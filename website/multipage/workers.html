@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/html/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
    }
@@ -145,23 +145,23 @@
    #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
    @font-face {
      font-family: 'Essays1743';
-     src: url('/fonts/Essays1743.ttf');
+     src: url('/html/fonts/Essays1743.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-weight: bold;
-     src: url('/fonts/Essays1743-Bold.ttf');
+     src: url('/html/fonts/Essays1743-Bold.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
-     src: url('/fonts/Essays1743-Italic.ttf');
+     src: url('/html/fonts/Essays1743-Italic.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
      font-weight: bold;
-     src: url('/fonts/Essays1743-BoldItalic.ttf');
+     src: url('/html/fonts/Essays1743-BoldItalic.ttf');
    }
 
    @media (max-width: 767px) {
@@ -274,7 +274,7 @@ search: while (true) {
   <p>The bulk of this code is simply an unoptimized search for a prime number. The <code id=a-background-number-crunching-worker:dom-dedicatedworkerglobalscope-postmessage><a href=#dom-dedicatedworkerglobalscope-postmessage>postMessage()</a></code> method is used to send a
   message back to the page when a prime is found.</p>
 
-  <p><a href=/demos/workers/primes/page.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/primes/page.html>View this example online</a>.</p>
 
 
 
@@ -385,7 +385,7 @@ onmessage = function (event) {
   postMessage(get('search.cgi?' + event.data));
 };</pre>
 
-  <p><a href=/demos/workers/stocks/page.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/stocks/page.html>View this example online</a>.</p>
 
   <h5 id=module-worker-example>10.1.2.3 Using a JavaScript module as a worker<a href=#module-worker-example class=self-link></a></h5>
 
@@ -504,7 +504,7 @@ export function brighten({ data: d }) {
   }
 };</pre>
 
-  <p><a href=/demos/workers/modules/page.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/modules/page.html>View this example online</a>.</p>
 
 
   <h5 id=shared-workers-introduction>10.1.2.4 Shared workers introduction<a href=#shared-workers-introduction class=self-link></a></h5><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="and_chr no"><span>Chrome for Android</span> <span>None</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf no"><span>iOS Safari</span> <span>None</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="firefox yes"><span>Firefox</span> <span>29+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie no"><span>IE</span> <span>None</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android no"><span>Android Browser</span> <span>None</span></span><span class="safari no"><span>Safari</span> <span>None</span></span><span class="edge no"><span>Edge</span> <span>None</span></span><span class="opera yes"><span>Opera</span> <span>10.6+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=sharedworkers">caniuse.com</a></div>
@@ -540,7 +540,7 @@ export function brighten({ data: d }) {
 }
 </pre>
 
-  <p><a href=/demos/workers/shared/001/test.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/shared/001/test.html>View this example online</a>.</p>
 
   <hr>
 
@@ -578,7 +578,7 @@ export function brighten({ data: d }) {
 }
 </pre>
 
-  <p><a href=/demos/workers/shared/002/test.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/shared/002/test.html>View this example online</a>.</p>
 
   <hr>
 
@@ -633,7 +633,7 @@ onconnect = function(e) {
 }
 </pre>
 
-  <p><a href=/demos/workers/shared/003/test.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/shared/003/test.html>View this example online</a>.</p>
 
 
   <h5 id=shared-state-using-a-shared-worker>10.1.2.5 Shared state using a shared worker<a href=#shared-state-using-a-shared-worker class=self-link></a></h5>
@@ -922,7 +922,7 @@ function getMessage(event) {
   naming another viewer, it sets up a direct connection between the two, so that the two viewers can
   communicate directly without the worker having to proxy all the messages.</p>
 
-  <p><a href=/demos/workers/multiviewer/page.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/multiviewer/page.html>View this example online</a>.</p>
 
 
   <h5 id=delegation>10.1.2.6 Delegation<a href=#delegation class=self-link></a></h5>
@@ -1009,7 +1009,7 @@ function work() {
   <p>They receive two numbers in two events, perform the computation for the range of numbers thus
   specified, and then report the result back to the parent.</p>
 
-  <p><a href=/demos/workers/multicore/page.html>View this example online</a>.</p>
+  <p><a href=/html/demos/workers/multicore/page.html>View this example online</a>.</p>
 
 
 
@@ -1880,7 +1880,7 @@ interface <dfn id=navigatorconcurrenthardware>NavigatorConcurrentHardware</dfn> 
   <p>The <dfn id=dom-navigator-hardwareconcurrency><code>navigator.hardwareConcurrency</code></dfn> attribute's
   getter must return a number between 1 and the number of logical processors potentially available
   to the user agent. If this cannot be determined, the getter must return 1.
-  <a id=navigator.hardwareconcurrency:fingerprinting-vector title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/images/fingerprint.png width=46 height=64></a></p>
+  <a id=navigator.hardwareconcurrency:fingerprinting-vector title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/html/images/fingerprint.png width=46 height=64></a></p>
 
   <p>User agents should err toward exposing the number of logical processors available, using lower
   values only in cases where there are user-agent specific limits in place (such as a limitation

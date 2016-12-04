@@ -12,7 +12,7 @@
 
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
-  xhr.open('GET', '/multipage/fragment-links.json');
+  xhr.open('GET', '/html/multipage/fragment-links.json');
   xhr.onload = function() {
     var fragmentLinks = xhr.response;
 

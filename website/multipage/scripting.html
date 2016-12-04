@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/html/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
    }
@@ -145,23 +145,23 @@
    #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
    @font-face {
      font-family: 'Essays1743';
-     src: url('/fonts/Essays1743.ttf');
+     src: url('/html/fonts/Essays1743.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-weight: bold;
-     src: url('/fonts/Essays1743-Bold.ttf');
+     src: url('/html/fonts/Essays1743-Bold.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
-     src: url('/fonts/Essays1743-Italic.ttf');
+     src: url('/html/fonts/Essays1743-Italic.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
      font-weight: bold;
-     src: url('/fonts/Essays1743-BoldItalic.ttf');
+     src: url('/html/fonts/Essays1743-BoldItalic.ttf');
    }
 
    @media (max-width: 767px) {
@@ -314,7 +314,7 @@ interface <dfn id=htmlscriptelement>HTMLScriptElement</dfn> : <a id=the-script-e
 
   <p>This is all summarized in the following schematic diagram:</p>
 
-  <p><img src=/images/asyncdefer.svg alt="With <script>, parsing is interrupted by fetching and execution. With <script defer>, fetching is parallel to parsing and execution takes place after all parsing has finished. And with <script async>, fetching is parallel to parsing but once it finishes parsing is interrupted to execute the script. The story for <script type=&quot;module&quot;> is similar to <script defer>, but the dependencies will be fetched as well, and the story for <script type=&quot;module&quot; async> is similar to <script async> with the extra dependency fetching." style="width: 80%; min-width: 820px;"></p>
+  <p><img src=/html/images/asyncdefer.svg alt="With <script>, parsing is interrupted by fetching and execution. With <script defer>, fetching is parallel to parsing and execution takes place after all parsing has finished. And with <script async>, fetching is parallel to parsing but once it finishes parsing is interrupted to execute the script. The story for <script type=&quot;module&quot;> is similar to <script defer>, but the dependencies will be fetched as well, and the story for <script type=&quot;module&quot; async> is similar to <script async> with the extra dependency fetching." style="width: 80%; min-width: 820px;"></p>
 
   <p class=note>The exact processing details for these attributes are, for mostly historical
   reasons, somewhat non-trivial, involving a number of aspects of HTML. The implementation
@@ -2853,7 +2853,7 @@ context.fillRect(100,0,50,50); // only this square remains</pre>
   attribute's allowed keywords correspond to alignment points in the
   font:</p>
 
-  <p><img src=/images/baselines.png width=738 alt="The top of the em square is roughly at the top of the glyphs in a font, the hanging baseline is where some glyphs like आ are anchored, the middle is half-way between the top of the em square and the bottom of the em square, the alphabetic baseline is where characters like Á, ÿ, f, and Ω are anchored, the ideographic baseline is where glyphs like 私 and 達 are anchored, and the bottom of the em square is roughly at the bottom of the glyphs in a font. The top and bottom of the bounding box can be far from these baselines, due to glyphs extending far outside the em square." height=300></p>
+  <p><img src=/html/images/baselines.png width=738 alt="The top of the em square is roughly at the top of the glyphs in a font, the hanging baseline is where some glyphs like आ are anchored, the middle is half-way between the top of the em square and the bottom of the em square, the alphabetic baseline is where characters like Á, ÿ, f, and Ω are anchored, the ideographic baseline is where glyphs like 私 and 達 are anchored, and the bottom of the em square is roughly at the bottom of the glyphs in a font. The top and bottom of the bounding box can be far from these baselines, due to glyphs extending far outside the em square." height=300></p>
 
   <p>The keywords map to these alignment points as follows:</p>
 
@@ -2997,9 +2997,9 @@ context.fillRect(100,0,50,50); // only this square remains</pre>
 
     <figure class=diagrams>
      
-     <img width=357 src=/images/arcTo1.png height=254 alt="">
-     <img width=468 src=/images/arcTo2.png height=310 alt="">
-     <img width=513 src=/images/arcTo3.png height=233 alt="">
+     <img width=357 src=/html/images/arcTo1.png height=254 alt="">
+     <img width=468 src=/html/images/arcTo2.png height=310 alt="">
+     <img width=513 src=/html/images/arcTo3.png height=233 alt="">
     </figure>
 
 
@@ -3016,7 +3016,7 @@ context.fillRect(100,0,50,50); // only this square remains</pre>
 
     <figure class=diagrams>
      
-     <img width=590 src=/images/arc1.png height=255 alt="">
+     <img width=590 src=/html/images/arc1.png height=255 alt="">
     </figure>
 
 
@@ -3936,7 +3936,7 @@ context.fillRect(100,0,50,50); // only this square remains</pre>
 
   Otherwise, it must return the new <code id=drawing-text-to-the-bitmap:textmetrics-3><a href=#textmetrics>TextMetrics</a></code> object.
   <a href=references.html#refsCSS>[CSS]</a>
-  <a id=drawing-text-to-the-bitmap:fingerprinting-vector title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/images/fingerprint.png width=46 height=64></a>
+  <a id=drawing-text-to-the-bitmap:fingerprinting-vector title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/html/images/fingerprint.png width=46 height=64></a>
   </p>
 
   
@@ -4320,7 +4320,7 @@ context.fillRect(100,0,50,50); // only this square remains</pre>
     <p>Draws the given image onto the canvas. The arguments are
     interpreted as follows:</p>
 
-    <p><img src=/images/drawImage.png width=356 alt="The sx and sy parameters give the x and y coordinates of the source rectangle; the sw and sh arguments give the width and height of the source rectangle; the dx and dy give the x and y coordinates of the destination rectangle; and the dw and dh arguments give the width and height of the destination rectangle." height=356></p>
+    <p><img src=/html/images/drawImage.png width=356 alt="The sx and sy parameters give the x and y coordinates of the source rectangle; the sw and sh arguments give the width and height of the source rectangle; the dx and dy give the x and y coordinates of the destination rectangle; and the dw and dh arguments give the width and height of the destination rectangle." height=356></p>
 
     <p>If the image isn't yet fully decoded, then nothing is drawn. If the image is a canvas with no
     data, throws an <a id=drawing-images:invalidstateerror href=https://heycam.github.io/webidl/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code id=drawing-images:domexception><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code>.</p>
@@ -5143,7 +5143,7 @@ function AddCloud(data, x, y) { ... }</pre>
    <p>The 2D rendering context for <code id=examples:the-canvas-element><a href=#the-canvas-element>canvas</a></code> is often used for sprite-based games. The
    following example demonstrates this:</p>
 
-   <iframe src=/demos/canvas/blue-robot/index-idle.html width=396 height=216></iframe>
+   <iframe src=/html/demos/canvas/blue-robot/index-idle.html width=396 height=216></iframe>
 
    <p>Here is the source for this example:</p>
 
@@ -6722,7 +6722,7 @@ customElements.define("x-foo", class extends HTMLElement {
 
   <p>This is all summarized in the following schematic diagram:</p>
 
-  <p><img src=/images/custom-element-reactions.svg alt="A custom element reactions stack consists of a stack of element queues. Zooming in on a particular queue, we see that it contains a number of elements (in our example, <x-a>, then <x-b>, then <x-c>). Any particular element in the queue then has a custom element reaction queue. Zooming in on the custom element reaction queue, we see that it contains a variety of queued-up reactions (in our example, upgrade, then attribute changed, then another attribute changed, then connected)." style="width: 80%; max-width: 580px;"></p>
+  <p><img src=/html/images/custom-element-reactions.svg alt="A custom element reactions stack consists of a stack of element queues. Zooming in on a particular queue, we see that it contains a number of elements (in our example, <x-a>, then <x-b>, then <x-c>). Any particular element in the queue then has a custom element reaction queue. Zooming in on the custom element reaction queue, we see that it contains a variety of queued-up reactions (in our example, upgrade, then attribute changed, then another attribute changed, then connected)." style="width: 80%; max-width: 580px;"></p>
 
   <p>To <dfn id=enqueue-an-element-on-the-appropriate-element-queue>enqueue an element on the appropriate element queue</dfn>, given an element
   <var>element</var>, run the following steps:</p>

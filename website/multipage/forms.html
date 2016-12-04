@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/html/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
    }
@@ -145,23 +145,23 @@
    #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
    @font-face {
      font-family: 'Essays1743';
-     src: url('/fonts/Essays1743.ttf');
+     src: url('/html/fonts/Essays1743.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-weight: bold;
-     src: url('/fonts/Essays1743-Bold.ttf');
+     src: url('/html/fonts/Essays1743-Bold.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
-     src: url('/fonts/Essays1743-Italic.ttf');
+     src: url('/html/fonts/Essays1743-Italic.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
      font-weight: bold;
-     src: url('/fonts/Essays1743-BoldItalic.ttf');
+     src: url('/html/fonts/Essays1743-BoldItalic.ttf');
    }
 
    @media (max-width: 767px) {
@@ -2969,7 +2969,7 @@ interface <dfn id=htmlinputelement>HTMLInputElement</dfn> : <a id=the-input-elem
    had visited <code>https://url.spec.whatwg.org/#url-parsing</code> and <code>https://streams.spec.whatwg.org/</code> in the recent past, then the rendering might look
    like this:</p>
 
-   <p><img src=/images/sample-url.svg width=480 alt="A text box with an icon on the left followed by the text &quot;spec.w&quot; and a cursor, with a drop down button on the right hand side; with, below, a drop down box containing a list of six URLs on the left, with the first four having grayed out labels on the right; and a scroll bar to the right of the drop down box, indicating further values are available." height=150></p>
+   <p><img src=/html/images/sample-url.svg width=480 alt="A text box with an icon on the left followed by the text &quot;spec.w&quot; and a cursor, with a drop down button on the right hand side; with, below, a drop down box containing a list of six URLs on the left, with the first four having grayed out labels on the right; and a scroll bar to the right of the drop down box, indicating further values are available." height=150></p>
 
    <p>The first four URLs in this sample consist of the four URLs in the author-specified list that
    match the text the user has entered, sorted in some UA-defined manner (maybe by how frequently
@@ -4244,7 +4244,7 @@ ldh-str       = &lt; as defined in <a href=https://tools.ietf.org/html/rfc1034#s
 
    <p>...might render as:</p>
 
-   <p><img src=/images/sample-range.png width=49 alt="A vertical slider control whose primary color is black and whose background color is beige, with the slider having five tick marks, one long one at each extremity, and three short ones clustered around the midpoint." height=75>
+   <p><img src=/html/images/sample-range.png width=49 alt="A vertical slider control whose primary color is black and whose background color is beige, with the slider having five tick marks, one long one at each extremity, and three short ones clustered around the midpoint." height=75>
 
    <p>Note how the UA determined the orientation of the control from the ratio of the
    style-sheet-specified height and width properties. The colors were similarly derived from the
@@ -4264,11 +4264,11 @@ ldh-str       = &lt; as defined in <a href=https://tools.ietf.org/html/rfc1034#s
 
    <p>A user agent could display in a variety of ways, for instance:</p>
 
-   <p><img src=/images/sample-range-2a.png width=231 alt="As a dial." height=57></p>
+   <p><img src=/html/images/sample-range-2a.png width=231 alt="As a dial." height=57></p>
 
    <p>Or, alternatively, for instance:</p>
 
-   <p><img src=/images/sample-range-2b.png width=445 alt="As a long horizontal slider with tick marks." height=56></p>
+   <p><img src=/html/images/sample-range-2b.png width=445 alt="As a long horizontal slider with tick marks." height=56></p>
 
    <p>The user agent could pick which one to display based on the dimensions given in the style
    sheet. This would allow it to maintain the same resolution for the tick marks, despite the
@@ -4289,7 +4289,7 @@ ldh-str       = &lt; as defined in <a href=https://tools.ietf.org/html/rfc1034#s
 
    <p>With styles that make the control draw vertically, it might look as follows:</p>
 
-   <p><img src=/images/sample-range-labels.png width=103 alt="A vertical slider control with two tick marks, one near the top labeled 'High', and one near the bottom labeled 'Low'." height=164>
+   <p><img src=/html/images/sample-range-labels.png width=103 alt="A vertical slider control with two tick marks, one near the top labeled 'High', and one near the bottom labeled 'Low'." height=164>
 
   </div>
 
@@ -4933,7 +4933,7 @@ ldh-str       = &lt; as defined in <a href=https://tools.ietf.org/html/rfc1034#s
   attribute, the button's label must be the value of that attribute; otherwise, it must be an
   implementation-defined string that means "Submit" or some such. The element is a <a href=#concept-button id="submit-button-state-(type=submit):concept-button">button</a>, specifically a <a href=#concept-submit-button id="submit-button-state-(type=submit):concept-submit-button">submit
   button</a>.
-  <a id="submit-button-state-(type=submit):fingerprinting-vector" title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/images/fingerprint.png width=46 height=64></a>
+  <a id="submit-button-state-(type=submit):fingerprinting-vector" title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/html/images/fingerprint.png width=46 height=64></a>
   </p>
 
   <p class=note>Since the default label is implementation-defined, and the width of the button
@@ -5256,7 +5256,7 @@ ldh-str       = &lt; as defined in <a href=https://tools.ietf.org/html/rfc1034#s
   the form. If the element has a <code id="reset-button-state-(type=reset):attr-input-value"><a href=#attr-input-value>value</a></code>
   attribute, the button's label must be the value of that attribute; otherwise, it must be an
   implementation-defined string that means "Reset" or some such. The element is a <a href=#concept-button id="reset-button-state-(type=reset):concept-button">button</a>.
-  <a id="reset-button-state-(type=reset):fingerprinting-vector" title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/images/fingerprint.png width=46 height=64></a>
+  <a id="reset-button-state-(type=reset):fingerprinting-vector" title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/html/images/fingerprint.png width=46 height=64></a>
   </p>
 
   <p class=note>Since the default label is implementation-defined, and the width of the button
@@ -5641,7 +5641,7 @@ ldh-str       = &lt; as defined in <a href=https://tools.ietf.org/html/rfc1034#s
    might suggest these two e-mail addresses to the user.</p>
 
    
-   <p><img src=/images/sample-email-1.svg width=330 alt="" height=100></p>
+   <p><img src=/html/images/sample-email-1.svg width=330 alt="" height=100></p>
 
    <p>The page could also link in the user's contacts database from the site:</p>
 
@@ -5660,7 +5660,7 @@ ldh-str       = &lt; as defined in <a href=https://tools.ietf.org/html/rfc1034#s
    the <code id=the-multiple-attribute:the-datalist-element><a href=#the-datalist-element>datalist</a></code> element.</p>
 
    
-   <p><img src=/images/sample-email-2.svg width=330 alt="" height=140></p>
+   <p><img src=/html/images/sample-email-2.svg width=330 alt="" height=140></p>
 
   </div>
 
@@ -5974,7 +5974,7 @@ You cannot submit this form when the field is incorrect.</samp></pre>
    <p>For user agents that follow the above suggestions, both the <a href=#concept-option-label id=the-list-attribute:concept-option-label-3>label</a> and <a href=#concept-option-value id=the-list-attribute:concept-option-value-3>value</a>
    would be shown:</p>
 
-   <p><img src=/images/sample-datalist.svg width=280 alt="A text box with a drop down button on the right hand side; with, below, a drop down box containing a list of the six values the left and the six labels on the right." height=150></p>
+   <p><img src=/html/images/sample-datalist.svg width=280 alt="A text box with a drop down button on the right hand side; with, below, a drop down box containing a list of the six values the left and the six labels on the right." height=150></p>
 
    <p>Then, typing "<kbd>arrow</kbd>" or "<kbd>=></kbd>" would filter the list to the entries with
    labels "arrow function" and "async arrow function". Typing "<kbd>generator</kbd>" or
@@ -8539,7 +8539,7 @@ and a height of &lt;meter value=2>2cm&lt;/meter>.&lt;/p> &lt;!-- <strong>BAD!</s
  &lt;/li>
 &lt;/ul></pre>
    <p>Might be rendered as follows:</p>
-   <p><img src=/images/sample-meter.png width=332 alt="With the <meter> elements rendered as inline green bars of varying lengths." height=178></p>
+   <p><img src=/html/images/sample-meter.png width=332 alt="With the <meter> elements rendered as inline green bars of varying lengths." height=178></p>
   </div>
 
   <p>User agents may combine the value of the <code id=the-meter-element:attr-title-2><a href=dom.html#attr-title>title</a></code> attribute and the other attributes to provide context-sensitive
@@ -10480,13 +10480,13 @@ MIT Room 32-G524
 
      <p>This might render as follows:</p>
 
-     <p><img src=/images/select-country-1.png alt="A drop-down control with a long alphabetical list of countries."></p>
+     <p><img src=/html/images/select-country-1.png alt="A drop-down control with a long alphabetical list of countries."></p>
 
      <p>Suppose that on the first visit to this page, the user selects "Zambia". On the second visit,
      the user agent could duplicate the entry for Zambia at the top of the list, so that the interface
      instead looks like this:</p>
 
-     <p><img src=/images/select-country-2.png alt="The same drop-down control with the alphabetical list of countries, but with Zambia as an entry at the top."></p>
+     <p><img src=/html/images/select-country-2.png alt="The same drop-down control with the alphabetical list of countries, but with Zambia as an entry at the top."></p>
 
     </div>
 
@@ -11963,7 +11963,7 @@ interface <dfn id=htmldetailselement>HTMLDetailsElement</dfn> : <a id=the-detail
    to collapse a set of fields down to a small set of headings, with the ability to open each
    one.</p>
 
-   <p class=details-example><img src=/images/sample-details-1.png width=345 alt="" height=611><img src=/images/sample-details-2.png width=345 alt="" height=666></p>
+   <p class=details-example><img src=/html/images/sample-details-1.png width=345 alt="" height=611><img src=/html/images/sample-details-2.png width=345 alt="" height=666></p>
 
    <p>In these examples, the summary really just summarizes what the controls can change, and not
    the actual values, which is less than ideal.</p>
@@ -12144,7 +12144,7 @@ interface <dfn id=htmlmenuelement>HTMLMenuElement</dfn> : <a id=the-menu-element
    <p>In a supporting user agent, this might look like this (assuming the user has just activated the
    second button):</p>
 
-   <p><img src=/images/sample-toolbar-1.png width=303 alt="A toolbar with three buttons, labeled 'File', 'Edit', and 'Help'; where if you select the 'Edit' button you get a drop-down menu with three more options, 'Copy', 'Cut', and 'Paste'." height=101></p>
+   <p><img src=/html/images/sample-toolbar-1.png width=303 alt="A toolbar with three buttons, labeled 'File', 'Edit', and 'Help'; where if you select the 'Edit' button you get a drop-down menu with three more options, 'Copy', 'Cut', and 'Paste'." height=101></p>
 
   </div>
 
@@ -12425,12 +12425,12 @@ interface <dfn id=htmlmenuitemelement>HTMLMenuItemElement</dfn> : <a id=the-menu
    <p>When a user of a mouse-operated visual Web browser right-clicks on the image, the browser
    might pop up a context menu like this:</p>
 
-   <p><img src=/images/contextmenu-collapsed.png alt="A context menu, shown over a picture of cats, with four lines: the first two offering the menu items described in the markup above ('Pet the kittens' and 'Cuddle with the kittens'), the third giving a submenu labeled 'Feed the kittens', and the fourth, after a horizontal splitter, consisting of only a downwards-pointing disclosure triangle.">
+   <p><img src=/html/images/contextmenu-collapsed.png alt="A context menu, shown over a picture of cats, with four lines: the first two offering the menu items described in the markup above ('Pet the kittens' and 'Cuddle with the kittens'), the third giving a submenu labeled 'Feed the kittens', and the fourth, after a horizontal splitter, consisting of only a downwards-pointing disclosure triangle.">
 
    <p>When the user clicks the disclosure triangle, such a user agent would expand the context menu
    in place, to show the browser's own commands:</p>
 
-   <p><img src=/images/contextmenu-expanded.png alt="This would result in the same basic interface, but with a longer menu; the disclosure triangle having been replaced by items such as 'View Image', 'Copy Image', 'Copy Image Location', and so forth.">
+   <p><img src=/html/images/contextmenu-expanded.png alt="This would result in the same basic interface, but with a longer menu; the disclosure triangle having been replaced by items such as 'View Image', 'Copy Image', 'Copy Image Location', and so forth.">
 
   </div>
 

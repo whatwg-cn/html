@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/html/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
    function toggleStatus(div) {
      div.parentNode.classList.toggle('wrapped');
    }
@@ -145,23 +145,23 @@
    #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
    @font-face {
      font-family: 'Essays1743';
-     src: url('/fonts/Essays1743.ttf');
+     src: url('/html/fonts/Essays1743.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-weight: bold;
-     src: url('/fonts/Essays1743-Bold.ttf');
+     src: url('/html/fonts/Essays1743-Bold.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
-     src: url('/fonts/Essays1743-Italic.ttf');
+     src: url('/html/fonts/Essays1743-Italic.ttf');
    }
    @font-face {
      font-family: 'Essays1743';
      font-style: italic;
      font-weight: bold;
-     src: url('/fonts/Essays1743-BoldItalic.ttf');
+     src: url('/html/fonts/Essays1743-BoldItalic.ttf');
    }
 
    @media (max-width: 767px) {
@@ -376,7 +376,7 @@ partial interface <dfn data-lt="" id=document>Document</dfn> {
   origin</a>, the user agent must throw a <a id=resource-metadata-management:securityerror-2 href=https://heycam.github.io/webidl/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
   <code id=resource-metadata-management:domexception-2><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code>. Otherwise, the user agent must return the <a id=resource-metadata-management:cookie-string href=infrastructure.html#cookie-string>cookie-string</a>
   for the document's <a href=https://dom.spec.whatwg.org/#concept-document-url id="resource-metadata-management:the-document's-address-4" data-x-internal="the-document's-address">URL</a> for a "non-HTTP" API, decoded
-  using <a id=resource-metadata-management:utf-8-decode-without-bom href=https://encoding.spec.whatwg.org/#utf-8-decode-without-bom data-x-internal=utf-8-decode-without-bom>UTF-8 decode without BOM</a>. <a href=references.html#refsCOOKIES>[COOKIES]</a><a id=resource-metadata-management:fingerprinting-vector title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/images/fingerprint.png width=46 height=64></a></p>
+  using <a id=resource-metadata-management:utf-8-decode-without-bom href=https://encoding.spec.whatwg.org/#utf-8-decode-without-bom data-x-internal=utf-8-decode-without-bom>UTF-8 decode without BOM</a>. <a href=references.html#refsCOOKIES>[COOKIES]</a><a id=resource-metadata-management:fingerprinting-vector title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/html/images/fingerprint.png width=46 height=64></a></p>
 
   <p>On setting, if the document is a <a href=#cookie-averse-document-object id=resource-metadata-management:cookie-averse-document-object-2>cookie-averse <code>Document</code> object</a>, then
   the user agent must do nothing. Otherwise, if the <code id=resource-metadata-management:document-7><a href=#document>Document</a></code>'s <a id=resource-metadata-management:concept-origin-2 href=browsers.html#concept-origin>origin</a> is
@@ -1332,7 +1332,7 @@ console.assert(image.height === 200);</pre>
   <p>These categories are related as follows:</p>
 
   
-  <p><object width=1000 height=288 data=/images/content-venn.svg><img width=512 src=/images/content-venn.png height=288 alt=""></object></p>
+  <p><object width=1000 height=288 data=/images/content-venn.svg><img width=512 src=/html/images/content-venn.png height=288 alt=""></object></p>
 
   <p>Sectioning content, heading content, phrasing content, embedded content, and interactive
   content are all types of flow content. Metadata is sometimes flow content. Metadata and
@@ -2287,7 +2287,7 @@ Transport Protocol">HTTP&lt;/abbr> today.&lt;/p></pre>
    namely to align the text to the <i>start edge</i> of the paragraph, the resulting rendering could
    be as follows:</p>
 
-   <p><img width=366 src=/images/im.png height=157 alt="Each paragraph rendered as a separate block, with the paragraphs left-aligned except the second paragraph and the last one, which would  be right aligned, with the usernames ('Student' and 'Teacher' in this example) flush right, with a colon to their left, and the text first to the left of that."></p>
+   <p><img width=366 src=/html/images/im.png height=157 alt="Each paragraph rendered as a separate block, with the paragraphs left-aligned except the second paragraph and the last one, which would  be right aligned, with the usernames ('Student' and 'Teacher' in this example) flush right, with a colon to their left, and the text first to the left of that."></p>
 
    <p>As noted earlier, the <code id=the-dir-attribute:attr-dir-auto><a href=#attr-dir-auto>auto</a></code> value is not a panacea. The
    final paragraph in this example is misinterpreted as being right-to-left text, since it begins
