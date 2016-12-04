@@ -1,0 +1,1200 @@
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=icon href=https://resources.whatwg.org/logo.svg><style>
+   [hidden] { display: none; }
+
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+   @media (max-width: 767px) {
+     .fingerprint { max-width: 35px; }
+   }
+
+   .status { min-height: 0.6em; font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status:hover { z-index: 9; }
+   .status:focus-within { z-index: 9; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; left: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > p > strong { margin-left: 1.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span.no::before { opacity: 0.5; }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .edge::before { background-image: url(https://resources.whatwg.org/browser-logos/edge.svg); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mini.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .support > .samsung::before { background-image: url(https://resources.whatwg.org/browser-logos/samsung.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+   .status > .caniuse + p { margin-top: 0.5em; border-top: 1px solid silver; }
+
+   @media (max-width: 767px) {
+     .status { right: -9em; }
+   }
+
+   .applies .yes, .yesno .yes { background: yellow; }
+   .yesno .yes, .yesno .no { text-align: center; }
+
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+
+   @media (max-width: 767px) {
+     #abstractimg { width: 100%; }
+   }
+   #abstractimg, #abstractimg text { font: inherit; }
+   #abstractimg rect { fill: #424242; }
+   #abstractimg text { fill: #ffffff; font-size: 18px }
+   #abstractimg .top { word-spacing: 50px; text-anchor: middle; }
+   #abstractimg .left, #abstractimg .bottom { word-spacing: 12px; }
+   #abstractimg .right { font-size: 25px; }
+  </style>
+  <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>4 December 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=references.html>← References</a> — <a href=index.html>Table of Contents</a></nav><ol class=toc><li id=toc-acknowledgments><a href=acknowledgements.html#acknowledgments>Acknowledgments</a></ol><h2 id=acknowledgments class=no-num>Acknowledgments<a href=#acknowledgments class=self-link></a></h2>
+  
+
+  <p>Thanks to Tim Berners-Lee for inventing HTML, without which none of this would exist.</p>
+
+  <p>Thanks to
+
+  Aankhen,
+  Aaron Boodman,
+  Aaron Leventhal,
+  Adam Barth,
+  Adam de Boor,
+  Adam Hepton,
+  Adam Klein,
+  Adam Roben,
+  Addison Phillips,
+  Adele Peterson,
+  Adrian Bateman,
+  Adrian Roselli,
+  Adrian Sutton,
+  Agustín Fernández,
+  Aharon (Vladimir) Lanin,
+  Ajai Tirumali,
+  Akatsuki Kitamura,
+  Alan Plum,
+  Alastair Campbell,
+  Alejandro G. Castro,
+  Aleksey Shvayka,
+  Alex Bishop,
+  Alex Nicolaou,
+  Alex Rousskov,
+  Alexander Farkas,
+  Alexander J. Vincent,
+  Alexandre Morgaut,
+  Alexey Feldgendler,
+  Алексей Проскуряков (Alexey Proskuryakov),
+  Alexis Deveria,
+  Ali Juma,
+  Alice Boxhall,
+  Allan Clements,
+  Allen Wirfs-Brock,
+  Alex Komoroske,
+  Alex Russell,
+  Ami Fischman,
+  Amos Jeffries,
+  Anders Carlsson,
+  André E. Veltstra,
+  Andrea Rendine,
+  Andreas,
+  Andreas Kling,
+  Andrei Popescu,
+  Andres Gomez,
+  Andres Rios,
+  Andrew Barfield,
+  Andrew Clover,
+  Andrew Gove,
+  Andrew Grieve,
+  Andrew Oakley,
+  Andrew Sidwell,
+  Andrew Simons,
+  Andrew Smith,
+  Andrew W. Hagen,
+  Andrey V. Lukyanov,
+  Andry Rendy,
+  Andy Earnshaw,
+  Andy Heydon,
+  Andy Palay,
+  Anjana Vakil,
+  Anna Belle Leiserson,
+  Anthony Boyd,
+  Anthony Bryan,
+  Anthony Hickson,
+  Anthony Ramine,
+  Anthony Ricaud,
+  Anton Vayvod,
+  Antti Koivisto,
+  Arkadiusz Michalski,
+  Arne Thomassen,
+  Aron Spohr,
+  Arphen Lin,
+  Arthur Stolyar,
+  Arun Patole,
+  Aryeh Gregor,
+  Asbjørn Ulsberg,
+  Ashley Gullen,
+  Ashley Sheridan,
+  Atsushi Takayama,
+  Aurelien Levy,
+  Ave Wrigley,
+  Avi Drissman,
+  Axel Dahmen,
+  Ben Boyle,
+  Ben Godfrey,
+  Ben Kelly,
+  Ben Lerner,
+  Ben Leslie,
+  Ben Meadowcroft,
+  Ben Millard,
+  Benjamin Carl Wiley Sittler,
+  Benjamin Hawkes-Lewis,
+  Benoit Ren,
+  Bert Bos,
+  Bijan Parsia,
+  Bil Corry,
+  Bill Mason,
+  Bill McCoy,
+  Billy Wong,
+  Bjartur Thorlacius,
+  Björn Höhrmann,
+  Blake Frantz,
+  Bob Lund,
+  Bob Owen,
+  Bobby Holley,
+  Boris Zbarsky,
+  Brad Fults,
+  Brad Neuberg,
+  Brad Spencer,
+  Brady Eidson,
+  Brandon Jones,
+  Brendan Eich,
+  Brenton Simpson,
+  Brett Wilson,
+  Brett Zamir,
+  Brian Blakely,
+  Brian Campbell,
+  Brian Korver,
+  Brian Kuhn,
+  Brian M. Dube,
+  Brian Ryner,
+  Brian Smith,
+  Brian Wilson,
+  Bryan Sullivan,
+  Bruce Bailey,
+  Bruce D'Arcus,
+  Bruce Lawson,
+  Bruce Miller,
+  Bugs Nash,
+  C. Scott Ananian,
+  C. Williams,
+  Cameron McCormack,
+  Cameron Zemek,
+  Cao Yipeng,
+  Carlos Amengual,
+  Carlos Gabriel Cardona,
+  Carlos Perelló Marín,
+  Casey Leask,
+  Cătălin Mariș,
+  Chao Cai,
+  윤석찬 (Channy Yun),
+  Charl van Niekerk,
+  Charlene Wright,
+  Charles Iliya Krempeaux,
+  Charles McCathie Nevile,
+  Charlie Reis,
+  Chris Apers,
+  Chris Cressman,
+  Chris Dumez,
+  Chris Evans,
+  Chris Harrelson,
+  Chris Markiewicz,
+  Chris Morris,
+  Chris Pearce,
+  Chris Peterson,
+  Chris Rebert,
+  Chris Weber,
+  Chris Wilson,
+  Christian Biesinger,
+  Christian Johansen,
+  Christian Schmidt,
+  Christoph Päper,
+  Christophe Dumez,
+  Christopher Aillon,
+  Christopher Ferris,
+  Chriswa,
+  Clark Buehler,
+  Cole Robison,
+  Colin Fine,
+  Collin Jackson,
+  Corey Farwell,
+  Corprew Reed,
+  Craig Cockburn,
+  Csaba Gabor,
+  Csaba Marton,
+  Cynthia Shelly,
+  Dan Ehrenberg,
+  Dan Yoder,
+  Dane Foster, 
+  Daniel Barclay,
+  Daniel Bratell,
+  Daniel Brooks,
+  Daniel Brumbaugh Keeney,
+  Daniel Buchner,
+  Daniel Cheng,
+  Daniel Davis,
+  Daniel Glazman,
+  Daniel Peng,
+  Daniel Schattenkirchner,
+  Daniel Spång,
+  Daniel Steinberg,
+  Daniel Trebbien,
+  Danny Sullivan,
+  Darin Adler,
+  Darin Fisher,
+  Darxus,
+  Dave Camp,
+  Dave Hodder,
+  Dave Lampton,
+  Dave Singer,
+  Dave Townsend,
+  David Baron,
+  David Bloom,
+  David Bruant,
+  David Carlisle,
+  David E. Cleary,
+  David Egan Evans,
+  David Fink,
+  David Flanagan,
+  David Gerard,
+  David Håsäther,
+  David Hyatt,
+  David I. Lehn,
+  David John Burrowes,
+  David Kendal,
+  David Matja,
+  David Remahl,
+  David Resseguie,
+  David Smith,
+  David Vest,
+  David Woolley,
+  David Zbarsky,
+  Dave Methvin,
+  DeWitt Clinton,
+  Dean Edridge,
+  Dean Edwards,
+  Dean Jackson,
+  Debi Orton,
+  Derek Featherstone,
+  Devarshi Pant,
+  Devdatta,
+  Dimitri Glazkov,
+  Dimitry Golubovsky,
+  Dirk Pranke,
+  Dirk Schulze,
+  Dirkjan Ochtman,
+  Divya Manian,
+  Dmitry Titov,
+  dolphinling,
+  Dominic Cooney,
+  Dominique Hazaël-Massieux,
+  Don Brutzman,
+  Doron Rosenberg,
+  Doug Kramer,
+  Doug Simpkinson,
+  Drew Wilson,
+  Edgar Chen,
+  Edmund Lai,
+  Eduard Pascual,
+  Eduardo Vela,
+  Edward Welbourne,
+  Edward Z. Yang,
+  Ehsan Akhgari,
+  Eira Monstad,
+  Eitan Adler,
+  Eli Friedman,
+  Eli Grey,
+  Eliot Graff,
+  Elisabeth Robson,
+  Elizabeth Castro,
+  Elliott Sprehn,
+  Elliotte Harold,
+  Emilio Cobos,
+  Emily Stark,
+  Eric Carlson,
+  Eric Casler,
+  Eric Lawrence,
+  Eric Rescorla,
+  Eric Semling,
+  Erik Arvidsson,
+  Erik Charlebois,
+  Erik Rose,
+  espretto, 
+  Evan Jacobs,
+  Evan Martin,
+  Evan Prodromou,
+  Evan Stade,
+  Evert,
+  Evgeny Kapun,
+  Ezequiel Garzón,
+  fantasai,
+  Felix Sanz,
+  Felix Sasaki,
+  Francesco Schwarz,
+  Francis Brosnan Blazquez,
+  Franck 'Shift' Quélain,
+  François Marier,
+  Frank Barchard,
+  Frank Liberato,
+  Fredrik Söderquist,
+  鵜飼文敏 (Fumitoshi Ukai),
+  Futomi Hatano,
+  Gavin Carothers,
+  Gavin Kistner,
+  Gareth Rees,
+  Garrett Smith,
+  Geoff Richards,
+  Geoffrey Garen,
+  Geoffrey Sneddon,
+  George Lund,
+  Gianmarco Armellin,
+  Giovanni Campagna,
+  Giuseppe Pascale,
+  Glenn Adams,
+  Glenn Maynard,
+  Graham Klyne,
+  Greg Botten,
+  Greg Houston,
+  Greg Wilkins,
+  Gregg Tavares,
+  Gregory J. Rosmaita,
+  Grey,
+  Guilherme Johansson Tramontina,
+  Gytis Jakutonis,
+  Håkon Wium Lie,
+  Habib Virji,
+  Hajime Morrita,
+  Hallvord Reiar Michaelsen Steen,
+  Hans S. Tømmerhalt,
+  Hans Stimer,
+  Harald Alvestrand,
+  Hayato Ito,
+  Henri Sivonen,
+  Henrik Lied,
+  Henry Mason,
+  Henry Story,
+  Hugh Bellamy,
+  Hugh Guiney,
+  Hugh Winkler,
+  Ian Bicking,
+  Ian Clelland,
+  Ian Davis,
+  Ian Fette,
+  Ian Kilpatrick,
+  Ido Green,
+  Ignacio Javier,
+  Igor Oliveira,
+  Ingvar Stepanyan,
+  isonmad,
+  Iurii Kucherov,
+  Ivan Enderlin,
+  Ivo Emanuel Gonçalves,
+  J. King,
+  Jackson Ray Hamilton,
+  Jacob Davies,
+  Jacques Distler,
+  Jake Archibald,
+  Jake Verbaten,
+  Jakub Łopuszański,
+  Jakub Wilk,
+  James Craig,
+  James Graham,
+  James Greene,
+  James Justin Harrell,
+  James Kozianski,
+  James M Snell,
+  James Perrett,
+  James Robinson,
+  Jamie Lokier,
+  Jan Miksovsky,
+  Janusz Majnert,
+  Jan-Klaas Kollhof,
+  Jared Jacobs,
+  Jason Duell,
+  Jason Kersey,
+  Jason Lustig,
+  Jason Orendorff,
+  Jason White,
+  Jasper Bryant-Greene,
+  Jasper St. Pierre,
+  Jatinder Mann,
+  Jean-Yves Avenard,
+  Jed Hartman,
+  Jeff Balogh,
+  Jeff Cutsinger,
+  Jeff Schiller,
+  Jeff Walden,
+  Jeffrey Yasskin,
+  Jeffrey Zeldman,
+  胡慧鋒 (Jennifer Braithwaite),
+  Jens Bannmann,
+  Jens Fendler,
+  Jens Lindström,
+  Jens Oliver Meiert,
+  Jer Noble,
+  Jeremey Hustman,
+  Jeremy Keith,
+  Jeremy Orlow,
+  Jeroen van der Meer,
+  Jerry Smith,
+  Jesse Renée Beach,
+  Jessica Jong,
+  jfkthame, 
+  Jian Li,
+  Jim Jewett,
+  Jim Ley,
+  Jim Meehan,
+  Jim Michaels,
+  Jirka Kosek,
+  Jjgod Jiang,
+  João Eiras,
+  Jochen Eisinger,
+  Joe Clark,
+  Joe Gregorio,
+  Joel Spolsky,
+  Joel Verhagen,
+  Johan Herland,
+  John Boyer,
+  John Bussjaeger,
+  John Carpenter,
+  John Daggett,
+  John Fallows,
+  John Foliot,
+  John Harding,
+  John Keiser,
+  John Snyders,
+  John Stockton,
+  John-Mark Bell,
+  Johnny Stenback,
+  Jon Coppeard,
+  Jon Ferraiolo,
+  Jon Gibbins,
+  Jon Perlow,
+  Jonas Sicking,
+  Jonathan Cook,
+  Jonathan Neal,
+  Jonathan Rees,
+  Jonathan Watt,
+  Jonathan Worent,
+  Jonny Axelsson,
+  Jordan Tucker,
+  Jorgen Horstink,
+  Joris van der Wel,
+  Jorunn Danielsen Newth,
+  Joseph Kesselman,
+  Joseph Mansfield,
+  Joseph Pecoraro,
+  Josh Aas,
+  Josh Hart,
+  Josh Levenberg,
+  Josh Matthews,
+  Joshua Bell,
+  Joshua Randall,
+  Jukka K. Korpela,
+  Jules Clément-Ripoche,
+  Julian Reschke,
+  Julio Lopez,
+  Jungkee Song,
+  Jürgen Jeka,
+  Justin Lebar,
+  Justin Novosad,
+  Justin Rogers,
+  Justin Schuh,
+  Justin Sinclair,
+  Juuso Lapinlampi,
+  Ka-Sing Chou,
+  Kai Hendry,
+  Kamishetty Sreeja,
+  呂康豪 (KangHao Lu),
+  Karl Dubost,
+  Karl Tomlinson,
+  Kartikaya Gupta,
+  Kat Graff,
+  Kathy Walton,
+  Keith Rollin,
+  Keith Yeung,
+  Kelly Ford,
+  Kelly Norton,
+  Kevin Benson,
+  Kevin Gadd,
+  Kevin Cole,
+  Kinuko Yasuda,
+  Koji Ishii,
+  Kornél Pál,
+  Kornel Lesinski,
+  Kris Northfield,
+  Kristof Zelechovski,
+  Krzysztof Maczyński,
+  黒澤剛志 (Kurosawa Takeshi),
+  Kyle Barnhart,
+  Kyle Hofmann,
+  Kyle Huey,
+  Léonard Bouchet,
+  Léonie Watson,
+  Lachlan Hunt,
+  Larry Masinter,
+  Larry Page,
+  Lars Gunther,
+  Lars Solberg,
+  Laura Carlson,
+  Laura Granka,
+  Laura L. Carlson,
+  Laura Wisewell,
+  Laurens Holst,
+  Lawrence Forooghian,
+  Lee Kowalkowski,
+  Leif Halvard Silli,
+  Leif Kornstaedt,
+  Lenny Domnitser,
+  Leonard Rosenthol,
+  Leons Petrazickis,
+  Lobotom Dysmon,
+  Logan,
+  Loune,
+  Lucas Gadani,
+  Łukasz Pilorz,
+  Luke Kenneth Casson Leighton,
+  Maciej Stachowiak,
+  Magnus Kristiansen,
+  Maik Merten,
+  Majid Valipour,
+  Malcolm Rowe,
+  Manish Goregaokar,
+  Manish Tripathi,
+  Marc Hoyois,
+  Marc-André Choquette, 
+  Marc-André Lafortune,
+  Marco Zehe,
+  Marcus Bointon,
+  Marijn Kruisselbrink,
+  Mark Amery,
+  Mark Birbeck,
+  Mark Davis,
+  Mark Miller,
+  Mark Nottingham,
+  Mark Pilgrim,
+  Mark Rowe,
+  Mark Schenk,
+  Mark Vickers,
+  Mark Wilton-Jones,
+  Markus Stange,
+  Martijn Wargers,
+  Martin Atkins,
+  Martin Chaov,
+  Martin Dürst,
+  Martin Honnen,
+  Martin Janecke,
+  Martin Kutschker,
+  Martin Nilsson,
+  Martin Thomson,
+  Masataka Yakura,
+  Masatoshi Kimura,
+  Mason Mize,
+  Mathias Bynens,
+  Mathieu Henri,
+  Matias Larsson,
+  Matt Brubeck,
+  Matt Di Pasquale,
+  Matt Falkenhagen,
+  Matt Schmidt,
+  Matt Wright,
+  Matthew Gregan,
+  Matthew Mastracci,
+  Matthew Noorenberghe,
+  Matthew Raymond,
+  Matthew Thomas,
+  Mattias Waldau,
+  Max Romantschuk,
+  Menachem Salomon,
+  Menno van Slooten,
+  Micah Dubinko,
+  Michael 'Ratt' Iannarelli,
+  Michael A. Nachbaur,
+  Michael A. Puls II,
+  Michael Carter,
+  Michael Daskalov,
+  Michael Day,
+  Michael Dyck,
+  Michael Enright,
+  Michael Gratton,
+  Michael Kohler,
+  Michael McKelvey,
+  Michael Nordman,
+  Michael Powers,
+  Michael Rakowski,
+  Michael(tm) Smith,
+  Michael Walmsley,
+  Michal Zalewski,
+  Michel Fortin,
+  Michelangelo De Simone,
+  Michiel van der Blonk,
+  Mihai Şucan,
+  Mihai Parparita,
+  Mike Brown,
+  Mike Dierken,
+  Mike Dixon,
+  Mike Hearn,
+  Mike Schinkel,
+  Mike Shaver,
+  Mikko Rantalainen,
+  Mohamed Zergaoui,
+  Mohammad Al Houssami,
+  Momdo Nakamura,
+  Mounir Lamouri,
+  Ms2ger,
+  Nadia Heninger,
+  NARUSE Yui,
+  Navid Zolghadr,
+  Neil Deakin,
+  Neil Rashbrook,
+  Neil Soiffer,
+  Nicholas Shanks,
+  Nicholas Stimpson,
+  Nicholas Zakas,
+  Nickolay Ponomarev,
+  Nicolas Gallagher,
+  Nikki Bee,
+  Noah Mendelsohn,
+  Noah Slater,
+  Noel Gordon,
+  Nolan Waite,
+  NoozNooz42,
+  Norbert Lindenberg,
+  Ojan Vafai,
+  Olaf Hoffmann,
+  Olav Junker Kjær,
+  Oldřich Vetešník,
+  Oli Studholme,
+  Oliver Hunt,
+  Oliver Rigby,
+  Olivier Gendrin,
+  Olli Pettay,
+  oSand, 
+  Pablo Flouret,
+  Patrick Dark,
+  Patrick Garies,
+  Patrick H. Lauke,
+  Patrik Persson,
+  Paul Adenot,
+  Paul Lewis,
+  Paul Norman,
+  Per-Erik Brodin,
+  Perry Smith,
+  Peter Beverloo,
+  Peter Karlsson,
+  Peter Kasting,
+  Peter Moulder,
+  Peter Occil,
+  Peter Stark,
+  Peter Van der Beken,
+  Peter van der Zee,
+  Peter-Paul Koch,
+  Phil Pickering,
+  Philip Taylor,
+  Philip TAYLOR,
+  Philippe De Ryck,
+  Pooja Sanklecha,
+  Prashant Hiremath,
+  Prashanth Chandra,
+  Prateek Rungta,
+  Pravir Gupta,
+  Prayag Verma,
+  李普君 (Pujun Li),
+  Rachid Finge,
+  Rafael Weinstein,
+  Rafał Miłecki,
+  Raj Doshi,
+  Rajas Moonka,
+  Ralf Stoltze,
+  Ralph Giles,
+  Raphael Champeimont,
+  Rebecca Star,
+  Remci Mizkur,
+  Remco,
+  Remy Sharp,
+  Rene Saarsoo,
+  Rene Stach,
+  Ric Hardacre,
+  Rich Clark,
+  Rich Doughty,
+  Richa Rupela,
+  Richard Gibson,
+  Richard Ishida,
+  Rigo Wenning,
+  Rikkert Koppes,
+  Rimantas Liubertas,
+  Riona Macnamara,
+  Rob Buis,
+  Rob Ennals,
+  Rob Jellinghaus,
+  Rob S,
+  Robert Blaut,
+  Robert Collins,
+  Robert Kieffer,
+  Robert Millan,
+  Robert O'Callahan,
+  Robert Sayre,
+  Robin Berjon,
+  Robin Schaufler,
+  Rodger Combs,
+  Roland Steiner,
+  Roma Matusevich,
+  Roman Ivanov,
+  Roy Fielding,
+  Ruud Steltenpool,
+  Ryan King,
+  Ryosuke Niwa,
+  S. Mike Dierken,
+  Salvatore Loreto,
+  Sam Dutton,
+  Sam Kuper,
+  Sam Ruby,
+  Sam Weinig,
+  Samuel Bronson,
+  Samy Kamkar,
+  Sander van Lambalgen,
+  Sanjoy Pal,
+  Sarven Capadisli,
+  Scott Beardsley,
+  Scott González,
+  Scott Hess,
+  Scott Miles,
+  Sean Fraser,
+  Sean Hayes,
+  Sean Hogan,
+  Sean Knapp,
+  Sebastian Markbåge,
+  Sebastian Schnitzenbaumer,
+  Sendil Kumar N,
+  Seth Call,
+  Seth Dillingham,
+  Shannon Moeller,
+  Shanti Rao,
+  Shaun Inman,
+  Shiino Yuki, 
+  Shiki Okasaka,
+  Shubheksha Jalan,
+  Sierk Bornemann,
+  Sigbjørn Finne,
+  Sigbjørn Vik,
+  Silver Ghost, 
+  Silvia Pfeiffer,
+  Šime Vidas,
+  Simon Montagu,
+  Simon Sapin,
+  Simon Spiegel,
+  skeww, 
+  Smylers,
+  Srirama Chandra Sekhar Mogali,
+  Stanton McCandlish,
+  Stefan Håkansson,
+  Stefan Haustein,
+  Stefan Santesson,
+  Stefan Schumacher,
+  Stefan Weiss,
+  Steffen Meschkat,
+  Stephen Ma,
+  Stephen White,
+  Steve Comstock,
+  Steve Faulkner,
+  Steve Orvell,
+  Steve Runyon,
+  Steven Bennett,
+  Steven Garrity,
+  Steven Tate,
+  Stewart Brodie,
+  Stuart Ballard,
+  Stuart Langridge,
+  Stuart Parmenter,
+  Subramanian Peruvemba,
+  Sunava Dutta,
+  Susan Borgrink,
+  Susan  Lesch,
+  Sylvain Pasche,
+  T. J. Crowder,
+  Tab Atkins-Bittner,
+  Taiju Tsuiki,
+  Takashi Toyoshima,
+  Takayoshi Kochi,
+  Takeshi Yoshino,
+  <span lang=tr>Tantek Çelik</span>,
+  田村健人 (TAMURA Kent),
+  Taylor Hunt,
+  Ted Mielczarek,
+  Terrence Wood,
+  Tetsuharu OHZEKI,
+  Theresa O'Connor,
+  Thijs van der Vossen,
+  Thomas Broyer,
+  Thomas Koetter,
+  Thomas O'Connor,
+  Tim Altman,
+  Tim Johansson,
+  Tim Perry,
+  TJ VanToll,
+  Tobias Schneider,
+  Toby Inkster,
+  Todd Moody,
+  Tom Baker,
+  Tom Pike,
+  Tom Schuster,
+  Tommy Thorsen,
+  Tony Ross,
+  Tooru Fujisawa,
+  Travis Leithead,
+  Trevor Saunders,
+  triple-underscore, 
+  Tyler Close,
+  Valentin Gosu,
+  Veli Şenol,
+  Victor Carbune,
+  Vipul Snehadeep Chawathe,
+  Vitya Muhachev,
+  Vladimir Katardjiev,
+  Vladimir Vukićević,
+  Vyacheslav Aristov,
+  voracity,
+  Wakaba,
+  Wayne Carr,
+  Wayne Pollock,
+  Wellington Fernando de Macedo,
+  Weston Ruter,
+  Wilhelm Joys Andersen,
+  Will Levine,
+  Will Ray,
+  William Chen,
+  William Swanson,
+  Willy Martin Aguirre Rodriguez,
+  Wladimir Palant,
+  Wojciech Mach,
+  Wolfram Kriesing,
+  Xan Gregg,
+  xenotheme,
+  Xida Chen,
+  Xidorn Quan,
+  Yang Chen,
+  Ye-Kui Wang,
+  Yehuda Katz,
+  Yi-An Huang,
+  Yngve Nysaeter Pettersen,
+  Yoav Weiss,
+  Yonathan Randolph,
+  Yuzo Fujishima,
+  Zhenbin Xu,
+  张智强 (Zhiqiang Zhang),
+  Zoltan Herczeg,
+  and
+  Øistein E. Andersen,
+
+  for their useful comments, both large and small, that have led to changes to this specification
+  over the years.</p>
+
+  <p>Thanks also to everyone who has ever posted about HTML to their blogs, public mailing lists, or
+  forums, including all the contributors to the <a href=https://www.w3.org/html/wg/lists/>various
+  W3C HTML WG lists</a> and the <a href=https://whatwg.org/mailing-list>various WHATWG
+  lists</a>.
+
+  <p>Special thanks to Richard Williamson for creating the first implementation of
+  <code id=acknowledgments:the-canvas-element><a href=scripting.html#the-canvas-element>canvas</a></code> in Safari, from which the canvas feature was designed.</p>
+
+  <p>Special thanks also to the Microsoft employees who first implemented the event-based
+  drag-and-drop mechanism, <code id=acknowledgments:attr-contenteditable><a href=interaction.html#attr-contenteditable>contenteditable</a></code>, and other
+  features first widely deployed by the Windows Internet Explorer browser.</p>
+
+  <p>Special thanks and $10,000 to David Hyatt who came up with a broken implementation
+  of the <a href=syntax.html#adoptionAgency>adoption agency algorithm</a> that the editor had to reverse
+  engineer and fix before using it in the parsing section.</p>
+
+  <p>Thanks to the participants of the microdata usability study for allowing us to use their
+  mistakes as a guide for designing the microdata feature.</p>
+
+  <p>Thanks to the many sources that provided inspiration for the examples used in the
+  specification.</p>
+
+  <p>Thanks also to the Microsoft blogging community for some ideas, to the attendees of the W3C
+  Workshop on Web Applications and Compound Documents for inspiration, to the #mrt crew, the #mrt.no
+  crew, and the #whatwg crew, and to Pillar and Hedral for their ideas and support.</p>
+
+  <p>Thanks to Igor Zhbanov for generating PDF versions of the specification.</p>
+
+  <p>Special thanks to the <a href=https://www.w3.org/community/respimg/>RICG</a> for developing
+  the <code id=acknowledgments:the-picture-element><a href=embedded-content.html#the-picture-element>picture</a></code> element and related features; in particular thanks to Adrian Bateman,
+  Bruce Lawson, David Newton, Ilya Grigorik, John Schoenick, Leon de Rijke, Mat Marquis, Marcos
+  Cáceres, Tab Atkins, Theresa O'Connor, and Yoav Weiss for their contributions.</p>
+
+  <p>Special thanks to the <a href=https://www.w3.org/WebPlatform/WG/>WPWG</a> for incubating the
+  <a href=scripting.html#custom-elements>custom elements</a> feature. In particular, thanks to David Hyatt and
+  Ian Hickson for their influence through the XBL specifications, Dimitri Glazkov for the first
+  draft of the custom elements specification, and to
+  Alex Komoroske,
+  Alex Russell,
+  Andres Rios,
+  Boris Zbarsky,
+  Brian Kardell,
+  Daniel Buchner,
+  Dominic Cooney,
+  Erik Arvidsson,
+  Elliott Sprehn,
+  Hajime Morrita,
+  Hayato Ito,
+  Jan Miksovsky,
+  Jonas Sicking,
+  Olli Pettay,
+  Rafael Weinstein,
+  Roland Steiner,
+  Ryosuke Niwa,
+  Scott Miles,
+  Steve Faulkner,
+  Steve Orvell,
+  Tab Atkins,
+  Theresa O'Connor,
+  Tim Perry, and
+  William Chen
+  for their contributions.</p>
+
+  <p>Part of the revision history of the <code id=acknowledgments:the-picture-element-2><a href=embedded-content.html#the-picture-element>picture</a></code> element and related features can be
+  found in the <a href=https://github.com/ResponsiveImagesCG/picture-element><code>ResponsiveImagesCG/picture-element</code>
+  repository</a>.</p>
+
+  <p>Part of the revision history of the <code id=acknowledgments:meta-theme-color><a href=semantics.html#meta-theme-color>theme-color</a></code> metadata
+  name can be found in the <a href=https://github.com/whatwg/meta-theme-color><code>whatwg/meta-theme-color</code>
+  repository</a>.</p>
+
+  <p itemtype=http://n.whatwg.org/work itemscope="">Part of the revision history of the <a href=scripting.html#custom-elements>custom elements</a> feature can be found in the <a href=https://github.com/w3c/webcomponents><code>w3c/webcomponents</code> repository</a>, which
+  is available under the <a itemprop=license href=https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document>W3C Permissive
+  Document License</a>.</p>
+
+  <p itemtype=http://n.whatwg.org/work itemscope="">Part of the revision history of the <code id=acknowledgments:dom-innertext><a href=dom.html#dom-innertext>innerText</a></code> IDL attribute can be found in the <a href=https://github.com/rocallahan/innerText-spec><code>rocallahan/innerText-spec</code>
+  repository</a>, which is available under the <a itemprop=license href=https://creativecommons.org/licenses/by/3.0/>Creative Commons Attribution 3.0
+  License</a>.</p>
+
+  <p>For about ten years starting in 2003, this specification was almost entirely written by Ian
+  Hickson (Google, ian@hixie.ch). More recently, Simon Pieters (Opera, simonp@opera.com), Anne van
+  Kesteren (Mozilla, annevk@annevk.nl), Philip Jägenstedt (Google, philip@foolip.org), and
+  Domenic Denicola (Google, d@domenic.me), all previously long-time contributors, have joined Ian in
+  editing the text directly.</p>
+
+  
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The image in the introduction is based on <a itemprop=work href=https://www.flickr.com/photos/wonderlane/2986252088/>a photo</a>
+   by <a itemprop=https://creativecommons.org/ns#attributionURL href=https://www.flickr.com/photos/wonderlane/>Wonderlane</a>.
+   (<a itemprop=license href=https://creativecommons.org/licenses/by/2.0/>CC BY 2.0</a>)
+  </div>
+  
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The image of the wolf in the embedded content introduction is based on <a itemprop=work href=https://commons.wikimedia.org/wiki/File:WolfRunningInSnow.jpg>a photo</a>
+   by <a itemprop=http://creativecommons.org/ns#attributionURL href=https://commons.wikimedia.org/wiki/File:WolfRunningInSnow.jpg>Barry O'Neill</a>.
+   (<a itemprop=license href=https://en.wikipedia.org/wiki/Public_domain>Public domain</a>)
+  </div>
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The image of the kettlebell swing in the embedded content introduction is based on <a itemprop=work href=https://pixabay.com/en/functional-mobility-articular-606568/>a photo</a>
+   by <a itemprop=http://creativecommons.org/ns#attributionURL href=https://pixabay.com/en/users/kokkarina-506563/>kokkarina</a>.
+   (<a itemprop=license href=https://creativecommons.org/publicdomain/zero/1.0/>CC0 1.0</a>)
+  </div>
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The image of two cute kittens in a basket used in the context menu example is based on
+   <a itemprop=work href=https://www.flickr.com/photos/digidreamgrafix/8370087640/>a photo</a>
+   by <a itemprop=https://creativecommons.org/ns#attributionURL href=https://www.flickr.com/photos/digidreamgrafix/>Alex G</a>.
+   (<a itemprop=license href=https://creativecommons.org/licenses/by/2.0/>CC BY 2.0</a>)
+  </div>
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The Blue Robot Player sprite used in the canvas demo is based on
+   <a itemprop=work href=https://johncolburn.deviantart.com/art/Blue-Robot-Player-Sprite-323813997>a work</a> by
+   <a itemprop=https://creativecommons.org/ns#attributionURL href=https://johncolburn.deviantart.com/>JohnColburn</a>.
+   (<a itemprop=license href=https://creativecommons.org/licenses/by-sa/3.0/>CC BY-SA 3.0</a>)</p>
+  </div>
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The photograph of robot 148 climbing the tower at the FIRST Robotics Competition 2013 Silicon Valley Regional is based on
+   <a itemprop=work href=https://www.flickr.com/photos/lenore-m/8631391979/>a work</a> by
+   <a itemprop=https://creativecommons.org/ns#attributionURL href=https://www.flickr.com/photos/lenore-m/>Lenore Edman</a>.
+   (<a itemprop=license href=https://creativecommons.org/licenses/by/2.0/>CC BY 2.0</a>)</p>
+  </div>
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The diagram showing how <code id=acknowledgments:attr-script-async><a href=scripting.html#attr-script-async>async</a></code> and <code id=acknowledgments:attr-script-defer><a href=scripting.html#attr-script-defer>defer</a></code> impact <code id=acknowledgments:the-script-element><a href=scripting.html#the-script-element>script</a></code> loading is based on a
+   similar diagram from <a itemprop=work href=http://peter.sh/experiments/asynchronous-and-deferred-javascript-execution-explained/>a
+   blog post</a> by <a itemprop=https://creativecommons.org/ns#attributionURL href=http://peter.sh/about/>Peter Beverloo</a>.
+   (<a itemprop=license href=https://creativecommons.org/publicdomain/zero/1.0/>CC0 1.0</a>)</p>
+  </div>
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The image decoding demo used to demonstrate module-based workers draws on some example code
+   from <a itemprop=work href=https://www.html5rocks.com/en/tutorials/canvas/imagefilters/>a
+   tutorial</a> by <a itemprop=https://creativecommons.org/ns#attributionURL href=https://www.fhtr.net/>Ilmari Heikkinen</a>.
+   (<a itemprop=license href=https://creativecommons.org/licenses/by/3.0/>CC BY 3.0</a>)</p>
+  </div>
+
+  <div itemtype=http://n.whatwg.org/work itemscope="">
+   <p>The <code>&lt;flag-icon></code> example was inspired by <a itemprop=work href=https://customelements.io/stevenrskelton/flag-icon/>a custom element</a> by <a itemprop=https://creativecommons.org/ns#attributionURL href=http://stevenskelton.ca/>Steven
+   Skelton</a>. (<a itemprop=license href=https://opensource.org/licenses/MIT>MIT</a>)</p>
+  </div>
+
+  <p>Parts of this specification are © Copyright 2004-2014 Apple Inc., Mozilla Foundation, and
+  Opera Software ASA. You are granted a license to use, reproduce and create derivative works of
+  this document.</p>
+
+  
+
+ 
+
+<nav><a href=references.html>← References</a> — <a href=index.html>Table of Contents</a></nav>

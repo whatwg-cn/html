@@ -1,0 +1,541 @@
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=icon href=https://resources.whatwg.org/logo.svg><style>
+   [hidden] { display: none; }
+
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+   @media (max-width: 767px) {
+     .fingerprint { max-width: 35px; }
+   }
+
+   .status { min-height: 0.6em; font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status:hover { z-index: 9; }
+   .status:focus-within { z-index: 9; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; left: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > p > strong { margin-left: 1.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span.no::before { opacity: 0.5; }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .edge::before { background-image: url(https://resources.whatwg.org/browser-logos/edge.svg); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mini.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .support > .samsung::before { background-image: url(https://resources.whatwg.org/browser-logos/samsung.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+   .status > .caniuse + p { margin-top: 0.5em; border-top: 1px solid silver; }
+
+   @media (max-width: 767px) {
+     .status { right: -9em; }
+   }
+
+   .applies .yes, .yesno .yes { background: yellow; }
+   .yesno .yes, .yesno .no { text-align: center; }
+
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+
+   @media (max-width: 767px) {
+     #abstractimg { width: 100%; }
+   }
+   #abstractimg, #abstractimg text { font: inherit; }
+   #abstractimg rect { fill: #424242; }
+   #abstractimg text { fill: #ffffff; font-size: 18px }
+   #abstractimg .top { word-spacing: 50px; text-anchor: middle; }
+   #abstractimg .left, #abstractimg .bottom { word-spacing: 12px; }
+   #abstractimg .right { font-size: 25px; }
+  </style>
+  <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>4 December 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=obsolete.html>← 15 Obsolete features</a> — <a href=index.html>Table of Contents</a> — <a href=indices.html>Index →</a></nav><ol class=toc><li id=toc-iana><a href=iana.html#iana>16 IANA considerations</a><ol><li><a href=iana.html#text/html>16.1 <code>text/html</code></a><li><a href=iana.html#multipart/x-mixed-replace>16.2 <code>multipart/x-mixed-replace</code></a><li><a href=iana.html#application/xhtml+xml>16.3 <code>application/xhtml+xml</code></a><li><a href=iana.html#text/cache-manifest>16.4 <code>text/cache-manifest</code></a><li><a href=iana.html#text/ping>16.5 <code>text/ping</code></a><li><a href=iana.html#application/microdata+json>16.6 <code>application/microdata+json</code></a><li><a href=iana.html#text/event-stream>16.7 <code>text/event-stream</code></a><li><a href=iana.html#ping-from>16.8 `<code>Ping-From</code>`</a><li><a href=iana.html#ping-to>16.9 `<code>Ping-To</code>`</a><li><a href=iana.html#last-event-id>16.10 `<code>Last-Event-ID</code>`</a><li><a href=iana.html#web+-scheme-prefix>16.11 <code>web+</code> scheme prefix</a></ol></ol><h2 id=iana>16 IANA considerations<a href=#iana class=self-link></a></h2>
+
+  
+
+
+  <h3 id=text/html>16.1 <dfn><code>text/html</code></dfn><a href=#text/html class=self-link></a></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  
+
+  
+
+  <dl><dt>Type name:<dd>text<dt>Subtype name:<dd>html<dt>Required parameters:<dd>No required parameters<dt>Optional parameters:<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p>The <code>charset</code> parameter may be provided to specify the
+      <a id="text/html:document's-character-encoding" href=https://dom.spec.whatwg.org/#concept-document-encoding data-x-internal="document's-character-encoding">document's character encoding</a>, overriding any <a href=semantics.html#character-encoding-declaration id=text/html:character-encoding-declaration>character encoding declarations</a> in the document other than a Byte Order Mark (BOM). The parameter's value
+      must be one of the <a href=https://encoding.spec.whatwg.org/#label id=text/html:encoding-label data-x-internal=encoding-label>labels</a> of the <a href=https://encoding.spec.whatwg.org/#encoding id=text/html:encoding data-x-internal=encoding>character encoding</a> used to serialize the file. <a href=references.html#refsENCODING>[ENCODING]</a></p>
+
+     </dl>
+   <dt>Encoding considerations:<dd>
+
+    8bit (see the section on <a href=semantics.html#character-encoding-declaration id=text/html:character-encoding-declaration-2>character encoding
+    declarations</a>)
+
+   <dt>Security considerations:<dd>
+
+    <p>Entire novels have been written about the security considerations that apply to HTML
+    documents. Many are listed in this document, to which the reader is referred for more details.
+    Some general concerns bear mentioning here, however:</p>
+
+    <p>HTML is scripted language, and has a large number of APIs (some of which are described in
+    this document). Script can expose the user to potential risks of information leakage, credential
+    leakage, cross-site scripting attacks, cross-site request forgeries, and a host of other
+    problems. While the designs in this specification are intended to be safe if implemented
+    correctly, a full implementation is a massive undertaking and, as with any software, user agents
+    are likely to have security bugs.</p>
+
+    <p>Even without scripting, there are specific features in HTML which, for historical reasons,
+    are required for broad compatibility with legacy content but that expose the user to unfortunate
+    security problems. In particular, the <code id=text/html:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element can be used in conjunction with
+    some other features as a way to effect a port scan from the user's location on the Internet.
+    This can expose local network topologies that the attacker would otherwise not be able to
+    determine.</p>
+
+    <p>HTML relies on a compartmentalization scheme sometimes known as the <i>same-origin
+    policy</i>. An <a id=text/html:concept-origin href=browsers.html#concept-origin>origin</a> in most cases consists of all the pages served from the same
+    host, on the same port, using the same protocol.</p>
+
+    <p>It is critical, therefore, to ensure that any untrusted content that forms part of a site be
+    hosted on a different <a id=text/html:concept-origin-2 href=browsers.html#concept-origin>origin</a> than any sensitive content on that site. Untrusted
+    content can easily spoof any other page on the same origin, read data from that origin, cause
+    scripts in that origin to execute, submit forms to and from that origin even if they are
+    protected from cross-site request forgery attacks by unique tokens, and make use of any
+    third-party resources exposed to or rights granted to that origin.</p>
+
+   <dt>Interoperability considerations:<dd>
+    Rules for processing both conforming and non-conforming content
+    are defined in this specification.
+   <dt>Published specification:<dd id=authors-using-html>
+    This document is the relevant specification. Labeling a resource
+    with the <code id=text/html:text/html><a href=#text/html>text/html</a></code> type asserts that the resource is
+    an <a href=https://dom.spec.whatwg.org/#html-document id=text/html:html-documents data-x-internal=html-documents>HTML document</a> using
+    <a id=text/html:syntax href=syntax.html#syntax>the HTML syntax</a>.
+   <dt>Applications that use this media type:<dd>
+    Web browsers, tools for processing Web content, HTML authoring
+    tools, search engines, validators.
+   <dt>Additional information:<dd>
+    <dl><dt>Magic number(s):<dd>No sequence of bytes can uniquely identify an HTML
+     document. More information on detecting HTML documents is
+     available in the WHATWG MIME Sniffing standard. <a href=references.html#refsMIMESNIFF>[MIMESNIFF]</a><dt>File extension(s):<dd>"<code>html</code>" and "<code>htm</code>"
+     are commonly, but certainly not exclusively, used as the
+     extension for HTML documents.<dt>Macintosh file type code(s):<dd><code>TEXT</code></dl>
+   <dt>Person &amp; email address to contact for further information:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Intended usage:<dd>Common<dt>Restrictions on usage:<dd>No restrictions apply.<dt>Author:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>W3C</dl>
+
+  <p><a href=https://url.spec.whatwg.org/#concept-url-fragment id=text/html:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> used with <code id=text/html:text/html-2><a href=#text/html>text/html</a></code> resources
+  either refer to <a id=text/html:the-indicated-part-of-the-document href=browsers.html#the-indicated-part-of-the-document>the indicated part of the document</a> or provide state information for
+  in-page scripts.</p>
+
+
+
+
+  <h3 id=multipart/x-mixed-replace>16.2 <dfn><code>multipart/x-mixed-replace</code></dfn><a href=#multipart/x-mixed-replace class=self-link></a></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  
+
+  <dl><dt>Type name:<dd>multipart<dt>Subtype name:<dd>x-mixed-replace<dt>Required parameters:<dd>
+    <ul class=brief><li><code>boundary</code> (defined in RFC2046) <a href=references.html#refsRFC2046>[RFC2046]</a>
+    </ul>
+   <dt>Optional parameters:<dd>No optional parameters.<dt>Encoding considerations:<dd>binary<dt>Security considerations:<dd>
+    Subresources of a <code id=multipart/x-mixed-replace:multipart/x-mixed-replace><a href=#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code>
+    resource can be of any type, including types with non-trivial
+    security implications such as <code id=multipart/x-mixed-replace:text/html><a href=#text/html>text/html</a></code>.
+   <dt>Interoperability considerations:<dd>
+    None.
+   <dt>Published specification:<dd>
+    This specification describes processing rules for Web browsers.
+    Conformance requirements for generating resources with this type are the same as for <code id=multipart/x-mixed-replace:multipart/mixed><a href=indices.html#multipart/mixed>multipart/mixed</a></code>. <a href=references.html#refsRFC2046>[RFC2046]</a>
+   <dt>Applications that use this media type:<dd>
+    This type is intended to be used in resources generated by Web servers, for consumption by Web browsers.
+   <dt>Additional information:<dd>
+    <dl><dt>Magic number(s):<dd>No sequence of bytes can uniquely identify a <code id=multipart/x-mixed-replace:multipart/x-mixed-replace-2><a href=#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code> resource.<dt>File extension(s):<dd>No specific file extensions are recommended for this type.<dt>Macintosh file type code(s):<dd>No specific Macintosh file type codes are recommended for this type.</dl>
+   <dt>Person &amp; email address to contact for further information:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Intended usage:<dd>Common<dt>Restrictions on usage:<dd>No restrictions apply.<dt>Author:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>W3C</dl>
+
+  <p><a href=https://url.spec.whatwg.org/#concept-url-fragment id=multipart/x-mixed-replace:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> used with
+  <code id=multipart/x-mixed-replace:multipart/x-mixed-replace-3><a href=#multipart/x-mixed-replace>multipart/x-mixed-replace</a></code> resources apply to each body part as defined by the type
+  used by that body part.</p>
+
+
+  <h3 id=application/xhtml+xml>16.3 <dfn><code>application/xhtml+xml</code></dfn><a href=#application/xhtml+xml class=self-link></a></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  
+
+  
+
+  <dl><dt>Type name:<dd>application<dt>Subtype name:<dd>xhtml+xml<dt>Required parameters:<dd>Same as for <code id=application/xhtml+xml:application/xml><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>Optional parameters:<dd>Same as for <code id=application/xhtml+xml:application/xml-2><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>Encoding considerations:<dd>Same as for <code id=application/xhtml+xml:application/xml-3><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>Security considerations:<dd>Same as for <code id=application/xhtml+xml:application/xml-4><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>Interoperability considerations:<dd>Same as for <code id=application/xhtml+xml:application/xml-5><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt id=authors-using-xhtml>Published specification:<dd>Labeling a resource with the <code id=application/xhtml+xml:application/xhtml+xml><a href=#application/xhtml+xml>application/xhtml+xml</a></code> type asserts that the
+   resource is an XML document that likely has a <a id=application/xhtml+xml:document-element href=https://dom.spec.whatwg.org/#document-element data-x-internal=document-element>document element</a> from the <a id=application/xhtml+xml:html-namespace-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
+   namespace</a>. Thus, the relevant specifications are the XML specification, the Namespaces in
+   XML specification, and this specification. <a href=references.html#refsXML>[XML]</a> <a href=references.html#refsXMLNS>[XMLNS]</a><dt>Applications that use this media type:<dd>Same as for <code id=application/xhtml+xml:application/xml-6><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>Additional information:<dd>
+    <dl><dt>Magic number(s):<dd>Same as for <code id=application/xhtml+xml:application/xml-7><a href=indices.html#application/xml>application/xml</a></code> <a href=references.html#refsRFC7303>[RFC7303]</a><dt>File extension(s):<dd>"<code>xhtml</code>" and "<code>xht</code>" are sometimes used as
+     extensions for XML resources that have a <a id=application/xhtml+xml:document-element-2 href=https://dom.spec.whatwg.org/#document-element data-x-internal=document-element>document element</a> from the <a id=application/xhtml+xml:html-namespace-2-2 href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
+     namespace</a>.<dt>Macintosh file type code(s):<dd><code>TEXT</code></dl>
+   <dt>Person &amp; email address to contact for further information:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Intended usage:<dd>Common<dt>Restrictions on usage:<dd>No restrictions apply.<dt>Author:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>W3C</dl>
+
+  <p><a href=https://url.spec.whatwg.org/#concept-url-fragment id=application/xhtml+xml:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> used with
+  <code id=application/xhtml+xml:application/xhtml+xml-2><a href=#application/xhtml+xml>application/xhtml+xml</a></code> resources have the same semantics as with any
+  <a id=application/xhtml+xml:xml-mime-type href=https://mimesniff.spec.whatwg.org/#xml-mime-type data-x-internal=xml-mime-type>XML MIME type</a>. <a href=references.html#refsRFC7303>[RFC7303]</a></p>
+
+
+  <h3 id=text/cache-manifest>16.4 <dfn><code>text/cache-manifest</code></dfn><a href=#text/cache-manifest class=self-link></a></h3>
+
+  <p>This registration is for community review and will be submitted
+  to the IESG for review, approval, and registration with IANA.</p>
+
+  
+
+  <dl><dt>Type name:<dd>text<dt>Subtype name:<dd>cache-manifest<dt>Required parameters:<dd>No parameters<dt>Optional parameters:<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p>The <code>charset</code> parameter may be provided. The parameter's value must be
+      "<code>utf-8</code>". This parameter serves no purpose; it is only allowed for
+      compatibility with legacy servers.</p>
+
+     </dl>
+   <dt>Encoding considerations:<dd>8bit (always UTF-8)<dt>Security considerations:<dd>
+    <p>Cache manifests themselves pose no immediate risk unless
+    sensitive information is included within the
+    manifest. Implementations, however, are required to follow
+    specific rules when populating a cache based on a cache manifest,
+    to ensure that certain origin-based restrictions are
+    honored. Failure to correctly implement these rules can result in
+    information leakage, cross-site scripting attacks, and the
+    like.</p>
+   <dt>Interoperability considerations:<dd>
+    Rules for processing both conforming and non-conforming content
+    are defined in this specification.
+   <dt>Published specification:<dd>
+    This document is the relevant specification.
+   <dt>Applications that use this media type:<dd>
+    Web browsers.
+   <dt>Additional information:<dd>
+    <dl><dt>Magic number(s):<dd>Cache manifests begin with the string "<code>CACHE
+     MANIFEST</code>", followed by either a U+0020 SPACE character, a
+     U+0009 CHARACTER TABULATION (tab) character, a U+000A LINE FEED
+     (LF) character, or a U+000D CARRIAGE RETURN (CR) character.<dt>File extension(s):<dd>"<code>appcache</code>"<dt>Macintosh file type code(s):<dd>No specific Macintosh file type codes are recommended for this type.</dl>
+   <dt>Person &amp; email address to contact for further information:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Intended usage:<dd>Common<dt>Restrictions on usage:<dd>No restrictions apply.<dt>Author:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>W3C</dl>
+
+  <p><a href=https://url.spec.whatwg.org/#concept-url-fragment id=text/cache-manifest:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> have no meaning with
+  <code id=text/cache-manifest:text/cache-manifest><a href=#text/cache-manifest>text/cache-manifest</a></code> resources.</p>
+
+
+  <h3 id=text/ping>16.5 <dfn><code>text/ping</code></dfn><a href=#text/ping class=self-link></a></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  
+
+  <dl><dt>Type name:<dd>text<dt>Subtype name:<dd>ping<dt>Required parameters:<dd>No parameters<dt>Optional parameters:<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p>The <code>charset</code> parameter may be provided. The parameter's value must be
+      "<code>utf-8</code>". This parameter serves no purpose; it is only allowed for
+      compatibility with legacy servers.</p>
+
+     </dl>
+   <dt>Encoding considerations:<dd>Not applicable.<dt>Security considerations:<dd>
+    <p>If used exclusively in the fashion described in the context of
+    <a id=text/ping:hyperlink-auditing href=semantics.html#hyperlink-auditing>hyperlink auditing</a>, this type introduces no new
+    security concerns.</p>
+   <dt>Interoperability considerations:<dd>
+    Rules applicable to this type are defined in this specification.
+   <dt>Published specification:<dd>
+    This document is the relevant specification.
+   <dt>Applications that use this media type:<dd>
+    Web browsers.
+   <dt>Additional information:<dd>
+    <dl><dt>Magic number(s):<dd><code id=text/ping:text/ping><a href=#text/ping>text/ping</a></code> resources always consist of the four
+     bytes 0x50 0x49 0x4E 0x47 (ASCII 'PING').<dt>File extension(s):<dd>No specific file extension is recommended for this type.<dt>Macintosh file type code(s):<dd>No specific Macintosh file type codes are recommended for this type.</dl>
+   <dt>Person &amp; email address to contact for further information:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Intended usage:<dd>Common<dt>Restrictions on usage:<dd>Only intended for use with HTTP POST requests generated as part
+   of a Web browser's processing of the <code id=text/ping:ping><a href=semantics.html#ping>ping</a></code> attribute.<dt>Author:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>W3C</dl>
+
+  <p><a href=https://url.spec.whatwg.org/#concept-url-fragment id=text/ping:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> have no meaning with
+  <code id=text/ping:text/ping-2><a href=#text/ping>text/ping</a></code> resources.</p>
+
+
+
+  <h3 id=application/microdata+json>16.6 <dfn><code>application/microdata+json</code></dfn><a href=#application/microdata+json class=self-link></a></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  
+
+  <dl><dt>Type name:<dd>application<dt>Subtype name:<dd>microdata+json<dt>Required parameters:<dd>Same as for <code id=application/microdata+json:application/json><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>Optional parameters:<dd>Same as for <code id=application/microdata+json:application/json-2><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>Encoding considerations:<dd>8bit (always UTF-8)<dt>Security considerations:<dd>Same as for <code id=application/microdata+json:application/json-3><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>Interoperability considerations:<dd>Same as for <code id=application/microdata+json:application/json-4><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>Published specification:<dd>
+
+    Labeling a resource with the <code id=application/microdata+json:application/microdata+json><a href=#application/microdata+json>application/microdata+json</a></code> type asserts that the
+    resource is a JSON text that consists of an object with a single entry called "<code>items</code>" consisting of an array of entries, each of which consists of an object
+    with an entry called "<code>id</code>" whose value is a string, an entry called "<code>type</code>" whose value is another string, and an entry called "<code>properties</code>" whose value is an object whose entries each have a value consisting
+    of an array of either objects or strings, the objects being of the same form as the objects in
+    the aforementioned "<code>items</code>" entry. Thus, the relevant specifications are
+    the JSON specification and this specification. <a href=references.html#refsJSON>[JSON]</a>
+
+   <dt>Applications that use this media type:<dd>
+
+    <p>Applications that transfer data intended for use with HTML's microdata feature, especially in
+    the context of drag-and-drop, are the primary application class for this type.</p>
+
+   <dt>Additional information:<dd>
+    <dl><dt>Magic number(s):<dd>Same as for <code id=application/microdata+json:application/json-5><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>File extension(s):<dd>Same as for <code id=application/microdata+json:application/json-6><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a><dt>Macintosh file type code(s):<dd>Same as for <code id=application/microdata+json:application/json-7><a href=indices.html#application/json>application/json</a></code> <a href=references.html#refsJSON>[JSON]</a></dl>
+   <dt>Person &amp; email address to contact for further information:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Intended usage:<dd>Common<dt>Restrictions on usage:<dd>No restrictions apply.<dt>Author:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>W3C</dl>
+
+  <p><a href=https://url.spec.whatwg.org/#concept-url-fragment id=application/microdata+json:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> used with
+  <code id=application/microdata+json:application/microdata+json-2><a href=#application/microdata+json>application/microdata+json</a></code> resources have the same semantics as when used with
+  <code id=application/microdata+json:application/json-8><a href=indices.html#application/json>application/json</a></code> (namely, at the time of writing, no semantics at all).
+  <a href=references.html#refsJSON>[JSON]</a></p>
+
+
+  <h3 id=text/event-stream>16.7 <dfn><code>text/event-stream</code></dfn><a href=#text/event-stream class=self-link></a></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  
+
+  <dl><dt>Type name:<dd>text<dt>Subtype name:<dd>event-stream<dt>Required parameters:<dd>No parameters<dt>Optional parameters:<dd>
+    <dl><dt><code>charset</code><dd>
+
+      <p>The <code>charset</code> parameter may be provided. The parameter's value must be
+      "<code>utf-8</code>". This parameter serves no purpose; it is only allowed for
+      compatibility with legacy servers.</p>
+
+     </dl>
+   <dt>Encoding considerations:<dd>8bit (always UTF-8)<dt>Security considerations:<dd>
+
+    <p>An event stream from an origin distinct from the origin of the content consuming the event
+    stream can result in information leakage. To avoid this, user agents are required to apply CORS
+    semantics. <a href=references.html#refsFETCH>[FETCH]</a></p>
+
+    <p>Event streams can overwhelm a user agent; a user agent is expected to apply suitable
+    restrictions to avoid depleting local resources because of an overabundance of information from
+    an event stream.</p>
+
+    <p>Servers can be overwhelmed if a situation develops in which the server is causing clients to
+    reconnect rapidly. Servers should use a 5xx status code to indicate capacity problems, as this
+    will prevent conforming clients from reconnecting automatically.</p>
+
+   <dt>Interoperability considerations:<dd>
+    Rules for processing both conforming and non-conforming content are defined in this
+    specification.
+   <dt>Published specification:<dd>
+    This document is the relevant specification.
+   <dt>Applications that use this media type:<dd>
+    Web browsers and tools using Web services.
+   <dt>Additional information:<dd>
+    <dl><dt>Magic number(s):<dd>No sequence of bytes can uniquely identify an event stream.<dt>File extension(s):<dd>No specific file extensions are recommended for this type.<dt>Macintosh file type code(s):<dd>No specific Macintosh file type codes are recommended for this type.</dl>
+   <dt>Person &amp; email address to contact for further information:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Intended usage:<dd>Common<dt>Restrictions on usage:<dd>This format is only expected to be used by dynamic open-ended streams served using HTTP or a
+   similar protocol. Finite resources are not expected to be labeled with this type.<dt>Author:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>W3C</dl>
+
+  <p><a href=https://url.spec.whatwg.org/#concept-url-fragment id=text/event-stream:concept-url-fragment data-x-internal=concept-url-fragment>Fragments</a> have no meaning with
+  <code id=text/event-stream:text/event-stream><a href=#text/event-stream>text/event-stream</a></code> resources.</p>
+
+
+  
+  <h3 id=ping-from>16.8 `<dfn><code>Ping-From</code></dfn>`<a href=#ping-from class=self-link></a></h3>
+
+  <p>This section describes a header for registration in the Permanent Message Header Field
+  Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
+
+  <dl><dt>Header field name:<dd>Ping-From<dt>Applicable protocol:<dd>http<dt>Status:<dd>standard<dt>Author/Change controller:<dd>W3C<dt>Specification document(s):<dd>
+    This document is the relevant specification.
+   <dt>Related information:<dd>None.</dl>
+
+
+  <h3 id=ping-to>16.9 `<dfn><code>Ping-To</code></dfn>`<a href=#ping-to class=self-link></a></h3>
+
+  <p>This section describes a header for registration in the Permanent Message Header Field
+  Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
+
+  <dl><dt>Header field name:<dd>Ping-To<dt>Applicable protocol:<dd>http<dt>Status:<dd>standard<dt>Author/Change controller:<dd>W3C<dt>Specification document(s):<dd>
+    This document is the relevant specification.
+   <dt>Related information:<dd>None.</dl>
+
+
+  <h3 id=last-event-id>16.10 `<dfn><code>Last-Event-ID</code></dfn>`<a href=#last-event-id class=self-link></a></h3>
+
+  <p>This section describes a header for registration in the Permanent Message Header Field
+  Registry. <a href=references.html#refsRFC3864>[RFC3864]</a></p>
+
+  <dl><dt>Header field name:<dd>Last-Event-ID<dt>Applicable protocol:<dd>http<dt>Status:<dd>standard<dt>Author/Change controller:<dd>W3C<dt>Specification document(s):<dd>
+    This document is the relevant specification.
+   <dt>Related information:<dd>None.</dl>
+
+
+  <h3 id=web+-scheme-prefix>16.11 <dfn><code>web+</code> scheme prefix</dfn><a href=#web+-scheme-prefix class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18496" title="Registries (IANA): Change the IANA sections to refer to the new registration system and not IANA">18496</a>, <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=18671" title="Find a solution to the problem of the IANA scheme registry being so incomplete (especially given web+)">18671</a></div>
+
+  <p>This section describes a convention for use with the IANA URI scheme registry. It does not
+  itself register a specific scheme. <a href=references.html#refsRFC7595>[RFC7595]</a></p>
+
+  <dl><dt>Scheme name:<dd>
+    Schemes starting with the four characters "<code>web+</code>" followed by one or more letters in the range
+    <code>a</code>-<code>z</code>.
+   <dt>Status:<dd>Permanent<dt>Scheme syntax:<dd>Scheme-specific.<dt>Scheme semantics:<dd>Scheme-specific.<dt>Encoding considerations:<dd>All "<code>web+</code>" schemes should use UTF-8 encodings where relevant.<dt>Applications/protocols that use this scheme name:<dd>Scheme-specific.<dt>Interoperability considerations:<dd>The scheme is expected to be used in the context of Web applications.<dt>Security considerations:<dd>
+
+    Any Web page is able to register a handler for all "<code>web+</code>" schemes. As
+    such, these schemes must not be used for features intended to be core platform features (e.g.
+    network transfer protocols like HTTP or FTP). Similarly, such schemes must not store
+    confidential information in their URLs, such as usernames, passwords, personal information, or
+    confidential project names.
+
+   <dt>Contact:<dd>Ian Hickson &lt;ian@hixie.ch><dt>Change controller:<dd>Ian Hickson &lt;ian@hixie.ch><dt>References:<dd>
+    <cite>Custom scheme and content handlers</cite>, HTML Living Standard:
+    <a href=webappapis.html#custom-handlers>https://html.spec.whatwg.org/#custom-handlers</a>
+   </dl>
+
+
+  <nav><a href=obsolete.html>← 15 Obsolete features</a> — <a href=index.html>Table of Contents</a> — <a href=indices.html>Index →</a></nav>

@@ -1,0 +1,2614 @@
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=icon href=https://resources.whatwg.org/logo.svg><style>
+   [hidden] { display: none; }
+
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+   @media (max-width: 767px) {
+     .fingerprint { max-width: 35px; }
+   }
+
+   .status { min-height: 0.6em; font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status:hover { z-index: 9; }
+   .status:focus-within { z-index: 9; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; left: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > p > strong { margin-left: 1.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span.no::before { opacity: 0.5; }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .edge::before { background-image: url(https://resources.whatwg.org/browser-logos/edge.svg); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mini.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .support > .samsung::before { background-image: url(https://resources.whatwg.org/browser-logos/samsung.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+   .status > .caniuse + p { margin-top: 0.5em; border-top: 1px solid silver; }
+
+   @media (max-width: 767px) {
+     .status { right: -9em; }
+   }
+
+   .applies .yes, .yesno .yes { background: yellow; }
+   .yesno .yes, .yesno .no { text-align: center; }
+
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+
+   @media (max-width: 767px) {
+     #abstractimg { width: 100%; }
+   }
+   #abstractimg, #abstractimg text { font: inherit; }
+   #abstractimg rect { fill: #424242; }
+   #abstractimg text { fill: #ffffff; font-size: 18px }
+   #abstractimg .top { word-spacing: 50px; text-anchor: middle; }
+   #abstractimg .left, #abstractimg .bottom { word-spacing: 12px; }
+   #abstractimg .right { font-size: 25px; }
+  </style>
+  <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>4 December 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=scripting.html>← 4.12 Scripting</a> — <a href=index.html>Table of Contents</a> — <a href=interaction.html>6 User interaction →</a></nav><ol class=toc><li id=toc-microdata><a href=microdata.html#microdata>5 Microdata</a><ol><li><a href=microdata.html#introduction-7>5.1 Introduction</a><ol><li><a href=microdata.html#overview>5.1.1 Overview</a><li><a href=microdata.html#the-basic-syntax>5.1.2 The basic syntax</a><li><a href=microdata.html#typed-items>5.1.3 Typed items</a><li><a href=microdata.html#global-identifiers-for-items>5.1.4 Global identifiers for items</a><li><a href=microdata.html#selecting-names-when-defining-vocabularies>5.1.5 Selecting names when defining vocabularies</a></ol><li><a href=microdata.html#encoding-microdata>5.2 Encoding microdata</a><ol><li><a href=microdata.html#the-microdata-model>5.2.1 The microdata model</a><li><a href=microdata.html#items>5.2.2 Items</a><li><a href=microdata.html#names:-the-itemprop-attribute>5.2.3 Names: the <code>itemprop</code> attribute</a><li><a href=microdata.html#values>5.2.4 Values</a><li><a href=microdata.html#associating-names-with-items>5.2.5 Associating names with items</a><li><a href=microdata.html#microdata-and-other-namespaces>5.2.6 Microdata and other namespaces</a></ol><li><a href=microdata.html#mdvocabs>5.3 Sample microdata vocabularies</a><ol><li><a href=microdata.html#vcard>5.3.1 vCard</a><ol><li><a href=microdata.html#conversion-to-vcard>5.3.1.1 Conversion to vCard</a><li><a href=microdata.html#examples-2>5.3.1.2 Examples</a></ol><li><a href=microdata.html#vevent>5.3.2 vEvent</a><ol><li><a href=microdata.html#conversion-to-icalendar>5.3.2.1 Conversion to iCalendar</a><li><a href=microdata.html#examples-3>5.3.2.2 Examples</a></ol><li><a href=microdata.html#licensing-works>5.3.3 Licensing works</a><ol><li><a href=microdata.html#examples-4>5.3.3.1 Examples</a></ol></ol><li><a href=microdata.html#converting-html-to-other-formats>5.4 Converting HTML to other formats</a><ol><li><a href=microdata.html#json>5.4.1 JSON</a></ol></ol></ol><h2 id=microdata>5 <dfn>Microdata</dfn><a href=#microdata class=self-link></a></h2>
+
+
+
+
+
+  <h3 id=introduction-7>5.1 Introduction<a href=#introduction-7 class=self-link></a></h3>
+
+  <h4 id=overview>5.1.1 Overview<a href=#overview class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Sometimes, it is desirable to annotate content with specific machine-readable labels, e.g. to
+  allow generic scripts to provide services that are customized to the page, or to enable content
+  from a variety of cooperating authors to be processed by a single script in a consistent
+  manner.</p>
+
+  <p>For this purpose, authors can use the microdata features described in this section. Microdata
+  allows nested groups of name-value pairs to be added to documents, in parallel with the existing
+  content.</p>
+
+
+  <h4 id=the-basic-syntax>5.1.2 The basic syntax<a href=#the-basic-syntax class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>At a high level, microdata consists of a group of name-value pairs. The groups are called <a href=#concept-item id=the-basic-syntax:concept-item>items</a>, and each name-value pair is a property. Items and properties
+  are represented by regular elements.</p>
+
+  <p>To create an item, the <code id=the-basic-syntax:attr-itemscope><a href=#attr-itemscope>itemscope</a></code> attribute is used.</p>
+
+  <p>To add a property to an item, the <code id=the-basic-syntax:names:-the-itemprop-attribute><a href=#names:-the-itemprop-attribute>itemprop</a></code> attribute is used
+  on one of the <a href=#concept-item id=the-basic-syntax:concept-item-2>item's</a> descendants.</p>
+
+  <div class=example>
+
+   <p>Here there are two items, each of which has the property "name":</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>My name is &lt;span itemprop="name">Elizabeth&lt;/span>.&lt;/p>
+&lt;/div>
+
+&lt;div itemscope>
+ &lt;p>My name is &lt;span itemprop="name">Daniel&lt;/span>.&lt;/p>
+&lt;/div></pre>
+
+  </div>
+
+  <p>Markup without the microdata-related attributes does not have any effect on the microdata
+  model.</p>
+
+  <div class=example>
+
+   <p>These two examples are exactly equivalent, at a microdata level, as the previous two examples
+   respectively:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>My &lt;em>name&lt;/em> is &lt;span itemprop="name">E&lt;strong>liz&lt;/strong>abeth&lt;/span>.&lt;/p>
+&lt;/div>
+
+&lt;section>
+ &lt;div itemscope>
+  &lt;aside>
+   &lt;p>My name is &lt;span itemprop="name">&lt;a href="/?user=daniel">Daniel&lt;/a>&lt;/span>.&lt;/p>
+  &lt;/aside>
+ &lt;/div>
+&lt;/section></pre>
+
+  </div>
+
+  <p>Properties generally have values that are strings.</p>
+
+  <div class=example>
+
+   <p>Here the item has three properties:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>My name is &lt;span itemprop="name">Neil&lt;/span>.&lt;/p>
+ &lt;p>My band is called &lt;span itemprop="band">Four Parts Water&lt;/span>.&lt;/p>
+ &lt;p>I am &lt;span itemprop="nationality">British&lt;/span>.&lt;/p>
+&lt;/div></pre>
+
+  </div>
+
+  <p>When a string value is a <a id=the-basic-syntax:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>, it is expressed using the <code id=the-basic-syntax:the-a-element><a href=semantics.html#the-a-element>a</a></code> element and
+  its <code id=the-basic-syntax:attr-hyperlink-href><a href=semantics.html#attr-hyperlink-href>href</a></code> attribute, the <code id=the-basic-syntax:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> element and its
+  <code id=the-basic-syntax:attr-img-src><a href=embedded-content.html#attr-img-src>src</a></code> attribute, or other elements that link to or embed external
+  resources.</p>
+
+  <div class=example>
+
+   <p>In this example, the item has one property, "image", whose value is a URL:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;img itemprop="image" src="google-logo.png" alt="Google">
+&lt;/div></pre>
+
+  </div>
+
+  <p>When a string value is in some machine-readable format unsuitable for human consumption, it is
+  expressed using the <code id=the-basic-syntax:attr-data-value><a href=semantics.html#attr-data-value>value</a></code> attribute of the <code id=the-basic-syntax:the-data-element><a href=semantics.html#the-data-element>data</a></code>
+  element, with the human-readable version given in the element's contents.</p>
+
+  <div class=example>
+
+   <p>Here, there is an item with a property whose value is a product ID. The ID is not
+   human-friendly, so the product's name is used the human-visible text instead of the ID.</p>
+
+   <pre>&lt;h1 itemscope>
+ &lt;data itemprop="product-id" value="9678AOU879">The Instigator 2000&lt;/data>
+&lt;/h1></pre>
+
+  </div>
+
+  <p>For numeric data, the <code id=the-basic-syntax:the-meter-element><a href=forms.html#the-meter-element>meter</a></code> element and its <code id=the-basic-syntax:attr-meter-value><a href=forms.html#attr-meter-value>value</a></code> attribute can be used instead.</p>
+
+  <div class=example>
+
+   <p>Here a rating is given using a <code id=the-basic-syntax:the-meter-element-2><a href=forms.html#the-meter-element>meter</a></code> element.</p>
+
+   <pre>&lt;div itemscope itemtype="http://schema.org/Product">
+ &lt;span itemprop="name">Panasonic White 60L Refrigerator&lt;/span>
+ &lt;img src="panasonic-fridge-60l-white.jpg" alt="">
+  &lt;div itemprop="aggregateRating"
+       itemscope itemtype="http://schema.org/AggregateRating">
+   &lt;meter itemprop="ratingValue" min=0 value=3.5 max=5>Rated 3.5/5&lt;/meter>
+   (based on &lt;span itemprop="reviewCount">11&lt;/span> customer reviews)
+  &lt;/div>
+&lt;/div></pre>
+
+  </div>
+
+  <p>Similarly, for date- and time-related data, the <code id=the-basic-syntax:the-time-element><a href=semantics.html#the-time-element>time</a></code> element and its <code id=the-basic-syntax:attr-time-datetime><a href=semantics.html#attr-time-datetime>datetime</a></code> attribute can be used instead.</p>
+
+  <div class=example>
+
+   <p>In this example, the item has one property, "birthday", whose value is a date:</p>
+
+   <pre>&lt;div itemscope>
+ I was born on &lt;time itemprop="birthday" datetime="2009-05-10">May 10th 2009&lt;/time>.
+&lt;/div></pre>
+
+  </div>
+
+  <p>Properties can also themselves be groups of name-value pairs, by putting the <code id=the-basic-syntax:attr-itemscope-2><a href=#attr-itemscope>itemscope</a></code> attribute on the element that declares the property.</p>
+
+  <p>Items that are not part of others are called <a href=#top-level-microdata-items id=the-basic-syntax:top-level-microdata-items>top-level microdata items</a>.</p>
+
+  <div class=example>
+
+   <p>In this example, the outer item represents a person, and the inner one represents a band:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>Name: &lt;span itemprop="name">Amanda&lt;/span>&lt;/p>
+ &lt;p>Band: &lt;span itemprop="band" itemscope> &lt;span itemprop="name">Jazz Band&lt;/span> (&lt;span itemprop="size">12&lt;/span> players)&lt;/span>&lt;/p>
+&lt;/div></pre>
+
+   <p>The outer item here has two properties, "name" and "band". The "name" is "Amanda", and the
+   "band" is an item in its own right, with two properties, "name" and "size". The "name" of the
+   band is "Jazz Band", and the "size" is "12".</p>
+
+   <p>The outer item in this example is a top-level microdata item.</p>
+
+  </div>
+
+  <p>Properties that are not descendants of the element with the <code id=the-basic-syntax:attr-itemscope-3><a href=#attr-itemscope>itemscope</a></code> attribute can be associated with the <a href=#concept-item id=the-basic-syntax:concept-item-3>item</a> using the <code id=the-basic-syntax:attr-itemref><a href=#attr-itemref>itemref</a></code> attribute.
+  This attribute takes a list of IDs of elements to crawl in addition to crawling the children of
+  the element with the <code id=the-basic-syntax:attr-itemscope-4><a href=#attr-itemscope>itemscope</a></code> attribute.</p>
+
+  <div class=example>
+
+   <p>This example is the same as the previous one, but all the properties are separated from their
+   <a href=#concept-item id=the-basic-syntax:concept-item-4>items</a>:</p>
+
+   <pre>&lt;div itemscope id="amanda" itemref="a b">&lt;/div>
+&lt;p id="a">Name: &lt;span itemprop="name">Amanda&lt;/span>&lt;/p>
+&lt;div id="b" itemprop="band" itemscope itemref="c">&lt;/div>
+&lt;div id="c">
+ &lt;p>Band: &lt;span itemprop="name">Jazz Band&lt;/span>&lt;/p>
+ &lt;p>Size: &lt;span itemprop="size">12&lt;/span> players&lt;/p>
+&lt;/div></pre>
+
+   <p>This gives the same result as the previous example. The first item has two properties, "name",
+   set to "Amanda", and "band", set to another item. That second item has two further properties,
+   "name", set to "Jazz Band", and "size", set to "12".</p>
+
+  </div>
+
+  <p>An <a href=#concept-item id=the-basic-syntax:concept-item-5>item</a> can have multiple properties with the same name and
+  different values.</p>
+
+  <div class=example>
+
+   <p>This example describes an ice cream, with two flavors:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>Flavors in my favorite ice cream:&lt;/p>
+ &lt;ul>
+  &lt;li itemprop="flavor">Lemon sorbet&lt;/li>
+  &lt;li itemprop="flavor">Apricot sorbet&lt;/li>
+ &lt;/ul>
+&lt;/div></pre>
+
+   <p>This thus results in an item with two properties, both "flavor", having the values "Lemon
+   sorbet" and "Apricot sorbet".</p>
+
+  </div>
+
+  <p>An element introducing a property can also introduce multiple properties at once, to avoid
+  duplication when some of the properties have the same value.</p>
+
+  <div class=example>
+
+   <p>Here we see an item with two properties, "favorite-color" and "favorite-fruit", both set to
+   the value "orange":</p>
+
+   <pre>&lt;div itemscope>
+ &lt;span itemprop="favorite-color favorite-fruit">orange&lt;/span>
+&lt;/div></pre>
+
+  </div>
+
+  <p>It's important to note that there is no relationship between the microdata and the content of
+  the document where the microdata is marked up.</p>
+
+  <div class=example>
+
+   <p>There is no semantic difference, for instance, between the following two examples:</p>
+
+   <pre>&lt;figure>
+ &lt;img src="castle.jpeg">
+ &lt;figcaption>&lt;span itemscope>&lt;span itemprop="name">The Castle&lt;/span>&lt;/span> (1986)&lt;/figcaption>
+&lt;/figure></pre>
+
+   <pre>&lt;span itemscope>&lt;meta itemprop="name" content="The Castle">&lt;/span>
+&lt;figure>
+ &lt;img src="castle.jpeg">
+ &lt;figcaption>The Castle (1986)&lt;/figcaption>
+&lt;/figure></pre>
+
+   <p>Both have a figure with a caption, and both, completely unrelated to the figure, have an item
+   with a name-value pair with the name "name" and the value "The Castle". The only difference is
+   that if the user drags the caption out of the document, in the former case, the item will be
+   included in the drag-and-drop data. In neither case is the image in any way associated with the
+   item.</p>
+
+  </div>
+
+
+  <h4 id=typed-items>5.1.3 Typed items<a href=#typed-items class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>The examples in the previous section show how information could be marked up on a page that
+  doesn't expect its microdata to be re-used. Microdata is most useful, though, when it is used in
+  contexts where other authors and readers are able to cooperate to make new uses of the markup.</p>
+
+  <p>For this purpose, it is necessary to give each <a href=#concept-item id=typed-items:concept-item>item</a> a type,
+  such as "https://example.com/person", or "https://example.org/cat", or
+  "https://band.example.net/". Types are identified as <a href=https://url.spec.whatwg.org/#concept-url id=typed-items:url data-x-internal=url>URLs</a>.</p>
+
+  <p>The type for an <a href=#concept-item id=typed-items:concept-item-2>item</a> is given as the value of an <code id=typed-items:attr-itemtype><a href=#attr-itemtype>itemtype</a></code> attribute on the same element as the <code id=typed-items:attr-itemscope><a href=#attr-itemscope>itemscope</a></code> attribute.</p>
+
+  <div class=example>
+
+   <p>Here, the item's type is "https://example.org/animals#cat":</p>
+
+<pre>&lt;section itemscope itemtype="https://example.org/animals#cat">
+ &lt;h1 itemprop="name">Hedral&lt;/h1>
+ &lt;p itemprop="desc">Hedral is a male american domestic
+ shorthair, with a fluffy black fur with white paws and belly.&lt;/p>
+ &lt;img itemprop="img" src="hedral.jpeg" alt="" title="Hedral, age 18 months">
+&lt;/section></pre>
+
+   <p>In this example the "https://example.org/animals#cat" item has three properties, a "name"
+   ("Hedral"), a "desc" ("Hedral is..."), and an "img" ("hedral.jpeg").</p>
+
+  </div>
+
+  <p>The type gives the context for the properties, thus selecting a vocabulary: a property named
+  "class" given for an item with the type "https://census.example/person" might refer to the economic
+  class of an individual, while a property named "class" given for an item with the type
+  "https://example.com/school/teacher" might refer to the classroom a teacher has been assigned.
+  Several types can share a vocabulary. For example, the types "<code>https://example.org/people/teacher</code>" and "<code>https://example.org/people/engineer</code>" could be defined to use the same vocabulary
+  (though maybe some properties would not be especially useful in both cases, e.g. maybe the "<code>https://example.org/people/engineer</code>" type might not typically be used with the
+  "<code>classroom</code>" property). Multiple types defined to use the same vocabulary can
+  be given for a single item by listing the URLs as a space-separated list in the attribute' value.
+  An item cannot be given two types if they do not use the same vocabulary, however.</p>
+
+
+  <h4 id=global-identifiers-for-items>5.1.4 Global identifiers for items<a href=#global-identifiers-for-items class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Sometimes, an <a href=#concept-item id=global-identifiers-for-items:concept-item>item</a> gives information about a topic that has a
+  global identifier. For example, books can be identified by their ISBN number.</p>
+
+  <p>Vocabularies (as identified by the <code id=global-identifiers-for-items:attr-itemtype><a href=#attr-itemtype>itemtype</a></code> attribute) can
+  be designed such that <a href=#concept-item id=global-identifiers-for-items:concept-item-2>items</a> get associated with their global
+  identifier in an unambiguous way by expressing the global identifiers as <a href=https://url.spec.whatwg.org/#concept-url id=global-identifiers-for-items:url data-x-internal=url>URLs</a> given in an <code id=global-identifiers-for-items:attr-itemid><a href=#attr-itemid>itemid</a></code> attribute.</p>
+
+  <p>The exact meaning of the <a href=https://url.spec.whatwg.org/#concept-url id=global-identifiers-for-items:url-2 data-x-internal=url>URLs</a> given in <code id=global-identifiers-for-items:attr-itemid-2><a href=#attr-itemid>itemid</a></code> attributes depends on the vocabulary used.</p>
+
+  <div class=example>
+
+   <p>Here, an item is talking about a particular book:</p>
+
+<pre>&lt;dl itemscope
+    itemtype="https://vocab.example.net/book"
+    <strong>itemid="urn:isbn:0-330-34032-8"</strong>>
+ &lt;dt>Title
+ &lt;dd itemprop="title">The Reality Dysfunction
+ &lt;dt>Author
+ &lt;dd itemprop="author">Peter F. Hamilton
+ &lt;dt>Publication date
+ &lt;dd>&lt;time itemprop="pubdate" datetime="1996-01-26">26 January 1996&lt;/time>
+&lt;/dl></pre>
+
+   <p>The "<code>https://vocab.example.net/book</code>" vocabulary in this example would
+   define that the <code id=global-identifiers-for-items:attr-itemid-3><a href=#attr-itemid>itemid</a></code> attribute takes a <code id=global-identifiers-for-items:urn-protocol><a data-x-internal=urn-protocol href=https://tools.ietf.org/html/rfc2141#section-2>urn:</a></code> <a id=global-identifiers-for-items:url-3 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> pointing to the ISBN of the book.</p>
+
+  </div>
+
+  
+
+
+
+  <h4 id=selecting-names-when-defining-vocabularies>5.1.5 Selecting names when defining vocabularies<a href=#selecting-names-when-defining-vocabularies class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Using microdata means using a vocabulary. For some purposes, an ad-hoc vocabulary is adequate.
+  For others, a vocabulary will need to be designed. Where possible, authors are encouraged to
+  re-use existing vocabularies, as this makes content re-use easier.</p>
+
+  <p>When designing new vocabularies, identifiers can be created either using <a href=https://url.spec.whatwg.org/#concept-url id=selecting-names-when-defining-vocabularies:url data-x-internal=url>URLs</a>, or, for properties, as plain words (with no dots or colons). For URLs,
+  conflicts with other vocabularies can be avoided by only using identifiers that correspond to
+  pages that the author has control over.</p>
+
+  <div class=example>
+
+   <p>For instance, if Jon and Adam both write content at <code>example.com</code>, at <code>https://example.com/~jon/...</code> and <code>https://example.com/~adam/...</code> respectively, then
+   they could select identifiers of the form
+   "https://example.com/~jon/name" and "https://example.com/~adam/name"
+   respectively.</p>
+
+  </div>
+
+  <p>Properties whose names are just plain words can only be used within the context of the types
+  for which they are intended; properties named using URLs can be reused in items of any type. If an
+  item has no type, and is not part of another item, then if its properties have names that are just
+  plain words, they are not intended to be globally unique, and are instead only intended for
+  limited use. Generally speaking, authors are encouraged to use either properties with globally
+  unique names (URLs) or ensure that their items are typed.</p>
+
+  <div class=example>
+
+   <p>Here, an item is an "https://example.org/animals#cat", and most of the properties have names
+   that are words defined in the context of that type. There are also a few additional properties
+   whose names come from other vocabularies.</p>
+
+<pre>&lt;section itemscope itemtype="https://example.org/animals#cat">
+ &lt;h1 itemprop="name https://example.com/fn">Hedral&lt;/h1>
+ &lt;p itemprop="desc">Hedral is a male american domestic
+ shorthair, with a fluffy &lt;span
+ itemprop="https://example.com/color">black&lt;/span> fur with &lt;span
+ itemprop="https://example.com/color">white&lt;/span> paws and belly.&lt;/p>
+ &lt;img itemprop="img" src="hedral.jpeg" alt="" title="Hedral, age 18 months">
+&lt;/section></pre>
+
+   <p>This example has one item with the type "https://example.org/animals#cat" and the following
+   properties:</p>
+
+   <table><thead><tr><td>Property
+      <td>Value
+    <tbody><tr><td>name
+      <td>Hedral
+     <tr><td>https://example.com/fn
+      <td>Hedral
+     <tr><td>desc
+      <td>Hedral is a male american domestic shorthair, with a fluffy black fur with white paws and belly.
+     <tr><td>https://example.com/color
+      <td>black
+     <tr><td>https://example.com/color
+      <td>white
+     <tr><td>img
+      <td>.../hedral.jpeg
+   </table>
+
+  </div>
+
+
+
+  <h3 id=encoding-microdata>5.2 Encoding microdata<a href=#encoding-microdata class=self-link></a></h3>
+
+
+  <h4 id=the-microdata-model>5.2.1 The microdata model<a href=#the-microdata-model class=self-link></a></h4>
+
+  <p>The microdata model consists of groups of name-value pairs known as <a href=#concept-item id=the-microdata-model:concept-item>items</a>.</p>
+
+  <p>Each group is known as an <a href=#concept-item id=the-microdata-model:concept-item-2>item</a>. Each <a href=#concept-item id=the-microdata-model:concept-item-3>item</a> can have <a href=#item-types id=the-microdata-model:item-types>item types</a>, a <a href=#global-identifier id=the-microdata-model:global-identifier>global
+  identifier</a> (if the vocabulary specified by the <a href=#item-types id=the-microdata-model:item-types-2>item types</a> <a href=#support-global-identifiers-for-items id=the-microdata-model:support-global-identifiers-for-items>support global
+  identifiers for items</a>), and a list of name-value pairs. Each name in the name-value pair is
+  known as a <a href=#the-properties-of-an-item id=the-microdata-model:the-properties-of-an-item>property</a>, and each <a href=#the-properties-of-an-item id=the-microdata-model:the-properties-of-an-item-2>property</a> has one or more <a href=#concept-property-value id=the-microdata-model:concept-property-value>values</a>. Each <a href=#concept-property-value id=the-microdata-model:concept-property-value-2>value</a> is either a string or itself a group of name-value
+  pairs (an <a href=#concept-item id=the-microdata-model:concept-item-4>item</a>). The names are unordered relative to each other,
+  but if a particular name has multiple values, they do have a relative order.</p>
+
+
+
+  <h4 id=items>5.2.2 Items<a href=#items class=self-link></a></h4>
+
+  <p>Every <a href=infrastructure.html#html-elements id=items:html-elements>HTML element</a> may have an <dfn id=attr-itemscope><code>itemscope</code></dfn> attribute specified. The <code id=items:attr-itemscope><a href=#attr-itemscope>itemscope</a></code> attribute is a <a id=items:boolean-attribute href=infrastructure.html#boolean-attribute>boolean attribute</a>.</p>
+
+  <p>An element with the <code id=items:attr-itemscope-2><a href=#attr-itemscope>itemscope</a></code> attribute specified creates a
+  new <dfn id=concept-item>item</dfn>, a group of name-value pairs.</p>
+
+  <hr>
+
+  <p>Elements with an <code id=items:attr-itemscope-3><a href=#attr-itemscope>itemscope</a></code> attribute may have an <dfn id=attr-itemtype><code>itemtype</code></dfn> attribute specified, to give the <a href=#item-types id=items:item-types>item
+  types</a> of the <a href=#concept-item id=items:concept-item>item</a>.</p>
+
+  <p>The <code id=items:attr-itemtype><a href=#attr-itemtype>itemtype</a></code> attribute, if specified, must have a value that
+  is an <a id=items:unordered-set-of-unique-space-separated-tokens href=infrastructure.html#unordered-set-of-unique-space-separated-tokens>unordered set of unique space-separated tokens</a> that are
+  <a id=items:case-sensitive href=infrastructure.html#case-sensitive>case-sensitive</a>, each of which is a <a id=items:valid-url href=infrastructure.html#valid-url>valid URL</a> that is an <a id=items:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+  URL</a>, and all of which are defined to use the same vocabulary. The attribute's value must
+  have at least one token.</p>
+
+  <p>The <dfn id=item-types>item types</dfn> of an <a href=#concept-item id=items:concept-item-2>item</a> are the tokens obtained
+  by <a href=infrastructure.html#split-a-string-on-spaces id=items:split-a-string-on-spaces>splitting the element's <code>itemtype</code> attribute's value on spaces</a>. If the <code id=items:attr-itemtype-2><a href=#attr-itemtype>itemtype</a></code> attribute is missing or parsing it in this way finds no
+  tokens, the <a href=#concept-item id=items:concept-item-3>item</a> is said to have no <a href=#item-types id=items:item-types-2>item types</a>.</p>
+
+  <p>The <a href=#item-types id=items:item-types-3>item types</a> must all be types defined in <a href=infrastructure.html#other-applicable-specifications id=items:other-applicable-specifications>applicable specifications</a> and must all be defined to use the same
+  vocabulary.</p>
+
+  
+
+   <p>Except if otherwise specified by that specification, the <a href=https://url.spec.whatwg.org/#concept-url id=items:url data-x-internal=url>URLs</a> given
+   as the <a href=#item-types id=items:item-types-4>item types</a> should not be automatically dereferenced.</p>
+
+   <p class=note>A specification could define that its <a href=#item-types id=items:item-types-5>item type</a>
+   can be dereferenced to provide the user with help information, for example. In fact, vocabulary
+   authors are encouraged to provide useful information at the given <a id=items:url-2 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>.</p>
+
+   <p><a href=#item-types id=items:item-types-6>Item types</a> are opaque identifiers, and user agents must not dereference unknown
+   <a href=#item-types id=items:item-types-7>item types</a>, or otherwise deconstruct them, in order to determine how to process
+   <a href=#concept-item id=items:concept-item-4>items</a> that use them.</p>
+
+  
+
+  <p>The <code id=items:attr-itemtype-3><a href=#attr-itemtype>itemtype</a></code> attribute must not be specified on elements
+  that do not have an <code id=items:attr-itemscope-4><a href=#attr-itemscope>itemscope</a></code> attribute specified.</p>
+
+  <hr>
+
+  <p>An <a href=#concept-item id=items:concept-item-5>item</a> is said to be a <dfn id=typed-item>typed item</dfn> when either it
+  has an <a href=#item-types id=items:item-types-8>item type</a>, or it is the <a href=#concept-property-value id=items:concept-property-value>value</a> of a <a href=#the-properties-of-an-item id=items:the-properties-of-an-item>property</a> of a <a href=#typed-item id=items:typed-item>typed item</a>. The <dfn id=relevant-types>relevant types</dfn> for a
+  <a href=#typed-item id=items:typed-item-2>typed item</a> is the <a href=#concept-item id=items:concept-item-6>item</a>'s <a href=#item-types id=items:item-types-9>item types</a>,
+  if it has any, or else is the <a href=#relevant-types id=items:relevant-types>relevant types</a> of the <a href=#concept-item id=items:concept-item-7>item</a> for which it is a <a href=#the-properties-of-an-item id=items:the-properties-of-an-item-2>property</a>'s <a href=#concept-property-value id=items:concept-property-value-2>value</a>.</p>
+
+  <hr>
+
+  <p>Elements with an <code id=items:attr-itemscope-5><a href=#attr-itemscope>itemscope</a></code> attribute and an <code id=items:attr-itemtype-4><a href=#attr-itemtype>itemtype</a></code> attribute that references a vocabulary that is defined to
+  <dfn id=support-global-identifiers-for-items>support global identifiers for items</dfn> may also have an <dfn id=attr-itemid><code>itemid</code></dfn> attribute specified, to give a global identifier for
+  the <a href=#concept-item id=items:concept-item-8>item</a>, so that it can be related to other <a href=#concept-item id=items:concept-item-9>items</a> on pages elsewhere on the Web.</p>
+
+  <p>The <code id=items:attr-itemid><a href=#attr-itemid>itemid</a></code> attribute, if specified, must have a value that is
+  a <a id=items:valid-url-potentially-surrounded-by-spaces href=infrastructure.html#valid-url-potentially-surrounded-by-spaces>valid URL potentially surrounded by spaces</a>.</p>
+
+  <p>The <dfn id=global-identifier>global identifier</dfn> of an <a href=#concept-item id=items:concept-item-10>item</a> is the value of
+  its element's <code id=items:attr-itemid-2><a href=#attr-itemid>itemid</a></code> attribute, if it has one, <a href=infrastructure.html#parse-a-url id=items:parse-a-url>parsed</a> relative to the <a id=items:node-document href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> of the element on
+  which the attribute is specified. If the <code id=items:attr-itemid-3><a href=#attr-itemid>itemid</a></code> attribute is
+  missing or if resolving it fails, it is said to have no <a href=#global-identifier id=items:global-identifier>global identifier</a>.</p>
+
+  <p>The <code id=items:attr-itemid-4><a href=#attr-itemid>itemid</a></code> attribute must not be specified on elements that do
+  not have both an <code id=items:attr-itemscope-6><a href=#attr-itemscope>itemscope</a></code> attribute and an <code id=items:attr-itemtype-5><a href=#attr-itemtype>itemtype</a></code> attribute specified, and must not be specified on elements
+  with an <code id=items:attr-itemscope-7><a href=#attr-itemscope>itemscope</a></code> attribute whose <code id=items:attr-itemtype-6><a href=#attr-itemtype>itemtype</a></code> attribute specifies a vocabulary that does not <a href=#support-global-identifiers-for-items id=items:support-global-identifiers-for-items>support
+  global identifiers for items</a>, as defined by that vocabulary's specification.</p>
+
+  <p>The exact meaning of a <a href=#global-identifier id=items:global-identifier-2>global identifier</a> is determined by the vocabulary's
+  specification. It is up to such specifications to define whether multiple items with the same
+  global identifier (whether on the same page or on different pages) are allowed to exist, and what
+  the processing rules for that vocabulary are with respect to handling the case of multiple items
+  with the same ID.</p>
+
+  <hr>
+
+  <p>Elements with an <code id=items:attr-itemscope-8><a href=#attr-itemscope>itemscope</a></code> attribute may have an <dfn id=attr-itemref><code>itemref</code></dfn> attribute specified, to give a list of additional
+  elements to crawl to find the name-value pairs of the <a href=#concept-item id=items:concept-item-11>item</a>.</p>
+
+  <p>The <code id=items:attr-itemref><a href=#attr-itemref>itemref</a></code> attribute, if specified, must have a value that
+  is an <a id=items:unordered-set-of-unique-space-separated-tokens-2 href=infrastructure.html#unordered-set-of-unique-space-separated-tokens>unordered set of unique space-separated tokens</a> that are
+  <a id=items:case-sensitive-2 href=infrastructure.html#case-sensitive>case-sensitive</a>, consisting of <a href=https://dom.spec.whatwg.org/#concept-id id=items:concept-id data-x-internal=concept-id>IDs</a> of elements in the
+  same <a id=items:tree href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a>.</p>
+
+  <p>The <code id=items:attr-itemref-2><a href=#attr-itemref>itemref</a></code> attribute must not be specified on elements that
+  do not have an <code id=items:attr-itemscope-9><a href=#attr-itemscope>itemscope</a></code> attribute specified.</p>
+
+  <p class=note>The <code id=items:attr-itemref-3><a href=#attr-itemref>itemref</a></code> attribute is not part of the
+  microdata data model. It is merely a syntactic construct to aid authors in adding annotations to
+  pages where the data to be annotated does not follow a convenient tree structure. For example, it
+  allows authors to mark up data in a table so that each column defines a separate <a href=#concept-item id=items:concept-item-12>item</a>, while keeping the properties in the cells.</p>
+
+  <div class=example>
+
+   <p>This example shows a simple vocabulary used to describe the products of a model railway
+   manufacturer. The vocabulary has just five property names:</p>
+
+   <dl><dt>product-code<dd>An integer that names the product in the manufacturer's catalog.<dt>name<dd>A brief description of the product.<dt>scale<dd>One of "HO", "1", or "Z" (potentially with leading or trailing
+    whitespace), indicating the scale of the product.<dt>digital<dd>If present, one of "Digital", "Delta", or "Systems"
+    (potentially with leading or trailing whitespace) indicating that
+    the product has a digital decoder of the given type.<dt>track-type<dd>For track-specific products, one of "K", "M", "C" (potentially
+    with leading or trailing whitespace) indicating the type of track
+    for which the product is intended.</dl>
+
+   <p>This vocabulary has four defined <a href=#item-types id=items:item-types-10>item types</a>:</p>
+
+   <dl><dt>https://md.example.com/loco<dd>Rolling stock with an engine<dt>https://md.example.com/passengers<dd>Passenger rolling stock<dt>https://md.example.com/track<dd>Track pieces<dt>https://md.example.com/lighting<dd>Equipment with lighting</dl>
+
+   <p>Each <a href=#concept-item id=items:concept-item-13>item</a> that uses this vocabulary can be given one or more
+   of these types, depending on what the product is.</p>
+
+   <p>Thus, a locomotive might be marked up as:</p>
+
+<pre>&lt;dl itemscope itemtype="https://md.example.com/loco
+                        https://md.example.com/lighting">
+ &lt;dt>Name:
+ &lt;dd itemprop="name">Tank Locomotive (DB 80)
+ &lt;dt>Product code:
+ &lt;dd itemprop="product-code">33041
+ &lt;dt>Scale:
+ &lt;dd itemprop="scale">HO
+ &lt;dt>Digital:
+ &lt;dd itemprop="digital">Delta
+&lt;/dl></pre>
+
+   <p>A turnout lantern retrofit kit might be marked up as:</p>
+
+   <pre>&lt;dl itemscope itemtype="https://md.example.com/track
+                       https://md.example.com/lighting">
+ &lt;dt>Name:
+ &lt;dd itemprop="name">Turnout Lantern Kit
+ &lt;dt>Product code:
+ &lt;dd itemprop="product-code">74470
+ &lt;dt>Purpose:
+ &lt;dd>For retrofitting 2 &lt;span itemprop="track-type">C&lt;/span> Track
+ turnouts. &lt;meta itemprop="scale" content="HO">
+&lt;/dl></pre>
+
+   <p>A passenger car with no lighting might be marked up as:</p>
+
+   <pre>&lt;dl itemscope itemtype="https://md.example.com/passengers">
+ &lt;dt>Name:
+ &lt;dd itemprop="name">Express Train Passenger Car (DB Am 203)
+ &lt;dt>Product code:
+ &lt;dd itemprop="product-code">8710
+ &lt;dt>Scale:
+ &lt;dd itemprop="scale">Z
+&lt;/dl></pre>
+
+   <p>Great care is necessary when creating new vocabularies. Often, a hierarchical approach to
+   types can be taken that results in a vocabulary where each item only ever has a single type,
+   which is generally much simpler to manage.</p>
+
+  </div>
+
+
+  <h4 id=names:-the-itemprop-attribute>5.2.3 Names: the <dfn><code>itemprop</code></dfn> attribute<a href=#names:-the-itemprop-attribute class=self-link></a></h4>
+
+  <p>Every <a href=infrastructure.html#html-elements id=names:-the-itemprop-attribute:html-elements>HTML element</a> may have an <code id=names:-the-itemprop-attribute:names:-the-itemprop-attribute><a href=#names:-the-itemprop-attribute>itemprop</a></code> attribute specified, if doing so <a href=#the-properties-of-an-item id=names:-the-itemprop-attribute:the-properties-of-an-item>adds one or more properties</a> to one or more <a href=#concept-item id=names:-the-itemprop-attribute:concept-item>items</a> (as defined below).</p>
+
+  <p>The <code id=names:-the-itemprop-attribute:names:-the-itemprop-attribute-2><a href=#names:-the-itemprop-attribute>itemprop</a></code> attribute, if specified, must have a value that
+  is an <a id=names:-the-itemprop-attribute:unordered-set-of-unique-space-separated-tokens href=infrastructure.html#unordered-set-of-unique-space-separated-tokens>unordered set of unique space-separated tokens</a> that are
+  <a id=names:-the-itemprop-attribute:case-sensitive href=infrastructure.html#case-sensitive>case-sensitive</a>, representing the names of the name-value pairs that it adds. The
+  attribute's value must have at least one token.</p>
+
+  <p>Each token must be either:</p>
+
+  <ul><li>If the item is a <a href=#typed-item id=names:-the-itemprop-attribute:typed-item>typed item</a>: a <dfn id=defined-property-name>defined property name</dfn> allowed in this
+   situation according to the specification that defines the <a href=#relevant-types id=names:-the-itemprop-attribute:relevant-types>relevant types</a> for the
+   item, or<li>A <a id=names:-the-itemprop-attribute:valid-url href=infrastructure.html#valid-url>valid URL</a> that is an <a id=names:-the-itemprop-attribute:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a> defined as an item property
+   name allowed in this situation by a vocabulary specification, or<li>A <a id=names:-the-itemprop-attribute:valid-url-2 href=infrastructure.html#valid-url>valid URL</a> that is an <a id=names:-the-itemprop-attribute:absolute-url-2 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>, used as a proprietary item
+   property name (i.e. one used by the author for private purposes, not defined in a public
+   specification), or<li>If the item is not a <a href=#typed-item id=names:-the-itemprop-attribute:typed-item-2>typed item</a>: a string that contains no U+002E FULL STOP
+   characters (.) and no U+003A COLON characters (:), used as a proprietary item property name (i.e.
+   one used by the author for private purposes, not defined in a public specification).</ul>
+
+  <p>Specifications that introduce <a href=#defined-property-name id=names:-the-itemprop-attribute:defined-property-name>defined property names</a>
+  must ensure all such property names contain no U+002E FULL STOP characters (.), no U+003A COLON
+  characters (:), and no <a href=infrastructure.html#space-character id=names:-the-itemprop-attribute:space-character>space characters</a>.</p>
+
+  <p class=note>The rules above disallow U+003A COLON characters (:) in non-URL values because
+  otherwise they could not be distinguished from URLs. Values with U+002E FULL STOP characters (.)
+  are reserved for future extensions. <a href=infrastructure.html#space-character id=names:-the-itemprop-attribute:space-character-2>Space characters</a> are
+  disallowed because otherwise the values would be parsed as multiple tokens.</p>
+
+  <p>When an element with an <code id=names:-the-itemprop-attribute:names:-the-itemprop-attribute-3><a href=#names:-the-itemprop-attribute>itemprop</a></code> attribute <a href=#the-properties-of-an-item id=names:-the-itemprop-attribute:the-properties-of-an-item-2>adds a property</a> to multiple <a href=#concept-item id=names:-the-itemprop-attribute:concept-item-2>items</a>,
+  the requirement above regarding the tokens applies for each <a href=#concept-item id=names:-the-itemprop-attribute:concept-item-3>item</a>
+  individually.</p>
+
+  
+
+  <p>The <dfn id=property-names>property names</dfn> of an element are the tokens that the element's <code id=names:-the-itemprop-attribute:names:-the-itemprop-attribute-4><a href=#names:-the-itemprop-attribute>itemprop</a></code> attribute is found to contain when its value is <a href=infrastructure.html#split-a-string-on-spaces id=names:-the-itemprop-attribute:split-a-string-on-spaces>split on spaces</a>, with the order preserved but with
+  duplicates removed (leaving only the first occurrence of each name).</p>
+
+  <p>Within an <a href=#concept-item id=names:-the-itemprop-attribute:concept-item-4>item</a>, the properties are unordered with respect to
+  each other, except for properties with the same name, which are ordered in the order they are
+  given by the algorithm that defines <a href=#the-properties-of-an-item id=names:-the-itemprop-attribute:the-properties-of-an-item-3>the properties of an item</a>.</p>
+
+  <div class=example>
+
+   <p>In the following example, the "a" property has the values "1" and "2", <em>in that order</em>,
+   but whether the "a" property comes before the "b" property or not is not important:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p itemprop="a">1&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+ &lt;p itemprop="b">test&lt;/p>
+&lt;/div></pre>
+
+   <p>Thus, the following is equivalent:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p itemprop="b">test&lt;/p>
+ &lt;p itemprop="a">1&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+&lt;/div></pre>
+
+   <p>As is the following:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p itemprop="a">1&lt;/p>
+ &lt;p itemprop="b">test&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+&lt;/div></pre>
+
+   <p>And the following:</p>
+
+   <pre>&lt;div id="x">
+ &lt;p itemprop="a">1&lt;/p>
+&lt;/div>
+&lt;div itemscope itemref="x">
+ &lt;p itemprop="b">test&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+&lt;/div>
+</pre>
+
+  </div>
+
+
+
+  <h4 id=values>5.2.4 Values<a href=#values class=self-link></a></h4>
+
+  <p>The <dfn id=concept-property-value>property value</dfn> of a name-value pair added by an
+  element with an <code id=values:names:-the-itemprop-attribute><a href=#names:-the-itemprop-attribute>itemprop</a></code> attribute is as given for the first
+  matching case in the following list:</p>
+
+  <dl class=switch><dt>If the element also has an <code id=values:attr-itemscope><a href=#attr-itemscope>itemscope</a></code> attribute<dd>
+
+    <p>The value is the <a href=#concept-item id=values:concept-item>item</a> created by the element.</p>
+
+   <dt>If the element is a <code id=values:the-meta-element><a href=semantics.html#the-meta-element>meta</a></code> element<dd>
+
+    <p>The value is the value of the element's <code id=values:attr-meta-content><a href=semantics.html#attr-meta-content>content</a></code>
+    attribute, if any, or the empty string if there is no such attribute.</p>
+
+   <dt>If the element is an <code id=values:the-audio-element><a href=embedded-content.html#the-audio-element>audio</a></code>, <code id=values:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code>, <code id=values:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>,
+   <code id=values:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>, <code id=values:the-source-element><a href=embedded-content.html#the-source-element>source</a></code>, <code id=values:the-track-element><a href=embedded-content.html#the-track-element>track</a></code>, or <code id=values:the-video-element><a href=embedded-content.html#the-video-element>video</a></code> element<dd>
+
+    <p>The value is the <a id=values:resulting-url-string href=infrastructure.html#resulting-url-string>resulting URL string</a> that results from <a href=infrastructure.html#parse-a-url id=values:parse-a-url>parsing</a> the value of the element's <code>src</code> attribute relative to
+    the <a id=values:node-document href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> of the element at the time the attribute is set, or the empty
+    string if there is no such attribute or if <a href=infrastructure.html#parse-a-url id=values:parse-a-url-2>parsing</a> it results
+    in an error.</p>
+
+   <dt>If the element is an <code id=values:the-a-element><a href=semantics.html#the-a-element>a</a></code>, <code id=values:the-area-element><a href=embedded-content.html#the-area-element>area</a></code>, or <code id=values:the-link-element><a href=semantics.html#the-link-element>link</a></code> element<dd>
+
+    <p>The value is the <a id=values:resulting-url-string-2 href=infrastructure.html#resulting-url-string>resulting URL string</a> that results from <a href=infrastructure.html#parse-a-url id=values:parse-a-url-3>parsing</a> the value of the element's <code>href</code> attribute relative to
+    the <a id=values:node-document-2 href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> of the element at the time the attribute is set, or the empty
+    string if there is no such attribute or if <a href=infrastructure.html#parse-a-url id=values:parse-a-url-4>parsing</a> it results
+    in an error.</p>
+
+   <dt>If the element is an <code id=values:the-object-element><a href=embedded-content.html#the-object-element>object</a></code> element<dd>
+
+    <p>The value is the <a id=values:resulting-url-string-3 href=infrastructure.html#resulting-url-string>resulting URL string</a> that results from <a href=infrastructure.html#parse-a-url id=values:parse-a-url-5>parsing</a> the value of the element's <code>data</code> attribute relative to
+    the <a id=values:node-document-3 href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> of the element at the time the attribute is set, or the empty
+    string if there is no such attribute or if <a href=infrastructure.html#parse-a-url id=values:parse-a-url-6>parsing</a> it results
+    in an error.</p>
+
+   <dt>If the element is a <code id=values:the-data-element><a href=semantics.html#the-data-element>data</a></code> element<dd>
+
+    <p>The value is the value of the element's <code id=values:attr-data-value><a href=semantics.html#attr-data-value>value</a></code> attribute,
+    if it has one, or the empty string otherwise.</p>
+
+   <dt>If the element is a <code id=values:the-meter-element><a href=forms.html#the-meter-element>meter</a></code> element<dd>
+
+    <p>The value is the value of the element's <code id=values:attr-meter-value><a href=forms.html#attr-meter-value>value</a></code> attribute,
+    if it has one, or the empty string otherwise.</p>
+
+   <dt>If the element is a <code id=values:the-time-element><a href=semantics.html#the-time-element>time</a></code> element<dd>
+
+    <p>The value is the element's <a id=values:datetime-value href=semantics.html#datetime-value>datetime value</a>.</p>
+
+   <dt>Otherwise<dd>
+
+    <p>The value is the element's <code id=values:textcontent><a data-x-internal=textcontent href=https://dom.spec.whatwg.org/#dom-node-textcontent>textContent</a></code>.</p>
+
+   </dl>
+
+  <p>The <dfn id=url-property-elements>URL property elements</dfn> are the <code id=values:the-a-element-2><a href=semantics.html#the-a-element>a</a></code>, <code id=values:the-area-element-2><a href=embedded-content.html#the-area-element>area</a></code>,
+  <code id=values:the-audio-element-2><a href=embedded-content.html#the-audio-element>audio</a></code>, <code id=values:the-embed-element-2><a href=embedded-content.html#the-embed-element>embed</a></code>, <code id=values:the-iframe-element-2><a href=embedded-content.html#the-iframe-element>iframe</a></code>, <code id=values:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code>, <code id=values:the-link-element-2><a href=semantics.html#the-link-element>link</a></code>,
+  <code id=values:the-object-element-2><a href=embedded-content.html#the-object-element>object</a></code>, <code id=values:the-source-element-2><a href=embedded-content.html#the-source-element>source</a></code>, <code id=values:the-track-element-2><a href=embedded-content.html#the-track-element>track</a></code>, and <code id=values:the-video-element-2><a href=embedded-content.html#the-video-element>video</a></code> elements.</p>
+
+  <p>If a property's <a href=#concept-property-value id=values:concept-property-value>value</a>, as defined by the property's
+  definition, is an <a id=values:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>, the property must be specified using a <a href=#url-property-elements id=values:url-property-elements>URL property element</a>.</p>
+
+  <p class=note>These requirements do not apply just because a property value happens to match the
+  syntax for a URL. They only apply if the property is explicitly defined as taking such a
+  value.</p>
+
+  <p class=example>For example, a book about the first moon landing  could be
+  called "mission:moon". A "title" property from a vocabulary that defines a title as being a string
+  would not expect the title to be given in an <code id=values:the-a-element-3><a href=semantics.html#the-a-element>a</a></code> element, even though it looks like a
+  <a id=values:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>. On the other hand, if there was a (rather narrowly scoped!) vocabulary for
+  "books whose titles look like URLs" which had a "title" property defined to take a URL, then the
+  property <em>would</em> expect the title to be given in an <code id=values:the-a-element-4><a href=semantics.html#the-a-element>a</a></code> element (or one of the
+  other <a href=#url-property-elements id=values:url-property-elements-2>URL property elements</a>), because of the requirement above.</p>
+
+
+  
+
+  <h4 id=associating-names-with-items>5.2.5 Associating names with items<a href=#associating-names-with-items class=self-link></a></h4>
+
+  <p>To find <dfn id=the-properties-of-an-item>the properties of an item</dfn> defined by the element <var>root</var>,
+  the user agent must run the following steps. These steps are also used to flag <a href=#microdata-error id=associating-names-with-items:microdata-error>microdata errors</a>.</p>
+
+  <ol><li><p>Let <var>results</var>, <var>memory</var>, and <var>pending</var> be empty lists of elements.<li><p>Add the element <var>root</var> to <var>memory</var>.<li><p>Add the child elements of <var>root</var>, if any, to <var>pending</var>.<li><p>If <var>root</var> has an <code id=associating-names-with-items:attr-itemref><a href=#attr-itemref>itemref</a></code> attribute,
+   <a href=infrastructure.html#split-a-string-on-spaces id=associating-names-with-items:split-a-string-on-spaces>split the value of that <code>itemref</code> attribute on spaces</a>. For each resulting token
+   <var>ID</var>, if there is an element in the <a id=associating-names-with-items:tree href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a> of <var>root</var> with the <a href=https://dom.spec.whatwg.org/#concept-id id=associating-names-with-items:concept-id data-x-internal=concept-id>ID</a> <var>ID</var>, then add the first such element to
+   <var>pending</var>.<li><p><i>Loop</i>: If <var>pending</var> is empty, jump to the step labeled <i>end of
+   loop</i>.<li><p>Remove an element from <var>pending</var> and let <var>current</var> be
+   that element.<li><p>If <var>current</var> is already in <var>memory</var>, there is a
+   <a href=#microdata-error id=associating-names-with-items:microdata-error-2>microdata error</a>; return to the step labeled <i>loop</i>.<li><p>Add <var>current</var> to <var>memory</var>.<li><p>If <var>current</var> does not have an <code id=associating-names-with-items:attr-itemscope><a href=#attr-itemscope>itemscope</a></code> attribute, then: add all the child elements of <var>current</var> to <var>pending</var>.<li><p>If <var>current</var> has an <code id=associating-names-with-items:names:-the-itemprop-attribute><a href=#names:-the-itemprop-attribute>itemprop</a></code>
+   attribute specified and has one or more <a href=#property-names id=associating-names-with-items:property-names>property names</a>, then add <var>current</var> to <var>results</var>.<li><p>Return to the step labeled <i>loop</i>.<li><p><i>End of loop</i>: Sort <var>results</var> in <a id=associating-names-with-items:tree-order href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.<li><p>Return <var>results</var>.</ol>
+
+  <p>A document must not contain any <a href=#concept-item id=associating-names-with-items:concept-item>items</a> for which the algorithm
+  to find <a href=#the-properties-of-an-item id=associating-names-with-items:the-properties-of-an-item>the properties of an item</a> finds any <dfn id=microdata-error>microdata
+  errors</dfn>.</p>
+
+  <p>An <a href=#concept-item id=associating-names-with-items:concept-item-2>item</a> is a <dfn id=top-level-microdata-items>top-level
+  microdata item</dfn> if its element does not have an <code id=associating-names-with-items:names:-the-itemprop-attribute-2><a href=#names:-the-itemprop-attribute>itemprop</a></code>
+  attribute.</p>
+
+
+
+  <p>All <code id=associating-names-with-items:attr-itemref-2><a href=#attr-itemref>itemref</a></code> attributes in a <code id=associating-names-with-items:document><a href=dom.html#document>Document</a></code> must be
+  such that there are no cycles in the graph formed from representing each <a href=#concept-item id=associating-names-with-items:concept-item-3>item</a> in the <code id=associating-names-with-items:document-2><a href=dom.html#document>Document</a></code> as a node in the graph and each
+  <a href=#the-properties-of-an-item id=associating-names-with-items:the-properties-of-an-item-2>property</a> of an item whose <a href=#concept-property-value id=associating-names-with-items:concept-property-value>value</a> is another item as an edge in the graph connecting
+  those two items.</p>
+
+  
+  <p>A document must not contain any elements that have an <code id=associating-names-with-items:names:-the-itemprop-attribute-3><a href=#names:-the-itemprop-attribute>itemprop</a></code> attribute that would not be found to be a property of any of
+  the <a href=#concept-item id=associating-names-with-items:concept-item-4>items</a> in that document were their <a href=#the-properties-of-an-item id=associating-names-with-items:the-properties-of-an-item-3>properties</a> all to be determined.</p>
+
+  <div class=example>
+
+   <p>In this example, a single license statement is applied to two works, using <code id=associating-names-with-items:attr-itemref-3><a href=#attr-itemref>itemref</a></code> from the items representing the works:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Photo gallery&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>My photos&lt;/h1>
+  &lt;figure itemscope itemtype="http://n.whatwg.org/work" itemref="licenses">
+   &lt;img itemprop="work" src="images/house.jpeg" alt="A white house, boarded up, sits in a forest.">
+   &lt;figcaption itemprop="title">The house I found.&lt;/figcaption>
+  &lt;/figure>
+  &lt;figure itemscope itemtype="http://n.whatwg.org/work" itemref="licenses">
+   &lt;img itemprop="work" src="images/mailbox.jpeg" alt="Outside the house is a mailbox. It has a leaflet inside.">
+   &lt;figcaption itemprop="title">The mailbox.&lt;/figcaption>
+  &lt;/figure>
+  &lt;footer>
+   &lt;p id="licenses">All images licensed under the &lt;a itemprop="license"
+   href="http://www.opensource.org/licenses/mit-license.php">MIT
+   license&lt;/a>.&lt;/p>
+  &lt;/footer>
+ &lt;/body>
+&lt;/html></pre>
+
+   <p>The above results in two items with the type "<code>http://n.whatwg.org/work</code>",
+   one with:</p>
+
+   <dl class=brief><dt>work
+    <dd><code>images/house.jpeg</code>
+    <dt>title
+    <dd>The house I found.
+    <dt>license
+    <dd><code>http://www.opensource.org/licenses/mit-license.php</code>
+   </dl>
+
+   <p>...and one with:</p>
+
+   <dl class=brief><dt>work
+    <dd><code>images/mailbox.jpeg</code>
+    <dt>title
+    <dd>The mailbox.
+    <dt>license
+    <dd><code>http://www.opensource.org/licenses/mit-license.php</code>
+   </dl>
+
+  </div>
+
+   
+
+
+  <h4 id=microdata-and-other-namespaces>5.2.6 Microdata and other namespaces<a href=#microdata-and-other-namespaces class=self-link></a></h4>
+
+  <p>Currently, the <code id=microdata-and-other-namespaces:attr-itemscope><a href=#attr-itemscope>itemscope</a></code>, <code id=microdata-and-other-namespaces:names:-the-itemprop-attribute><a href=#names:-the-itemprop-attribute>itemprop</a></code>, and other microdata attributes are only defined for
+  <a id=microdata-and-other-namespaces:html-elements href=infrastructure.html#html-elements>HTML elements</a>. This means that attributes with the literal names "<code>itemscope</code>", "<code>itemprop</code>", etc, do not cause microdata
+  processing to occur on elements in other namespaces, such as SVG.</p>
+
+  <div class=example>
+
+   <p>Thus, in the following example there is only one item, not
+   two.</p>
+
+   <pre class=bad>&lt;p itemscope>&lt;/p> &lt;!-- this is an item (with no properties and no type) -->
+&lt;svg itemscope>&lt;/svg> &lt;!-- this is not, it's just an <a id=microdata-and-other-namespaces:svg-svg href=https://www.w3.org/TR/SVG11/struct.html#SVGElement data-x-internal=svg-svg>SVG <code>svg</code></a> element with an invalid unknown attribute --></pre>
+
+  </div>
+
+
+  <h3 id=mdvocabs>5.3 Sample microdata vocabularies<a href=#mdvocabs class=self-link></a></h3>
+
+  <p>The vocabularies in this section are primarily intended to demonstrate how a vocabulary is
+  specified, though they are also usable in their own right.</p>
+
+
+  <h4 id=vcard>5.3.1 vCard<a href=#vcard class=self-link></a></h4>
+
+  <p>An item with the <a href=#item-types id=vcard:item-types>item type</a> <dfn id=md-vcard><code>http://microformats.org/profile/hcard</code></dfn> represents a person's or
+  organization's contact information.</p>
+
+  <p>This vocabulary does not <a href=#support-global-identifiers-for-items id=vcard:support-global-identifiers-for-items>support global identifiers for items</a>.</p>
+
+  <p>The following are the type's <a href=#defined-property-name id=vcard:defined-property-name>defined property names</a>.
+  They are based on the vocabulary defined in the vCard 4.0 specification and its extensions, where
+  more information on how to interpret the values can be found. <a href=references.html#refsRFC6350>[RFC6350]</a></p>
+
+  <dl><dt><dfn id=md-vcard-kind><code>kind</code></dfn><dd>
+
+    <p>Describes what kind of contact the item represents.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value>value</a> must be text that, when compared in a
+    <a id=vcard:case-sensitive href=infrastructure.html#case-sensitive>case-sensitive</a> manner, is equal to one of the <a href=#kind-strings id=vcard:kind-strings>kind strings</a>.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-kind><a href=#md-vcard-kind>kind</a></code> may be present within
+    each <a href=#concept-item id=vcard:concept-item>item</a> with the type <code id=vcard:md-vcard><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-fn><code>fn</code></dfn><dd>
+
+    <p>Gives the formatted text corresponding to the name of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-2>value</a> must be text.</p>
+
+    <p>Exactly one property with the name <code id=vcard:md-vcard-fn><a href=#md-vcard-fn>fn</a></code> must be present within
+    each <a href=#concept-item id=vcard:concept-item-2>item</a> with the type <code id=vcard:md-vcard-2><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-n><code>n</code></dfn><dd>
+
+    <p>Gives the structured name of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-3>value</a> must be an <a href=#concept-item id=vcard:concept-item-3>item</a> with zero or more of each of the <code id=vcard:md-vcard-n-family-name><a href=#md-vcard-n-family-name>family-name</a></code>, <code id=vcard:md-vcard-n-given-name><a href=#md-vcard-n-given-name>given-name</a></code>, <code id=vcard:md-vcard-n-additional-name><a href=#md-vcard-n-additional-name>additional-name</a></code>, <code id=vcard:md-vcard-n-honorific-prefix><a href=#md-vcard-n-honorific-prefix>honorific-prefix</a></code>, and <code id=vcard:md-vcard-n-honorific-suffix><a href=#md-vcard-n-honorific-suffix>honorific-suffix</a></code> properties.</p>
+
+    <p>Exactly one property with the name <code id=vcard:md-vcard-n><a href=#md-vcard-n>n</a></code> must be present within
+    each <a href=#concept-item id=vcard:concept-item-4>item</a> with the type <code id=vcard:md-vcard-3><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-n-family-name><code>family-name</code></dfn> (inside <code id=vcard:md-vcard-n-2><a href=#md-vcard-n>n</a></code>)<dd>
+
+    <p>Gives the family name of the person, or the full name of the organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-4>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-n-family-name-2><a href=#md-vcard-n-family-name>family-name</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-5>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-5>value</a> of the <code id=vcard:md-vcard-n-3><a href=#md-vcard-n>n</a></code> property of
+    an <a href=#concept-item id=vcard:concept-item-6>item</a> with the type <code id=vcard:md-vcard-4><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-n-given-name><code>given-name</code></dfn> (inside <code id=vcard:md-vcard-n-4><a href=#md-vcard-n>n</a></code>)<dd>
+
+    <p>Gives the given-name of the person.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-6>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-n-given-name-2><a href=#md-vcard-n-given-name>given-name</a></code>
+    may be present within the <a href=#concept-item id=vcard:concept-item-7>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-7>value</a> of the <code id=vcard:md-vcard-n-5><a href=#md-vcard-n>n</a></code> property of
+    an <a href=#concept-item id=vcard:concept-item-8>item</a> with the type <code id=vcard:md-vcard-5><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-n-additional-name><code>additional-name</code></dfn> (inside <code id=vcard:md-vcard-n-6><a href=#md-vcard-n>n</a></code>)<dd>
+
+    <p>Gives the any additional names of the person.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-8>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-n-additional-name-2><a href=#md-vcard-n-additional-name>additional-name</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-9>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-9>value</a> of the <code id=vcard:md-vcard-n-7><a href=#md-vcard-n>n</a></code> property of
+    an <a href=#concept-item id=vcard:concept-item-10>item</a> with the type <code id=vcard:md-vcard-6><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-n-honorific-prefix><code>honorific-prefix</code></dfn> (inside <code id=vcard:md-vcard-n-8><a href=#md-vcard-n>n</a></code>)<dd>
+
+    <p>Gives the honorific prefix of the person.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-10>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-n-honorific-prefix-2><a href=#md-vcard-n-honorific-prefix>honorific-prefix</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-11>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-11>value</a> of the <code id=vcard:md-vcard-n-9><a href=#md-vcard-n>n</a></code> property of
+    an <a href=#concept-item id=vcard:concept-item-12>item</a> with the type <code id=vcard:md-vcard-7><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-n-honorific-suffix><code>honorific-suffix</code></dfn> (inside <code id=vcard:md-vcard-n-10><a href=#md-vcard-n>n</a></code>)<dd>
+
+    <p>Gives the honorific suffix of the person.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-12>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-n-honorific-suffix-2><a href=#md-vcard-n-honorific-suffix>honorific-suffix</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-13>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-13>value</a> of the <code id=vcard:md-vcard-n-11><a href=#md-vcard-n>n</a></code> property of
+    an <a href=#concept-item id=vcard:concept-item-14>item</a> with the type <code id=vcard:md-vcard-8><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-nickname><code>nickname</code></dfn><dd>
+
+    <p>Gives the nickname of the person or organization.</p>
+
+    
+    <p class=note>The nickname is the descriptive name given instead of or in addition to the one
+    belonging to a person, place, or thing. It can also be used to specify a familiar form of a
+    proper name specified by the <code id=vcard:md-vcard-fn-2><a href=#md-vcard-fn>fn</a></code> or <code id=vcard:md-vcard-n-12><a href=#md-vcard-n>n</a></code> properties.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-14>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-nickname><a href=#md-vcard-nickname>nickname</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-15>item</a> with the type <code id=vcard:md-vcard-9><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-photo><code>photo</code></dfn><dd>
+
+    <p>Gives a photograph of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-15>value</a> must be an <a id=vcard:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-photo><a href=#md-vcard-photo>photo</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-16>item</a> with the type <code id=vcard:md-vcard-10><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-bday><code>bday</code></dfn><dd>
+
+    <p>Gives the birth date of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-16>value</a> must be a <a id=vcard:valid-date-string href=infrastructure.html#valid-date-string>valid date
+    string</a>.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-bday><a href=#md-vcard-bday>bday</a></code> may be present within
+    each <a href=#concept-item id=vcard:concept-item-17>item</a> with the type <code id=vcard:md-vcard-11><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-anniversary><code>anniversary</code></dfn><dd>
+
+    <p>Gives the birth date of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-17>value</a> must be a <a id=vcard:valid-date-string-2 href=infrastructure.html#valid-date-string>valid date
+    string</a>.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-anniversary><a href=#md-vcard-anniversary>anniversary</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-18>item</a> with the type <code id=vcard:md-vcard-12><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-sex><code>sex</code></dfn><dd>
+
+    <p>Gives the biological sex of the person.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-18>value</a> must be one of
+    <code>F</code>, meaning "female",
+    <code>M</code>, meaning "male",
+    <code>N</code>, meaning "none or not applicable",
+    <code>O</code>, meaning "other", or
+    <code>U</code>, meaning "unknown".</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-sex><a href=#md-vcard-sex>sex</a></code> may be present within
+    each <a href=#concept-item id=vcard:concept-item-19>item</a> with the type <code id=vcard:md-vcard-13><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-gender-identity><code>gender-identity</code></dfn><dd>
+
+    <p>Gives the gender identity of the person.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-19>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-gender-identity><a href=#md-vcard-gender-identity>gender-identity</a></code>
+    may be present within each <a href=#concept-item id=vcard:concept-item-20>item</a> with the type <code id=vcard:md-vcard-14><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-adr><code>adr</code></dfn><dd>
+
+    <p>Gives the delivery address of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-20>value</a> must be an <a href=#concept-item id=vcard:concept-item-21>item</a> with zero or more <code id=vcard:md-vcard-adr-type><a href=#md-vcard-adr-type>type</a></code>,
+    <code id=vcard:md-vcard-adr-post-office-box><a href=#md-vcard-adr-post-office-box>post-office-box</a></code>, <code id=vcard:md-vcard-adr-extended-address><a href=#md-vcard-adr-extended-address>extended-address</a></code>, and <code id=vcard:md-vcard-adr-street-address><a href=#md-vcard-adr-street-address>street-address</a></code> properties, and optionally a <code id=vcard:md-vcard-adr-locality><a href=#md-vcard-adr-locality>locality</a></code> property, optionally a <code id=vcard:md-vcard-adr-region><a href=#md-vcard-adr-region>region</a></code> property, optionally a <code id=vcard:md-vcard-adr-postal-code><a href=#md-vcard-adr-postal-code>postal-code</a></code> property, and optionally a <code id=vcard:md-vcard-adr-country-name><a href=#md-vcard-adr-country-name>country-name</a></code> property.</p>
+
+    <p>If no <code id=vcard:md-vcard-adr-type-2><a href=#md-vcard-adr-type>type</a></code> properties are present within an <a href=#concept-item id=vcard:concept-item-22>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-21>value</a> of an <code id=vcard:md-vcard-adr><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-23>item</a> with the type <code id=vcard:md-vcard-15><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>, then the <a href=#address-type-strings id=vcard:address-type-strings>address type string</a> <code id=vcard:md-vcard-type-adr-work><a href=#md-vcard-type-adr-work>work</a></code> is
+    implied.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-adr-2><a href=#md-vcard-adr>adr</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-24>item</a> with the type <code id=vcard:md-vcard-16><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-adr-type><code>type</code></dfn> (inside <code id=vcard:md-vcard-adr-3><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives the type of delivery address.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-22>value</a> must be text that, when compared in a
+    <a id=vcard:case-sensitive-2 href=infrastructure.html#case-sensitive>case-sensitive</a> manner, is equal to one of the <a href=#address-type-strings id=vcard:address-type-strings-2>address type
+    strings</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-adr-type-3><a href=#md-vcard-adr-type>type</a></code> may be
+    present within the <a href=#concept-item id=vcard:concept-item-25>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-23>value</a> of an <code id=vcard:md-vcard-adr-4><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-26>item</a> with the type <code id=vcard:md-vcard-17><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>, but within each such <code id=vcard:md-vcard-adr-5><a href=#md-vcard-adr>adr</a></code> property <a href=#concept-item id=vcard:concept-item-27>item</a> there must only
+    be one <code id=vcard:md-vcard-adr-type-4><a href=#md-vcard-adr-type>type</a></code> property per distinct value.</p>
+
+   <dt><dfn id=md-vcard-adr-post-office-box><code>post-office-box</code></dfn> (inside <code id=vcard:md-vcard-adr-6><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives the post office box component of the delivery address of the person or
+    organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-24>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-adr-post-office-box-2><a href=#md-vcard-adr-post-office-box>post-office-box</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-28>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-25>value</a> of an <code id=vcard:md-vcard-adr-7><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-29>item</a> with the type <code id=vcard:md-vcard-18><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+    <p class=note>The vCard specification urges authors not to use this field.</p>
+
+   <dt><dfn id=md-vcard-adr-extended-address><code>extended-address</code></dfn> (inside <code id=vcard:md-vcard-adr-8><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives an additional component of the delivery address of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-26>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-adr-extended-address-2><a href=#md-vcard-adr-extended-address>extended-address</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-30>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-27>value</a> of an <code id=vcard:md-vcard-adr-9><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-31>item</a> with the type <code id=vcard:md-vcard-19><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+    <p class=note>The vCard specification urges authors not to use this field.</p>
+
+   <dt><dfn id=md-vcard-adr-street-address><code>street-address</code></dfn> (inside <code id=vcard:md-vcard-adr-10><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives the street address component of the delivery address of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-28>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-adr-street-address-2><a href=#md-vcard-adr-street-address>street-address</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-32>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-29>value</a> of an <code id=vcard:md-vcard-adr-11><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-33>item</a> with the type <code id=vcard:md-vcard-20><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-adr-locality><code>locality</code></dfn> (inside <code id=vcard:md-vcard-adr-12><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives the locality component (e.g. city) of the delivery address of the person or
+    organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-30>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-adr-locality-2><a href=#md-vcard-adr-locality>locality</a></code> may be
+    present within the <a href=#concept-item id=vcard:concept-item-34>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-31>value</a> of an <code id=vcard:md-vcard-adr-13><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-35>item</a> with the type <code id=vcard:md-vcard-21><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-adr-region><code>region</code></dfn> (inside <code id=vcard:md-vcard-adr-14><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives the region component (e.g. state or province) of the delivery address of the person or
+    organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-32>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-adr-region-2><a href=#md-vcard-adr-region>region</a></code> may be
+    present within the <a href=#concept-item id=vcard:concept-item-36>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-33>value</a> of an <code id=vcard:md-vcard-adr-15><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-37>item</a> with the type <code id=vcard:md-vcard-22><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-adr-postal-code><code>postal-code</code></dfn> (inside <code id=vcard:md-vcard-adr-16><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives the postal code component of the delivery address of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-34>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-adr-postal-code-2><a href=#md-vcard-adr-postal-code>postal-code</a></code> may
+    be present within the <a href=#concept-item id=vcard:concept-item-38>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-35>value</a> of an <code id=vcard:md-vcard-adr-17><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-39>item</a> with the type <code id=vcard:md-vcard-23><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-adr-country-name><code>country-name</code></dfn> (inside <code id=vcard:md-vcard-adr-18><a href=#md-vcard-adr>adr</a></code>)<dd>
+
+    <p>Gives the country name component of the delivery address of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-36>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-adr-country-name-2><a href=#md-vcard-adr-country-name>country-name</a></code>
+    may be present within the <a href=#concept-item id=vcard:concept-item-40>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-37>value</a> of an <code id=vcard:md-vcard-adr-19><a href=#md-vcard-adr>adr</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-41>item</a> with the type <code id=vcard:md-vcard-24><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-tel><code>tel</code></dfn><dd>
+
+    <p>Gives the telephone number of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-38>value</a> must be either text that can be
+    interpreted as a telephone number as defined in the CCITT specifications E.163 and X.121, or an
+    <a href=#concept-item id=vcard:concept-item-42>item</a> with zero or more <code id=vcard:md-vcard-tel-type><a href=#md-vcard-tel-type>type</a></code> properties and exactly one <code id=vcard:md-vcard-tel-value><a href=#md-vcard-tel-value>value</a></code> property. <a href=references.html#refsE163>[E163]</a> <a href=references.html#refsX121>[X121]</a></p>
+
+    <p>If no <code id=vcard:md-vcard-tel-type-2><a href=#md-vcard-tel-type>type</a></code> properties are present within an <a href=#concept-item id=vcard:concept-item-43>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-39>value</a> of a <code id=vcard:md-vcard-tel><a href=#md-vcard-tel>tel</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-44>item</a> with the type <code id=vcard:md-vcard-25><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>, or if the <a href=#concept-property-value id=vcard:concept-property-value-40>value</a> of such a <code id=vcard:md-vcard-tel-2><a href=#md-vcard-tel>tel</a></code>
+    property is text, then the <a href=#telephone-type-strings id=vcard:telephone-type-strings>telephone type string</a>
+    <code id=vcard:md-vcard-type-tel-voice><a href=#md-vcard-type-tel-voice>voice</a></code> is implied.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-tel-3><a href=#md-vcard-tel>tel</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-45>item</a> with the type <code id=vcard:md-vcard-26><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-tel-type><code>type</code></dfn> (inside <code id=vcard:md-vcard-tel-4><a href=#md-vcard-tel>tel</a></code>)<dd>
+
+    <p>Gives the type of telephone number.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-41>value</a> must be text that, when compared in a
+    <a id=vcard:case-sensitive-3 href=infrastructure.html#case-sensitive>case-sensitive</a> manner, is equal to one of the <a href=#telephone-type-strings id=vcard:telephone-type-strings-2>telephone type
+    strings</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-tel-type-3><a href=#md-vcard-tel-type>type</a></code> may be
+    present within the <a href=#concept-item id=vcard:concept-item-46>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-42>value</a> of a <code id=vcard:md-vcard-tel-5><a href=#md-vcard-tel>tel</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-47>item</a> with the type <code id=vcard:md-vcard-27><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>, but within each such <code id=vcard:md-vcard-tel-6><a href=#md-vcard-tel>tel</a></code> property <a href=#concept-item id=vcard:concept-item-48>item</a> there must only
+    be one <code id=vcard:md-vcard-tel-type-4><a href=#md-vcard-tel-type>type</a></code> property per distinct value.</p>
+
+   <dt><dfn id=md-vcard-tel-value><code>value</code></dfn> (inside <code id=vcard:md-vcard-tel-7><a href=#md-vcard-tel>tel</a></code>)<dd>
+
+    <p>Gives the actual telephone number of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-43>value</a> must be text that can be interpreted as
+    a telephone number as defined in the CCITT specifications E.163 and X.121. <a href=references.html#refsE163>[E163]</a> <a href=references.html#refsX121>[X121]</a></p>
+
+    <p>Exactly one property with the name <code id=vcard:md-vcard-tel-value-2><a href=#md-vcard-tel-value>value</a></code> must be
+    present within the <a href=#concept-item id=vcard:concept-item-49>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-44>value</a> of a <code id=vcard:md-vcard-tel-8><a href=#md-vcard-tel>tel</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-50>item</a> with the type <code id=vcard:md-vcard-28><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-email><code>email</code></dfn><dd>
+
+    <p>Gives the e-mail address of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-45>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-email><a href=#md-vcard-email>email</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-51>item</a> with the type <code id=vcard:md-vcard-29><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-impp><code>impp</code></dfn><dd>
+
+    <p>Gives a <a id=vcard:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> for instant messaging and presence protocol communications with the
+    person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-46>value</a> must be an <a id=vcard:absolute-url-2 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-impp><a href=#md-vcard-impp>impp</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-52>item</a> with the type <code id=vcard:md-vcard-30><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-lang><code>lang</code></dfn><dd>
+
+    <p>Gives a language understood by the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-47>value</a> must be a valid BCP 47 language tag. <a href=references.html#refsBCP47>[BCP47]</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-lang><a href=#md-vcard-lang>lang</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-53>item</a> with the type <code id=vcard:md-vcard-31><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-tz><code>tz</code></dfn><dd>
+
+    <p>Gives the time zone of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-48>value</a> must be text and must match the
+    following syntax:</p>
+
+    <ol><li>Either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character (-).<li>A <a id=vcard:valid-non-negative-integer href=infrastructure.html#valid-non-negative-integer>valid non-negative integer</a> that is exactly two digits long and that
+     represents a number in the range 00..23.<li>A U+003A COLON character (:).<li>A <a id=vcard:valid-non-negative-integer-2 href=infrastructure.html#valid-non-negative-integer>valid non-negative integer</a> that is exactly two digits long and that
+     represents a number in the range 00..59.</ol>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-tz><a href=#md-vcard-tz>tz</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-54>item</a> with the type <code id=vcard:md-vcard-32><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-geo><code>geo</code></dfn><dd>
+
+    <p>Gives the geographical position of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-49>value</a> must be text and must match the
+    following syntax:</p>
+
+    <ol><li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+     (-).<li>One or more <a id=vcard:ascii-digits href=infrastructure.html#ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a id=vcard:ascii-digits-2 href=infrastructure.html#ascii-digits>ASCII
+     digits</a>.<li>A U+003B SEMICOLON character (;).<li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+     (-).<li>One or more <a id=vcard:ascii-digits-3 href=infrastructure.html#ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a id=vcard:ascii-digits-4 href=infrastructure.html#ascii-digits>ASCII
+     digits</a>.</ol>
+
+    <p>The optional components marked with an asterisk (*) should be included, and should have six
+    digits each.</p>
+
+    
+    <p class=note>The value specifies latitude and longitude, in that order (i.e., "LAT LON"
+    ordering), in decimal degrees. The longitude represents the location east and west of the prime
+    meridian as a positive or negative real number, respectively. The latitude represents the
+    location north and south of the equator as a positive or negative real number, respectively.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-geo><a href=#md-vcard-geo>geo</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-55>item</a> with the type <code id=vcard:md-vcard-33><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-title><code>title</code></dfn><dd>
+
+    <p>Gives the job title, functional position or function of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-50>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-title><a href=#md-vcard-title>title</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-56>item</a> with the type <code id=vcard:md-vcard-34><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-role><code>role</code></dfn><dd>
+
+    <p>Gives the role, occupation, or business category of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-51>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-role><a href=#md-vcard-role>role</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-57>item</a> with the type <code id=vcard:md-vcard-35><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-logo><code>logo</code></dfn><dd>
+
+    <p>Gives the logo of the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-52>value</a> must be an <a id=vcard:absolute-url-3 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-logo><a href=#md-vcard-logo>logo</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-58>item</a> with the type <code id=vcard:md-vcard-36><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-agent><code>agent</code></dfn><dd>
+
+    <p>Gives the contact information of another person who will act on behalf of the person or
+    organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-53>value</a> must be either an <a href=#concept-item id=vcard:concept-item-59>item</a> with the type <code id=vcard:md-vcard-37><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>, or an <a id=vcard:absolute-url-4 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
+    or text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-agent><a href=#md-vcard-agent>agent</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-60>item</a> with the type <code id=vcard:md-vcard-38><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-org><code>org</code></dfn><dd>
+
+    <p>Gives the name and units of the organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-54>value</a> must be either text or an <a href=#concept-item id=vcard:concept-item-61>item</a> with one <code id=vcard:md-vcard-org-organization-name><a href=#md-vcard-org-organization-name>organization-name</a></code> property and zero or more <code id=vcard:md-vcard-org-organization-unit><a href=#md-vcard-org-organization-unit>organization-unit</a></code> properties.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-org><a href=#md-vcard-org>org</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-62>item</a> with the type <code id=vcard:md-vcard-39><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-org-organization-name><code>organization-name</code></dfn> (inside <code id=vcard:md-vcard-org-2><a href=#md-vcard-org>org</a></code>)<dd>
+
+    <p>Gives the name of the organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-55>value</a> must be text.</p>
+
+    <p>Exactly one property with the name <code id=vcard:md-vcard-org-organization-name-2><a href=#md-vcard-org-organization-name>organization-name</a></code> must be present within the <a href=#concept-item id=vcard:concept-item-63>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-56>value</a> of an <code id=vcard:md-vcard-org-3><a href=#md-vcard-org>org</a></code> property
+    of an <a href=#concept-item id=vcard:concept-item-64>item</a> with the type <code id=vcard:md-vcard-40><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-org-organization-unit><code>organization-unit</code></dfn> (inside <code id=vcard:md-vcard-org-4><a href=#md-vcard-org>org</a></code>)<dd>
+
+    <p>Gives the name of the organization unit.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-57>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-org-organization-unit-2><a href=#md-vcard-org-organization-unit>organization-unit</a></code> may be present within the <a href=#concept-item id=vcard:concept-item-65>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-58>value</a> of the <code id=vcard:md-vcard-org-5><a href=#md-vcard-org>org</a></code>
+    property of an <a href=#concept-item id=vcard:concept-item-66>item</a> with the type <code id=vcard:md-vcard-41><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-member><code>member</code></dfn><dd>
+
+    <p>Gives a <a id=vcard:url-2 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> that represents a member of the group.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-59>value</a> must be an <a id=vcard:absolute-url-5 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-member><a href=#md-vcard-member>member</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-67>item</a> with the type <code id=vcard:md-vcard-42><a href=#md-vcard>http://microformats.org/profile/hcard</a></code> if the <a href=#concept-item id=vcard:concept-item-68>item</a> also has a property with the name <code id=vcard:md-vcard-kind-2><a href=#md-vcard-kind>kind</a></code> whose value is "<code id=vcard:md-vcard-kind-group><a href=#md-vcard-kind-group>group</a></code>".</p>
+
+   <dt><dfn id=md-vcard-related><code>related</code></dfn><dd>
+
+    <p>Gives a relationship to another entity.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-60>value</a> must be an <a href=#concept-item id=vcard:concept-item-69>item</a> with one <code id=vcard:md-vcard-related-url><a href=#md-vcard-related-url>url</a></code>
+    property and one <code id=vcard:md-vcard-related-rel><a href=#md-vcard-related-rel>rel</a></code> properties.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-related><a href=#md-vcard-related>related</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-70>item</a> with the type <code id=vcard:md-vcard-43><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-related-url><code>url</code></dfn> (inside <code id=vcard:md-vcard-related-2><a href=#md-vcard-related>related</a></code>)<dd>
+
+    <p>Gives the <a id=vcard:url-3 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> for the related entity.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-61>value</a> must be an <a id=vcard:absolute-url-6 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Exactly one property with the name <code id=vcard:md-vcard-related-url-2><a href=#md-vcard-related-url>url</a></code> must be
+    present within the <a href=#concept-item id=vcard:concept-item-71>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-62>value</a> of a <code id=vcard:md-vcard-related-3><a href=#md-vcard-related>related</a></code>
+    property of an <a href=#concept-item id=vcard:concept-item-72>item</a> with the type <code id=vcard:md-vcard-44><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-related-rel><code>rel</code></dfn> (inside <code id=vcard:md-vcard-related-4><a href=#md-vcard-related>related</a></code>)<dd>
+
+    <p>Gives the relationship between the entity and the related entity.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-63>value</a> must be text that, when compared in a
+    <a id=vcard:case-sensitive-4 href=infrastructure.html#case-sensitive>case-sensitive</a> manner, is equal to one of the <a href=#relationship-strings id=vcard:relationship-strings>relationship
+    strings</a>.</p>
+
+    <p>Exactly one property with the name <code id=vcard:md-vcard-related-rel-2><a href=#md-vcard-related-rel>rel</a></code> must be
+    present within the <a href=#concept-item id=vcard:concept-item-73>item</a> that forms the <a href=#concept-property-value id=vcard:concept-property-value-64>value</a> of a <code id=vcard:md-vcard-related-5><a href=#md-vcard-related>related</a></code>
+    property of an <a href=#concept-item id=vcard:concept-item-74>item</a> with the type <code id=vcard:md-vcard-45><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-categories><code>categories</code></dfn><dd>
+
+    <p>Gives the name of a category or tag that the person or organization could be classified
+    as.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-65>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-categories><a href=#md-vcard-categories>categories</a></code>
+    may be present within each <a href=#concept-item id=vcard:concept-item-75>item</a> with the type <code id=vcard:md-vcard-46><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-note><code>note</code></dfn><dd>
+
+    <p>Gives supplemental information or a comment about the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-66>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-note><a href=#md-vcard-note>note</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-76>item</a> with the type <code id=vcard:md-vcard-47><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-rev><code>rev</code></dfn><dd>
+
+    <p>Gives the revision date and time of the contact information.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-67>value</a> must be text that is a <a id=vcard:valid-global-date-and-time-string href=infrastructure.html#valid-global-date-and-time-string>valid
+    global date and time string</a>.</p>
+
+    
+    <p class=note>The value distinguishes the current revision of the information for other
+    renditions of the information.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-rev><a href=#md-vcard-rev>rev</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-77>item</a> with the type <code id=vcard:md-vcard-48><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-sound><code>sound</code></dfn><dd>
+
+    <p>Gives a sound file relating to the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-68>value</a> must be an <a id=vcard:absolute-url-7 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-sound><a href=#md-vcard-sound>sound</a></code> may be
+    present within each <a href=#concept-item id=vcard:concept-item-78>item</a> with the type <code id=vcard:md-vcard-49><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-uid><code>uid</code></dfn><dd>
+
+    <p>Gives a globally unique identifier corresponding to the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-69>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vcard:md-vcard-uid><a href=#md-vcard-uid>uid</a></code> may be present within
+    each <a href=#concept-item id=vcard:concept-item-79>item</a> with the type <code id=vcard:md-vcard-50><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   <dt><dfn id=md-vcard-url><code>url</code></dfn><dd>
+
+    <p>Gives a <a id=vcard:url-4 href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> relating to the person or organization.</p>
+
+    <p>The <a href=#concept-property-value id=vcard:concept-property-value-70>value</a> must be an <a id=vcard:absolute-url-8 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=vcard:md-vcard-url><a href=#md-vcard-url>url</a></code> may be present
+    within each <a href=#concept-item id=vcard:concept-item-80>item</a> with the type <code id=vcard:md-vcard-51><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.</p>
+
+   </dl>
+
+  <p>The <dfn id=kind-strings>kind strings</dfn> are:</p>
+
+  <dl><dt><dfn id=md-vcard-kind-individual><code>individual</code></dfn><dd>
+    <p>Indicates a single entity (e.g. a person).</p>
+   <dt><dfn id=md-vcard-kind-group><code>group</code></dfn><dd>
+    <p>Indicates multiple entities (e.g. a mailing list).</p>
+   <dt><dfn id=md-vcard-kind-org><code>org</code></dfn><dd>
+    <p>Indicates a single entity that is not a person (e.g. a company).</p>
+   <dt><dfn id=md-vcard-kind-location><code>location</code></dfn><dd>
+    <p>Indicates a geographical place (e.g. an office building).</p>
+   </dl>
+
+  <p>The <dfn id=address-type-strings>address type strings</dfn> are:</p>
+
+  <dl><dt><dfn id=md-vcard-type-adr-home><code>home</code></dfn><dd>
+    <p>Indicates a delivery address for a residence.</p>
+   <dt><dfn id=md-vcard-type-adr-work><code>work</code></dfn><dd>
+    <p>Indicates a delivery address for a place of work.</p>
+   </dl>
+
+  <p>The <dfn id=telephone-type-strings>telephone type strings</dfn> are:</p>
+
+  <dl><dt><dfn id=md-vcard-type-tel-home><code>home</code></dfn><dd>
+    <p>Indicates a residential number.</p>
+   <dt><dfn id=md-vcard-type-tel-work><code>work</code></dfn><dd>
+    <p>Indicates a telephone number for a place of work.</p>
+   <dt><dfn id=md-vcard-type-tel-text><code>text</code></dfn><dd>
+    <p>Indicates that the telephone number supports text messages (SMS).</p>
+   <dt><dfn id=md-vcard-type-tel-voice><code>voice</code></dfn><dd>
+    <p>Indicates a voice telephone number.</p>
+   <dt><dfn id=md-vcard-type-tel-fax><code>fax</code></dfn><dd>
+    <p>Indicates a facsimile telephone number.</p>
+   <dt><dfn id=md-vcard-type-tel-cell><code>cell</code></dfn><dd>
+    <p>Indicates a cellular telephone number.</p>
+   <dt><dfn id=md-vcard-type-tel-video><code>video</code></dfn><dd>
+    <p>Indicates a video conferencing telephone number.</p>
+   <dt><dfn id=md-vcard-type-tel-pager><code>pager</code></dfn><dd>
+    <p>Indicates a paging device telephone number.</p>
+   <dt><dfn id=md-vcard-type-tel-textphone><code>textphone</code></dfn><dd>
+    <p>Indicates a telecommunication device for people with hearing or speech difficulties.</p>
+   </dl>
+
+  <p>The <dfn id=relationship-strings>relationship strings</dfn> are:</p>
+
+  <dl><dt><dfn id=md-vcard-rel-emergency><code>emergency</code></dfn><dd>
+    <p>An emergency contact.</p>
+   <dt><dfn id=md-vcard-rel-agent><code>agent</code></dfn><dd>
+    <p>Another entity that acts on behalf of this entity.</p>
+   <dt><dfn id=md-vcard-rel-contact>contact</dfn><dt><dfn id=md-vcard-rel-acquaintance>acquaintance</dfn><dt><dfn id=md-vcard-rel-friend>friend</dfn><dt><dfn id=md-vcard-rel-met>met</dfn><dt><dfn id=md-vcard-rel-co-worker>worker</dfn><dt><dfn id=md-vcard-rel-colleague>colleague</dfn><dt><dfn id=md-vcard-rel-co-resident>resident</dfn><dt><dfn id=md-vcard-rel-neighbor>neighbor</dfn><dt><dfn id=md-vcard-rel-child>child</dfn><dt><dfn id=md-vcard-rel-parent>parent</dfn><dt><dfn id=md-vcard-rel-sibling>sibling</dfn><dt><dfn id=md-vcard-rel-spouse>spouse</dfn><dt><dfn id=md-vcard-rel-kin>kin</dfn><dt><dfn id=md-vcard-rel-muse>muse</dfn><dt><dfn id=md-vcard-rel-crush>crush</dfn><dt><dfn id=md-vcard-rel-date>date</dfn><dt><dfn id=md-vcard-rel-sweetheart>sweetheart</dfn><dt><dfn id=md-vcard-rel-me>me</dfn><dd>
+    <p>Has the meaning defined in XFN. <a href=references.html#refsXFN>[XFN]</a></p>
+   </dl>
+
+
+  <h5 id=conversion-to-vcard>5.3.1.1 Conversion to vCard<a href=#conversion-to-vcard class=self-link></a></h5>
+
+  <p>Given a list of nodes <var>nodes</var> in a <code id=conversion-to-vcard:document><a href=dom.html#document>Document</a></code>, a user agent must
+  run the following algorithm to <dfn id=extracting-a-vcard>extract any vCard data represented
+  by those nodes</dfn> (only the first vCard is returned):</p>
+
+  <ol><li><p>If none of the nodes in <var>nodes</var> are <a href=#concept-item id=conversion-to-vcard:concept-item>items</a> with the <a href=#item-types id=conversion-to-vcard:item-types>item type</a> <code id=conversion-to-vcard:md-vcard><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>, then there is no vCard. Abort the
+   algorithm, returning nothing.<li><p>Let <var>node</var> be the first node in <var>nodes</var> that is an
+   <a href=#concept-item id=conversion-to-vcard:concept-item-2>item</a> with the <a href=#item-types id=conversion-to-vcard:item-types-2>item type</a> <code id=conversion-to-vcard:md-vcard-2><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>.<li><p>Let <var>output</var> be an empty string.<li><p><a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line>Add a vCard line</a> with the type "<code>BEGIN</code>" and the value
+   "<code>VCARD</code>" to <var>output</var>.<li><p><a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line-2>Add a vCard line</a> with the type "<code>PROFILE</code>" and the value
+   "<code>VCARD</code>" to <var>output</var>.<li><p><a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line-3>Add a vCard line</a> with the type "<code>VERSION</code>" and the value
+   "<code>4.0</code>" to <var>output</var>.<li><p><a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line-4>Add a vCard line</a> with the type "<code>SOURCE</code>" and the result
+   of <a href=#escaping-the-vcard-text-string id=conversion-to-vcard:escaping-the-vcard-text-string>escaping the vCard text string</a> that is the document's <a href=https://dom.spec.whatwg.org/#concept-document-url id="conversion-to-vcard:the-document's-address" data-x-internal="the-document's-address">URL</a> as the value to <var>output</var>.<li><p>If <a id=conversion-to-vcard:the-title-element-2 href=dom.html#the-title-element-2>the <code>title</code> element</a> is not null, <a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line-5>add a vCard line</a>
+   with the type "<code>NAME</code>" and with the result of <a href=#escaping-the-vcard-text-string id=conversion-to-vcard:escaping-the-vcard-text-string-2>escaping the vCard text
+   string</a> obtained from the <code id=conversion-to-vcard:textcontent><a data-x-internal=textcontent href=https://dom.spec.whatwg.org/#dom-node-textcontent>textContent</a></code> of <a id=conversion-to-vcard:the-title-element-2-2 href=dom.html#the-title-element-2>the <code>title</code>
+   element</a> as the value to <var>output</var>.<li><p>Let <var>sex</var> be the empty string.<li><p>Let <var>gender-identity</var> be the empty string.<li>
+
+    <p>For each element <var>element</var> that is <a href=#the-properties-of-an-item id=conversion-to-vcard:the-properties-of-an-item>a property of the item</a> <var>node</var>: for each name <var>name</var> in <var>element</var>'s <a href=#property-names id=conversion-to-vcard:property-names>property names</a>, run the
+    following substeps:</p>
+
+    <ol><li><p>Let <var>parameters</var> be an empty set of name-value pairs.<li>
+
+      <p>Run the appropriate set of substeps from the following list. The steps will set a variable
+      <var>value</var>, which is used in the next step.</p>
+
+      <dl><dt>If the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value>value</a> is an <a href=#concept-item id=conversion-to-vcard:concept-item-3>item</a> <var>subitem</var> and <var>name</var> is
+       <code id=conversion-to-vcard:md-vcard-n><a href=#md-vcard-n>n</a></code><dd>
+
+        <ol><li><p>Let <var>value</var> be the empty string.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-n-family-name><a href=#md-vcard-n-family-name>family-name</a></code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-2>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-n-given-name><a href=#md-vcard-n-given-name>given-name</a></code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-3>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-n-additional-name><a href=#md-vcard-n-additional-name>additional-name</a></code> in
+         <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-4>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-n-honorific-prefix><a href=#md-vcard-n-honorific-prefix>honorific-prefix</a></code>
+         in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-5>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-n-honorific-suffix><a href=#md-vcard-n-honorific-suffix>honorific-suffix</a></code>
+         in <var>subitem</var>.</p>
+
+        </ol>
+
+       <dt>If the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-2>value</a> is an <a href=#concept-item id=conversion-to-vcard:concept-item-4>item</a> <var>subitem</var> and <var>name</var> is
+       <code id=conversion-to-vcard:md-vcard-adr><a href=#md-vcard-adr>adr</a></code><dd>
+
+        <ol><li><p>Let <var>value</var> be the empty string.<li><p>Append to <var>value</var> the result of <a href=#collecting-vcard-subproperties id=conversion-to-vcard:collecting-vcard-subproperties>collecting vCard
+         subproperties</a> named <code id=conversion-to-vcard:md-vcard-adr-post-office-box><a href=#md-vcard-adr-post-office-box>post-office-box</a></code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-vcard-subproperties id=conversion-to-vcard:collecting-vcard-subproperties-2>collecting vCard
+         subproperties</a> named <code id=conversion-to-vcard:md-vcard-adr-extended-address><a href=#md-vcard-adr-extended-address>extended-address</a></code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-vcard-subproperties id=conversion-to-vcard:collecting-vcard-subproperties-3>collecting vCard
+         subproperties</a> named <code id=conversion-to-vcard:md-vcard-adr-street-address><a href=#md-vcard-adr-street-address>street-address</a></code>
+         in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-6>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-adr-locality><a href=#md-vcard-adr-locality>locality</a></code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-7>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-adr-region><a href=#md-vcard-adr-region>region</a></code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-8>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-adr-postal-code><a href=#md-vcard-adr-postal-code>postal-code</a></code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-9>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-adr-country-name><a href=#md-vcard-adr-country-name>country-name</a></code> in
+         <var>subitem</var>.</p>
+
+         <li><p>If there is a property named <code id=conversion-to-vcard:md-vcard-adr-type><a href=#md-vcard-adr-type>type</a></code> in <var>subitem</var>, and the first such property has a <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-3>value</a> that is not an <a href=#concept-item id=conversion-to-vcard:concept-item-5>item</a> and whose value consists only of <a id=conversion-to-vcard:alphanumeric-ascii-characters href=infrastructure.html#alphanumeric-ascii-characters>alphanumeric ASCII
+         characters</a>, then add a parameter named "<code>TYPE</code>" whose value is
+         the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-4>value</a> of that property to <var>parameters</var>.</ol>
+
+       <dt>If the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-5>value</a> is an <a href=#concept-item id=conversion-to-vcard:concept-item-6>item</a> <var>subitem</var> and <var>name</var> is
+       <code id=conversion-to-vcard:md-vcard-org><a href=#md-vcard-org>org</a></code><dd>
+
+        <ol><li><p>Let <var>value</var> be the empty string.<li><p>Append to <var>value</var> the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-10>collecting the first vCard
+         subproperty</a> named <code id=conversion-to-vcard:md-vcard-org-organization-name><a href=#md-vcard-org-organization-name>organization-name</a></code> in <var>subitem</var>.</p>
+
+         <li>
+
+          <p>For each property named <code id=conversion-to-vcard:md-vcard-org-organization-unit><a href=#md-vcard-org-organization-unit>organization-unit</a></code> in <var>subitem</var>, run the following steps:</p>
+
+          <ol><li><p>If the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-6>value</a> of the property is an
+           <a href=#concept-item id=conversion-to-vcard:concept-item-7>item</a>, then skip this property.<li><p>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append the result of <a href=#escaping-the-vcard-text-string id=conversion-to-vcard:escaping-the-vcard-text-string-3>escaping the vCard text string</a> given by the
+           <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-7>value</a> of the property to <var>value</var>.</ol>
+
+         </ol>
+
+       <dt>If the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-8>value</a> is an <a href=#concept-item id=conversion-to-vcard:concept-item-8>item</a> <var>subitem</var> with the <a href=#item-types id=conversion-to-vcard:item-types-3>item type</a> <code id=conversion-to-vcard:md-vcard-3><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>
+       and <var>name</var> is <code id=conversion-to-vcard:md-vcard-related><a href=#md-vcard-related>related</a></code><dd>
+
+        <ol><li><p>Let <var>value</var> be the empty string.<li><p>If there is a property named <code id=conversion-to-vcard:md-vcard-related-url><a href=#md-vcard-related-url>url</a></code> in
+         <var>subitem</var>, and its element is a <a href=#url-property-elements id=conversion-to-vcard:url-property-elements>URL property
+         element</a>, then append the result of <a href=#escaping-the-vcard-text-string id=conversion-to-vcard:escaping-the-vcard-text-string-4>escaping the vCard text string</a> given
+         by the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-9>value</a> of the first such property to
+         <var>value</var>, and add a parameter with the name "<code>VALUE</code>" and the
+         value "<code>URI</code>" to <var>parameters</var>.<li><p>If there is a property named <code id=conversion-to-vcard:md-vcard-related-rel><a href=#md-vcard-related-rel>rel</a></code> in
+         <var>subitem</var>, and the first such property has a <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-10>value</a> that is not an <a href=#concept-item id=conversion-to-vcard:concept-item-9>item</a> and whose value consists only of <a id=conversion-to-vcard:alphanumeric-ascii-characters-2 href=infrastructure.html#alphanumeric-ascii-characters>alphanumeric ASCII
+         characters</a>, then add a parameter named "<code>RELATION</code>" whose value
+         is the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-11>value</a> of that property to
+         <var>parameters</var>.</ol>
+
+       <dt>If the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-12>value</a> is an <a href=#concept-item id=conversion-to-vcard:concept-item-10>item</a> and <var>name</var> is none of the above<dd>
+
+        <ol><li><p>Let <var>value</var> be the result of <a href=#collecting-the-first-vcard-subproperty id=conversion-to-vcard:collecting-the-first-vcard-subproperty-11>collecting the first vCard
+         subproperty</a> named <code>value</code> in <var>subitem</var>.</p>
+
+         <li><p>If there is a property named <code>type</code> in <var>subitem</var>, and the first such property has a <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-13>value</a> that is not an <a href=#concept-item id=conversion-to-vcard:concept-item-11>item</a> and whose value consists only of <a id=conversion-to-vcard:alphanumeric-ascii-characters-3 href=infrastructure.html#alphanumeric-ascii-characters>alphanumeric ASCII
+         characters</a>, then add a parameter named "<code>TYPE</code>" whose value is
+         the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-14>value</a> of that property to <var>parameters</var>.</ol>
+
+       <dt>If the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-15>value</a> is not an <a href=#concept-item id=conversion-to-vcard:concept-item-12>item</a> and its <var>name</var> is <code id=conversion-to-vcard:md-vcard-sex><a href=#md-vcard-sex>sex</a></code><dd>
+
+        <p>If this is the first such property to be found, set <var>sex</var> to the
+        property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-16>value</a>.</p>
+
+       <dt>If the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-17>value</a> is not an <a href=#concept-item id=conversion-to-vcard:concept-item-13>item</a> and its <var>name</var> is <code id=conversion-to-vcard:md-vcard-gender-identity><a href=#md-vcard-gender-identity>gender-identity</a></code><dd>
+
+        <p>If this is the first such property to be found, set <var>gender-identity</var>
+        to the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-18>value</a>.</p>
+
+       <dt>Otherwise (the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-19>value</a> is not an
+       <a href=#concept-item id=conversion-to-vcard:concept-item-14>item</a>)<dd>
+
+        <ol><li><p>Let <var>value</var> be the property's <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-20>value</a>.<li><p>If <var>element</var> is one of the <a href=#url-property-elements id=conversion-to-vcard:url-property-elements-2>URL property elements</a>, add
+         a parameter with the name "<code>VALUE</code>" and the value "<code>URI</code>" to <var>parameters</var>.<li><p>Otherwise, if <var>name</var> is <code id=conversion-to-vcard:md-vcard-bday><a href=#md-vcard-bday>bday</a></code> or
+         <code id=conversion-to-vcard:md-vcard-anniversary><a href=#md-vcard-anniversary>anniversary</a></code> and the <var>value</var> is
+         a <a id=conversion-to-vcard:valid-date-string href=infrastructure.html#valid-date-string>valid date string</a>, add a parameter with the name "<code>VALUE</code>" and the value "<code>DATE</code>" to <var>parameters</var>.<li><p>Otherwise, if <var>name</var> is <code id=conversion-to-vcard:md-vcard-rev><a href=#md-vcard-rev>rev</a></code> and
+         the <var>value</var> is a <a id=conversion-to-vcard:valid-global-date-and-time-string href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a>, add a
+         parameter with the name "<code>VALUE</code>" and the value "<code>DATE-TIME</code>" to <var>parameters</var>.<li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+         another U+005C REVERSE SOLIDUS character (\).<li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C
+         REVERSE SOLIDUS character (\).<li><p>Unless <var>name</var> is <code id=conversion-to-vcard:md-vcard-geo><a href=#md-vcard-geo>geo</a></code>, prefix
+         every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C REVERSE
+         SOLIDUS character (\).<li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+         SMALL LETTER N character (n).<li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF)
+         character in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed
+         by a U+006E LATIN SMALL LETTER N character (n).</ol>
+
+       </dl>
+
+     <li>
+
+      <p><a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line-6>Add a vCard line</a> with the type <var>name</var>, the parameters <var>parameters</var>, and the value <var>value</var> to <var>output</var>.</p>
+
+     </ol>
+
+   <li><p>If either <var>sex</var> or <var>gender-identity</var> has a value that
+   is not the empty string, <a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line-7>add a vCard line</a> with the type "<code>GENDER</code>" and the value consisting of the concatenation of <var>sex</var>,
+   a U+003B SEMICOLON character (;), and <var>gender-identity</var> to <var>output</var>.<li><p><a href=#add-a-vcard-line id=conversion-to-vcard:add-a-vcard-line-8>Add a vCard line</a> with the type "<code>END</code>" and the value
+   "<code>VCARD</code>" to <var>output</var>.</ol>
+
+  <p>When the above algorithm says that the user agent is to <dfn id=add-a-vcard-line>add a vCard line</dfn> consisting
+  of a type <var>type</var>, optionally some parameters, and a value <var>value</var> to a string <var>output</var>, it must run the following steps:</p>
+
+  <ol><li><p>Let <var>line</var> be an empty string.
+
+   <li><p>Append <var>type</var>, <a id=conversion-to-vcard:converted-to-ascii-uppercase href=https://infra.spec.whatwg.org/#ascii-uppercase data-x-internal=converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.<li>
+
+    <p>If there are any parameters, then for each parameter, in the order that they were added, run
+    these substeps:</p>
+
+    <ol><li><p>Append a U+003B SEMICOLON character (;) to <var>line</var>.<li><p>Append the parameter's name to <var>line</var>.<li><p>Append a U+003D EQUALS SIGN character (=) to <var>line</var>.<li><p>Append the parameter's value to <var>line</var>.</ol>
+
+   <li><p>Append a U+003A COLON character (:) to <var>line</var>.<li><p>Append <var>value</var> to <var>line</var>.<li><p>Let <var>maximum length</var> be 75.<li>
+
+    <p>If and while <var>line</var> is longer than <var>maximum length</var>
+    Unicode code points long, run the following substeps:</p>
+
+    <ol><li><p>Append the first <var>maximum length</var> Unicode code points of <var>line</var> to <var>output</var>.<li><p>Remove the first <var>maximum length</var> Unicode code points from <var>line</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.<li><p>Append a U+0020 SPACE character to <var>output</var>.<li><p>Let <var>maximum length</var> be 74.</ol>
+
+   <li><p>Append (what remains of) <var>line</var> to <var>output</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</ol>
+
+  <p>When the steps above require the user agent to obtain the result of <dfn id=collecting-vcard-subproperties>collecting vCard
+  subproperties</dfn> named <var>subname</var> in <var>subitem</var>, the user
+  agent must run the following steps:</p>
+
+  <ol><li><p>Let <var>value</var> be the empty string.<li>
+
+    <p>For each property named <var>subname</var> in the item <var>subitem</var>,
+    run the following substeps:</p>
+
+    <ol><li><p>If the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-21>value</a> of the property is itself an
+     <a href=#concept-item id=conversion-to-vcard:concept-item-15>item</a>, then skip this property.<li><p>If this is not the first property named <var>subname</var> in <var>subitem</var> (ignoring any that were skipped by the previous step), then append a
+     U+002C COMMA character (,) to <var>value</var>.<li><p>Append the result of <a href=#escaping-the-vcard-text-string id=conversion-to-vcard:escaping-the-vcard-text-string-5>escaping the vCard text string</a> given by the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-22>value</a> of the property to <var>value</var>.</ol>
+
+   <li><p>Return <var>value</var>.</ol>
+
+  <p>When the steps above require the user agent to obtain the result of <dfn id=collecting-the-first-vcard-subproperty>collecting the first
+  vCard subproperty</dfn> named <var>subname</var> in <var>subitem</var>, the user
+  agent must run the following steps:</p>
+
+  <ol><li><p>If there are no properties named <var>subname</var> in <var>subitem</var>, then abort these substeps, returning the empty string.<li><p>If the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-23>value</a> of the first property named <var>subname</var> in <var>subitem</var> is an <a href=#concept-item id=conversion-to-vcard:concept-item-16>item</a>, then abort these substeps, returning the empty string.<li><p>Return the result of <a href=#escaping-the-vcard-text-string id=conversion-to-vcard:escaping-the-vcard-text-string-6>escaping the vCard text string</a> given by the <a href=#concept-property-value id=conversion-to-vcard:concept-property-value-24>value</a> of the first property named <var>subname</var> in <var>subitem</var>.</ol>
+
+  <p>When the above algorithms say the user agent is to <dfn id=escaping-the-vcard-text-string>escape the vCard text string</dfn> <var>value</var>, the user agent must use the
+  following steps:</p>
+
+  <ol><li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+   another U+005C REVERSE SOLIDUS character (\).<li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C REVERSE
+   SOLIDUS character (\).<li><p>Prefix every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C
+   REVERSE SOLIDUS character (\).<li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN SMALL
+   LETTER N character (n).<li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF) character in
+   <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+   SMALL LETTER N character (n).<li><p>Return the mutated <var>value</var>.</ol>
+
+  <p class=note>This algorithm can generate invalid vCard output, if the input does not conform to
+  the rules described for the <code id=conversion-to-vcard:md-vcard-4><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>
+  <a href=#item-types id=conversion-to-vcard:item-types-4>item type</a> and <a href=#defined-property-name id=conversion-to-vcard:defined-property-name>defined property
+  names</a>.</p> 
+
+
+
+  <h5 id=examples-2>5.3.1.2 Examples<a href=#examples-2 class=self-link></a></h5>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <div class=example>
+
+   <p>Here is a long example vCard for a fictional character called "Jack Bauer":</p>
+
+   <pre>&lt;section id="jack" itemscope itemtype="http://microformats.org/profile/hcard">
+ &lt;h1 itemprop="fn">
+  &lt;span itemprop="n" itemscope>
+   &lt;span itemprop="given-name">Jack&lt;/span>
+   &lt;span itemprop="family-name">Bauer&lt;/span>
+  &lt;/span>
+ &lt;/h1>
+ &lt;img itemprop="photo" alt="" src="jack-bauer.jpg">
+ &lt;p itemprop="org" itemscope>
+  &lt;span itemprop="organization-name">Counter-Terrorist Unit&lt;/span>
+  (&lt;span itemprop="organization-unit">Los Angeles Division&lt;/span>)
+ &lt;/p>
+ &lt;p>
+  &lt;span itemprop="adr" itemscope>
+   &lt;span itemprop="street-address">10201 W. Pico Blvd.&lt;/span>&lt;br>
+   &lt;span itemprop="locality">Los Angeles&lt;/span>,
+   &lt;span itemprop="region">CA&lt;/span>
+   &lt;span itemprop="postal-code">90064&lt;/span>&lt;br>
+   &lt;span itemprop="country-name">United States&lt;/span>&lt;br>
+  &lt;/span>
+  &lt;span itemprop="geo">34.052339;-118.410623&lt;/span>
+ &lt;/p>
+ &lt;h2>Assorted Contact Methods&lt;/h2>
+ &lt;ul>
+  &lt;li itemprop="tel" itemscope>
+   &lt;span itemprop="value">+1 (310) 597 3781&lt;/span> &lt;span itemprop="type">work&lt;/span>
+   &lt;meta itemprop="type" content="voice">
+  &lt;/li>
+  &lt;li>&lt;a itemprop="url" href="https://en.wikipedia.org/wiki/Jack_Bauer">I'm on Wikipedia&lt;/a>
+  so you can leave a message on my user talk page.&lt;/li>
+  &lt;li>&lt;a itemprop="url" href="http://www.jackbauerfacts.com/">Jack Bauer Facts&lt;/a>&lt;/li>
+  &lt;li itemprop="email">&lt;a href="mailto:j.bauer@la.ctu.gov.invalid">j.bauer@la.ctu.gov.invalid&lt;/a>&lt;/li>
+  &lt;li itemprop="tel" itemscope>
+   &lt;span itemprop="value">+1 (310) 555 3781&lt;/span> &lt;span>
+   &lt;meta itemprop="type" content="cell">mobile phone&lt;/span>
+  &lt;/li>
+ &lt;/ul>
+ &lt;ins datetime="2008-07-20 21:00:00+01:00">
+  &lt;meta itemprop="rev" content="2008-07-20 21:00:00+01:00">
+  &lt;p itemprop="tel" itemscope>&lt;strong>Update!&lt;/strong>
+  My new &lt;span itemprop="type">home&lt;/span> phone number is
+  &lt;span itemprop="value">01632 960 123&lt;/span>.&lt;/p>
+ &lt;/ins>
+&lt;/section></pre>
+
+   <p>The odd line wrapping is needed because newlines are meaningful in microdata: newlines would
+   be preserved in a conversion to, for example, the vCard format.</p>
+
+  </div>
+
+  <div class=example>
+
+   <p>This example shows a site's contact details (using the <code id=examples-2:the-address-element><a href=semantics.html#the-address-element>address</a></code> element)
+   containing an address with two street components:</p>
+
+   <pre>&lt;address itemscope itemtype="http://microformats.org/profile/hcard">
+ &lt;strong itemprop="fn">&lt;span itemprop="n" itemscope>&lt;span itemprop="given-name">Alfred&lt;/span>
+ &lt;span itemprop="family-name">Person&lt;/span>&lt;/span>&lt;/strong> &lt;br>
+ &lt;span itemprop="adr" itemscope>
+  &lt;span itemprop="street-address">1600 Amphitheatre Parkway&lt;/span> &lt;br>
+  &lt;span itemprop="street-address">Building 43, Second Floor&lt;/span> &lt;br>
+  &lt;span itemprop="locality">Mountain View&lt;/span>,
+   &lt;span itemprop="region">CA&lt;/span> &lt;span itemprop="postal-code">94043&lt;/span>
+ &lt;/span>
+&lt;/address></pre>
+
+  </div>
+
+  <div class=example>
+
+   <p>The vCard vocabulary can be used to just mark up people's names:</p>
+
+   <pre>&lt;span itemscope itemtype="http://microformats.org/profile/hcard"
+>&lt;span itemprop=fn>&lt;span itemprop="n" itemscope>&lt;span itemprop="given-name"
+>George&lt;/span> &lt;span itemprop="family-name">Washington&lt;/span>&lt;/span
+>&lt;/span>&lt;/span></pre>
+
+   <p>This creates a single item with a two name-value pairs, one with the name "fn" and the value
+   "George Washington", and the other with the name "n" and a second item as its value, the second
+   item having the two name-value pairs "given-name" and "family-name" with the values "George" and
+   "Washington" respectively. This is defined to map to the following vCard:</p>
+
+   <pre>BEGIN:VCARD
+PROFILE:VCARD
+VERSION:4.0
+SOURCE:<var>document's address</var>
+FN:George Washington
+N:Washington;George;;;
+END:VCARD</pre>
+
+  </div>
+
+
+  <h4 id=vevent>5.3.2 vEvent<a href=#vevent class=self-link></a></h4>
+
+  <p>An item with the <a href=#item-types id=vevent:item-types>item type</a> <dfn id=md-vevent><code>http://microformats.org/profile/hcalendar#vevent</code></dfn> represents
+  an event.</p>
+
+  <p>This vocabulary does not <a href=#support-global-identifiers-for-items id=vevent:support-global-identifiers-for-items>support global identifiers for items</a>.</p>
+
+  <p>The following are the type's <a href=#defined-property-name id=vevent:defined-property-name>defined property names</a>.
+  They are based on the vocabulary defined in the iCalendar specification, where more information on
+  how to interpret the values can be found. <a href=references.html#refsRFC5545>[RFC5545]</a></p>
+
+  <p class=note>Only the parts of the iCalendar vocabulary relating to events are used here; this
+  vocabulary cannot express a complete iCalendar instance.</p>
+
+  <dl><dt><dfn id=md-vevent-attach><code>attach</code></dfn><dd>
+
+    <p>Gives the address of an associated document for the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value>value</a> must be an <a id=vevent:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=vevent:md-vevent-attach><a href=#md-vevent-attach>attach</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item>item</a> with the type <code id=vevent:md-vevent><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-categories><code>categories</code></dfn><dd>
+
+    <p>Gives the name of a category or tag that the event could be classified as.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-2>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vevent:md-vevent-categories><a href=#md-vevent-categories>categories</a></code>
+    may be present within each <a href=#concept-item id=vevent:concept-item-2>item</a> with the type <code id=vevent:md-vevent-2><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-class><code>class</code></dfn><dd>
+
+    <p>Gives the access classification of the information regarding the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-3>value</a> must be text with one of the following
+    values:</p>
+
+    <ul class=brief><li><code>public</code><li><code>private</code><li><code>confidential</code></ul>
+
+    <p class=warning>This is merely advisory and cannot be considered a confidentiality
+    measure.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-class><a href=#md-vevent-class>class</a></code> may be present
+    within each <a href=#concept-item id=vevent:concept-item-3>item</a> with the type <code id=vevent:md-vevent-3><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-comment><code>comment</code></dfn><dd>
+
+    <p>Gives a comment regarding the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-4>value</a> must be text.</p>
+
+    <p>Any number of properties with the name <code id=vevent:md-vevent-comment><a href=#md-vevent-comment>comment</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-4>item</a> with the type <code id=vevent:md-vevent-4><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-description><code>description</code></dfn><dd>
+
+    <p>Gives a detailed description of the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-5>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-description><a href=#md-vevent-description>description</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-5>item</a> with the type <code id=vevent:md-vevent-5><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-geo><code>geo</code></dfn><dd>
+
+    <p>Gives the geographical position of the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-6>value</a> must be text and must match the
+    following syntax:</p>
+
+    <ol><li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+     (-).<li>One or more <a id=vevent:ascii-digits href=infrastructure.html#ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a id=vevent:ascii-digits-2 href=infrastructure.html#ascii-digits>ASCII
+     digits</a>.<li>A U+003B SEMICOLON character (;).<li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+     (-).<li>One or more <a id=vevent:ascii-digits-3 href=infrastructure.html#ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a id=vevent:ascii-digits-4 href=infrastructure.html#ascii-digits>ASCII
+     digits</a>.</ol>
+
+    <p>The optional components marked with an asterisk (*) should be included, and should have six
+    digits each.</p> 
+
+    
+    <p class=note>The value specifies latitude and longitude, in that order (i.e., "LAT LON"
+    ordering), in decimal degrees. The longitude represents the location east and west of the prime
+    meridian as a positive or negative real number, respectively. The latitude represents the
+    location north and south of the equator as a positive or negative real number, respectively.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-geo><a href=#md-vevent-geo>geo</a></code> may be present within
+    each <a href=#concept-item id=vevent:concept-item-6>item</a> with the type <code id=vevent:md-vevent-6><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-location><code>location</code></dfn><dd>
+
+    <p>Gives the location of the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-7>value</a> must be text.</p> 
+
+    <p>A single property with the name <code id=vevent:md-vevent-location><a href=#md-vevent-location>location</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-7>item</a> with the type <code id=vevent:md-vevent-7><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-resources><code>resources</code></dfn><dd>
+
+    <p>Gives a resource that will be needed for the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-8>value</a> must be text.</p> 
+
+    <p>Any number of properties with the name <code id=vevent:md-vevent-resources><a href=#md-vevent-resources>resources</a></code> may
+    be present within each <a href=#concept-item id=vevent:concept-item-8>item</a> with the type <code id=vevent:md-vevent-8><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-status><code>status</code></dfn><dd>
+
+    <p>Gives the confirmation status of the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-9>value</a> must be text with one of the following
+    values:</p>
+
+    <ul class=brief><li><code>tentative</code><li><code>confirmed</code><li><code>cancelled</code></ul>
+
+    <p>A single property with the name <code id=vevent:md-vevent-status><a href=#md-vevent-status>status</a></code> may be present
+    within each <a href=#concept-item id=vevent:concept-item-9>item</a> with the type <code id=vevent:md-vevent-9><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-summary><code>summary</code></dfn><dd>
+
+    <p>Gives a short summary of the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-10>value</a> must be text.</p>
+
+    <p>User agents should replace U+000A LINE FEED (LF) characters in the <a href=#concept-property-value id=vevent:concept-property-value-11>value</a> by U+0020 SPACE characters when using the value.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-summary><a href=#md-vevent-summary>summary</a></code> may be present
+    within each <a href=#concept-item id=vevent:concept-item-10>item</a> with the type <code id=vevent:md-vevent-10><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-dtend><code>dtend</code></dfn><dd>
+
+    <p>Gives the date and time by which the event ends.</p>
+
+    <p>If the property with the name <code id=vevent:md-vevent-dtend><a href=#md-vevent-dtend>dtend</a></code> is present within an
+    <a href=#concept-item id=vevent:concept-item-11>item</a> with the type <code id=vevent:md-vevent-11><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code> that has a property
+    with the name <code id=vevent:md-vevent-dtstart><a href=#md-vevent-dtstart>dtstart</a></code> whose value is a <a id=vevent:valid-date-string href=infrastructure.html#valid-date-string>valid date
+    string</a>, then the <a href=#concept-property-value id=vevent:concept-property-value-12>value</a> of the property with
+    the name <code id=vevent:md-vevent-dtend-2><a href=#md-vevent-dtend>dtend</a></code> must be text that is a <a id=vevent:valid-date-string-2 href=infrastructure.html#valid-date-string>valid date
+    string</a> also. Otherwise, the <a href=#concept-property-value id=vevent:concept-property-value-13>value</a> of the
+    property must be text that is a <a id=vevent:valid-global-date-and-time-string href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a>.</p>
+
+    <p>In either case, the <a href=#concept-property-value id=vevent:concept-property-value-14>value</a> be later in time than
+    the value of the <code id=vevent:md-vevent-dtstart-2><a href=#md-vevent-dtstart>dtstart</a></code> property of the same <a href=#concept-item id=vevent:concept-item-12>item</a>.</p>
+
+    <p class=note>The time given by the <code id=vevent:md-vevent-dtend-3><a href=#md-vevent-dtend>dtend</a></code> property is not
+    inclusive. For day-long events, therefore, the <code id=vevent:md-vevent-dtend-4><a href=#md-vevent-dtend>dtend</a></code>
+    property's <a href=#concept-property-value id=vevent:concept-property-value-15>value</a> will be the day <em>after</em> the
+    end of the event.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-dtend-5><a href=#md-vevent-dtend>dtend</a></code> may be present
+    within each <a href=#concept-item id=vevent:concept-item-13>item</a> with the type <code id=vevent:md-vevent-12><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>, so long as that <code id=vevent:md-vevent-13><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code> does not have a
+    property with the name <code id=vevent:md-vevent-duration><a href=#md-vevent-duration>duration</a></code>.</p>
+
+   <dt><dfn id=md-vevent-dtstart><code>dtstart</code></dfn><dd>
+
+    <p>Gives the date and time at which the event starts.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-16>value</a> must be text that is either a
+    <a id=vevent:valid-date-string-3 href=infrastructure.html#valid-date-string>valid date string</a> or a <a id=vevent:valid-global-date-and-time-string-2 href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a>.</p>
+
+    <p>Exactly one property with the name <code id=vevent:md-vevent-dtstart-3><a href=#md-vevent-dtstart>dtstart</a></code> must be
+    present within each <a href=#concept-item id=vevent:concept-item-14>item</a> with the type <code id=vevent:md-vevent-14><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-duration><code>duration</code></dfn><dd>
+
+    <p>Gives the duration of the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-17>value</a> must be text that is a <a href=#valid-vevent-duration-string id=vevent:valid-vevent-duration-string>valid
+    vevent duration string</a>.</p>
+
+    <p>The duration represented is the sum of all the durations represented by integers in the
+    value.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-duration-2><a href=#md-vevent-duration>duration</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-15>item</a> with the type <code id=vevent:md-vevent-15><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>, so long as that <code id=vevent:md-vevent-16><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code> does not have a
+    property with the name <code id=vevent:md-vevent-dtend-6><a href=#md-vevent-dtend>dtend</a></code>.</p>
+
+   <dt><dfn id=md-vevent-transp><code>transp</code></dfn><dd>
+
+    <p>Gives whether the event is to be considered as consuming time on a calendar, for the purpose
+    of free-busy time searches.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-18>value</a> must be text with one of the following
+    values:</p>
+
+    <ul class=brief><li><code>opaque</code><li><code>transparent</code></ul>
+
+    <p>A single property with the name <code id=vevent:md-vevent-transp><a href=#md-vevent-transp>transp</a></code> may be present
+    within each <a href=#concept-item id=vevent:concept-item-16>item</a> with the type <code id=vevent:md-vevent-17><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-contact><code>contact</code></dfn><dd>
+
+    <p>Gives the contact information for the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-19>value</a> must be text.</p> 
+
+    <p>Any number of properties with the name <code id=vevent:md-vevent-contact><a href=#md-vevent-contact>contact</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-17>item</a> with the type <code id=vevent:md-vevent-18><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-url><code>url</code></dfn><dd>
+
+    <p>Gives a <a id=vevent:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> for the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-20>value</a> must be an <a id=vevent:absolute-url-2 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-url><a href=#md-vevent-url>url</a></code> may be present within
+    each <a href=#concept-item id=vevent:concept-item-18>item</a> with the type <code id=vevent:md-vevent-19><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-uid><code>uid</code></dfn><dd>
+
+    <p>Gives a globally unique identifier corresponding to the event.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-21>value</a> must be text.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-uid><a href=#md-vevent-uid>uid</a></code> may be present within
+    each <a href=#concept-item id=vevent:concept-item-19>item</a> with the type <code id=vevent:md-vevent-20><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-exdate><code>exdate</code></dfn><dd>
+
+    <p>Gives a date and time at which the event does not occur despite the recurrence rules.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-22>value</a> must be text that is either a
+    <a id=vevent:valid-date-string-4 href=infrastructure.html#valid-date-string>valid date string</a> or a <a id=vevent:valid-global-date-and-time-string-3 href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a>.</p>
+
+    <p>Any number of properties with the name <code id=vevent:md-vevent-exdate><a href=#md-vevent-exdate>exdate</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-20>item</a> with the type <code id=vevent:md-vevent-21><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-rdate><code>rdate</code></dfn><dd>
+
+    <p>Gives a date and time at which the event recurs.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-23>value</a> must be text that is one of the
+    following:
+
+    <ul><li>A <a id=vevent:valid-date-string-5 href=infrastructure.html#valid-date-string>valid date string</a>.<li>A <a id=vevent:valid-global-date-and-time-string-4 href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a>.<li>A <a id=vevent:valid-global-date-and-time-string-5 href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a> followed by a U+002F SOLIDUS character (/)
+     followed by a second <a id=vevent:valid-global-date-and-time-string-6 href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a> representing a later
+     time.<li>A <a id=vevent:valid-global-date-and-time-string-7 href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a> followed by a U+002F SOLIDUS character (/)
+     followed by a <a href=#valid-vevent-duration-string id=vevent:valid-vevent-duration-string-2>valid vevent duration string</a>.</ul>
+
+    <p>Any number of properties with the name <code id=vevent:md-vevent-rdate><a href=#md-vevent-rdate>rdate</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-21>item</a> with the type <code id=vevent:md-vevent-22><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-rrule><code>rrule</code></dfn><dd>
+
+    <p>Gives a rule for finding dates and times at which the event occurs.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-24>value</a> must be text that matches the RECUR
+    value type defined in the iCalendar specification. <a href=references.html#refsRFC5545>[RFC5545]</a></p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-rrule><a href=#md-vevent-rrule>rrule</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-22>item</a> with the type <code id=vevent:md-vevent-23><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-created><code>created</code></dfn><dd>
+
+    <p>Gives the date and time at which the event information was first created in a calendaring
+    system.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-25>value</a> must be text that is a <a id=vevent:valid-global-date-and-time-string-8 href=infrastructure.html#valid-global-date-and-time-string>valid
+    global date and time string</a>.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-created><a href=#md-vevent-created>created</a></code> may be present
+    within each <a href=#concept-item id=vevent:concept-item-23>item</a> with the type <code id=vevent:md-vevent-24><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-last-modified><code>last-modified</code></dfn><dd>
+
+    <p>Gives the date and time at which the event information was last modified in a calendaring
+    system.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-26>value</a> must be text that is a <a id=vevent:valid-global-date-and-time-string-9 href=infrastructure.html#valid-global-date-and-time-string>valid
+    global date and time string</a>.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-last-modified><a href=#md-vevent-last-modified>last-modified</a></code>
+    may be present within each <a href=#concept-item id=vevent:concept-item-24>item</a> with the type <code id=vevent:md-vevent-25><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   <dt><dfn id=md-vevent-sequence><code>sequence</code></dfn><dd>
+
+    <p>Gives a revision number for the event information.</p>
+
+    <p>The <a href=#concept-property-value id=vevent:concept-property-value-27>value</a> must be text that is a <a id=vevent:valid-non-negative-integer href=infrastructure.html#valid-non-negative-integer>valid
+    non-negative integer</a>.</p>
+
+    <p>A single property with the name <code id=vevent:md-vevent-sequence><a href=#md-vevent-sequence>sequence</a></code> may be
+    present within each <a href=#concept-item id=vevent:concept-item-25>item</a> with the type <code id=vevent:md-vevent-26><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+
+   </dl>
+
+  <p>A string is a <dfn id=valid-vevent-duration-string>valid vevent duration string</dfn> if it matches the following pattern:</p>
+
+  <ol><li>A U+0050 LATIN CAPITAL LETTER P character (P).<li>One of the following:
+
+    <ul><li> A <a id=vevent:valid-non-negative-integer-2 href=infrastructure.html#valid-non-negative-integer>valid non-negative integer</a> followed by a U+0057 LATIN CAPITAL LETTER W
+     character (W). The integer represents a duration of that number of weeks. <li> At least one, and possible both in this order, of the following:
+
+      <ol><li> A <a id=vevent:valid-non-negative-integer-3 href=infrastructure.html#valid-non-negative-integer>valid non-negative integer</a> followed by a U+0044 LATIN CAPITAL LETTER D
+       character (D). The integer represents a duration of that number of days. <li> A U+0054 LATIN CAPITAL LETTER T character (T) followed by any one of the following, or
+       the first and second of the following in that order, or the second and third of the following
+       in that order, or all three of the following in this order:
+
+        <ol><li> A <a id=vevent:valid-non-negative-integer-4 href=infrastructure.html#valid-non-negative-integer>valid non-negative integer</a> followed by a U+0048 LATIN CAPITAL LETTER H
+         character (H). The integer represents a duration of that number of hours. <li> A <a id=vevent:valid-non-negative-integer-5 href=infrastructure.html#valid-non-negative-integer>valid non-negative integer</a> followed by a U+004D LATIN CAPITAL LETTER M
+         character (M). The integer represents a duration of that number of minutes. <li> A <a id=vevent:valid-non-negative-integer-6 href=infrastructure.html#valid-non-negative-integer>valid non-negative integer</a> followed by a U+0053 LATIN CAPITAL LETTER S
+         character (S). The integer represents a duration of that number of seconds. </ol>
+
+      </ol>
+
+     </ul>
+
+   </ol>
+
+
+  <h5 id=conversion-to-icalendar>5.3.2.1 Conversion to iCalendar<a href=#conversion-to-icalendar class=self-link></a></h5>
+
+  <p>Given a list of nodes <var>nodes</var> in a <code id=conversion-to-icalendar:document><a href=dom.html#document>Document</a></code>, a user agent must
+  run the following algorithm to <dfn id=extracting-vevent-data>extract any vEvent data
+  represented by those nodes</dfn>:</p>
+
+  <ol><li><p>If none of the nodes in <var>nodes</var> are <a href=#concept-item id=conversion-to-icalendar:concept-item>items</a> with the type <code id=conversion-to-icalendar:md-vevent><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>, then there is no
+   vEvent data. Abort the algorithm, returning nothing.<li><p>Let <var>output</var> be an empty string.<li><p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line>Add an iCalendar line</a> with the type "<code>BEGIN</code>" and the
+   value "<code>VCALENDAR</code>" to <var>output</var>.<li><p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-2>Add an iCalendar line</a> with the type "<code>PRODID</code>" and the
+   value equal to a user-agent-specific string representing the user agent to <var>output</var>.<li><p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-3>Add an iCalendar line</a> with the type "<code>VERSION</code>" and the
+   value "<code>2.0</code>" to <var>output</var>.<li>
+
+    <p>For each node <var>node</var> in <var>nodes</var> that is an <a href=#concept-item id=conversion-to-icalendar:concept-item-2>item</a> with the type <code id=conversion-to-icalendar:md-vevent-2><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code>, run the following
+    steps:</p>
+
+    <ol><li><p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-4>Add an iCalendar line</a> with the type "<code>BEGIN</code>" and the
+     value "<code>VEVENT</code>" to <var>output</var>.<li><p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-5>Add an iCalendar line</a> with the type "<code>DTSTAMP</code>" and a
+     value consisting of an iCalendar DATE-TIME string representing the current date and time, with
+     the annotation "<code>VALUE=DATE-TIME</code>", to <var>output</var>. <a href=references.html#refsRFC5545>[RFC5545]</a><li>
+
+      <p>For each element <var>element</var> that is <a href=#the-properties-of-an-item id=conversion-to-icalendar:the-properties-of-an-item>a property of the item</a> <var>node</var>: for each name <var>name</var> in <var>element</var>'s <a href=#property-names id=conversion-to-icalendar:property-names>property names</a>, run the
+      appropriate set of substeps from the following list:</p>
+
+      <dl><dt>If the property's <a href=#concept-property-value id=conversion-to-icalendar:concept-property-value>value</a> is an <a href=#concept-item id=conversion-to-icalendar:concept-item-3>item</a><dd>
+
+        <p>Skip the property.</p>
+
+       <dt>If the property is <code id=conversion-to-icalendar:md-vevent-dtend><a href=#md-vevent-dtend>dtend</a></code><dt>If the property is <code id=conversion-to-icalendar:md-vevent-dtstart><a href=#md-vevent-dtstart>dtstart</a></code><dt>If the property is <code id=conversion-to-icalendar:md-vevent-exdate><a href=#md-vevent-exdate>exdate</a></code><dt>If the property is <code id=conversion-to-icalendar:md-vevent-rdate><a href=#md-vevent-rdate>rdate</a></code><dt>If the property is <code id=conversion-to-icalendar:md-vevent-created><a href=#md-vevent-created>created</a></code><dt>If the property is <code id=conversion-to-icalendar:md-vevent-last-modified><a href=#md-vevent-last-modified>last-modified</a></code><dd>
+
+        <p>Let <var>value</var> be the result of stripping all U+002D HYPHEN-MINUS (-) and
+        U+003A COLON (:) characters from the property's <a href=#concept-property-value id=conversion-to-icalendar:concept-property-value-2>value</a>.</p>
+
+        <p>If the property's <a href=#concept-property-value id=conversion-to-icalendar:concept-property-value-3>value</a> is a <a id=conversion-to-icalendar:valid-date-string href=infrastructure.html#valid-date-string>valid date
+        string</a> then <a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-6>add an iCalendar line</a> with the type <var>name</var>
+        and the value <var>value</var> to <var>output</var>, with the annotation
+        "<code>VALUE=DATE</code>".</p>
+
+        <p>Otherwise, if the property's <a href=#concept-property-value id=conversion-to-icalendar:concept-property-value-4>value</a> is a
+        <a id=conversion-to-icalendar:valid-global-date-and-time-string href=infrastructure.html#valid-global-date-and-time-string>valid global date and time string</a> then <a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-7>add an iCalendar line</a> with
+        the type <var>name</var> and the value <var>value</var> to <var>output</var>, with the annotation "<code>VALUE=DATE-TIME</code>".</p>
+
+        <p>Otherwise skip the property.</p>
+
+       <dt>Otherwise<dd>
+
+        <p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-8>Add an iCalendar line</a> with the type <var>name</var> and the
+        property's <a href=#concept-property-value id=conversion-to-icalendar:concept-property-value-5>value</a> to <var>output</var>.</p>
+
+       </dl>
+
+     <li><p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-9>Add an iCalendar line</a> with the type "<code>END</code>" and the
+     value "<code>VEVENT</code>" to <var>output</var>.</ol>
+
+   <li><p><a href=#add-an-icalendar-line id=conversion-to-icalendar:add-an-icalendar-line-10>Add an iCalendar line</a> with the type "<code>END</code>" and the value
+   "<code>VCALENDAR</code>" to <var>output</var>.</ol>
+
+  <p>When the above algorithm says that the user agent is to <dfn id=add-an-icalendar-line>add an iCalendar line</dfn>
+  consisting of a type <var>type</var>, a value <var>value</var>, and optionally
+  an annotation, to a string <var>output</var>, it must run the following steps:</p>
+
+  <ol><li><p>Let <var>line</var> be an empty string.<li><p>Append <var>type</var>, <a id=conversion-to-icalendar:converted-to-ascii-uppercase href=https://infra.spec.whatwg.org/#ascii-uppercase data-x-internal=converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.<li>
+
+    <p>If there is an annotation:</p>
+
+    <ol><li><p>Append a U+003B SEMICOLON character (;) to <var>line</var>.<li><p>Append the annotation to <var>line</var>.</ol>
+
+   <li><p>Append a U+003A COLON character (:) to <var>line</var>.<li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+   another U+005C REVERSE SOLIDUS character (\).<li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C REVERSE
+   SOLIDUS character (\).<li><p>Prefix every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C
+   REVERSE SOLIDUS character (\).<li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN SMALL
+   LETTER N character (n).<li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF) character in
+   <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+   SMALL LETTER N character (n).<li><p>Append <var>value</var> to <var>line</var>.<li><p>Let <var>maximum length</var> be 75.<li>
+
+    <p>If and while <var>line</var> is longer than <var>maximum length</var>
+    Unicode code points long, run the following substeps:</p>
+
+    <ol><li><p>Append the first <var>maximum length</var> Unicode code points of <var>line</var> to <var>output</var>.<li><p>Remove the first <var>maximum length</var> Unicode code points from <var>line</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.<li><p>Append a U+0020 SPACE character to <var>output</var>.<li><p>Let <var>maximum length</var> be 74.</ol>
+
+   <li><p>Append (what remains of) <var>line</var> to <var>output</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</ol>
+
+  <p class=note>This algorithm can generate invalid iCalendar output, if the input does not
+  conform to the rules described for the <code id=conversion-to-icalendar:md-vevent-3><a href=#md-vevent>http://microformats.org/profile/hcalendar#vevent</a></code> <a href=#item-types id=conversion-to-icalendar:item-types>item type</a> and <a href=#defined-property-name id=conversion-to-icalendar:defined-property-name>defined property names</a>.</p>
+  
+
+
+
+  <h5 id=examples-3>5.3.2.2 Examples<a href=#examples-3 class=self-link></a></h5>
+
+  <p><i>This section is non-normative.</i></p>
+
+
+
+  <div class=example>
+
+   <p>Here is an example of a page that uses the vEvent vocabulary to mark up an event:</p>
+
+   <pre>&lt;body itemscope itemtype="http://microformats.org/profile/hcalendar#vevent">
+ ...
+ &lt;h1 itemprop="summary">Bluesday Tuesday: Money Road&lt;/h1>
+ ...
+ &lt;time itemprop="dtstart" datetime="2009-05-05T19:00:00Z">May 5th @ 7pm&lt;/time>
+ (until &lt;time itemprop="dtend" datetime="2009-05-05T21:00:00Z">9pm&lt;/time>)
+ ...
+ &lt;a href="http://livebrum.co.uk/2009/05/05/bluesday-tuesday-money-road"
+    rel="bookmark" itemprop="url">Link to this page&lt;/a>
+ ...
+ &lt;p>Location: &lt;span itemprop="location">The RoadHouse&lt;/span>&lt;/p>
+ ...
+ &lt;p>&lt;input type=button value="Add to Calendar"
+           onclick="location = getCalendar(this)">&lt;/p>
+ ...
+ &lt;meta itemprop="description" content="via livebrum.co.uk">
+&lt;/body></pre>
+
+   <p>The <code>getCalendar()</code> function is left as an exercise for the reader.</p>
+
+   <p>The same page could offer some markup, such as the following,
+   for copy-and-pasting into blogs:</p>
+
+   <pre>&lt;div itemscope itemtype="http://microformats.org/profile/hcalendar#vevent">
+ &lt;p>I'm going to
+ &lt;strong itemprop="summary">Bluesday Tuesday: Money Road&lt;/strong>,
+ &lt;time itemprop="dtstart" datetime="2009-05-05T19:00:00Z">May 5th at 7pm&lt;/time>
+ to &lt;time itemprop="dtend" datetime="2009-05-05T21:00:00Z">9pm&lt;/time>,
+ at &lt;span itemprop="location">The RoadHouse&lt;/span>!&lt;/p>
+ &lt;p>&lt;a href="http://livebrum.co.uk/2009/05/05/bluesday-tuesday-money-road"
+       itemprop="url">See this event on livebrum.co.uk&lt;/a>.&lt;/p>
+ &lt;meta itemprop="description" content="via livebrum.co.uk">
+&lt;/div></pre>
+
+  </div>
+
+
+  <h4 id=licensing-works>5.3.3 Licensing works<a href=#licensing-works class=self-link></a></h4>
+
+  <p>An item with the <a href=#item-types id=licensing-works:item-types>item type</a> <dfn id=md-work><code>http://n.whatwg.org/work</code></dfn> represents a work (e.g. an article, an
+  image, a video, a song, etc). This type is primarily intended to allow authors to include
+  licensing information for works.</p>
+
+  <p>The following are the type's <a href=#defined-property-name id=licensing-works:defined-property-name>defined property
+  names</a>.</p>
+
+  <dl><dt><dfn id=md-work-work><code>work</code></dfn><dd>
+
+    <p>Identifies the work being described.</p>
+
+    <p>The <a href=#concept-property-value id=licensing-works:concept-property-value>value</a> must be an <a id=licensing-works:absolute-url href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Exactly one property with the name <code id=licensing-works:md-work-work><a href=#md-work-work>work</a></code> must be present
+    within each <a href=#concept-item id=licensing-works:concept-item>item</a> with the type <code id=licensing-works:md-work><a href=#md-work>http://n.whatwg.org/work</a></code>.</p>
+
+   <dt><dfn id=md-work-title><code>title</code></dfn><dd>
+
+    <p>Gives the name of the work.</p>
+
+    <p>A single property with the name <code id=licensing-works:md-work-title><a href=#md-work-title>title</a></code> may be present
+    within each <a href=#concept-item id=licensing-works:concept-item-2>item</a> with the type <code id=licensing-works:md-work-2><a href=#md-work>http://n.whatwg.org/work</a></code>.</p>
+
+   <dt><dfn id=md-work-author><code>author</code></dfn><dd>
+
+    <p>Gives the name or contact information of one of the authors or creators of the work.</p>
+
+    <p>The <a href=#concept-property-value id=licensing-works:concept-property-value-2>value</a> must be either an <a href=#concept-item id=licensing-works:concept-item-3>item</a> with the type <code id=licensing-works:md-vcard><a href=#md-vcard>http://microformats.org/profile/hcard</a></code>, or text.</p>
+
+    <p>Any number of properties with the name <code id=licensing-works:md-work-author><a href=#md-work-author>author</a></code> may be
+    present within each <a href=#concept-item id=licensing-works:concept-item-4>item</a> with the type <code id=licensing-works:md-work-3><a href=#md-work>http://n.whatwg.org/work</a></code>.</p>
+
+   <dt><dfn id=md-work-license><code>license</code></dfn><dd>
+
+    <p>Identifies one of the licenses under which the work is available.</p>
+
+    <p>The <a href=#concept-property-value id=licensing-works:concept-property-value-3>value</a> must be an <a id=licensing-works:absolute-url-2 href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+    URL</a>.</p>
+
+    <p>Any number of properties with the name <code id=licensing-works:md-work-license><a href=#md-work-license>license</a></code> may be
+    present within each <a href=#concept-item id=licensing-works:concept-item-5>item</a> with the type <code id=licensing-works:md-work-4><a href=#md-work>http://n.whatwg.org/work</a></code>.</p>
+
+   </dl>
+
+
+
+
+  <h5 id=examples-4>5.3.3.1 Examples<a href=#examples-4 class=self-link></a></h5>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <div class=example>
+
+   <p>This example shows an embedded image entitled <cite>My Pond</cite>, licensed under the
+   Creative Commons Attribution-Share Alike 4.0 International License and the MIT license
+   simultaneously.</p>
+
+   <pre>&lt;figure <strong>itemscope itemtype="http://n.whatwg.org/work"</strong>>
+ &lt;img <strong>itemprop="work"</strong> src="mypond.jpeg">
+ &lt;figcaption>
+  &lt;p>&lt;cite <strong>itemprop="title"</strong>>My Pond&lt;/cite>&lt;/p>
+  &lt;p>&lt;small>Licensed under the &lt;a <strong>itemprop="license"</strong>
+  href="https://creativecommons.org/licenses/by-sa/4.0/">Creative
+  Commons Attribution-Share Alike 4.0 International License&lt;/a>
+  and the &lt;a <strong>itemprop="license"</strong>
+  href="http://www.opensource.org/licenses/mit-license.php">MIT
+  license&lt;/a>.&lt;/small>
+ &lt;/figcaption>
+&lt;/figure></pre>
+
+  </div>
+
+
+  
+
+  <h3 id=converting-html-to-other-formats>5.4 Converting HTML to other formats<a href=#converting-html-to-other-formats class=self-link></a></h3>
+
+  <h4 id=json>5.4.1 JSON<a href=#json class=self-link></a></h4>
+
+  <p>Given a list of nodes <var>nodes</var> in a <code id=json:document><a href=dom.html#document>Document</a></code>, a user agent must
+  run the following algorithm to <dfn id=extracting-json>extract the microdata from those nodes
+  into a JSON form</dfn>:</p>
+
+  <ol><li><p>Let <var>result</var> be an empty object.<li><p>Let <var>items</var> be an empty array.<li><p>For each <var>node</var> in <var>nodes</var>, check if the element is a
+   <a href=#top-level-microdata-items id=json:top-level-microdata-items>top-level microdata item</a>, and if it is then
+   <a href=#get-the-object id=json:get-the-object>get the object</a> for that element and add it to <var>items</var>.<li><p>Add an entry to <var>result</var> called "<code>items</code>" whose
+   value is the array <var>items</var>.<li><p>Return the result of serializing <var>result</var> to JSON in the shortest
+   possible way (meaning no whitespace between tokens, no unnecessary zero digits in numbers, and
+   only using Unicode escapes in strings for characters that do not have a dedicated escape
+   sequence), and with a lowercase "<code>e</code>" used, when appropriate, in the
+   representation of any numbers. <a href=references.html#refsJSON>[JSON]</a></ol>
+
+  <p class=note>This algorithm returns an object with a single property that is an array, instead
+  of just returning an array, so that it is possible to extend the algorithm in the future if
+  necessary.</p>
+
+  <p>When the user agent is to <dfn id=get-the-object>get the object</dfn> for an item <var>item</var>,
+  optionally with a list of elements <var>memory</var>, it must run the following
+  substeps:</p>
+
+  <ol><li><p>Let <var>result</var> be an empty object.<li><p>If no <var>memory</var> was passed to the algorithm, let <var>memory</var> be an empty list.<li><p>Add <var>item</var> to <var>memory</var>.<li><p>If the <var>item</var> has any <a href=#item-types id=json:item-types>item types</a>, add an entry to <var>result</var> called "<code>type</code>" whose value is an array listing the
+   <a href=#item-types id=json:item-types-2>item types</a> of <var>item</var>, in the order they were specified on the
+   <code id=json:attr-itemtype><a href=#attr-itemtype>itemtype</a></code> attribute.</p>
+
+   <li><p>If the <var>item</var> has a <a href=#global-identifier id=json:global-identifier>global identifier</a>, add an entry to <var>result</var> called "<code>id</code>" whose value is the <a href=#global-identifier id=json:global-identifier-2>global
+   identifier</a> of <var>item</var>.<li><p>Let <var>properties</var> be an empty object.<li>
+
+    <p>For each element <var>element</var> that has one or more <a href=#property-names id=json:property-names>property names</a>
+    and is one of <a href=#the-properties-of-an-item id=json:the-properties-of-an-item>the properties of the item</a> <var>item</var>, in the order those elements are given by the algorithm that returns
+    <a href=#the-properties-of-an-item id=json:the-properties-of-an-item-2>the properties of an item</a>, run the following substeps:</p>
+
+    <ol><li><p>Let <var>value</var> be the <a href=#concept-property-value id=json:concept-property-value>property
+     value</a> of <var>element</var>.<li><p>If <var>value</var> is an <a href=#concept-item id=json:concept-item>item</a>, then: If <var>value</var> is in <var>memory</var>, then let <var>value</var> be
+     the string "<code>ERROR</code>". Otherwise, <a href=#get-the-object id=json:get-the-object-2>get the object</a> for <var>value</var>, passing a copy of <var>memory</var>, and then replace <var>value</var> with the object returned from those steps.<li>
+
+      <p>For each name <var>name</var> in <var>element</var>'s <a href=#property-names id=json:property-names-2>property
+      names</a>, run the following substeps:</p>
+
+      <ol><li><p>If there is no entry named <var>name</var> in <var>properties</var>,
+       then add an entry named <var>name</var> to <var>properties</var> whose
+       value is an empty array.<li><p>Append <var>value</var> to the entry named <var>name</var> in <var>properties</var>.</ol>
+
+     </ol>
+
+   <li><p>Add an entry to <var>result</var> called "<code>properties</code>" whose
+   value is the object <var>properties</var>.<li><p>Return <var>result</var>.</ol>
+
+  <div class=example>
+
+   <p>For example, take this markup:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+&lt;title>My Blog&lt;/title>
+&lt;article itemscope itemtype="http://schema.org/BlogPosting">
+ &lt;header>
+  &lt;h1 itemprop="headline">Progress report&lt;/h1>
+  &lt;p>&lt;time itemprop="datePublished" datetime="2013-08-29">today&lt;/time>&lt;/p>
+  &lt;link itemprop="url" href="?comments=0">
+ &lt;/header>
+ &lt;p>All in all, he's doing well with his swim lessons. The biggest thing was he had trouble
+ putting his head in, but we got it down.&lt;/p>
+ &lt;section>
+  &lt;h1>Comments&lt;/h1>
+  &lt;article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c1">
+   &lt;link itemprop="url" href="#c1">
+   &lt;footer>
+    &lt;p>Posted by: &lt;span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+     &lt;span itemprop="name">Greg&lt;/span>
+    &lt;/span>&lt;/p>
+    &lt;p>&lt;time itemprop="commentTime" datetime="2013-08-29">15 minutes ago&lt;/time>&lt;/p>
+   &lt;/footer>
+   &lt;p>Ha!&lt;/p>
+  &lt;/article>
+  &lt;article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c2">
+   &lt;link itemprop="url" href="#c2">
+   &lt;footer>
+    &lt;p>Posted by: &lt;span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+     &lt;span itemprop="name">Charlotte&lt;/span>
+    &lt;/span>&lt;/p>
+    &lt;p>&lt;time itemprop="commentTime" datetime="2013-08-29">5 minutes ago&lt;/time>&lt;/p>
+   &lt;/footer>
+   &lt;p>When you say "we got it down"...&lt;/p>
+  &lt;/article>
+ &lt;/section>
+&lt;/article></pre>
+
+   <p>It would be turned into the following JSON by the algorithm above (supposing that the page's
+   URL was <code>https://blog.example.com/progress-report</code>):</p>
+
+   <pre>{
+  "items": [
+    {
+      "type": [ "http://schema.org/BlogPosting" ],
+      "properties": {
+        "headline": [ "Progress report" ],
+        "datePublished": [ "2013-08-29" ],
+        "url": [ "https://blog.example.com/progress-report?comments=0" ],
+        "comment": [
+          {
+            "type": [ "http://schema.org/UserComments" ],
+            "properties": {
+              "url": [ "https://blog.example.com/progress-report#c1" ],
+              "creator": [
+                {
+                  "type": [ "http://schema.org/Person" ],
+                  "properties": {
+                    "name": [ "Greg" ]
+                  }
+                }
+              ],
+              "commentTime": [ "2013-08-29" ]
+            }
+          },
+          {
+            "type": [ "http://schema.org/UserComments" ],
+            "properties": {
+              "url": [ "https://blog.example.com/progress-report#c2" ],
+              "creator": [
+                {
+                  "type": [ "http://schema.org/Person" ],
+                  "properties": {
+                    "name": [ "Charlotte" ]
+                  }
+                }
+              ],
+              "commentTime": [ "2013-08-29" ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}</pre>
+
+  </div>
+
+  
+
+
+
+
+
+  <nav><a href=scripting.html>← 4.12 Scripting</a> — <a href=index.html>Table of Contents</a> — <a href=interaction.html>6 User interaction →</a></nav>

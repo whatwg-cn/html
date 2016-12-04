@@ -1,0 +1,1430 @@
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=icon href=https://resources.whatwg.org/logo.svg><style>
+   [hidden] { display: none; }
+
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+   @media (max-width: 767px) {
+     .fingerprint { max-width: 35px; }
+   }
+
+   .status { min-height: 0.6em; font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status:hover { z-index: 9; }
+   .status:focus-within { z-index: 9; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; left: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > p > strong { margin-left: 1.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span.no::before { opacity: 0.5; }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .edge::before { background-image: url(https://resources.whatwg.org/browser-logos/edge.svg); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mini.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .support > .samsung::before { background-image: url(https://resources.whatwg.org/browser-logos/samsung.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+   .status > .caniuse + p { margin-top: 0.5em; border-top: 1px solid silver; }
+
+   @media (max-width: 767px) {
+     .status { right: -9em; }
+   }
+
+   .applies .yes, .yesno .yes { background: yellow; }
+   .yesno .yes, .yesno .no { text-align: center; }
+
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+
+   @media (max-width: 767px) {
+     #abstractimg { width: 100%; }
+   }
+   #abstractimg, #abstractimg text { font: inherit; }
+   #abstractimg rect { fill: #424242; }
+   #abstractimg text { fill: #ffffff; font-size: 18px }
+   #abstractimg .top { word-spacing: 50px; text-anchor: middle; }
+   #abstractimg .left, #abstractimg .bottom { word-spacing: 12px; }
+   #abstractimg .right { font-size: 25px; }
+  </style>
+  <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>4 December 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=index.html>Table of Contents</a> — <a href=infrastructure.html>2 Common infrastructure →</a></nav><ol class=toc><li id=toc-introduction><a href=introduction.html#introduction>1 Introduction</a><ol><li><a href=introduction.html#abstract>1.1 Where does this specification fit?</a><li><a href=introduction.html#is-this-html5?>1.2 Is this HTML5?</a><li><a href=introduction.html#background>1.3 Background</a><li><a href=introduction.html#audience>1.4 Audience</a><li><a href=introduction.html#scope>1.5 Scope</a><li><a href=introduction.html#history-2>1.6 History</a><li><a href=introduction.html#design-notes>1.7 Design notes</a><ol><li><a href=introduction.html#serialisability-of-script-execution>1.7.1 Serializability of script execution</a><li><a href=introduction.html#compliance-with-other-specifications>1.7.2 Compliance with other specifications</a><li><a href=introduction.html#extensibility>1.7.3 Extensibility</a></ol><li><a href=introduction.html#html-vs-xhtml>1.8 HTML vs XML syntax</a><li><a href=introduction.html#structure-of-this-specification>1.9 Structure of this specification</a><ol><li><a href=introduction.html#how-to-read-this-specification>1.9.1 How to read this specification</a><li><a href=introduction.html#typographic-conventions>1.9.2 Typographic conventions</a></ol><li><a href=introduction.html#fingerprint>1.10 Privacy concerns</a><ol><li><a href=introduction.html#fingerprint-postMessage>1.10.1 Cross-site communication</a></ol><li><a href=introduction.html#a-quick-introduction-to-html>1.11 A quick introduction to HTML</a><ol><li><a href=introduction.html#writing-secure-applications-with-html>1.11.1 Writing secure applications with HTML</a><li><a href=introduction.html#common-pitfalls-to-avoid-when-using-the-scripting-apis>1.11.2 Common pitfalls to avoid when using the scripting APIs</a><li><a href=introduction.html#how-to-catch-mistakes-when-writing-html:-validators-and-conformance-checkers>1.11.3 How to catch mistakes when writing HTML: validators and conformance checkers</a></ol><li><a href=introduction.html#conformance-requirements-for-authors>1.12 Conformance requirements for authors</a><ol><li><a href=introduction.html#presentational-markup>1.12.1 Presentational markup</a><li><a href=introduction.html#syntax-errors>1.12.2 Syntax errors</a><li><a href=introduction.html#restrictions-on-content-models-and-on-attribute-values>1.12.3 Restrictions on content models and on attribute values</a></ol><li><a href=introduction.html#suggested-reading>1.13 Suggested reading</a></ol></ol><h2 id=introduction>1 Introduction<a href=#introduction class=self-link></a></h2><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=bugs><strong>Spec bugs:</strong> <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23036" title="Either drop all mention of mutation events, or specify them in full detail">23036</a></div>
+
+  
+
+  <h3 id=abstract>1.1 Where does this specification fit?<a href=#abstract class=self-link></a></h3>
+
+  <p>This specification defines a big part of the Web platform, in lots of detail. Its place in the
+  Web platform specification stack relative to other specifications can be best summed up as
+  follows:</p>
+
+  <svg id=abstractimg width=398 role=img viewBox="0 0 398 359" height=359 aria-label="It consists of everything else, above such core technologies as HTTP, TLS, MQ, DOM, Unicode, Web IDL, MIME, URL, XML, JavaScript, and Encodings; below presentation-layer technologies like CSS, SVG, MathML, and NPAPI; and to the side of technologies like Geo, Fetch, CSP, JPEG, GIF, and PNG.">
+   <rect width=398 height=80></rect>
+   <text class=top x=199 y=45>CSS SVG MathML NPAPI</text>
+   <rect width=67 y=85 height=177></rect>
+   <text transform="translate(25 251) rotate(-90)" class=left>Geo Fetch CSP</text>
+   <text transform="translate(50 250) rotate(-90)" class=left>JPEG GIF PNG</text>
+   
+   <image xlink:href=images/abstract.jpeg width=326 x=72 y=85 height=177></image>
+   <text class=right x=130 y=250>THIS SPECIFICATION</text>
+   <rect width=398 y=267 height=92></rect>
+   <text class=bottom x=15 y=300>HTTP TLS MQ DOM Unicode Web IDL</text>
+   <text class=bottom x=18 y=330>MIME URL XML JavaScript Encodings</text>
+  </svg>
+
+  
+
+
+  <h3 id=is-this-html5?>1.2 Is this HTML5?<a href=#is-this-html5? class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>In short: Yes.</p>
+
+  <p>In more length: The term "HTML5" is widely used as a buzzword to refer to modern Web
+  technologies, many of which (though by no means all) are developed at the WHATWG. This document is
+  one such; others are available from <a href=https://whatwg.org/specs/>the WHATWG
+  specification index</a>.</p>
+
+  <p class=note>Although we have asked them to stop doing so, the W3C also republishes some parts
+  of this specification as separate documents.</p>
+
+
+  <h3 id=background>1.3 Background<a href=#background class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>HTML is the World Wide Web's core markup language. Originally, HTML was primarily designed as a
+  language for semantically describing scientific documents. Its general design, however, has
+  enabled it to be adapted, over the subsequent years, to describe a number of other types of
+  documents and even applications.</p>
+
+
+  <h3 id=audience>1.4 Audience<a href=#audience class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>This specification is intended for authors of documents and scripts that use the features
+  defined in this specification, implementors of tools that operate on pages that
+  use the features defined in this specification, and individuals wishing to establish the
+  correctness of documents or implementations with respect to the requirements of this
+  specification.</p>
+
+  <p>This document is probably not suited to readers who do not already have at least a passing
+  familiarity with Web technologies, as in places it sacrifices clarity for precision, and brevity
+  for completeness. More approachable tutorials and authoring guides can provide a gentler
+  introduction to the topic.</p>
+
+  <p>In particular, familiarity with the basics of DOM is necessary for a complete understanding of
+  some of the more technical parts of this specification. An understanding of Web IDL, HTTP, XML,
+  Unicode, character encodings, JavaScript, and CSS will also be helpful in places but is not
+  essential.</p>
+
+
+  <h3 id=scope>1.5 Scope<a href=#scope class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>This specification is limited to providing a semantic-level markup language and associated
+  semantic-level scripting APIs for authoring accessible pages on the Web ranging from static
+  documents to dynamic applications.</p>
+
+  <p>The scope of this specification does not include providing mechanisms for media-specific
+  customization of presentation (although default rendering rules for Web browsers are included at
+  the end of this specification, and several mechanisms for hooking into CSS are provided as part of
+  the language).</p>
+
+  <p>The scope of this specification is not to describe an entire operating system. In particular,
+  hardware configuration software, image manipulation tools, and applications that users would be
+  expected to use with high-end workstations on a daily basis are out of scope. In terms of
+  applications, this specification is targeted specifically at applications that would be expected
+  to be used by users on an occasional basis, or regularly but from disparate locations, with low
+  CPU requirements. Examples of such applications include online purchasing systems, searching
+  systems, games (especially multiplayer online games), public telephone books or address books,
+  communications software (e-mail clients, instant messaging clients, discussion software), document
+  editing software, etc.</p>
+
+
+  <h3 id=history-2>1.6 History<a href=#history-2 class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>For its first five years (1990-1995), HTML went through a number of revisions and experienced a
+  number of extensions, primarily hosted first at CERN, and then at the IETF.</p>
+
+  <p>With the creation of the W3C, HTML's development changed venue again. A first abortive attempt
+  at extending HTML in 1995 known as HTML 3.0 then made way to a more pragmatic approach known as
+  HTML 3.2, which was completed in 1997. HTML4 quickly followed later that same year.</p>
+
+  <p>The following year, the W3C membership decided to stop evolving HTML and instead begin work on
+  an XML-based equivalent, called XHTML.  This
+  effort started with a reformulation of HTML4 in XML, known as XHTML 1.0, which added no new
+  features except the new serialization, and which was completed in 2000. After XHTML 1.0, the W3C's
+  focus turned to making it easier for other working groups to extend XHTML, under the banner of
+  XHTML Modularization. In parallel with this, the W3C also worked on a new language that was not
+  compatible with the earlier HTML and XHTML languages, calling it XHTML2.</p>
+
+  <p>Around the time that HTML's evolution was stopped in 1998, parts of the API for HTML developed
+  by browser vendors were specified and published under the name DOM Level 1 (in 1998) and DOM Level
+  2 Core and DOM Level 2 HTML (starting in 2000 and culminating in 2003). These efforts then petered
+  out, with some DOM Level 3 specifications published in 2004 but the working group being closed
+  before all the Level 3 drafts were completed.</p>
+
+  <p>In 2003, the publication of XForms, a technology which was positioned as the next generation of
+  Web forms, sparked a renewed interest in evolving HTML itself, rather than finding replacements
+  for it. This interest was borne from the realization that XML's deployment as a Web technology was
+  limited to entirely new technologies (like RSS and later Atom), rather than as a replacement for
+  existing deployed technologies (like HTML).</p>
+
+  <p>A proof of concept to show that it was possible to extend HTML4's forms to provide many of the
+  features that XForms 1.0 introduced, without requiring browsers to implement rendering engines
+  that were incompatible with existing HTML Web pages, was the first result of this renewed
+  interest. At this early stage, while the draft was already publicly available, and input was
+  already being solicited from all sources, the specification was only under Opera Software's
+  copyright.</p>
+
+  <p>The idea that HTML's evolution should be reopened was tested at a W3C workshop in 2004, where
+  some of the principles that underlie the HTML5 work (described below), as well as the
+  aforementioned early draft proposal covering just forms-related features, were presented to the
+  W3C jointly by Mozilla and Opera. The proposal was rejected on the grounds that the proposal
+  conflicted with the previously chosen direction for the Web's evolution; the W3C staff and
+  membership voted to continue developing XML-based replacements instead.</p>
+
+  <p>Shortly thereafter, Apple, Mozilla, and Opera jointly announced their intent to continue
+  working on the effort under the umbrella of a new venue called the WHATWG. A public mailing list
+  was created, and the draft was moved to the WHATWG site. The copyright was subsequently amended to
+  be jointly owned by all three vendors, and to allow reuse of the specification.</p>
+
+  <p>The WHATWG was based on several core principles, in particular that technologies need to be
+  backwards compatible, that specifications and implementations need to match even if this means
+  changing the specification rather than the implementations, and that specifications need to be
+  detailed enough that implementations can achieve complete interoperability without
+  reverse-engineering each other.</p>
+
+  <p>The latter requirement in particular required that the scope of the HTML5 specification include
+  what had previously been specified in three separate documents: HTML4, XHTML1, and DOM2 HTML. It
+  also meant including significantly more detail than had previously been considered the norm.</p>
+
+  <p>In 2006, the W3C indicated an interest to participate in the development of HTML5 after all,
+  and in 2007 formed a working group chartered to work with the WHATWG on the development of the
+  HTML5 specification. Apple, Mozilla, and Opera allowed the W3C to publish the specification under
+  the W3C copyright, while keeping a version with the less restrictive license on the WHATWG
+  site.</p>
+
+  <p>For a number of years, both groups then worked together. In 2011, however, the groups came to
+  the conclusion that they had different goals: the W3C wanted to publish a "finished" version of
+  "HTML5", while the WHATWG wanted to continue working on a Living Standard for HTML, continuously
+  maintaining the specification rather than freezing it in a state with known problems, and adding
+  new features as needed to evolve the platform.</p>
+
+  <p>Since then, the WHATWG has been working on this specification (amongst others), and the W3C has
+  been copying fixes made by the WHATWG into their fork of the document (which also has other
+  changes).</p>
+
+
+
+  <h3 id=design-notes>1.7 Design notes<a href=#design-notes class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>It must be admitted that many aspects of HTML appear at first glance to be nonsensical and
+  inconsistent.</p>
+
+  <p>HTML, its supporting DOM APIs, as well as many of its supporting technologies, have been
+  developed over a period of several decades by a wide array of people with different priorities
+  who, in many cases, did not know of each other's existence.</p>
+
+  <p>Features have thus arisen from many sources, and have not always been designed in especially
+  consistent ways. Furthermore, because of the unique characteristics of the Web, implementation
+  bugs have often become de-facto, and now de-jure, standards, as content is often unintentionally
+  written in ways that rely on them before they can be fixed.</p>
+
+  <p>Despite all this, efforts have been made to adhere to certain design goals. These are described
+  in the next few subsections.</p>
+
+
+  
+
+  <h4 id=serialisability-of-script-execution>1.7.1 Serializability of script execution<a href=#serialisability-of-script-execution class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>To avoid exposing Web authors to the complexities of multithreading, the HTML and DOM APIs are
+  designed such that no script can ever detect the simultaneous execution of other scripts. Even
+  with <a href=workers.html#worker id=serialisability-of-script-execution:worker>workers</a>, the intent is that the behavior of implementations can
+  be thought of as completely serializing the execution of all scripts in all <a href=browsers.html#browsing-context id=serialisability-of-script-execution:browsing-context>browsing contexts</a>.</p>
+
+  
+
+
+
+  <h4 id=compliance-with-other-specifications>1.7.2 Compliance with other specifications<a href=#compliance-with-other-specifications class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>This specification interacts with and relies on a wide variety of other specifications. In
+  certain circumstances, unfortunately, conflicting needs have led to this specification violating
+  the requirements of these other specifications. Whenever this has occurred, the transgressions
+  have each been noted as a "<dfn id=willful-violation>willful violation</dfn>", and the reason for the violation has
+  been noted.</p>
+
+
+
+  <h4 id=extensibility>1.7.3 Extensibility<a href=#extensibility class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>HTML has a wide array of extensibility mechanisms that can be used for adding semantics in a
+  safe manner:</p>
+
+  <ul><li><p>Authors can use the <code id=extensibility:classes><a href=dom.html#classes>class</a></code> attribute to extend elements,
+   effectively creating their own elements, while using the most applicable existing "real" HTML
+   element, so that browsers and other tools that don't know of the extension can still support it
+   somewhat well. This is the tack used by microformats, for example.<li><p>Authors can include data for inline client-side scripts or server-side site-wide scripts
+   to process using the <code id=extensibility:attr-data-*><a href=dom.html#attr-data-*>data-*=""</a></code> attributes. These are guaranteed
+   to never be touched by browsers, and allow scripts to include data on HTML elements that scripts
+   can then look for and process.<li><p>Authors can use the <code id=extensibility:the-meta-element><a href=semantics.html#the-meta-element>&lt;meta name="" content=""></a></code> mechanism to
+   include page-wide metadata by registering <a href=semantics.html#concept-meta-extensions id=extensibility:concept-meta-extensions>extensions to
+   the predefined set of metadata names</a>.<li><p>Authors can use the <code id=extensibility:attr-hyperlink-rel><a href=semantics.html#attr-hyperlink-rel>rel=""</a></code> mechanism to annotate
+   links with specific meanings by registering <a href=semantics.html#concept-rel-extensions id=extensibility:concept-rel-extensions>extensions to
+   the predefined set of link types</a>. This is also used by microformats.<li><p>Authors can embed raw data using the <code id=extensibility:the-script-element><a href=scripting.html#the-script-element>&lt;script type=""></a></code>
+   mechanism with a custom type, for further handling by inline or server-side scripts.<li><p>Authors can create <a href=infrastructure.html#plugin id=extensibility:plugin>plugins</a> and invoke them using the
+   <code id=extensibility:the-embed-element><a href=embedded-content.html#the-embed-element>embed</a></code> element. This is how Flash works.<li><p>Authors can extend APIs using the JavaScript prototyping mechanism. This is widely used by
+   script libraries, for instance.<li><p>Authors can use the microdata feature (the <code id=extensibility:attr-itemscope><a href=microdata.html#attr-itemscope>itemscope=""</a></code> and <code id=extensibility:names:-the-itemprop-attribute><a href=microdata.html#names:-the-itemprop-attribute>itemprop=""</a></code>
+   attributes) to embed nested name-value pairs of data to be shared with other applications and
+   sites.</ul>
+
+
+
+
+  <h3 id=html-vs-xhtml>1.8 HTML vs XML syntax<a href=#html-vs-xhtml class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>This specification defines an abstract language for describing documents and applications, and
+  some APIs for interacting with in-memory representations of resources that use this language.</p>
+
+  <p>The in-memory representation is known as "DOM HTML", or "the DOM" for short.</p>
+
+  <p>There are various concrete syntaxes that can be used to transmit resources that use this
+  abstract language, two of which are defined in this specification.</p>
+
+  <p>The first such concrete syntax is the HTML syntax. This is the format suggested for most
+  authors. It is compatible with most legacy Web browsers. If a document is transmitted with the
+  <code id=html-vs-xhtml:text/html><a href=iana.html#text/html>text/html</a></code> <a id=html-vs-xhtml:mime-type href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a>, then it will be processed as an HTML document by
+  Web browsers. This specification defines the latest HTML syntax, known simply as "HTML".</p>
+
+  <p>The second concrete syntax is XML. When a document is transmitted with an <a id=html-vs-xhtml:xml-mime-type href=https://mimesniff.spec.whatwg.org/#xml-mime-type data-x-internal=xml-mime-type>XML MIME
+  type</a>, such as <code id=html-vs-xhtml:application/xhtml+xml><a href=iana.html#application/xhtml+xml>application/xhtml+xml</a></code>, then it is treated as an XML document by
+  Web browsers, to be parsed by an XML processor. Authors are reminded that the processing for XML
+  and HTML differs; in particular, even minor syntax errors will prevent a document labeled as XML
+  from being rendered fully, whereas they would be ignored in the HTML syntax.</p>
+
+  <p class=note>The XML syntax for HTML was formerly referred to as "XHTML", but this
+  specification does not use that term (among other reasons, because no such term is used for the
+  HTML syntaxes of MathML and SVG).</p>
+
+  <p>The DOM, the HTML syntax, and the XML syntax cannot all represent the same content. For
+  example, namespaces cannot be represented using the HTML syntax, but they are supported in the DOM
+  and in the XML syntax. Similarly, documents that use the <code id=html-vs-xhtml:the-noscript-element><a href=scripting.html#the-noscript-element>noscript</a></code> feature can be
+  represented using the HTML syntax, but cannot be represented with the DOM or in the XML syntax.
+  Comments that contain the string "<code>--></code>" can only be represented in the
+  DOM, not in the HTML and XML syntaxes.</p>
+
+
+  <h3 id=structure-of-this-specification>1.9 Structure of this specification<a href=#structure-of-this-specification class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>This specification is divided into the following major sections:</p>
+
+  <dl><dt><a href=#introduction>Introduction</a><dd>Non-normative materials providing a context for the HTML standard.<dt><a href=infrastructure.html#infrastructure>Common infrastructure</a><dd>The conformance classes, algorithms, definitions, and the common underpinnings of the rest of
+   the specification.<dt><a href=dom.html#dom>Semantics, structure, and APIs of HTML documents</a><dd>Documents are built from elements. These elements form a tree using the DOM. This section
+   defines the features of this DOM, as well as introducing the features common to all elements, and
+   the concepts used in defining elements.<dt><a href=semantics.html#semantics>The elements of HTML</a><dd>Each element has a predefined meaning, which is explained in this section. Rules for authors
+   on how to use the element, along with user agent requirements for how to
+   handle each element, are also given. This includes large signature features of HTML such
+   as video playback and subtitles, form controls and form submission, and a 2D graphics API known
+   as the HTML canvas.<dt><a href=microdata.html#microdata>Microdata</a><dd>This specification introduces a mechanism for adding machine-readable annotations to
+   documents, so that tools can extract trees of name-value pairs from the document. This section
+   describes this mechanism and some algorithms that can be used to convert HTML
+   documents into other formats. This section also defines some sample Microdata vocabularies
+   for contact information, calendar events, and licensing works.<dt><a href=interaction.html#editing>User interaction</a><dd>HTML documents can provide a number of mechanisms for users to interact with and modify
+   content, which are described in this section, such as how focus works, and drag-and-drop.<dt><a href=browsers.html#browsers>Loading Web pages</a><dd>HTML documents do not exist in a vacuum — this section defines many of the features
+   that affect environments that deal with multiple pages, such as Web browsers and offline
+   caching of Web applications.<dt><a href=webappapis.html#webappapis>Web application APIs</a><dd>This section introduces basic features for scripting of applications in HTML.<dt><a href=workers.html#workers>Web workers</a><dd>This section defines an API for background threads in JavaScript.<dt><a href=comms.html#comms>The communication APIs</a><dd>This section describes some mechanisms that applications written in HTML can use to
+   communicate with other applications from different domains running on the same client. It also
+   introduces a server-push event stream mechanism known as Server Sent Events or
+   <code id=structure-of-this-specification:eventsource><a href=comms.html#eventsource>EventSource</a></code>, and a two-way full-duplex socket protocol for scripts known as Web
+   Sockets.
+
+   <dt><a href=webstorage.html#webstorage>Web storage</a><dd>This section defines a client-side storage mechanism based on name-value pairs.<dt><a href=syntax.html#syntax>The HTML syntax</a><dt><a href=xhtml.html#xhtml>The XML syntax</a><dd>All of these features would be for naught if they couldn't be represented in a serialized
+   form and sent to other people, and so these sections define the syntaxes of HTML and XML, along with rules for how to parse content using those syntaxes.<dt><a href=rendering.html#rendering>Rendering</a><dd>This section defines the default rendering rules for Web browsers.</dl>
+
+  <p>There are also some appendices, listing <a href=obsolete.html#obsolete>obsolete features</a> and <a href=iana.html#iana>IANA considerations</a>, and several indices.</p>
+
+
+  
+
+  <h4 id=how-to-read-this-specification>1.9.1 How to read this specification<a href=#how-to-read-this-specification class=self-link></a></h4>
+
+  <p>This specification should be read like all other specifications. First, it should be read
+  cover-to-cover, multiple times. Then, it should be read backwards at least once. Then it should be
+  read by picking random sections from the contents list and following all the cross-references.</p>
+
+  <p>As described in the conformance requirements section below, this specification describes
+  conformance criteria for a variety of conformance classes. In particular, there are conformance
+  requirements that apply to <em>producers</em>, for example authors and the documents they create,
+  and there are conformance requirements that apply to <em>consumers</em>, for example Web browsers.
+  They can be distinguished by what they are requiring: a requirement on a producer states what is
+  allowed, while a requirement on a consumer states how software is to act.</p>
+
+  <div class=example>
+
+   <p>For example, "the <code>foo</code> attribute's value must be a <a id=how-to-read-this-specification:valid-integer href=infrastructure.html#valid-integer>valid
+   integer</a>" is a requirement on producers, as it lays out the allowed values; in contrast,
+   the requirement "the <code>foo</code> attribute's value must be parsed using the
+   <a id=how-to-read-this-specification:rules-for-parsing-integers href=infrastructure.html#rules-for-parsing-integers>rules for parsing integers</a>" is a requirement on consumers, as it describes how to
+   process the content.</p>
+
+  </div>
+
+  <p><strong>Requirements on producers have no bearing whatsoever on consumers.</strong></p>
+
+  <div class=example>
+
+   <p>Continuing the above example, a requirement stating that a particular attribute's value is
+   constrained to being a <a id=how-to-read-this-specification:valid-integer-2 href=infrastructure.html#valid-integer>valid integer</a> emphatically does <em>not</em> imply anything
+   about the requirements on consumers. It might be that the consumers are in fact required to treat
+   the attribute as an opaque string, completely unaffected by whether the value conforms to the
+   requirements or not. It might be (as in the previous example) that the consumers are required to
+   parse the value using specific rules that define how invalid (non-numeric in this case) values
+   are to be processed.</p>
+
+  </div>
+
+  
+
+
+
+  <h4 id=typographic-conventions>1.9.2 Typographic conventions<a href=#typographic-conventions class=self-link></a></h4>
+
+  <p>This is a definition, requirement, or explanation.</p>
+
+  <p class=note>This is a note.</p>
+
+  <p class=example>This is an example.</p>
+
+  <p class=XXX>This is an open issue.</p>
+
+  <p class=warning>This is a warning.</p>
+
+  <pre class="idl extract">interface <dfn>Example</dfn> {
+  // this is an IDL definition
+};</pre>
+
+  <dl class=domintro><dt><var>variable</var> = <var>object</var> . <code id=typographic-conventions:x-that><a href=#x-that>method</a></code>( [ <var>optionalArgument</var> ] )<dd>
+
+    <p>This is a note to authors describing the usage of an interface.</p>
+
+   </dl>
+
+  <pre class=css>/* this is a CSS fragment */</pre>
+
+  <p>The defining instance of a term is marked up like <dfn id=x-this>this</dfn>. Uses of that
+  term are marked up like <a href=#x-this id=typographic-conventions:x-this>this</a> or like <i id=typographic-conventions:x-this-2><a href=#x-this>this</a></i>.</p>
+
+  <p>The defining instance of an element, attribute, or API is marked up like <dfn id=x-that><code>this</code></dfn>. References to that element, attribute, or API are marked up
+  like <code id=typographic-conventions:x-that-2><a href=#x-that>this</a></code>.</p>
+
+  <p>Other code fragments are marked up <code>like this</code>.</p>
+
+  <p>Variables are marked up like <var>this</var>.</p>
+
+  <p>In an algorithm, steps in <a href=webappapis.html#synchronous-section id=typographic-conventions:synchronous-section>synchronous
+  sections</a> are marked with ⌛.</p>
+
+  <p>In some cases, requirements are given in the form of lists with conditions and corresponding
+  requirements. In such cases, the requirements that apply to a condition are always the first set
+  of requirements that follow the condition, even in the case of there being multiple sets of
+  conditions for those requirements. Such cases are presented as follows:</p>
+
+  <dl class=switch><dt>This is a condition
+   <dt>This is another condition
+   <dd>This is the requirement that applies to the conditions above.
+
+   <dt>This is a third condition
+   <dd>This is the requirement that applies to the third condition.
+
+  </dl>
+
+
+
+  <h3 id=fingerprint>1.10 Privacy concerns<a href=#fingerprint class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Some features of HTML trade user convenience for a measure of user privacy.</p>
+
+  <p>In general, due to the Internet's architecture, a user can be distinguished from another by the
+  user's IP address. IP addresses do not perfectly match to a user; as a user moves from device to
+  device, or from network to network, their IP address will change; similarly, NAT routing, proxy
+  servers, and shared computers enable packets that appear to all come from a single IP address to
+  actually map to multiple users. Technologies such as onion routing can be used to further
+  anonymize requests so that requests from a single user at one node on the Internet appear to come
+  from many disparate parts of the network.</p>
+
+  <p>However, the IP address used for a user's requests is not the only mechanism by which a user's
+  requests could be related to each other. Cookies, for example, are designed specifically to enable
+  this, and are the basis of most of the Web's session features that enable you to log into a site
+  with which you have an account.</p>
+
+  <p>There are other mechanisms that are more subtle. Certain characteristics of a user's system can
+  be used to distinguish groups of users from each other; by collecting enough such information, an
+  individual user's browser's "digital fingerprint" can be computed, which can be as good, if not
+  better, as an IP address in ascertaining which requests are from the same user.</p>
+
+  <p>Grouping requests in this manner, especially across multiple sites, can be used for both benign
+  (and even arguably positive) purposes, as well as for malevolent purposes. An example of a
+  reasonably benign purpose would be determining whether a particular person seems to prefer sites
+  with dog illustrations as opposed to sites with cat illustrations (based on how often they visit
+  the sites in question) and then automatically using the preferred illustrations on subsequent
+  visits to participating sites. Malevolent purposes, however, could include governments combining
+  information such as the person's home address (determined from the addresses they use when getting
+  driving directions on one site) with their apparent political affiliations (determined by
+  examining the forum sites that they participate in) to determine whether the person should be
+  prevented from voting in an election.</p>
+
+  <p>Since the malevolent purposes can be remarkably evil, user agent implementors are encouraged to
+  consider how to provide their users with tools to minimize leaking information that could be used
+  to fingerprint a user.</p>
+
+  <p>Unfortunately, as the first paragraph in this section implies, sometimes there is great benefit
+  to be derived from exposing the very information that can also be used for fingerprinting
+  purposes, so it's not as easy as simply blocking all possible leaks. For instance, the ability to
+  log into a site to post under a specific identity requires that the user's requests be
+  identifiable as all being from the same user, more or less by definition. More subtly, though,
+  information such as how wide text is, which is necessary for many effects that involve drawing
+  text onto a canvas (e.g. any effect that involves drawing a border around the text) also leaks
+  information that can be used to group a user's requests. (In this case, by potentially exposing,
+  via a brute force search, which fonts a user has installed, information which can vary
+  considerably from user to user.)</p>
+
+  <p>Features in this specification which can be <dfn id=fingerprinting-vector>used to
+  fingerprint the user</dfn> are marked as this paragraph is.
+  <a href=#fingerprinting-vector id=fingerprint:fingerprinting-vector class=fingerprint title="There is a potential fingerprinting vector here."><img alt="(This is a fingerprinting vector.)" src=/images/fingerprint.png width=46 height=64></a>
+  </p>
+
+  <p>Other features in the platform can be used for the same purpose, though, including, though not
+  limited to:</p>
+
+  <ul><li>The exact list of which features a user agents supports.<li>The maximum allowed stack depth for recursion in script.<li>Features that describe the user's environment, like Media Queries and the <code id=fingerprint:screen><a data-x-internal=screen href=https://drafts.csswg.org/cssom-view/#the-screen-interface>Screen</a></code>
+   object. <a href=references.html#refsMQ>[MQ]</a> <a href=references.html#refsCSSOMVIEW>[CSSOMVIEW]</a><li>The user's time zone.</ul>
+
+
+  <h4 id=fingerprint-postMessage>1.10.1 Cross-site communication<a href=#fingerprint-postMessage class=self-link></a></h4>
+
+  <p>The <code id=fingerprint-postMessage:dom-window-postmessage><a href=comms.html#dom-window-postmessage>postMessage()</a></code> API provides a mechanism by
+  which two sites can communicate directly. At first glance, this might appear to open a new way by
+  which the problems described above can occur. However, in practice, multiple mechanisms exist by
+  which two sites can communicate that predate this API: a site embedding another can send data via
+  an <code id=fingerprint-postMessage:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> element's dimensions; a site can use a cross-site image request with a
+  unique identifier known to the server to initiate a server-side data exchange; or indeed the
+  fingerprinting techniques described above can be used by two sites to uniquely identify a visitor
+  such that information can then be exchanged on the server side.</p>
+
+  <p>Fundamentally, users that do not trust a site to treat their information with respect have to
+  avoid visiting that site at all.</p>
+
+
+
+
+  <h3 id=a-quick-introduction-to-html>1.11 A quick introduction to HTML<a href=#a-quick-introduction-to-html class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>A basic HTML document looks like this:</p>
+
+  <pre id=intro-early-example>&lt;!DOCTYPE html>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Sample page&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>Sample page&lt;/h1>
+  &lt;p>This is a &lt;a href="demo.html">simple&lt;/a> sample.&lt;/p>
+  &lt;!-- this is a comment -->
+ &lt;/body>
+&lt;/html></pre>
+
+  <p>HTML documents consist of a tree of elements and text. Each element is denoted in the source by
+  a <a href=syntax.html#syntax-start-tag id=a-quick-introduction-to-html:syntax-start-tag>start tag</a>, such as "<code>&lt;body></code>", and
+  an <a href=syntax.html#syntax-end-tag id=a-quick-introduction-to-html:syntax-end-tag>end tag</a>, such as "<code>&lt;/body></code>".
+  (Certain start tags and end tags can in certain cases be <a href=syntax.html#syntax-tag-omission id=a-quick-introduction-to-html:syntax-tag-omission>omitted</a> and are implied by other tags.)</p>
+
+  <p>Tags have to be nested such that elements are all completely within each other, without
+  overlapping:</p>
+
+  <pre class=bad>&lt;p>This is &lt;em>very &lt;strong>wrong&lt;/em>!&lt;/strong>&lt;/p></pre>
+  <pre>&lt;p>This &lt;em>is &lt;strong>correct&lt;/strong>.&lt;/em>&lt;/p></pre>
+
+  <p>This specification defines a set of elements that can be used in HTML, along with rules about
+  the ways in which the elements can be nested.</p>
+
+  <p>Elements can have attributes, which control how the elements work. In the example below, there
+  is a <a id=a-quick-introduction-to-html:hyperlink href=semantics.html#hyperlink>hyperlink</a>, formed using the <code id=a-quick-introduction-to-html:the-a-element><a href=semantics.html#the-a-element>a</a></code> element and its <code id=a-quick-introduction-to-html:attr-hyperlink-href><a href=semantics.html#attr-hyperlink-href>href</a></code> attribute:</p>
+
+  <pre>&lt;a href="demo.html">simple&lt;/a></pre>
+
+  <p><a href=syntax.html#syntax-attributes id=a-quick-introduction-to-html:syntax-attributes>Attributes</a> are placed inside the start tag, and consist
+  of a <a href=syntax.html#syntax-attribute-name id=a-quick-introduction-to-html:syntax-attribute-name>name</a> and a <a href=syntax.html#syntax-attribute-value id=a-quick-introduction-to-html:syntax-attribute-value>value</a>, separated by an "<code>=</code>" character.
+  The attribute value can remain <a href=syntax.html#unquoted>unquoted</a> if it doesn't contain <a href=infrastructure.html#space-character id=a-quick-introduction-to-html:space-character>space characters</a> or any of <code>"</code> <code>'</code> <code>`</code> <code>=</code> <code>&lt;</code> or
+  <code>></code>. Otherwise, it has to be quoted using either single or double quotes.
+  The value, along with the "<code>=</code>" character, can be omitted altogether if the
+  value is the empty string.</p>
+
+  <pre>&lt;!-- empty attributes -->
+&lt;input name=address disabled>
+&lt;input name=address disabled="">
+
+&lt;!-- attributes with a value -->
+&lt;input name=address maxlength=200>
+&lt;input name=address maxlength='200'>
+&lt;input name=address maxlength="200"></pre>
+
+  <p>HTML user agents (e.g. Web browsers) then <i>parse</i> this markup, turning it into a DOM
+  (Document Object Model) tree. A DOM tree is an in-memory representation of a document.</p>
+
+  <p>DOM trees contain several kinds of nodes, in particular a <code id=a-quick-introduction-to-html:documenttype><a data-x-internal=documenttype href=https://dom.spec.whatwg.org/#interface-documenttype>DocumentType</a></code> node,
+  <code id=a-quick-introduction-to-html:element><a data-x-internal=element href=https://dom.spec.whatwg.org/#interface-element>Element</a></code> nodes, <code id=a-quick-introduction-to-html:text><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> nodes, <code id=a-quick-introduction-to-html:comment-2><a data-x-internal=comment-2 href=https://dom.spec.whatwg.org/#interface-comment>Comment</a></code> nodes, and in some cases
+  <code id=a-quick-introduction-to-html:processinginstruction><a data-x-internal=processinginstruction href=https://dom.spec.whatwg.org/#interface-processinginstruction>ProcessingInstruction</a></code> nodes.</p>
+
+  <p>The <a href=#intro-early-example>markup snippet at the top of this section</a> would be
+  turned into the following DOM tree:</p>
+
+  <ul class=domTree><li class=t10>DOCTYPE: <code>html</code><li class=t1><code id=a-quick-introduction-to-html:the-html-element><a href=semantics.html#the-html-element>html</a></code> <span class=t2><code id=a-quick-introduction-to-html:attr-lang class="attribute name"><a href=dom.html#attr-lang>lang</a></code>="<code class="attribute value">en</code>"</span><ul><li class=t1><code id=a-quick-introduction-to-html:the-head-element><a href=semantics.html#the-head-element>head</a></code><ul><li class=t3><code id=a-quick-introduction-to-html:text-2><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>⏎␣␣</span><li class=t1><code id=a-quick-introduction-to-html:the-title-element><a href=semantics.html#the-title-element>title</a></code><ul><li class=t3><code id=a-quick-introduction-to-html:text-3><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>Sample page</span></ul><li class=t3><code id=a-quick-introduction-to-html:text-4><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>⏎␣</span></ul><li class=t3><code id=a-quick-introduction-to-html:text-5><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>⏎␣</span><li class=t1><code id=a-quick-introduction-to-html:the-body-element><a href=semantics.html#the-body-element>body</a></code><ul><li class=t3><code id=a-quick-introduction-to-html:text-6><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>⏎␣␣</span><li class=t1><code id=a-quick-introduction-to-html:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code><ul><li class=t3><code id=a-quick-introduction-to-html:text-7><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>Sample page</span></ul><li class=t3><code id=a-quick-introduction-to-html:text-8><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>⏎␣␣</span><li class=t1><code id=a-quick-introduction-to-html:the-p-element><a href=semantics.html#the-p-element>p</a></code><ul><li class=t3><code id=a-quick-introduction-to-html:text-9><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>This is a </span><li class=t1><code id=a-quick-introduction-to-html:the-a-element-2><a href=semantics.html#the-a-element>a</a></code> <span class=t2><code id=a-quick-introduction-to-html:attr-hyperlink-href-2 class="attribute name"><a href=semantics.html#attr-hyperlink-href>href</a></code>="<code class="attribute value">demo.html</code>"</span><ul><li class=t3><code id=a-quick-introduction-to-html:text-10><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>simple</span></ul><li class=t3><code id=a-quick-introduction-to-html:text-11><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span> sample.</span></ul><li class=t3><code id=a-quick-introduction-to-html:text-12><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>⏎␣␣</span><li class=t8><code id=a-quick-introduction-to-html:comment-2-2><a data-x-internal=comment-2 href=https://dom.spec.whatwg.org/#interface-comment>#comment</a></code>: <span> this is a comment </span><li class=t3><code id=a-quick-introduction-to-html:text-13><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>⏎␣⏎</span></ul></ul></ul>
+
+  <p>The <a id=a-quick-introduction-to-html:document-element href=https://dom.spec.whatwg.org/#document-element data-x-internal=document-element>document element</a> of this tree is the <code id=a-quick-introduction-to-html:the-html-element-2><a href=semantics.html#the-html-element>html</a></code> element, which is the
+  element always found in that position in HTML documents. It contains two elements,
+  <code id=a-quick-introduction-to-html:the-head-element-2><a href=semantics.html#the-head-element>head</a></code> and <code id=a-quick-introduction-to-html:the-body-element-2><a href=semantics.html#the-body-element>body</a></code>, as well as a <code id=a-quick-introduction-to-html:text-14><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node between them.</p>
+
+  <p>There are many more <code id=a-quick-introduction-to-html:text-15><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> nodes in the DOM tree than one would initially expect,
+  because the source contains a number of spaces (represented here by "␣") and line breaks
+  ("⏎") that all end up as <code id=a-quick-introduction-to-html:text-16><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> nodes in the DOM. However, for historical
+  reasons not all of the spaces and line breaks in the original markup appear in the DOM. In
+  particular, all the whitespace before <code id=a-quick-introduction-to-html:the-head-element-3><a href=semantics.html#the-head-element>head</a></code> start tag ends up being dropped silently,
+  and all the whitespace after the <code id=a-quick-introduction-to-html:the-body-element-3><a href=semantics.html#the-body-element>body</a></code> end tag ends up placed at the end of the
+  <code id=a-quick-introduction-to-html:the-body-element-4><a href=semantics.html#the-body-element>body</a></code>.</p>
+
+  <p>The <code id=a-quick-introduction-to-html:the-head-element-4><a href=semantics.html#the-head-element>head</a></code> element contains a <code id=a-quick-introduction-to-html:the-title-element-2><a href=semantics.html#the-title-element>title</a></code> element, which itself contains a
+  <code id=a-quick-introduction-to-html:text-17><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node with the text "Sample page". Similarly, the <code id=a-quick-introduction-to-html:the-body-element-5><a href=semantics.html#the-body-element>body</a></code> element
+  contains an <code id=a-quick-introduction-to-html:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-2><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code> element, a <code id=a-quick-introduction-to-html:the-p-element-2><a href=semantics.html#the-p-element>p</a></code> element, and a comment.</p>
+
+  <hr>
+
+  <p>This DOM tree can be manipulated from scripts in the page. Scripts (typically in JavaScript)
+  are small programs that can be embedded using the <code id=a-quick-introduction-to-html:the-script-element><a href=scripting.html#the-script-element>script</a></code> element or using <a id=a-quick-introduction-to-html:event-handler-content-attributes href=webappapis.html#event-handler-content-attributes>event
+  handler content attributes</a>. For example, here is a form with a script that sets the value
+  of the form's <code id=a-quick-introduction-to-html:the-output-element><a href=forms.html#the-output-element>output</a></code> element to say "Hello World":</p>
+
+  <pre>&lt;<a id=a-quick-introduction-to-html:the-form-element href=forms.html#the-form-element>form</a> <a href=forms.html#attr-form-name id=a-quick-introduction-to-html:attr-form-name>name</a>="main">
+ Result: &lt;<a id=a-quick-introduction-to-html:the-output-element-2 href=forms.html#the-output-element>output</a> <a href=forms.html#attr-fe-name id=a-quick-introduction-to-html:attr-fe-name>name</a>="result">&lt;/output>
+ &lt;<a id=a-quick-introduction-to-html:the-script-element-2 href=scripting.html#the-script-element>script</a>>
+  <a href=dom.html#document id=a-quick-introduction-to-html:document>document</a>.<a href=dom.html#dom-document-forms id=a-quick-introduction-to-html:dom-document-forms>forms</a>.main.<a href=forms.html#dom-form-elements id=a-quick-introduction-to-html:dom-form-elements>elements</a>.result.<a href=forms.html#dom-output-value id=a-quick-introduction-to-html:dom-output-value>value</a> = 'Hello World';
+ &lt;/script>
+&lt;/form></pre>
+
+  <p>Each element in the DOM tree is represented by an object, and these objects have APIs so that
+  they can be manipulated. For instance, a link (e.g. the <code id=a-quick-introduction-to-html:the-a-element-3><a href=semantics.html#the-a-element>a</a></code> element in the tree above)
+  can have its "<code id=a-quick-introduction-to-html:attr-hyperlink-href-3><a href=semantics.html#attr-hyperlink-href>href</a></code>" attribute changed in several
+  ways:</p>
+
+  <pre>var a = <a href=dom.html#document id=a-quick-introduction-to-html:document-2>document</a>.<a href=dom.html#dom-document-links id=a-quick-introduction-to-html:dom-document-links>links</a>[0]; // obtain the first link in the document
+a.<a href=semantics.html#dom-hyperlink-href id=a-quick-introduction-to-html:dom-hyperlink-href>href</a> = 'sample.html'; // change the destination URL of the link
+a.<a href=semantics.html#dom-hyperlink-protocol id=a-quick-introduction-to-html:dom-hyperlink-protocol>protocol</a> = 'https'; // change just the scheme part of the URL
+a.setAttribute('href', 'https://example.com/'); // change the content attribute directly</pre>
+
+  <p>Since DOM trees are used as the way to represent HTML documents when they are processed and
+  presented by implementations (especially interactive implementations like Web browsers), this
+  specification is mostly phrased in terms of DOM trees, instead of the markup described above.</p>
+
+  <hr>
+
+  <p>HTML documents represent a media-independent description of interactive content. HTML documents
+  might be rendered to a screen, or through a speech synthesizer, or on a braille display. To
+  influence exactly how such rendering takes place, authors can use a styling language such as
+  CSS.</p>
+
+  <p>In the following example, the page has been made yellow-on-blue using CSS.</p>
+
+  <pre>&lt;!DOCTYPE html>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Sample styled page&lt;/title>
+  &lt;style>
+   body { background: navy; color: yellow; }
+  &lt;/style>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>Sample styled page&lt;/h1>
+  &lt;p>This page is just a demo.&lt;/p>
+ &lt;/body>
+&lt;/html></pre>
+
+  <p>For more details on how to use HTML, authors are encouraged to consult tutorials and guides.
+  Some of the examples included in this specification might also be of use, but the novice author is
+  cautioned that this specification, by necessity, defines the language with a level of detail that
+  might be difficult to understand at first.</p>
+
+
+
+
+  <h4 id=writing-secure-applications-with-html>1.11.1 Writing secure applications with HTML<a href=#writing-secure-applications-with-html class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>When HTML is used to create interactive sites, care needs to be taken to avoid introducing
+  vulnerabilities through which attackers can compromise the integrity of the site itself or of the
+  site's users.</p>
+
+  <p>A comprehensive study of this matter is beyond the scope of this document, and authors are
+  strongly encouraged to study the matter in more detail. However, this section attempts to provide
+  a quick introduction to some common pitfalls in HTML application development.</p>
+
+  <p>The security model of the Web is based on the concept of "origins", and correspondingly many of
+  the potential attacks on the Web involve cross-origin actions. <a href=references.html#refsORIGIN>[ORIGIN]</a></p>
+
+  <dl><dt>Not validating user input<dt>Cross-site scripting (XSS)<dt>SQL injection<dd>
+
+    <p>When accepting untrusted input, e.g. user-generated content such as text comments, values in
+    URL parameters, messages from third-party sites, etc, it is imperative that the data be
+    validated before use, and properly escaped when displayed. Failing to do this can allow a
+    hostile user to perform a variety of attacks, ranging from the potentially benign, such as
+    providing bogus user information like a negative age, to the serious, such as running scripts
+    every time a user looks at a page that includes the information, potentially propagating the
+    attack in the process, to the catastrophic, such as deleting all data in the server.</p>
+
+    <p>When writing filters to validate user input, it is imperative that filters always be
+    safelist-based, allowing known-safe constructs and disallowing all other input. Blocklist-based
+    filters that disallow known-bad inputs and allow everything else are not secure, as not
+    everything that is bad is yet known (for example, because it might be invented in the
+    future).</p>
+
+    <div class=example>
+
+     <p>For example, suppose a page looked at its URL's query string to determine what to display,
+     and the site then redirected the user to that page to display a message, as in:</p>
+
+     <pre>&lt;ul>
+ &lt;li>&lt;a href="message.cgi?say=Hello">Say Hello&lt;/a>
+ &lt;li>&lt;a href="message.cgi?say=Welcome">Say Welcome&lt;/a>
+ &lt;li>&lt;a href="message.cgi?say=Kittens">Say Kittens&lt;/a>
+&lt;/ul></pre>
+
+     <p>If the message was just displayed to the user without escaping, a hostile attacker could
+     then craft a URL that contained a script element:</p>
+
+     <pre>https://example.com/message.cgi?say=%3Cscript%3Ealert%28%27Oh%20no%21%27%29%3C/script%3E</pre>
+
+     <p>If the attacker then convinced a victim user to visit this page, a script of the attacker's
+     choosing would run on the page. Such a script could do any number of hostile actions, limited
+     only by what the site offers: if the site is an e-commerce shop, for instance, such a script
+     could cause the user to unknowingly make arbitrarily many unwanted purchases.</p>
+
+     <p>This is called a cross-site scripting attack.</p>
+
+    </div>
+
+    <p>There are many constructs that can be used to try to trick a site into executing code. Here
+    are some that authors are encouraged to consider when writing safelist filters:</p>
+
+    <ul><li>When allowing harmless-seeming elements like <code id=writing-secure-applications-with-html:the-img-element><a href=embedded-content.html#the-img-element>img</a></code>, it is important to safelist
+     any provided attributes as well. If one allowed all attributes then an attacker could, for
+     instance, use the <code id=writing-secure-applications-with-html:handler-onload><a href=webappapis.html#handler-onload>onload</a></code> attribute to run arbitrary
+     script.<li>When allowing URLs to be provided (e.g. for links), the scheme of each URL also needs to be
+     explicitly safelisted, as there are many schemes that can be abused. The most prominent
+     example is "<code id=writing-secure-applications-with-html:javascript-protocol><a href=browsers.html#javascript-protocol>javascript:</a></code>", but user agents can
+     implement (and indeed, have historically implemented) others.<li>Allowing a <code id=writing-secure-applications-with-html:the-base-element><a href=semantics.html#the-base-element>base</a></code> element to be inserted means any <code id=writing-secure-applications-with-html:the-script-element><a href=scripting.html#the-script-element>script</a></code> elements
+     in the page with relative links can be hijacked, and similarly that any form submissions can
+     get redirected to a hostile site.</ul>
+
+   <dt>Cross-site request forgery (CSRF)<dd>
+
+    <p>If a site allows a user to make form submissions with user-specific side-effects, for example
+    posting messages on a forum under the user's name, making purchases, or applying for a passport,
+    it is important to verify that the request was made by the user intentionally, rather than by
+    another site tricking the user into making the request unknowingly.</p>
+
+    <p>This problem exists because HTML forms can be submitted to other origins.</p>
+
+    <p>Sites can prevent such attacks by populating forms with user-specific hidden tokens, or by
+    checking `<code id=writing-secure-applications-with-html:http-origin><a data-x-internal=http-origin href=https://fetch.spec.whatwg.org/#http-origin>Origin</a></code>` headers on all requests.</p>
+
+   <dt>Clickjacking<dd>
+
+    <p>A page that provides users with an interface to perform actions that the user might not wish
+    to perform needs to be designed so as to avoid the possibility that users can be tricked into
+    activating the interface.</p>
+
+    <p>One way that a user could be so tricked is if a hostile site places the victim site in a
+    small <code id=writing-secure-applications-with-html:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> and then convinces the user to click, for instance by having the user
+    play a reaction game. Once the user is playing the game, the hostile site can quickly position
+    the iframe under the mouse cursor just as the user is about to click, thus tricking the user
+    into clicking the victim site's interface.</p>
+
+    <p>To avoid this, sites that do not expect to be used in frames are encouraged to only enable
+    their interface if they detect that they are not in a frame (e.g. by comparing the <code id=writing-secure-applications-with-html:dom-window><a href=browsers.html#dom-window>window</a></code> object to the value of the <code id=writing-secure-applications-with-html:dom-top><a href=browsers.html#dom-top>top</a></code>
+    attribute).</p>
+
+   </dl>
+
+
+
+  <h4 id=common-pitfalls-to-avoid-when-using-the-scripting-apis>1.11.2 Common pitfalls to avoid when using the scripting APIs<a href=#common-pitfalls-to-avoid-when-using-the-scripting-apis class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Scripts in HTML have "run-to-completion" semantics, meaning that the browser will generally run
+  the script uninterrupted before doing anything else, such as firing further events or continuing
+  to parse the document.</p>
+
+  <p>On the other hand, parsing of HTML files happens incrementally, meaning that
+  the parser can pause at any point to let scripts run. This is generally a good thing, but it does
+  mean that authors need to be careful to avoid hooking event handlers after the events could have
+  possibly fired.</p>
+
+  <p>There are two techniques for doing this reliably: use <a id=common-pitfalls-to-avoid-when-using-the-scripting-apis:event-handler-content-attributes href=webappapis.html#event-handler-content-attributes>event handler content
+  attributes</a>, or create the element and add the event handlers in the same script. The latter
+  is safe because, as mentioned earlier, scripts are run to completion before further events can
+  fire.</p>
+
+  <div class=example>
+
+   <p>One way this could manifest itself is with <code id=common-pitfalls-to-avoid-when-using-the-scripting-apis:the-img-element><a href=embedded-content.html#the-img-element>img</a></code> elements and the <code id=common-pitfalls-to-avoid-when-using-the-scripting-apis:event-load><a href=indices.html#event-load>load</a></code> event. The event could fire as soon as the element has been
+   parsed, especially if the image has already been cached (which is common).</p>
+
+   <p>Here, the author uses the <code id=common-pitfalls-to-avoid-when-using-the-scripting-apis:handler-onload><a href=webappapis.html#handler-onload>onload</a></code> handler on an
+   <code id=common-pitfalls-to-avoid-when-using-the-scripting-apis:the-img-element-2><a href=embedded-content.html#the-img-element>img</a></code> element to catch the <code id=common-pitfalls-to-avoid-when-using-the-scripting-apis:event-load-2><a href=indices.html#event-load>load</a></code> event:</p>
+
+   <pre>&lt;img src="games.png" alt="Games" onload="gamesLogoHasLoaded(event)"></pre>
+
+   <p>If the element is being added by script, then so long as the event handlers are added in the
+   same script, the event will still not be missed:</p>
+
+   <pre>&lt;script>
+ var img = new Image();
+ img.src = 'games.png';
+ img.alt = 'Games';
+ img.onload = gamesLogoHasLoaded;
+ // img.addEventListener('load', gamesLogoHasLoaded, false); // would work also
+&lt;/script></pre>
+
+   <p>However, if the author first created the <code id=common-pitfalls-to-avoid-when-using-the-scripting-apis:the-img-element-3><a href=embedded-content.html#the-img-element>img</a></code> element and then in a separate
+   script added the event listeners, there's a chance that the <code id=common-pitfalls-to-avoid-when-using-the-scripting-apis:event-load-3><a href=indices.html#event-load>load</a></code>
+   event would be fired in between, leading it to be missed:</p>
+
+   <pre class=bad>&lt;!-- Do not use this style, it has a race condition! -->
+ &lt;img id="games" src="games.png" alt="Games">
+ &lt;!-- the 'load' event might fire here while the parser is taking a
+      break, in which case you will not see it! -->
+ &lt;script>
+  var img = document.getElementById('games');
+  img.onload = gamesLogoHasLoaded; // might never fire!
+ &lt;/script></pre>
+
+  </div>
+
+
+
+  <h4 id=how-to-catch-mistakes-when-writing-html:-validators-and-conformance-checkers>1.11.3 How to catch mistakes when writing HTML: validators and conformance checkers<a href=#how-to-catch-mistakes-when-writing-html:-validators-and-conformance-checkers class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Authors are encouraged to make use of conformance checkers (also known as <i>validators</i>) to
+  catch common mistakes. The WHATWG maintains a list of such tools at: <a href=https://validator.whatwg.org/>https://validator.whatwg.org/</a></p>
+
+
+
+  <h3 id=conformance-requirements-for-authors>1.12 Conformance requirements for authors<a href=#conformance-requirements-for-authors class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Unlike previous versions of the HTML specification, this specification defines in some detail
+  the required processing for invalid documents as well as valid documents.</p> 
+
+  <p>However, even though the processing of invalid content is in most cases well-defined,
+  conformance requirements for documents are still important: in practice, interoperability (the
+  situation in which all implementations process particular content in a reliable and identical or
+  equivalent way) is not the only goal of document conformance requirements. This section details
+  some of the more common reasons for still distinguishing between a conforming document and one
+  with errors.</p>
+
+
+  <h4 id=presentational-markup>1.12.1 Presentational markup<a href=#presentational-markup class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>The majority of presentational features from previous versions of HTML are no longer allowed.
+  Presentational markup in general has been found to have a number of problems:</p>
+
+  <dl><dt>The use of presentational elements leads to poorer accessibility<dd>
+
+    <p>While it is possible to use presentational markup in a way that provides users of assistive
+    technologies (ATs) with an acceptable experience (e.g. using ARIA), doing so is significantly
+    more difficult than doing so when using semantically-appropriate markup. Furthermore, even using
+    such techniques doesn't help make pages accessible for non-AT non-graphical users, such as users
+    of text-mode browsers.</p>
+
+    <p>Using media-independent markup, on the other hand, provides an easy way for documents to be
+    authored in such a way that they work for more users (e.g. text browsers).</p>
+
+   <dt>Higher cost of maintenance<dd>
+
+    <p>It is significantly easier to maintain a site written in such a way that the markup is
+    style-independent. For example, changing the color of a site that uses <code>&lt;font color=""></code> throughout requires changes across the entire site,
+    whereas a similar change to a site based on CSS can be done by changing a single file.</p>
+
+   <dt>Larger document sizes<dd>
+
+    <p>Presentational markup tends to be much more redundant, and thus results in larger document
+    sizes.</p>
+
+   </dl>
+
+  <p>For those reasons, presentational markup has been removed from HTML in this version. This
+  change should not come as a surprise; HTML4 deprecated presentational markup many years ago and
+  provided a mode (HTML4 Transitional) to help authors move away from presentational markup; later,
+  XHTML 1.1 went further and obsoleted those features altogether.</p>
+
+  <p>The only remaining presentational markup features in HTML are the <code id=presentational-markup:the-style-attribute><a href=dom.html#the-style-attribute>style</a></code> attribute and the <code id=presentational-markup:the-style-element><a href=semantics.html#the-style-element>style</a></code> element. Use of the <code id=presentational-markup:the-style-attribute-2><a href=dom.html#the-style-attribute>style</a></code> attribute is somewhat discouraged in production environments, but
+  it can be useful for rapid prototyping (where its rules can be directly moved into a separate
+  style sheet later) and for providing specific styles in unusual cases where a separate style sheet
+  would be inconvenient. Similarly, the <code id=presentational-markup:the-style-element-2><a href=semantics.html#the-style-element>style</a></code> element can be useful in syndication or
+  for page-specific styles, but in general an external style sheet is likely to be more convenient
+  when the styles apply to multiple pages.</p>
+
+  <p>It is also worth noting that some elements that were previously presentational have been
+  redefined in this specification to be media-independent: <code id=presentational-markup:the-b-element><a href=semantics.html#the-b-element>b</a></code>, <code id=presentational-markup:the-i-element><a href=semantics.html#the-i-element>i</a></code>,
+  <code id=presentational-markup:the-hr-element><a href=semantics.html#the-hr-element>hr</a></code>, <code id=presentational-markup:the-s-element><a href=semantics.html#the-s-element>s</a></code>, <code id=presentational-markup:the-small-element><a href=semantics.html#the-small-element>small</a></code>, and <code id=presentational-markup:the-u-element><a href=semantics.html#the-u-element>u</a></code>.</p>
+
+
+  <h4 id=syntax-errors>1.12.2 Syntax errors<a href=#syntax-errors class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>The syntax of HTML is constrained to avoid a wide variety of problems.</p>
+
+  <dl><dt>Unintuitive error-handling behavior<dd>
+
+    <p>Certain invalid syntax constructs, when parsed, result in DOM trees that are highly
+    unintuitive.</p>
+
+    <div class=example>
+
+     <p>For example, the following markup fragment results in a DOM with an <code id=syntax-errors:the-hr-element><a href=semantics.html#the-hr-element>hr</a></code> element
+     that is an <em>earlier</em> sibling of the corresponding <code id=syntax-errors:the-table-element><a href=tables.html#the-table-element>table</a></code> element:</p>
+
+     <pre class=bad>&lt;table>&lt;hr>...</pre>
+
+    </div>
+
+   <dt>Errors with optional error recovery<dd>
+
+    <p>To allow user agents to be used in controlled environments without having to implement the
+    more bizarre and convoluted error handling rules, user agents are permitted to fail whenever
+    encountering a <a id=syntax-errors:parse-error href=syntax.html#parse-error>parse error</a>.</p>
+
+   <dt>Errors where the error-handling behavior is not compatible with streaming user agents<dd>
+
+    <p>Some error-handling behavior, such as the behavior for the <code>&lt;table>&lt;hr>...</code> example mentioned above, are incompatible with streaming
+    user agents (user agents that process HTML files in one pass, without storing state). To avoid
+    interoperability problems with such user agents, any syntax resulting in such behavior is
+    considered invalid.</p>
+
+   <dt>Errors that can result in infoset coercion<dd>
+
+    <p>When a user agent based on XML is connected to an HTML parser, it is possible that certain
+    invariants that XML enforces, such as element or attribute names never contain multiple colons,
+    will be violated by an HTML file. Handling this can require that the parser coerce the HTML DOM
+    into an XML-compatible infoset. Most syntax constructs that require such handling are considered
+    invalid. (Comments containing two consecutive hyphens, or ending with a hyphen, are exceptions
+    that are allowed in the HTML syntax.)</p>
+
+   <dt>Errors that result in disproportionately poor performance<dd>
+
+    <p>Certain syntax constructs can result in disproportionately poor performance. To discourage the
+    use of such constructs, they are typically made non-conforming.</p>
+
+    <div class=example>
+
+     <p>For example, the following markup results in poor performance, since all the unclosed
+     <code id=syntax-errors:the-i-element><a href=semantics.html#the-i-element>i</a></code> elements have to be reconstructed in each paragraph, resulting in progressively
+     more elements in each paragraph:</p>
+
+     <pre class=bad>&lt;p>&lt;i>She dreamt.
+&lt;p>&lt;i>She dreamt that she ate breakfast.
+&lt;p>&lt;i>Then lunch.
+&lt;p>&lt;i>And finally dinner.</pre>
+
+     <p>The resulting DOM for this fragment would be:</p>
+
+     <ul class=domTree><li class=t1><code id=syntax-errors:the-p-element><a href=semantics.html#the-p-element>p</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-2><a href=semantics.html#the-i-element>i</a></code><ul><li class=t3><code id=syntax-errors:text><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>She dreamt.</span></ul></ul><li class=t1><code id=syntax-errors:the-p-element-2><a href=semantics.html#the-p-element>p</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-3><a href=semantics.html#the-i-element>i</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-4><a href=semantics.html#the-i-element>i</a></code><ul><li class=t3><code id=syntax-errors:text-2><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>She dreamt that she ate breakfast.</span></ul></ul></ul><li class=t1><code id=syntax-errors:the-p-element-3><a href=semantics.html#the-p-element>p</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-5><a href=semantics.html#the-i-element>i</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-6><a href=semantics.html#the-i-element>i</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-7><a href=semantics.html#the-i-element>i</a></code><ul><li class=t3><code id=syntax-errors:text-3><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>Then lunch.</span></ul></ul></ul></ul><li class=t1><code id=syntax-errors:the-p-element-4><a href=semantics.html#the-p-element>p</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-8><a href=semantics.html#the-i-element>i</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-9><a href=semantics.html#the-i-element>i</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-10><a href=semantics.html#the-i-element>i</a></code><ul><li class=t1><code id=syntax-errors:the-i-element-11><a href=semantics.html#the-i-element>i</a></code><ul><li class=t3><code id=syntax-errors:text-4><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>#text</a></code>: <span>And finally dinner.</span></ul></ul></ul></ul></ul></ul>
+
+    </div>
+
+   <dt>Errors involving fragile syntax constructs<dd>
+
+    <p>There are syntax constructs that, for historical reasons, are relatively fragile. To help
+    reduce the number of users who accidentally run into such problems, they are made
+    non-conforming.</p>
+
+    <div class=example>
+
+     <p>For example, the parsing of certain named character references in attributes happens even
+     with the closing semicolon being omitted. It is safe to include an ampersand followed by
+     letters that do not form a named character reference, but if the letters are changed to a
+     string that <em>does</em> form a named character reference, they will be interpreted as that
+     character instead.</p>
+
+     <p>In this fragment, the attribute's value is "<code>?bill&amp;ted</code>":</p>
+
+     <pre class=bad>&lt;a href="?bill&amp;ted">Bill and Ted&lt;/a></pre>
+
+     <p>In the following fragment, however, the attribute's value is actually "<code>?art©</code>", <em>not</em> the intended "<code>?art&amp;copy</code>",
+     because even without the final semicolon, "<code>&amp;copy</code>" is handled the same
+     as "<code>&amp;copy;</code>" and thus gets interpreted as "<code>©</code>":</p>
+
+     <pre class=bad>&lt;a href="?art&amp;copy">Art and Copy&lt;/a></pre>
+
+     <p>To avoid this problem, all named character references are required to end with a semicolon,
+     and uses of named character references without a semicolon are flagged as errors.</p>
+
+     <p>Thus, the correct way to express the above cases is as
+     follows:</p>
+
+     <pre>&lt;a href="?bill&amp;ted">Bill and Ted&lt;/a> &lt;!-- &amp;ted is ok, since it's not a named character reference --></pre>
+     <pre>&lt;a href="?art&amp;amp;copy">Art and Copy&lt;/a> &lt;!-- the &amp; has to be escaped, since &amp;copy <em>is</em> a named character reference --></pre>
+
+    </div>
+
+   <dt>Errors involving known interoperability problems in legacy user agents<dd>
+
+    <p>Certain syntax constructs are known to cause especially subtle or serious problems in legacy
+    user agents, and are therefore marked as non-conforming to help authors avoid them.</p>
+
+    <div class=example>
+
+     <p>For example, this is why the U+0060 GRAVE ACCENT character (`) is not allowed in unquoted
+     attributes. In certain legacy user agents,  it is sometimes treated as a
+     quote character.</p>
+
+    </div>
+
+    <div class=example>
+
+     <p>Another example of this is the DOCTYPE, which is required to trigger <a id=syntax-errors:no-quirks-mode href=https://dom.spec.whatwg.org/#concept-document-no-quirks data-x-internal=no-quirks-mode>no-quirks
+     mode</a>, because the behavior of legacy user agents in <a id=syntax-errors:quirks-mode href=https://dom.spec.whatwg.org/#concept-document-quirks data-x-internal=quirks-mode>quirks mode</a> is often
+     largely undocumented.</p>
+
+    </div>
+
+   <dt>Errors that risk exposing authors to security attacks<dd>
+
+    <p>Certain restrictions exist purely to avoid known security problems.</p>
+
+    <div class=example>
+
+     <p>For example, the restriction on using UTF-7 exists purely to avoid authors falling prey to a
+     known cross-site-scripting attack using UTF-7. <a href=references.html#refsUTF7>[UTF7]</a></p>
+
+    </div>
+
+   <dt>Cases where the author's intent is unclear<dd>
+
+    <p>Markup where the author's intent is very unclear is often made non-conforming. Correcting
+    these errors early makes later maintenance easier.</p>
+
+    <div class=example>
+
+     <p>For example, it is unclear whether the author intended the following to be an
+     <code id=syntax-errors:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h1</a></code> heading or an <code id=syntax-errors:the-h1,-h2,-h3,-h4,-h5,-and-h6-elements-2><a href=semantics.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements>h2</a></code> heading:</p>
+
+     <pre class=bad>&lt;h1>Contact details&lt;/h2></pre>
+
+    </div>
+
+   <dt>Cases that are likely to be typos<dd>
+
+    <p>When a user makes a simple typo, it is helpful if the error can be caught early, as this can
+    save the author a lot of debugging time. This specification therefore usually considers it an
+    error to use element names, attribute names, and so forth, that do not match the names defined
+    in this specification.</p>
+
+    <div class=example>
+
+     <p>For example, if the author typed <code>&lt;capton></code> instead of <code>&lt;caption></code>, this would be flagged as an error and the author could correct
+     the typo immediately.</p>
+
+    </div>
+
+   <dt>Errors that could interfere with new syntax in the future<dd>
+
+    <p>In order to allow the language syntax to be extended in the future, certain otherwise
+    harmless features are disallowed.</p>
+
+    <div class=example>
+
+     <p>For example, "attributes" in end tags are ignored currently, but they are invalid, in case a
+     future change to the language makes use of that syntax feature without conflicting with
+     already-deployed (and valid!) content.</p>
+
+    </div>
+
+   </dl>
+
+  <p>Some authors find it helpful to be in the practice of always quoting all attributes and always
+  including all optional tags, preferring the consistency derived from such custom over the minor
+  benefits of terseness afforded by making use of the flexibility of the HTML syntax. To aid such
+  authors, conformance checkers can provide modes of operation wherein such conventions are
+  enforced.</p>
+
+
+
+  <h4 id=restrictions-on-content-models-and-on-attribute-values>1.12.3 Restrictions on content models and on attribute values<a href=#restrictions-on-content-models-and-on-attribute-values class=self-link></a></h4>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>Beyond the syntax of the language, this specification also places restrictions on how elements
+  and attributes can be specified. These restrictions are present for similar reasons:</p>
+
+  <dl><dt>Errors involving content with dubious semantics<dd>
+
+    <p>To avoid misuse of elements with defined meanings, content models are defined that restrict
+    how elements can be nested when such nestings would be of dubious value.</p>
+
+    <p class=example>For example, this specification disallows nesting a <code id=restrictions-on-content-models-and-on-attribute-values:the-section-element><a href=semantics.html#the-section-element>section</a></code>
+    element inside a <code id=restrictions-on-content-models-and-on-attribute-values:the-kbd-element><a href=semantics.html#the-kbd-element>kbd</a></code> element, since it is highly unlikely for an author to indicate
+    that an entire section should be keyed in.</p>
+
+   <dt>Errors that involve a conflict in expressed semantics<dd>
+
+    <p>Similarly, to draw the author's attention to mistakes in the use of elements, clear
+    contradictions in the semantics expressed are also considered conformance errors.</p>
+
+    <div class=example>
+
+     <p>In the fragments below, for example, the semantics are nonsensical: a separator cannot
+     simultaneously be a cell, nor can a radio button be a progress bar.</p>
+
+     <pre class=bad>&lt;hr role="cell"></pre>
+     <pre class=bad>&lt;input type=radio role=progressbar></pre>
+
+    </div>
+
+    <p class=example>Another example is the restrictions on the content models of the
+    <code id=restrictions-on-content-models-and-on-attribute-values:the-ul-element><a href=semantics.html#the-ul-element>ul</a></code> element, which only allows <code id=restrictions-on-content-models-and-on-attribute-values:the-li-element><a href=semantics.html#the-li-element>li</a></code> element children. Lists by definition
+    consist just of zero or more list items, so if a <code id=restrictions-on-content-models-and-on-attribute-values:the-ul-element-2><a href=semantics.html#the-ul-element>ul</a></code> element contains something
+    other than an <code id=restrictions-on-content-models-and-on-attribute-values:the-li-element-2><a href=semantics.html#the-li-element>li</a></code> element, it's not clear what was meant.</p>
+
+   <dt>Cases where the default styles are likely to lead to confusion<dd>
+
+    <p>Certain elements have default styles or behaviors that make certain combinations likely to
+    lead to confusion. Where these have equivalent alternatives without this problem, the confusing
+    combinations are disallowed.</p>
+
+    <p class=example>For example, <code id=restrictions-on-content-models-and-on-attribute-values:the-div-element><a href=semantics.html#the-div-element>div</a></code> elements are rendered as <a href=https://drafts.csswg.org/css2/visuren.html#x9 id=restrictions-on-content-models-and-on-attribute-values:block-box data-x-internal=block-box>block boxes</a>, and <code id=restrictions-on-content-models-and-on-attribute-values:the-span-element><a href=semantics.html#the-span-element>span</a></code> elements as <a href=https://drafts.csswg.org/css2/visuren.html#inline-box id=restrictions-on-content-models-and-on-attribute-values:inline-box data-x-internal=inline-box>inline boxes</a>. Putting a <a id=restrictions-on-content-models-and-on-attribute-values:block-box-2 href=https://drafts.csswg.org/css2/visuren.html#x9 data-x-internal=block-box>block box</a> in an
+    <a id=restrictions-on-content-models-and-on-attribute-values:inline-box-2 href=https://drafts.csswg.org/css2/visuren.html#inline-box data-x-internal=inline-box>inline box</a> is unnecessarily confusing; since either nesting just <code id=restrictions-on-content-models-and-on-attribute-values:the-div-element-2><a href=semantics.html#the-div-element>div</a></code>
+    elements, or nesting just <code id=restrictions-on-content-models-and-on-attribute-values:the-span-element-2><a href=semantics.html#the-span-element>span</a></code> elements, or nesting <code id=restrictions-on-content-models-and-on-attribute-values:the-span-element-3><a href=semantics.html#the-span-element>span</a></code> elements
+    inside <code id=restrictions-on-content-models-and-on-attribute-values:the-div-element-3><a href=semantics.html#the-div-element>div</a></code> elements all serve the same purpose as nesting a <code id=restrictions-on-content-models-and-on-attribute-values:the-div-element-4><a href=semantics.html#the-div-element>div</a></code>
+    element in a <code id=restrictions-on-content-models-and-on-attribute-values:the-span-element-4><a href=semantics.html#the-span-element>span</a></code> element, but only the latter involves a <a id=restrictions-on-content-models-and-on-attribute-values:block-box-3 href=https://drafts.csswg.org/css2/visuren.html#x9 data-x-internal=block-box>block box</a> in
+    an <a id=restrictions-on-content-models-and-on-attribute-values:inline-box-3 href=https://drafts.csswg.org/css2/visuren.html#inline-box data-x-internal=inline-box>inline box</a>, the latter combination is disallowed.</p>
+
+    <p class=example>Another example would be the way <a id=restrictions-on-content-models-and-on-attribute-values:interactive-content-2 href=dom.html#interactive-content-2>interactive content</a> cannot be
+    nested. For example, a <code id=restrictions-on-content-models-and-on-attribute-values:the-button-element><a href=forms.html#the-button-element>button</a></code> element cannot contain a <code id=restrictions-on-content-models-and-on-attribute-values:the-textarea-element><a href=forms.html#the-textarea-element>textarea</a></code>
+    element. This is because the default behavior of such nesting interactive elements would be
+    highly confusing to users. Instead of nesting these elements, they can be placed side by
+    side.</p>
+
+   <dt>Errors that indicate a likely misunderstanding of the specification<dd>
+
+    <p>Sometimes, something is disallowed because allowing it would likely cause author
+    confusion.</p>
+
+    <p class=example>For example, setting the <code id=restrictions-on-content-models-and-on-attribute-values:attr-fe-disabled><a href=forms.html#attr-fe-disabled>disabled</a></code>
+    attribute to the value "<code>false</code>" is disallowed, because despite the
+    appearance of meaning that the element is enabled, it in fact means that the element is
+    <em>disabled</em> (what matters for implementations is the presence of the attribute, not its
+    value).</p>
+
+   <dt>Errors involving limits that have been imposed merely to simplify the language<dd>
+
+    <p>Some conformance errors simplify the language that authors need to learn.</p>
+
+    <p class=example>For example, the <code id=restrictions-on-content-models-and-on-attribute-values:the-area-element><a href=embedded-content.html#the-area-element>area</a></code> element's <code id=restrictions-on-content-models-and-on-attribute-values:attr-area-shape><a href=embedded-content.html#attr-area-shape>shape</a></code> attribute, despite accepting both <code id=restrictions-on-content-models-and-on-attribute-values:attr-area-shape-keyword-circ><a href=embedded-content.html#attr-area-shape-keyword-circ>circ</a></code> and <code id=restrictions-on-content-models-and-on-attribute-values:attr-area-shape-keyword-circle><a href=embedded-content.html#attr-area-shape-keyword-circle>circle</a></code> values in practice as synonyms, disallows
+    the use of the <code id=restrictions-on-content-models-and-on-attribute-values:attr-area-shape-keyword-circ-2><a href=embedded-content.html#attr-area-shape-keyword-circ>circ</a></code> value, so as to simplify
+    tutorials and other learning aids. There would be no benefit to allowing both, but it would
+    cause extra confusion when teaching the language.</p>
+
+   <dt>Errors that involve peculiarities of the parser<dd>
+
+    <p>Certain elements are parsed in somewhat eccentric ways (typically for historical reasons),
+    and their content model restrictions are intended to avoid exposing the author to these
+    issues.</p>
+
+    <div class=example>
+
+     <p>For example, a <code id=restrictions-on-content-models-and-on-attribute-values:the-form-element><a href=forms.html#the-form-element>form</a></code> element isn't allowed inside <a id=restrictions-on-content-models-and-on-attribute-values:phrasing-content-2 href=dom.html#phrasing-content-2>phrasing content</a>,
+     because when parsed as HTML, a <code id=restrictions-on-content-models-and-on-attribute-values:the-form-element-2><a href=forms.html#the-form-element>form</a></code> element's start tag will imply a
+     <code id=restrictions-on-content-models-and-on-attribute-values:the-p-element><a href=semantics.html#the-p-element>p</a></code> element's end tag. Thus, the following markup results in two <a href=dom.html#paragraph id=restrictions-on-content-models-and-on-attribute-values:paragraph>paragraphs</a>, not one:</p>
+
+     <pre>&lt;p>Welcome. &lt;form>&lt;label>Name:&lt;/label> &lt;input>&lt;/form></pre>
+
+     <p>It is parsed exactly like the following:</p>
+
+     <pre>&lt;p>Welcome. &lt;/p>&lt;form>&lt;label>Name:&lt;/label> &lt;input>&lt;/form></pre>
+
+    </div>
+
+   <dt>Errors that would likely result in scripts failing in hard-to-debug ways<dd>
+
+    <p>Some errors are intended to help prevent script problems that would be hard to debug.</p>
+
+    <p class=example>This is why, for instance, it is non-conforming to have two <code id=restrictions-on-content-models-and-on-attribute-values:the-id-attribute><a href=dom.html#the-id-attribute>id</a></code> attributes with the same value. Duplicate IDs lead to the wrong
+    element being selected, with sometimes disastrous effects whose cause is hard to determine.</p>
+
+   <dt>Errors that waste authoring time<dd>
+
+    <p>Some constructs are disallowed because historically they have been the cause of a lot of
+    wasted authoring time, and by encouraging authors to avoid making them, authors can save time in
+    future efforts.</p>
+
+    <p class=example>For example, a <code id=restrictions-on-content-models-and-on-attribute-values:the-script-element><a href=scripting.html#the-script-element>script</a></code> element's <code id=restrictions-on-content-models-and-on-attribute-values:attr-script-src><a href=scripting.html#attr-script-src>src</a></code> attribute causes the element's contents to be ignored.
+    However, this isn't obvious, especially if the element's contents appear to be executable script
+    — which can lead to authors spending a lot of time trying to debug the inline script
+    without realizing that it is not executing. To reduce this problem, this specification makes it
+    non-conforming to have executable script in a <code id=restrictions-on-content-models-and-on-attribute-values:the-script-element-2><a href=scripting.html#the-script-element>script</a></code> element when the <code id=restrictions-on-content-models-and-on-attribute-values:attr-script-src-2><a href=scripting.html#attr-script-src>src</a></code> attribute is present. This means that authors who are
+    validating their documents are less likely to waste time with this kind of mistake.</p>
+
+   <dt>Errors that involve areas that affect authors migrating between the HTML and XML
+   syntaxes<dd>
+
+    <p>Some authors like to write files that can be interpreted as both XML and HTML with similar
+    results. Though this practice is discouraged in general due to the myriad of subtle
+    complications involved (especially when involving scripting, styling, or any kind of automated
+    serialization), this specification has a few restrictions intended to at least somewhat mitigate
+    the difficulties. This makes it easier for authors to use this as a transitionary step when
+    migrating between the HTML and XML syntaxes.</p>
+
+    <p class=example>For example, there are somewhat complicated rules surrounding the <code id=restrictions-on-content-models-and-on-attribute-values:attr-lang><a href=dom.html#attr-lang>lang</a></code> and <code id=restrictions-on-content-models-and-on-attribute-values:attr-xml-lang><a href=dom.html#attr-xml-lang>xml:lang</a></code> attributes
+    intended to keep the two synchronized.</p>
+
+    <p class=example>Another example would be the restrictions on the values of <code>xmlns</code> attributes in the HTML serialization, which are intended to ensure that
+    elements in conforming documents end up in the same namespaces whether processed as HTML or
+    XML.</p>
+
+   <dt>Errors that involve areas reserved for future expansion<dd>
+
+    <p>As with the restrictions on the syntax intended to allow for new syntax in future revisions
+    of the language, some restrictions on the content models of elements and values of attributes
+    are intended to allow for future expansion of the HTML vocabulary.</p>
+
+    <p class=example>For example, limiting the values of the <code id=restrictions-on-content-models-and-on-attribute-values:attr-hyperlink-target><a href=semantics.html#attr-hyperlink-target>target</a></code> attribute that start with an U+005F LOW LINE
+    character (_) to only specific predefined values allows new predefined values to be introduced
+    at a future time without conflicting with author-defined values.</p>
+
+   <dt>Errors that indicate a mis-use of other specifications<dd>
+
+    <p>Certain restrictions are intended to support the restrictions made by other
+    specifications.</p>
+
+    <p class=example>For example, requiring that attributes that take media query lists use only
+    <em>valid</em> media query lists reinforces the importance of following the conformance rules of
+    that specification.</p>
+
+   </dl>
+
+
+
+  <h3 id=suggested-reading>1.13 Suggested reading<a href=#suggested-reading class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>The following documents might be of interest to readers of this specification.</p>
+
+  <dl><dt><cite>Character Model for the World Wide Web 1.0: Fundamentals</cite> <a href=references.html#refsCHARMOD>[CHARMOD]</a><dd><blockquote><p>This Architectural Specification provides authors of specifications, software
+   developers, and content developers with a common reference for interoperable text manipulation on
+   the World Wide Web, building on the Universal Character Set, defined jointly by the Unicode
+   Standard and ISO/IEC 10646. Topics addressed include use of the terms 'character', 'encoding' and
+   'string', a reference processing model, choice and identification of character encodings,
+   character escaping, and string indexing.</blockquote><dt><cite>Unicode Security Considerations</cite> <a href=references.html#refsUTR36>[UTR36]</a><dd><blockquote><p>Because Unicode contains such a large number of characters and incorporates
+   the varied writing systems of the world, incorrect usage can expose programs or systems to
+   possible security attacks. This is especially important as more and more products are
+   internationalized. This document describes some of the security considerations that programmers,
+   system analysts, standards developers, and users should take into account, and provides specific
+   recommendations to reduce the risk of problems.</blockquote><dt><cite>Web Content Accessibility Guidelines (WCAG) 2.0</cite> <a href=references.html#refsWCAG>[WCAG]</a><dd><blockquote><p>Web Content Accessibility Guidelines (WCAG) 2.0 covers a wide range of
+   recommendations for making Web content more accessible. Following these guidelines will make
+   content accessible to a wider range of people with disabilities, including blindness and low
+   vision, deafness and hearing loss, learning disabilities, cognitive limitations, limited
+   movement, speech disabilities, photosensitivity and combinations of these. Following these
+   guidelines will also often make your Web content more usable to users in
+   general.</blockquote><dt><cite>Authoring Tool Accessibility Guidelines (ATAG) 2.0</cite> <a href=references.html#refsATAG>[ATAG]</a><dd><blockquote><p>This specification provides guidelines for designing Web content
+   authoring tools that are more accessible for people with disabilities. An authoring tool that
+   conforms to these guidelines will promote accessibility by providing an accessible user interface
+   to authors with disabilities as well as by enabling, supporting, and promoting the production of
+   accessible Web content by all authors.</blockquote><dt><cite>User Agent Accessibility Guidelines (UAAG) 2.0</cite> <a href=references.html#refsUAAG>[UAAG]</a><dd><blockquote><p>This document provides guidelines for designing user agents that
+   lower barriers to Web accessibility for people with disabilities. User agents include browsers
+   and other types of software that retrieve and render Web content. A user agent that conforms to
+   these guidelines will promote accessibility through its own user interface and through other
+   internal facilities, including its ability to communicate with other technologies (especially
+   assistive technologies). Furthermore, all users, not just users with disabilities, should find
+   conforming user agents to be more usable.</blockquote></dl>
+
+
+
+  <nav><a href=index.html>Table of Contents</a> — <a href=infrastructure.html>2 Common infrastructure →</a></nav>

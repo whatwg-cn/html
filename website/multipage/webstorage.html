@@ -1,0 +1,700 @@
+<!DOCTYPE html><html class=split lang=en-US-x-hixie><script src=/link-fixup.js defer=""></script><meta charset=utf-8><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name=viewport><title>HTML Standard</title><meta content=#3c790a name=theme-color><link rel=stylesheet href=https://resources.whatwg.org/standard.css><script defer="" src=https://resources.whatwg.org/dfn.js></script><script>
+   function toggleStatus(div) {
+     div.parentNode.classList.toggle('wrapped');
+   }
+  </script><link rel=icon href=https://resources.whatwg.org/logo.svg><style>
+   [hidden] { display: none; }
+
+   .bad, .bad *:not(.X\58X) { color: gray; border-color: gray; background: transparent; }
+
+   .fingerprint { position: absolute; right: 0; z-index: 5; }
+   @media (max-width: 767px) {
+     .fingerprint { max-width: 35px; }
+   }
+
+   .status { min-height: 0.6em; font: 1em sans-serif; width: 9em; padding: 0.3em; position: absolute; z-index: 8; right: 0.3em; background: #EEE; color: black; box-shadow: 0 0 3px #999; overflow: hidden; margin: -2em 0 0 0; border-collapse: initial; border-spacing: initial; }
+   .status:hover { z-index: 9; }
+   .status:focus-within { z-index: 9; }
+   .status.wrapped > :not(input) { display: none; }
+   .status > input { position: absolute; left: 0; top: 0; width: 1em; height: 1em; border: none; background: transparent; padding: 0; margin: 0; }
+   .status > p { font-size: 0.6em; margin: 0; padding: 0; }
+   .status > p + p { padding-top: 0.5em; }
+   .status > p > strong { margin-left: 1.5em; }
+   .status > .support { display: block; }
+   .status > .support > span { padding: 0.2em 0; display: block; display: table; }
+   .status > .support > span.partial { color: #666666; filter: grayscale(50%); }
+   .status > .support > span.no { color: #CCCCCC; filter: grayscale(100%); }
+   .status > .support > span.no::before { opacity: 0.5; }
+   .status > .support > span:first-of-type { padding-top: 0.5em; }
+   .status > .support > span > span { padding: 0 0.5em; display: table-cell; vertical-align: top; }
+   .status > .support > span > span:first-child { width: 100%; }
+   .status > .support > span > span:last-child { width: 100%; white-space: pre; padding: 0; }
+   .status > .support > span::before { content: ' '; display: table-cell; min-width: 1.5em; height: 1.5em; background: no-repeat center center; background-size: contain; text-align: right; font-size: 0.75em; font-weight: bold; }
+   .status > .support > .and_chr::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .and_ff::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .and_uc::before { background-image: url(https://resources.whatwg.org/browser-logos/uc.png); } /* UC Browser for Android */
+   .status > .support > .android::before { background-image: url(https://resources.whatwg.org/browser-logos/android.svg); }
+   .status > .support > .bb::before { background-image: url(https://resources.whatwg.org/browser-logos/bb.jpg); } /* Blackberry Browser */
+   .status > .support > .chrome::before { background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg); }
+   .status > .support > .edge::before { background-image: url(https://resources.whatwg.org/browser-logos/edge.svg); }
+   .status > .support > .firefox::before { background-image: url(https://resources.whatwg.org/browser-logos/firefox.png); }
+   .status > .support > .ie::before { background-image: url(https://resources.whatwg.org/browser-logos/ie.png); }
+   .status > .support > .ie_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/ie-mobile.svg); }
+   .status > .support > .ios_saf::before { background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg); }
+   .status > .support > .op_mini::before { background-image: url(https://resources.whatwg.org/browser-logos/opera-mini.png); }
+   .status > .support > .op_mob::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .opera::before { background-image: url(https://resources.whatwg.org/browser-logos/opera.png); }
+   .status > .support > .safari::before { background-image: url(https://resources.whatwg.org/browser-logos/safari.png); }
+   .status > .support > .samsung::before { background-image: url(https://resources.whatwg.org/browser-logos/samsung.png); }
+   .status > .caniuse { text-align: right; font-style: italic; }
+   .status > .caniuse + p { margin-top: 0.5em; border-top: 1px solid silver; }
+
+   @media (max-width: 767px) {
+     .status { right: -9em; }
+   }
+
+   .applies .yes, .yesno .yes { background: yellow; }
+   .yesno .yes, .yesno .no { text-align: center; }
+
+   .applies thead th > * { display: block; }
+   .applies thead code { display: block; }
+   .applies td { text-align: center; }
+
+   .matrix, .matrix td { border: hidden; text-align: right; }
+   .matrix { margin-left: 2em; }
+
+   .vertical-summary-table tr > th[rowspan="2"]:first-child + th,
+   .vertical-summary-table tr > td[rowspan="2"]:first-child + td { border-bottom: hidden; }
+
+   .dice-example { border-collapse: collapse; border-style: hidden solid solid hidden; border-width: thin; margin-left: 3em; }
+   .dice-example caption { width: 30em; font-size: smaller; font-style: italic; padding: 0.75em 0; text-align: left; }
+   .dice-example td, .dice-example th { border: solid thin; width: 1.35em; height: 1.05em; text-align: center; padding: 0; }
+
+   td.eg { border-width: thin; text-align: center; }
+
+   #table-example-1 { border: solid thin; border-collapse: collapse; margin-left: 3em; }
+   #table-example-1 caption { padding-bottom: 0.5em; }
+   #table-example-1 thead, #table-example-1 tbody { border: none; }
+   #table-example-1 th, #table-example-1 td { border: solid thin; }
+   #table-example-1 th { font-weight: normal; }
+   #table-example-1 td { border-style: none solid; vertical-align: top; }
+   #table-example-1 th { padding: 0.5em; vertical-align: middle; text-align: center; }
+   #table-example-1 tbody tr:first-child td { padding-top: 0.5em; }
+   #table-example-1 tbody tr:last-child td { padding-bottom: 1.5em; }
+   #table-example-1 tbody td:first-child { padding-left: 2.5em; padding-right: 0; width: 9em; }
+   #table-example-1 tbody td:first-child::after { content: leader(". "); }
+   #table-example-1 tbody td { padding-left: 2em; padding-right: 2em; }
+   #table-example-1 tbody td:first-child + td { width: 10em; }
+   #table-example-1 tbody td:first-child + td ~ td { width: 2.5em; }
+   #table-example-1 tbody td:first-child + td + td + td ~ td { width: 1.25em; }
+
+   .apple-table-examples { border: none; border-collapse: separate; border-spacing: 1.5em 0em; width: 40em; margin-left: 3em; }
+   .apple-table-examples * { font-family: "Times", serif; }
+   .apple-table-examples td, .apple-table-examples th { border: none; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+   .apple-table-examples tbody th:first-child { border-left: none; width: 100%; }
+   .apple-table-examples thead th:first-child ~ th { font-size: smaller; font-weight: bolder; border-bottom: solid 2px; text-align: center; }
+   .apple-table-examples tbody th::after, .apple-table-examples tfoot th::after { content: leader(". ") }
+   .apple-table-examples tbody th, .apple-table-examples tfoot th { font: inherit; text-align: left; }
+   .apple-table-examples td { text-align: right; vertical-align: top; }
+   .apple-table-examples.e1 tbody tr:last-child td { border-bottom: solid 1px; }
+   .apple-table-examples.e1 tbody + tbody tr:last-child td { border-bottom: double 3px; }
+   .apple-table-examples.e2 th[scope=row] { padding-left: 1em; }
+   .apple-table-examples sup { line-height: 0; }
+
+   .three-column-nowrap tr > td:first-child,
+   .three-column-nowrap tr > td:first-child + td,
+   .three-column-nowrap tr > td:first-child + td + td { white-space: nowrap; }
+
+   .details-example img { vertical-align: top; }
+
+   #base64-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 6em;
+     column-count: 5;
+     column-gap: 1em;
+     -moz-column-width: 6em;
+     -moz-column-count: 5;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 6em;
+     -webkit-column-count: 5;
+     -webkit-column-gap: 1em;
+   }
+   #base64-table thead { display: none; }
+   #base64-table * { border: none; }
+   #base64-table tbody td:first-child:after { content: ':'; }
+   #base64-table tbody td:last-child { text-align: right; }
+
+   #named-character-references-table {
+     white-space: nowrap;
+     font-size: 0.6em;
+     column-width: 30em;
+     column-gap: 1em;
+     -moz-column-width: 30em;
+     -moz-column-gap: 1em;
+     -webkit-column-width: 30em;
+     -webkit-column-gap: 1em;
+   }
+   #named-character-references-table > table > tbody > tr > td:first-child + td,
+   #named-character-references-table > table > tbody > tr > td:last-child { text-align: center; }
+   #named-character-references-table > table > tbody > tr > td:last-child:hover > span { position: absolute; top: auto; left: auto; margin-left: 0.5em; line-height: 1.2; font-size: 5em; border: outset; padding: 0.25em 0.5em; background: white; width: 1.25em; height: auto; text-align: center; }
+   #named-character-references-table > table > tbody > tr#entity-CounterClockwiseContourIntegral > td:first-child { font-size: 0.5em; }
+
+   .glyph.control { color: red; }
+
+   #table-example-1 * { font-family: "Essays1743", serif; line-height: 1.01em; }
+   @font-face {
+     font-family: 'Essays1743';
+     src: url('/fonts/Essays1743.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-weight: bold;
+     src: url('/fonts/Essays1743-Bold.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     src: url('/fonts/Essays1743-Italic.ttf');
+   }
+   @font-face {
+     font-family: 'Essays1743';
+     font-style: italic;
+     font-weight: bold;
+     src: url('/fonts/Essays1743-BoldItalic.ttf');
+   }
+
+   @media (max-width: 767px) {
+     #abstractimg { width: 100%; }
+   }
+   #abstractimg, #abstractimg text { font: inherit; }
+   #abstractimg rect { fill: #424242; }
+   #abstractimg text { fill: #ffffff; font-size: 18px }
+   #abstractimg .top { word-spacing: 50px; text-anchor: middle; }
+   #abstractimg .left, #abstractimg .bottom { word-spacing: 12px; }
+   #abstractimg .right { font-size: 25px; }
+  </style>
+  <script data-file-issue-url=https://github.com/whatwg/html/issues/new src=https://resources.whatwg.org/file-issue.js async=""></script>
+  <header id=head class="head with-buttons">
+   <p><a href=https://whatwg.org/ class=logo><img alt=WHATWG src=https://resources.whatwg.org/logo.svg width=100 height=100></a></p>
+   <hgroup><h1 class=allcaps>HTML</h1><h2 id=living-standard class="no-num no-toc">Living Standard — Last Updated <span class=pubdate>4 December 2016</span></h2></hgroup>
+   
+   
+  </header>
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <nav><a href=workers.html>← 10 Web workers</a> — <a href=index.html>Table of Contents</a> — <a href=syntax.html>12 The HTML syntax →</a></nav><ol class=toc><li id=toc-webstorage><a href=webstorage.html#webstorage>11 Web storage</a><ol><li><a href=webstorage.html#introduction-15>11.1 Introduction</a><li><a href=webstorage.html#storage>11.2 The API</a><ol><li><a href=webstorage.html#the-storage-interface>11.2.1 The <code>Storage</code> interface</a><li><a href=webstorage.html#the-sessionstorage-attribute>11.2.2 The <code>sessionStorage</code> attribute</a><li><a href=webstorage.html#the-localstorage-attribute>11.2.3 The <code>localStorage</code> attribute</a><li><a href=webstorage.html#the-storage-event>11.2.4 The <code>storage</code> event</a><ol><li><a href=webstorage.html#the-storageevent-interface>11.2.4.1 The <code>StorageEvent</code> interface</a></ol></ol><li><a href=webstorage.html#disk-space-2>11.3 Disk space</a><li><a href=webstorage.html#privacy>11.4 Privacy</a><ol><li><a href=webstorage.html#user-tracking>11.4.1 User tracking</a><li><a href=webstorage.html#sensitivity-of-data>11.4.2 Sensitivity of data</a></ol><li><a href=webstorage.html#security-storage>11.5 Security</a><ol><li><a href=webstorage.html#dns-spoofing-attacks>11.5.1 DNS spoofing attacks</a><li><a href=webstorage.html#cross-directory-attacks>11.5.2 Cross-directory attacks</a><li><a href=webstorage.html#implementation-risks>11.5.3 Implementation risks</a></ol></ol></ol><h2 id=webstorage>11 Web storage<a href=#webstorage class=self-link></a></h2>
+
+  <h3 id=introduction-15>11.1 Introduction<a href=#introduction-15 class=self-link></a></h3>
+
+  <p><i>This section is non-normative.</i></p>
+
+  <p>This specification introduces two related mechanisms, similar to HTTP session cookies, for
+  storing name-value pairs on the client side. <a href=references.html#refsCOOKIES>[COOKIES]</a></p>
+
+  <p>The first is designed for scenarios where the user is carrying out a single transaction, but
+  could be carrying out multiple transactions in different windows at the same time.</p>
+
+  <p>Cookies don't really handle this case well. For example, a user could be buying plane tickets
+  in two different windows, using the same site. If the site used cookies to keep track of which
+  ticket the user was buying, then as the user clicked from page to page in both windows, the ticket
+  currently being purchased would "leak" from one window to the other, potentially causing the user
+  to buy two tickets for the same flight without really noticing.</p>
+
+  <p>To address this, this specification introduces the <code id=introduction-15:dom-sessionstorage><a href=#dom-sessionstorage>sessionStorage</a></code> IDL attribute. Sites can add data to the session
+  storage, and it will be accessible to any page from the same site opened in that window.</p> 
+
+  <div class=example>
+
+   <p>For example, a page could have a checkbox that the user ticks to
+   indicate that they want insurance:</p>
+
+   <pre>&lt;label>
+ &lt;input type="checkbox" onchange="sessionStorage.insurance = checked ? 'true' : ''">
+  I want insurance on this trip.
+&lt;/label></pre>
+
+   <p>A later page could then check, from script, whether the user had checked the checkbox or
+   not:</p>
+
+   <pre>if (sessionStorage.insurance) { ... }</pre>
+
+   <p>If the user had multiple windows opened on the site, each one would have its own individual
+   copy of the session storage object.</p>
+
+  </div>
+
+  
+
+  <p>The second storage mechanism is designed for storage that spans multiple windows, and lasts
+  beyond the current session. In particular, Web applications may wish to store megabytes of user
+  data, such as entire user-authored documents or a user's mailbox, on the client side for
+  performance reasons.</p>
+
+  <p>Again, cookies do not handle this case well, because they are transmitted with every
+  request.</p>
+
+  <p>The <code id=introduction-15:dom-localstorage><a href=#dom-localstorage>localStorage</a></code> IDL attribute is used to access a page's
+  local storage area.</p>
+
+  <div class=example>
+
+   <p>The site at example.com can display a count of how many times the user has loaded its page by
+   putting the following at the bottom of its page:</p>
+
+   <pre>&lt;p>
+  You have viewed this page
+  &lt;span id="count">an untold number of&lt;/span>
+  time(s).
+&lt;/p>
+&lt;script>
+  if (!localStorage.pageLoadCount)
+    localStorage.pageLoadCount = 0;
+  localStorage.pageLoadCount = parseInt(localStorage.pageLoadCount) + 1;
+  document.getElementById('count').textContent = localStorage.pageLoadCount;
+&lt;/script></pre>
+
+  </div>
+
+  <p>Each site has its own separate storage area.</p>
+
+
+
+
+  <h3 id=storage>11.2 The API<a href=#storage class=self-link></a></h3><div class=status><input onclick=toggleStatus(this) value=⋰ type=button><p class=support><strong>Support:</strong> <span class="and_chr yes"><span>Chrome for Android</span> <span>54+</span></span><span class="chrome yes"><span>Chrome</span> <span>4+</span></span><span class="ios_saf yes"><span>iOS Safari</span> <span>3.2+</span></span><span class="and_uc yes"><span>UC Browser for Android</span> <span>11+</span></span><span class="firefox yes"><span>Firefox</span> <span>3.5+</span></span><span class="op_mini no"><span>Opera Mini</span> <span>None</span></span><span class="ie yes"><span>IE</span> <span>8+</span></span><span class="samsung yes"><span>Samsung Internet</span> <span>4+</span></span><span class="android yes"><span>Android Browser</span> <span>2.1+</span></span><span class="safari yes"><span>Safari</span> <span>4+</span></span><span class="edge yes"><span>Edge</span> <span>12+</span></span><span class="opera yes"><span>Opera</span> <span>10.5+</span></span><p class=caniuse>Source: <a href="http://caniuse.com/#feat=namevalue-storage">caniuse.com</a></div>
+
+  <h4 id=the-storage-interface>11.2.1 The <code id=the-storage-interface:storage-2><a href=#storage-2>Storage</a></code> interface<a href=#the-storage-interface class=self-link></a></h4>
+
+  <pre class=idl>interface <dfn id=storage-2>Storage</dfn> {
+  readonly attribute unsigned long <a href=#dom-storage-length id=the-storage-interface:dom-storage-length>length</a>;
+  DOMString? <a href=#dom-storage-key id=the-storage-interface:dom-storage-key>key</a>(unsigned long index);
+  getter DOMString? <a href=#dom-storage-getitem id=the-storage-interface:dom-storage-getitem>getItem</a>(DOMString key);
+  setter void <a href=#dom-storage-setitem id=the-storage-interface:dom-storage-setitem>setItem</a>(DOMString key, DOMString value);
+  deleter void <a href=#dom-storage-removeitem id=the-storage-interface:dom-storage-removeitem>removeItem</a>(DOMString key);
+  void <a href=#dom-storage-clear id=the-storage-interface:dom-storage-clear>clear</a>();
+};</pre>
+
+  
+
+  <p>Each <code id=the-storage-interface:storage-2-2><a href=#storage-2>Storage</a></code> object provides access to a list of key/value pairs, which are
+  sometimes called items. Keys are strings. Any string (including the empty string) is a valid key.
+  Values are similarly strings.</p>
+
+  <p>Each <code id=the-storage-interface:storage-2-3><a href=#storage-2>Storage</a></code> object is associated with a list of key/value pairs when it is
+  created, as defined in the sections on the <code id=the-storage-interface:dom-sessionstorage><a href=#dom-sessionstorage>sessionStorage</a></code>
+  and <code id=the-storage-interface:dom-localstorage><a href=#dom-localstorage>localStorage</a></code> attributes. Multiple separate objects
+  implementing the <code id=the-storage-interface:storage-2-4><a href=#storage-2>Storage</a></code> interface can all be associated with the same list of
+  key/value pairs simultaneously.</p>
+
+  <p>The <dfn id=dom-storage-length><code>length</code></dfn> attribute must return the number
+  of key/value pairs currently present in the list associated with the object.</p>
+
+  <p>The <dfn id=dom-storage-key><code>key(<var>n</var>)</code></dfn> method must
+  return the name of the <var>n</var>th key in the list. The order of keys is user-agent
+  defined, but must be consistent within an object so long as the number of keys doesn't change.
+  (Thus, <a href=#dom-storage-setitem id=the-storage-interface:dom-storage-setitem-2>adding</a> or <a href=#dom-storage-removeitem id=the-storage-interface:dom-storage-removeitem-2>removing</a> a key may change the order of the keys, but merely
+  changing the value of an existing key must not.)  If <var>n</var> is
+   greater than or equal to the number of key/value pairs
+  in the object, then this method must return null.</p>
+
+  <p>The <a id=the-storage-interface:supported-property-names href=https://heycam.github.io/webidl/#dfn-supported-property-names data-x-internal=supported-property-names>supported property names</a> on a <code id=the-storage-interface:storage-2-5><a href=#storage-2>Storage</a></code> object are the keys of each
+  key/value pair currently present in the list associated with the object, in the order that the
+  keys were last added to the storage area.</p>
+
+  <p>The <dfn id=dom-storage-getitem><code>getItem(<var>key</var>)</code></dfn> method
+  must return the current value associated with the given <var>key</var>. If the given <var>key</var> does not exist in the list associated with the object then this method must
+  return null. </p>
+
+  <p>The <dfn id=dom-storage-setitem><code>setItem(<var>key</var>, <var>value</var>)</code></dfn> method must first check if a key/value pair with the given <var>key</var> already exists in the list associated with the object.</p>
+
+  <p>If it does not, then a new key/value pair must be added to the list, with the given <var>key</var> and with its value set to <var>value</var>.</p>
+
+  <p>If the given <var>key</var> <em>does</em> exist in the list, and its value is not
+  equal to <var>value</var>, then it must have its value updated to <var>value</var>. If its previous value <em>is</em> equal to <var>value</var>, then
+  the method must do nothing.</p>
+
+  <p>If it couldn't set the new value, the method must throw a
+  <a id=the-storage-interface:quotaexceedederror href=https://heycam.github.io/webidl/#quotaexceedederror data-x-internal=quotaexceedederror>"<code>QuotaExceededError</code>"</a> <code id=the-storage-interface:domexception><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> exception. (Setting could
+  fail if, e.g., the user has disabled storage for the site, or if the quota has been exceeded.)</p>
+
+  <p>The <dfn id=dom-storage-removeitem><code>removeItem(<var>key</var>)</code></dfn>
+  method must cause the key/value pair with the given <var>key</var> to be removed from the
+  list associated with the object, if it exists. If no item with that key exists, the method must do
+  nothing.</p>
+
+  <p>The <code id=the-storage-interface:dom-storage-setitem-3><a href=#dom-storage-setitem>setItem()</a></code> and <code id=the-storage-interface:dom-storage-removeitem-3><a href=#dom-storage-removeitem>removeItem()</a></code> methods must be atomic with respect to failure.
+  In the case of failure, the method does nothing. That is, changes to the data storage area must
+  either be successful, or the data storage area must not be changed at all.</p>
+
+  <p>The <dfn id=dom-storage-clear><code>clear()</code></dfn> method must atomically cause the
+  list associated with the object to be emptied of all key/value pairs, if there are any. If there
+  are none, then the method must do nothing.</p>
+
+  <p class=note>When the <code id=the-storage-interface:dom-storage-setitem-4><a href=#dom-storage-setitem>setItem()</a></code>, <code id=the-storage-interface:dom-storage-removeitem-4><a href=#dom-storage-removeitem>removeItem()</a></code>, and <code id=the-storage-interface:dom-storage-clear-2><a href=#dom-storage-clear>clear()</a></code> methods are invoked, events are fired on the
+  <code id=the-storage-interface:window><a href=browsers.html#window>Window</a></code> objects of other <code id=the-storage-interface:document><a href=dom.html#document>Document</a></code>s that can access the newly stored or
+  removed data, as defined in the sections on the <code id=the-storage-interface:dom-sessionstorage-2><a href=#dom-sessionstorage>sessionStorage</a></code> and <code id=the-storage-interface:dom-localstorage-2><a href=#dom-localstorage>localStorage</a></code> attributes.</p> 
+
+  <p class=note>This specification does not require that the above methods wait until the data has
+  been physically written to disk. Only consistency in what different scripts accessing the same
+  underlying list of key/value pairs see is required.</p>
+
+
+  <h4 id=the-sessionstorage-attribute>11.2.2 The <code id=the-sessionstorage-attribute:dom-sessionstorage><a href=#dom-sessionstorage>sessionStorage</a></code> attribute<a href=#the-sessionstorage-attribute class=self-link></a></h4>
+
+  <pre class=idl>[NoInterfaceObject]
+interface <dfn id=windowsessionstorage>WindowSessionStorage</dfn> {
+  readonly attribute <a href=#storage-2 id=the-sessionstorage-attribute:storage-2>Storage</a> <a href=#dom-sessionstorage id=the-sessionstorage-attribute:dom-sessionstorage-2>sessionStorage</a>;
+};
+<a id=the-sessionstorage-attribute:window href=browsers.html#window>Window</a> implements <a href=#windowsessionstorage id=the-sessionstorage-attribute:windowsessionstorage>WindowSessionStorage</a>;</pre>
+
+  <p>The <dfn id=dom-sessionstorage><code>sessionStorage</code></dfn> attribute represents the
+  set of storage areas specific to the current <a id=the-sessionstorage-attribute:top-level-browsing-context href=browsers.html#top-level-browsing-context>top-level browsing context</a>.</p>
+
+  <p>Each <a id=the-sessionstorage-attribute:top-level-browsing-context-2 href=browsers.html#top-level-browsing-context>top-level browsing context</a> has a unique set of session storage areas, one for
+  each <a id=the-sessionstorage-attribute:concept-origin href=browsers.html#concept-origin>origin</a>.</p>
+
+  <p>User agents should not expire data from a browsing context's session storage areas, but may do
+  so when the user requests that such data be deleted, or when the UA detects that it has limited
+  storage space, or for security reasons. User agents should always avoid deleting data while a
+  script that could access that data is running. When a top-level browsing context is destroyed (and
+  therefore permanently inaccessible to the user) the data stored in its session storage areas can
+  be discarded with it, as the API described in this specification provides no way for that data to
+  ever be subsequently retrieved.</p>
+
+  <p class=note>The lifetime of a browsing context can be unrelated to the lifetime of the actual
+  user agent process itself, as the user agent may support resuming sessions after a restart.</p>
+
+  <p>When a new <code id=the-sessionstorage-attribute:document><a href=dom.html#document>Document</a></code> is created in a <a id=the-sessionstorage-attribute:browsing-context href=browsers.html#browsing-context>browsing context</a> which has a
+  <a id=the-sessionstorage-attribute:top-level-browsing-context-3 href=browsers.html#top-level-browsing-context>top-level browsing context</a>, the user agent must check to see if that <a id=the-sessionstorage-attribute:top-level-browsing-context-4 href=browsers.html#top-level-browsing-context>top-level
+  browsing context</a> has a session storage area for that document's <a id=the-sessionstorage-attribute:concept-origin-2 href=browsers.html#concept-origin>origin</a>. If it
+  does, then that is the <code id=the-sessionstorage-attribute:document-2><a href=dom.html#document>Document</a></code>'s assigned session storage area. If it does not, a
+  new storage area for that document's <a id=the-sessionstorage-attribute:concept-origin-3 href=browsers.html#concept-origin>origin</a> must be created, and then <em>that</em>
+  is the <code id=the-sessionstorage-attribute:document-3><a href=dom.html#document>Document</a></code>'s assigned session storage area. A <code id=the-sessionstorage-attribute:document-4><a href=dom.html#document>Document</a></code>'s assigned
+  storage area does not change during the lifetime of a <code id=the-sessionstorage-attribute:document-5><a href=dom.html#document>Document</a></code>.</p>
+
+  <p class=note>In the case of an <code id=the-sessionstorage-attribute:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code> being moved to another
+  <code id=the-sessionstorage-attribute:document-6><a href=dom.html#document>Document</a></code>, the nested browsing context is destroyed and a new one created.</p>
+
+  <p>The <code id=the-sessionstorage-attribute:dom-sessionstorage-3><a href=#dom-sessionstorage>sessionStorage</a></code> attribute must return a
+  <code id=the-sessionstorage-attribute:storage-2-2><a href=#storage-2>Storage</a></code> object associated with the <code id=the-sessionstorage-attribute:document-7><a href=dom.html#document>Document</a></code>'s assigned session storage
+  area, if any, or null if there isn't one. Each <code id=the-sessionstorage-attribute:document-8><a href=dom.html#document>Document</a></code> object must have a separate
+  object for its <code id=the-sessionstorage-attribute:window-2><a href=browsers.html#window>Window</a></code>'s <code id=the-sessionstorage-attribute:dom-sessionstorage-4><a href=#dom-sessionstorage>sessionStorage</a></code>
+  attribute.</p>
+
+  <p>When a new <a id=the-sessionstorage-attribute:top-level-browsing-context-5 href=browsers.html#top-level-browsing-context>top-level browsing context</a> is created by cloning an existing
+  <a id=the-sessionstorage-attribute:browsing-context-2 href=browsers.html#browsing-context>browsing context</a>, the new browsing context must start with the same session storage
+  areas as the original, but the two sets must from that point on be considered separate, not
+  affecting each other in any way.</p>
+
+  <p>When a new <a id=the-sessionstorage-attribute:top-level-browsing-context-6 href=browsers.html#top-level-browsing-context>top-level browsing context</a> is created by a <a href=webappapis.html#concept-script id=the-sessionstorage-attribute:concept-script>script</a> in an existing <a id=the-sessionstorage-attribute:browsing-context-3 href=browsers.html#browsing-context>browsing context</a>, or by the user
+  following a link in an existing browsing context, or in some other way related to a specific
+  <code id=the-sessionstorage-attribute:document-9><a href=dom.html#document>Document</a></code>, and the creation is not a new start for session storage, then the session
+  storage area of the <a id=the-sessionstorage-attribute:concept-origin-4 href=browsers.html#concept-origin>origin</a> of that <code id=the-sessionstorage-attribute:document-10><a href=dom.html#document>Document</a></code> must be copied into the new
+  browsing context when it is created. From that point on, however, the two session storage areas
+  must be considered separate, not affecting each other in any way.</p>
+
+  <p id=sessionStorageEvent>When the <code id=the-sessionstorage-attribute:dom-storage-setitem><a href=#dom-storage-setitem>setItem()</a></code>, <code id=the-sessionstorage-attribute:dom-storage-removeitem><a href=#dom-storage-removeitem>removeItem()</a></code>, and <code id=the-sessionstorage-attribute:dom-storage-clear><a href=#dom-storage-clear>clear()</a></code> methods are called on a <code id=the-sessionstorage-attribute:storage-2-3><a href=#storage-2>Storage</a></code> object <var>x</var> that is associated with a session storage area, if the methods did not throw an
+  exception or "do nothing" as defined above, then for every <code id=the-sessionstorage-attribute:document-11><a href=dom.html#document>Document</a></code> object whose
+  <code id=the-sessionstorage-attribute:window-3><a href=browsers.html#window>Window</a></code> object's <code id=the-sessionstorage-attribute:dom-sessionstorage-5><a href=#dom-sessionstorage>sessionStorage</a></code> attribute's
+  <code id=the-sessionstorage-attribute:storage-2-4><a href=#storage-2>Storage</a></code> object is associated with the same storage area, other than <var>x</var>, <a href=#send-a-storage-notification id=the-sessionstorage-attribute:send-a-storage-notification>send a storage notification</a>.</p>
+
+
+  <h4 id=the-localstorage-attribute>11.2.3 The <code id=the-localstorage-attribute:dom-localstorage><a href=#dom-localstorage>localStorage</a></code> attribute<a href=#the-localstorage-attribute class=self-link></a></h4>
+
+  <pre class=idl>[NoInterfaceObject]
+interface <dfn id=windowlocalstorage>WindowLocalStorage</dfn> {
+  readonly attribute <a href=#storage-2 id=the-localstorage-attribute:storage-2>Storage</a> <a href=#dom-localstorage id=the-localstorage-attribute:dom-localstorage-2>localStorage</a>;
+};
+<a id=the-localstorage-attribute:window href=browsers.html#window>Window</a> implements <a href=#windowlocalstorage id=the-localstorage-attribute:windowlocalstorage>WindowLocalStorage</a>;</pre>
+
+  <p>The <dfn id=dom-localstorage><code>localStorage</code></dfn> object provides a
+  <code id=the-localstorage-attribute:storage-2-2><a href=#storage-2>Storage</a></code> object for an <a id=the-localstorage-attribute:concept-origin href=browsers.html#concept-origin>origin</a>.
+  <a id=the-localstorage-attribute:fingerprinting-vector title="There is a potential fingerprinting vector here." href=introduction.html#fingerprinting-vector class=fingerprint><img alt="(This is a fingerprinting vector.)" src=/images/fingerprint.png width=46 height=64></a>
+  </p>
+
+  <p>User agents must have a set of local storage areas, one for each <a id=the-localstorage-attribute:concept-origin-2 href=browsers.html#concept-origin>origin</a>.</p>
+
+  <p>User agents should expire data from the local storage areas only for security reasons or when
+  requested to do so by the user. User agents should always avoid deleting data while a script that
+  could access that data is running.</p>
+
+  <p>When the <code id=the-localstorage-attribute:dom-localstorage-3><a href=#dom-localstorage>localStorage</a></code> attribute is accessed, the user
+  agent must run the following steps, which are known as the
+  <dfn id=storage-object-initialisation-steps><code>Storage</code> object
+  initialization steps</dfn>:</p> 
+
+  <ol><li><p>The user agent may throw a <a id=the-localstorage-attribute:securityerror href=https://heycam.github.io/webidl/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
+   <code id=the-localstorage-attribute:domexception><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these steps instead of returning a <code id=the-localstorage-attribute:storage-2-3><a href=#storage-2>Storage</a></code>
+   object if the request violates a policy decisions (e.g. if the user agent is configured to not
+   allow the page to persist data).<li><p>If the <code id=the-localstorage-attribute:document><a href=dom.html#document>Document</a></code>'s <a id=the-localstorage-attribute:concept-origin-3 href=browsers.html#concept-origin>origin</a> is an <a href=browsers.html#concept-origin-opaque id=the-localstorage-attribute:concept-origin-opaque>opaque origin</a>, then throw a
+   <a id=the-localstorage-attribute:securityerror-2 href=https://heycam.github.io/webidl/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code id=the-localstorage-attribute:domexception-2><a data-x-internal=domexception href=https://heycam.github.io/webidl/#dfn-DOMException>DOMException</a></code> and abort these
+   steps.<li><p>Check to see if the user agent has allocated a local storage area for the
+   <a id=the-localstorage-attribute:concept-origin-4 href=browsers.html#concept-origin>origin</a> of the <code id=the-localstorage-attribute:document-2><a href=dom.html#document>Document</a></code> of the <code id=the-localstorage-attribute:window-2><a href=browsers.html#window>Window</a></code> object on which the
+   attribute was accessed. If it has not, create a new storage area for that
+   <a id=the-localstorage-attribute:concept-origin-5 href=browsers.html#concept-origin>origin</a>.<li><p>Return the <code id=the-localstorage-attribute:storage-2-4><a href=#storage-2>Storage</a></code> object associated with that origin's local storage area.
+   Each <code id=the-localstorage-attribute:document-3><a href=dom.html#document>Document</a></code> object must have a separate object for its <code id=the-localstorage-attribute:window-3><a href=browsers.html#window>Window</a></code>'s <code id=the-localstorage-attribute:dom-localstorage-4><a href=#dom-localstorage>localStorage</a></code> attribute.</p>
+
+  </ol>
+
+  <p id=localStorageEvent>When the <code id=the-localstorage-attribute:dom-storage-setitem><a href=#dom-storage-setitem>setItem()</a></code>, <code id=the-localstorage-attribute:dom-storage-removeitem><a href=#dom-storage-removeitem>removeItem()</a></code>, and <code id=the-localstorage-attribute:dom-storage-clear><a href=#dom-storage-clear>clear()</a></code> methods are called on a <code id=the-localstorage-attribute:storage-2-5><a href=#storage-2>Storage</a></code> object <var>x</var> that is associated with a local storage area, if the methods did not throw an
+  exception or "do nothing" as defined above, then for every <code id=the-localstorage-attribute:document-4><a href=dom.html#document>Document</a></code> object whose
+  <code id=the-localstorage-attribute:window-4><a href=browsers.html#window>Window</a></code> object's <code id=the-localstorage-attribute:dom-localstorage-5><a href=#dom-localstorage>localStorage</a></code> attribute's
+  <code id=the-localstorage-attribute:storage-2-6><a href=#storage-2>Storage</a></code> object is associated with the same storage area, other than <var>x</var>, <a href=#send-a-storage-notification id=the-localstorage-attribute:send-a-storage-notification>send a storage notification</a>.
+
+  <p class=warning>The <code id=the-localstorage-attribute:dom-localstorage-6><a href=#dom-localstorage>localStorage</a></code> attribute provides
+  access to shared state. This specification does not define the interaction with other browsing
+  contexts in a multiprocess user agent, and authors are encouraged to assume that there is no
+  locking mechanism. A site could, for instance, try to read the value of a key, increment its
+  value, then write it back out, using the new value as a unique identifier for the session; if the
+  site does this twice in two different browser windows at the same time, it might end up using the
+  same "unique" identifier for both sessions, with potentially disastrous effects.</p>
+
+
+  <h4 id=the-storage-event>11.2.4 The <code id=the-storage-event:event-storage><a href=indices.html#event-storage>storage</a></code> event<a href=#the-storage-event class=self-link></a></h4>
+
+  <p>The <code id=the-storage-event:event-storage-2><a href=indices.html#event-storage>storage</a></code> event is fired on a <code id=the-storage-event:document><a href=dom.html#document>Document</a></code>'s
+  <code id=the-storage-event:window><a href=browsers.html#window>Window</a></code> object when a storage area changes, as described in the previous two sections
+  (<a href=#sessionStorageEvent>for session storage</a>, <a href=#localStorageEvent>for local
+  storage</a>).</p>
+
+  <p>When a user agent is to <dfn id=send-a-storage-notification>send a storage notification</dfn> for a <code id=the-storage-event:document-2><a href=dom.html#document>Document</a></code>, the
+  user agent must <a id=the-storage-event:queue-a-task href=webappapis.html#queue-a-task>queue a task</a> to <a href=https://dom.spec.whatwg.org/#concept-event-fire id=the-storage-event:concept-event-fire data-x-internal=concept-event-fire>fire an
+  event</a> named <code id=the-storage-event:storage-2><a href=#storage-2>storage</a></code> at the <code id=the-storage-event:document-3><a href=dom.html#document>Document</a></code> object's <code id=the-storage-event:window-2><a href=browsers.html#window>Window</a></code>
+  object, using <code id=the-storage-event:storageevent><a href=#storageevent>StorageEvent</a></code>.</p>
+
+  <p class=note>Such a <code id=the-storage-event:document-4><a href=dom.html#document>Document</a></code> object is not necessarily <a id=the-storage-event:fully-active href=browsers.html#fully-active>fully active</a>,
+  but events fired on such objects are ignored by the <a id=the-storage-event:event-loop href=webappapis.html#event-loop>event loop</a> until the
+  <code id=the-storage-event:document-5><a href=dom.html#document>Document</a></code> becomes <a id=the-storage-event:fully-active-2 href=browsers.html#fully-active>fully active</a> again.</p>
+
+  <p>The <a id=the-storage-event:task-source href=webappapis.html#task-source>task source</a> for these tasks is the <a id=the-storage-event:dom-manipulation-task-source href=webappapis.html#dom-manipulation-task-source>DOM manipulation task
+  source</a>.</p>
+
+  <p>If the event is being fired due to an invocation of the <code id=the-storage-event:dom-storage-setitem><a href=#dom-storage-setitem>setItem()</a></code> or <code id=the-storage-event:dom-storage-removeitem><a href=#dom-storage-removeitem>removeItem()</a></code> methods, the event must have its <code id=the-storage-event:dom-storageevent-key><a href=#dom-storageevent-key>key</a></code> attribute initialized to the name of the key in question,
+  its <code id=the-storage-event:dom-storageevent-oldvalue><a href=#dom-storageevent-oldvalue>oldValue</a></code> attribute initialized to the old
+  value of the key in question, or null if the key is newly added, and its <code id=the-storage-event:dom-storageevent-newvalue><a href=#dom-storageevent-newvalue>newValue</a></code> attribute initialized to the new value of the
+  key in question, or null if the key was removed.</p>
+
+  <p>Otherwise, if the event is being fired due to an invocation of the <code id=the-storage-event:dom-storage-clear><a href=#dom-storage-clear>clear()</a></code> method, the event must have its <code id=the-storage-event:dom-storageevent-key-2><a href=#dom-storageevent-key>key</a></code>, <code id=the-storage-event:dom-storageevent-oldvalue-2><a href=#dom-storageevent-oldvalue>oldValue</a></code>,
+  and <code id=the-storage-event:dom-storageevent-newvalue-2><a href=#dom-storageevent-newvalue>newValue</a></code> attributes initialized to null.</p>
+
+  <p>In addition, the event must have its <code id=the-storage-event:dom-storageevent-url><a href=#dom-storageevent-url>url</a></code> attribute
+  initialized to the <a href=https://dom.spec.whatwg.org/#concept-document-url id="the-storage-event:the-document's-address" data-x-internal="the-document's-address">URL</a> of the document whose
+  <code id=the-storage-event:storage-2-2><a href=#storage-2>Storage</a></code> object was affected; and its <code id=the-storage-event:dom-storageevent-storagearea><a href=#dom-storageevent-storagearea>storageArea</a></code> attribute initialized to the
+  <code id=the-storage-event:storage-2-3><a href=#storage-2>Storage</a></code> object from the <code id=the-storage-event:window-3><a href=browsers.html#window>Window</a></code> object of the target
+  <code id=the-storage-event:document-6><a href=dom.html#document>Document</a></code> that represents the same kind of <code id=the-storage-event:storage-2-4><a href=#storage-2>Storage</a></code> area as was affected
+  (i.e. session or local).</p>
+
+
+  <h5 id=the-storageevent-interface>11.2.4.1 The <code id=the-storageevent-interface:storageevent><a href=#storageevent>StorageEvent</a></code> interface<a href=#the-storageevent-interface class=self-link></a></h5>
+
+  <pre class=idl>[Constructor(DOMString type, optional <a href=#storageeventinit id=the-storageevent-interface:storageeventinit>StorageEventInit</a> eventInitDict)]
+interface <dfn id=storageevent>StorageEvent</dfn> : <a id=the-storageevent-interface:event href=https://dom.spec.whatwg.org/#interface-event data-x-internal=event>Event</a> {
+  readonly attribute DOMString? <a href=#dom-storageevent-key id=the-storageevent-interface:dom-storageevent-key>key</a>;
+  readonly attribute DOMString? <a href=#dom-storageevent-oldvalue id=the-storageevent-interface:dom-storageevent-oldvalue>oldValue</a>;
+  readonly attribute DOMString? <a href=#dom-storageevent-newvalue id=the-storageevent-interface:dom-storageevent-newvalue>newValue</a>;
+  readonly attribute USVString <a href=#dom-storageevent-url id=the-storageevent-interface:dom-storageevent-url>url</a>;
+  readonly attribute <a href=#storage-2 id=the-storageevent-interface:storage-2>Storage</a>? <a href=#dom-storageevent-storagearea id=the-storageevent-interface:dom-storageevent-storagearea>storageArea</a>;
+};
+
+dictionary <dfn id=storageeventinit>StorageEventInit</dfn> : <a id=the-storageevent-interface:eventinit href=https://dom.spec.whatwg.org/#dictdef-eventinit data-x-internal=eventinit>EventInit</a> {
+  DOMString? key = null;
+  DOMString? oldValue = null;
+  DOMString? newValue = null;
+  USVString url = "";
+  <a href=#storage-2 id=the-storageevent-interface:storage-2-2>Storage</a>? storageArea = null;
+};</pre>
+
+  <p>The <dfn id=dom-storageevent-key><code>key</code></dfn> attribute must return the value
+  it was initialized to. It represents the key being changed.</p>
+
+  <p>The <dfn id=dom-storageevent-oldvalue><code>oldValue</code></dfn> attribute must return
+  the value it was initialized to. It represents the old value of the key being changed.</p>
+
+  <p>The <dfn id=dom-storageevent-newvalue><code>newValue</code></dfn> attribute must return
+  the value it was initialized to. It represents the new value of the key being changed.</p>
+
+  <p>The <dfn id=dom-storageevent-url><code>url</code></dfn> attribute must return the value
+  it was initialized to. It represents the <a id=the-storageevent-interface:url href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> of the document whose key changed.</p>
+
+  <p>The <dfn id=dom-storageevent-storagearea><code>storageArea</code></dfn> attribute must
+  return the value it was initialized to. It represents the <code id=the-storageevent-interface:storage-2-3><a href=#storage-2>Storage</a></code> object that was
+  affected.</p>
+
+
+  <h3 id=disk-space-2>11.3 Disk space<a href=#disk-space-2 class=self-link></a></h3>
+
+  <p>User agents should limit the total amount of space allowed for storage areas, because hostile
+  authors could otherwise use this feature to exhaust the user's available disk space.</p>
+
+  <p>User agents should guard against sites storing data under their origin's other affiliated
+  sites, e.g. storing up to the limit in a1.example.com, a2.example.com, a3.example.com, etc,
+  circumventing the main example.com storage limit.</p>
+
+  <p>User agents may prompt the user when quotas are reached, allowing the user to grant a site more
+  space. This enables sites to store many user-created documents on the user's computer, for
+  instance.</p>
+
+  <p>User agents should allow users to see how much space each domain is using.</p>
+
+  
+
+  <p>A mostly arbitrary limit of five megabytes per <a id=disk-space-2:concept-origin href=browsers.html#concept-origin>origin</a> is suggested. Implementation
+  feedback is welcome and will be used to update this suggestion in the future.</p>
+
+  <p>For predictability, quotas should be based on the uncompressed size of data stored.</p>
+  
+
+
+  <h3 id=privacy>11.4 Privacy<a href=#privacy class=self-link></a></h3>
+
+  <h4 id=user-tracking>11.4.1 User tracking<a href=#user-tracking class=self-link></a></h4>
+
+  <p>A third-party advertiser (or any entity capable of getting content distributed to multiple
+  sites) could use a unique identifier stored in its local storage area to track a user across
+  multiple sessions, building a profile of the user's interests to allow for highly targeted
+  advertising. In conjunction with a site that is aware of the user's real identity (for example an
+  e-commerce site that requires authenticated credentials), this could allow oppressive groups to
+  target individuals with greater accuracy than in a world with purely anonymous Web usage.</p>
+
+  <p>There are a number of techniques that can be used to mitigate the risk of user tracking:</p>
+
+  <dl><dt>Blocking third-party storage<dd>
+
+    <p>User agents may restrict access to the <code id=user-tracking:dom-localstorage><a href=#dom-localstorage>localStorage</a></code>
+    objects to scripts originating at the domain of the <a id=user-tracking:active-document href=browsers.html#active-document>active document</a> of the <a id=user-tracking:top-level-browsing-context href=browsers.html#top-level-browsing-context>top-level browsing
+    context</a>, for instance denying access to the API for pages from other domains running in
+    <code id=user-tracking:the-iframe-element><a href=embedded-content.html#the-iframe-element>iframe</a></code>s.</p>
+
+   <dt>Expiring stored data<dd>
+
+    <p>User agents may, possibly in a manner configured by the user, automatically delete stored
+    data after a period of time.</p>
+
+    <p>For example, a user agent could be configured to treat third-party local storage areas as
+    session-only storage, deleting the data once the user had closed all the <a href=browsers.html#browsing-context id=user-tracking:browsing-context>browsing contexts</a> that could access it.</p>
+
+    <p>This can restrict the ability of a site to track a user, as the site would then only be able
+    to track the user across multiple sessions when they authenticate with the site itself (e.g. by
+    making a purchase or logging in to a service).</p>
+
+    <p>However, this also reduces the usefulness of the API as a long-term storage mechanism. It can
+    also put the user's data at risk, if the user does not fully understand the implications of data
+    expiration.</p>
+
+    
+
+   <dt>Treating persistent storage as cookies<dd>
+
+    <p>If users attempt to protect their privacy by clearing cookies without also clearing data
+    stored in the local storage area, sites can defeat those attempts by using the two features as
+    redundant backup for each other. User agents should present the interfaces for clearing these in
+    a way that helps users to understand this possibility and enables them to delete data in all
+    persistent storage features simultaneously. <a href=references.html#refsCOOKIES>[COOKIES]</a></p>
+
+   <dt>Site-specific safelisting of access to local storage areas<dd>
+
+    <p>User agents may allow sites to access session storage areas in
+    an unrestricted manner, but require the user to authorize access
+    to local storage areas.</p>
+
+   <dt>Origin-tracking of stored data<dd>
+
+    <p>User agents may record the <a href=browsers.html#concept-origin id=user-tracking:concept-origin>origins</a> of sites that contained
+    content from third-party origins that caused data to be stored.</p>
+
+    <p>If this information is then used to present the view of data currently in persistent storage,
+    it would allow the user to make informed decisions about which parts of the persistent storage
+    to prune. Combined with a blocklist ("delete this data and prevent this domain from ever storing
+    data again"), the user can restrict the use of persistent storage to sites that they trust.</p>
+
+   <dt>Shared blocklists<dd>
+
+    <p>User agents may allow users to share their persistent storage domain blocklists.</p>
+
+    <p>This would allow communities to act together to protect their privacy.</p>
+
+   </dl>
+
+  <p>While these suggestions prevent trivial use of this API for user tracking, they do not block it
+  altogether. Within a single domain, a site can continue to track the user during a session, and
+  can then pass all this information to the third party along with any identifying information
+  (names, credit card numbers, addresses) obtained by the site. If a third party cooperates with
+  multiple sites to obtain such information, a profile can still be created.</p>
+
+  <p>However, user tracking is to some extent possible even with no cooperation from the user agent
+  whatsoever, for instance by using session identifiers in URLs, a technique already commonly used
+  for innocuous purposes but easily repurposed for user tracking (even retroactively). This
+  information can then be shared with other sites, using visitors' IP addresses and other
+  user-specific data (e.g. user-agent headers and configuration settings) to combine separate
+  sessions into coherent user profiles.</p>
+
+
+  <h4 id=sensitivity-of-data>11.4.2 Sensitivity of data<a href=#sensitivity-of-data class=self-link></a></h4>
+
+  <p>User agents should treat persistently stored data as potentially sensitive; it's quite possible
+  for e-mails, calendar appointments, health records, or other confidential documents to be stored
+  in this mechanism.</p>
+
+  <p>To this end, user agents should ensure that when deleting data, it is promptly deleted from the
+  underlying storage.</p>
+
+
+
+  <h3 id=security-storage>11.5 Security<a href=#security-storage class=self-link></a></h3>
+
+  <h4 id=dns-spoofing-attacks>11.5.1 DNS spoofing attacks<a href=#dns-spoofing-attacks class=self-link></a></h4>
+
+  <p>Because of the potential for DNS spoofing attacks, one cannot guarantee that a host claiming to
+  be in a certain domain really is from that domain. To mitigate this, pages can use TLS. Pages
+  using TLS can be sure that only the user, software working on behalf of the user, and other pages
+  using TLS that have certificates identifying them as being from the same domain, can access their
+  storage areas.</p>
+
+
+  <h4 id=cross-directory-attacks>11.5.2 Cross-directory attacks<a href=#cross-directory-attacks class=self-link></a></h4>
+
+  <p>Different authors sharing one host name, for example users hosting content on the now defunct
+  <code>geocities.com</code>, all share one local storage object. There is no feature to
+  restrict the access by pathname. Authors on shared hosts are therefore urged to avoid using these
+  features, as it would be trivial for other authors to read the data and overwrite it.</p>
+
+  <p class=note>Even if a path-restriction feature was made available, the usual DOM scripting
+  security model would make it trivial to bypass this protection and access the data from any
+  path.</p>
+
+
+  <h4 id=implementation-risks>11.5.3 Implementation risks<a href=#implementation-risks class=self-link></a></h4>
+
+  <p>The two primary risks when implementing these persistent storage features are letting hostile
+  sites read information from other domains, and letting hostile sites write information that is
+  then read from other domains.</p>
+
+  <p>Letting third-party sites read data that is not supposed to be read from their domain causes
+  <em>information leakage</em>, For example, a user's shopping wishlist on one domain could be used
+  by another domain for targeted advertising; or a user's work-in-progress confidential documents
+  stored by a word-processing site could be examined by the site of a competing company.</p>
+
+  <p>Letting third-party sites write data to the persistent storage of other domains can result in
+  <em>information spoofing</em>, which is equally dangerous. For example, a hostile site could add
+  items to a user's wishlist; or a hostile site could set a user's session identifier to a known ID
+  that the hostile site can then use to track the user's actions on the victim site.</p>
+
+  <p>Thus, strictly following the <a id=implementation-risks:concept-origin href=browsers.html#concept-origin>origin</a> model described in this specification is
+  important for user security.</p>
+
+
+
+
+
+  <nav><a href=workers.html>← 10 Web workers</a> — <a href=index.html>Table of Contents</a> — <a href=syntax.html>12 The HTML syntax →</a></nav>
