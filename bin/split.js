@@ -74,7 +74,7 @@ function loadSource() {
 
     var sections = [],
         match, begin = 0,
-        id = 0;
+        id = 0, prev;
     var rHeader = /<h([2-6])([^>]*)>([\s\S]*?)<\/h[2-6]>/ig;
     while (match = rHeader.exec(content)) {
         var section = new TreeNode();
@@ -95,7 +95,7 @@ function loadSource() {
         if (id === 1) {
             skeleton = content.slice(begin, section.index);
         } else {
-            var prev = top(sections);
+            prev = top(sections);
             prev.contentHTML = content.slice(begin, section.index);
             skeleton += `<file src="${prev.id}">`;
         }
@@ -104,7 +104,7 @@ function loadSource() {
         begin = section.index + section.outerHTML.length;
     }
     match = content.match(/<\/body>\s*<\/html>/);
-    var prev = top(sections);
+    prev = top(sections);
     prev.contentHTML = content.slice(begin, match.index);
     skeleton += `<file src="${prev.id}">`;
     skeleton += content.slice(match.index);
@@ -120,5 +120,5 @@ function normalizaSlug(str) {
         .trim()
         .replace(/ +/g, '-')
         .toLowerCase()
-        .substr(0, 48);
+        .substr(0, 128);
 }

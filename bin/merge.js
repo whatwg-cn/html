@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const targetPath = path.resolve(__dirname, '../html/source');
 const skeletonPath = path.resolve(__dirname, '../skeleton.html');
 
 var skeleton = fs.readFileSync(skeletonPath, 'utf8');
@@ -24,4 +23,4 @@ while (match = rFile.exec(skeleton)) {
 }
 
 target += skeleton.slice(begin);
-fs.writeFileSync(targetPath, target);
+process.stdout.write(target);

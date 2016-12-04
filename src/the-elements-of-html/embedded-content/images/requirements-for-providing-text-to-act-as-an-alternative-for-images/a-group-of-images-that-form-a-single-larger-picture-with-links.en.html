@@ -1,0 +1,27 @@
+<h6>A group of images that form a single larger picture with links</h6>
+
+  <p>Generally, <span data-x="image map">image maps</span> should be used instead of slicing an image
+  for links.</p>
+
+  <p>However, if an image is indeed sliced and any of the components of the sliced picture are the
+  sole contents of links, then one image per link must have alternative text in its <code
+  data-x="attr-img-alt">alt</code> attribute representing the purpose of the link.</p>
+
+  <div class="example">
+
+   <p>In the following example, a picture representing the flying spaghetti monster emblem, with
+   each of the left noodly appendages and the right noodly appendages in different images, so that
+   the user can pick the left side or the right side in an adventure.</p>
+
+   <pre>&lt;h1>The Church&lt;/h1>
+&lt;p>You come across a flying spaghetti monster. Which side of His
+Noodliness do you wish to reach out for?&lt;/p>
+<strong>&lt;p>&lt;a href="?go=left" >&lt;img src="fsm-left.png"  alt="Left side. ">&lt;/a
+  >&lt;img src="fsm-middle.png" alt=""
+  >&lt;a href="?go=right">&lt;img src="fsm-right.png" alt="Right side.">&lt;/a>&lt;/p></strong></pre>
+
+  </div>
+
+
+
+  
