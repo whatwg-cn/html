@@ -13,8 +13,8 @@ build-zh:
 	HTML_OUTPUT=$(abspath website) bash html-build/build.sh -n
 	sed -i 's/\/multipage/\/html\/multipage/g' $(RESULTS)
 	sed -i 's/src=\/link-fixup.js/src=\/html\/link-fixup.js/g' $(RESULTS)
-	sed -i 's/src=\/images\//src=\/html\/images\//g' $(RESULTS)
 	sed -i "s/'\/fonts\//'\/html\/fonts\//g" $(RESULTS)
+	sed -i 's/=\/images\//=\/html\/images\//g' $(RESULTS)
 	sed -i 's/=\/demos\//=\/html\/demos\//g' $(RESULTS)
 	sed -i 's/=\/entities.json/=\/html\/entities.json/g' $(RESULTS)
 
