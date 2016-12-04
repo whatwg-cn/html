@@ -75,7 +75,7 @@ function loadSource() {
     var sections = [],
         match, begin = 0,
         id = 0, prev;
-    var rHeader = /<h([2-6])([^>]*)>([\s\S]*?)<\/h[2-6]>/ig;
+    var rHeader = /[ \t]*<h([2-6])([^>]*)>([\s\S]*?)<\/h[2-6]>/ig;
     while (match = rHeader.exec(content)) {
         var section = new TreeNode();
         section.id = id++;
