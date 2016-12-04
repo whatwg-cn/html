@@ -1,0 +1,60 @@
+  <h2 split-filename="microdata" id="microdata"><dfn>微数据</dfn></h2>
+
+<!-- USE CASES
+
+     Getting data out of poorly written Web pages
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019595.html
+
+     Allowing authors to keep track of where content originates
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019620.html
+
+     Helping people searching for content filtered by license
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019668.html
+
+     Allowing authors to annotate their documents to explain things for readers
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019672.html
+
+     Annotating structured data that HTML has no semantics for
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019681.html
+
+     Exposing known data types in a reusable way
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019833.html
+
+     Providing enhanced search results
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019834.html
+
+     Dragging or copying data between sites
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019835.html
+
+     Writing authoring tools and validators for custom microdata vocabularies
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019839.html
+
+     Removing the need for separate feeds
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019884.html
+
+     Use cases for which I haven't been able to find solutions
+     http://lists.whatwg.org/htdig.cgi/whatwg-whatwg.org/2009-May/019886.html
+
+-->
+
+<!-- v2
+
+  * <itemref itemprop="foo" src="url#id"> to import the item with id="id" from url into the current
+    microdata block as the value of property foo?
+
+  * splitting the 'content' part of a property into multiple sub-bits, as in:
+
+     <span itemprop="tel" item-content-in-bits>
+       Telephone:
+       <span content-bit>+44</span> (0) <span content-bit>1223 123 123</span>
+     </span>
+
+    maybe vocabs that need this can use a sub vocabulary specifically for this:
+
+     <span itemprop="tel" itemscope itemtype="https://bits.example/">
+       Telephone:
+       <span itemprop=bit>+44</span> (0) <span itemprop=bit>1223 123 123</span>
+     </span>
+
+-->
+

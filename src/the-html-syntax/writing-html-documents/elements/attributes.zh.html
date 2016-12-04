@@ -1,0 +1,189 @@
+  <h5>Attributes</h5>
+
+  <p><dfn data-x="syntax-attributes">Attributes</dfn> for an element are expressed inside the
+  element's start tag.</p>
+
+  <p>Attributes have a name and a value. <dfn data-x="syntax-attribute-name">Attribute names</dfn>
+  must consist of one or more characters other than the <span data-x="space character">space
+  characters</span>, U+0000 NULL, U+0022 QUOTATION MARK (&#x22;), U+0027 APOSTROPHE (&#x27;), U+003E
+  GREATER-THAN SIGN (&gt;), U+002F SOLIDUS (/), and U+003D EQUALS SIGN (=) characters, the <span>control
+  characters</span>, and any characters that are not defined by Unicode. In the HTML syntax, attribute
+  names, even those for <span>foreign elements</span>, may be written with any mix of lower- and
+  uppercase letters that are an <span>ASCII case-insensitive</span> match for the attribute's
+  name.</p>
+
+  <p><dfn data-x="syntax-attribute-value">Attribute values</dfn> are a mixture of <span
+  data-x="syntax-text">text</span> and <span data-x="syntax-charref">character references</span>,
+  except with the additional restriction that the text cannot contain an <span
+  data-x="syntax-ambiguous-ampersand">ambiguous ampersand</span>.</p>
+
+  <p>Attributes can be specified in four different ways:</p>
+
+  <dl>
+
+   <dt>Empty attribute syntax</dt>
+
+   <dd>
+
+    <p>Just the <span data-x="syntax-attribute-name">attribute name</span>. The value is implicitly
+    the empty string.</p>
+
+    <div class="example">
+
+     <p>In the following example, the <code data-x="attr-fe-disabled">disabled</code> attribute is
+     given with the empty attribute syntax:</p>
+
+     <pre>&lt;input <em>disabled</em>&gt;</pre>
+
+    </div>
+
+    <p>If an attribute using the empty attribute syntax is to be followed by another attribute, then
+    there must be a <span>space character</span> separating the two.</p>
+
+   </dd>
+
+   <dt id="unquoted">Unquoted attribute value syntax</dt>
+
+   <dd>
+
+    <p>The <span data-x="syntax-attribute-name">attribute name</span>, followed by zero or more <span
+    data-x="space character">space characters</span>, followed by a single U+003D EQUALS SIGN
+    character, followed by zero or more <span data-x="space character">space characters</span>,
+    followed by the <span data-x="syntax-attribute-value">attribute value</span>, which, in addition
+    to the requirements given above for attribute values, must not contain any literal <span
+    data-x="space character">space characters</span>, any U+0022 QUOTATION MARK characters (&#x22;),
+    U+0027 APOSTROPHE characters (&#x27;), U+003D EQUALS SIGN characters (=), U+003C LESS-THAN SIGN
+    characters (&lt;), U+003E GREATER-THAN SIGN characters (&gt;), or U+0060 GRAVE ACCENT characters
+    (`), and must not be the empty string.</p>
+
+    <!-- The ` character is in this list on a temporary basis, waiting for IE to fix its parsing bug
+         whereby it treats ` as an attribute value delimiter. Otherwise, escaping software that
+         tries to be clever and not use quotes when it doesn't need to could be tricked by an
+         attacker.
+
+         Posit a site that allows the user to input text that is used verbatim in two attributes,
+         such that the user can set the first attribute's value to:
+
+            `
+
+         ...and the second to:
+
+            ` onload='...payload...' end=x
+
+         ...with the assumption that the site is going to not quote the first one, and quote the
+         second one with double quotes:
+
+            <body data-x=` class="` onload='...payload...' end=x">
+
+         In IE, this is treated as:
+
+            <body data-x=' class="'
+                  onload='...payload...'
+                  end='x"'>
+
+    -->
+
+
+    <div class="example">
+
+     <p>In the following example, the <code data-x="attr-input-value">value</code> attribute is given
+     with the unquoted attribute value syntax:</p>
+
+     <pre>&lt;input <em>value=yes</em>&gt;</pre>
+
+    </div>
+
+    <p>If an attribute using the unquoted attribute syntax is to be followed by another attribute or
+    by the optional U+002F SOLIDUS character (/) allowed in step 6 of the <span
+    data-x="syntax-start-tag">start tag</span> syntax above, then there must be a <span>space
+    character</span> separating the two.</p>
+
+   </dd>
+
+   <dt>Single-quoted attribute value syntax</dt>
+
+   <dd>
+
+    <p>The <span data-x="syntax-attribute-name">attribute name</span>, followed by zero or more <span
+    data-x="space character">space characters</span>, followed by a single U+003D EQUALS SIGN
+    character, followed by zero or more <span data-x="space character">space characters</span>,
+    followed by a single U+0027 APOSTROPHE character ('), followed by the <span
+    data-x="syntax-attribute-value">attribute value</span>, which, in addition to the requirements
+    given above for attribute values, must not contain any literal U+0027 APOSTROPHE characters ('),
+    and finally followed by a second single U+0027 APOSTROPHE character (').</p>
+
+    <div class="example">
+
+     <p>In the following example, the <code data-x="attr-input-type">type</code> attribute is given
+     with the single-quoted attribute value syntax:</p>
+
+     <pre>&lt;input <em>type='checkbox'</em>&gt;</pre>
+
+    </div>
+
+    <p>If an attribute using the single-quoted attribute syntax is to be followed by another
+    attribute, then there must be a <span>space character</span> separating the two.</p>
+
+   </dd>
+
+   <dt>Double-quoted attribute value syntax</dt>
+
+   <dd>
+
+    <p>The <span data-x="syntax-attribute-name">attribute name</span>, followed by zero or more <span
+    data-x="space character">space characters</span>, followed by a single U+003D EQUALS SIGN
+    character, followed by zero or more <span data-x="space character">space characters</span>,
+    followed by a single U+0022 QUOTATION MARK character ("), followed by the <span
+    data-x="syntax-attribute-value">attribute value</span>, which, in addition to the requirements
+    given above for attribute values, must not contain any literal U+0022 QUOTATION MARK characters
+    ("), and finally followed by a second single U+0022 QUOTATION MARK character (").</p>
+
+    <div class="example">
+
+     <p>In the following example, the <code data-x="attr-fe-name">name</code> attribute is given with
+     the double-quoted attribute value syntax:</p>
+
+     <pre>&lt;input <em>name="be evil"</em>&gt;</pre>
+
+    </div>
+
+    <p>If an attribute using the double-quoted attribute syntax is to be followed by another
+    attribute, then there must be a <span>space character</span> separating the two.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>There must never be two or more attributes on the same start tag whose names are an <span>ASCII
+  case-insensitive</span> match for each other.</p>
+
+  <hr>
+
+  <p>When a <span data-x="foreign elements">foreign element</span> has one of the namespaced
+  attributes given by the local name and namespace of the first and second cells of a row from the
+  following table, it must be written using the name given by the third cell from the same row.</p>
+
+  <table>
+   <thead>
+    <tr> <th> Local name <th> Namespace <th> Attribute name
+   <tbody>
+    <tr> <td> <code data-x="">actuate</code> <td> <span>XLink namespace</span> <td> <code data-x="">xlink:actuate</code>
+    <tr> <td> <code data-x="">arcrole</code> <td> <span>XLink namespace</span> <td> <code data-x="">xlink:arcrole</code>
+    <tr> <td> <code data-x="">href</code> <td> <span>XLink namespace</span> <td> <code data-x="">xlink:href</code>
+    <tr> <td> <code data-x="">role</code> <td> <span>XLink namespace</span> <td> <code data-x="">xlink:role</code>
+    <tr> <td> <code data-x="">show</code> <td> <span>XLink namespace</span> <td> <code data-x="">xlink:show</code>
+    <tr> <td> <code data-x="">title</code> <td> <span>XLink namespace</span> <td> <code data-x="">xlink:title</code>
+    <tr> <td> <code data-x="">type</code> <td> <span>XLink namespace</span> <td> <code data-x="">xlink:type</code>
+    <tr> <td> <code data-x="">lang</code> <td> <span>XML namespace</span> <td> <code data-x="">xml:lang</code>
+    <tr> <td> <code data-x="">space</code> <td> <span>XML namespace</span> <td> <code data-x="">xml:space</code>
+    <tr> <td> <code data-x="">xmlns</code> <td> <span>XMLNS namespace</span> <td> <code data-x="">xmlns</code>
+    <tr> <td> <code data-x="">xlink</code> <td> <span>XMLNS namespace</span> <td> <code data-x="">xmlns:xlink</code>
+  </table>
+
+  <p>No other namespaced attribute can be expressed in <span>HTML 语法</span>.</p>
+
+  <p class="note">Whether the attributes in the table above are conforming or not is defined by
+  other specifications (e.g. the SVG and MathML specifications); this section only describes the
+  syntax rules if the attributes are serialized using the HTML syntax.</p>
+
+

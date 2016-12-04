@@ -1,0 +1,174 @@
+  <h4>The <dfn><code>noscript</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Metadata content</span>.</dd>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>In a <code>head</code> element of an <span data-x="HTML documents">HTML document</span>, if there are no ancestor <code>noscript</code> elements.</dd>
+   <dd>Where <span>phrasing content</span> is expected in <span>HTML documents</span>, if there are no ancestor <code>noscript</code> elements.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>When <span data-x="concept-n-noscript">scripting is disabled</span>, in a <code>head</code> element: in any order, zero or more <code>link</code> elements, zero or more <code>style</code> elements, and zero or more <code>meta</code> elements.</dd>
+   <dd>When <span data-x="concept-n-noscript">scripting is disabled</span>, not in a <code>head</code> element: <span>transparent</span>, but there must be no <code>noscript</code> element descendants.</dd>
+   <dd>Otherwise: text that conforms to the requirements given in the prose.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>noscript</code> element <span>represents</span> nothing if <span
+  data-x="concept-n-script">scripting is enabled</span>, and <span>represents</span> its children if
+  <span data-x="concept-n-noscript">scripting is disabled</span>. It is used to present different
+  markup to user agents that support scripting and those that don't support scripting, by affecting
+  how the document is parsed.</p>
+
+  <p>When used in <span>HTML documents</span>, the allowed content model is as follows:</p>
+
+  <dl>
+
+   <dt>In a <code>head</code> element, if <span data-x="concept-n-noscript">scripting is
+   disabled</span> for the <code>noscript</code> element</dt>
+
+   <dd><p>The <code>noscript</code> element must contain only <code>link</code>, <code>style</code>,
+   and <code>meta</code> elements.</p></dd>
+
+   <dt>In a <code>head</code> element, if <span data-x="concept-n-script">scripting is enabled</span>
+   for the <code>noscript</code> element</dt>
+
+   <dd><p>The <code>noscript</code> element must contain only text, except that invoking the
+   <span>HTML fragment parsing algorithm</span> <!-- (which disables <script> execution) --> with
+   the <code>noscript</code> element as the <var data-x="concept-frag-parse-context">context</var>
+   element and the text contents as the <var>input</var> must result in a list of nodes
+   that consists only of <code>link</code>, <code>style</code>, and <code>meta</code> elements that
+   would be conforming if they were children of the <code>noscript</code> element, and no <span
+   data-x="parse error">parse errors</span>.</p></dd>
+
+   <dt>Outside of <code>head</code> elements, if <span data-x="concept-n-noscript">scripting is
+   disabled</span> for the <code>noscript</code> element</dt>
+
+   <dd><p>The <code>noscript</code> element's content model is <span>transparent</span>, with the
+   additional restriction that a <code>noscript</code> element must not have a <code>noscript</code>
+   element as an ancestor (that is, <code>noscript</code> can't be nested).</p></dd>
+
+   <dt>Outside of <code>head</code> elements, if <span data-x="concept-n-script">scripting is
+   enabled</span> for the <code>noscript</code> element</dt>
+
+   <dd>
+
+    <p>The <code>noscript</code> element must contain only text, except that the text must be such
+    that running the following algorithm results in a conforming document with no
+    <code>noscript</code> elements and no <code>script</code> elements, and such that no step in the
+    algorithm throws an exception or causes an <span>HTML parser</span> to flag a <span>parse
+    error</span>:</p>
+    <!-- the possible exception is from the outerHTML setter -->
+
+    <ol>
+
+     <li>Remove every <code>script</code> element from the document.</li>
+
+     <li>Make a list of every <code>noscript</code> element in the document. For every
+     <code>noscript</code> element in that list, perform the following steps:
+
+      <ol>
+
+       <li>Let <var>s</var> be the <span>child text content</span> of the <code>noscript</code>
+       element.</li>
+
+       <li>Set the <code data-x="dom-outerHTML">outerHTML</code> attribute of the
+       <code>noscript</code> element to the value of <var>s</var>. (This, as a
+       side-effect, causes the <code>noscript</code> element to be removed from the document.) <ref spec=DOMPARSING></li>
+
+      </ol>
+
+     </li>
+
+    </ol>
+
+   </dd>
+
+  </dl>
+
+  <p class="note">All these contortions are required because, for historical reasons, the
+  <code>noscript</code> element is handled differently by the <span>HTML parser</span> based on
+  whether <span data-x="scripting flag">scripting was enabled or not</span> when the parser was
+  invoked.</p>
+
+  <p>The <code>noscript</code> element must not be used in <span>XML documents</span>.</p>
+
+  <p class="note">The <code>noscript</code> element is only effective in <span>HTML
+  语法</span>, it has no effect in <span>XML 语法</span>. This is because the way it works
+  is by essentially "turning off" the parser when scripts are enabled, so that the contents of the
+  element are treated as pure text and not as real elements. XML does not define a mechanism by
+  which to do this.</p>
+
+  <div w-nodev>
+
+  <p>The <code>noscript</code> element has no other requirements. In particular, children of the
+  <code>noscript</code> element are not exempt from <span>form submission</span>, scripting, and so
+  forth, even when <span data-x="concept-n-script">scripting is enabled</span> for the element.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, a <code>noscript</code> element is
+   used to provide fallback for a script.</p>
+
+   <pre>&lt;form action="calcSquare.php">
+ &lt;p>
+  &lt;label for=x>Number&lt;/label>:
+  &lt;input id="x" name="x" type="number">
+ &lt;/p>
+ &lt;script>
+  var x = document.getElementById('x');
+  var output = document.createElement('p');
+  output.textContent = 'Type a number; it will be squared right then!';
+  x.form.appendChild(output);
+  x.form.onsubmit = function () { return false; }
+  x.oninput = function () {
+    var v = x.valueAsNumber;
+    output.textContent = v + ' squared is ' + v * v;
+  };
+ &lt;/script>
+ &lt;noscript>
+  &lt;input type=submit value="Calculate Square">
+ &lt;/noscript>
+&lt;/form></pre>
+
+   <p>When script is disabled, a button appears to do the calculation on the server side. When
+   script is enabled, the value is computed on-the-fly instead.</p>
+
+   <p>The <code>noscript</code> element is a blunt instrument. Sometimes, scripts might be enabled,
+   but for some reason the page's script might fail. For this reason, it's generally better to avoid
+   using <code>noscript</code>, and to instead design the script to change the page from being a
+   scriptless page to a scripted page on the fly, as in the next example:</p>
+
+   <pre>&lt;form action="calcSquare.php">
+ &lt;p>
+  &lt;label for=x>Number&lt;/label>:
+  &lt;input id="x" name="x" type="number">
+ &lt;/p>
+ <strong>&lt;input id="submit" type=submit value="Calculate Square"></strong>
+ &lt;script>
+  var x = document.getElementById('x');
+  var output = document.createElement('p');
+  output.textContent = 'Type a number; it will be squared right then!';
+  x.form.appendChild(output);
+  x.form.onsubmit = function () { return false; }
+  x.oninput = function () {
+    var v = x.valueAsNumber;
+    output.textContent = v + ' squared is ' + v * v;
+  };
+<strong>  var submit = document.getElementById('submit');
+  submit.parentNode.removeChild(submit);</strong>
+ &lt;/script>
+&lt;/form></pre>
+
+   <p>The above technique is also useful in <span>XML documents</span>, since <code>noscript</code>
+   is not allowed there.</p>
+
+  </div>
+
+

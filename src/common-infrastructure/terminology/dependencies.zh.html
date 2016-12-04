@@ -1,0 +1,1497 @@
+  <h4>Dependencies</h4>
+
+  <div data-noexport="">
+
+  <p>This specification relies on several other underlying specifications.</p>
+
+  <dl>
+
+   <dt>Infra</dt>
+
+   <dd>
+    <p>The following terms are defined in the WHATWG Infra standard: <ref spec=INFRA></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://infra.spec.whatwg.org/#ascii-case-insensitive">ASCII case-insensitive</dfn></li>
+     <li><dfn data-x="converted to ASCII uppercase" data-x-href="https://infra.spec.whatwg.org/#ascii-uppercase">ASCII uppercase</dfn></li>
+     <li><dfn data-x="converted to ASCII lowercase" data-x-href="https://infra.spec.whatwg.org/#ascii-lowercase">ASCII lowercase</dfn></li>
+     <li>The <dfn data-x-href="https://infra.spec.whatwg.org/#ordered-map">ordered map</dfn> data structure and the associated definitions for
+             <dfn data-x="map exists" data-x-href="https://infra.spec.whatwg.org/#map-exists">exists</dfn>,
+             <dfn data-x="map get" data-x-href="https://infra.spec.whatwg.org/#map-get">getting the value of an entry</dfn>, and
+             <dfn data-x="map set" data-x-href="https://infra.spec.whatwg.org/#map-set">setting the value of an entry</dfn></li>
+     <li>The <dfn data-x-href="https://infra.spec.whatwg.org/#list">list</dfn> data structure and the associated definitions for
+             <dfn data-x="list is empty" data-x-href="https://infra.spec.whatwg.org/#list-is-empty">is empty</dfn>,
+             <dfn data-x="list contains" data-x-href="https://infra.spec.whatwg.org/#list-contains">contains</dfn>,
+             <dfn data-x="list append" data-x-href="https://infra.spec.whatwg.org/#list-append">append</dfn>, and
+             <dfn data-x="list iterate" data-x-href="https://infra.spec.whatwg.org/#list-iterate">iterate</dfn></li>
+     <li>The <dfn data-x-href="https://infra.spec.whatwg.org/#stack">stack</dfn> data structure and the associated definitions for
+             <dfn data-x="stack push" data-x-href="https://infra.spec.whatwg.org/#stack-push">push</dfn> and
+             <dfn data-x="stack pop" data-x-href="https://infra.spec.whatwg.org/#stack-pop">pop</dfn></li>
+     <li>The <dfn data-x="set" data-x-href="https://infra.spec.whatwg.org/#ordered-set">ordered set</dfn> data structure</li>
+     <li><dfn data-x-href="https://infra.spec.whatwg.org/#html-namespace">HTML namespace</dfn></li>
+     <li><dfn data-x-href="https://infra.spec.whatwg.org/#mathml-namespace">MathML namespace</dfn></li>
+     <li><dfn data-x-href="https://infra.spec.whatwg.org/#svg-namespace">SVG namespace</dfn></li>
+     <li><dfn data-x-href="https://infra.spec.whatwg.org/#xlink-namespace">XLink namespace</dfn></li>
+     <li><dfn data-x-href="https://infra.spec.whatwg.org/#xml-namespace">XML namespace</dfn></li>
+     <li><dfn data-x-href="https://infra.spec.whatwg.org/#xmlns-namespace">XMLNS namespace</dfn></li>
+    </ul>
+
+   </dd>
+
+   <dt>Unicode and Encoding</dt>
+
+   <dd>
+
+    <p>The Unicode character set is used to represent textual data, and the WHATWG Encoding standard
+    defines requirements around <span data-x="encoding">character encodings</span>. <ref
+    spec=UNICODE></p>
+
+    <p class="note">This specification <a href="#encoding-terminology">introduces terminology</a>
+    based on the terms defined in those specifications, as described earlier.</p>
+
+    <p>The following terms are used as defined in the WHATWG Encoding standard: <ref
+    spec=ENCODING></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://encoding.spec.whatwg.org/#concept-encoding-get">Getting an
+     encoding</dfn></li>
+
+     <li><dfn data-x-href="https://encoding.spec.whatwg.org/#get-an-output-encoding">Get an output
+     encoding</dfn></li>
+
+     <li>The generic <dfn data-x-href="https://encoding.spec.whatwg.org/#decode">decode</dfn>
+     algorithm which takes a byte stream and an encoding and returns a character stream</li>
+
+     <li>The <dfn data-x-href="https://encoding.spec.whatwg.org/#utf-8-decode">UTF-8 decode</dfn>
+     algorithm which takes a byte stream and returns a character stream, additionally stripping one
+     leading UTF-8 Byte Order Mark (BOM), if any</li>
+
+     <li>The <dfn data-x-href="https://encoding.spec.whatwg.org/#utf-8-decode-without-bom">UTF-8
+     decode without BOM</dfn> algorithm which is identical to <span>UTF-8 decode</span> except that
+     it does not strip one leading UTF-8 Byte Order Mark (BOM)</li>
+
+     <li>The <dfn
+     data-x-href="https://encoding.spec.whatwg.org/#utf-8-decode-without-bom-or-fail">UTF-8 decode
+     without BOM or fail</dfn> algorithm which is identical to <span>UTF-8 decode without BOM</span>
+     except that it returns failure upon encountering an error</li>
+
+     <li>The <dfn data-x-href="https://encoding.spec.whatwg.org/#encode">encode</dfn> algorithm
+     which takes a character stream and an encoding and returns a byte stream</li>
+
+     <li>The <dfn data-x-href="https://encoding.spec.whatwg.org/#utf-8-encode">UTF-8 encode</dfn>
+     algorithm which takes a character stream and returns a byte stream</li>
+    </ul>
+
+   </dd>
+
+
+   <dt>XML and related specifications</dt>
+
+   <dd>
+
+    <p>Implementations that support <span>XML 语法</span> for HTML must support some version
+    of XML, as well as its corresponding namespaces specification, because that syntax uses an XML
+    serialization with namespaces. <ref spec=XML> <ref spec=XMLNS></p>
+
+    <p>Data mining tools and other user agents that perform operations on content without running
+    scripts, evaluating CSS or XPath expressions, or otherwise exposing the resulting DOM to
+    arbitrary content, may "support namespaces" by just asserting that their DOM node analogues are
+    in certain namespaces, without actually exposing the namespace strings.</p>
+
+    <p class="note">In <span>HTML 语法</span>, namespace prefixes and namespace declarations
+    do not have the same effect as in XML. For instance, the colon has no special meaning in HTML
+    element names.</p>
+
+    <hr>
+
+    <p>The attribute with the tag name <dfn><code data-x="attr-xml-space">xml:space</code></dfn> in
+    the <span>XML namespace</span> is defined by the XML specification. <ref spec=XML></p>
+
+    <p>The <dfn data-x-href="https://www.w3.org/TR/xml/#NT-Name"><code
+    data-x="xml-Name">Name</code></dfn> production is defined in the XML specification. <ref
+    spec=XML></p>
+
+    <p>This specification also references the <dfn
+    data-x-href="https://www.w3.org/TR/xml-stylesheet/#the-xml-stylesheet-processing-instruction"><code>&lt;?xml-stylesheet?></code></dfn>
+    processing instruction, defined in the <cite>Associating Style Sheets with XML documents</cite>
+    specification. <ref spec="XMLSSPI"></p>
+
+    <p>This specification also non-normatively mentions the <dfn><code>XSLTProcessor</code></dfn>
+    interface and its <dfn><code
+    data-x="dom-XSLTProcessor-transformToFragment">transformToFragment()</code></dfn> and <dfn><code
+    data-x="dom-XSLTProcessor-transformToDocument">transformToDocument()</code></dfn> methods. <ref
+    spec=XSLTP></p>
+
+   </dd>
+
+
+   <dt>URLs</dt>
+
+   <dd>
+
+    <p>The following terms are defined in the WHATWG URL standard: <ref spec=URL></p>
+
+    <ul class="brief">
+     <li><dfn data-x="concept-host" data-x-href="https://url.spec.whatwg.org/#concept-host">host</dfn></li>
+     <li><dfn data-x="concept-domain" data-x-href="https://url.spec.whatwg.org/#concept-domain">domain</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#concept-ipv4">IPv4 address</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#concept-ipv6">IPv6 address</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#concept-url">URL</dfn></li>
+     <li><dfn data-dfn-for="url" data-x="concept-url-origin" data-x-href="https://url.spec.whatwg.org/#concept-url-origin">Origin</dfn> of URLs</li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#syntax-url-absolute">Absolute URL</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#syntax-url-relative">Relative URL</dfn></li>
+     <li>
+      The <dfn data-x-href="https://url.spec.whatwg.org/#concept-url-parser">URL parser</dfn> and
+      <dfn data-x-href="https://url.spec.whatwg.org/#concept-basic-url-parser">basic URL
+      parser</dfn> as well as these parser states:
+      <ul class="brief">
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#scheme-start-state">scheme start state</dfn></li>
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#host-state">host state</dfn></li>
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#hostname-state">hostname state</dfn></li>
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#port-state">port state</dfn></li>
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#path-start-state">path start state</dfn></li>
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#query-state">query state</dfn></li>
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#fragment-state">fragment state</dfn></li>
+      </ul>
+     <li>
+      <dfn data-x-href="https://url.spec.whatwg.org/#concept-url">URL record</dfn>, as well as its
+      individual components:
+      <ul class="brief">
+       <li><dfn data-x="concept-url-scheme" data-x-href="https://url.spec.whatwg.org/#concept-url-scheme">scheme</dfn></li>
+       <li><dfn data-x="concept-url-username" data-x-href="https://url.spec.whatwg.org/#concept-url-username">username</dfn></li>
+       <li><dfn data-x="concept-url-password" data-x-href="https://url.spec.whatwg.org/#concept-url-password">password</dfn></li>
+       <li><dfn data-x="concept-url-host" data-x-href="https://url.spec.whatwg.org/#concept-url-host">host</dfn></li>
+       <li><dfn data-x="concept-url-port" data-x-href="https://url.spec.whatwg.org/#concept-url-port">port</dfn></li>
+       <li><dfn data-x="concept-url-path" data-x-href="https://url.spec.whatwg.org/#concept-url-path">path</dfn></li>
+       <li><dfn data-x="concept-url-query" data-x-href="https://url.spec.whatwg.org/#concept-url-query">query</dfn></li>
+       <li><dfn data-x="concept-url-fragment" data-x-href="https://url.spec.whatwg.org/#concept-url-fragment">fragment</dfn></li>
+       <li><dfn data-x-href="https://url.spec.whatwg.org/#url-cannot-be-a-base-url-flag">cannot-be-a-base-URL flag</dfn></li>
+       <li><dfn data-x="concept-url-object" data-x-href="https://url.spec.whatwg.org/#concept-url-object">object</dfn></li>
+      </ul>
+     </li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#syntax-url">URL string</dfn></li>
+     <li>A <dfn data-x-href="https://url.spec.whatwg.org/#local-scheme">local scheme</dfn></li>
+     <li>An <dfn data-x-href="https://url.spec.whatwg.org/#http-scheme">HTTP(S) scheme</dfn></li>
+     <li>A <dfn data-x-href="https://url.spec.whatwg.org/#network-scheme">network scheme</dfn></li>
+     <li>A <dfn data-x-href="https://url.spec.whatwg.org/#fetch-scheme">fetch scheme</dfn></li>
+     <li>The <dfn data-x="concept-url-serializer" data-x-href="https://url.spec.whatwg.org/#concept-url-serializer">URL serializer</dfn></li>
+     <li>The <dfn data-x-href="https://url.spec.whatwg.org/#concept-host-parser">host parser</dfn></li>
+     <li>The <dfn data-x="host serializer" data-x-href="https://url.spec.whatwg.org/#concept-host-serializer">host serializer</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#concept-host-equals">Host equals</dfn></li>
+     <li><dfn data-x="concept-url-equals" data-x-href="https://url.spec.whatwg.org/#concept-url-equals">URL equals</dfn></li>
+     <li><dfn data-x="serialize an integer" data-x-href="https://url.spec.whatwg.org/#serialize-an-integer">serialize an integer</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#default-encode-set">Default encode set</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#utf-8-percent-encode">UTF-8 percent encode</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#percent-decode">Percent decode</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#set-the-username">set the username</dfn></li>
+     <li><dfn data-x-href="https://url.spec.whatwg.org/#set-the-password">set the password</dfn></li>
+     <li>The <dfn data-x-href="https://url.spec.whatwg.org/#concept-domain-to-unicode">domain to Unicode</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://url.spec.whatwg.org/#concept-urlencoded"><code>application/x-www-form-urlencoded</code></dfn> format</li>
+     <li>The <dfn data-x-href="https://url.spec.whatwg.org/#concept-urlencoded-serializer"><code>application/x-www-form-urlencoded</code> serializer</dfn></li>
+    </ul>
+
+    <p>A number of schemes and protocols are referenced by this specification also:</p>
+
+    <ul class="brief">
+     <li>The <dfn data-x="about protocol" data-x-href="https://tools.ietf.org/html/rfc6694#section-2"><code>about:</code></dfn> scheme <ref spec="ABOUT"></li>
+     <li>The <dfn data-x="blob protocol" data-x-href="https://w3c.github.io/FileAPI/#DefinitionOfScheme"><code>blob:</code></dfn> scheme <ref spec="FILEAPI"></li>
+     <li>The <dfn data-x="data protocol" data-x-href="https://tools.ietf.org/html/rfc2397#section-2"><code>data:</code></dfn> scheme <ref spec=RFC2397></li>
+     <li>The <dfn data-x="http protocol" data-x-href="https://tools.ietf.org/html/rfc7230#section-2.7.1"><code>http:</code></dfn> scheme <ref spec="HTTP"></li>
+     <li>The <dfn data-x="https protocol" data-x-href="https://tools.ietf.org/html/rfc7230#section-2.7.2"><code>https:</code></dfn> scheme <ref spec="HTTP"></li>
+     <li>The <dfn data-x="mailto protocol" data-x-href="https://tools.ietf.org/html/rfc6068#section-2"><code>mailto:</code></dfn> scheme <ref spec="MAILTO"></li>
+     <li>The <dfn data-x="sms protocol" data-x-href="https://tools.ietf.org/html/rfc5724#section-2"><code>sms:</code></dfn> scheme <ref spec="SMS"></li>
+     <li>The <dfn data-x="urn protocol" data-x-href="https://tools.ietf.org/html/rfc2141#section-2"><code>urn:</code></dfn> scheme <ref spec="URN"></li>
+    </ul>
+
+    <p><dfn data-x-href="https://www.w3.org/TR/media-frags/#media-fragment-syntax">Media fragment
+    syntax</dfn> is defined in the <cite>Media Fragments URI</cite> specification. <ref
+    spec=MEDIAFRAG></p>
+   </dd>
+
+
+   <dt>HTTP and related specifications</dt>
+
+   <dd>
+
+    <p>The following terms are defined in the HTTP specifications: <ref spec=HTTP></p>
+
+    <ul class="brief">
+     <li>`<dfn data-x="http-accept" data-x-href="https://tools.ietf.org/html/rfc7231#section-5.3.2"><code>Accept</code></dfn>` header</li>
+     <li>`<dfn data-x="http-accept-language" data-x-href="https://tools.ietf.org/html/rfc7231#section-5.3.5"><code>Accept-Language</code></dfn>` header</li>
+     <li>`<dfn data-x="http-cache-control" data-x-href="https://tools.ietf.org/html/rfc7234#section-5.2"><code>Cache-Control</code></dfn>` header</li>
+     <li>`<dfn data-x="http-content-disposition" data-x-href="https://tools.ietf.org/html/rfc6266"><code>Content-Disposition</code></dfn>` header</li>
+     <li>`<dfn data-x="http-content-language" data-x-href="https://tools.ietf.org/html/rfc7231#section-3.1.3.2"><code>Content-Language</code></dfn>` header</li>
+     <li>`<dfn data-x="http-last-modified" data-x-href="https://tools.ietf.org/html/rfc7232#section-2.2"><code>Last-Modified</code></dfn>` header</li>
+     <li>`<dfn data-x="http-referer" data-x-href="https://tools.ietf.org/html/rfc7231#section-5.5.2"><code>Referer</code></dfn>` header</li>
+    </ul>
+
+    <p>The following terms are defined in the Cookie specification: <ref spec=COOKIES></p>
+
+    <ul class="brief">
+     <li><dfn>cookie-string</dfn></li>
+     <li><dfn>receives a set-cookie-string</dfn></li>
+     <li>`<dfn><code data-x="http-cookie">Cookie</code></dfn>` header</li>
+    </ul>
+
+    <p>The following term is defined in the Web Linking specification: <ref spec=WEBLINK></p>
+
+    <ul class="brief">
+     <li>`<dfn data-x="http-link" data-x-href="https://tools.ietf.org/html/rfc5988#section-5"><code>Link</code></dfn>` header</li>
+    </ul>
+
+    <p>The following terms are defined in the WHATWG MIME Sniffing standard: <ref spec=MIMESNIFF></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://mimesniff.spec.whatwg.org/#mime-type">MIME type</dfn></li>
+     <li><dfn data-x-href="https://mimesniff.spec.whatwg.org/#valid-mime-type">valid MIME type</dfn></li>
+     <li><dfn data-x-href="https://mimesniff.spec.whatwg.org/#valid-mime-type-with-no-parameters">valid MIME type with no parameters</dfn></li>
+     <li><dfn data-x-href="https://mimesniff.spec.whatwg.org/#xml-mime-type">XML MIME type</dfn></li>
+     <li><dfn data-x-href="https://mimesniff.spec.whatwg.org/#html-mime-type">HTML MIME type</dfn></li>
+    </ul>
+
+   </dd>
+
+
+   <dt>Fetch</dt>
+
+   <dd>
+
+    <p>The following terms are defined in the WHATWG Fetch standard: <ref spec=FETCH></p>
+
+    <ul class="brief">
+     <li><dfn><code>about:blank</code></dfn></li>
+     <li><dfn data-x-href="https://fetch.spec.whatwg.org/#concept-https-state-value">HTTPS state value</dfn></li>
+     <li><dfn data-x-href="https://fetch.spec.whatwg.org/#http-cors-protocol">CORS protocol</dfn></li>
+     <li><dfn data-x="default-user-agent-value" data-x-href="https://fetch.spec.whatwg.org/#default-user-agent-value">default `<code>User-Agent</code>` value</dfn></li>
+     <li><dfn data-x-href="https://fetch.spec.whatwg.org/#concept-header-extract-mime-type">extract a MIME type</dfn></li>
+     <li><dfn data-x="concept-fetch" data-x-href="https://fetch.spec.whatwg.org/#concept-fetch">fetch</dfn></li>
+     <li><dfn data-x-href="https://fetch.spec.whatwg.org/#concept-http-redirect-fetch">HTTP-redirect fetch</dfn></li>
+     <li><dfn data-x-href="https://fetch.spec.whatwg.org/#ok-status">ok status</dfn></li>
+     <li><dfn data-x="navigation-request" data-x-href="https://fetch.spec.whatwg.org/#navigation-request">navigation request</dfn></li>
+     <li><dfn data-x-href="https://fetch.spec.whatwg.org/#concept-network-error">network error</dfn></li>
+     <li>`<dfn data-dfn-type="http-header" data-x="http-origin" data-x-href="https://fetch.spec.whatwg.org/#http-origin"><code>Origin</code></dfn>` header</li>
+     <li><dfn data-x-href="https://fetch.spec.whatwg.org/#process-response">process response</dfn></li>
+     <li><dfn data-x="concept-header-list-set" data-x-href="https://fetch.spec.whatwg.org/#concept-header-list-set">set</dfn></li>
+     <li><dfn data-x="concept-fetch-terminate" data-x-href="https://fetch.spec.whatwg.org/#concept-fetch-terminate">terminate</dfn></li>
+     <li>the <dfn data-x-href="https://fetch.spec.whatwg.org/#requestcredentials"><code>RequestCredentials</code></dfn> enumeration</li>
+     <li>the <dfn data-x-href="https://fetch.spec.whatwg.org/#requestdestination"><code>RequestDestination</code></dfn> enumeration</li>
+     <li>
+      <dfn data-x="concept-response"
+      data-x-href="https://fetch.spec.whatwg.org/#concept-response">response</dfn> and its
+      associated:
+      <ul class="brief">
+       <li><dfn data-x="concept-response-type" data-x-href="https://fetch.spec.whatwg.org/#concept-response-type">type</dfn></li>
+       <li><dfn data-x="concept-response-url" data-x-href="https://fetch.spec.whatwg.org/#concept-response-url">url</dfn></li>
+       <li><dfn data-x="concept-response-url-list" data-x-href="https://fetch.spec.whatwg.org/#concept-response-url-list">url list</dfn></li>
+       <li><dfn data-x="concept-response-status" data-x-href="https://fetch.spec.whatwg.org/#concept-response-status">status</dfn></li>
+       <li><dfn data-x="concept-response-header-list" data-x-href="https://fetch.spec.whatwg.org/#concept-response-header-list">header list</dfn></li>
+       <li><dfn data-x="concept-response-body" data-x-href="https://fetch.spec.whatwg.org/#concept-response-body">body</dfn></li>
+       <li><dfn data-x="concept-internal-response" data-x-href="https://fetch.spec.whatwg.org/#concept-internal-response">internal response</dfn></li>
+       <li><dfn data-x="concept-response-csp-list" data-x-href="https://fetch.spec.whatwg.org/#concept-response-csp-list">CSP list</dfn></li>
+       <li><dfn data-x="concept-response-https-state" data-x-href="https://fetch.spec.whatwg.org/#concept-response-https-state">HTTPS state</dfn></li>
+       <li><dfn data-x="concept-response-location-url" data-x-href="https://fetch.spec.whatwg.org/#concept-response-location-url">location URL</dfn></li>
+      </ul>
+     </li>
+     <li>
+      <dfn data-x="concept-request"
+      data-x-href="https://fetch.spec.whatwg.org/#concept-request">request</dfn> and its associated:
+      <ul class="brief">
+       <li><dfn data-x="concept-request-url" data-x-href="https://fetch.spec.whatwg.org/#concept-request-url">url</dfn></li>
+       <li><dfn data-x="concept-request-method" data-x-href="https://fetch.spec.whatwg.org/#concept-request-method">method</dfn></li>
+       <li><dfn data-x="concept-request-header-list" data-x-href="https://fetch.spec.whatwg.org/#concept-request-header-list">header list</dfn></li>
+       <li><dfn data-x="concept-request-body" data-x-href="https://fetch.spec.whatwg.org/#concept-request-body">body</dfn></li>
+       <li><dfn data-x="concept-request-client" data-x-href="https://fetch.spec.whatwg.org/#concept-request-client">client</dfn></li>
+       <li><dfn data-x="concept-request-reserved-client" data-x-href="https://fetch.spec.whatwg.org/#concept-request-reserved-client">reserved client</dfn></li>
+       <li><dfn data-x="concept-request-target-client-id" data-x-href="https://fetch.spec.whatwg.org/#concept-request-target-client-id">target client id</dfn></li>
+       <li><dfn data-x="concept-request-initiator" data-x-href="https://fetch.spec.whatwg.org/#concept-request-initiator">initiator</dfn></li>
+       <li><dfn data-x="concept-request-type" data-x-href="https://fetch.spec.whatwg.org/#concept-request-type">type</dfn></li>
+       <li><dfn data-x="concept-request-destination" data-x-href="https://fetch.spec.whatwg.org/#concept-request-destination">destination</dfn></li>
+       <li><dfn data-x="concept-request-priority" data-x-href="https://fetch.spec.whatwg.org/#concept-request-priority">priority</dfn></li>
+       <li><dfn data-dfn-for="request" data-x="concept-request-origin" data-x-href="https://fetch.spec.whatwg.org/#concept-request-origin">origin</dfn></li>
+       <li><dfn data-x-href="https://fetch.spec.whatwg.org/#omit-origin-header-flag">omit-<code>Origin</code>-header flag</dfn></li>
+       <li><dfn data-x="concept-request-referrer" data-x-href="https://fetch.spec.whatwg.org/#concept-request-referrer">referrer</dfn></li>
+       <li><dfn data-x-href="https://fetch.spec.whatwg.org/#synchronous-flag">synchronous flag</dfn></li>
+       <li><dfn data-x="concept-request-mode" data-x-href="https://fetch.spec.whatwg.org/#concept-request-mode">mode</dfn></li>
+       <li><dfn data-x="concept-request-credentials-mode" data-x-href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode">credentials mode</dfn></li>
+       <li><dfn data-x-href="https://fetch.spec.whatwg.org/#concept-request-use-url-credentials-flag">use-URL-credentials flag</dfn></li>
+       <li><dfn data-x-href="https://fetch.spec.whatwg.org/#unsafe-request-flag">unsafe-request flag</dfn></li>
+       <li><dfn data-x="concept-request-cache-mode" data-x-href="https://fetch.spec.whatwg.org/#concept-request-cache-mode">cache mode</dfn></li>
+       <li><dfn data-x="concept-request-redirect-mode" data-x-href="https://fetch.spec.whatwg.org/#concept-request-redirect-mode">redirect mode</dfn></li>
+       <li><dfn data-x="concept-request-referrer-policy" data-x-href="https://fetch.spec.whatwg.org/#concept-request-referrer-policy">referrer policy</dfn></li>
+       <li><dfn data-x="concept-request-nonce-metadata" data-x-href="https://fetch.spec.whatwg.org/#concept-request-nonce-metadata">cryptographic nonce metadata</dfn></li>
+       <li><dfn data-x="concept-request-integrity-metadata" data-x-href="https://fetch.spec.whatwg.org/#concept-request-integrity-metadata">integrity metadata</dfn></li>
+       <li><dfn data-x="concept-request-parser-metadata" data-x-href="https://fetch.spec.whatwg.org/#concept-request-parser-metadata">parser metadata</dfn></li>
+      </ul>
+     </li>
+    </ul>
+
+    <p>The following terms are defined in <cite>Referrer Policy</cite>: <ref
+    spec=REFERRERPOLICY></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/webappsec-referrer-policy/#referrer-policy">referrer policy</dfn></li>
+     <li>The `<dfn data-x="http-referrer-policy" data-x-href="https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-header-dfn"><code>Referrer-Policy</code></dfn>` HTTP header</li>
+     <li>The <dfn data-x="parse-referrer-policy-header" data-x-href="https://w3c.github.io/webappsec-referrer-policy/#parse-referrer-policy-from-header">parse a referrer policy from a `<code>Referrer-Policy</code>` header</dfn> algorithm</li>
+     <li>The "<dfn data-x="referrer-policy-no-referrer" data-x-href="https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-no-referrer"><code>no-referrer</code></dfn>",
+             "<dfn data-x="referrer-policy-no-referrer-when-downgrade" data-x-href="https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-no-referrer-when-downgrade"><code>no-referrer-when-downgrade</code></dfn>",
+             "<dfn data-x="referrer-policy-origin-when-cross-origin" data-x-href="https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-origin-when-cross-origin"><code>no-referrer-when-downgrade</code></dfn>", and
+             "<dfn data-x="referrer-policy-unsafe-url" data-x-href="https://w3c.github.io/webappsec-referrer-policy/#referrer-policy-unsafe-url"><code>unsafe-url</code></dfn>" referrer policies</li>
+    </ul>
+
+    <p>The following terms are defined in <cite>Mixed Content</cite>: <ref spec=MIX></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/webappsec-mixed-content/#a-priori-authenticated-url"><i>a priori</i> authenticated URL</dfn></li>
+    </ul>
+
+   </dd>
+
+
+<!--TOPIC:DOM APIs-->
+
+   <dt>Web IDL</dt>
+
+   <dd>
+
+    <p>The IDL fragments in this specification must be interpreted as required for conforming IDL
+    fragments, as described in the Web IDL specification. <ref spec=WEBIDL></p>
+
+    <p>The following terms are defined in the Web IDL specification:</p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-extended-attribute">extended attribute</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-named-constructor">named constructor</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-array-index-property-name">array index property name</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-supported-property-indices">supported property indices</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-determine-the-value-of-an-indexed-property">determine the value of an indexed property</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-set-the-value-of-an-existing-indexed-property">set the value of an existing indexed property</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-set-the-value-of-a-new-indexed-property">set the value of a new indexed property</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-support-named-properties">support named properties</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-supported-property-names">supported property names</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-determine-the-value-of-a-named-property">determine the value of a named property</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-set-the-value-of-an-existing-named-property">set the value of an existing named property</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-set-the-value-of-a-new-named-property">set the value of a new named property</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-delete-an-existing-named-property">delete an existing named property</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-perform-a-security-check">perform a security check</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-platform-object">platform object</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-interface-object">interface object</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-interface-prototype-object">interface prototype object</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#es-platform-objects">global environment associated with</dfn> a platform object</li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-callback-context">callback context</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#dfn-frozen-array-type">frozen array</dfn> and
+         <dfn data-x-href="https://heycam.github.io/webidl/#dfn-create-frozen-array">creating a frozen array</dfn></li>
+     <li><dfn data-x="dfn-callback-this-value" data-x-href="https://heycam.github.io/webidl/#dfn-callback-this-value">callback this value</dfn></li>
+     <li><dfn data-x="concept-idl-convert" data-x-href="https://heycam.github.io/webidl/#es-type-mapping">converting</dfn> between Web IDL types and JS types</li>
+     <li><dfn data-x="es-invoking-callback-functions" data-x-href="https://heycam.github.io/webidl/#es-invoking-callback-functions">invoke the Web IDL callback function</dfn></li>
+    </ul>
+
+    <p>The Web IDL specification also defines the following types that are used in Web IDL fragments
+    in this specification:</p>
+
+    <ul class="brief">
+     <li><dfn data-x="idl-ArrayBuffer" data-x-href="https://heycam.github.io/webidl/#idl-ArrayBuffer"><code>ArrayBuffer</code></dfn></li>
+     <li><dfn data-x="idl-ArrayBufferView" data-x-href="https://heycam.github.io/webidl/#common-ArrayBufferView"><code>ArrayBufferView</code></dfn></li>
+     <li><dfn data-x="idl-boolean" data-x-href="https://heycam.github.io/webidl/#idl-boolean"><code>boolean</code></dfn></li>
+     <li><dfn data-x="idl-DOMString" data-x-href="https://heycam.github.io/webidl/#idl-DOMString"><code>DOMString</code></dfn></li>
+     <li><dfn data-x="idl-double" data-x-href="https://heycam.github.io/webidl/#idl-double"><code>double</code></dfn></li>
+     <li><dfn data-x="IDL enumeration" data-x-href="https://heycam.github.io/webidl/#idl-enums">enumeration</dfn></li>
+     <li><dfn data-x="idl-Error" data-x-href="https://heycam.github.io/webidl/#idl-Error"><code>Error</code></dfn></li>
+     <li><dfn data-x="idl-Function" data-x-href="https://heycam.github.io/webidl/#common-Function"><code>Function</code></dfn></li>
+     <li><dfn data-x="idl-long" data-x-href="https://heycam.github.io/webidl/#idl-long"><code>long</code></dfn></li>
+     <li><dfn data-x="idl-object" data-x-href="https://heycam.github.io/webidl/#idl-object"><code>object</code></dfn></li>
+     <li><dfn data-x="idl-RegExp" data-x-href="https://heycam.github.io/webidl/#idl-RegExp"><code>RegExp</code></dfn></li>
+     <li><dfn data-x="idl-Uint8ClampedArray" data-x-href="https://heycam.github.io/webidl/#idl-Uint8ClampedArray"><code>Uint8ClampedArray</code></dfn></li>
+     <li><dfn data-x="idl-unrestricted-double" data-x-href="https://heycam.github.io/webidl/#idl-unrestricted-double"><code>unrestricted double</code></dfn></li>
+     <li><dfn data-x="idl-unsigned-long" data-x-href="https://heycam.github.io/webidl/#idl-unsigned-long"><code>unsigned long</code></dfn></li>
+     <li><dfn data-x="idl-USVString" data-x-href="https://heycam.github.io/webidl/#idl-USVString"><code>USVString</code></dfn></li>
+    </ul>
+
+    <p>The term <dfn data-x-href="https://heycam.github.io/webidl/#dfn-throw">throw</dfn> in this
+    specification is used as defined in the Web IDL specification. The <dfn
+    data-x-href="https://heycam.github.io/webidl/#dfn-DOMException"><code>DOMException</code></dfn>
+    type and the following exception names are defined by Web IDL and used by this
+    specification:</p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#indexsizeerror">"<code>IndexSizeError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#hierarchyrequesterror">"<code>HierarchyRequestError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#invalidcharactererror">"<code>InvalidCharacterError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#notfounderror">"<code>NotFoundError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#notsupportederror">"<code>NotSupportedError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#invalidstateerror">"<code>InvalidStateError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#syntaxerror">"<code>SyntaxError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#invalidaccesserror">"<code>InvalidAccessError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#securityerror">"<code>SecurityError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#networkerror">"<code>NetworkError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#aborterror">"<code>AbortError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#quotaexceedederror">"<code>QuotaExceededError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#datacloneerror">"<code>DataCloneError</code>"</dfn></li>
+     <li><dfn data-x-href="https://heycam.github.io/webidl/#notallowederror">"<code>NotAllowedError</code>"</dfn></li>
+    </ul>
+
+    <p>When this specification requires a user agent to <dfn>create a <code>Date</code> object</dfn>
+    representing a particular time (which could be the special value Not-a-Number), the milliseconds
+    component of that time, if any, must be truncated to an integer, and the time value of the newly
+    created <code>Date</code> object must represent the resulting truncated time.</p>
+
+    <p class="example">For instance, given the time 23045 millionths of a second after 01:00 UTC on
+    January 1st 2000, i.e. the time 2000-01-01T00:00:00.023045Z, then the <code>Date</code> object
+    created representing that time would represent the same time as that created representing the
+    time 2000-01-01T00:00:00.023Z, 45 millionths earlier. If the given time is NaN, then the result
+    is a <code>Date</code> object that represents a time value NaN (indicating that the object does
+    not represent a specific instant of time).</p>
+
+   </dd>
+
+
+   <dt>JavaScript</dt>
+
+   <dd>
+
+    <p>Some parts of the language described by this specification only support JavaScript as the
+    underlying scripting language. <ref spec=JAVASCRIPT></p>
+
+    <p>Users agents that support JavaScript must also implement the <cite>ECMAScript
+    Internationalization API Specification</cite>. <ref spec=JSINTL></p>
+
+    <p class="note">The term "JavaScript" is used to refer to ECMA-262, rather than the official
+    term ECMAScript, since the term JavaScript is more widely known. Similarly, the <span>MIME
+    type</span> used to refer to JavaScript in this specification is <code
+    data-x="">text/javascript</code>, since that is the most commonly used type, <span
+    data-x="willful violation">despite it being an officially obsoleted type</span> according to RFC
+    4329. <ref spec=RFC4329></p>
+
+    <p>The following terms are defined in the JavaScript specification and used in this
+    specification:</p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#active-function-object">active function object</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion">automatic semicolon insertion</dfn></li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#current-realm">current Realm Record</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#early-error-rule">early error</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#directive-prologue">Directive Prologue</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#sec-invariants-of-the-essential-internal-methods">invariants of the essential internal methods</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#sec-execution-contexts">JavaScript execution context</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#execution-context-stack">JavaScript execution context stack</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#sec-code-realms">JavaScript realm</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#running-execution-context">running JavaScript execution context</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#use-strict-directive">Use Strict Directive</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#sec-well-known-symbols">Well-Known Symbols</dfn>, including
+         <dfn>@@hasInstance</dfn>,
+         <dfn>@@isConcatSpreadable</dfn>,
+         <dfn>@@toPrimitive</dfn>, and
+         <dfn>@@toStringTag</dfn></li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#sec-well-known-intrinsic-objects">Well-Known Intrinsic Objects</dfn>, including
+         <dfn data-x-href="https://tc39.github.io/ecma262/#sec-arraybuffer-constructor">%ArrayBuffer%</dfn>,
+         <dfn data-x-href="https://tc39.github.io/ecma262/#sec-properties-of-the-array-prototype-object">%ArrayPrototype%</dfn>,
+         <dfn data-x-href="https://tc39.github.io/ecma262/#sec-object.prototype.tostring">%ObjProto_toString%</dfn>, and
+         <dfn data-x-href="https://tc39.github.io/ecma262/#sec-object.prototype.valueof">%ObjProto_valueOf%</dfn></li>
+
+     <li>The <dfn data-x="js-prod-FunctionBody" data-x-href="https://tc39.github.io/ecma262/#prod-FunctionBody"><i>FunctionBody</i></dfn> production</li>
+     <li>The <dfn data-x="js-prod-Module" data-x-href="https://tc39.github.io/ecma262/#prod-Module"><i>Module</i></dfn> production</li>
+     <li>The <dfn data-x="js-prod-Pattern" data-x-href="https://tc39.github.io/ecma262/#prod-Pattern"><i>Pattern</i></dfn> production</li>
+     <li>The <dfn data-x="js-prod-Script" data-x-href="https://tc39.github.io/ecma262/#prod-Script"><i>Script</i></dfn> production</li>
+
+     <li>The <dfn data-x="js-Type" data-x-href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</dfn> notation</li>
+     <li>The <dfn data-x="js-List" data-x-href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</dfn> and
+             <dfn data-x-href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</dfn> specification types</li>
+     <li>The <dfn data-x="PropertyDescriptor" data-x-href="https://tc39.github.io/ecma262/#sec-property-descriptor-specification-type">Property Descriptor</dfn> specification type</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-source-text-module-records">Source Text Module Record</dfn> specification type and its
+             <dfn data-x="js-ModuleEvaluation" data-x-href="https://tc39.github.io/ecma262/#sec-moduleevaluation">ModuleEvaluation</dfn> and
+             <dfn data-x="js-ModuleDeclarationInstantiation" data-x-href="https://tc39.github.io/ecma262/#sec-moduledeclarationinstantiation">ModuleDeclarationInstantiation</dfn> methods</li>
+
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-arraycreate">ArrayCreate</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-call">Call</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-clonearraybuffer">CloneArrayBuffer</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-construct">Construct</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-createdataproperty">CreateDataProperty</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-detacharraybuffer">DetachArrayBuffer</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-EnqueueJob" data-x-href="https://tc39.github.io/ecma262/#sec-enqueuejob">EnqueueJob</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-enumerableownproperties">EnumerableOwnProperties</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-FunctionCreate" data-x-href="https://tc39.github.io/ecma262/#sec-functioncreate">FunctionCreate</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-Get" data-x-href="https://tc39.github.io/ecma262/#sec-get-o-p">Get</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-getfunctionrealm">GetFunctionRealm</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-hasownproperty">HasOwnProperty</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-HostEnsureCanCompileStrings" data-x-href="https://tc39.github.io/ecma262/#sec-hostensurecancompilestrings">HostEnsureCanCompileStrings</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-HostPromiseRejectionTracker" data-x-href="https://tc39.github.io/ecma262/#sec-host-promise-rejection-tracker">HostPromiseRejectionTracker</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-HostResolveImportedModule" data-x-href="https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule">HostResolveImportedModule</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-InitializeHostDefinedRealm" data-x-href="https://tc39.github.io/ecma262/#sec-initializehostdefinedrealm">InitializeHostDefinedRealm</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-isaccessordescriptor">IsAccessorDescriptor</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-iscallable">IsCallable</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-isconstructor">IsConstructor</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-isdatadescriptor">IsDataDescriptor</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-isdetachedbuffer">IsDetachedBuffer</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-NewObjectEnvironment" data-x-href="https://tc39.github.io/ecma262/#sec-newobjectenvironment">NewObjectEnvironment</dfn> abstract operation</li>
+     <!-- the next set of Ordinary* abstract operations are in order of appearance -->
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinarygetprototypeof">OrdinaryGetPrototypeOf</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinarysetprototypeof">OrdinarySetPrototypeOf</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinaryisextensible">OrdinaryIsExtensible</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinarypreventextensions">OrdinaryPreventExtensions</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinarygetownproperty">OrdinaryGetOwnProperty</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinarydefineownproperty">OrdinaryDefineOwnProperty</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinaryget">OrdinaryGet</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinaryset">OrdinarySet</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinarydelete">OrdinaryDelete</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-ordinaryownpropertykeys">OrdinaryOwnPropertyKeys</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-ParseModule" data-x-href="https://tc39.github.io/ecma262/#sec-parsemodule">ParseModule</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-ParseScript" data-x-href="https://tc39.github.io/ecma262/#sec-parse-script">ParseScript</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-runjobs">RunJobs</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-samevalue">SameValue</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-ScriptEvaluation" data-x-href="https://tc39.github.io/ecma262/#sec-runtime-semantics-scriptevaluation">ScriptEvaluation</dfn> abstract operation</li>
+     <li>The <dfn data-x="js-ToBoolean" data-x-href="https://tc39.github.io/ecma262/#sec-toboolean">ToBoolean</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-tostring">ToString</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-touint32">ToUint32</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#typedarray-create">TypedArrayCreate</dfn> abstract operation</li>
+
+     <li>The <dfn data-x="js-abstract-equality" data-x-href="https://tc39.github.io/ecma262/#sec-abstract-equality-comparison">Abstract Equality Comparison</dfn> algorithm</li>
+     <li>The <dfn data-x="js-strict-equality" data-x-href="https://tc39.github.io/ecma262/#sec-strict-equality-comparison">Strict Equality Comparison</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-date-objects"><code>Date</code></dfn> class</li>
+     <li>The <dfn data-x-href="https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-typeerror"><code>TypeError</code></dfn> class</li>
+     <li>The <dfn data-x="js-RangeError" data-x-href="https://tc39.github.io/ecma262/#sec-native-error-types-used-in-this-standard-rangeerror"><code>RangeError</code></dfn> class</li>
+     <li>The <dfn data-x="js-typeof" data-x-href="https://tc39.github.io/ecma262/#sec-typeof-operator"><code>typeof</code></dfn> operator</li>
+     <li><dfn data-x-href="https://tc39.github.io/ecma262/#table-49">The <var>TypedArray</var> Constructors</dfn> table</li>
+    </ul>
+
+   </dd>
+
+
+   <dt>DOM</dt>
+
+   <dd>
+
+    <p>The Document Object Model (DOM) is a representation &mdash; a model &mdash; of a document and
+    its content. The DOM is not just an API; the conformance criteria of HTML implementations are
+    defined, in this specification, in terms of operations on the DOM. <ref spec=DOM></p>
+
+    <p>Implementations must support DOM and the events defined in UI Events, because this
+    specification is defined in terms of the DOM, and some of the features are defined as extensions
+    to the DOM interfaces. <ref spec=DOM> <ref spec=UIEVENTS></p>
+
+    <p>In particular, the following features are defined in the WHATWG DOM standard: <ref
+    spec=DOM></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-attr"><code>Attr</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-comment"><code>Comment</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-domimplementation"><code>DOMImplementation</code></dfn> interface</li>
+     <li><dfn data-x="DOM Document" data-x-href="https://dom.spec.whatwg.org/#interface-document"><code>Document</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-documentfragment"><code>DocumentFragment</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-documenttype"><code>DocumentType</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-childnode"><code>ChildNode</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-element"><code>Element</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-node"><code>Node</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-nodelist"><code>NodeList</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-processinginstruction"><code>ProcessingInstruction</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-shadowroot"><code>ShadowRoot</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-text"><code>Text</code></dfn> interface</li>
+
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#concept-node-document">node document</dfn> concept</li>
+     <li><dfn data-x="concept-DocumentFragment-host" data-x-href="https://dom.spec.whatwg.org/#concept-documentfragment-host">host</dfn> concept</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#concept-shadow-root">shadow root</dfn> concept</li>
+
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-htmlcollection"><code>HTMLCollection</code></dfn> interface</li>
+     <li><dfn data-x="dom-HTMLCollection-length" data-x-href="https://dom.spec.whatwg.org/#dom-htmlcollection-length"><code>HTMLCollection.length</code></dfn> attribute</li>
+     <li><dfn data-x="dom-HTMLCollection-item" data-x-href="https://dom.spec.whatwg.org/#dom-htmlcollection-item"><code>HTMLCollection.item()</code></dfn> method</li>
+     <li><dfn data-x="dom-HTMLCollection-namedItem" data-x-href="https://dom.spec.whatwg.org/#dom-htmlcollection-nameditem"><code>HTMLCollection.namedItem()</code></dfn> method</li>
+     <li>The terms <dfn data-x="concept-collection" data-x-href="https://dom.spec.whatwg.org/#concept-collection">collection</dfn> and <dfn data-x-href="https://dom.spec.whatwg.org/#represented-by-the-collection">represented by the collection</dfn></li>
+
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-domtokenlist"><code>DOMTokenList</code></dfn> interface</li>
+     <li><dfn data-x="dom-DOMTokenList-value" data-x-href="https://dom.spec.whatwg.org/#dom-domtokenlist-value"><code>DOMTokenList.value</code></dfn> attribute</li>
+
+     <li><dfn data-x="dom-DOMImplementation-createDocument" data-x-href="https://dom.spec.whatwg.org/#dom-domimplementation-createdocument"><code>createDocument()</code></dfn> method</li>
+     <li><dfn data-x="dom-DOMImplementation-createHTMLDocument" data-x-href="https://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument"><code>createHTMLDocument()</code></dfn> method</li>
+     <li><dfn data-x="dom-Document-createElement" data-x-href="https://dom.spec.whatwg.org/#dom-document-createelement"><code>createElement()</code></dfn> method</li>
+     <li><dfn data-x="dom-Document-createElementNS" data-x-href="https://dom.spec.whatwg.org/#dom-document-createelementns"><code>createElementNS()</code></dfn> method</li>
+     <li><dfn data-x="dom-Document-getElementById" data-x-href="https://dom.spec.whatwg.org/#dom-nonelementparentnode-getelementbyid"><code>getElementById()</code></dfn> method</li>
+     <li><dfn data-x="dom-document-getElementsByClassName" data-x-href="https://dom.spec.whatwg.org/#dom-document-getelementsbyclassname"><code>getElementsByClassName()</code></dfn> method</li>
+     <li><dfn data-x="dom-Node-appendChild" data-x-href="https://dom.spec.whatwg.org/#dom-node-appendchild"><code>appendChild()</code></dfn> method</li>
+     <li><dfn data-x="dom-Node-cloneNode" data-x-href="https://dom.spec.whatwg.org/#dom-node-clonenode"><code>cloneNode()</code></dfn> method</li>
+     <li><dfn data-x="dom-Document-importNode" data-x-href="https://dom.spec.whatwg.org/#dom-document-importnode"><code>importNode()</code></dfn> method</li>
+     <li><dfn data-x="dom-Event-preventDefault" data-x-href="https://dom.spec.whatwg.org/#dom-event-preventdefault"><code>preventDefault()</code></dfn> method</li>
+     <li><dfn data-x="dom-Element-id" data-x-href="https://dom.spec.whatwg.org/#dom-element-id"><code>id</code></dfn> attribute</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#dom-node-textcontent"><code>textContent</code></dfn> attribute</li>
+
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-tree">tree</dfn> and <dfn data-x-href="https://dom.spec.whatwg.org/#concept-shadow-tree">shadow tree</dfn> concepts</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-tree-order">tree order</dfn> and <dfn data-x-href="https://dom.spec.whatwg.org/#concept-shadow-including-tree-order">shadow-including tree order</dfn> concepts</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-tree-child" data-x="concept-tree-child">child</dfn> concept</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-tree-root">root</dfn> and <dfn data-x-href="https://dom.spec.whatwg.org/#concept-shadow-including-root">shadow-including root</dfn> concepts</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-tree-inclusive-ancestor">inclusive ancestor</dfn> and <dfn data-x-href="https://dom.spec.whatwg.org/#concept-shadow-including-descendant">shadow-including descendant</dfn> concepts</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-tree-first-child">first child</dfn> and <dfn data-x-href="https://dom.spec.whatwg.org/#concept-tree-next-sibling">next sibling</dfn> concepts</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#document-element">document element</dfn> concept</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#in-a-document-tree">in a document tree</dfn>, <dfn data-x-href="https://dom.spec.whatwg.org/#in-a-document">in a document</dfn> (legacy), and <dfn data-x-href="https://dom.spec.whatwg.org/#connected">connected</dfn> concepts</li>
+     <li>The <dfn data-x="concept-slot" data-x-href="https://dom.spec.whatwg.org/#concept-slot">slot</dfn> concept, and its <dfn data-x="slot-name" data-x-href="https://dom.spec.whatwg.org/#slot-name">name</dfn> and <dfn data-x-href="https://dom.spec.whatwg.org/#slot-assigned-nodes">assigned nodes</dfn></li>
+     <li>The <dfn data-x="finding flattened slotables" data-x-href="https://dom.spec.whatwg.org/#find-flattened-slotables">find flattened slotables</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-node-pre-insert">pre-insert</dfn>, <dfn data-x="concept-node-insert" data-x-href="https://dom.spec.whatwg.org/#concept-node-insert">insert</dfn>, <dfn data-x="concept-node-append" data-x-href="https://dom.spec.whatwg.org/#concept-node-append">append</dfn>, <dfn data-x="concept-node-replace" data-x-href="https://dom.spec.whatwg.org/#concept-node-replace">replace</dfn>, <dfn data-x="concept-node-replace-all" data-x-href="https://dom.spec.whatwg.org/#concept-node-replace-all">replace all</dfn>, <dfn data-x="concept-node-remove" data-x-href="https://dom.spec.whatwg.org/#concept-node-remove">remove</dfn>, and <dfn data-x="concept-node-adopt" data-x-href="https://dom.spec.whatwg.org/#concept-node-adopt">adopt</dfn> algorithms for nodes</li>
+     <li>The <dfn data-x="concept-element-attributes-change" data-x-href="https://dom.spec.whatwg.org/#concept-element-attributes-change">change</dfn>, <dfn data-x="concept-element-attributes-append" data-x-href="https://dom.spec.whatwg.org/#concept-element-attributes-append">append</dfn>, <dfn data-x="concept-element-attributes-remove" data-x-href="https://dom.spec.whatwg.org/#concept-element-attributes-remove">remove</dfn>, <dfn data-x="concept-element-attributes-replace" data-x-href="https://dom.spec.whatwg.org/#concept-element-attributes-replace">replace</dfn>, and <dfn data-x="concept-element-attributes-set-value" data-x-href="https://dom.spec.whatwg.org/#concept-element-attributes-set-value">set value</dfn> algorithms for attributes</li>
+     <li>The <dfn data-x="concept-node-insert-ext" data-x-href="https://dom.spec.whatwg.org/#concept-node-insert-ext">insertion steps</dfn>,
+             <dfn data-x="concept-node-remove-ext" data-x-href="https://dom.spec.whatwg.org/#concept-node-remove-ext">removing steps</dfn>, and
+             <dfn data-x="concept-node-adopt-ext" data-x-href="https://dom.spec.whatwg.org/#concept-node-adopt-ext">adopting steps</dfn> hooks</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#concept-element-attribute">attribute list</dfn> concept</li>
+     <li>The <dfn data-x="concept-cd-data" data-x-href="https://dom.spec.whatwg.org/#concept-cd-data">data</dfn> of a text node</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-event"><code>Event</code></dfn> interface</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#interface-eventtarget"><code>EventTarget</code></dfn> interface</li>
+     <li>The <!--en-GB--><dfn id="activation-behaviour" data-x-href="https://dom.spec.whatwg.org/#eventtarget-activation-behavior">activation behavior</dfn> hook</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#eventtarget-legacy-pre-activation-behavior">legacy-pre-activation behavior</dfn> hook</li>
+     <li>The <dfn data-x-href="https://dom.spec.whatwg.org/#eventtarget-legacy-canceled-activation-behavior">legacy-canceled-activation behavior</dfn> hook</li>
+     <li>The <dfn data-x="creating an event" data-x-href="https://dom.spec.whatwg.org/#concept-event-create">create an event</dfn> algorithm</li>
+     <li>The <dfn data-x="concept-event-fire" data-x-href="https://dom.spec.whatwg.org/#concept-event-fire">fire an event</dfn> algorithm</li>
+     <li>The <dfn data-x="concept-event-dispatch" data-x-href="https://dom.spec.whatwg.org/#concept-event-dispatch">dispatch</dfn> algorithm</li>
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#dictdef-eventinit"><code>EventInit</code></dfn> dictionary type</li>
+     <li><dfn data-x="dom-Event-type" data-x-href="https://dom.spec.whatwg.org/#dom-event-type"><code>type</code></dfn> attribute</li>
+     <li><dfn data-x="dom-Event-target" data-x-href="https://dom.spec.whatwg.org/#dom-event-target"><code>target</code></dfn> attribute</li>
+     <li><dfn data-x="dom-Event-currentTarget" data-x-href="https://dom.spec.whatwg.org/#dom-event-currenttarget"><code>currentTarget</code></dfn> attribute</li>
+     <li><dfn data-x="dom-Event-bubbles" data-x-href="https://dom.spec.whatwg.org/#dom-event-bubbles"><code>bubbles</code></dfn> attribute</li>
+     <li><dfn data-x="dom-Event-cancelable" data-x-href="https://dom.spec.whatwg.org/#dom-event-cancelable"><code>cancelable</code></dfn> attribute</li>
+     <li><dfn data-x="dom-Event-isTrusted" data-x-href="https://dom.spec.whatwg.org/#dom-event-istrusted"><code>isTrusted</code></dfn> attribute</li>
+     <li><dfn data-x="dom-Event-initEvent" data-x-href="https://dom.spec.whatwg.org/#dom-event-initevent"><code>initEvent()</code></dfn> method</li>
+     <li><dfn data-x="dom-EventTarget-addEventListener" data-x-href="https://dom.spec.whatwg.org/#dom-eventtarget-addeventlistener"><code>addEventListener()</code></dfn> method</li>
+     <li>The <dfn data-x="concept-event-type" data-x-href="https://dom.spec.whatwg.org/#dom-event-type">type</dfn> of an event</li>
+     <li>The concept of an <dfn data-x="concept-event-listener" data-x-href="https://dom.spec.whatwg.org/#concept-event-listener">event listener</dfn> and the <span data-x="concept-event-listener">event listeners</span> associated with an <code>EventTarget</code></li>
+
+     <li>The <dfn data-x="document's character encoding" data-x-href="https://dom.spec.whatwg.org/#concept-document-encoding">encoding</dfn> (herein the <i>character encoding</i>) and
+             <dfn data-x="concept-document-content-type" data-x-href="https://dom.spec.whatwg.org/#concept-document-content-type">content type</dfn> of a <code>Document</code></li>
+     <li>The distinction between <dfn data-x-href="https://dom.spec.whatwg.org/#xml-document">XML documents</dfn> and
+                                 <dfn data-x-href="https://dom.spec.whatwg.org/#html-document">HTML documents</dfn></li>
+     <li>The terms <dfn data-x-href="https://dom.spec.whatwg.org/#concept-document-quirks">quirks mode</dfn>,
+                   <dfn data-x-href="https://dom.spec.whatwg.org/#concept-document-limited-quirks">limited-quirks mode</dfn>, and
+                   <dfn data-x-href="https://dom.spec.whatwg.org/#concept-document-no-quirks">no-quirks mode</dfn></li>
+     <li>The algorithm to <dfn data-x="concept-node-clone" data-x-href="https://dom.spec.whatwg.org/#concept-node-clone">clone</dfn> a <code>Node</code>, and the concept of
+                          <dfn data-x="concept-node-clone-ext" data-x-href="https://dom.spec.whatwg.org/#concept-node-clone-ext">cloning steps</dfn> used by that algorithm</li>
+     <li>The concept of <dfn>base URL change steps</dfn> and the definition of what happens when an element is <dfn>affected by a base URL change</dfn></li>
+     <li>The concept of an element's <dfn data-x="concept-id" data-x-href="https://dom.spec.whatwg.org/#concept-id">unique identifier (ID)</dfn></li>
+     <li>The term <dfn data-x="concept-supported-tokens" data-x-href="https://dom.spec.whatwg.org/#concept-supported-tokens">supported tokens</dfn></li>
+
+     <li>The concept of a DOM <dfn data-x="concept-range" data-x-href="https://dom.spec.whatwg.org/#concept-range">range</dfn>, and the terms
+                              <dfn data-x="concept-range-start" data-x-href="https://dom.spec.whatwg.org/#concept-range-start">start</dfn>,
+                              <dfn data-x="concept-range-end" data-x-href="https://dom.spec.whatwg.org/#concept-range-end">end</dfn>, and
+                              <dfn data-x="concept-range-bp" data-x-href="https://dom.spec.whatwg.org/#concept-range-bp">boundary point</dfn> as applied to ranges.</li>
+
+     <li>The <dfn data-x="create an element" data-x-href="https://dom.spec.whatwg.org/#concept-create-element">create an element</dfn> algorithm</li>
+     <li>The <dfn data-x="element interface" data-x-href="https://dom.spec.whatwg.org/#concept-element-interface">element interface</dfn> concept</li>
+     <li>The concepts of <dfn data-x-href="https://dom.spec.whatwg.org/#concept-element-custom-element-state">custom element state</dfn>, and of
+                         <dfn data-x="concept-element-defined" data-x-href="https://dom.spec.whatwg.org/#concept-element-defined">defined</dfn> and
+                         <dfn data-x="concept-element-custom" data-x-href="https://dom.spec.whatwg.org/#concept-element-custom">custom</dfn> elements</li>
+     <li>An element's <dfn data-x="concept-element-custom-element-definition" data-x-href="https://dom.spec.whatwg.org/#concept-element-custom-element-definition">custom element definition</dfn></li>
+     <li>An element's <dfn data-x="concept-element-is-value" data-x-href="https://dom.spec.whatwg.org/#concept-element-is-value"><code data-x="">is</code> value</dfn></li>
+
+     <li><dfn data-x-href="https://dom.spec.whatwg.org/#mutationobserver"><code>MutationObserver</code></dfn> interface and <dfn data-x-href="https://dom.spec.whatwg.org/#mutation-observers">mutation observers</dfn> in general</li>
+    </ul>
+
+    <p>The following features are defined in the UI Events specification: <ref spec=UIEVENTS></p>
+
+    <ul class="brief">
+     <li>The <dfn data-x-href="https://w3c.github.io/uievents/#interface-MouseEvent"><code>MouseEvent</code></dfn> interface</li>
+     <li>The <code>MouseEvent</code> interface's <dfn data-x="dom-MouseEvent-relatedTarget" data-x-href="https://w3c.github.io/uievents/#widl-MouseEvent-relatedTarget"><code>relatedTarget</code></dfn> attribute</li>
+     <li><dfn data-x-href="https://w3c.github.io/uievents/#idl-def-MouseEventInit"><code>MouseEventInit</code></dfn> dictionary type</li>
+
+     <li>The <dfn data-x-href="https://w3c.github.io/uievents/#interface-FocusEvent"><code>FocusEvent</code></dfn> interface</li>
+     <li>The <code>FocusEvent</code> interface's <dfn data-x="dom-FocusEvent-relatedTarget" data-x-href="https://w3c.github.io/uievents/#widl-FocusEvent-relatedTarget"><code>relatedTarget</code></dfn> attribute</li>
+
+     <li>The <dfn data-x-href="https://w3c.github.io/uievents/#interface-UIEvent"><code>UIEvent</code></dfn> interface</li>
+     <li>The <code>UIEvent</code> interface's <dfn data-x="dom-UIEvent-view" data-x-href="https://w3c.github.io/uievents/#widl-UIEvent-view"><code>view</code></dfn> attribute</li>
+
+     <li><dfn data-x="event-click" data-x-href="https://w3c.github.io/uievents/#event-type-click"><code>click</code></dfn> event</li>
+     <li><dfn data-x="event-dblclick" data-x-href="https://w3c.github.io/uievents/#event-type-dblclick"><code>dblclick</code></dfn> event</li>
+     <li><dfn data-x="event-mousedown" data-x-href="https://w3c.github.io/uievents/#event-type-mousedown"><code>mousedown</code></dfn> event</li>
+     <li><dfn data-x="event-mouseenter" data-x-href="https://w3c.github.io/uievents/#event-type-mouseenter"><code>mouseenter</code></dfn> event</li>
+     <li><dfn data-x="event-mouseleave" data-x-href="https://w3c.github.io/uievents/#event-type-mouseleave"><code>mouseleave</code></dfn> event</li>
+     <li><dfn data-x="event-mousemove" data-x-href="https://w3c.github.io/uievents/#event-type-mousemove"><code>mousemove</code></dfn> event</li>
+     <li><dfn data-x="event-mouseout" data-x-href="https://w3c.github.io/uievents/#event-type-mouseout"><code>mouseout</code></dfn> event</li>
+     <li><dfn data-x="event-mouseover" data-x-href="https://w3c.github.io/uievents/#event-type-mouseover"><code>mouseover</code></dfn> event</li>
+     <li><dfn data-x="event-mouseup" data-x-href="https://w3c.github.io/uievents/#event-type-mouseup"><code>mouseup</code></dfn> event</li>
+     <li><dfn data-x="event-wheel" data-x-href="https://w3c.github.io/uievents/#event-type-wheel"><code>wheel</code></dfn> event</li>
+
+     <li><dfn data-x="event-keydown" data-x-href="https://w3c.github.io/uievents/#event-type-keydown"><code>keydown</code></dfn> event</li>
+     <li><dfn data-x="event-keyup" data-x-href="https://w3c.github.io/uievents/#event-type-keyup"><code>keyup</code></dfn> event</li>
+     <li><dfn data-x="event-keypress" data-x-href="https://w3c.github.io/uievents/#event-type-keypress"><code>keypress</code></dfn> event</li>
+    </ul>
+
+    <p>The following features are defined in the Touch Events specification: <ref spec=TOUCH></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/touch-events/#touch-interface"><code>Touch</code></dfn> interface</li>
+     <li><dfn data-x-href="https://w3c.github.io/touch-events/#dfn-touch-point">Touch point</dfn> concept</li>
+     <li><dfn data-x="event-touchend" data-x-href="https://w3c.github.io/touch-events/#event-touchend"><code>touchend</code></dfn> event</li>
+    </ul>
+
+    <p>The following features are defined in the Pointer Events specification: <ref spec=POINTEREVENTS></p>
+
+    <ul class="brief">
+     <li><dfn data-x="event-pointerup" data-x-href="https://w3c.github.io/pointerevents/#the-pointerup-event"><code>pointerup</code></dfn> event</li>
+    </ul>
+
+    <p>The following features are defined in the auxclick specification: <ref spec=AUXCLICK></p>
+
+    <ul class="brief">
+     <li><dfn data-x="event-auxclick" data-x-href="https://wicg.github.io/auxclick/#the-auxclick-event"><code>auxclick</code></dfn> event</li>
+    </ul>
+
+    <p>This specification sometimes uses the term <dfn data-x="">name</dfn> to refer to the event's
+    <span data-x="concept-event-type">type</span>; as in, "an event named <code
+    data-x="">click</code>" or "if the event name is <code data-x="">keypress</code>". The terms
+    "name" and "type" for events are synonymous.</p>
+
+    <p>The following features are defined in the <cite>DOM Parsing and Serialization</cite>
+    specification: <ref spec=DOMPARSING></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/DOM-Parsing/#the-domparser-interface"><code>DOMParser</code></dfn></li>
+     <li><dfn data-x="dom-innerHTML" data-x-href="https://w3c.github.io/DOM-Parsing/#widl-Element-innerHTML"><code>innerHTML</code></dfn></li>
+     <li><dfn data-x="dom-outerHTML" data-x-href="https://w3c.github.io/DOM-Parsing/#widl-Element-outerHTML"><code>outerHTML</code></dfn></li>
+    </ul>
+
+    <p>The <dfn
+    data-x-href="https://w3c.github.io/selection-api/#selection-interface"><code>Selection</code></dfn>
+    interface is defined in the <cite>Selection API</cite> specification. <ref spec=SELECTION></p>
+
+    <p class="note">User agents are encouraged to implement the features described in the
+    <cite>execCommand</cite> specification. <ref spec=EXECCOMMAND></p>
+
+    <p>The following parts of the WHATWG Fullscreen API standard are referenced from this
+    specification, in part to define the rendering of <code>dialog</code> elements, and also to
+    define how the Fullscreen API interacts with HTML: <ref spec=FULLSCREEN></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://fullscreen.spec.whatwg.org/#top-layer">top layer</dfn> and its
+         <dfn data-x="top-layer-add" data-x-href="https://fullscreen.spec.whatwg.org/#top-layer-add">add</dfn> and
+         <dfn data-x="top-layer-remove" data-x-href="https://fullscreen.spec.whatwg.org/#top-layer-remove">remove</dfn> algorithms</li>
+     <li><dfn data-x-href="https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen"><code data-x="dom-element-requestFullscreen">requestFullscreen()</code></dfn></li>
+    </ul>
+
+    <p>The <cite>High Resolution Time</cite> specification provides the <dfn
+    data-x-href="https://w3c.github.io/hr-time/#dom-domhighrestimestamp"><code>DOMHighResTimeStamp</code></dfn>
+    typedef and the <dfn
+    data-x-href="https://w3c.github.io/hr-time/#the-performance-interface"><code>Performance</code></dfn>
+    interface's <dfn data-x="dom-Performance-now"
+    data-x-href="https://w3c.github.io/hr-time/#dom-performance-now"><code>now()</code></dfn>
+    method. <ref spec=HRT></p>
+
+   </dd>
+
+
+
+   <dt>File API</dt>
+
+   <dd>
+
+    <p>This specification uses the following features defined in the File API specification: <ref
+    spec=FILEAPI></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/FileAPI/#blob"><code>Blob</code></dfn> interface</li>
+     <li><dfn data-x-href="https://w3c.github.io/FileAPI/#file"><code>File</code></dfn> interface</li>
+     <li><dfn data-x-href="https://w3c.github.io/FileAPI/#filelist-section"><code>FileList</code></dfn> interface</li>
+     <li>The concept of a <dfn data-x-href="https://w3c.github.io/FileAPI/#closed" data-x="concept-blob-closed">closed</dfn> <code>Blob</code></li>
+     <li><dfn data-x="dom-Blob-type" data-x-href="https://w3c.github.io/FileAPI/#dfn-type"><code>Blob.type</code></dfn></li>
+     <li>The concept of <dfn data-x="file-error-read">read errors</dfn></li>
+    </ul>
+
+   </dd>
+
+
+
+   <dt>Media Source Extensions</dt>
+
+   <dd>
+
+    <p>The following terms are defined in the Media Source Extensions specification: <ref
+    spec=MEDIASOURCE></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/media-source/#idl-def-MediaSource"><code>MediaSource</code></dfn> interface</li>
+     <li><dfn data-x-href="https://w3c.github.io/media-source/#mediasource-detach">detaching from a media element</dfn></li>
+    </ul>
+
+   </dd>
+
+   <dt>Media Capture and Streams</dt>
+
+   <dd>
+
+    <p>The following terms are defined in the Media Capture and Streams specification: <ref
+    spec=MEDIASTREAM></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-MediaStream"><code>MediaStream</code></dfn> interface</li>
+     <li><dfn data-x="dom-MediaDevices-getUserMedia" data-x-href="https://w3c.github.io/mediacapture-main/#dom-mediadevices-getusermedia"><code>getUserMedia()</code></dfn> method</li>
+    </ul>
+
+   </dd>
+
+
+   <dt>XMLHttpRequest</dt>
+
+   <dd>
+
+    <p>This specification references the XMLHttpRequest specification to describe how the two
+    specifications interact and to use its <code>ProgressEvent</code> features. The following
+    features and terms are defined in the XMLHttpRequest specification: <ref spec=XHR></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://xhr.spec.whatwg.org/#xmlhttprequest"><code>XMLHttpRequest</code></dfn> interface</li>
+     <li><dfn data-x="dom-XMLHttpRequest-responseXML" data-x-href="https://xhr.spec.whatwg.org/#dom-xmlhttprequest-responsexml"><code>XMLHttpRequest.responseXML</code></dfn> attribute</li>
+     <li><dfn data-x-href="https://xhr.spec.whatwg.org/#interface-progressevent"><code>ProgressEvent</code></dfn> interface</li>
+     <li><dfn data-x="dom-ProgressEvent-lengthComputable" data-x-href="https://xhr.spec.whatwg.org/#dom-progressevent-lengthcomputable"><code>ProgressEvent.lengthComputable</code></dfn> attribute</li>
+     <li><dfn data-x="dom-ProgressEvent-loaded" data-x-href="https://xhr.spec.whatwg.org/#dom-progressevent-loaded"><code>ProgressEvent.loaded</code></dfn> attribute</li>
+     <li><dfn data-x="dom-ProgressEvent-total" data-x-href="https://xhr.spec.whatwg.org/#dom-progressevent-total"><code>ProgressEvent.total</code></dfn> attribute</li>
+     <li><dfn data-x="fire a progress event" data-x-href="https://xhr.spec.whatwg.org/#concept-event-fire-progress">Fire a progress event named <var>e</var></dfn></li>
+    </ul>
+
+   </dd>
+
+   <dt>Battery Status</dt>
+
+   <dd>
+
+    <p>The following features are defined in the <cite>Battery Status API</cite> specification: <ref spec=BATTERY></p>
+
+    <ul class="brief">
+     <li><dfn data-x="dom-navigator-getBattery" data-x-href="https://w3c.github.io/battery/#widl-Navigator-getBattery-Promise-BatteryManager"><code>getBattery()</code></dfn> method</li>
+    </ul>
+
+   </dd>
+
+<!--TOPIC:HTML-->
+
+   <dt>Media Queries</dt>
+
+   <dd>
+
+    <p>Implementations must support <cite>Media Queries</cite>. The <dfn
+    data-x-href="https://drafts.csswg.org/mediaqueries/#typedef-media-condition">&lt;media-condition></dfn>
+    feature is defined therein. <ref spec=MQ></p>
+
+   </dd>
+
+
+   <dt>CSS modules</dt>
+
+   <dd>
+
+    <p>While support for CSS as a whole is not required of implementations of this specification
+    (though it is encouraged, at least for Web browsers), some features are defined in terms of
+    specific CSS requirements.</p>
+
+    <p>When this specification requires that something be <dfn data-x="parse something according to
+    a CSS grammar"
+    data-x-href="https://drafts.csswg.org/css-syntax/#parse-something-according-to-a-css-grammar">parsed
+    according to a particular CSS grammar</dfn>, the relevant algorithm in the CSS Syntax
+    specification must be followed. <ref spec=CSSSYNTAX></p>
+
+    <p>In particular, some features require that a string be <dfn>parsed as a CSS &lt;color&gt;
+    value</dfn>. When parsing a CSS value, user agents are required by the CSS specifications to
+    apply some error handling rules. These apply to this specification also. <ref spec=CSSCOLOR>
+    <ref spec=CSS></p>
+
+    <p class="example">For example, user agents are required to close all open constructs upon
+    finding the end of a style sheet unexpectedly. Thus, when parsing the string "<code
+    data-x="">rgb(0,0,0</code>" (with a missing close-parenthesis) for a color value, the close
+    parenthesis is implied by this error handling rule, and a value is obtained (the color 'black').
+    However, the similar construct "<code data-x="">rgb(0,0,</code>" (with both a missing
+    parenthesis and a missing "blue" value) cannot be parsed, as closing the open construct does not
+    result in a viable value.</p>
+
+    <p>The following terms and features are defined in the CSS specification: <ref spec=CSS></p>
+
+    <ul class="brief">
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#viewport">viewport</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#line-box">line box</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#x24">out-of-flow</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#x25">in-flow</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/conform.html#replaced-element">replaced element</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/conform.html#intrinsic">intrinsic dimensions</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/box.html#box-content-area">content area</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/box.html#x10">content box</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/box.html#x14">border box</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/box.html#x17">margin box</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/box.html#border-edge">border edge</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/box.html#margin-edge">margin edge</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/box.html#collapsing-margins">collapsing margins</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/visudet.html#containing-block-details">containing block</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#inline-box">inline box</dfn></li>
+      <li><dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#x9">block box</dfn></li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-margin-top">'margin-top'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-margin-bottom">'margin-bottom'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-margin-left">'margin-left'</dfn>, and
+              <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-margin-right">'margin-right'</dfn> properties</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-padding-top">'padding-top'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-padding-bottom">'padding-bottom'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-padding-left">'padding-left'</dfn>, and
+              <dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-padding-right">'padding-right'</dfn> properties</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#float-position">'float'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#flow-control">'clear'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visudet.html#the-width-property">'width'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visudet.html#the-height-property">'height'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visudet.html#propdef-line-height">'line-height'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visudet.html#propdef-vertical-align">'vertical-align'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/generate.html#content">'content'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visuren.html#value-def-inline-block">'inline-block'</dfn> value of the <span>'display'</span> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css2/visufx.html#propdef-visibility">'visibility'</dfn> property</li>
+    </ul>
+
+    <p>The CSS specification also defines the following border properties: <ref spec=CSS></p>
+
+    <table>
+     <caption>Border properties
+     <tbody>
+      <tr>
+       <td>
+       <th>Top
+       <th>Bottom
+       <th>Left
+       <th>Right
+      <tr>
+       <th>Width
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-top-width">'border-top-width'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-bottom-width">'border-bottom-width'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-left-width">'border-left-width'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-right-width">'border-right-width'</dfn>
+      <tr>
+       <th>Style
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-top-style">'border-top-style'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-bottom-style">'border-bottom-style'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-left-style">'border-left-style'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-right-style">'border-right-style'</dfn>
+      <tr>
+       <th>Color
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-top-color">'border-top-color'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-bottom-color">'border-bottom-color'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-left-color">'border-left-color'</dfn>
+       <td><dfn data-x-href="https://drafts.csswg.org/css2/box.html#propdef-border-right-color">'border-right-color'</dfn>
+    </table>
+
+    <p>The terms <dfn>intrinsic width</dfn> and <dfn>intrinsic height</dfn> refer to the width dimension and the height
+    dimension, respectively, of <span>intrinsic dimensions</span>.</p>
+
+    <p>The basic version of the <dfn
+    data-x-href="https://drafts.csswg.org/css2/visuren.html#display-prop">'display'</dfn> property
+    is defined in the <cite>CSS</cite> specification, and the property is extended by other CSS
+    modules. <ref spec=CSS> <ref spec=CSSRUBY> <ref spec=CSSTABLE></p>
+
+    <p>The following terms and features are defined in the <cite>CSS Logical Properties</cite>
+    specification: <ref spec=CSSLOGICAL></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-margin-block-start">'margin-block-start'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-margin-block-end">'margin-block-end'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-margin-inline-start">'margin-inline-start'</dfn>, and
+              <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-margin-inline-end">'margin-inline-end'</dfn> properties</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-padding-block-start">'padding-block-start'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-padding-block-end">'padding-block-end'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-padding-inline-start">'padding-inline-start'</dfn>, and
+              <dfn data-x-href="https://drafts.csswg.org/css-logical-props/#propdef-padding-inline-end">'padding-inline-end'</dfn> properties</li>
+    </ul>
+
+    <p>The following terms and features are defined in the <cite>CSS Color</cite> specification:
+    <ref spec=CSSCOLOR></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.csswg.org/css-color/#named-color">named color</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/css-color/#typedef-color">&lt;color></dfn></li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-color/#the-color-property">'color'</dfn> property</li>
+    </ul>
+
+    <p>The term <dfn data-x-href="https://drafts.csswg.org/css-images-4/#paint-source">paint
+    source</dfn> is used as defined in the <cite>CSS Image Values and Replaced Content</cite>
+    specification to define the interaction of certain HTML elements with the CSS 'element()'
+    function. <ref spec=CSSIMAGES></p>
+
+    <p>The term <dfn data-x-href="https://drafts.csswg.org/css-images/#default-object-size">default
+    object size</dfn> and the <dfn
+    data-x-href="https://drafts.csswg.org/css-images/#the-object-fit">'object-fit'</dfn> property
+    are also defined in the <cite>CSS Image Values and Replaced Content</cite> specification. <ref
+    spec=CSSIMAGES></p>
+
+    <p>The following features are defined in the <cite>CSS Backgrounds and Borders</cite>
+    specification: <ref spec=CSSBG></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-backgrounds/#the-background-color">'background-color'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-backgrounds/#the-background-image">'background-image'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-backgrounds/#position">&lt;position></dfn> CSS data type</li>
+    </ul>
+
+    <p>The term <dfn
+    data-x-href="https://drafts.csswg.org/css-display/#block-level">block-level</dfn> is defined in
+    the <cite>CSS Display</cite> specification. <ref spec=CSSDISPLAY></p>
+
+    <p>The following features are defined in the <cite>CSS Fonts</cite> specification: <ref
+    spec=CSSFONTS></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-fonts/#font-family-prop">'font-family'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-fonts/#font-weight-prop">'font-weight'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-fonts/#font-size-prop">'font-size'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-fonts/#font-prop">'font'</dfn> property</li>
+    </ul>
+
+    <p>The <dfn
+    data-x-href="https://drafts.csswg.org/css-lists/#propdef-list-style-type">'list-style-type'</dfn>
+    property is defined in the <cite>CSS Lists and Counters</cite> specification. <ref
+    spec=CSSLISTS></p>
+
+    <p>The <dfn
+    data-x-href="https://drafts.csswg.org/css-overflow/#propdef-overflow">'overflow'</dfn> property
+    is defined in the <cite>CSS Overflow</cite> specification. <ref spec=CSSOVERFLOW></p>
+
+    <p>The following features are defined in the <cite>CSS Positioned Layout</cite> specification:
+    <ref spec=CSSPOSITION></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-position/#position-property">'position'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-position/#propdef-top">'top'</dfn> property</li>
+    </ul>
+
+    <p>The <dfn
+    data-x-href="https://drafts.csswg.org/css-ruby/#valdef-display-ruby-base">'ruby-base'</dfn>
+    value of the <span>'display'</span> property is defined in the <cite>CSS Ruby Layout</cite>
+    specification. <ref spec=CSSRUBY></p>
+
+    <p>The following features are defined in the <cite>CSS Table</cite> specification: <ref
+    spec=CSSTABLE></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-tables/#propdef-border-spacing">'border-spacing'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-tables/#border-collapse-property">'border-collapse'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-tables/#table-cell">'table-cell'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-tables/#table-row">'table-row'</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-tables/#table-caption">'table-caption'</dfn>, and
+              <dfn data-x-href="https://drafts.csswg.org/css-tables/#table">'table'</dfn> values of the <span>'display'</span> property</li>
+    </ul>
+
+    <p>The following features are defined in the <cite>CSS Text</cite> specification: <ref
+    spec=CSSTEXT></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-text/#text-transform-property">'text-transform'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-text/#white-space-property">'white-space'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-text/#text-align-property">'text-align'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-text/#letter-spacing-property">'letter-spacing'</dfn> property</li>
+    </ul>
+
+    <p>The following features are defined in the <cite>CSS Writing Modes</cite> specification: <ref
+    spec=CSSWM></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#direction">'direction'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#unicode-bidi">'unicode-bidi'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#block-size">block size</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#inline-size">inline size</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#block-start">block-start</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#block-end">block-end</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#inline-start">inline-start</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#inline-end">inline-end</dfn>,
+              <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#line-left">line-left</dfn>, and
+              <dfn data-x-href="https://drafts.csswg.org/css-writing-modes/#line-right">line-right</dfn> concepts</li>
+    </ul>
+
+    <p>The following features are defined in the <cite>CSS Basic User Interface</cite>
+    specification: <ref spec=CSSUI></p>
+
+    <ul class="brief">
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-ui/#outline">'outline'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-ui/#cursor">'cursor'</dfn> property</li>
+      <li>The <dfn data-x-href="https://drafts.csswg.org/css-ui-4/#appearance-switching">'appearance'</dfn> property</li>
+    </ul>
+
+    <p>Implementations that support scripting must support the CSS Object Model. The following
+    features and terms are defined in the CSSOM specifications: <ref spec=CSSOM> <ref spec=CSSOMVIEW>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom-view/#the-screen-interface"><code>Screen</code></dfn> interface</li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#the-linkstyle-interface"><code>LinkStyle</code></dfn> interface</li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#the-cssstyledeclaration-interface"><code>CSSStyleDeclaration</code></dfn> interface</li>
+     <li><dfn data-x="dom-CSSStyleDeclaration-cssText" data-x-href="https://drafts.csswg.org/cssom/#dom-cssstyledeclaration-csstext"><code>cssText</code></dfn> attribute of <code>CSSStyleDeclaration</code></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#the-stylesheet-interface"><code>StyleSheet</code></dfn> interface</li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#create-a-css-style-sheet">create a CSS style sheet</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#remove-a-css-style-sheet">remove a CSS style sheet</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#associated-css-style-sheet">associated CSS style sheet</dfn></li>
+     <li>
+      <dfn data-x="CSS style sheet"
+      data-x-href="https://drafts.csswg.org/cssom/#css-style-sheet">CSS style sheets</dfn> and their
+      properties:
+      <ul class="brief">
+       <li><dfn data-x="concept-css-style-sheet-type" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-type">type</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-location" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-location">location</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-parent-CSS-style-sheet" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-parent-css-style-sheet">parent CSS style sheet</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-owner-node" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-owner-node">owner node</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-owner-CSS-rule" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-owner-css-rule">owner CSS rule</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-media" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-media">media</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-title" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-title">title</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-alternate-flag" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-alternate-flag">alternate flag</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-disabeld-flag" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-disabled-flag">disabled flag</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-CSS-rules" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-css-rules">CSS rules</dfn></li>
+       <li><dfn data-x="concept-css-style-sheet-origin-clean-flag" data-x-href="https://drafts.csswg.org/cssom/#concept-css-style-sheet-origin-clean-flag">origin-clean flag</dfn></li>
+      </ul>
+     </li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#css-style-sheet-set">CSS style sheet set</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#css-style-sheet-set-name">CSS style sheet set name</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#preferred-css-style-sheet-set-name">preferred CSS style sheet set name</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#change-the-preferred-css-style-sheet-set-name">change the preferred CSS style sheet set name</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom/#serialize-a-css-value">Serializing a CSS value</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom-view/#run-the-resize-steps">run the resize steps</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom-view/#run-the-scroll-steps">run the scroll steps</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom-view/#evaluate-media-queries-and-report-changes">evaluate media queries and report changes</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom-view/#scroll-an-element-into-view">Scroll an element into view</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/cssom-view/#scroll-to-the-beginning-of-the-document">Scroll to the beginning of the document</dfn></li>
+     <li>The <dfn data-x="event-resize" data-x-href="https://drafts.csswg.org/cssom-view/#eventdef-window-resize"><code>resize</code></dfn> event</li>
+     <li>The <dfn data-x="event-scroll" data-x-href="https://drafts.csswg.org/cssom-view/#eventdef-document-scroll"><code>scroll</code></dfn> event</li>
+     <li><dfn data-x="dom-open-features" data-x-href="https://drafts.csswg.org/cssom-view/#the-features-argument-to-the-open()-method">The <var>features</var> argument of <code data-x="dom-open">window.open</code></dfn>
+    </ul>
+
+    <p>The following features and terms are defined in the <cite>CSS Syntax</cite> specifications:
+    <ref spec=CSSSYNTAX></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.csswg.org/css-syntax/#parse-a-comma-separated-list-of-component-values">Parse a comma-separated list of component values</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/css-syntax/#component-value">component value</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/css-syntax/#environment-encoding">environment encoding</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/css-syntax/#typedef-whitespace-token">&lt;whitespace-token></dfn></li>
+    </ul>
+
+    <p>The following terms are defined in the <cite>Selectors</cite> specification: <ref
+    spec=SELECTORS></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.csswg.org/selectors/#type-selector">type selector</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/selectors/#attribute-selector">attribute selector</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/selectors/#pseudo-class">pseudo-class</dfn></li>
+    </ul>
+
+    <p>The following features are defined in the <cite>CSS Values and Units</cite> specification:
+    <ref spec=CSSVALUES></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.csswg.org/css-values/#lengths">&lt;length></dfn></li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-values/#em">'em'</dfn> unit</li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-values/#ex">'ex'</dfn> unit</li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-values/#vw">'vw'</dfn> unit</li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-values/#in">'in'</dfn> unit</li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-values/#px">'px'</dfn> unit</li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-values/#funcdef-attr">'attr()'</dfn> function</li>
+     <li>The <dfn data-x-href="https://drafts.csswg.org/css-values/#funcdef-calc">'calc()'</dfn> function</li>
+    </ul>
+
+    <p>The term <dfn data-x="css-styling-attribute"
+    data-x-href="https://drafts.csswg.org/css-style-attr/#style-attribute">style attribute</dfn> is
+    defined in the <cite>CSS Style Attributes</cite> specification. <ref spec=CSSATTR></p>
+
+    <p>The following terms are defined in the <cite>CSS Cascading and Inheritance</cite>
+    specification: <ref spec=CSSCASCADE></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.csswg.org/css-cascade/#specified-value">specified value</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/css-cascade/#computed-value">computed value</dfn></li>
+     <li><dfn data-x-href="https://drafts.csswg.org/css-cascade/#used-value">used value</dfn></li>
+    </ul>
+
+    <p>The <code>CanvasRenderingContext2D</code> object's use of fonts depends on the features
+    described in the CSS <cite>Fonts</cite> and <cite>Font Loading</cite> specifications, including
+    in particular <dfn><code>FontFace</code></dfn> objects and the <dfn
+    data-x-href="https://drafts.csswg.org/css-font-loading/#font-source">font source</dfn> concept.
+    <ref spec=CSSFONTS> <ref spec=CSSFONTLOAD></p>
+
+    <p>The following interfaces and terms are defined in the Geometry Interfaces Module specification: <ref
+    spec=GEOMETRY></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.fxtf.org/geometry/#dommatrix"><code>DOMMatrix</code></dfn> interface</li>
+     <li><dfn data-x-href="https://drafts.fxtf.org/geometry/#dictdef-dommatrixinit"><code>DOMMatrixInit</code></dfn> interface</li>
+     <li>The <dfn data-x-href="https://drafts.fxtf.org/geometry/#create-a-dommatrix-from-the-dictionary">create a <code>DOMMatrix</code> from a dictionary</dfn> algorithm for <code>DOMMatrixInit</code></li>
+    </ul>
+
+   </dd>
+
+   <dt>Intersection Observer</dt>
+
+   <dd>
+
+    <p>The following term is defined in the Intersection Observer specification: <ref
+    spec=INTERSECTIONOBSERVER></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://wicg.github.io/IntersectionObserver/#run-the-update-intersection-observations-steps">run the update intersection observations steps</dfn></li>
+    </ul>
+
+   </dd>
+
+
+<!--TOPIC:Canvas-->
+
+   <dt>WebGL</dt>
+
+   <dd>
+
+    <p>The following interface is defined in the WebGL specification: <ref spec=WEBGL></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://www.khronos.org/registry/webgl/specs/latest/1.0/#WebGLRenderingContext"><code>WebGLRenderingContext</code></dfn> interface</li>
+    </ul>
+
+   </dd>
+
+
+<!--TOPIC:Video Text Tracks-->
+
+   <dt>WebVTT</dt>
+
+   <dd>
+
+    <p>Implementations may support WebVTT as a text track format for subtitles, captions, chapter
+    titles, metadata, etc, for media resources. <ref spec=WEBVTT></p>
+
+    <p>The following terms, used in this specification, are defined in the WebVTT specification:</p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/webvtt/#webvtt-file">WebVTT file</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/webvtt/#webvtt-file-using-cue-text">WebVTT file using cue text</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/webvtt/#webvtt-file-using-chapter-title-text">WebVTT file using chapter title text</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/webvtt/#webvtt-file-using-only-nested-cues">WebVTT file using only nested cues</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/webvtt/#webvtt-parser">WebVTT parser</dfn></li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webvtt/#rules-for-updating-the-display-of-webvtt-text-tracks">rules for updating the display of WebVTT text tracks</dfn></li>
+     <li>The WebVTT <dfn data-x-href="https://w3c.github.io/webvtt/#webvtt-cue-writing-direction">text track cue writing direction</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/webvtt/#vttcue"><code>VTTCue</code></dfn> interface</li>
+    </ul>
+
+   </dd>
+
+
+<!--TOPIC:WebSocket API-->
+
+   <dt>The WebSocket protocol</dt>
+
+   <dd>
+    <p>The following terms are defined in the WHATWG Fetch standard: <ref spec=FETCH></p>
+
+    <ul class="brief">
+     <li><dfn data-x="concept-websocket-establish" data-x-href="https://fetch.spec.whatwg.org/#concept-websocket-establish">establish a WebSocket connection</dfn></li>
+    </ul>
+
+    <p>The following terms are defined in the WebSocket protocol specification: <ref spec=WSP></p>
+
+    <ul class="brief">
+     <li><dfn data-x="concept-websocket-established">the WebSocket connection is established</dfn></li>
+     <li><dfn data-x="concept-websockets-active-extensions">extensions in use</dfn></li>
+     <li><dfn data-x="concept-websocket-subprotocol">subprotocol in use</dfn></li>
+     <li><dfn data-x="concept-websocket-message-received">a WebSocket message has been received</dfn></li>
+     <li><dfn data-x="concept-websocket-send">send a WebSocket Message</dfn></li>
+     <li><dfn data-x="concept-websocket-fail">fail the WebSocket connection</dfn></li>
+     <li><dfn data-x="concept-websocket-close">close the WebSocket connection</dfn></li>
+     <li><dfn data-x="concept-websocket-start-closing-handshake">start the WebSocket closing handshake</dfn></li>
+     <li><dfn data-x="concept-websocket-closing-handshake">the WebSocket closing handshake is started</dfn></li>
+     <li><dfn data-x="concept-websocket-closed">the WebSocket connection is closed</dfn> (possibly <i>cleanly</i>)</li>
+     <li><dfn data-x="concept-websocket-close-code">the WebSocket connection close code</dfn></li>
+     <li><dfn data-x="concept-websocket-close-reason">the WebSocket connection close reason</dfn></li>
+     <li><dfn><code data-x="http-sec-websocket-protocol">Sec-WebSocket-Protocol</code></dfn> field</li>
+    </ul>
+
+   </dd>
+
+
+<!--TOPIC:HTML-->
+
+   <dt>ARIA</dt>
+
+   <dd>
+
+    <p>The <dfn><code data-x="attr-aria-role">role</code></dfn> attribute is defined in the ARIA
+    specification, as are the following roles: <ref spec=ARIA></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/aria/aria/aria.html#button"><code data-x="attr-aria-role-button">button</code></dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/aria/aria/aria.html#presentation"><code data-x="attr-aria-role-presentation">presentation</code></dfn></li>
+    </ul>
+
+    <p>In addition, the following <dfn><code data-x="attr-aria-*">aria-*</code></dfn> content
+    attributes are defined in the ARIA specification: <ref spec=ARIA></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/aria/aria/aria.html#aria-describedby"><code data-x="attr-aria-describedby">aria-describedby</code></dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/aria/aria/aria.html#aria-disabled"><code data-x="attr-aria-disabled">aria-disabled</code></dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/aria/aria/aria.html#aria-label"><code data-x="attr-aria-label">aria-label</code></dfn></li>
+    </ul>
+
+    <p>Finally, the following terms are defined in the ARIA specification: <ref spec=ARIA></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/aria/aria/aria.html#dfn-accessible-name" data-x="concept-accessible-name">accessible name</dfn></li>
+    </ul>
+
+   </dd>
+
+
+   <dt>Content Security Policy</dt>
+
+   <dd>
+
+    <p>The following terms are defined in <cite>Content Security Policy</cite>: <ref spec="CSP"></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/webappsec-csp/#policy">Content Security Policy</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/webappsec-csp/#directives">Content Security Policy directive</dfn></li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#grammardef-serialized-policy">Content Security Policy syntax</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/webappsec-csp/#enforced">enforce the policy</dfn></li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#parse-serialized-policy">parse a serialized Content Security Policy</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#initialize-global-object-csp">Initialize a global object's CSP list</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#initialize-document-csp">Initialize a Document's CSP list</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#should-block-inline">Should element's inline behavior be blocked by Content Security Policy?</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#should-block-navigation-request">Should navigation request of type from source in target be blocked by Content Security Policy?</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#should-block-navigation-response">Should navigation response to navigation request of type from source in target be blocked by Content Security Policy?</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#report-uri"><code data-x="">report-uri</code> directive</dfn></li>
+     <li>The <dfn data-x="csp-EnsureCSPDoesNotBlockStringCompilation" data-x-href="https://w3c.github.io/webappsec-csp/#can-compile-strings">EnsureCSPDoesNotBlockStringCompilation</dfn> abstract operation</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#allow-base-for-document">Is base allowed for Document?</dfn> algorithm</li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#frame-ancestors"><code data-x="">frame-ancestors</code> directive</dfn></li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#sandbox"><code data-x="">sandbox</code> directive</dfn></li>
+     <li>The <dfn data-x-href="https://w3c.github.io/webappsec-csp/#should-plugin-element-be-blocked-a-priori-by-content-security-policy">Should element be blocked <i lang="la">a priori</i> by Content Security Policy?</dfn> algorithm</li>
+    </ul>
+
+   </dd>
+
+   <dt>Service Workers</dt>
+
+   <dd>
+
+    <p>The following terms are defined in <cite>Service Workers</cite>: <ref spec="SW"></p>
+
+    <ul class="brief">
+     <li><dfn data-x="dfn-active-worker" data-x-href="https://w3c.github.io/ServiceWorker/#dfn-active-worker">active worker</dfn></li>
+     <li><dfn data-x="dfn-client-message-queue" data-x-href="https://w3c.github.io/ServiceWorker/#dfn-client-message-queue">client message queue</dfn></li>
+     <li><dfn data-x="dfn-control" data-x-href="https://w3c.github.io/ServiceWorker/#dfn-control">control</dfn></li>
+     <li><dfn data-x="on-fetch-request-algorithm" data-x-href="https://w3c.github.io/ServiceWorker/#on-fetch-request-algorithm">handle fetch</dfn></li>
+     <li><dfn data-x="scope-match-algorithm" data-x-href="https://w3c.github.io/ServiceWorker/#scope-match-algorithm">match service worker registration</dfn></li>
+     <li><dfn data-x="dfn-service-worker" data-x-href="https://w3c.github.io/ServiceWorker/#dfn-service-worker">service worker</dfn></li>
+     <li><dfn data-x="serviceworkercontainer-service-worker-client" data-x-href="https://w3c.github.io/ServiceWorker/#serviceworkercontainer-service-worker-client">service worker client</dfn></li>
+     <li><dfn data-x-href="https://w3c.github.io/ServiceWorker/#serviceworker"><code>ServiceWorker</code></dfn> interface</li>
+     <li><dfn data-x-href="https://w3c.github.io/ServiceWorker/#serviceworkercontainer"><code>ServiceWorkerContainer</code></dfn> interface</li>
+    </ul>
+
+   </dd>
+
+   <dt>Secure Contexts</dt>
+
+   <dd>
+
+    <p>The following term is defined in <cite>Secure Contexts</cite>: <ref
+    spec="SECURE-CONTEXTS"></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://w3c.github.io/webappsec-secure-contexts/#settings-object">Is environment settings object a secure context?</dfn></li>
+     <li><dfn data-x="non-secure-context" data-x-href="https://w3c.github.io/webappsec-secure-contexts/#non-secure-context">non-secure context</dfn></li>
+     <li><dfn data-x="secure-context" data-x-href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</dfn></li>
+    </ul>
+
+   </dd>
+
+   <dt>MathML</dt>
+
+   <dd>
+    <p>While support for MathML as a whole is not required by this specification (though it is
+    encouraged, at least for Web browsers), certain features depend upon small parts of MathML being
+    implemented. <ref spec=MATHML></p>
+
+    <p>The following features are defined in the MathML specification:</p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter5.html#mixing.elements.annotation.xml">MathML <code>annotation-xml</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter2.html#interf.toplevel">MathML <code>math</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter3.html#presm.merror">MathML <code>merror</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter3.html#presm.mi">MathML <code>mi</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter3.html#presm.mn">MathML <code>mn</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter3.html#presm.mo">MathML <code>mo</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter3.html#presm.ms">MathML <code>ms</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/Math/draft-spec/chapter3.html#presm.mtext">MathML <code>mtext</code></dfn> element</li>
+    </ul>
+   </dd>
+
+
+   <dt>SVG</dt>
+
+   <dd>
+    <p>While support for SVG as a whole is not required by this specification (though it is
+    encouraged, at least for Web browsers), certain features depend upon parts of SVG being
+    implemented.</p>
+
+    <p>Also, the SVG specifications do not reflect implementation reality. Implementations implement
+    subsets of SVG 1.1 and SVG Tiny 1.2. Although it is hoped that the in-progress SVG 2
+    specification is a more realistic target for implementations, until that specification is ready,
+    user agents that implement SVG must do so with the following <span data-x="willful
+    violation">willful violations</span> and additions. <ref spec=SVG> <ref spec=SVGTINY12> <ref
+    spec=SVG2></p>
+
+    <p>User agents that implement SVG must not implement the following features from SVG 1.1:</p>
+
+    <ul class="brief">
+     <li>The <code data-x="">tref</code> element</li>
+     <li>The <code data-x="">cursor</code> element (use CSS's <code data-x="">cursor</code> property
+     instead)</li>
+     <li>The font-defining SVG elements: <code data-x="">font</code>, <code data-x="">glyph</code>,
+     <code data-x="">missing-glyph</code>, <code data-x="">hkern</code>, <code
+     data-x="">vkern</code>, <code data-x="">font-face</code>, <code data-x="">font-face-src</code>,
+     <code data-x="">font-face-uri</code>, <code data-x="">font-face-format</code>, and <code
+     data-x="">font-face-name</code> (use CSS's <code data-x="">@font-face</code> instead)</li>
+     <li>The <code data-x="">externalResourcesRequired</code> attribute</li>
+     <li>The <code data-x="">enable-background</code> property</li>
+     <li>The <code data-x="">contentScriptType</code> and <code data-x="">contentStyleType</code>
+     attributes (use the <code data-x="">type</code> attribute on the <span>SVG
+     <code>script</code></span> and <code data-x="">style</code> elements instead)</li>
+    </ul>
+
+    <p>User agents that implement SVG must implement the following features from SVG Tiny 1.2:</p>
+
+    <ul class="brief">
+     <li>The <code data-x="">non-scaling-stroke</code> value for the <code
+     data-x="">vector-effect</code> property</li>
+     <li>The <code data-x="">class</code> attribute is allowed on all SVG elements</li>
+     <li>The <code data-x="">tabindex</code> attribute is allowed on visible SVG elements</li>
+     <li>The ARIA accessibility attributes are allowed on all SVG elements</li>
+    </ul>
+
+    <p>The following features are defined in the SVG specifications:</p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/struct.html#InterfaceSVGImageElement"><code>SVGImageElement</code></dfn> interface</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/script.html#InterfaceSVGScriptElement"><code>SVGScriptElement</code></dfn> interface</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/struct.html#InterfaceSVGSVGElement"><code>SVGSVGElement</code></dfn> interface</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/struct.html#DescElement">SVG <code>desc</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/extend.html#ForeignObjectElement">SVG <code>foreignObject</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/struct.html#ImageElement">SVG <code>image</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/script.html#ScriptElement">SVG <code>script</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/struct.html#SVGElement">SVG <code>svg</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/struct.html#TitleElement">SVG <code>title</code></dfn> element</li>
+     <li><dfn data-x-href="https://www.w3.org/TR/SVG11/struct.html#UseElement">SVG <code>use</code></dfn> element</li>
+    </ul>
+   </dd>
+
+
+   <dt>Filter Effects</dt>
+
+   <dd>
+    <p>The following feature is defined in the <cite>Filter Effects</cite> specification:
+    <ref spec=FILTERS></p>
+
+    <ul class="brief">
+     <li><dfn data-x-href="https://drafts.fxtf.org/filters/#typedef-filter-function-list">&lt;filter-function-list&gt;</dfn></li>
+    </ul>
+   </dd>
+
+  </dl>
+
+  <hr>
+
+  <p>This specification does not <em>require</em> support of any particular network protocol, style
+  sheet language, scripting language, or any of the DOM specifications beyond those required in the
+  list above. However, the language described by this specification is biased towards CSS as the
+  styling language, JavaScript as the scripting language, and HTTP as the network protocol, and
+  several features assume that those languages and protocols are in use.</p>
+
+  <p>A user agent that implements the HTTP protocol must implement <cite>HTTP State Management
+  Mechanism</cite> (Cookies) as well. <ref spec=HTTP> <ref spec=COOKIES></p>
+
+  <p class="note">This specification might have certain additional requirements on character
+  encodings, image formats, audio formats, and video formats in the respective sections.</p>
+
+  </div>
+
+
+
+

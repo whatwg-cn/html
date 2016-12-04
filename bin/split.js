@@ -75,7 +75,7 @@ function loadSource() {
     var sections = [],
         match, begin = 0,
         id = 0, prev;
-    var rHeader = /[ \t]*<h([2-6])([^>]*)>([\s\S]*?)<\/h[2-6]>/ig;
+    var rHeader = /[ \t]*(?:<!--.*?-->)?<h([2-6])([^>]*)>([\s\S]*?)<\/h[2-6]>/ig;
     while (match = rHeader.exec(content)) {
         var section = new TreeNode();
         section.id = id++;
@@ -103,7 +103,7 @@ function loadSource() {
         sections.push(section);
         begin = section.index + section.outerHTML.length;
     }
-    match = content.match(/<\/body>\s*<\/html>/);
+    match = content.match(/[ \t]*<\/body>\s*<\/html>/);
     prev = top(sections);
     prev.contentHTML = content.slice(begin, match.index);
     skeleton += `<file src="${prev.id}">`;

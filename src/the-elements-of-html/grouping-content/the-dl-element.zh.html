@@ -1,0 +1,270 @@
+  <h4>The <dfn><code>dl</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd>If the element's children include at least one name-value group: <span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Either: Zero or more groups each consisting of one or more <code>dt</code> elements followed by one or more <code>dd</code> elements, optionally intermixed with <span>script-supporting elements</span>.</dd>
+   <dd>Or: One or more <code>div</code> elements, optionally intermixed with <span>script-supporting elements</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLDListElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>dl</code> element <span>represents</span> an association list consisting of zero or
+  more name-value groups (a description list). A name-value group consists of one or more names
+  (<code>dt</code> elements, possibly as children of a <code>div</code> element child) followed by
+  one or more values (<code>dd</code> elements, possibly as children of a <code>div</code> element
+  child), ignoring any nodes other than <code>dt</code> and <code>dd</code> element children, and
+  <code>dt</code> and <code>dd</code> elements that are children of <code>div</code> element
+  children. Within a single <code>dl</code> element, there should not be more than one
+  <code>dt</code> element for each name.</p>
+
+  <p>Name-value groups may be terms and definitions, metadata topics and values, questions and
+  answers, or any other groups of name-value data.</p>
+
+  <p>The values within a group are alternatives; multiple paragraphs forming part of the same value
+  must all be given within the same <code>dd</code> element.</p>
+
+  <p>The order of the list of groups, and of the names and values within each group, may be
+  significant.</p>
+
+  <p>In order to annotate groups with <span data-x="微数据">microdata</span> attributes, or other <span>global
+  attributes</span> that apply to whole groups, or just for styling purposes, each group in a
+  <code>dl</code> element can be wrapped in a <code>div</code> element. This does not change the
+  semantics of the <code>dl</code> element.</p>
+
+  <div w-nodev>
+
+  <p>The name-value groups of a <code>dl</code> element <var>dl</var> are determined using the
+  following algorithm. A name-value group has a name (a list of <code>dt</code> elements, initially
+  empty) and a value (a list of <code>dd</code> elements, initially empty).</p>
+
+  <ol>
+   <li><p>Let <var>groups</var> be an empty list of name-value groups.</p></li>
+
+   <li><p>Let <var>current</var> be a new name-value group.</p></li>
+
+   <li><p>Let <var>seenDd</var> be false.</p></li>
+
+   <li><p>Let <var>child</var> be <var>dl</var>'s <span>first child</span>.</p></li>
+
+   <li><p>Let <var>grandchild</var> be null.</p></li>
+
+   <li>
+    <p>While <var>child</var> is not null, follow these substeps:</p>
+
+    <ol>
+     <li>
+      <p>If <var>child</var> is a <code>div</code> element, then follow these subsubsteps:</p>
+
+      <ol>
+       <li><p>Let <var>grandchild</var> be <var>child</var>'s <span>first child</span>.</p></li>
+
+       <li>
+        <p>While <var>grandchild</var> is not null, follow these subsubsubsteps:</p>
+
+        <ol>
+         <li><p><span>Process <code>dt</code> or <code>dd</code></span> for
+         <var>grandchild</var>.</p></li>
+
+         <li><p>Set <var>grandchild</var> to <var>grandchild</var>'s <span>next
+         sibling</span>.</p></li>
+        </ol>
+       </li>
+      </ol>
+     </li>
+
+     <li><p>Otherwise, <span>process <code>dt</code> or <code>dd</code></span> for
+     <var>child</var>.</p></li>
+
+     <li><p>Set <var>child</var> to <var>child</var>'s <span>next sibling</span>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>If <var>current</var> is not empty, then append <var>current</var> to
+   <var>groups</var>.</p></li>
+
+   <li><p>Return <var>groups</var>.</p></li>
+  </ol>
+
+  <p>To <dfn>process <code>dt</code> or <code>dd</code></dfn> for a node <var>node</var> means to
+  follow these steps:</p>
+
+  <ol>
+   <li><p>Let <var>groups</var>, <var>current</var>, and <var>seenDd</var> be the same variables as
+   those of the same name in the algorithm that invoked these steps.</p></li>
+
+   <li>
+    <p>If <var>node</var> is a <code>dt</code> element, then follow these substeps:</p>
+
+    <ol>
+     <li><p>If <var>seenDd</var> is true, then append <var>current</var> to <var>groups</var>, set
+     <var>current</var> to a new name-value group, and set <var>seenDd</var> to false.</p></li>
+
+     <li><p>Append <var>node</var> to <var>current</var>'s name.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Otherwise, if <var>node</var> is a <code>dd</code> element, then append <var>node</var> to
+   <var>current</var>'s value and set <var>seenDd</var> to true.</p></li>
+  </ol>
+
+  <p class="note">When a name-value group has an empty list as name or value, it is often due to
+  accidentally using <code>dd</code> elements in the place of <code>dt</code> elements and vice
+  versa. Conformance checkers can spot such mistakes and might be able to advise authors how to
+  correctly use the markup.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, one entry ("Authors") is linked to two values ("John" and
+   "Luke").</p>
+
+   <pre>&lt;dl&gt;
+ &lt;dt&gt; Authors
+ &lt;dd&gt; John
+ &lt;dd&gt; Luke
+ &lt;dt&gt; Editor
+ &lt;dd&gt; Frank
+&lt;/dl&gt;</pre>
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, one definition is linked to two terms.</p>
+
+   <pre>&lt;dl&gt;
+ &lt;dt lang="en-US"&gt; &lt;dfn>color&lt;/dfn> &lt;/dt&gt;
+ <span lang="en-GB">&lt;dt lang="en-GB"&gt; &lt;dfn>colour&lt;/dfn> &lt;/dt&gt;</span>
+ &lt;dd&gt; A sensation which (in humans) derives from the ability of
+ the fine structure of the eye to distinguish three differently
+ filtered analyses of a view. &lt;/dd&gt;
+&lt;/dl&gt;</pre>
+  </div>
+
+  <div class="example">
+
+   <p>The following example illustrates the use of the <code>dl</code> element to mark up metadata
+   of sorts. At the end of the example, one group has two metadata labels ("Authors" and "Editors")
+   and two values ("Robert Rothman" and "Daniel Jackson"). This example also uses the
+   <code>div</code> element around the groups of <code>dt</code> and <code>dd</code> element, to aid
+   with styling.</p>
+
+   <pre>&lt;dl>
+ &lt;div>
+  &lt;dt> Last modified time &lt;/dt>
+  &lt;dd> 2004-12-23T23:33Z &lt;/dd>
+ &lt;/div>
+ &lt;div>
+  &lt;dt> Recommended update interval &lt;/dt>
+  &lt;dd> 60s &lt;/dd>
+ &lt;/div>
+ &lt;div>
+  &lt;dt> Authors &lt;/dt>
+  &lt;dt> Editors &lt;/dt>
+  &lt;dd> Robert Rothman &lt;/dd>
+  &lt;dd> Daniel Jackson &lt;/dd>
+ &lt;/div>
+&lt;/dl></pre>
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows the <code>dl</code> element used to give a set of instructions.
+   The order of the instructions here is important (in the other examples, the order of the blocks
+   was not important).</p>
+
+   <pre>&lt;p&gt;Determine the victory points as follows (use the
+first matching case):&lt;/p&gt;
+&lt;dl&gt;
+ &lt;dt&gt; If you have exactly five gold coins &lt;/dt&gt;
+ &lt;dd&gt; You get five victory points &lt;/dd&gt;
+ &lt;dt&gt; If you have one or more gold coins, and you have one or more silver coins &lt;/dt&gt;
+ &lt;dd&gt; You get two victory points &lt;/dd&gt;
+ &lt;dt&gt; If you have one or more silver coins &lt;/dt&gt;
+ &lt;dd&gt; You get one victory point &lt;/dd&gt;
+ &lt;dt&gt; Otherwise &lt;/dt&gt;
+ &lt;dd&gt; You get no victory points &lt;/dd&gt;
+&lt;/dl&gt;</pre>
+  </div>
+
+  <div class="example">
+
+   <p>The following snippet shows a <code>dl</code> element being used as a glossary. Note the use
+   of <code>dfn</code> to indicate the word being defined.</p>
+
+   <pre>&lt;dl>
+ &lt;dt>&lt;dfn>Apartment&lt;/dfn>, n.&lt;/dt>
+ &lt;dd>An execution context grouping one or more threads with one or
+ more COM objects.&lt;/dd>
+ &lt;dt>&lt;dfn>Flat&lt;/dfn>, n.&lt;/dt>
+ &lt;dd>A deflated tire.&lt;/dd>
+ &lt;dt>&lt;dfn>Home&lt;/dfn>, n.&lt;/dt>
+ &lt;dd>The user's login directory.&lt;/dd>
+&lt;/dl></pre>
+  </div>
+
+  <div class="example">
+
+   <p>This example uses <span data-x="微数据">microdata</span> attributes in a <code>dl</code> element, together
+   with the <code>div</code> element, to annotate the ice cream desserts at a French restaurant.</p>
+   <!-- https://commons.wikimedia.org/wiki/File:Carte_des_desserts_2012_des_cafétérias_Toquenelle_(1).jpg -->
+
+   <pre lang="fr">&lt;dl>
+ &lt;div itemscope itemtype="http://schema.org/Product">
+  &lt;dt itemprop="name">Café ou Chocolat Liégeois
+  &lt;dd itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+   &lt;span itemprop="price">3.50&lt;/span>
+   &lt;data itemprop="priceCurrency" value="EUR">€&lt;/data>
+  &lt;dd itemprop="description">
+   2 boules Café ou Chocolat, 1 boule Vanille, sause café ou chocolat, chantilly
+ &lt;/div>
+
+ &lt;div itemscope itemtype="http://schema.org/Product">
+  &lt;dt itemprop="name">Américaine
+  &lt;dd itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+   &lt;span itemprop="price">3.50&lt;/span>
+   &lt;data itemprop="priceCurrency" value="EUR">€&lt;/data>
+  &lt;dd itemprop="description">
+   1 boule Crème brûlée, 1 boule Vanille, 1 boule Caramel, chantilly
+ &lt;/div>
+&lt;/dl></pre>
+
+   <p>Without the <code>div</code> element the markup would need to use the <code
+   data-x="attr-itemref">itemref</code> attribute to link the data in the <code>dd</code> elements
+   with the item, as follows.</p>
+
+   <pre lang="fr">&lt;dl>
+ &lt;dt itemscope itemtype="http://schema.org/Product" itemref="1-offer 1-description">
+  &lt;span itemprop="name">Café ou Chocolat Liégeois&lt;/span>
+ &lt;dd id="1-offer" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+  &lt;span itemprop="price">3.50&lt;/span>
+  &lt;data itemprop="priceCurrency" value="EUR">€&lt;/data>
+ &lt;dd id="1-description" itemprop="description">
+  2 boules Café ou Chocolat, 1 boule Vanille, sause café ou chocolat, chantilly
+
+ &lt;dt itemscope itemtype="http://schema.org/Product" itemref="2-offer 2-description">
+  &lt;span itemprop="name">Américaine&lt;/span>
+ &lt;dd id="2-offer" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+  &lt;span itemprop="price">3.50&lt;/span>
+  &lt;data itemprop="priceCurrency" value="EUR">€&lt;/data>
+ &lt;dd id="2-description" itemprop="description">
+  1 boule Crème brûlée, 1 boule Vanille, 1 boule Caramel, chantilly
+&lt;/dl></pre>
+
+  </div>
+
+  <p class="note">The <code>dl</code> element is inappropriate for marking up dialogue. <a
+  href="#conversations">Examples of how to mark up dialogue</a> are shown below.</p>
+
+
+

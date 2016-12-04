@@ -1,0 +1,56 @@
+  <h3>Terminology</h3>
+
+  <p>This specification refers to both HTML and XML attributes and IDL attributes, often in the same
+  context. When it is not clear which is being referred to, they are referred to as <dfn
+  data-x="">content attributes</dfn> for HTML and XML attributes, and <dfn data-x="">IDL
+  attributes</dfn> for those defined on IDL interfaces. Similarly, the term "properties" is used for
+  both JavaScript object properties and CSS properties. When these are ambiguous they are qualified
+  as <dfn data-x="">object properties</dfn> and <dfn data-x="">CSS properties</dfn> respectively.</p>
+
+  <p>Generally, when the specification states that a feature applies to <span>HTML 语法</span>
+  or <span>XML 语法</span>, it also includes the other. When a feature specifically only
+  applies to one of the two languages, it is called out by explicitly stating that it does not apply
+  to the other format, as in "for HTML, ... (this does not apply to XML)".</p>
+
+  <p>This specification uses the term <dfn data-x="">document</dfn> to refer to any use of HTML,
+  ranging from short static documents to long essays or reports with rich multimedia, as well as to
+  fully-fledged interactive applications. The term is used to refer both to <code>Document</code>
+  objects and their descendant DOM trees, and to serialized byte streams using the <span data-x="HTML 语法">HTML syntax</span> or the <span data-x="XML 语法">XML 语法</span>, depending
+  on context.</p>
+
+  <p>In the context of the DOM structures, the terms <span data-x="HTML documents">HTML
+  document</span> and <span data-x="XML documents">XML document</span> are used as defined in the DOM
+  specification, and refer specifically to two different modes that <code>Document</code> objects
+  can find themselves in. <ref spec=DOM> (Such uses are always hyperlinked to their
+  definition.)</p>
+
+  <p>In the context of byte streams, the term HTML document refers to resources labeled as
+  <code>text/html</code>, and the term XML document refers to resources labeled with an <span>XML
+  MIME type</span>.</p>
+
+  <hr>
+
+  <p>For simplicity, terms such as <dfn data-x="">shown</dfn>, <dfn data-x="">displayed</dfn>, and
+  <dfn data-x="">visible</dfn> might sometimes be used when referring to the way a document is
+  rendered to the user. These terms are not meant to imply a visual medium; they must be considered
+  to apply to other media in equivalent ways.</p>
+
+  <div w-nodev>
+
+  <p>When an algorithm B says to return to another algorithm A, it implies that A called B. Upon
+  returning to A, the implementation must continue from where it left off in calling B. Some
+  algorithms run <dfn data-export="">in parallel</dfn>; this means that the algorithm's subsequent
+  steps are to be run, one after another, at the same time as other logic in the specification (e.g.
+  at the same time as the <span>event loop</span>). This specification does not define the precise
+  mechanism by which this is achieved, be it time-sharing cooperative multitasking, fibers, threads,
+  processes, using different hyperthreads, cores, CPUs, machines, etc. By contrast, an operation
+  that is to run <dfn>immediately</dfn> must interrupt the currently running task, run itself, and
+  then resume the previously running task.</p>
+
+  </div>
+
+  <!-- should find somewhere more appropriate to put this -->
+  <p>The term "transparent black" refers to the color with red, green, blue, and alpha channels all
+  set to zero.</p>
+
+

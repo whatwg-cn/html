@@ -1,0 +1,250 @@
+  <h4>Conformance classes</h4>
+
+  <p>This specification describes the conformance criteria for <span w-nodev>user agents
+  (relevant to implementors) and</span> documents<span w-nodev> (relevant to authors and
+  authoring tool implementors)</span>.</p>
+
+  <p><dfn>Conforming documents</dfn> are those that comply with all the conformance criteria for
+  documents. For readability, some of these conformance requirements are phrased as conformance
+  requirements on authors; such requirements are implicitly requirements on documents: by
+  definition, all documents are assumed to have had an author. (In some cases, that author may
+  itself be a user agent &mdash; such user agents are subject to additional rules, as explained
+  below.)</p>
+
+  <p class="example">For example, if a requirement states that "authors must not use the <code
+  data-x="">foobar</code> element", it would imply that documents are not allowed to contain
+  elements named <code data-x="">foobar</code>.</p>
+
+  <p class="note impl">There is no implied relationship between document conformance requirements
+  and implementation conformance requirements. User agents are not free to handle non-conformant
+  documents as they please; the processing model described in this specification applies to
+  implementations regardless of the conformity of the input documents.</p>
+
+  <p>User agents fall into several (overlapping) categories with different conformance
+  requirements.</p>
+
+  <dl>
+
+   <dt id="interactive">Web browsers and other interactive user agents</dt>
+
+   <dd>
+
+    <p>Web browsers that support <span>XML 语法</span> must process elements and attributes
+    from the <span>HTML namespace</span> found in XML documents as described in this specification,
+    so that users can interact with them, unless the semantics of those elements have been
+    overridden by other specifications.</p>
+
+    <p class="example">A conforming Web browser would, upon finding a <code>script</code> element in
+    an XML document, execute the script contained in that element. However, if the element is found
+    within a transformation expressed in XSLT (assuming the user agent also supports XSLT), then the
+    processor would instead treat the <code>script</code> element as an opaque element that forms
+    part of the transform.</p>
+
+    <p>Web browsers that support <span>HTML 语法</span> must process documents labeled with an
+    <span>HTML MIME type</span> as described in this specification, so that users can interact with
+    them.</p>
+
+    <p>User agents that support scripting must also be conforming implementations of the IDL
+    fragments in this specification, as described in the Web IDL specification. <ref
+    spec=WEBIDL></p>
+
+    <p class="note">Unless explicitly stated, specifications that override the semantics of HTML
+    elements do not override the requirements on DOM objects representing those elements. For
+    example, the <code>script</code> element in the example above would still implement the
+    <code>HTMLScriptElement</code> interface.</p>
+
+   </dd>
+
+   <dt id="non-interactive">Non-interactive presentation user agents</dt>
+
+   <dd>
+
+    <p>User agents that process HTML and XML documents purely to render non-interactive versions of
+    them must comply to the same conformance criteria as Web browsers, except that they are exempt
+    from requirements regarding user interaction.</p>
+
+    <p class="note">Typical examples of non-interactive presentation user agents are printers
+    (static UAs) and overhead displays (dynamic UAs). It is expected that most static
+    non-interactive presentation user agents will also opt to <a href="#non-scripted">lack scripting
+    support</a>.</p>
+
+    <p class="example">A non-interactive but dynamic presentation UA would still execute scripts,
+    allowing forms to be dynamically submitted, and so forth. However, since the concept of "focus"
+    is irrelevant when the user cannot interact with the document, the UA would not need to support
+    any of the focus-related DOM APIs.</p>
+
+   </dd>
+
+   <dt id="renderingUA">Visual user agents that support the suggested default rendering</dt>
+
+   <dd>
+
+    <p>User agents, whether interactive or not, may be designated (possibly as a user option) as
+    supporting the suggested default rendering defined by this specification.</p>
+
+    <p>This is not required. In particular, even user agents that do implement the suggested default
+    rendering are encouraged to offer settings that override this default to improve the experience
+    for the user, e.g. changing the color contrast, using different focus styles, or otherwise
+    making the experience more accessible and usable to the user.</p>
+
+    <p>User agents that are designated as supporting the suggested default rendering must, while so
+    designated, implement the rules <a href="#rendering">the rendering section</a> defines as the
+    behavior that user agents are <em>expected</em> to implement.</p>
+
+   </dd>
+
+   <dt id="non-scripted">User agents with no scripting support</dt>
+
+   <dd>
+
+    <p>Implementations that do not support scripting (or which have their scripting features
+    disabled entirely) are exempt from supporting the events and DOM interfaces mentioned in this
+    specification. For the parts of this specification that are defined in terms of an events model
+    or in terms of the DOM, such user agents must still act as if events and the DOM were
+    supported.</p>
+
+    <p class="note">Scripting can form an integral part of an application. Web browsers that do not
+    support scripting, or that have scripting disabled, might be unable to fully convey the author's
+    intent.</p>
+
+   </dd>
+
+
+   <dt>Conformance checkers</dt>
+
+   <dd id="conformance-checkers">
+
+    <p>Conformance checkers must verify that a document conforms to the applicable conformance
+    criteria described in this specification. Automated conformance checkers are exempt from
+    detecting errors that require interpretation of the author's intent (for example, while a
+    document is non-conforming if the content of a <code>blockquote</code> element is not a quote,
+    conformance checkers running without the input of human judgement do not have to check that
+    <code>blockquote</code> elements only contain quoted material).</p>
+
+    <p>Conformance checkers must check that the input document conforms when parsed without a
+    <span data-x="concept-document-bc">browsing context</span> (meaning that no scripts are run, and
+    that the parser's <span>scripting flag</span> is disabled), and should also check that the input
+    document conforms when parsed with a <span data-x="concept-document-bc">browsing context</span>
+    in which scripts execute, and that the scripts never cause non-conforming states to occur other
+    than transiently during script execution itself. (This is only a "SHOULD" and not a "MUST"
+    requirement because it has been proven to be impossible. <ref spec=COMPUTABLE>)</p>
+
+    <p>The term "HTML validator" can be used to refer to a conformance checker that itself conforms
+    to the applicable requirements of this specification.</p>
+
+    <div class="note">
+
+     <p>XML DTDs cannot express all the conformance requirements of this specification. Therefore, a
+     validating XML processor and a DTD cannot constitute a conformance checker. Also, since neither
+     of the two authoring formats defined in this specification are applications of SGML, a
+     validating SGML system cannot constitute a conformance checker either.</p>
+
+     <p>To put it another way, there are three types of conformance criteria:</p>
+
+     <ol>
+
+      <li>Criteria that can be expressed in a DTD.</li>
+
+      <li>Criteria that cannot be expressed by a DTD, but can still be checked by a machine.</li>
+
+      <li>Criteria that can only be checked by a human.</li>
+
+     </ol>
+
+     <p>A conformance checker must check for the first two. A simple DTD-based validator only checks
+     for the first class of errors and is therefore not a conforming conformance checker according
+     to this specification.</p>
+
+    </div>
+   </dd>
+
+
+   <dt>Data mining tools</dt>
+
+   <dd id="data-mining">
+
+    <p>Applications and tools that process HTML and XML documents for reasons other than to either
+    render the documents or check them for conformance should act in accordance with the semantics
+    of the documents that they process.</p>
+
+    <p class="example">A tool that generates <span data-x="outline">document outlines</span> but
+    increases the nesting level for each paragraph and does not increase the nesting level for each
+    section would not be conforming.</p>
+
+   </dd>
+
+
+   <dt id="editors">Authoring tools and markup generators</dt>
+
+   <dd>
+
+    <p>Authoring tools and markup generators must generate <span>conforming documents</span>.
+    Conformance criteria that apply to authors also apply to authoring tools, where appropriate.</p>
+
+    <p>Authoring tools are exempt from the strict requirements of using elements only for their
+    specified purpose, but only to the extent that authoring tools are not yet able to determine
+    author intent. However, authoring tools must not automatically misuse elements or encourage
+    their users to do so.</p>
+
+    <p class="example">For example, it is not conforming to use an <code>address</code> element for
+    arbitrary contact information; that element can only be used for marking up contact information
+    for the author of the document or section. However, since an authoring tool is likely unable to
+    determine the difference, an authoring tool is exempt from that requirement. This does not mean,
+    though, that authoring tools can use <code>address</code> elements for any block of italics text
+    (for instance); it just means that the authoring tool doesn't have to verify that when the user
+    uses a tool for inserting contact information for a section, that the user really is doing that
+    and not inserting something else instead.</p>
+
+    <p class="note">In terms of conformance checking, an editor has to output documents that conform
+    to the same extent that a conformance checker will verify.</p>
+
+    <p>When an authoring tool is used to edit a non-conforming document, it may preserve the
+    conformance errors in sections of the document that were not edited during the editing session
+    (i.e. an editing tool is allowed to round-trip erroneous content). However, an authoring tool
+    must not claim that the output is conformant if errors have been so preserved.</p>
+
+    <p>Authoring tools are expected to come in two broad varieties: tools that work from structure
+    or semantic data, and tools that work on a What-You-See-Is-What-You-Get media-specific editing
+    basis (WYSIWYG).</p>
+
+    <p>The former is the preferred mechanism for tools that author HTML, since the structure in the
+    source information can be used to make informed choices regarding which HTML elements and
+    attributes are most appropriate.</p>
+
+    <p>However, WYSIWYG tools are legitimate. WYSIWYG tools should use elements they know are
+    appropriate, and should not use elements that they do not know to be appropriate. This might in
+    certain extreme cases mean limiting the use of flow elements to just a few elements, like
+    <code>div</code>, <code>b</code>, <code>i</code>, and <code>span</code> and making liberal use
+    of the <code data-x="attr-style">style</code> attribute.</p>
+
+    <p>All authoring tools, whether WYSIWYG or not, should make a best effort attempt at enabling
+    users to create well-structured, semantically rich, media-independent content.</p>
+
+   </dd>
+
+  </dl>
+
+  <p id="hardwareLimitations">User agents may impose implementation-specific limits on otherwise
+  unconstrained inputs, e.g. to prevent denial of service attacks, to guard against running out of
+  memory, or to work around platform-specific limitations.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>For compatibility with existing content and prior specifications, this specification describes
+  two authoring formats: one based on <span data-x="XML 语法">XML</span>, and one using a <a
+  href="#writing">custom format</a> inspired by SGML (referred to as <span>HTML 语法</span>).
+  Implementations must support at least one of these two formats, although supporting both is
+  encouraged.</p>
+
+  <p>Some conformance requirements are phrased as requirements on elements, attributes, methods or
+  objects. Such requirements fall into two categories: those describing content model restrictions,
+  and those describing implementation behavior. Those in the former category are requirements on
+  documents and authoring tools. Those in the second category are requirements on user agents.
+  Similarly, some conformance requirements are phrased as requirements on authors; such requirements
+  are to be interpreted as conformance requirements on the documents that authors produce. (In other
+  words, this specification does not distinguish between conformance criteria on authors and
+  conformance criteria on documents.)</p>
+
+  </div>
+
+

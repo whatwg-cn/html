@@ -1,0 +1,110 @@
+  <h4>The <dfn><code>pre</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLPreElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>pre</code> element <span>represents</span> a block of preformatted text, in which
+  structure is represented by typographic conventions rather than by elements.</p>
+
+  <p class="note">In <span>HTML 语法</span>, a leading newline character immediately following
+  the <code>pre</code> element start tag is stripped.</p>
+
+  <p>Some examples of cases where the <code>pre</code> element could be used:</p>
+
+  <ul>
+
+   <li>Including an e-mail, with paragraphs indicated by blank lines, lists indicated by lines
+   prefixed with a bullet, and so on.</li>
+
+   <li>Including fragments of computer code, with structure indicated according to the conventions
+   of that language.</li>
+
+   <li>Displaying ASCII art.</li>
+
+  </ul>
+
+  <p class="note">Authors are encouraged to consider how preformatted text will be experienced when
+  the formatting is lost, as will be the case for users of speech synthesizers, braille displays,
+  and the like. For cases like ASCII art, it is likely that an alternative presentation, such as a
+  textual description, would be more universally accessible to the readers of the document.</p>
+
+  <p>To represent a block of computer code, the <code>pre</code> element can be used with a
+  <code>code</code> element; to represent a block of computer output the <code>pre</code> element
+  can be used with a <code>samp</code> element. Similarly, the <code>kbd</code> element can be used
+  within a <code>pre</code> element to indicate text that the user is to enter.</p>
+
+  <div w-nodev>
+
+  <p class="note">This element <a href="#bidireq">has rendering requirements involving the
+  bidirectional algorithm</a>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following snippet, a sample of computer code is presented.</p>
+
+   <pre>&lt;p>This is the &lt;code>Panel&lt;/code> constructor:&lt;/p>
+&lt;pre>&lt;code>function Panel(element, canClose, closeHandler) {
+  this.element = element;
+  this.canClose = canClose;
+  this.closeHandler = function () { if (closeHandler) closeHandler() };
+}&lt;/code>&lt;/pre></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following snippet, <code>samp</code> and <code>kbd</code> elements are mixed in the
+   contents of a <code>pre</code> element to show a session of Zork I.</p>
+
+   <pre>&lt;pre>&lt;samp>You are in an open field west of a big white house with a boarded
+front door.
+There is a small mailbox here.
+
+>&lt;/samp> &lt;kbd>open mailbox&lt;/kbd>
+
+&lt;samp>Opening the mailbox reveals:
+A leaflet.
+
+>&lt;/samp>&lt;/pre></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following shows a contemporary poem that uses the <code>pre</code> element to preserve its
+   unusual formatting, which forms an intrinsic part of the poem itself.</p>
+
+   <pre>&lt;pre>                maxling
+
+it is with a          heart
+               heavy
+
+that i admit loss of a feline
+        so           loved
+
+a friend lost to the
+        unknown
+                                (night)
+
+~cdr 11dec07&lt;/pre></pre>
+
+  </div>
+
+
+

@@ -1,0 +1,63 @@
+  <h3 id="parsing">Parsing HTML documents</h3>
+
+  <p><i>This section only applies to user agents, data mining tools, and conformance
+  checkers.</i></p>
+
+  <p class="note">The rules for parsing XML documents into DOM trees are covered by the next
+  section, entitled "<span>XML 语法</span>".</p>
+
+  <p>User agents must use the parsing rules described in this section to generate the DOM trees from
+  <code>text/html</code> resources. Together, these rules define what is referred to as the
+  <dfn data-export="">HTML parser</dfn>.</p>
+
+  <div class="note">
+
+   <p>While the HTML syntax described in this specification bears a close resemblance to SGML and
+   XML, it is a separate language with its own parsing rules.</p>
+
+   <p>Some earlier versions of HTML (in particular from HTML2 to HTML4) were based on SGML and used
+   SGML parsing rules. However, few (if any) web browsers ever implemented true SGML parsing for
+   HTML documents; the only user agents to strictly handle HTML as an SGML application have
+   historically been validators. The resulting confusion &mdash; with validators claiming documents
+   to have one representation while widely deployed Web browsers interoperably implemented a
+   different representation &mdash; has wasted decades of productivity. This version of HTML thus
+   returns to a non-SGML basis.</p>
+
+   <p>Authors interested in using SGML tools in their authoring pipeline are encouraged to use XML
+   tools and the XML serialization of HTML.</p>
+
+  </div>
+
+  <p>This specification defines the parsing rules for HTML documents, whether they are syntactically
+  correct or not. Certain points in the parsing algorithm are said to be <dfn data-x="parse
+  error">parse errors</dfn>. The error handling for parse errors is well-defined (that's the
+  processing rules described throughout this specification), but user agents, while parsing an HTML
+  document, may <span data-x="abort a parser">abort the parser</span> at the first <span>parse
+  error</span> that they encounter for which they do not wish to apply the rules described in this
+  specification.</p>
+
+  <p>Conformance checkers must report at least one parse error condition to the user if one or more
+  parse error conditions exist in the document and must not report parse error conditions if none
+  exist in the document. Conformance checkers may report more than one parse error condition if more
+  than one parse error condition exists in the document.</p>
+
+  <p class="note">Parse errors are only errors with the <em>syntax</em> of HTML. In addition to
+  checking for parse errors, conformance checkers will also verify that the document obeys all the
+  other conformance requirements described in this specification.</p>
+
+  <p>For the purposes of conformance checkers, if a resource is determined to be in <span>HTML
+  语法</span>, then it is an <span data-x="HTML documents">HTML document</span>.</p>
+
+  <p class="note">As stated <span class="no-backref" data-x="HTML elements">in the terminology
+  section</span>, references to <span data-x="element type">element types</span> that do not
+  explicitly specify a namespace always refer to elements in the <span>HTML namespace</span>. For
+  example, if the spec talks about "a <code>menuitem</code> element", then that is an element with
+  the local name "<code data-x="">menuitem</code>", the namespace "<code
+  data-x="">http://www.w3.org/1999/xhtml</code>", and the interface <code>HTMLMenuItemElement</code>.
+  Where possible, references to such elements are hyperlinked to their definition.</p>
+
+  </div>
+
+
+  <div w-nodev>
+

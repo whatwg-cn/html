@@ -1,0 +1,261 @@
+  <h5><dfn>Embedding custom non-visible data</dfn> with the <code data-x="attr-data-*">data-*</code> attributes</h5>
+
+  <p>A <dfn>custom data attribute</dfn> is an attribute in no namespace whose name starts with the
+  string "<dfn><code data-x="attr-data-*">data-</code></dfn>", has at least one character after the
+  hyphen, is <span>XML-compatible</span>, and contains no <span>uppercase ASCII letters</span>.</p>
+
+  <p class="note">All attribute names on <span>HTML elements</span> in <span>HTML documents</span>
+  get ASCII-lowercased automatically, so the restriction on ASCII uppercase letters doesn't affect
+  such documents.</p>
+
+  <p><span data-x="custom data attribute">Custom data attributes</span> are intended to store custom
+  data private to the page or application, for which there are no more appropriate attributes or
+  elements.</p>
+
+  <p>These attributes are not intended for use by software that is not known to the administrators
+  of the site that uses the attributes. For generic extensions that are to be used by multiple
+  independent tools, either this specification should be extended to provide the feature explicitly,
+  or a technology like <span>微数据</span> should be used (with a standardized vocabulary).</p>
+
+  <div class="example">
+
+   <p>For instance, a site about music could annotate list items representing tracks in an album
+   with custom data attributes containing the length of each track. This information could then be
+   used by the site itself to allow the user to sort the list by track length, or to filter the list
+   for tracks of certain lengths.</p>
+
+   <pre>&lt;ol>
+ &lt;li data-length="2m11s">Beyond The Sea&lt;/li>
+ ...
+&lt;/ol></pre>
+
+   <p>It would be inappropriate, however, for the user to use generic software not associated with
+   that music site to search for tracks of a certain length by looking at this data.</p>
+
+   <p>This is because these attributes are intended for use by the site's own scripts, and are not a
+   generic extension mechanism for publicly-usable metadata.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Similarly, a page author could write markup that provides information for a translation tool
+   that they are intending to use:</p>
+
+   <pre>&lt;p>The third &lt;span data-mytrans-de="Anspruch">claim&lt;/span> covers the case of &lt;span
+translate="no">HTML&lt;/span> markup.&lt;/p></pre>
+
+   <p>In this example, the "<code data-x="">data-mytrans-de</code>" attribute gives specific text
+   for the MyTrans product to use when translating the phrase "claim" to German. However, the
+   standard <code data-x="attr-translate">translate</code> attribute is used to tell it that in all
+   languages, "HTML" is to remain unchanged. When a standard attribute is available, there is no
+   need for a <span>custom data attribute</span> to be used.</p>
+
+  </div>
+
+  <p>Every <span data-x="HTML elements">HTML element</span> may have any number of <span
+  data-x="custom data attribute">custom data attributes</span> specified, with any value.</p>
+
+  <p>Authors should carefully design such extensions so that when the attributes are ignored and any
+  associated CSS dropped, the page is still usable.</p>
+
+  <div w-nodev>
+
+  <p>User agents must not derive any implementation behavior from these attributes or values.
+  Specifications intended for user agents must not define these attributes to have any meaningful
+  values.</p>
+
+  </div>
+
+  <p>JavaScript libraries may use the <span data-x="custom data attribute">custom data
+  attributes</span>, as they are considered to be part of the page on which they are used. Authors
+  of libraries that are reused by many authors are encouraged to include their name in the attribute
+  names, to reduce the risk of clashes. Where it makes sense, library authors are also encouraged to
+  make the exact name used in the attribute names customizable, so that libraries whose authors
+  unknowingly picked the same name can be used on the same page, and so that multiple versions of a
+  particular library can be used on the same page even when those versions are not mutually
+  compatible.</p>
+
+  <div class="example">
+
+   <p>For example, a library called "DoQuery" could use attribute names like <code
+   data-x="">data-doquery-range</code>, and a library called "jJo" could use attributes names like
+   <code data-x="">data-jjo-range</code>. The jJo library could also provide an API to set which
+   prefix to use (e.g. <code data-x="">J.setDataPrefix('j2')</code>, making the attributes have names
+   like <code data-x="">data-j2-range</code>).</p>
+
+  </div>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-dataset">dataset</code></dt>
+   <dd>
+
+    <p>Returns a <code>DOMStringMap</code> object for the element's <code
+    data-x="attr-data-*">data-*</code> attributes.</p>
+
+    <p>Hyphenated names become camel-cased. For example, <code data-x="">data-foo-bar=""</code>
+    becomes <code data-x="">element.dataset.fooBar</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-dataset">dataset</code></dfn> IDL attribute provides convenient
+  accessors for all the <code data-x="attr-data-*">data-*</code> attributes on an element. On
+  getting, the <code data-x="dom-dataset">dataset</code> IDL attribute must return a
+  <code>DOMStringMap</code> whose associated element is this element.</p>
+
+  </div>
+
+  <p>The <code>DOMStringMap</code> interface is used for the <code
+  data-x="dom-dataset">dataset</code> attribute. Each <code>DOMStringMap</code> has an <dfn
+  data-x="concept-DOMStringMap-element">associated element</dfn>.</p>
+
+  <pre class="idl">[OverrideBuiltins]
+interface <dfn>DOMStringMap</dfn> {
+  <a href="#dom-domstringmap-namedItem">getter</a> DOMString (DOMString name);
+  [<span>CEReactions</span>] <a href="#dom-domstringmap-setitem">setter</a> void (DOMString name, DOMString value);
+  [<span>CEReactions</span>] <a href="#dom-domstringmap-removeitem">deleter</a> void (DOMString name);
+};</pre>
+
+  <div w-nodev>
+
+  <p>To <dfn data-x="concept-DOMStringMap-pairs">get a <code>DOMStringMap</code>'s name-value
+  pairs</dfn>, run the following algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>list</var> be an empty list of name-value pairs.</p></li>
+
+   <li><p>For each content attribute on the <code>DOMStringMap</code>'s <span
+   data-x="concept-DOMStringMap-element">associated element</span> whose first five characters are
+   the string "<code data-x="">data-</code>" and whose remaining characters (if any) do not include
+   any <span>uppercase ASCII letters</span>, in the order that those attributes are listed in the
+   element's <span>attribute list</span>, add a name-value pair to <var>list</var> whose name is the
+   attribute's name with the first five characters removed and whose value is the attribute's
+   value.</p></li>
+
+   <li><p>For each name in <var>list</var>, for each U+002D HYPHEN-MINUS character (-) in the
+   name that is followed by a <span data-x="lowercase ASCII letters">lowercase ASCII letter</span>,
+   remove the U+002D HYPHEN-MINUS character (-) and replace the character that followed it by the
+   same character <span>converted to ASCII uppercase</span>.</p></li>
+
+   <li><p>Return <var>list</var>.</p></li>
+  </ol>
+
+  <p>The <span>supported property names</span> on a <code>DOMStringMap</code> object at any instant
+  are the names of each pair returned from <span data-x="concept-DOMStringMap-pairs">getting the
+  <code>DOMStringMap</code>'s name-value pairs</span> at that instant, in the order returned.</p>
+
+  <p id="dom-domstringmap-nameditem">To <span>determine the value of a named property</span>
+  <var>name</var> for a <code>DOMStringMap</code>, return the value component of the name-value pair
+  whose name component is <var>name</var> in the list returned from <span
+  data-x="concept-DOMStringMap-pairs">getting the <code>DOMStringMap</code>'s name-value
+  pairs</span>.</p>
+
+  <p id="dom-domstringmap-setitem">To <span>set the value of a new named property</span> or
+  <span>set the value of an existing named property</span> for a <code>DOMStringMap</code>, given a
+  property name <var>name</var> and a new value <var>value</var>, run the following steps:</p>
+
+  <ol>
+   <li><p>If <var>name</var> contains a U+002D HYPHEN-MINUS character (-) followed by a
+   <span data-x="lowercase ASCII letters">lowercase ASCII letter</span>, then throw a
+   <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> and abort these steps.</p></li>
+
+   <li><p>For each <span data-x="uppercase ASCII letters">uppercase ASCII letter</span> in
+   <var>name</var>, insert a U+002D HYPHEN-MINUS character (-) before the character and replace the
+   character with the same character <span>converted to ASCII lowercase</span>.</p></li>
+
+   <li><p>Insert the string <code data-x="">data-</code> at the front of <var>name</var>.</p></li>
+
+   <li><p>If <var>name</var> does not match the XML <code data-x="xml-Name">Name</code> production,
+   throw an <span>"<code>InvalidCharacterError</code>"</span> <code>DOMException</code> and abort
+   these steps.</p></li>
+
+   <li><p><span data-x="concept-element-attributes-set-value">Set an attribute value</span> for the
+   <code>DOMStringMap</code>'s <span data-x="concept-DOMStringMap-element">associated element</span>
+   using <var>name</var> and <var>value</var>.</p></li>
+  </ol>
+
+  <p id="dom-domstringmap-removeitem">To <span>delete an existing named property</span>
+  <var>name</var> for a <code>DOMStringMap</code>, run the following steps:</p>
+
+  <ol>
+<!--(can't happen while the DOMStringMap deleter has no name)
+   <li><p>If <var>name</var> contains a U+002D HYPHEN-MINUS character (-) followed by a
+   <span data-x="lowercase ASCII letters">lowercase ASCII letter</span>, throw a
+   <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> and abort these steps.</p></li>
+-->
+
+   <li><p>For each <span data-x="uppercase ASCII letters">uppercase ASCII letter</span> in
+   <var>name</var>, insert a U+002D HYPHEN-MINUS character (-) before the character and replace the
+   character with the same character <span>converted to ASCII lowercase</span>.</p></li>
+
+   <li><p>Insert the string <code data-x="">data-</code> at the front of <var>name</var>.</p></li>
+
+   <li><p><span data-x="concept-element-attributes-remove">Remove an attribute by name</span> given
+   <var>name</var> and the <code>DOMStringMap</code>'s <span
+   data-x="concept-DOMStringMap-element">associated element</span>.</p></li>
+  </ol>
+
+  <p class="note">This algorithm will only get invoked by the Web IDL specification for names that
+  are given by the earlier algorithm for <span data-x="concept-DOMStringMap-pairs">getting the
+  <code>DOMStringMap</code>'s name-value pairs</span>. <ref
+  spec=WEBIDL></p>
+
+  </div>
+
+  <div class="example">
+
+   <p>If a Web page wanted an element to represent a space ship, e.g. as part of a game, it would
+   have to use the <code data-x="attr-class">class</code> attribute along with <code
+   data-x="attr-data-*">data-*</code> attributes:</p>
+
+   <pre>&lt;div class="spaceship" data-ship-id="92432"
+     data-weapons="laser 2" data-shields="50%"
+     data-<!---->x="30" data-y="10" data-z="90">
+ &lt;button class="fire"
+         onclick="spaceships[this.parentNode.dataset.shipId].fire()">
+  Fire
+ &lt;/button>
+&lt;/div></pre>
+
+   <p>Notice how the hyphenated attribute name becomes camel-cased in the API.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Given the following fragment and elements with similar constructions:</p>
+
+   <pre>&lt;img class="tower" id="tower5" data-<!---->x="12" data-y="5"
+     data-ai="robotarget" data-hp="46" data-ability="flames"
+     src="towers/rocket.png" alt="Rocket Tower"></pre>
+
+   <p>...one could imagine a function <code
+   data-x="">splashDamage()</code> that takes some arguments, the first
+   of which is the element to process:</p>
+
+   <pre>function splashDamage(node, x, y, damage) {
+  if (node.classList.contains('tower') && // checking the 'class' attribute
+      node.dataset.x == x && // reading the 'data-x' attribute
+      node.dataset.y == y) { // reading the 'data-y' attribute
+    var hp = parseInt(node.dataset.hp); // reading the 'data-hp' attribute
+    hp = hp - damage;
+    if (hp &lt; 0) {
+      hp = 0;
+      node.dataset.ai = 'dead'; // setting the 'data-ai' attribute
+      delete node.dataset.ability; // removing the 'data-ability' attribute
+    }
+    node.dataset.hp = hp; // setting the 'data-hp' attribute
+  }
+}</pre>
+
+  </div>
+
+

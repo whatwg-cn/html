@@ -1,0 +1,77 @@
+  <h4>The <code>Document</code> object</h4>
+
+  <p>The WHATWG DOM standard defines a <code data-x="DOM Document">Document</code> interface, which
+  this specification extends significantly:</p>
+
+  <pre class="idl">enum <dfn>DocumentReadyState</dfn> { "loading", "interactive", "complete" };
+typedef (<span>HTMLScriptElement</span> or <span>SVGScriptElement</span>) <dfn>HTMLOrSVGScriptElement</dfn>;
+
+[OverrideBuiltins]
+partial interface <dfn id="document" data-lt="">Document</dfn> {
+  // <span>resource metadata management</span>
+  [PutForwards=<span data-x="dom-location-href">href</span>, Unforgeable] readonly attribute <span>Location</span>? <span data-x="dom-document-location">location</span>;
+  attribute USVString <span data-x="dom-document-domain">domain</span>;
+  readonly attribute USVString <span data-x="dom-document-referrer">referrer</span>;
+  attribute USVString <span data-x="dom-document-cookie">cookie</span>;
+  readonly attribute DOMString <span data-x="dom-document-lastModified">lastModified</span>;
+  readonly attribute <span>DocumentReadyState</span> <span data-x="dom-document-readyState">readyState</span>;
+
+  // <span>DOM tree accessors</span>
+  <a href="#dom-document-nameditem">getter</a> object (DOMString name);
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-document-title">title</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-document-dir">dir</span>;
+  [<span>CEReactions</span>] attribute <span>HTMLElement</span>? <span data-x="dom-document-body">body</span>;
+  readonly attribute <span>HTMLHeadElement</span>? <span data-x="dom-document-head">head</span>;
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-document-images">images</span>;
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-document-embeds">embeds</span>;
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-document-plugins">plugins</span>;
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-document-links">links</span>;
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-document-forms">forms</span>;
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-document-scripts">scripts</span>;
+  NodeList <span data-x="dom-document-getElementsByName">getElementsByName</span>(DOMString elementName);
+  readonly attribute <span>HTMLOrSVGScriptElement</span>? <span data-x="dom-document-currentScript">currentScript</span>; // classic scripts in a document tree only
+
+  // <span>dynamic markup insertion</span>
+  [<span>CEReactions</span>] <span>Document</span> <span data-x="dom-document-open">open</span>(optional DOMString type = "text/html", optional DOMString replace = "");
+  <span>WindowProxy</span> <span data-x="dom-document-open">open</span>(USVString url, DOMString name, DOMString features);
+  [<span>CEReactions</span>] void <span data-x="dom-document-close">close</span>();
+  [<span>CEReactions</span>] void <span data-x="dom-document-write">write</span>(DOMString... text);
+  [<span>CEReactions</span>] void <span data-x="dom-document-writeln">writeln</span>(DOMString... text);
+
+  // <span>用户交互</span>
+  readonly attribute <span>WindowProxy</span>? <span data-x="dom-document-defaultView">defaultView</span>;
+  readonly attribute <span>Element</span>? <span data-x="dom-document-activeElement">activeElement</span>;
+  boolean <span data-x="dom-document-hasFocus">hasFocus</span>();
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-document-designMode">designMode</span>;
+  [<span>CEReactions</span>] boolean <span data-x="dom-document-execCommand">execCommand</span>(DOMString commandId, optional boolean showUI = false, optional DOMString value = "");
+  boolean <span data-x="dom-document-queryCommandEnabled">queryCommandEnabled</span>(DOMString commandId);
+  boolean <span data-x="dom-document-queryCommandIndeterm">queryCommandIndeterm</span>(DOMString commandId);
+  boolean <span data-x="dom-document-queryCommandState">queryCommandState</span>(DOMString commandId);
+  boolean <span data-x="dom-document-queryCommandSupported">queryCommandSupported</span>(DOMString commandId);
+  DOMString <span data-x="dom-document-queryCommandValue">queryCommandValue</span>(DOMString commandId);
+
+  // special <span>event handler IDL attributes</span> that only apply to Document objects
+  [LenientThis] attribute <span>EventHandler</span> <span data-x="handler-onreadystatechange">onreadystatechange</span>;
+};
+<span>Document</span> implements <span>GlobalEventHandlers</span>;
+<span>Document</span> implements <span>DocumentAndElementEventHandlers</span>;</pre>
+
+  <p>The <code>Document</code> has an <dfn data-x="concept-document-https-state" data-export=""
+  data-dfn-for="Document">HTTPS state</dfn> (an <span>HTTPS state value</span>), initially "<code
+  data-x="">none</code>", which represents the security properties of the network channel used to
+  deliver the <code>Document</code>'s data.</p>
+
+  <p>The <code>Document</code> has a <dfn data-x="concept-document-referrer-policy" data-export=""
+  data-dfn-for="Document">referrer policy</dfn> (a <span>referrer policy</span>), initially the
+  empty string, which represents the default <span>referrer policy</span> used by <span
+  data-x="concept-fetch">fetches</span> initiated by the <code>Document</code>.</p>
+
+  <p>The <code>Document</code> has a <dfn data-x="concept-document-csp-list" data-export=""
+  data-dfn-for="Document">CSP list</dfn>, which is a list of <span>Content Security Policy</span>
+  objects active in this context. The list is empty unless otherwise specified.</p>
+
+  <p>The <code>Document</code> has a <dfn data-dfn-for="Document"
+  data-x="concept-document-module-map">module map</dfn>, which is a <span>module map</span>,
+  initially empty.</p>
+
+
