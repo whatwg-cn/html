@@ -1,0 +1,87 @@
+<h4>The <dfn><code>param</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of an <code>object</code> element, before any <span>flow content</span>.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-param-name">name</code></dd>
+   <dd><code data-x="attr-param-value">value</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLParamElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-param-name">name</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-param-value">value</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>param</code> element defines parameters for plugins invoked by <code>object</code>
+  elements. It does not <span data-x="represents">represent</span> anything on its own.</p>
+
+  <p>The <dfn><code data-x="attr-param-name">name</code></dfn> attribute gives the name of the
+  parameter.</p>
+
+  <p>The <dfn><code data-x="attr-param-value">value</code></dfn> attribute gives the value of the
+  parameter.</p>
+
+  <p>Both attributes must be present. They may have any value.</p>
+
+  <div w-nodev>
+
+  <p>If both attributes are present, and if the parent element of the <code>param</code> is an
+  <code>object</code> element, then the element defines a <dfn
+  data-x="concept-param-parameter">parameter</dfn> with the given name-value pair.</p>
+
+  <p>If either the name or value of a <span data-x="concept-param-parameter">parameter</span> defined
+  by a <code>param</code> element that is the child of an <code>object</code> element that
+  <span>represents</span> an instantiated <span>plugin</span> changes, and if that
+  <span>plugin</span> is communicating with the user agent using an API that features the ability to
+  update the <span>plugin</span> when the name or value of a <span
+  data-x="concept-param-parameter">parameter</span> so changes, then the user agent must
+  appropriately exercise that ability to notify the <span>plugin</span> of the change.</p>
+
+  <p>The IDL attributes <dfn><code data-x="dom-param-name">name</code></dfn> and <dfn><code data-x="dom-param-value">value</code></dfn> must both <span>reflect</span> the respective
+  content attributes of the same name.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows how the <code>param</code> element can be used to pass a parameter
+   to a plugin, in this case the O3D plugin.</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+  &lt;head>
+   &lt;title>O3D Utah Teapot&lt;/title>
+  &lt;/head>
+  &lt;body>
+   &lt;p>
+    &lt;object type="application/vnd.o3d.auto">
+     <strong>&lt;param name="o3d_features" value="FloatingPointTextures"></strong>
+     &lt;img src="o3d-teapot.png"
+          title="3D Utah Teapot illustration rendered using O3D."
+          alt="When O3D renders the Utah Teapot, it appears as a squat
+          teapot with a shiny metallic finish on which the
+          surroundings are reflected, with a faint shadow caused by
+          the lighting.">
+     &lt;p>To see the teapot actually rendered by O3D on your
+     computer, please download and install the &lt;a
+     href="http://code.google.com/apis/o3d/docs/gettingstarted.html#install">O3D plugin&lt;/a>.&lt;/p>
+    &lt;/object>
+    &lt;script src="o3d-teapot.js">&lt;/script>
+   &lt;/p>
+  &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+<!--TOPIC:Video and Audio-->
+  

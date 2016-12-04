@@ -1,0 +1,54 @@
+<h5>Preprocessing the input stream</h5>
+
+  <p>The <dfn>input stream</dfn> consists of the characters pushed into it as the <span>input byte
+  stream</span> is decoded or from the various APIs that directly manipulate the input stream.</p>
+
+  <p>Any occurrences of any characters in the ranges U+0001 to U+0008, <!-- HT, LF allowed --> <!--
+  U+000B is in the next list --> <!-- FF, CR allowed --> U+000E to U+001F, <!-- ASCII allowed -->
+  U+007F <!--to U+0084, (U+0085 NEL not allowed), U+0086--> to U+009F, U+FDD0 to U+FDEF, and
+  characters U+000B, U+FFFE, U+FFFF, U+1FFFE, U+1FFFF, U+2FFFE, U+2FFFF, U+3FFFE, U+3FFFF, U+4FFFE,
+  U+4FFFF, U+5FFFE, U+5FFFF, U+6FFFE, U+6FFFF, U+7FFFE, U+7FFFF, U+8FFFE, U+8FFFF, U+9FFFE, U+9FFFF,
+  U+AFFFE, U+AFFFF, U+BFFFE, U+BFFFF, U+CFFFE, U+CFFFF, U+DFFFE, U+DFFFF, U+EFFFE, U+EFFFF, U+FFFFE,
+  U+FFFFF, U+10FFFE, and U+10FFFF are <span data-x="parse error">parse errors</span>. These are all
+  <span>control characters</span> or permanently undefined Unicode characters (noncharacters).</p>
+
+  <p>Any <span>character</span> that is a not a <span>Unicode character</span>, i.e. any isolated
+  surrogate, is a <span>parse error</span>. (These can only find their way into the input stream via
+  script APIs such as <code data-x="dom-document-write">document.write()</code>.)</p>
+
+  <p>U+000D CARRIAGE RETURN (CR) characters and U+000A LINE FEED (LF) characters are treated
+  specially. Any LF character that immediately follows a CR character must be ignored, and all CR
+  characters must then be converted to LF characters. Thus, newlines in HTML DOMs are represented by
+  LF characters, and there are never any CR characters in the input to the <span>tokenization</span>
+  stage.</p>
+
+  <p>The <dfn>next input character</dfn> is the first character in the <span>input stream</span>
+  that has not yet been <dfn data-x="">consumed</dfn> or explicitly ignored by the requirements in
+  this section. Initially, the <i data-x="next input character">next input character</i> is the
+  first character in the input. The <dfn>current input character</dfn> is the last character to have
+  been <i>consumed</i>.</p>
+
+  <p>The <dfn>insertion point</dfn> is the position (just before a character or just before the end
+  of the input stream) where content inserted using <code
+  data-x="dom-document-write">document.write()</code> is actually inserted. The insertion point is
+  relative to the position of the character immediately after it, it is not an absolute offset into
+  the input stream. Initially, the insertion point is undefined.</p>
+
+  <p>The "EOF" character in the tables below is a conceptual character representing the end of the
+  <span>input stream</span>. If the parser is a <span>script-created parser</span>, then the end of
+  the <span>input stream</span> is reached when an <dfn>explicit "EOF" character</dfn> (inserted by
+  the <code data-x="dom-document-close">document.close()</code> method) is consumed. Otherwise, the
+  "EOF" character is not a real character in the stream, but rather the lack of any further
+  characters.</p>
+
+  <p class="note">The handling of U+0000 NULL characters varies based on where the characters are
+  found. In general, they are ignored except where doing so could plausibly introduce an attack
+  vector. This handling is, by necessity, spread across both the tokenization stage and the tree
+  construction stage.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

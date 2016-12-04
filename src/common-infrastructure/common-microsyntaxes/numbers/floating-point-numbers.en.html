@@ -1,0 +1,250 @@
+<h5>Floating-point numbers</h5>
+
+  <p>A string is a <dfn>valid floating-point number</dfn> if it consists of:</p>
+
+  <ol class="brief">
+
+   <li>Optionally, a U+002D HYPHEN-MINUS character (-).</li>
+
+   <li>One or both of the following, in the given order:
+
+    <ol>
+
+     <li>A series of one or more <span>ASCII digits</span>.</li>
+
+     <li>Both of the following, in the given order:
+
+      <ol>
+
+       <li>A single U+002E FULL STOP character (.).</li>
+
+       <li>A series of one or more <span>ASCII digits</span>.</li>
+
+      </ol>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>Optionally:
+
+    <ol>
+
+     <li>Either a U+0065 LATIN SMALL LETTER E character (e) or a U+0045 LATIN CAPITAL LETTER E
+     character (E).</li>
+
+     <li>Optionally, a U+002D HYPHEN-MINUS character (-) or U+002B PLUS SIGN character (+).</li>
+
+     <li>A series of one or more <span>ASCII digits</span>.</li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>A <span>valid floating-point number</span> represents the number obtained by multiplying the
+  significand by ten raised to the power of the exponent, where the significand is the first number,
+  interpreted as base ten (including the decimal point and the number after the decimal point, if
+  any, and interpreting the significand as a negative number if the whole string starts with a
+  U+002D HYPHEN-MINUS character (-) and the number is not zero), and where the exponent is the
+  number after the E, if any (interpreted as a negative number if there is a U+002D HYPHEN-MINUS
+  character (-) between the E and the number and the number is not zero, or else ignoring a U+002B
+  PLUS SIGN character (+) between the E and the number if there is one). If there is no E, then the
+  exponent is treated as zero.</p>
+
+  <p class="note">The Infinity and Not-a-Number (NaN) values are not <span data-x="valid
+  floating-point number">valid floating-point numbers</span>.</p>
+
+  <div w-nodev>
+
+  <p class="note">The <span>valid floating-point number</span> concept is typically only used to
+  restrict what is allowed for authors, while the user agent requirements use the <span>rules for
+  parsing floating-point number values</span> below (e.g., the <code
+  data-x="attr-progress-max">max</code> attribute of the <code>progress</code> element). However, in
+  some cases the user agent requirements include checking if a string is a <span>valid
+  floating-point number</span> (e.g., the <span>value sanitization algorithm</span> for the <span
+  data-x="attr-input-type-number">Number</span> state of the <code>input</code> element, or the
+  <span>parse a srcset attribute</span> algorithm).</p>
+
+  <p>The <dfn data-x="best representation of the number as a floating-point number">best
+  representation of the number <var>n</var> as a floating-point number</dfn> is the string
+  obtained from running <span>ToString</span>(<var>n</var>). The abstract operation
+  <span>ToString</span> is not uniquely determined. When there are multiple possible strings that
+  could be obtained from <span>ToString</span> for a particular value, the user agent must always
+  return the same string for that value (though it may differ from the value used by other user
+  agents).</p>
+
+  <p>The <dfn>rules for parsing floating-point number values</dfn> are as given in the following
+  algorithm. This algorithm must be aborted at the first step that returns something. This algorithm
+  will return either a number or an error.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially pointing at the
+   start of the string.</p></li>
+
+   <li><p>Let <var>value</var> have the value 1.</li>
+
+   <li><p>Let <var>divisor</var> have the value 1.</p></li>
+
+   <li><p>Let <var>exponent</var> have the value 1.</p></li>
+
+   <li><p><span>Skip whitespace</span>.</p></li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, return an error.</p></li>
+
+   <li>
+
+    <p>If the character indicated by <var>position</var> is a U+002D HYPHEN-MINUS character (-):</p>
+
+    <ol>
+
+     <li>Change <var>value</var> and <var>divisor</var> to &#x2212;1.</li>
+
+     <li>Advance <var>position</var> to the next character.</li>
+
+     <li>If <var>position</var> is past the end of <var>input</var>, return an error.</li>
+
+    </ol>
+
+    <p>Otherwise, if the character indicated by <var>position</var> (the first character) is a
+    U+002B PLUS SIGN character (+):</p>
+
+    <ol>
+
+     <li>Advance <var>position</var> to the next character. (The "<code data-x="">+</code>"
+     is ignored, but it is not conforming.)</li>
+
+     <li>If <var>position</var> is past the end of <var>input</var>, return an error.</li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the character indicated by <var>position</var> is a U+002E FULL STOP (.), and that is
+   not the last character in <var>input</var>, and the character after the character indicated by
+   <var>position</var> is an <span data-x="ASCII digits">ASCII digit</span>, then set
+   <var>value</var> to zero and jump to the step labeled <i>fraction</i>.</p> <!-- we have to check
+   there's a number so that ".e1" fails to parse but ".0" does not -->
+
+   <li><p>If the character indicated by <var>position</var> is not an <span data-x="ASCII
+   digits">ASCII digit</span>, then return an error.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>, and
+   interpret the resulting sequence as a base-ten integer. Multiply <var>value</var> by that
+   integer.</p></li>
+
+   <li>If <var>position</var> is past the end of <var>input</var>, jump to the step labeled
+   <i>conversion</i>.</li>
+
+   <li><p><i>Fraction</i>: If the character indicated by <var>position</var> is a U+002E
+   FULL STOP (.), run these substeps:</p>
+
+    <ol>
+
+     <li><p>Advance <var>position</var> to the next character.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, or if the character
+     indicated by <var>position</var> is not an <span data-x="ASCII digits">ASCII digit</span>,
+     U+0065 LATIN SMALL LETTER E (e), or U+0045 LATIN CAPITAL LETTER E (E), then jump to the step
+     labeled <i>conversion</i>.</li>
+
+     <li><p>If the character indicated by <var>position</var> is a U+0065 LATIN SMALL
+     LETTER E character (e) or a U+0045 LATIN CAPITAL LETTER E character (E), skip the remainder of
+     these substeps.</p>
+
+     <li><p><i>Fraction loop</i>: Multiply <var>divisor</var> by ten.</p></li>
+
+     <li>Add the value of the character indicated by <var>position</var>, interpreted as a
+     base-ten digit (0..9) and divided by <var>divisor</var>, to <var>value</var>.</li>
+
+     <li><p>Advance <var>position</var> to the next character.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, then jump to the step
+     labeled <i>conversion</i>.</li>
+
+     <li><p>If the character indicated by <var>position</var> is an <span data-x="ASCII
+     digits">ASCII digit</span>, jump back to the step labeled <i>fraction loop</i> in these
+     substeps.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the character indicated by <var>position</var> is a U+0065 LATIN SMALL LETTER
+   E character (e) or a U+0045 LATIN CAPITAL LETTER E character (E), run these substeps:</p>
+
+    <ol>
+
+     <li><p>Advance <var>position</var> to the next character.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, then jump to the step
+     labeled <i>conversion</i>.</li>
+
+     <li>
+
+      <p>If the character indicated by <var>position</var> is a U+002D HYPHEN-MINUS character
+      (-):</p>
+
+      <ol>
+
+       <li>Change <var>exponent</var> to &#x2212;1.</li>
+
+       <li>Advance <var>position</var> to the next character.</li>
+
+       <li><p>If <var>position</var> is past the end of <var>input</var>, then jump to the step
+       labeled <i>conversion</i>.</li>
+
+      </ol>
+
+      <p>Otherwise, if the character indicated by <var>position</var> is a U+002B PLUS SIGN
+      character (+):</p>
+
+      <ol>
+
+       <li>Advance <var>position</var> to the next character.</li>
+
+       <li><p>If <var>position</var> is past the end of <var>input</var>, then jump to the step
+       labeled <i>conversion</i>.</li>
+
+      </ol>
+
+     </li>
+
+     <li><p>If the character indicated by <var>position</var> is not an <span data-x="ASCII
+     digits">ASCII digit</span>, then jump to the step labeled <i>conversion</i>.</li>
+
+     <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>, and
+     interpret the resulting sequence as a base-ten integer. Multiply <var>exponent</var>
+     by that integer.</p></li>
+
+     <li><p>Multiply <var>value</var> by ten raised to the <var>exponent</var>th power.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p><i>Conversion</i>: Let <var>S</var> be the set of finite IEEE 754 double-precision
+   floating-point values except &#x2212;0, but with two special values added: 2<sup>1024</sup> and &#x2212;2<sup>1024</sup>.</p></li>
+
+   <li><p>Let <var>rounded-value</var> be the number in <var>S</var> that is closest to
+   <var>value</var>, selecting the number with an even significand if there are two equally close
+   values. (The two special values 2<sup>1024</sup> and &#x2212;2<sup>1024</sup>
+   are considered to have even significands for this purpose.)</p></li>
+
+   <li><p>If <var>rounded-value</var> is 2<sup>1024</sup> or &#x2212;2<sup>1024</sup>, return an error.</p></li>
+
+   <li><p>Return <var>rounded-value</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+<div w-nodev>
+  

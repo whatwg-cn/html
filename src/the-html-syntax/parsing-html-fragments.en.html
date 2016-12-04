@@ -1,0 +1,186 @@
+<h3>Parsing HTML fragments</h3>
+
+  <p>The following steps form the <dfn>HTML fragment parsing algorithm</dfn>. The algorithm
+  takes as input an <code>Element</code> node, referred to as the <dfn
+  data-x="concept-frag-parse-context"><var>context</var></dfn> element, which gives the context for
+  the parser, as well as <var>input</var>, a string to parse, and returns a list of zero or
+  more nodes.</p>
+
+  <p class="note">Parts marked <dfn>fragment case</dfn> in algorithms in the parser section are
+  parts that only occur if the parser was created for the purposes of this algorithm. The algorithms have been annotated
+  with such markings for informational purposes only; such markings have no normative weight. If it
+  is possible for a condition described as a <span>fragment case</span> to occur even when the
+  parser wasn't created for the purposes of handling this algorithm, then that is an error in the
+  specification.</p>
+
+  <ol>
+
+   <li>
+
+    <p>Create a new <code>Document</code> node, and mark it as being an <span data-x="HTML
+    documents">HTML document</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the
+    <span>node document</span> of the <var data-x="concept-frag-parse-context">context</var> element is in
+    <span>quirks mode</span>, then let the <code>Document</code> be in <span>quirks mode</span>.
+    Otherwise, the
+    <span>node document</span> of the <var data-x="concept-frag-parse-context">context</var> element is in
+    <span>limited-quirks mode</span>, then let the <code>Document</code> be in <span>limited-quirks
+    mode</span>. Otherwise, leave the <code>Document</code> in <span>no-quirks mode</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Create a new <span>HTML parser</span>, and associate it with the just created
+    <code>Document</code> node.</p>
+
+   </li>
+
+   <li>
+
+    <p>Set the state of the <span>HTML parser</span>'s <span>tokenization</span> stage as
+    follows, switching on the <var data-x="concept-frag-parse-context">context</var> element:</p>
+
+    <dl class="switch">
+
+     <dt><code>title</code></dt>
+     <dt><code>textarea</code></dt>
+
+     <dd>Switch the tokenizer to the <span>RCDATA state</span>.</dd>
+
+
+     <dt><code>style</code></dt>
+     <dt><code>xmp</code></dt>
+     <dt><code>iframe</code></dt>
+     <dt><code>noembed</code></dt>
+     <dt><code>noframes</code></dt>
+
+     <dd>Switch the tokenizer to the <span>RAWTEXT state</span>.</dd>
+
+
+     <dt><code>script</code></dt>
+
+     <dd>Switch the tokenizer to the <span>script data state</span>.</dd>
+
+
+     <dt><code>noscript</code></dt>
+
+     <dd>If the <span>scripting flag</span> is enabled, switch the tokenizer to the <span>RAWTEXT
+     state</span>. Otherwise, leave the tokenizer in the <span>data state</span>.</dd>
+
+
+     <dt><code>plaintext</code></dt>
+
+     <dd>Switch the tokenizer to the <span>PLAINTEXT state</span>.</dd>
+
+
+     <dt>Any other element</dt>
+
+     <dd>Leave the tokenizer in the <span>data state</span>.</dd>
+
+    </dl>
+
+    <p class="note">For performance reasons, an implementation that does not report errors and
+    that uses the actual state machine described in this specification directly could use the
+    PLAINTEXT state instead of the RAWTEXT and script data states where those are mentioned in the
+    list above. Except for rules regarding parse errors, they are equivalent, since there is no
+    <span>appropriate end tag token</span> in the fragment case, yet they involve far fewer state
+    transitions.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>root</var> be a new <code>html</code> element with no attributes.</p>
+
+   </li>
+
+   <li>
+
+    <p>Append the element <var>root</var> to the <code>Document</code> node created
+    above.</p>
+
+   </li>
+
+   <li>
+
+    <p>Set up the parser's <span>stack of open elements</span> so that it contains just the single
+    element <var>root</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <var data-x="concept-frag-parse-context">context</var> element is a
+    <code>template</code> element, push "<span data-x="insertion mode: in template">in
+    template</span>" onto the <span>stack of template insertion modes</span> so that it is the new
+    <span>current template insertion mode</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Create a start tag token whose name is the local name of <var
+    data-x="concept-frag-parse-context">context</var> and whose attributes are the attributes of
+    <var data-x="concept-frag-parse-context">context</var>.</p>
+
+    <p>Let this start tag token be the start tag token of the <var
+    data-x="concept-frag-parse-context">context</var> node, e.g. for the purposes of determining
+    if it is an <span>HTML integration point</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p><span data-x="reset the insertion mode appropriately">Reset the parser's insertion mode
+    appropriately</span>.</p>
+
+    <p class="note">The parser will reference the <var
+    data-x="concept-frag-parse-context">context</var> element as part of that algorithm.</p>
+
+   </li>
+
+   <li>
+
+    <p>Set the parser's <span><code>form</code> element pointer</span> to the nearest node to the
+    <var data-x="concept-frag-parse-context">context</var> element that is a <code>form</code>
+    element (going straight up the ancestor chain, and including the element itself, if it is a
+    <code>form</code> element), if any. (If there is no such <code>form</code> element, the
+    <span><code>form</code> element pointer</span> keeps its initial value, null.)</p>
+
+   </li>
+
+   <li>
+
+    <p>Place the <var>input</var> into the <span>input stream</span> for the <span>HTML
+    parser</span> just created. The encoding <span
+    data-x="concept-encoding-confidence">confidence</span> is <i>irrelevant</i>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Start the parser and let it run until it has consumed all the characters just inserted into
+    the input stream.</p>
+
+   </li>
+
+   <li>
+
+    <p>Return the child
+    nodes of <var>root</var>, in <span>tree order</span>.</p>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+
+  

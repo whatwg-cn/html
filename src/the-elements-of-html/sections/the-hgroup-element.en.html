@@ -1,0 +1,142 @@
+<h4>The <dfn><code>hgroup</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Heading content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>One or more <code>h1</code>, <code>h2</code>, <code>h3</code>, <code>h4</code>, <code>h5</code>, <code>h6</code>, and <code>template</code> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>hgroup</code> element <span>represents</span> the heading of a section, which
+  consists of all the <code>h1</code>&ndash;<code>h6</code> element children of the
+  <code>hgroup</code> element. The element is used to group a set of
+  <code>h1</code>&ndash;<code>h6</code> elements when the heading has multiple levels, such as
+  subheadings, alternative titles, or taglines.</p>
+
+  <p>The <span>rank</span> of an <code>hgroup</code> element is the rank of the highest-ranked
+  <code>h1</code>&ndash;<code>h6</code> element descendant of the <code>hgroup</code> element, if
+  there are any such elements, or otherwise the same as for an <code>h1</code> element (the highest
+  rank). Other <code>h1</code>&ndash;<code>h6</code> elements of <span>heading content</span> in the
+  <code>hgroup</code> element indicate subheadings or subtitles or (secondary) alternative
+  titles.</p>
+
+  <p>The section on <span>headings and sections</span> defines how <code>hgroup</code> elements are
+  assigned to individual sections.</p>
+
+  <div class="example">
+
+   <p>Here are some examples of valid headings.</p>
+
+    <pre>&lt;hgroup&gt;
+ &lt;h1&gt;The reality dysfunction&lt;/h1&gt;
+ &lt;h2&gt;Space is not the only void&lt;/h2&gt;
+&lt;/hgroup&gt;</pre>
+
+    <pre>&lt;hgroup&gt;
+ &lt;h1&gt;Dr. Strangelove&lt;/h1&gt;
+ &lt;h2&gt;Or: How I Learned to Stop Worrying and Love the Bomb&lt;/h2&gt;
+&lt;/hgroup&gt;</pre>
+
+   <p>The point of using <code>hgroup</code> in these examples is to mask the <code>h2</code>
+   element (which acts as a secondary title) from the <span>outline</span> algorithm.</p>
+   <!-- http://www.brucelawson.co.uk/2009/html-5-is-a-mess/#comment-618895 -->
+
+   <p>How a user agent exposes such multi-level headings in user interfaces (e.g. in tables of
+   contents or search results) is left open to implementors, as it is a user interface issue. The
+   first example above could be rendered as:</p>
+
+   <pre>The reality dysfunction: Space is not the only void</pre>
+
+   <p>Alternatively, it could look like this:
+
+   <pre>The reality dysfunction (Space is not the only void)</pre>
+
+   <p>In interfaces where a title can be rendered on multiple lines, it could be rendered as
+   follows, maybe with the first line in a bigger font size:</p>
+
+   <pre>The reality dysfunction
+Space is not the only void</pre>
+
+  </div>
+
+  <div class="example">
+   <p>The following two examples show ways in which two <code>h1</code> headings could be used
+   within an <code>hgroup</code> element to group the US and UK names for the same movie.</p>
+
+   <pre>&lt;hgroup>
+ &lt;h1>The Avengers&lt;/h1>
+ &lt;h1>Avengers Assemble&lt;/h1>
+&lt;/hgroup>
+
+&lt;hgroup>
+ &lt;h1>Avengers Assemble&lt;/h1>
+ &lt;h1>The Avengers&lt;/h1>
+&lt;/hgroup></pre>
+
+   <p>The first example above shows how the movie names might be grouped in a publication in the US,
+   with the US name <i>The Avengers</i> as the (primary) title, and the UK name <i>Avengers
+   Assemble</i> as the (secondary) alternative title. The second example above shows how the movie
+   names might be grouped in a publication in the UK, with the UK name as the (primary) title, and
+   the US name as the (secondary) alternative title.</p>
+
+   <p>In both cases it is important to note the use of the <code>hgroup</code> element to group the
+   two titles indicates that the titles are not equivalent; instead the first <code>h1</code> gives
+   the (primary) title while the second gives the (secondary) alternative title. Even though both the
+   title and alternative title are marked up with <code>h1</code> elements, the second
+   <code>h1</code> in the <code>hgroup</code> will be masked from the <span>outline</span>
+   algorithm, and it would be reasonable in some contexts to render the contents of the second
+   <code>h1</code> in way that clearly indicates it is secondary; for example:
+
+   <p>In a US publication:</p>
+   <pre>The Avengers (Avengers Assemble)</pre>
+
+   <p>In a UK publication:</p>
+   <pre>Avengers Assemble (The Avengers)</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, an <code>hgroup</code> element is used to mark up a two-level
+   heading in a wizard-style dialog box:</p>
+
+   <pre>&lt;dialog onclose="walletSetup.continue(this.returnValue)">
+ &lt;hgroup>
+  &lt;h1>Wallet Setup&lt;/h1>
+  &lt;h2>Configure your Wallet funding source&lt;/h2>
+ &lt;/hgroup>
+ &lt;p>Your Wallet can be used to buy wands at the merchant in town, to buy potions from travelling
+ salesmen you may find in the dungeons, and to pay for mercenaries.&lt;/p>
+ &lt;p>We support two payment sources:&lt;/p>
+ &lt;form method=dialog>
+  &lt;fieldset oninput="this.getElementsByTagName('input')[0].checked = true">
+   &lt;legend> &lt;label> &lt;input type=radio name=payment-type value=cc> Credit Card &lt;/label> &lt;/legend>
+   &lt;p>&lt;label>Name on card: &lt;input name=cc1 autocomplete="section-cc cc-name" placeholder="Y. Name">&lt;/label>
+   &lt;p>&lt;label>Card number: &lt;input name=cc2 inputmode=numeric autocomplete="section-cc cc-number" placeholder="6331 1019 9999 0016">&lt;/label>
+   &lt;p>&lt;label>Expiry Date: &lt;input name=cc3 type=month autocomplete="section-cc cc-exp" placeholder="2020-02">&lt;/label>
+   &lt;p>&lt;label>Security Code: &lt;input name=cc4 inputmode=numeric autocomplete="section-cc cc-csc" placeholder="246">&lt;/label>
+  &lt;/fieldset>
+  &lt;fieldset oninput="this.getElementsByTagName('input')[0].checked = true">
+   &lt;legend> &lt;label> &lt;input type=radio name=payment-type value=bank> Checking Account &lt;/label> &lt;/legend>
+   &lt;p>&lt;label>Name on account: &lt;input name=bank1 autocomplete="section-bank cc-name">&lt;/label>
+   &lt;p>&lt;label>Routing number: &lt;input name=bank2 inputmode=numeric>&lt;/label>
+   &lt;p>&lt;label>Account number: &lt;input name=bank3 inputmode=numeric>&lt;/label>
+  &lt;/fieldset>
+  &lt;button type=submit value="back"> &#x2190; Back &lt;/button>
+  &lt;button type=submit value="next"> Next &#x2192; &lt;/button>
+ &lt;/form>
+&lt;/dialog></pre>
+
+  </div>
+
+
+
+  

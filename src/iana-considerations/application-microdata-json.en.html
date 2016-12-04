@@ -1,0 +1,78 @@
+<h3><dfn><code>application/microdata+json</code></dfn></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  <!--
+   To: ietf-types@iana.org
+   Subject: Registration of media type application/microdata+json
+  -->
+
+  <dl>
+   <dt>Type name:</dt>
+   <dd>application</dd>
+   <dt>Subtype name:</dt>
+   <dd>microdata+json</dd>
+   <dt>Required parameters:</dt>
+   <dd>Same as for <code>application/json</code> <ref spec=JSON></dd>
+   <dt>Optional parameters:</dt>
+   <dd>Same as for <code>application/json</code> <ref spec=JSON></dd>
+   <dt>Encoding considerations:</dt>
+   <dd>8bit (always UTF-8)</dd>
+<!--ADD-TOPIC:Security-->
+   <dt>Security considerations:</dt>
+   <dd>Same as for <code>application/json</code> <ref spec=JSON></dd>
+<!--REMOVE-TOPIC:Security-->
+   <dt>Interoperability considerations:</dt>
+   <dd>Same as for <code>application/json</code> <ref spec=JSON></dd>
+   <dt>Published specification:</dt>
+   <dd>
+
+    Labeling a resource with the <code>application/microdata+json</code> type asserts that the
+    resource is a JSON text that consists of an object with a single entry called "<code
+    data-x="">items</code>" consisting of an array of entries, each of which consists of an object
+    with an entry called "<code data-x="">id</code>" whose value is a string, an entry called "<code
+    data-x="">type</code>" whose value is another string, and an entry called "<code
+    data-x="">properties</code>" whose value is an object whose entries each have a value consisting
+    of an array of either objects or strings, the objects being of the same form as the objects in
+    the aforementioned "<code data-x="">items</code>" entry. Thus, the relevant specifications are
+    the JSON specification and this specification. <ref spec=JSON>
+
+   </dd>
+   <dt>Applications that use this media type:</dt>
+   <dd>
+
+    <p>Applications that transfer data intended for use with HTML's microdata feature, especially in
+    the context of drag-and-drop, are the primary application class for this type.</p>
+
+   </dd>
+   <dt>Additional information:</dt>
+   <dd>
+    <dl>
+     <dt>Magic number(s):</dt>
+     <dd>Same as for <code>application/json</code> <ref spec=JSON></dd>
+     <dt>File extension(s):</dt>
+     <dd>Same as for <code>application/json</code> <ref spec=JSON></dd>
+     <dt>Macintosh file type code(s):</dt>
+     <dd>Same as for <code>application/json</code> <ref spec=JSON></dd>
+    </dl>
+   </dd>
+   <dt>Person &amp; email address to contact for further information:</dt>
+   <dd>Ian Hickson &lt;ian@hixie.ch></dd>
+   <dt>Intended usage:</dt>
+   <dd>Common</dd>
+   <dt>Restrictions on usage:</dt>
+   <dd>No restrictions apply.</dd>
+   <dt>Author:</dt>
+   <dd>Ian Hickson &lt;ian@hixie.ch></dd>
+   <dt>Change controller:</dt>
+   <dd>W3C</dd>
+  </dl>
+
+  <p><span data-x="concept-url-fragment">Fragments</span> used with
+  <code>application/microdata+json</code> resources have the same semantics as when used with
+  <code>application/json</code> (namely, at the time of writing, no semantics at all).
+  <ref spec=JSON></p>
+
+
+  

@@ -1,0 +1,73 @@
+<h5>Dates</h5>
+
+  <p>A <dfn data-x="concept-date">date</dfn> consists of a specific <span>proleptic-Gregorian
+  date</span> with no time-zone information, consisting of a year, a month, and a day. <ref spec=GREGORIAN></p>
+
+  <p>A string is a <dfn>valid date string</dfn> representing a year <var>year</var>, month
+  <var>month</var>, and day <var>day</var> if it consists of the following
+  components in the given order:</p>
+
+  <ol>
+
+   <li>A <span>valid month string</span>, representing <var>year</var> and <var>month</var></li>
+
+   <li>A U+002D HYPHEN-MINUS character (-)</li>
+
+   <li>Two <span>ASCII digits</span>, representing <var>day</var>, in the range
+   1&nbsp;&le;&nbsp;<var>day</var>&nbsp;&le;&nbsp;<var>maxday</var> where <var>maxday</var> is the <span data-x="number of days in month month of year year">number of
+   days in the month <var>month</var> and year <var>year</var></span></li>
+
+  </ol>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a date string</dfn> are as follows. This will return either a date, or
+  nothing. If at any point the algorithm says that it "fails", this means that it is aborted at that
+  point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Parse a date component</span> to obtain <var>year</var>, <var>month</var>, and <var>day</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Let <var>date</var> be the date with year <var>year</var>, month <var>month</var>, and day <var>day</var>.</p></li>
+
+   <li><p>Return <var>date</var>.</p></li>
+
+  </ol>
+
+  <p>The rules to <dfn>parse a date component</dfn>, given an <var>input</var> string and a
+  <var>position</var>, are as follows. This will return either a year, a month, and a day,
+  or nothing. If at any point the algorithm says that it "fails", this means that it is aborted at
+  that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p><span>Parse a month component</span> to obtain <var>year</var> and <var>month</var>. If this returns nothing, then fail.</li>
+
+   <li><p>Let <var>maxday</var> be the <span>number of days in month <var>month</var> of year <var>year</var></span>.</p></li>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is not a U+002D HYPHEN-MINUS character, then fail.
+   Otherwise, move <var>position</var> forwards one character.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not exactly two characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>day</var>.</p></li>
+
+   <li><p>If <var>day</var> is not a number in the range 1&nbsp;&le;&nbsp;<var>day</var>&nbsp;&le;&nbsp;<var>maxday</var>, then fail.</li>
+
+   <li><p>Return <var>year</var>, <var>month</var>, and <var>day</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

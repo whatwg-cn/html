@@ -1,0 +1,84 @@
+<h4><dfn>Tree construction</dfn></h4>
+
+  <p>The input to the tree construction stage is a sequence of tokens from the
+  <span>tokenization</span> stage. The tree construction stage is associated with a DOM
+  <code>Document</code> object when a parser is created. The "output" of this stage consists of
+  dynamically modifying or extending that document's DOM tree.</p>
+
+  <p>This specification does not define when an interactive user agent has to render the
+  <code>Document</code> so that it is available to the user, or when it has to begin accepting user
+  input.</p>
+
+  <hr>
+
+  <p>As each token is emitted from the tokenizer, the user agent must follow the appropriate steps
+  from the following list, known as the <dfn>tree construction dispatcher</dfn>:</p>
+
+  <dl class="switch">
+
+   <dt>If the <span>stack of open elements</span> is empty</dt>
+   <dt>If the <span>adjusted current node</span> is an element in the <span>HTML namespace</span></dt>
+   <dt>If the <span>adjusted current node</span> is a <span>MathML text integration point</span> and the token is a start tag whose tag name is neither "mglyph" nor "malignmark"</dt>
+   <dt>If the <span>adjusted current node</span> is a <span>MathML text integration point</span> and the token is a character token</dt>
+   <dt>If the <span>adjusted current node</span> is a <span>MathML <code>annotation-xml</code></span> element and the token is a start tag whose tag name is "svg"</dt>
+   <dt>If the <span>adjusted current node</span> is an <span>HTML integration point</span> and the token is a start tag</dt>
+   <dt>If the <span>adjusted current node</span> is an <span>HTML integration point</span> and the token is a character token</dt>
+   <dt>If the token is an end-of-file token</dt>
+
+   <dd>Process the token according to the rules given in the section corresponding to the current
+   <span>insertion mode</span> in HTML content.</dd>
+
+   <dt>Otherwise</dt>
+
+   <dd>Process the token according to the rules given in the section for parsing tokens <span
+   data-x="insertion mode: in foreign content">in foreign content</span>.</dd>
+
+  </dl>
+
+  <p>The <dfn>next token</dfn> is the token that is about to be processed by the <span>tree
+  construction dispatcher</span> (even if the token is subsequently just ignored).</p>
+
+  <p>A node is a <dfn>MathML text integration point</dfn> if it is one of the following
+  elements:</p>
+
+  <ul class="brief">
+   <li>A <span>MathML <code>mi</code></span> element</li>
+   <li>A <span>MathML <code>mo</code></span> element</li>
+   <li>A <span>MathML <code>mn</code></span> element</li>
+   <li>A <span>MathML <code>ms</code></span> element</li>
+   <li>A <span>MathML <code>mtext</code></span> element</li>
+  </ul>
+
+  <p>A node is an <dfn>HTML integration point</dfn> if it is one of the following elements:</p>
+
+  <ul class="brief">
+   <li>A <span>MathML <code>annotation-xml</code></span> element whose start tag token had an
+   attribute with the name "encoding" whose value was an <span>ASCII case-insensitive</span> match
+   for the string "<code data-x="">text/html</code>"</li>
+   <li>A <span>MathML <code>annotation-xml</code></span> element whose start tag token had an
+   attribute with the name "encoding" whose value was an <span>ASCII case-insensitive</span> match
+   for the string "<code data-x="">application/xhtml+xml</code>"</li>
+   <li>An <span>SVG <code>foreignObject</code></span> element</li>
+   <li>An <span>SVG <code>desc</code></span> element</li>
+   <li>An <span>SVG <code>title</code></span> element</li>
+  </ul>
+
+  <p class="note">If the node in question is the <var
+  data-x="concept-frag-parse-context">context</var> element passed to the <span>HTML fragment
+  parsing algorithm</span>, then the start tag token for that element is the "fake" token created
+  during by that <span>HTML fragment parsing algorithm</span>.</p>
+
+  <hr>
+
+  <p class="note">Not all of the tag names mentioned below are conformant tag names in this
+  specification; many are included to handle legacy content. They still form part of the algorithm
+  that implementations are required to implement to claim conformance.</p>
+
+  <p class="note">The algorithm described below places no limit on the depth of the DOM tree
+  generated, or on the length of tag names, attribute names, attribute values, <code>Text</code>
+  nodes, etc. While implementors are encouraged to avoid arbitrary limits, it is recognized that <a
+  href="#hardwareLimitations">practical concerns</a> will likely force user agents to impose nesting
+  depth constraints.</p>
+
+
+  

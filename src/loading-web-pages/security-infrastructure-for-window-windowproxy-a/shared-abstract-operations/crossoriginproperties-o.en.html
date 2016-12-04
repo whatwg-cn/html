@@ -1,0 +1,41 @@
+<h5><dfn>CrossOriginProperties</dfn> ( <var>O</var> )</h5>
+
+  <ol>
+   <li><p>Assert: <var>O</var> is a <code>Location</code> or <code>Window</code> object.</p></li>
+
+   <li><p>If <var>O</var> is a <code>Location</code> object, then return «
+   { [[Property]]: "<code data-x="">href</code>", [[NeedsGet]]: false, [[NeedsSet]]: true },
+   { [[Property]]: "<code data-x="">replace</code>" } ».</p></li>
+
+   <li><p>Let <var>crossOriginWindowProperties</var> be «
+   { [[Property]]: "<code data-x="">window</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">self</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">location</code>", [[NeedsGet]]: true, [[NeedsSet]]: true },
+   { [[Property]]: "<code data-x="">close</code>" },
+   { [[Property]]: "<code data-x="">closed</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">focus</code>" },
+   { [[Property]]: "<code data-x="">blur</code>" },
+   { [[Property]]: "<code data-x="">frames</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">length</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">top</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">opener</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">parent</code>", [[NeedsGet]]: true, [[NeedsSet]]: false },
+   { [[Property]]: "<code data-x="">postMessage</code>" } ».</p></li>
+
+   <li>
+    <p>Repeat for each <var>e</var> that is an element of <var>O</var>'s <span>document-tree child
+    browsing context name property set</span>:</p>
+
+    <ol>
+     <li><p>Add { [[Property]]: <var>e</var> } as the last element of
+     <var>crossOriginWindowProperties</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Return <var>crossOriginWindowProperties</var>.</p></li>
+  </ol>
+
+  <p class="note">Indexed properties do not need to be safelisted as they are handled directly by
+  the <code>WindowProxy</code> object.</p>
+
+  

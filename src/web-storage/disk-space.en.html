@@ -1,0 +1,26 @@
+<h3>Disk space</h3>
+
+  <p>User agents should limit the total amount of space allowed for storage areas, because hostile
+  authors could otherwise use this feature to exhaust the user's available disk space.</p>
+
+  <p>User agents should guard against sites storing data under their origin's other affiliated
+  sites, e.g. storing up to the limit in a1.example.com, a2.example.com, a3.example.com, etc,
+  circumventing the main example.com storage limit.</p>
+
+  <p>User agents may prompt the user when quotas are reached, allowing the user to grant a site more
+  space. This enables sites to store many user-created documents on the user's computer, for
+  instance.</p>
+
+  <p>User agents should allow users to see how much space each domain is using.</p>
+
+  <!--<p>If the storage area space limit is reached during a <code
+  data-x="dom-Storage-setItem">setItem()</code> call, the method will throw an exception.</p>-->
+
+  <p>A mostly arbitrary limit of five megabytes per <span>origin</span> is suggested. Implementation
+  feedback is welcome and will be used to update this suggestion in the future.</p>
+
+  <p>For predictability, quotas should be based on the uncompressed size of data stored.</p>
+  <!-- see https://www.w3.org/Bugs/Public/show_bug.cgi?id=21319#c3 -->
+
+
+  

@@ -1,0 +1,66 @@
+<h4 id="server-sent-events-intro">Introduction</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>To enable servers to push data to Web pages over HTTP or using dedicated server-push protocols,
+  this specification introduces the <code>EventSource</code> interface.</p>
+
+  <p>Using this API consists of creating an <code>EventSource</code> object and registering an event
+  listener.</p>
+
+  <pre>var source = new EventSource('updates.cgi');
+source.onmessage = function (event) {
+  alert(event.data);
+};</pre>
+
+  <p>On the server-side, the script ("<code data-x="">updates.cgi</code>" in this case) sends
+  messages in the following form, with the <code>text/event-stream</code> MIME type:</p>
+
+  <pre>data: This is the first message.
+
+data: This is the second message, it
+data: has two lines.
+
+data: This is the third message.</pre>
+
+  <hr>
+
+  <p>Authors can separate events by using different event types. Here is a stream that has two event
+  types, "add" and "remove":</p>
+
+  <pre>event: add
+data: 73857293
+
+event: remove
+data: 2153
+
+event: add
+data: 113411</pre>
+
+  <p>The script to handle such a stream would look like this (where <code data-x="">addHandler</code>
+  and <code data-x="">removeHandler</code> are functions that take one argument, the event):</p>
+
+  <pre>var source = new EventSource('updates.cgi');
+source.addEventListener('add', addHandler, false);
+source.addEventListener('remove', removeHandler, false);</pre>
+
+  <p>The default event type is "message".</p>
+
+  <p>Event streams are always decoded as UTF-8. There is no way to specify another character
+  encoding.</p>
+
+  <hr>
+
+  <p>Event stream requests can be redirected using HTTP 301 and 307 redirects as with normal HTTP
+  requests. Clients will reconnect if the connection is closed; a client can be told to stop
+  reconnecting using the HTTP 204 No Content response code.</p>
+
+  <p>Using this API rather than emulating it using <code>XMLHttpRequest</code> or an
+  <code>iframe</code> allows the user agent to make better use of network resources in cases where
+  the user agent implementor and the network operator are able to coordinate in advance. Amongst
+  other benefits, this can result in significant savings in battery life on portable devices. This
+  is discussed further in the section below on <a href="#eventsource-push">connectionless
+  push</a>.</p>
+
+
+  

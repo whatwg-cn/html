@@ -1,0 +1,88 @@
+<h5>Vaguer moments in time</h5>
+
+  <p>A string is a <dfn>valid date string with optional time</dfn> if
+  it is also one of the following:</p>
+
+  <ul>
+
+   <li>A <span>valid date string</span></li>
+
+   <li>A <span>valid global date and time string</span></li>
+
+  </ul>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>The rules to <dfn>parse a date or time string</dfn> are as follows. The algorithm will return
+  either a <span data-x="concept-date">date</span>, a <span data-x="concept-time">time</span>, a <span
+  data-x="concept-datetime">global date and time</span>, or nothing. If at any point the algorithm
+  says that it "fails", this means that it is aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p>Set <var>start position</var> to the same position as <var>position</var>.</p></li>
+
+   <li><p>Set the <var>date present</var> and <var>time present</var> flags to
+   true.</p></li>
+
+   <li><p><span>Parse a date component</span> to obtain <var>year</var>, <var>month</var>, and <var>day</var>. If this fails, then set the <var>date
+   present</var> flag to false.</p>
+
+   <li>
+
+    <p>If <var>date present</var> is true, and <var>position</var> is not beyond
+    the end of <var>input</var>, and the character at <var>position</var> is
+    either a U+0054 LATIN CAPITAL LETTER T character (T) or a U+0020 SPACE character, then advance
+    <var>position</var> to the next character in <var>input</var>.</p>
+
+    <p>Otherwise, if <var>date present</var> is true, and either <var>position</var> is beyond the end of <var>input</var> or the character at <var>position</var> is neither a U+0054 LATIN CAPITAL LETTER T character (T) nor a U+0020
+    SPACE character, then set <var>time present</var> to false.</p>
+
+    <p>Otherwise, if <var>date present</var> is false, set <var>position</var>
+    back to the same position as <var>start position</var>.</p>
+
+   </li>
+
+   <li><p>If the <var>time present</var> flag is true, then <span>parse a time
+   component</span> to obtain <var>hour</var>, <var>minute</var>, and <var>second</var>. If this returns nothing, then fail.</p></li>
+
+   <li><p>If the <var>date present</var> and <var>time present</var> flags are
+   both true, but <var>position</var> is beyond the end of <var>input</var>, then
+   fail.</p></li>
+
+   <li><p>If the <var>date present</var> and <var>time present</var> flags are
+   both true, <span>parse a time-zone offset component</span> to obtain <var>timezone<sub>hours</sub></var> and <var>timezone<sub>minutes</sub></var>. If this
+   returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li>
+
+    <p>If the <var>date present</var> flag is true and the <var>time present</var>
+    flag is false, then let <var>date</var> be the date with year <var>year</var>,
+    month <var>month</var>, and day <var>day</var>, and return <var>date</var>.</p>
+
+    <p>Otherwise, if the <var>time present</var> flag is true and the <var>date
+    present</var> flag is false, then let <var>time</var> be the time with hour <var>hour</var>, minute <var>minute</var>, and second <var>second</var>,
+    and return <var>time</var>.</p>
+
+    <p>Otherwise, let <var>time</var> be the moment in time at year <var>year</var>, month <var>month</var>, day <var>day</var>, hours <var>hour</var>, minute <var>minute</var>, second <var>second</var>,
+    subtracting <var>timezone<sub>hours</sub></var> hours and <var>timezone<sub>minutes</sub></var> minutes, that moment in time being a moment
+    in the UTC time zone; let <var>timezone</var> be <var>timezone<sub>hours</sub></var> hours and <var>timezone<sub>minutes</sub></var>
+    minutes from UTC; and return <var>time</var> and <var>timezone</var>.</p>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+  <!--en-GB-->

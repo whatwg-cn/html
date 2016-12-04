@@ -1,0 +1,66 @@
+<h5>Providing libraries</h5>
+
+  <!- - NON-NORMATIVE SECTION - ->
+
+  <p>Suppose that a cryptography library is made available that provides three tasks:</p>
+
+  <dl>
+
+   <dt>Generate a public/private key pair</dt>
+
+   <dd>Takes a port, on which it will send two messages, first the public key and then the private
+   key.</dd>
+
+   <dt>Given a plaintext and a public key, return the corresponding cyphertext</dt>
+
+   <dd>Takes a port, to which any number of messages can be sent, the first giving the public key,
+   and the remainder giving the plaintext, each of which is encrypted and then sent on that same
+   channel as the cyphertext. The user can close the port when it is done encrypting content.</dd>
+
+   <dt>Given a cyphertext and a private key, return the corresponding plaintext</dt>
+
+   <dd>Takes a port, to which any number of messages can be sent, the first giving the private key,
+   and the remainder giving the cyphertext, each of which is decrypted and then sent on that same
+   channel as the plaintext. The user can close the port when it is done decrypting content.</dd>
+
+  </dl>
+
+  <p>The library itself is as follows:</p>
+
+  <pre>EXAMPLE workers/crypto/libcrypto-v1.js</pre>
+
+  <p>Note that the crypto functions here are just stubs and don't do real cryptography.</p>
+
+  <p>This library could be used as follows:</p>
+
+  <pre>EXAMPLE workers/crypto/page.html</pre>
+
+  <p>A later version of the API, though, might want to offload all the crypto work onto subworkers.
+  This could be done as follows:</p>
+
+  <pre>EXAMPLE workers/crypto/libcrypto-v2.js</pre>
+
+  <p>The little subworkers would then be as follows.</p>
+
+  <p>For generating key pairs:</p>
+
+  <pre>EXAMPLE workers/crypto/libcrypto-v2-generator.js</pre>
+
+  <p>For encrypting:</p>
+
+  <pre>EXAMPLE workers/crypto/libcrypto-v2-encryptor.js</pre>
+
+  <p>For decrypting:</p>
+
+  <pre>EXAMPLE workers/crypto/libcrypto-v2-decryptor.js</pre>
+
+  <p>Notice how the users of the API don't have to even know that this is happening &mdash; the API
+  hasn't changed; the library can delegate to subworkers without changing its API, even though it is
+  accepting data using message channels.</p>
+
+  <p><a href="/demos/workers/crypto/page.html">View this example online</a>.</p>
+
+(end startConversation block) (beware nested comments)-->
+
+
+  

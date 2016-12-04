@@ -1,0 +1,1490 @@
+<h3 class="no-num">Attributes</h3>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <table id="attributes-1">
+   <caption>List of attributes (excluding event handler content attributes)</caption>
+   <thead>
+    <tr>
+     <th> Attribute
+     <th> Element(s)
+     <th> Description
+     <th> Value
+   <tbody>
+    <tr>
+     <th> <code data-x="">abbr</code>
+     <td> <code data-x="attr-th-abbr">th</code>
+     <td> Alternative label to use for the header cell when referencing the cell in other contexts
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">accept</code>
+     <td> <code data-x="attr-input-accept">input</code>
+     <td> Hint for expected file type in <span data-x="attr-input-type-file">file upload controls</span>
+     <td> <span>Set of comma-separated tokens</span>* consisting of <span data-x="valid MIME type">valid MIME types with no parameters</span> or <code data-x="">audio/*</code>, <code data-x="">video/*</code>, or <code data-x="">image/*</code>
+    <tr>
+     <th> <code data-x="">accept-charset</code>
+     <td> <code data-x="attr-form-accept-charset">form</code>
+     <td> Character encodings to use for <span>form submission</span>
+     <td> <span>Ordered set of unique space-separated tokens</span>, <span>ASCII case-insensitive</span>, consisting of <span data-x="encoding label">labels</span> of <span data-x="ASCII-compatible encoding">ASCII-compatible encodings</span>*
+    <tr>
+     <th> <code data-x="">accesskey</code>
+     <td> <span data-x="attr-accesskey">HTML elements</span>
+     <td> Keyboard shortcut to activate or focus element
+     <td> <span>Ordered set of unique space-separated tokens</span>, <span>case-sensitive</span>, consisting of one Unicode code point in length
+    <tr>
+     <th> <code data-x="">action</code>
+     <td> <code data-x="attr-fs-action">form</code>
+     <td> <span>URL</span> to use for <span>form submission</span>
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">allowfullscreen</code>
+     <td> <code data-x="attr-iframe-allowfullscreen">iframe</code>
+     <td> Whether to allow the <code>iframe</code>'s contents to use <code data-x="dom-element-requestFullscreen">requestFullscreen()</code>
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">allowusermedia</code>
+     <td> <code data-x="attr-iframe-allowusermedia">iframe</code>
+     <td> Whether to allow the <code>iframe</code>'s contents to use <code data-x="dom-MediaDevices-getUserMedia">getUserMedia()</code>
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">alt</code>
+     <td> <code data-x="attr-area-alt">area</code>;
+          <code data-x="attr-img-alt">img</code>;
+          <code data-x="attr-input-alt">input</code>
+     <td> Replacement text for use when images are not available
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">as</code>
+     <td> <code data-x="attr-link-as">link</code>
+     <td> Destination for a preload request (for <code data-x="attr-link-rel">rel</code>="<code data-x="rel-preload">preload</code>")
+     <td> <span data-x="concept-request-destination">Destination keyword</span>
+    <tr>
+     <th> <code data-x="">async</code>
+     <td> <code data-x="attr-script-async">script</code>
+     <td> Execute script when available, without blocking
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">autocomplete</code>
+     <td> <code data-x="attr-form-autocomplete">form</code>
+     <td> Default setting for autofill feature for controls in the form
+     <td> "<code data-x="">on</code>"; "<code data-x="">off</code>"
+    <tr>
+     <th> <code data-x="">autocomplete</code>
+     <td> <code data-x="attr-fe-autocomplete">input</code>;
+          <code data-x="attr-fe-autocomplete">select</code>;
+          <code data-x="attr-fe-autocomplete">textarea</code>
+     <td> Hint for form autofill feature
+     <td> <span data-x="autofill field">Autofill field</span> name and related tokens*
+    <tr>
+     <th> <code data-x="">autofocus</code>
+     <td> <code data-x="attr-fe-autofocus">button</code>;
+          <code data-x="attr-fe-autofocus">input</code>;
+          <code data-x="attr-fe-autofocus">keygen</code>;
+          <code data-x="attr-fe-autofocus">select</code>;
+          <code data-x="attr-fe-autofocus">textarea</code>
+     <td> Automatically focus the form control when the page is loaded
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">autoplay</code>
+     <td> <code data-x="attr-media-autoplay">audio</code>;
+          <code data-x="attr-media-autoplay">video</code>
+     <td> Hint that the <span>media resource</span> can be started automatically when the page is loaded
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">challenge</code>
+     <td> <code data-x="attr-keygen-challenge">keygen</code>
+     <td> String to package with the generated and signed public key
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">charset</code>
+     <td> <code data-x="attr-meta-charset">meta</code>
+     <td> <span>Character encoding declaration</span>
+     <td> <span>Encoding label</span>*
+    <tr>
+     <th> <code data-x="">charset</code>
+     <td> <code data-x="attr-script-charset">script</code>
+     <td> Character encoding of the external script resource
+     <td> <span>Encoding label</span>*
+    <tr>
+     <th> <code data-x="">checked</code>
+     <td> <code data-x="attr-menuitem-checked">menuitem</code>;
+          <code data-x="attr-input-checked">input</code>
+     <td> Whether the command or control is checked
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">cite</code>
+     <td> <code data-x="attr-blockquote-cite">blockquote</code>;
+          <code data-x="attr-mod-cite">del</code>;
+          <code data-x="attr-mod-cite">ins</code>;
+          <code data-x="attr-q-cite">q</code>
+     <td> Link to the source of the quotation or more information about the edit
+     <td> <span>Valid URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">class</code>
+     <td> <span data-x="attr-class">HTML elements</span>
+     <td> Classes to which the element belongs
+     <td> <span>Set of space-separated tokens</span>
+    <tr>
+     <th> <code data-x="">cols</code>
+     <td> <code data-x="attr-textarea-cols">textarea</code>
+     <td> Maximum number of characters per line
+     <td> <span>Valid non-negative integer</span> greater than zero
+    <tr>
+     <th> <code data-x="">colspan</code>
+     <td> <code data-x="attr-tdth-colspan">td</code>;
+          <code data-x="attr-tdth-colspan">th</code>
+     <td> Number of columns that the cell is to span
+     <td> <span>Valid non-negative integer</span> greater than zero
+    <tr>
+     <th> <code data-x="">content</code>
+     <td> <code data-x="attr-meta-content">meta</code>
+     <td> Value of the element
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">contenteditable</code>
+     <td> <span data-x="attr-contenteditable">HTML elements</span>
+     <td> Whether the element is editable
+     <td> "<code data-x="">true</code>"; "<code data-x="">false</code>"
+    <tr>
+     <th> <code data-x="">contextmenu</code>
+     <td> <span data-x="attr-contextmenu">HTML elements</span>
+     <td> The element's context menu
+     <td> <span data-x="concept-id">ID</span>*
+    <tr>
+     <th> <code data-x="">controls</code>
+     <td> <code data-x="attr-media-controls">audio</code>;
+          <code data-x="attr-media-controls">video</code>
+     <td> Show user agent controls
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">coords</code>
+     <td> <code data-x="attr-area-coords">area</code>
+     <td> Coordinates for the shape to be created in an <span>image map</span>
+     <td> <span>Valid list of floating-point numbers</span>*
+    <tr>
+     <th> <code data-x="">crossorigin</code>
+     <td> <code data-x="attr-media-crossorigin">audio</code>;
+          <code data-x="attr-img-crossorigin">img</code>;
+          <code data-x="attr-link-crossorigin">link</code>;
+          <code data-x="attr-script-crossorigin">script</code>;
+          <code data-x="attr-media-crossorigin">video</code>
+     <td> How the element handles crossorigin requests
+     <td> "<code data-x="attr-crossorigin-anonymous-keyword">anonymous</code>"; "<code data-x="attr-crossorigin-use-credentials-keyword">use-credentials</code>"
+    <tr>
+     <th> <code data-x="">data</code>
+     <td> <code data-x="attr-object-data">object</code>
+     <td> Address of the resource
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">datetime</code>
+     <td> <code data-x="attr-mod-datetime">del</code>;
+          <code data-x="attr-mod-datetime">ins</code>
+     <td> Date and (optionally) time of the change
+     <td> <span>Valid date string with optional time</span>
+    <tr>
+     <th> <code data-x="">datetime</code>
+     <td> <code data-x="attr-time-datetime">time</code>
+     <td> Machine-readable value
+     <td> <span>Valid month string</span>,
+          <span>valid date string</span>,
+          <span>valid yearless date string</span>,
+          <span>valid time string</span>,
+          <span>valid local date and time string</span>,
+          <span>valid time-zone offset string</span>,
+          <span>valid global date and time string</span>,
+          <span>valid week string</span>,
+          <span>valid non-negative integer</span>, or
+          <span>valid duration string</span>
+    <tr>
+     <th> <code data-x="">default</code>
+     <td> <code data-x="attr-menuitem-default">menuitem</code>
+     <td> Mark the command as being a default command
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">default</code>
+     <td> <code data-x="attr-track-default">track</code>
+     <td> Enable the track if no other <span>text track</span> is more suitable
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">defer</code>
+     <td> <code data-x="attr-script-defer">script</code>
+     <td> Defer script execution
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">dir</code>
+     <td> <span data-x="attr-dir">HTML elements</span>
+     <td> <span data-x="the directionality">The text directionality</span> of the element
+     <td> "<code data-x="attr-dir-ltr">ltr</code>"; "<code data-x="attr-dir-rtl">rtl</code>"; "<code data-x="attr-dir-auto">auto</code>"
+    <tr>
+     <th> <code data-x="">dir</code>
+     <td> <code>bdo</code>
+     <td> <span data-x="the directionality">The text directionality</span> of the element
+     <td> "<code data-x="attr-dir-ltr">ltr</code>"; "<code data-x="attr-dir-rtl">rtl</code>"
+    <tr>
+     <th> <code data-x="">dirname</code>
+     <td> <code data-x="attr-fe-dirname">input</code>;
+          <code data-x="attr-fe-dirname">textarea</code>
+     <td> Name of form control to use for sending the element's <span data-x="the directionality">directionality</span> in <span>form submission</span>
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">disabled</code>
+     <td> <code data-x="attr-fe-disabled">button</code>;
+          <code data-x="attr-menuitem-disabled">menuitem</code>;
+          <code data-x="attr-fieldset-disabled">fieldset</code>;
+          <code data-x="attr-fe-disabled">input</code>;
+          <code data-x="attr-fe-disabled">keygen</code>;
+          <code data-x="attr-optgroup-disabled">optgroup</code>;
+          <code data-x="attr-option-disabled">option</code>;
+          <code data-x="attr-fe-disabled">select</code>;
+          <code data-x="attr-fe-disabled">textarea</code>
+     <td> Whether the form control is disabled
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">download</code>
+     <td> <code data-x="attr-hyperlink-download">a</code>;
+          <code data-x="attr-hyperlink-download">area</code>
+     <td> Whether to download the resource instead of navigating to it, and its file name if so
+     <td> Text
+    <tr>
+     <th> <code data-x="">draggable</code>
+     <td> <span data-x="attr-draggable">HTML elements</span>
+     <td> Whether the element is draggable
+     <td> "<code data-x="">true</code>"; "<code data-x="">false</code>"
+    <tr>
+     <th> <code data-x="">dropzone</code>
+     <td> <span data-x="attr-dropzone">HTML elements</span>
+     <td> Accepted item types for drag-and-drop
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>ASCII case-insensitive</span>, consisting of accepted types and drag feedback*
+    <tr>
+     <th> <code data-x="">enctype</code>
+     <td> <code data-x="attr-fs-enctype">form</code>
+     <td> Form data set encoding type to use for <span>form submission</span>
+     <td> "<code data-x="attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</code>"; "<code data-x="attr-fs-enctype-formdata">multipart/form-data</code>"; "<code data-x="attr-fs-enctype-text">text/plain</code>"
+    <tr>
+     <th> <code data-x="">for</code>
+     <td> <code data-x="attr-label-for">label</code>
+     <td> Associate the label with form control
+     <td> <span data-x="concept-id">ID</span>*
+    <tr>
+     <th> <code data-x="">for</code>
+     <td> <code data-x="attr-output-for">output</code>
+     <td> Specifies controls from which the output was calculated
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>case-sensitive</span>, consisting of IDs*
+    <tr>
+     <th> <code data-x="">form</code>
+     <td> <code data-x="attr-fae-form">button</code>;
+          <code data-x="attr-fae-form">fieldset</code>;
+          <code data-x="attr-fae-form">input</code>;
+          <code data-x="attr-fae-form">keygen</code>;
+          <code data-x="attr-fae-form">object</code>;
+          <code data-x="attr-fae-form">output</code>;
+          <code data-x="attr-fae-form">select</code>;
+          <code data-x="attr-fae-form">textarea</code>
+     <td> Associates the control with a <code>form</code> element
+     <td> <span data-x="concept-id">ID</span>*
+    <tr>
+     <th> <code data-x="">formaction</code>
+     <td> <code data-x="attr-fs-formaction">button</code>;
+          <code data-x="attr-fs-formaction">input</code>
+     <td> <span>URL</span> to use for <span>form submission</span>
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">formenctype</code>
+     <td> <code data-x="attr-fs-formenctype">button</code>;
+          <code data-x="attr-fs-formenctype">input</code>
+     <td> Form data set encoding type to use for <span>form submission</span>
+     <td> "<code data-x="attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</code>"; "<code data-x="attr-fs-enctype-formdata">multipart/form-data</code>"; "<code data-x="attr-fs-enctype-text">text/plain</code>"
+    <tr>
+     <th> <code data-x="">formmethod</code>
+     <td> <code data-x="attr-fs-formmethod">button</code>;
+          <code data-x="attr-fs-formmethod">input</code>
+     <td> HTTP method to use for <span>form submission</span>
+     <td> "<code data-x="">GET</code>"; "<code data-x="">POST</code>"
+    <tr>
+     <th> <code data-x="">formnovalidate</code>
+     <td> <code data-x="attr-fs-formnovalidate">button</code>;
+          <code data-x="attr-fs-formnovalidate">input</code>
+     <td> Bypass form control validation for <span>form submission</span>
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">formtarget</code>
+     <td> <code data-x="attr-fs-formtarget">button</code>;
+          <code data-x="attr-fs-formtarget">input</code>
+     <td> <span>Browsing context</span> for <span>form submission</span>
+     <td> <span>Valid browsing context name or keyword</span>
+    <tr>
+     <th> <code data-x="">headers</code>
+     <td> <code data-x="attr-tdth-headers">td</code>;
+          <code data-x="attr-tdth-headers">th</code>
+     <td> The header cells for this cell
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>case-sensitive</span>, consisting of IDs*
+    <tr>
+     <th> <code data-x="">height</code>
+     <td> <code data-x="attr-canvas-height">canvas</code>;
+          <code data-x="attr-dim-height">embed</code>;
+          <code data-x="attr-dim-height">iframe</code>;
+          <code data-x="attr-dim-height">img</code>;
+          <code data-x="attr-dim-height">input</code>;
+          <code data-x="attr-dim-height">object</code>;
+          <code data-x="attr-dim-height">video</code>
+     <td> Vertical dimension
+     <td> <span>Valid non-negative integer</span>
+    <tr>
+     <th> <code data-x="">hidden</code>
+     <td> <span data-x="attr-hidden">HTML elements</span>
+     <td> Whether the element is relevant
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">high</code>
+     <td> <code data-x="attr-meter-high">meter</code>
+     <td> Low limit of high range
+     <td> <span>Valid floating-point number</span>*
+    <tr>
+     <th> <code data-x="">href</code>
+     <td> <code data-x="attr-hyperlink-href">a</code>;
+          <code data-x="attr-hyperlink-href">area</code>
+     <td> Address of the <span>hyperlink</span>
+     <td> <span>Valid URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">href</code>
+     <td> <code data-x="attr-link-href">link</code>
+     <td> Address of the <span>hyperlink</span>
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">href</code>
+     <td> <code data-x="attr-base-href">base</code>
+     <td> <span>Document base URL</span>
+     <td> <span>Valid URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">hreflang</code>
+     <td> <code data-x="attr-hyperlink-hreflang">a</code>;
+          <code data-x="attr-link-hreflang">link</code>
+     <td> Language of the linked resource
+     <td> Valid BCP 47 language tag
+    <tr>
+     <th> <code data-x="">http-equiv</code>
+     <td> <code data-x="attr-meta-http-equiv">meta</code>
+     <td> Pragma directive
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">icon</code>
+     <td> <code data-x="attr-menuitem-icon">menuitem</code>
+     <td> Icon for the command
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">id</code>
+     <td> <span data-x="attr-id">HTML elements</span>
+     <td> The element's <span data-x="concept-id">ID</span>
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">inputmode</code>
+     <td> <code data-x="attr-fe-inputmode">input</code>;
+          <code data-x="attr-fe-inputmode">textarea</code>
+     <td> Hint for selecting an input modality
+     <td> "<code data-x="attr-fe-inputmode-keyword-verbatim">verbatim</code>";
+          "<code data-x="attr-fe-inputmode-keyword-latin">latin</code>";
+          "<code data-x="attr-fe-inputmode-keyword-latin-name">latin-name</code>";
+          "<code data-x="attr-fe-inputmode-keyword-latin-prose">latin-prose</code>";
+          "<code data-x="attr-fe-inputmode-keyword-full-width-latin">full-width-latin</code>";
+          "<code data-x="attr-fe-inputmode-keyword-kana">kana</code>";
+          "<code data-x="attr-fe-inputmode-keyword-kana-name">kana-name</code>";
+          "<code data-x="attr-fe-inputmode-keyword-katakana">katakana</code>";
+          <!-- "<code data-x="attr-fe-inputmode-keyword-half-width-katakana">half-width-katakana</code>"; -->
+          "<code data-x="attr-fe-inputmode-keyword-numeric">numeric</code>";
+          "<code data-x="attr-fe-inputmode-keyword-tel">tel</code>";
+          "<code data-x="attr-fe-inputmode-keyword-email">email</code>";
+          "<code data-x="attr-fe-inputmode-keyword-url">url</code>"
+    <tr>
+     <th> <code data-x="">integrity</code>
+     <td> <code data-x="attr-link-integrity">link</code>;
+          <code data-x="attr-script-integrity">script</code>
+     <td> Integrity metadata used in <cite>Subresource Integrity</cite> checks <ref spec="SRI">
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">is</code>
+     <td> <span data-x="attr-is">HTML elements</span>
+     <td> Creates a <span>customized built-in element</span>
+     <td> <span>Valid custom element name</span> of a defined <span>customized built-in element</span>
+    <tr>
+     <th> <code data-x="">ismap</code>
+     <td> <code data-x="attr-img-ismap">img</code>
+     <td> Whether the image is a server-side image map
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">itemid</code>
+     <td> <span data-x="attr-itemid">HTML elements</span>
+     <td> <span>Global identifier</span> for a microdata item
+     <td> <span>Valid URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">itemprop</code>
+     <td> <span data-x="attr-itemprop">HTML elements</span>
+     <td> <span>Property names</span> of a microdata item
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>case-sensitive</span>, consisting of <span data-x="absolute URL">valid absolute URLs</span>, <span data-x="defined property name">defined property names</span>, or text*
+    <tr>
+     <th> <code data-x="">itemref</code>
+     <td> <span data-x="attr-itemref">HTML elements</span>
+     <td> Referenced elements
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>case-sensitive</span>, consisting of IDs*
+    <tr>
+     <th> <code data-x="">itemscope</code>
+     <td> <span data-x="attr-itemscope">HTML elements</span>
+     <td> Introduces a microdata item
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">itemtype</code>
+     <td> <span data-x="attr-itemtype">HTML elements</span>
+     <td> <span>Item types</span> of a microdata item
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>case-sensitive</span>, consisting of <span data-x="absolute URL">valid absolute URL</span>*
+    <tr>
+     <th> <code data-x="">keytype</code>
+     <td> <code data-x="attr-keygen-keytype">keygen</code>
+     <td> The type of cryptographic key to generate
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">kind</code>
+     <td> <code data-x="attr-track-kind">track</code>
+     <td> The type of text track
+     <td> "<code data-x="attr-track-kind-subtitles">subtitles</code>";
+          "<code data-x="attr-track-kind-captions">captions</code>";
+          "<code data-x="attr-track-kind-descriptions">descriptions</code>";
+          "<code data-x="attr-track-kind-chapters">chapters</code>";
+          "<code data-x="attr-track-kind-metadata">metadata</code>"
+    <tr>
+     <th> <code data-x="">label</code>
+     <td> <code data-x="attr-menuitem-label">menuitem</code>;
+          <code data-x="attr-menu-label">menu</code>;
+          <code data-x="attr-optgroup-label">optgroup</code>;
+          <code data-x="attr-option-label">option</code>;
+          <code data-x="attr-track-label">track</code>
+     <td> User-visible label
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">lang</code>
+     <td> <span data-x="attr-lang">HTML elements</span>
+     <td> <span>Language</span> of the element
+     <td> Valid BCP 47 language tag or the empty string
+    <tr>
+     <th> <code data-x="">list</code>
+     <td> <code data-x="attr-input-list">input</code>
+     <td> List of autocomplete options
+     <td> <span data-x="concept-id">ID</span>*
+    <tr>
+     <th> <code data-x="">loop</code>
+     <td> <code data-x="attr-media-loop">audio</code>;
+          <code data-x="attr-media-loop">video</code>
+     <td> Whether to loop the <span>media resource</span>
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">low</code>
+     <td> <code data-x="attr-meter-low">meter</code>
+     <td> High limit of low range
+     <td> <span>Valid floating-point number</span>*
+    <tr>
+     <th> <code data-x="">manifest</code>
+     <td> <code data-x="attr-html-manifest">html</code>
+     <td> <span data-x="concept-appcache-manifest">Application cache manifest</span>
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">max</code>
+     <td> <code data-x="attr-input-max">input</code>
+     <td> Maximum value
+     <td> Varies*
+    <tr>
+     <th> <code data-x="">max</code>
+     <td> <code data-x="attr-meter-max">meter</code>;
+          <code data-x="attr-progress-max">progress</code>
+     <td> Upper bound of range
+     <td> <span>Valid floating-point number</span>*
+    <tr>
+     <th> <code data-x="">maxlength</code>
+     <td> <code data-x="attr-input-maxlength">input</code>;
+          <code data-x="attr-textarea-maxlength">textarea</code>
+     <td> Maximum length of value
+     <td> <span>Valid non-negative integer</span>
+    <tr>
+     <th> <code data-x="">media</code>
+     <td> <code data-x="attr-link-media">link</code>;
+          <code data-x="attr-source-media">source</code>;
+          <code data-x="attr-style-media">style</code>
+     <td> Applicable media
+     <td> <span>Valid media query list</span>
+    <tr>
+     <th> <code data-x="">menu</code>
+     <td> <code data-x="attr-button-menu">button</code>
+     <td> Specifies the element's <span>designated pop-up menu</span>
+     <td> <span data-x="concept-id">ID</span>*
+    <tr>
+     <th> <code data-x="">method</code>
+     <td> <code data-x="attr-fs-method">form</code>
+     <td> HTTP method to use for <span>form submission</span>
+     <td> "<code data-x="attr-fs-method-GET-keyword">GET</code>";
+          "<code data-x="attr-fs-method-POST-keyword">POST</code>";
+          "<code data-x="attr-fs-method-dialog-keyword">dialog</code>"
+    <tr>
+     <th> <code data-x="">min</code>
+     <td> <code data-x="attr-input-min">input</code>
+     <td> Minimum value
+     <td> Varies*
+    <tr>
+     <th> <code data-x="">min</code>
+     <td> <code data-x="attr-meter-min">meter</code>
+     <td> Lower bound of range
+     <td> <span>Valid floating-point number</span>*
+    <tr>
+     <th> <code data-x="">minlength</code>
+     <td> <code data-x="attr-input-minlength">input</code>;
+          <code data-x="attr-textarea-minlength">textarea</code>
+     <td> Minimum length of value
+     <td> <span>Valid non-negative integer</span>
+    <tr>
+     <th> <code data-x="">multiple</code>
+     <td> <code data-x="attr-input-multiple">input</code>;
+          <code data-x="attr-select-multiple">select</code>
+     <td> Whether to allow multiple values
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">muted</code>
+     <td> <code data-x="attr-media-muted">audio</code>;
+          <code data-x="attr-media-muted">video</code>
+     <td> Whether to mute the <span>media resource</span> by default
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">name</code>
+     <td> <code data-x="attr-fe-name">button</code>;
+          <code data-x="attr-fe-name">fieldset</code>;
+          <code data-x="attr-fe-name">input</code>;
+          <code data-x="attr-fe-name">keygen</code>;
+          <code data-x="attr-fe-name">output</code>;
+          <code data-x="attr-fe-name">select</code>;
+          <code data-x="attr-fe-name">textarea</code>
+     <td> Name of form control to use for <span>form submission</span> and in the <code data-x="dom-form-elements">form.elements</code> API <!--or: Name of form control to use in the <code data-x="dom-form-elements">form.elements</code> API -->
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">name</code>
+     <td> <code data-x="attr-form-name">form</code>
+     <td> Name of form to use in the <code data-x="dom-document-forms">document.forms</code> API
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">name</code>
+     <td> <code data-x="attr-iframe-name">iframe</code>;
+          <code data-x="attr-object-name">object</code>
+     <td> Name of <span>nested browsing context</span>
+     <td> <span>Valid browsing context name or keyword</span>
+    <tr>
+     <th> <code data-x="">name</code>
+     <td> <code data-x="attr-map-name">map</code>
+     <td> Name of <span>image map</span> to reference from the <code data-x="attr-hyperlink-usemap">usemap</code> attribute
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">name</code>
+     <td> <code data-x="attr-meta-name">meta</code>
+     <td> Metadata name
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">name</code>
+     <td> <code data-x="attr-param-name">param</code>
+     <td> Name of parameter
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">name</code>
+     <td> <code data-x="attr-slot-name">slot</code>
+     <td> Name of shadow tree slot
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">nonce</code>
+     <td> <code data-x="attr-link-nonce">link</code>;
+          <code data-x="attr-script-nonce">script</code>;
+          <code data-x="attr-style-nonce">style</code>
+     <td> Cryptographic nonce used in <cite>Content Security Policy</cite> checks <ref spec="CSP">
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">novalidate</code>
+     <td> <code data-x="attr-fs-novalidate">form</code>
+     <td> Bypass form control validation for <span>form submission</span>
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">open</code>
+     <td> <code data-x="attr-details-open">details</code>
+     <td> Whether the details are visible
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">open</code>
+     <td> <code data-x="attr-dialog-open">dialog</code>
+     <td> Whether the dialog box is showing
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">optimum</code>
+     <td> <code data-x="attr-meter-optimum">meter</code>
+     <td> Optimum value in gauge
+     <td> <span>Valid floating-point number</span>*
+    <tr>
+     <th> <code data-x="">pattern</code>
+     <td> <code data-x="attr-input-pattern">input</code>
+     <td> Pattern to be matched by the form control's value
+     <td> Regular expression matching the JavaScript <i data-x="js-prod-Pattern">Pattern</i> production
+    <tr>
+     <th> <code data-x="">ping</code>
+     <td> <code data-x="attr-hyperlink-ping">a</code>;
+          <code data-x="attr-hyperlink-ping">area</code>
+     <td> <span data-x="URL">URLs</span> to ping
+     <td> <span>Set of space-separated tokens</span> consisting of <span data-x="valid non-empty URL">valid non-empty URLs</span>
+    <tr>
+     <th> <code data-x="">placeholder</code>
+     <td> <code data-x="attr-input-placeholder">input</code>;
+          <code data-x="attr-textarea-placeholder">textarea</code>
+     <td> User-visible label to be placed within the form control
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">playsinline</code>
+     <td> <code data-x="attr-video-playsinline">video</code>
+     <td> Encourage the user agent to display video content within the element's playback area
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">poster</code>
+     <td> <code data-x="attr-video-poster">video</code>
+     <td> Poster frame to show prior to video playback
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">preload</code>
+     <td> <code data-x="attr-media-preload">audio</code>;
+          <code data-x="attr-media-preload">video</code>
+     <td> Hints how much buffering the <span>media resource</span> will likely need
+     <td> "<code data-x="attr-media-preload-none">none</code>";
+          "<code data-x="attr-media-preload-metadata">metadata</code>";
+          "<code data-x="attr-media-preload-auto">auto</code>"
+    <tr>
+     <th> <code data-x="">radiogroup</code>
+     <td> <code data-x="attr-menuitem-radiogroup">menuitem</code>
+     <td> Name of group of commands to treat as a radio button group
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">readonly</code>
+     <td> <code data-x="attr-input-readonly">input</code>;
+          <code data-x="attr-textarea-readonly">textarea</code>
+     <td> Whether to allow the value to be edited by the user
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">referrerpolicy</code>
+     <td> <code data-x="attr-hyperlink-referrerpolicy">a</code>;
+          <code data-x="attr-hyperlink-referrerpolicy">area</code>;
+          <code data-x="attr-iframe-referrerpolicy">iframe</code>;
+          <code data-x="attr-img-referrerpolicy">img</code>;
+          <code data-x="attr-link-referrerpolicy">link</code>
+     <td> Determines the <span>referrer policy</span> for <span data-x="concept-fetch">fetches</span> initiated by the element
+     <td> <span>Referrer policy</span>
+    <tr>
+     <th> <code data-x="">rel</code>
+     <td> <code data-x="attr-hyperlink-rel">a</code>;
+          <code data-x="attr-hyperlink-rel">area</code>
+     <td> Relationship between the location in the document containing the hyperlink and the destination resource
+     <td> <span>Set of space-separated tokens</span>*
+    <tr>
+     <th> <code data-x="">rel</code>
+     <td> <code data-x="attr-link-rel">link</code>
+     <td> Relationship between the document containing the hyperlink and the destination resource
+     <td> <span>Set of space-separated tokens</span>*
+    <tr>
+     <th> <code data-x="">required</code>
+     <td> <code data-x="attr-input-required">input</code>;
+          <code data-x="attr-select-required">select</code>;
+          <code data-x="attr-textarea-required">textarea</code>
+     <td> Whether the control is required for <span>form submission</span>
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">reversed</code>
+     <td> <code data-x="attr-ol-reversed">ol</code>
+     <td> Number the list backwards
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">rows</code>
+     <td> <code data-x="attr-textarea-rows">textarea</code>
+     <td> Number of lines to show
+     <td> <span>Valid non-negative integer</span> greater than zero
+    <tr>
+     <th> <code data-x="">rowspan</code>
+     <td> <code data-x="attr-tdth-rowspan">td</code>;
+          <code data-x="attr-tdth-rowspan">th</code>
+     <td> Number of rows that the cell is to span
+     <td> <span>Valid non-negative integer</span>
+    <tr>
+     <th> <code data-x="">sandbox</code>
+     <td> <code data-x="attr-iframe-sandbox">iframe</code>
+     <td> Security rules for nested content
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>ASCII case-insensitive</span>, consisting of
+          "<code data-x="attr-iframe-sandbox-allow-forms">allow-forms</code>",
+          "<code data-x="attr-iframe-sandbox-allow-modals">allow-modals</code>",
+          "<code data-x="attr-iframe-sandbox-allow-orientation-lock">allow-orientation-lock</code>",
+          "<code data-x="attr-iframe-sandbox-allow-pointer-lock">allow-pointer-lock</code>",
+          "<code data-x="attr-iframe-sandbox-allow-popups">allow-popups</code>",
+          "<code data-x="attr-iframe-sandbox-allow-popups-to-escape-sandbox">allow-popups-to-escape-sandbox</code>",
+          "<code data-x="attr-iframe-sandbox-allow-presentation">allow-presentation</code>",
+          "<code data-x="attr-iframe-sandbox-allow-same-origin">allow-same-origin</code>",
+          "<code data-x="attr-iframe-sandbox-allow-scripts">allow-scripts</code>" and
+          "<code data-x="attr-iframe-sandbox-allow-top-navigation">allow-top-navigation</code>"
+    <tr>
+     <th> <code data-x="">slot</code>
+     <td> <span data-x="attr-id">HTML elements</span>
+     <td> The element's desired slot
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">spellcheck</code>
+     <td> <span data-x="attr-spellcheck">HTML elements</span>
+     <td> Whether the element is to have its spelling and grammar checked
+     <td> "<code data-x="">true</code>"; "<code data-x="">false</code>"
+    <tr>
+     <th> <code data-x="">scope</code>
+     <td> <code data-x="attr-th-scope">th</code>
+     <td> Specifies which cells the header cell applies to
+     <td> "<code data-x="attr-th-scope-row">row</code>";
+          "<code data-x="attr-th-scope-col">col</code>";
+          "<code data-x="attr-th-scope-rowgroup">rowgroup</code>";
+          "<code data-x="attr-th-scope-colgroup">colgroup</code>"
+    <tr>
+     <th> <code data-x="">selected</code>
+     <td> <code data-x="attr-option-selected">option</code>
+     <td> Whether the option is selected by default
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">shape</code>
+     <td> <code data-x="attr-area-shape">area</code>
+     <td> The kind of shape to be created in an <span>image map</span>
+     <td> "<code data-x="attr-area-shape-keyword-circle">circle</code>";
+          "<code data-x="attr-area-shape-keyword-default">default</code>";
+          "<code data-x="attr-area-shape-keyword-poly">poly</code>";
+          "<code data-x="attr-area-shape-keyword-rect">rect</code>"
+    <tr>
+     <th> <code data-x="">size</code>
+     <td> <code data-x="attr-input-size">input</code>;
+          <code data-x="attr-select-size">select</code>
+     <td> Size of the control
+     <td> <span>Valid non-negative integer</span> greater than zero
+    <tr>
+     <th> <code data-x="">sizes</code>
+     <td> <code data-x="attr-link-sizes">link</code>
+     <td> Sizes of the icons (for <code data-x="attr-link-rel">rel</code>="<code data-x="rel-icon">icon</code>")
+     <td> <span>Unordered set of unique space-separated tokens</span>, <span>ASCII case-insensitive</span>, consisting of sizes*
+    <tr>
+     <th> <code data-x="">sizes</code>
+     <td> <code data-x="attr-img-sizes">img</code>;
+          <code data-x="attr-source-sizes">source</code>
+     <td> Image sizes for different page layouts
+     <td> <span>Valid source size list</span>
+    <tr>
+     <th> <code data-x="">span</code>
+     <td> <code data-x="attr-col-span">col</code>;
+          <code data-x="attr-colgroup-span">colgroup</code>
+     <td> Number of columns spanned by the element
+     <td> <span>Valid non-negative integer</span> greater than zero
+    <tr>
+     <th> <code data-x="">src</code>
+     <td> <code data-x="attr-media-src">audio</code>;
+          <code data-x="attr-embed-src">embed</code>;
+          <code data-x="attr-iframe-src">iframe</code>;
+          <code data-x="attr-img-src">img</code>;
+          <code data-x="attr-input-src">input</code>;
+          <code data-x="attr-script-src">script</code>;
+          <code data-x="attr-source-src">source</code>;
+          <code data-x="attr-track-src">track</code>;
+          <code data-x="attr-media-src">video</code>
+     <td> Address of the resource
+     <td> <span>Valid non-empty URL potentially surrounded by spaces</span>
+    <tr>
+     <th> <code data-x="">srcdoc</code>
+     <td> <code data-x="attr-iframe-srcdoc">iframe</code>
+     <td> A document to render in the <code>iframe</code>
+     <td> The source of <span>an <code>iframe</code> <code data-x="attr-iframe-srcdoc">srcdoc</code> document</span>*
+    <tr>
+     <th> <code data-x="">srclang</code>
+     <td> <code data-x="attr-track-srclang">track</code>
+     <td> Language of the text track
+     <td> Valid BCP 47 language tag
+    <tr>
+     <th> <code data-x="">srcset</code>
+     <td> <code data-x="attr-img-srcset">img</code>;
+          <code data-x="attr-source-srcset">source</code>
+     <td> Images to use in different situations (e.g. high-resolution displays, small monitors, etc)
+     <td> Comma-separated list of <span data-x="image candidate string">image candidate strings</span>
+    <tr>
+     <th> <code data-x="">start</code>
+     <td> <code data-x="attr-ol-start">ol</code>
+     <td> <span data-x="concept-ol-start">Starting value</span> of the list
+     <td> <span>Valid integer</span>
+    <tr>
+     <th> <code data-x="">step</code>
+     <td> <code data-x="attr-input-step">input</code>
+     <td> Granularity to be matched by the form control's value
+     <td> <span>Valid floating-point number</span> greater than zero, or "<code data-x="">any</code>"
+    <tr>
+     <th> <code data-x="">style</code>
+     <td> <span data-x="attr-style">HTML elements</span>
+     <td> Presentational and formatting instructions
+     <td> CSS declarations*
+    <tr>
+     <th> <code data-x="">tabindex</code>
+     <td> <span data-x="attr-tabindex">HTML elements</span>
+     <td> Whether the element is focusable, and the relative order of the element for the purposes of sequential focus navigation
+     <td> <span>Valid integer</span>
+    <tr>
+     <th> <code data-x="">target</code>
+     <td> <code data-x="attr-hyperlink-target">a</code>;
+          <code data-x="attr-hyperlink-target">area</code>
+     <td> <span>Browsing context</span> for <span>hyperlink</span> <span data-x="navigate">navigation</span>
+     <td> <span>Valid browsing context name or keyword</span>
+    <tr>
+     <th> <code data-x="">target</code>
+     <td> <code data-x="attr-base-target">base</code>
+     <td> Default <span>browsing context</span> for <span>hyperlink</span> <span data-x="navigate">navigation</span> and <span>form submission</span>
+     <td> <span>Valid browsing context name or keyword</span>
+    <tr>
+     <th> <code data-x="">target</code>
+     <td> <code data-x="attr-fs-target">form</code>
+     <td> <span>Browsing context</span> for <span>form submission</span>
+     <td> <span>Valid browsing context name or keyword</span>
+    <tr>
+     <th> <code data-x="">title</code>
+     <td> <span data-x="attr-title">HTML elements</span>
+     <td> Advisory information for the element
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">title</code>
+     <td> <code data-x="attr-abbr-title">abbr</code>;
+          <code data-x="attr-dfn-title">dfn</code>
+     <td> Full term or expansion of abbreviation
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">title</code>
+     <td> <code data-x="attr-input-title">input</code>
+     <td> Description of pattern (when used with <code data-x="attr-input-pattern">pattern</code> attribute)
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">title</code>
+     <td> <code data-x="attr-menuitem-title">menuitem</code>
+     <td> Hint describing the command
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">title</code>
+     <td> <code data-x="attr-link-title">link</code>
+     <td> Title of the link
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">title</code>
+     <td> <code data-x="attr-link-title">link</code>;
+          <code data-x="attr-style-title">style</code>
+     <td> <span>CSS style sheet set name</span>
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">translate</code>
+     <td> <span data-x="attr-translate">HTML elements</span>
+     <td> Whether the element is to be translated when the page is localized
+     <td> "<code data-x="">yes</code>"; "<code data-x="">no</code>"
+    <tr>
+     <th> <code data-x="">type</code>
+     <td> <code data-x="attr-hyperlink-type">a</code>;
+          <code data-x="attr-link-type">link</code>
+     <td> Hint for the type of the referenced resource
+     <td> <span>Valid MIME type</span>
+    <tr>
+     <th> <code data-x="">type</code>
+     <td> <code data-x="attr-button-type">button</code>
+     <td> Type of button
+     <td> "<code data-x="attr-button-type-submit">submit</code>";
+          "<code data-x="attr-button-type-reset">reset</code>";
+          "<code data-x="attr-button-type-button">button</code>";
+          "<code data-x="attr-button-type-menu">menu</code>"
+    <tr>
+     <th> <code data-x="">type</code>
+     <td> <code data-x="attr-embed-type">embed</code>;
+          <code data-x="attr-object-type">object</code>;
+          <code data-x="attr-script-type">script</code>;
+          <code data-x="attr-source-type">source</code>;
+          <code data-x="attr-style-type">style</code>
+     <td> Type of embedded resource
+     <td> <span>Valid MIME type</span>
+    <tr>
+     <th> <code data-x="">type</code>
+     <td> <code data-x="attr-input-type">input</code>
+     <td> Type of form control
+     <td> <span data-x="attr-input-type"><code>input</code> type keyword</span>
+    <tr>
+     <th> <code data-x="">type</code>
+     <td> <code data-x="attr-menu-type">menu</code>
+     <td> Type of menu
+     <td> "<code data-x="popup menu state">context</code>"; "<code data-x="toolbar state">toolbar</code>"
+    <tr>
+     <th> <code data-x="">type</code>
+     <td> <code data-x="attr-menuitem-type">menuitem</code>
+     <td> Type of command
+     <td> "<code data-x="attr-menuitem-type-keyword-command">command</code>";
+          "<code data-x="attr-menuitem-type-keyword-checkbox">checkbox</code>";
+          "<code data-x="attr-menuitem-type-keyword-radio">radio</code>"
+    <tr>
+     <th> <code data-x="">type</code>
+     <td> <code data-x="attr-ol-type">ol</code>
+     <td> Kind of list marker
+     <td> "<code data-x="attr-ol-type-keyword-decimal">1</code>";
+          "<code data-x="attr-ol-type-keyword-lower-alpha">a</code>";
+          "<code data-x="attr-ol-type-keyword-upper-alpha">A</code>";
+          "<code data-x="attr-ol-type-keyword-lower-roman">i</code>";
+          "<code data-x="attr-ol-type-keyword-upper-roman">I</code>"
+    <tr>
+     <th> <code data-x="">typemustmatch</code>
+     <td> <code data-x="attr-object-typemustmatch">object</code>
+     <td> Whether the <code data-x="attr-object-type">type</code> attribute and the <span>Content-Type</span> value need to match for the resource to be used
+     <td> <span>Boolean attribute</span>
+    <tr>
+     <th> <code data-x="">usemap</code>
+     <td> <code data-x="attr-hyperlink-usemap">img</code>;
+          <code data-x="attr-hyperlink-usemap">object</code>
+     <td> Name of <span>image map</span> to use
+     <td> <span>Valid hash-name reference</span>*
+    <tr>
+     <th> <code data-x="">value</code>
+     <td> <code data-x="attr-button-value">button</code>;
+          <code data-x="attr-option-value">option</code>
+     <td> Value to be used for <span>form submission</span>
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">value</code>
+     <td> <code data-x="attr-data-value">data</code>
+     <td> Machine-readable value
+     <td> <a href="#attribute-text">Text</a>*
+    <tr>
+     <th> <code data-x="">value</code>
+     <td> <code data-x="attr-input-value">input</code>
+     <td> Value of the form control
+     <td> Varies*
+    <tr>
+     <th> <code data-x="">value</code>
+     <td> <code data-x="attr-li-value">li</code>
+     <td> <span>Ordinal value</span> of the list item
+     <td> <span>Valid integer</span>
+    <tr>
+     <th> <code data-x="">value</code>
+     <td> <code data-x="attr-meter-value">meter</code>;
+          <code data-x="attr-progress-value">progress</code>
+     <td> Current value of the element
+     <td> <span>Valid floating-point number</span>
+    <tr>
+     <th> <code data-x="">value</code>
+     <td> <code data-x="attr-param-value">param</code>
+     <td> Value of parameter
+     <td> <a href="#attribute-text">Text</a>
+    <tr>
+     <th> <code data-x="">width</code>
+     <td> <code data-x="attr-canvas-width">canvas</code>;
+          <code data-x="attr-dim-width">embed</code>;
+          <code data-x="attr-dim-width">iframe</code>;
+          <code data-x="attr-dim-width">img</code>;
+          <code data-x="attr-dim-width">input</code>;
+          <code data-x="attr-dim-width">object</code>;
+          <code data-x="attr-dim-width">video</code>
+     <td> Horizontal dimension
+     <td> <span>Valid non-negative integer</span>
+    <tr>
+     <th> <code data-x="">wrap</code>
+     <td> <code data-x="attr-textarea-wrap">textarea</code>
+     <td> How the value of the form control is to be wrapped for <span>form submission</span>
+     <td> "<code data-x="attr-textarea-wrap-soft">soft</code>";
+          "<code data-x="attr-textarea-wrap-hard">hard</code>"
+  </table>
+
+  <p class="tablenote"><small>An asterisk (*) in a cell indicates that the actual rules are more
+  complicated than indicated in the table above.</small></p>
+
+  <hr>
+
+  <table id="ix-event-handlers">
+   <caption>List of event handler content attributes</caption>
+   <thead>
+    <tr>
+     <th> Attribute
+     <th> Element(s)
+     <th> Description
+     <th> Value
+   <tbody>
+
+    <tr>
+     <th id="ix-handler-onabort"> <code data-x="">onabort</code>
+     <td> <span data-x="handler-onabort">HTML elements</span>
+     <td> <code data-x="event-abort">abort</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onauxclick"> <code data-x="">onauxclick</code>
+     <td> <span data-x="handler-onauxclick">HTML elements</span>
+     <td> <code data-x="event-auxclick">auxclick</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onafterprint"> <code data-x="">onafterprint</code>
+     <td> <code data-x="handler-window-onafterprint">body</code>
+     <td> <code data-x="event-afterprint">afterprint</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onbeforeprint"> <code data-x="">onbeforeprint</code>
+     <td> <code data-x="handler-window-onbeforeprint">body</code>
+     <td> <code data-x="event-beforeprint">beforeprint</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onbeforeunload"> <code data-x="">onbeforeunload</code>
+     <td> <code data-x="handler-window-onbeforeunload">body</code>
+     <td> <code data-x="event-beforeunload">beforeunload</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onblur"> <code data-x="">onblur</code>
+     <td> <span data-x="handler-onblur">HTML elements</span>
+     <td> <code data-x="event-blur">blur</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oncancel"> <code data-x="">oncancel</code>
+     <td> <span data-x="handler-oncancel">HTML elements</span>
+     <td> <code data-x="event-cancel">cancel</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oncanplay"> <code data-x="">oncanplay</code>
+     <td> <span data-x="handler-oncanplay">HTML elements</span>
+     <td> <code data-x="event-media-canplay">canplay</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oncanplaythrough"> <code data-x="">oncanplaythrough</code>
+     <td> <span data-x="handler-oncanplaythrough">HTML elements</span>
+     <td> <code data-x="event-media-canplaythrough">canplaythrough</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onchange"> <code data-x="">onchange</code>
+     <td> <span data-x="handler-onchange">HTML elements</span>
+     <td> <code data-x="event-change">change</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onclick"> <code data-x="">onclick</code>
+     <td> <span data-x="handler-onclick">HTML elements</span>
+     <td> <code data-x="event-click">click</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onclose"> <code data-x="">onclose</code>
+     <td> <span data-x="handler-onclose">HTML elements</span>
+     <td> <code data-x="event-close">close</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oncontextmenu"> <code data-x="">oncontextmenu</code>
+     <td> <span data-x="handler-oncontextmenu">HTML elements</span>
+     <td> <code data-x="event-contextmenu">contextmenu</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oncopy"> <code data-x="">oncopy</code>
+     <td> <span data-x="handler-oncopy">HTML elements</span>
+     <td> <code data-x="event-copy">copy</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oncuechange"> <code data-x="">oncuechange</code>
+     <td> <span data-x="handler-oncuechange">HTML elements</span>
+     <td> <code data-x="event-media-cuechange">cuechange</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oncut"> <code data-x="">oncut</code>
+     <td> <span data-x="handler-oncut">HTML elements</span>
+     <td> <code data-x="event-cut">cut</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondblclick"> <code data-x="">ondblclick</code>
+     <td> <span data-x="handler-ondblclick">HTML elements</span>
+     <td> <code data-x="event-dblclick">dblclick</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondrag"> <code data-x="">ondrag</code>
+     <td> <span data-x="handler-ondrag">HTML elements</span>
+     <td> <code data-x="event-dnd-drag">drag</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondragend"> <code data-x="">ondragend</code>
+     <td> <span data-x="handler-ondragend">HTML elements</span>
+     <td> <code data-x="event-dnd-dragend">dragend</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondragenter"> <code data-x="">ondragenter</code>
+     <td> <span data-x="handler-ondragenter">HTML elements</span>
+     <td> <code data-x="event-dnd-dragenter">dragenter</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondragexit"> <code data-x="">ondragexit</code>
+     <td> <span data-x="handler-ondragexit">HTML elements</span>
+     <td> <code data-x="event-dnd-dragexit">dragexit</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondragleave"> <code data-x="">ondragleave</code>
+     <td> <span data-x="handler-ondragleave">HTML elements</span>
+     <td> <code data-x="event-dnd-dragleave">dragleave</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondragover"> <code data-x="">ondragover</code>
+     <td> <span data-x="handler-ondragover">HTML elements</span>
+     <td> <code data-x="event-dnd-dragover">dragover</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondragstart"> <code data-x="">ondragstart</code>
+     <td> <span data-x="handler-ondragstart">HTML elements</span>
+     <td> <code data-x="event-dnd-dragstart">dragstart</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondrop"> <code data-x="">ondrop</code>
+     <td> <span data-x="handler-ondrop">HTML elements</span>
+     <td> <code data-x="event-dnd-drop">drop</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ondurationchange"> <code data-x="">ondurationchange</code>
+     <td> <span data-x="handler-ondurationchange">HTML elements</span>
+     <td> <code data-x="event-media-durationchange">durationchange</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onemptied"> <code data-x="">onemptied</code>
+     <td> <span data-x="handler-onemptied">HTML elements</span>
+     <td> <code data-x="event-media-emptied">emptied</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onended"> <code data-x="">onended</code>
+     <td> <span data-x="handler-onended">HTML elements</span>
+     <td> <code data-x="event-media-ended">ended</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onerror"> <code data-x="">onerror</code>
+     <td> <span data-x="handler-onerror">HTML elements</span>
+     <td> <code data-x="event-error">error</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onfocus"> <code data-x="">onfocus</code>
+     <td> <span data-x="handler-onfocus">HTML elements</span>
+     <td> <code data-x="event-focus">focus</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onhashchange"> <code data-x="">onhashchange</code>
+     <td> <code data-x="handler-window-onhashchange">body</code>
+     <td> <code data-x="event-hashchange">hashchange</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oninput"> <code data-x="">oninput</code>
+     <td> <span data-x="handler-oninput">HTML elements</span>
+     <td> <code data-x="event-input">input</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-oninvalid"> <code data-x="">oninvalid</code>
+     <td> <span data-x="handler-oninvalid">HTML elements</span>
+     <td> <code data-x="event-invalid">invalid</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onkeydown"> <code data-x="">onkeydown</code>
+     <td> <span data-x="handler-onkeydown">HTML elements</span>
+     <td> <code data-x="event-keydown">keydown</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onkeypress"> <code data-x="">onkeypress</code>
+     <td> <span data-x="handler-onkeypress">HTML elements</span>
+     <td> <code data-x="event-keypress">keypress</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onkeyup"> <code data-x="">onkeyup</code>
+     <td> <span data-x="handler-onkeyup">HTML elements</span>
+     <td> <code data-x="event-keyup">keyup</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onlanguagechange"> <code data-x="">onlanguagechange</code>
+     <td> <code data-x="handler-window-onlanguagechange">body</code>
+     <td> <code data-x="event-languagechange">languagechange</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onload"> <code data-x="">onload</code>
+     <td> <span data-x="handler-onload">HTML elements</span>
+     <td> <code data-x="event-load">load</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onloadeddata"> <code data-x="">onloadeddata</code>
+     <td> <span data-x="handler-onloadeddata">HTML elements</span>
+     <td> <code data-x="event-media-loadeddata">loadeddata</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onloadedmetadata"> <code data-x="">onloadedmetadata</code>
+     <td> <span data-x="handler-onloadedmetadata">HTML elements</span>
+     <td> <code data-x="event-media-loadedmetadata">loadedmetadata</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onloadend"> <code data-x="">onloadend</code>
+     <td> <span data-x="handler-onloadend">HTML elements</span>
+     <td> <code data-x="event-loadend">loadend</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onloadstart"> <code data-x="">onloadstart</code>
+     <td> <span data-x="handler-onloadstart">HTML elements</span>
+     <td> <code data-x="event-media-loadstart">loadstart</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onmessage"> <code data-x="">onmessage</code>
+     <td> <code data-x="handler-window-onmessage">body</code>
+     <td> <code data-x="event-message">message</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onmousedown"> <code data-x="">onmousedown</code>
+     <td> <span data-x="handler-onmousedown">HTML elements</span>
+     <td> <code data-x="event-mousedown">mousedown</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onmouseenter"> <code data-x="">onmouseenter</code>
+     <td> <span data-x="handler-onmouseenter">HTML elements</span>
+     <td> <code data-x="event-mouseenter">mouseenter</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onmouseleave"> <code data-x="">onmouseleave</code>
+     <td> <span data-x="handler-onmouseleave">HTML elements</span>
+     <td> <code data-x="event-mouseleave">mouseleave</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onmousemove"> <code data-x="">onmousemove</code>
+     <td> <span data-x="handler-onmousemove">HTML elements</span>
+     <td> <code data-x="event-mousemove">mousemove</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onmouseout"> <code data-x="">onmouseout</code>
+     <td> <span data-x="handler-onmouseout">HTML elements</span>
+     <td> <code data-x="event-mouseout">mouseout</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onmouseover"> <code data-x="">onmouseover</code>
+     <td> <span data-x="handler-onmouseover">HTML elements</span>
+     <td> <code data-x="event-mouseover">mouseover</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onmouseup"> <code data-x="">onmouseup</code>
+     <td> <span data-x="handler-onmouseup">HTML elements</span>
+     <td> <code data-x="event-mouseup">mouseup</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onwheel"> <code data-x="">onwheel</code>
+     <td> <span data-x="handler-onwheel">HTML elements</span>
+     <td> <code data-x="event-wheel">wheel</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onoffline"> <code data-x="">onoffline</code>
+     <td> <code data-x="handler-window-onoffline">body</code>
+     <td> <code data-x="event-offline">offline</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-ononline"> <code data-x="">ononline</code>
+     <td> <code data-x="handler-window-ononline">body</code>
+     <td> <code data-x="event-online">online</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onpagehide"> <code data-x="">onpagehide</code>
+     <td> <code data-x="handler-window-onpagehide">body</code>
+     <td> <code data-x="event-pagehide">pagehide</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onpageshow"> <code data-x="">onpageshow</code>
+     <td> <code data-x="handler-window-onpageshow">body</code>
+     <td> <code data-x="event-pageshow">pageshow</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onpaste"> <code data-x="">onpaste</code>
+     <td> <span data-x="handler-onpaste">HTML elements</span>
+     <td> <code data-x="event-paste">paste</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onpause"> <code data-x="">onpause</code>
+     <td> <span data-x="handler-onpause">HTML elements</span>
+     <td> <code data-x="event-media-pause">pause</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onplay"> <code data-x="">onplay</code>
+     <td> <span data-x="handler-onplay">HTML elements</span>
+     <td> <code data-x="event-media-play">play</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onplaying"> <code data-x="">onplaying</code>
+     <td> <span data-x="handler-onplaying">HTML elements</span>
+     <td> <code data-x="event-media-playing">playing</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onpopstate"> <code data-x="">onpopstate</code>
+     <td> <code data-x="handler-window-onpopstate">body</code>
+     <td> <code data-x="event-popstate">popstate</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onprogress"> <code data-x="">onprogress</code>
+     <td> <span data-x="handler-onprogress">HTML elements</span>
+     <td> <code data-x="event-media-progress">progress</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onratechange"> <code data-x="">onratechange</code>
+     <td> <span data-x="handler-onratechange">HTML elements</span>
+     <td> <code data-x="event-media-ratechange">ratechange</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onreset"> <code data-x="">onreset</code>
+     <td> <span data-x="handler-onreset">HTML elements</span>
+     <td> <code data-x="event-reset">reset</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onresize"> <code data-x="">onresize</code>
+     <td> <span data-x="handler-onresize">HTML elements</span>
+     <td> <code data-x="event-resize">resize</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onrejectionhandled"> <code data-x="">onrejectionhandled</code>
+     <td> <code data-x="handler-window-onrejectionhandled">body</code>
+     <td> <code data-x="event-rejectionhandled">rejectionhandled</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onscroll"> <code data-x="">onscroll</code>
+     <td> <span data-x="handler-onscroll">HTML elements</span>
+     <td> <code data-x="event-scroll">scroll</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onseeked"> <code data-x="">onseeked</code>
+     <td> <span data-x="handler-onseeked">HTML elements</span>
+     <td> <code data-x="event-media-seeked">seeked</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onseeking"> <code data-x="">onseeking</code>
+     <td> <span data-x="handler-onseeking">HTML elements</span>
+     <td> <code data-x="event-media-seeking">seeking</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onselect"> <code data-x="">onselect</code>
+     <td> <span data-x="handler-onselect">HTML elements</span>
+     <td> <code data-x="event-select">select</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onshow"> <code data-x="">onshow</code>
+     <td> <span data-x="handler-onshow">HTML elements</span>
+     <td> <code data-x="event-show">show</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onstalled"> <code data-x="">onstalled</code>
+     <td> <span data-x="handler-onstalled">HTML elements</span>
+     <td> <code data-x="event-media-stalled">stalled</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onstorage"> <code data-x="">onstorage</code>
+     <td> <code data-x="handler-window-onstorage">body</code>
+     <td> <code data-x="event-storage">storage</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onsubmit"> <code data-x="">onsubmit</code>
+     <td> <span data-x="handler-onsubmit">HTML elements</span>
+     <td> <code data-x="event-submit">submit</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onsuspend"> <code data-x="">onsuspend</code>
+     <td> <span data-x="handler-onsuspend">HTML elements</span>
+     <td> <code data-x="event-media-suspend">suspend</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ontimeupdate"> <code data-x="">ontimeupdate</code>
+     <td> <span data-x="handler-ontimeupdate">HTML elements</span>
+     <td> <code data-x="event-media-timeupdate">timeupdate</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-ontoggle"> <code data-x="">ontoggle</code>
+     <td> <span data-x="handler-ontoggle">HTML elements</span>
+     <td> <code data-x="event-toggle">toggle</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onunhandledrejection"> <code data-x="">onunhandledrejection</code>
+     <td> <code data-x="handler-window-onunhandledrejection">body</code>
+     <td> <code data-x="event-unhandledrejection">unhandledrejection</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-window-onunload"> <code data-x="">onunload</code>
+     <td> <code data-x="handler-window-onunload">body</code>
+     <td> <code data-x="event-unload">unload</code> event handler for <code>Window</code> object
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onvolumechange"> <code data-x="">onvolumechange</code>
+     <td> <span data-x="handler-onvolumechange">HTML elements</span>
+     <td> <code data-x="event-media-volumechange">volumechange</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+    <tr>
+     <th id="ix-handler-onwaiting"> <code data-x="">onwaiting</code>
+     <td> <span data-x="handler-onwaiting">HTML elements</span>
+     <td> <code data-x="event-media-waiting">waiting</code> event handler
+     <td> <span data-x="event handler content attributes">Event handler content attribute</span>
+
+  </table>
+
+
+<!-- v2 for completeness: (also search for REFLECTIDL)
+  

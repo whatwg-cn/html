@@ -1,0 +1,148 @@
+<h6>The "<dfn data-x="insertion mode: initial">initial</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode:
+  initial">initial</span>" <span>insertion mode</span>, the user agent must handle the token as
+  follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token that is one of U+0009 CHARACTER
+   TABULATION, U+000A LINE FEED (LF), U+000C FORM FEED (FF),
+   U+000D CARRIAGE RETURN (CR), or U+0020 SPACE</dt>
+   <dd>
+    <p>Ignore the token.</p>
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+    <p><span>Insert a comment</span> as the last child of the <code>Document</code> object.</p>
+   </dd>
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+
+    <p>If the DOCTYPE token's name is not a <span>case-sensitive</span> match for the string "<code
+    data-x="">html</code>", or the token's public identifier is not missing, or the token's system
+    identifier is neither missing nor a <span>case-sensitive</span> match for the string
+    "<code>about:legacy-compat</code>", then there is a <span>parse error</span>.</p>
+
+    <p>Append a <code>DocumentType</code> node to the <code>Document</code> node, with the <code
+    data-x="">name</code> attribute set to the name given in the DOCTYPE token, or the empty string
+    if the name was missing; the <code data-x="">publicId</code> attribute set to the public
+    identifier given in the DOCTYPE token, or the empty string if the public identifier was missing;
+    the <code data-x="">systemId</code> attribute set to the system identifier given in the DOCTYPE
+    token, or the empty string if the system identifier was missing; and the other attributes
+    specific to <code>DocumentType</code> objects set to null and empty lists as appropriate.
+    Associate the <code>DocumentType</code> node with the <code>Document</code> object so that it is
+    returned as the value of the <code data-x="">doctype</code> attribute of the
+    <code>Document</code> object.</p>
+
+    <p id="quirks-mode-doctypes">Then, if the document is <em>not</em> <span>an <code>iframe</code>
+    <code data-x="attr-iframe-srcdoc">srcdoc</code> document</span>, and the DOCTYPE token matches
+    one of the conditions in the following list, then set the <code>Document</code> to <span>quirks
+    mode</span>:</p>
+
+    <ul class="brief">
+     <li> The <i data-x="force-quirks flag">force-quirks flag</i> is set to <i>on</i>. </li>
+     <li> The name is set to anything other than "<code data-x="">html</code>" (compared <span data-x="case-sensitive">case-sensitively</span>). </li>
+     <li> The public identifier is set to: "<code data-x="">-//W3O//DTD W3 HTML Strict 3.0//EN//</code>" </li>
+     <li> The public identifier is set to: "<code data-x="">-/W3C/DTD HTML 4.0 Transitional/EN</code>" </li>
+     <li> The public identifier is set to: "<code data-x="">HTML</code>" </li>
+     <li> The system identifier is set to: "<code data-x="">http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">+//Silmaril//dtd html Pro v0r11 19970101//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//AS//DTD HTML 3.0 asWedit + extensions//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//AdvaSoft Ltd//DTD HTML 3.0 asWedit + extensions//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 2.0 Level 1//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 2.0 Level 2//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 2.0 Strict Level 1//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 2.0 Strict Level 2//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 2.0 Strict//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 2.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 2.1E//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 3.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 3.2 Final//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 3.2//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML 3//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Level 0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Level 1//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Level 2//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Level 3//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Strict Level 0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Strict Level 1//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Strict Level 2//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Strict Level 3//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML Strict//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//IETF//DTD HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Metrius//DTD Metrius Presentational//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Microsoft//DTD Internet Explorer 2.0 HTML Strict//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Microsoft//DTD Internet Explorer 2.0 HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Microsoft//DTD Internet Explorer 2.0 Tables//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Microsoft//DTD Internet Explorer 3.0 HTML Strict//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Microsoft//DTD Internet Explorer 3.0 HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Microsoft//DTD Internet Explorer 3.0 Tables//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Netscape Comm. Corp.//DTD HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Netscape Comm. Corp.//DTD Strict HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//O'Reilly and Associates//DTD HTML 2.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//O'Reilly and Associates//DTD HTML Extended 1.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//O'Reilly and Associates//DTD HTML Extended Relaxed 1.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//SQ//DTD HTML 2.0 HoTMetaL + extensions//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//SoftQuad Software//DTD HoTMetaL PRO 6.0::19990601::extensions to HTML 4.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Spyglass//DTD HTML 2.0 Extended//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Sun Microsystems Corp.//DTD HotJava HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//Sun Microsystems Corp.//DTD HotJava Strict HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML 3 1995-03-24//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML 3.2 Draft//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML 3.2 Final//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML 3.2//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML 3.2S Draft//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML 4.0 Frameset//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML 4.0 Transitional//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML Experimental 19960712//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD HTML Experimental 970421//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD W3 HTML//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3O//DTD W3 HTML 3.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//WebTechs//DTD Mozilla HTML 2.0//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//WebTechs//DTD Mozilla HTML//</code>" </li>
+     <li> The system identifier is missing and the public identifier starts with: "<code data-x="">-//W3C//DTD HTML 4.01 Frameset//</code>" </li>
+     <li> The system identifier is missing and the public identifier starts with: "<code data-x="">-//W3C//DTD HTML 4.01 Transitional//</code>" </li>
+    </ul>
+
+    <p>Otherwise, if the document is <em>not</em> <span>an <code>iframe</code> <code
+    data-x="attr-iframe-srcdoc">srcdoc</code> document</span>, and the DOCTYPE token matches one of
+    the conditions in the following list, then set the <code>Document</code> to <span>limited-quirks
+    mode</span>:</p>
+
+    <ul class="brief">
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD XHTML 1.0 Frameset//</code>" </li>
+     <li> The public identifier starts with: "<code data-x="">-//W3C//DTD XHTML 1.0 Transitional//</code>" </li>
+     <li> The system identifier is not missing and the public identifier starts with: "<code data-x="">-//W3C//DTD HTML 4.01 Frameset//</code>" </li>
+     <li> The system identifier is not missing and the public identifier starts with: "<code data-x="">-//W3C//DTD HTML 4.01 Transitional//</code>" </li>
+    </ul>
+
+    <p>The system identifier and public identifier strings must be compared to the values given in
+    the lists above in an <span>ASCII case-insensitive</span> manner. A system identifier whose
+    value is the empty string is not considered missing for the purposes of the conditions
+    above.</p>
+
+    <p>Then, switch the <span>insertion mode</span> to "<span data-x="insertion mode: before
+    html">before html</span>".</p>
+
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <p>If the document is <em>not</em> <span>an <code>iframe</code> <code
+    data-x="attr-iframe-srcdoc">srcdoc</code> document</span>, then this is a <span>parse
+    error</span>; set the <code>Document</code> to <span>quirks mode</span>.</p>
+
+    <p>In any case, switch the <span>insertion mode</span> to "<span data-x="insertion mode: before
+    html">before html</span>", then reprocess the token.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

@@ -1,0 +1,152 @@
+<h4>The <dfn><code>details</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Sectioning root</span>.</dd>
+   <dd><span>Interactive content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>One <code>summary</code> element followed by <span>flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-details-open">open</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLDetailsElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-details-open">open</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>details</code> element <span>represents</span> a disclosure widget from which the
+  user can obtain additional information or controls.</p>
+
+  <p class="note">The <code>details</code> element is not appropriate for footnotes. Please see <a
+  href="#footnotes">the section on footnotes</a> for details on how to mark up footnotes.</p>
+
+  <p>The <span w-nodev>first</span> <code>summary</code> element child of the element, if any,
+  <span>represents</span> the summary or legend of the details. <span w-nodev>If there is no
+  child <code>summary</code> element, the user agent should provide its own legend (e.g.
+  "Details").</span></p>
+
+  <p>The rest of the element's contents <span>represents</span> the additional information or
+  controls.</p>
+
+  <p>The <dfn><code data-x="attr-details-open">open</code></dfn> content attribute is a <span>boolean
+  attribute</span>. If present, it indicates that both the summary and the additional information is
+  to be shown to the user. If the attribute is absent, only the summary is to be shown.</p>
+
+  <div w-nodev>
+
+  <p>When the element is created, if the attribute is absent, the additional information should be
+  hidden; if the attribute is present, that information should be shown. Subsequently, if the
+  attribute is removed, then the information should be hidden; if the attribute is added, the
+  information should be shown.</p>
+
+  <p>The user agent should allow the user to request that the additional information be shown or
+  hidden. To honor a request for the details to be shown, the user agent must set the <code
+  data-x="attr-details-open">open</code> attribute on the element to the value <code
+  data-x="">open</code>. To honor a request for the information to be hidden, the user agent must
+  remove the <code data-x="attr-details-open">open</code> attribute from the element.</p>
+
+  <p>Whenever the <code data-x="attr-details-open">open</code> attribute is added to or removed from
+  a <code>details</code> element, the user agent must <span>queue a task</span> that runs the
+  following steps, which are known as the <dfn>details notification task steps</dfn>, for this
+  <code>details</code> element:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If another <span data-x="concept-task">task</span> has been <span data-x="queue a
+    task">queued</span> to run the <span>details notification task steps</span> for this
+    <code>details</code> element, then abort these steps.</p>
+
+    <p class="note">When the <code data-x="attr-details-open">open</code> attribute is toggled
+    several times in succession, these steps essentially get coalesced so that only one event is
+    fired.</p>
+
+   </li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-toggle">toggle</code> at the <code>details</code> element.</p></li>
+
+  </ol>
+
+  <p>The <span>task source</span> for this task must be the <span>DOM manipulation task
+  source</span>.</p>
+
+  <p>The <dfn><code data-x="dom-details-open">open</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-details-open">open</code> content attribute.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows the <code>details</code> element being used to hide technical
+   details in a progress report.</p>
+
+   <pre>&lt;section class="progress window">
+ &lt;h1>Copying "Really Achieving Your Childhood Dreams"&lt;/h1>
+ &lt;details>
+  &lt;summary>Copying... &lt;progress max="375505392" value="97543282">&lt;/progress> 25%&lt;/summary>
+  &lt;dl>
+   &lt;dt>Transfer rate:&lt;/dt> &lt;dd>452KB/s&lt;/dd>
+   &lt;dt>Local filename:&lt;/dt> &lt;dd>/home/rpausch/raycd.m4v&lt;/dd>
+   &lt;dt>Remote filename:&lt;/dt> &lt;dd>/var/www/lectures/raycd.m4v&lt;/dd>
+   &lt;dt>Duration:&lt;/dt> &lt;dd>01:16:27&lt;/dd>
+   &lt;dt>Color profile:&lt;/dt> &lt;dd>SD (6-1-6)&lt;/dd>
+   &lt;dt>Dimensions:&lt;/dt> &lt;dd>320&times;240&lt;/dd>
+  &lt;/dl>
+ &lt;/details>
+&lt;/section></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following shows how a <code>details</code> element can be used to hide some controls by
+   default:</p>
+
+   <pre>&lt;details>
+ &lt;summary>&lt;label for=fn>Name &amp; Extension:&lt;/label>&lt;/summary>
+ &lt;p>&lt;input type=text id=fn name=fn value="Pillar Magazine.pdf">
+ &lt;p>&lt;label>&lt;input type=checkbox name=ext checked> Hide extension&lt;/label>
+&lt;/details></pre>
+
+   <p>One could use this in conjunction with other <code>details</code> in a list to allow the user
+   to collapse a set of fields down to a small set of headings, with the ability to open each
+   one.</p>
+
+   <p class="details-example"><img src="/images/sample-details-1.png" width="345" height="611" alt=""><img src="/images/sample-details-2.png" width="345" height="666" alt=""></p>
+
+   <p>In these examples, the summary really just summarizes what the controls can change, and not
+   the actual values, which is less than ideal.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Because the <code data-x="attr-details-open">open</code> attribute is added and removed
+   automatically as the user interacts with the control, it can be used in CSS to style the element
+   differently based on its state. Here, a stylesheet is used to animate the color of the summary
+   when the element is opened or closed:</p>
+
+   <pre>&lt;style>
+ details > summary { transition: color 1s; color: black; }
+ details[open] > summary { color: red; }
+&lt;/style>
+&lt;details>
+ &lt;summary>Automated Status: Operational&lt;/summary>
+ &lt;p>Velocity: 12m/s&lt;/p>
+ &lt;p>Direction: North&lt;/p>
+&lt;/details></pre>
+
+  </div>
+
+
+  

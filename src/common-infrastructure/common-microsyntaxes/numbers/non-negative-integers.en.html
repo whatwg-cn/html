@@ -1,0 +1,35 @@
+<h5>Non-negative integers</h5>
+
+  <p>A string is a <dfn>valid non-negative integer</dfn> if it consists of one or more <span>ASCII
+  digits</span>.</p>
+
+  <p>A <span>valid non-negative integer</span> represents the number that is represented in base ten
+  by that string of digits.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn>rules for parsing non-negative integers</dfn> are as given in the following algorithm.
+  When invoked, the steps must be followed in the order given, aborting at the first step that
+  returns a value. This algorithm will return either zero, a positive integer, or an error.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>value</var> be the result of parsing <var>input</var> using the
+   <span>rules for parsing integers</span>.</p></li>
+
+   <li><p>If <var>value</var> is an error, return an error.</p></li>
+
+   <li><p>If <var>value</var> is less than zero, return an error.</p></li>
+
+   <li><p>Return <var>value</var>.</p></li>
+
+  </ol>
+
+  <!-- Implications: A leading + is ignored. A leading - is ignored if the value is zero. -->
+
+  </div>
+
+
+  

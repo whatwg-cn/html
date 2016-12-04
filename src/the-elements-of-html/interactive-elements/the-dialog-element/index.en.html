@@ -1,0 +1,556 @@
+<h4>The <dfn><code>dialog</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Sectioning root</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-dialog-open">open</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLDialogElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-dialog-open">open</span>;
+  attribute DOMString <span data-x="dom-dialog-returnValue">returnValue</span>;
+  [<span>CEReactions</span>] void <span data-x="dom-dialog-show">show</span>(optional (<span>MouseEvent</span> or <span>Element</span>) anchor);
+  [<span>CEReactions</span>] void <span data-x="dom-dialog-showModal">showModal</span>(optional (<span>MouseEvent</span> or <span>Element</span>) anchor);
+  [<span>CEReactions</span>] void <span data-x="dom-dialog-close">close</span>(optional DOMString returnValue);
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>dialog</code> element represents a part of an application that a user interacts with
+  to perform a task, for example a dialog box, inspector, or window.</p>
+
+  <p>The <dfn><code data-x="attr-dialog-open">open</code></dfn> attribute is a <span>boolean
+  attribute</span>. When specified, it indicates that the <code>dialog</code> element is active and
+  that the user can interact with it.</p>
+
+  <div w-nodev>
+
+  <p>A <code>dialog</code> element without an <code data-x="attr-dialog-open">open</code> attribute
+  specified should not be shown to the user. This requirement may be implemented indirectly through
+  the style layer. For example, user agents that <a href="#renderingUA">support the suggested
+  default rendering</a> implement this requirement using the CSS rules described in the <a
+  href="#rendering">rendering section</a>.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-tabindex">tabindex</code> attribute must not be specified on
+  <code>dialog</code> elements.</p>
+
+<!--TOPIC:DOM APIs-->
+
+  <dl class="domintro">
+
+   <dt><var>dialog</var> . <code subdfn data-x="dom-dialog-show">show</code>( [ <var>anchor</var> ] )</dt>
+
+   <dd>
+
+    <p>Displays the <code>dialog</code> element.</p>
+
+    <p>The argument, if provided, provides an anchor point to which the element will be fixed.</p>
+
+   </dd>
+
+   <dt><var>dialog</var> . <code subdfn data-x="dom-dialog-showModal">showModal</code>( [ <var>anchor</var> ] )</dt>
+
+   <dd>
+
+    <p>Displays the <code>dialog</code> element and makes it the top-most modal dialog.</p>
+
+    <p>The argument, if provided, provides an anchor point to which the element will be fixed.</p>
+
+    <p>This method honors the <code data-x="attr-fe-autofocus">autofocus</code> attribute.</p>
+
+   </dd>
+
+   <dt><var>dialog</var> . <code subdfn data-x="dom-dialog-close">close</code>( [ <var>result</var> ] )</dt>
+
+   <dd>
+
+    <p>Closes the <code>dialog</code> element.</p>
+
+    <p>The argument, if provided, provides a return value.</p>
+
+   </dd>
+
+   <dt><var>dialog</var> . <code subdfn data-x="dom-dialog-returnValue">returnValue</code> [ = <var>result</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the <code>dialog</code>'s return value.</p>
+
+    <p>Can be set, to update the return value.</p>
+
+   </dd>
+
+  </dl>
+
+<!--ADD-TOPIC:CSS-->
+
+  <div w-nodev>
+
+  <p>When the <dfn><code data-x="dom-dialog-show">show()</code></dfn> method is invoked, the user
+  agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the element already has an <code data-x="attr-dialog-open">open</code> attribute, then
+   abort these steps.</p></li>
+
+   <li><p>Add an <code data-x="attr-dialog-open">open</code> attribute to the <code>dialog</code>
+   element, whose value is the empty string.</p></li>
+
+   <li><p>If the <code data-x="dom-dialog-show">show()</code> method was invoked with an argument,
+   <span>set up the position</span> of the <code>dialog</code> element, using that argument as the
+   anchor. Otherwise, set the <code>dialog</code> to the <span>normal alignment</span> mode.</p></li>
+
+   <li><p>Run the <span>dialog focusing steps</span> for the <code>dialog</code> element.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>Each <code>Document</code> has a stack of <code>dialog</code> elements known as the
+  <dfn>pending dialog stack</dfn>. When a <code>Document</code> is created, this stack must be
+  initialized to be empty.</p>
+
+  <p>When an element is added to the <span>pending dialog stack</span>, it must also be <span
+  data-x="top-layer-add">added</span> to the <span>top layer</span>. When an element is removed from
+  the <span>pending dialog stack</span>, it must be <span data-x="top-layer-remove">removed</span>
+  from the <span>top layer</span>. <ref spec=FULLSCREEN></p>
+
+  <p>When the <dfn><code data-x="dom-dialog-showModal">showModal()</code></dfn> method is invoked,
+  the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>subject</var> be the <code>dialog</code> element on which the method was
+   invoked.</p></li>
+
+   <li><p>If <var>subject</var> already has an <code data-x="attr-dialog-open">open</code>
+   attribute, then throw an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>
+   and abort these steps.</p></li>
+
+   <li><p>If <var>subject</var> is not <span>in a document</span>, then throw an
+   <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>Add an <code data-x="attr-dialog-open">open</code> attribute to <var>subject</var>, whose value is the empty string.</p></li>
+
+   <li><p>If the <code data-x="dom-dialog-showModal">showModal()</code> method was invoked with an
+   argument, <span>set up the position</span> of <var>subject</var>, using that argument
+   as the anchor. Otherwise, set the <code>dialog</code> to the <span>centered alignment</span>
+   mode.</p></li>
+
+   <li><p>Let <var>subject</var>'s <span>node document</span> be <span data-x="blocked by a
+   modal dialog">blocked by the modal dialog</span> <var>subject</var>.</p></li>
+
+   <li><p>Push <var>subject</var> onto <var>subject</var>'s
+   <span>node document</span>'s <span>pending dialog stack</span>.</p></li>
+
+   <li><p>Run the <span>dialog focusing steps</span> for <var>subject</var>.</p></li>
+
+  </ol>
+
+  <p>The <dfn>dialog focusing steps</dfn> for a <code>dialog</code> element <var>subject</var> are as follows:</p>
+
+  <ol>
+
+   <li><p>If for some reason <var>subject</var> is not a <span>control group owner object</span>
+   at this point, or if it is <span>inert</span>, abort these steps.</p></li>
+
+   <li>
+
+    <p>Let <var>control</var> be the first non-<span>inert</span> <span>focusable area</span> in
+    <var>subject</var>'s <span>control group</span> whose <span>DOM anchor</span> has an <code
+    data-x="attr-fe-autofocus">autofocus</code> attribute specified.</p>
+
+    <p>If there isn't one, then let <var>control</var> be the first non-<span>inert</span>
+    <span>focusable area</span> in <var>subject</var>'s <span>control group</span>.</p>
+
+    <p>If there isn't one of those either, then let <var>control</var> be <var>subject</var>.</p>
+
+   </li>
+
+   <li><p>Run the <span>focusing steps</span> for <var>control</var>.</p></li>
+
+  </ol>
+
+  <p>If at any time a <code>dialog</code> element is <span data-x="node is removed from a
+  document">removed from a <code>Document</code></span>, then if that <code>dialog</code> is in that
+  <code>Document</code>'s <span>pending dialog stack</span>, the following steps must be run:</p>
+
+  <ol>
+
+   <li><p>Let <var>subject</var> be that <code>dialog</code> element and <var>document</var> be the <code>Document</code> from which it is being removed.</p></li>
+
+   <li><p>Remove <var>subject</var> from <var>document</var>'s <span>pending
+   dialog stack</span>.</p></li>
+
+   <li><p>If <var>document</var>'s <span>pending dialog stack</span> is not empty, then let
+   <var>document</var> be <span data-x="blocked by a modal dialog">blocked by the modal
+   dialog</span> that is at the top of <var>document</var>'s <span>pending dialog
+   stack</span>. Otherwise, let <var>document</var> be no longer <span>blocked by a modal
+   dialog</span> at all.</p></li>
+
+  </ol>
+
+  <p>When the <dfn><code data-x="dom-dialog-close">close()</code></dfn> method is invoked, the user
+  agent must <span>close the dialog</span> that the method was invoked on. If the method was invoked
+  with an argument, that argument must be used as the return value; otherwise, there is no return
+  value.</p>
+
+<!--TOPIC:HTML-->
+
+  <p>When a <code>dialog</code> element <var>subject</var> is to be <dfn data-x="close the
+  dialog">closed</dfn>, optionally with a return value <var>result</var>, the user agent
+  must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If <var>subject</var> does not have an <code data-x="attr-dialog-open">open</code>
+   attribute, then abort these steps.</p></li>
+
+   <li><p>Remove <var>subject</var>'s <code data-x="attr-dialog-open">open</code>
+   attribute.</p></li>
+
+   <li><p>If the argument <var>result</var> was provided, then set the <code
+   data-x="dom-dialog-returnValue">returnValue</code> attribute to the value of <var>result</var>.</p></li>
+
+   <li>
+
+    <p>If <var>subject</var> is in its <code>Document</code>'s <span>pending dialog
+    stack</span>, then run these substeps:</p>
+
+    <ol>
+
+     <li><p>Remove <var>subject</var> from that <span>pending dialog stack</span>.</p></li>
+
+     <li><p>If that <span>pending dialog stack</span> is not empty, then let <var>subject</var>'s <span>node document</span> be <span data-x="blocked by a modal
+     dialog">blocked by the modal dialog</span> that is at the top of the <span>pending dialog
+     stack</span>. Otherwise, let <var>document</var> be no longer <span>blocked by a modal
+     dialog</span> at all.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+   <code data-x="event-close">close</code> at <var>subject</var>.</p></li>
+
+  </ol>
+
+<!--TOPIC:DOM APIs-->
+  <p>The <dfn><code data-x="dom-dialog-returnValue">returnValue</code></dfn> IDL attribute, on
+  getting, must return the last value to which it was set. On setting, it must be set to the new
+  value. When the element is created, it must be set to the empty string.</p>
+<!--TOPIC:HTML-->
+
+  <hr>
+
+  <p><strong>Canceling dialogs</strong>: When a <code>Document</code>'s <span>pending dialog
+  stack</span> is not empty, user agents may provide a user interface that, upon activation, <span
+  data-x="queue a task">queues a task</span> to run these steps:
+
+  <ol>
+   <li><p>Let <var>dialog</var> be the top <code>dialog</code> element on the
+   <code>Document</code>'s <span>pending dialog stack</span>.</p></li>
+
+   <li><p>Let <var>close</var> be the result of <span data-x="concept-event-fire">firing an
+   event</span> named <code data-x="event-cancel">cancel</code> at <var>dialog</var>, with the <code
+   data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+   <li><p>If <var>close</var> is true and <var>dialog</var> has an <code
+   data-x="attr-dialog-open">open</code> attribute, then <span>close the dialog</span> with no
+   return value.</p></li>
+  </ol>
+
+  <p class="note">An example of such a UI mechanism would be the user pressing the "Escape" key.</p>
+
+  <hr>
+
+  <p>All <code>dialog</code> elements are always in one of three modes: <dfn>normal alignment</dfn>,
+  <dfn>centered alignment</dfn>, and <dfn>magic alignment</dfn>. When a <code>dialog</code> element
+  is created, it must be placed in the <span>normal alignment</span> mode. In this mode, normal CSS
+  requirements apply to the element. The <span>centered alignment</span> mode is only used for
+  <code>dialog</code> elements that are in the <span>top layer</span>. <ref spec=FULLSCREEN> <ref spec=CSS></p>
+
+  <p>When an element <var>subject</var> is placed in <span>centered alignment</span> mode,
+  and when it is in that mode and has new rendering boxes created, the user agent must set up the
+  element such that its top static position, for the purposes of calculating the
+  <span>used value</span> of the <span>'top'</span> property, is the value that would place the
+  element's top <span>margin edge</span> as far from the top of the <span>viewport</span> as the
+  element's bottom <span>margin edge</span> from the bottom of the <span>viewport</span>, if the
+  element's height is less than the height of the <span>viewport</span>, and otherwise is the value
+  that would place the element's top <span>margin edge</span> at the top of the
+  <span>viewport</span>.</p>
+
+  <p>If there is a <code>dialog</code> element with <span>centered alignment</span> and that is
+  <span>being rendered</span> when its <span>browsing context</span> changes <span>viewport</span>
+  width (as measured in <span data-x="'px'">CSS pixels</span>), then the user agent must recreate
+  the element's boxes, recalculating its top static position as in the previous paragraph.</p>
+
+  <p>This top static position of a <code>dialog</code> element with <span>centered alignment</span>
+  must remain the element's top static position until its boxes are recreated. (The element's static
+  position is only used in calculating the <span>used value</span> of the <span>'top'</span>
+  property in certain situations; it's not used, for instance, to position the element if its
+  <span>'position'</span> property is set to 'static'.)</p>
+
+  <p>When a user agent is to <dfn>set up the position</dfn> of an element <var>subject</var> using an anchor <var>anchor</var>, it must run the following
+  steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If <var>anchor</var> is a <code>MouseEvent</code> object, then run these
+    substeps:</p>
+
+    <ol>
+
+     <li><p>If <var>anchor</var>'s target element does not have a rendered box, or is in a
+     different document than <var>subject</var>, then let <var>subject</var> be
+     in the <span>centered alignment</span> mode, and abort the <span>set up the position</span>
+     steps.</p></li>
+
+     <li><p>Let <var>anchor element</var> be an anonymous element rendered as a box with
+     zero height and width (so its <span>margin box</span> and <span>border box</span> both just
+     form a point), positioned so that its top and left are at the coordinate identified by the
+     event, and whose properties all compute to their initial values.</p></li>
+
+    </ol>
+
+    <p>Otherwise, let <var>anchor element</var> be <var>anchor</var>.</p>
+
+   </li>
+
+   <li><p>Put <var>subject</var> in the <span>magic alignment</span> mode, aligned to <var>anchor element</var>.</p></li>
+
+  </ol>
+
+  <p>While an element <var>A</var> has <span>magic alignment</span>, aligned to an element
+  <var>B</var>, the following requirements apply:</p>
+
+  <ul>
+
+   <li>
+
+    <p>If at any time either <var>A</var> or <var>B</var> cease having rendered
+    boxes, <var>A</var> and <var>B</var> cease being in the same
+    <code>Document</code>, or <var>B</var> ceases being earlier than <var>A</var> in <span>tree order</span>, then, if <var>subject</var> is in the
+    <span>pending dialog stack</span>, let <var>subject</var>'s mode become <span>centered
+    alignment</span>, otherwise, let <var>subject</var>'s mode become <span>normal
+    alignment</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p><var>A</var>'s <span>'position'</span> property must compute to the keyword '<span
+    data-x="css-position-absolute-anchored">absolute-anchored</span>' rather than whatever it would
+    otherwise compute to (i.e. the <span>'position'</span> property's <span>specified value</span>
+    is ignored).</p>
+
+    <p class="note">The '<span data-x="css-position-absolute-anchored">absolute-anchored</span>'
+    keyword's requirements are described below.</p>
+
+   </li>
+
+   <li>
+
+    <p>The anchor points for <var>A</var> and <var>B</var> are defined as per the
+    appropriate entry in the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the <span>computed value</span> of <span>'anchor-point'</span> is 'none' on both
+     <var>A</var> and <var>B</var>
+
+     <dd>
+      <p>The anchor points of <var>A</var> and <var>B</var> are the center points
+      of their respective first boxes' <span data-x="border box">border boxes</span>.
+
+
+     <dt>If the <span>computed value</span> of <span>'anchor-point'</span> is 'none' on <var>A</var>
+     and a specific point on <var>B</var>
+
+     <dd>
+      <p>The anchor point of <var>B</var> is the point given by its <span>'anchor-point'</span>
+      property.
+
+      <p>If the anchor point of <var>B</var> is the center point of <var>B</var>'s
+      first box's <span>border box</span>, then <var>A</var>'s anchor point is the center point of
+      its first box's <span>margin box</span>.
+
+      <p>Otherwise, <var>A</var>'s anchor point is on one of its <span
+      data-x="margin edge">margin edges</span>. Consider four hypothetical half-infinite lines
+      L1, L2, L3, and L4 that each start in the center of <var>B</var>'s first box's
+      <span>border box</span>, and that extend respectively through the
+      top left corner, top right corner, bottom right corner, and bottom left corner of
+      <var>B</var>'s first box's <span>border box</span>. <var>A</var>'s anchor point is determined
+      by the location of <var>B</var>'s anchor point relative to these four hypothetical lines, as
+      follows:
+
+      <p>If the anchor point of <var>B</var> lies on L1 or L2, or inside the area bounded by L1 and
+      L2 that also contains the points above <var>B</var>'s first box's <span>border box</span>,
+      then let <var>A</var>'s anchor point be the horizontal center of <var>A</var>'s bottom
+      <span>margin edge</span>.</p>
+
+      <p>Otherwise, if the anchor point of <var>B</var> lies on L3 or L4, or inside the
+      area bounded by L3 and L4 that also contains the points below <var>B</var>'s first
+      box's <span>border box</span>, then let <var>A</var>'s anchor point be the horizontal center
+      of <var>A</var>'s top <span>margin edge</span>.</p>
+
+      <p>Otherwise, if the anchor point of <var>B</var> lies inside the area bounded by L4 and L1
+      that also contains the points to the left of <var>B</var>'s first box's <span>border
+      box</span>, then let <var>A</var>'s anchor point be the vertical center of <var>A</var>'s
+      right <span>margin edge</span>.</p>
+
+      <p>Otherwise, the anchor point of <var>B</var> lies inside the area bounded by L2 and L3 that
+      also contains the points to the right of <var>B</var>'s first box's <span>border box</span>;
+      let <var>A</var>'s anchor point be the vertical center of <var>A</var>'s left <span>margin
+      edge</span>.</p>
+
+
+     <dt>If the <span>computed value</span> of <span>'anchor-point'</span> is a specific point on
+     <var>A</var> and 'none' on <var>B</var>
+
+     <dd>
+      <p>The anchor point of <var>A</var> is the point given by its <span>'anchor-point'</span>
+      property.
+
+      <p>If the anchor point of <var>A</var> is the center point of <var>A</var>'s
+      first box's <span>margin box</span>, then <var>B</var>'s anchor point is the center point of
+      its first box's <span>border box</span>.
+
+      <p>Otherwise, <var>B</var>'s anchor point is on one of its <span
+      data-x="border edge">border edges</span>. Consider four hypothetical half-infinite lines
+      L1, L2, L3, and L4 that each start in the center of <var>A</var>'s first box's
+      <span>margin box</span>, and that extend respectively through the
+      top left corner, top right corner, bottom right corner, and bottom left corner of
+      <var>A</var>'s first box's <span>margin box</span>. <var>B</var>'s anchor point is determined
+      by the location of <var>A</var>'s anchor point relative to these four hypothetical lines, as
+      follows:
+
+      <p>If the anchor point of <var>A</var> lies on L1 or L2, or inside the area bounded by L1 and
+      L2 that also contains the points above <var>A</var>'s first box's <span>margin box</span>,
+      then let <var>B</var>'s anchor point be the horizontal center of <var>B</var>'s bottom
+      <span>border edge</span>.</p>
+
+      <p>Otherwise, if the anchor point of <var>A</var> lies on L3 or L4, or inside the
+      area bounded by L4 and L4 that also contains the points below <var>A</var>'s first
+      box's <span>margin box</span>, then let <var>B</var>'s anchor point be the horizontal center
+      of <var>B</var>'s top <span>border edge</span>.</p>
+
+      <p>Otherwise, if the anchor point of <var>A</var> lies inside the area bounded by L4 and L1
+      that also contains the points to the left of <var>A</var>'s first box's <span>margin
+      box</span>, then let <var>B</var>'s anchor point be the vertical center of <var>B</var>'s
+      right <span>border edge</span>.</p>
+
+      <p>Otherwise, the anchor point of <var>A</var> lies inside the area bounded by L2 and L3 that
+      also contains the points to the right of <var>A</var>'s first box's <span>margin box</span>;
+      let <var>B</var>'s anchor point be the vertical center of <var>B</var>'s left <span>border
+      edge</span>.</p>
+
+
+     <dt>If the <span>computed value</span> of <span>'anchor-point'</span> is a specific point on
+     both <var>A</var> and <var>B</var>
+
+     <dd>
+      <p>The anchor points of <var>A</var> and <var>B</var> are the points given
+      by their respective <span>'anchor-point'</span> properties.
+
+    </dl>
+
+    <p class="note">The rules above generally use <var>A</var>'s <em>margin</em> box, but
+    <var>B</var>'s <em>border</em> box. This is because while <var>A</var> always
+    has a <span>margin box</span>, and using the <span>margin box</span> allows for the dialog to be
+    positioned offset from the box it is annotating, <var>B</var> sometimes does not have a
+    <span>margin box</span> (e.g. if it is a <span>'table-cell'</span>), or has a <span>margin
+    box</span> whose position may be not entirely clear (e.g. in the face of <span
+    data-x="collapsing margins">margin collapsing</span> and <span>'clear'</span> handling of
+    <span>in-flow</span> blocks).</p>
+
+    <p>In cases where <var>B</var> does not have a <span>border box</span> but its
+    <span>border box</span> is used by the algorithm above, user agents must use its first box's
+    <span>content area</span> instead. (This is in particular an issue with boxes in tables that
+    have <span>'border-collapse'</span> set to 'collapse'.)</p>
+
+   </li>
+
+   <li>
+
+    <p>When an element's <span>'position'</span> property computes to '<dfn
+    data-x="css-position-absolute-anchored">absolute-anchored</dfn>', the <span>'float'</span>
+    property does not apply and must compute to 'none', the <span>'display'</span> property must
+    compute to a value as described by the table in <a
+    href="https://drafts.csswg.org/css2/visuren.html#dis-pos-flo">the section of the CSS
+    specification describing the <cite>relationships between 'display', 'position', and
+    'float'</cite></a>, and the element's box must be positioned using the rules for absolute
+    positioning but with its static position set such that if the box is positioned in its static
+    position, its anchor point is exactly aligned over the anchor point of the element to which it
+    is <span data-x="magic alignment">magically aligned</span>. Elements aligned in this way are
+    <i>absolutely positioned</i>. For the purposes of determining the <span>containing block</span>
+    of other elements, the '<span data-x="css-position-absolute-anchored">absolute-anchored</span>'
+    keyword must be treated like the 'absolute' keyword.</p>
+
+   </li>
+
+  </ul>
+
+  <p class="note">The trivial example of an element that does not have a rendered box is one whose
+  <span>'display'</span> property computes to 'none'. However, there are many other cases; e.g.
+  table columns do not have boxes (their properties merely affect other boxes).</p>
+
+  <p class="note">If an element to which another element is anchored changes rendering, the anchored
+  element will be repositioned accordingly. (In other words, the requirements above are live,
+  they are not just calculated once per anchored element.)</p>
+
+  <p class="note">The '<span data-x="css-position-absolute-anchored">absolute-anchored</span>'
+  keyword is not a keyword that can be specified in CSS; the <span>'position'</span> property can
+  only compute to this value if the <code>dialog</code> element is positioned via the APIs described
+  above.</p>
+
+  <p>User agents in visual interactive media should allow the user to pan the <span>viewport</span>
+  to access all parts of a <code>dialog</code> element's <span>border box</span>, even if the
+  element is larger than the <span>viewport</span> and the <span>viewport</span> would otherwise not
+  have a scroll mechanism (e.g. because the <span>viewport</span>'s <span>'overflow'</span> property
+  is set to 'hidden').</p>
+
+  <hr>
+
+<!--TOPIC:DOM APIs-->
+  <p>The <dfn><code data-x="dom-dialog-open">open</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-dialog-open">open</code> content attribute.</p>
+<!--TOPIC:HTML-->
+
+  </div>
+
+  <div class="example">
+
+   <p>This dialog box has some small print. The <code>main</code> element is used to draw the user's
+   attention to the more important parts.</p>
+
+   <pre>&lt;dialog>
+ &lt;h1>Add to Wallet&lt;/h1>
+ &lt;main>
+  &lt;p>How many gold coins do you want to add to your wallet?&lt;/p>
+  &lt;p>&lt;input name=amt type=number min=0 step=0.01 value=100>&lt;/p>
+ &lt;/main>
+ &lt;p>&lt;small>You add coins at your own risk.&lt;/small>&lt;/p>
+ &lt;p>&lt;label>&lt;input name=round type=checkbox> Only add perfectly round coins &lt;/label>
+ &lt;p>&lt;input type=button onclick="submit()" value="Add Coins">&lt;/p>
+&lt;/dialog></pre>
+
+  </div>
+
+
+
+  

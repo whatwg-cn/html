@@ -1,0 +1,76 @@
+<h6>Compositing</h6>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-globalAlpha">globalAlpha</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current alpha value applied to rendering operations.</p>
+
+    <p>Can be set, to change the alpha value. Values outside of the range 0.0 .. 1.0 are
+    ignored.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-globalCompositeOperation">globalCompositeOperation</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current composition operation, from the values defined in the Compositing and
+    Blending specification. <ref spec=COMPOSITE>.</p>
+
+    <p>Can be set, to change the composition operation. Unknown values are ignored.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>All drawing operations on an object which implements the <code>CanvasCompositing</code>
+  interface are affected by the global compositing attributes, <code
+  data-x="dom-context-2d-globalAlpha">globalAlpha</code> and <code
+  data-x="dom-context-2d-globalCompositeOperation">globalCompositeOperation</code>.</p>
+
+  <!-- conformance criteria for painting are described in the "drawing model" section below -->
+
+  <p>The <dfn><code data-x="dom-context-2d-globalAlpha">globalAlpha</code></dfn> attribute gives an
+  alpha value that is applied to shapes and images before they are composited onto the <span>output
+  bitmap</span>. The value must be in the range from 0.0 (fully transparent) to 1.0 (no additional
+  transparency). If an attempt is made to set the attribute to a value outside this range, including
+  Infinity and Not-a-Number (NaN) values, then the attribute must retain its previous value. When
+  the context is created, the <code data-x="dom-context-2d-globalAlpha">globalAlpha</code> attribute
+  must initially have the value 1.0.</p>
+
+  <p>The <dfn><code
+  data-x="dom-context-2d-globalCompositeOperation">globalCompositeOperation</code></dfn> attribute
+  sets the <dfn>current composition operator</dfn>, which controls how shapes and images are drawn onto the
+  <span>output bitmap</span>, once they have had <code
+  data-x="dom-context-2d-globalAlpha">globalAlpha</code> and the current transformation matrix
+  applied. The possible values are those defined in the Compositing and Blending specification, and
+  include the values <dfn><code data-x="gcop-source-over"
+  data-x-href="https://drafts.fxtf.org/compositing-1/#porterduffcompositingoperators_srcover">source-over</code></dfn>
+  and <dfn><code data-x="gcop-copy"
+  data-x-href="https://drafts.fxtf.org/compositing-1/#porterduffcompositingoperators_src">copy</code></dfn>.
+  <ref spec=COMPOSITE></p>
+
+  <p>These values are all case-sensitive &mdash; they must be used exactly as defined. User agents
+  must not recognize values that are not a <span>case-sensitive</span> match for one of the values
+  given in the Compositing and Blending specification. <ref spec=COMPOSITE></p>
+
+  <p>On setting, if the user agent does not recognize the specified value, it must be ignored,
+  leaving the value of <code
+  data-x="dom-context-2d-globalCompositeOperation">globalCompositeOperation</code> unaffected.
+  Otherwise, the attribute must be set to the given new value.</p>
+
+  <p>When the context is created, the <code
+  data-x="dom-context-2d-globalCompositeOperation">globalCompositeOperation</code> attribute must
+  initially have the value <code data-x="gcop-source-over">source-over</code>.</p>
+
+  </div>
+
+
+
+  

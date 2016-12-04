@@ -1,0 +1,135 @@
+<h4><code data-x="dom-document-write">document.write()</code></h4>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-write">write</code>(<var>text</var>...)</dt>
+
+   <dd>
+
+    <p>In general, adds the given string(s) to the <code>Document</code>'s input stream.</p>
+
+    <p class="warning">This method has very idiosyncratic behavior. In some cases, this method can
+    affect the state of the <span>HTML parser</span> while the parser is running, resulting in a DOM
+    that does not correspond to the source of the document (e.g. if the string written is the string
+    "<code data-x="">&lt;plaintext&gt;</code>" or "<code data-x="">&lt;!--</code>"). In other cases,
+    the call can clear the current page first, as if <code
+    data-x="dom-document-open">document.open()</code> had been called. In yet more cases, the method
+    is simply ignored, or throws an exception. To make matters worse, the exact behavior of this
+    method can in some cases be dependent on network latency<!--
+
+     Namely, in the following case:
+
+        <script>
+         document.write('<link rel=stylesheet href=foo.css><script></script>x');
+         // at this point, whether the DOM contains an "x" or not depends on how quickly the foo.css file could be processed
+        </script>
+
+    -->, which can lead to failures that are very hard to debug. <strong>For all these reasons, use
+    of this method is strongly discouraged.</strong></p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> when
+    invoked on <span>XML documents</span>.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the
+    parser is currently executing a <span>custom element constructor</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p><code>Document</code> objects have an <dfn>ignore-destructive-writes counter</dfn>, which is
+  used in conjunction with the processing of <code>script</code> elements to prevent external
+  scripts from being able to use <code data-x="dom-document-write">document.write()</code> to blow
+  away the document by implicitly calling <code data-x="dom-document-open">document.open()</code>.
+  Initially, the counter must be set to zero.</p>
+
+  <p>The <dfn><code data-x="dom-document-write">document.write(...)</code></dfn> method must act as
+  follows:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the method was invoked on an <span data-x="XML documents">XML document</span>, throw an
+    <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+    steps.</p>
+
+    <!--
+    Where would document.write() insert?
+    Consider: data:text/xml,<script xmlns="http://www.w3.org/1999/xhtml"><![CDATA[ document.write('<foo>Test</foo>'); ]]></script>
+    -->
+
+   </li>
+
+   <li><p>If the <code>Document</code> object's <span>throw-on-dynamic-markup-insertion
+   counter</span> is greater than zero, then throw an <span>"<code>InvalidStateError</code>"</span>
+   <code>DOMException</code> and abort these steps.</p></li>
+
+   <li><p>If the <code>Document</code> object is not an <span>active document</span>, then abort
+   these steps.</p></li>
+
+   <li>
+
+    <p>If the <span>insertion point</span> is undefined and either the <code>Document</code>'s
+    <span>ignore-opens-during-unload counter</span> is greater than zero or the
+    <code>Document</code>'s <span>ignore-destructive-writes counter</span> is greater than zero,
+    abort these steps.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <span>insertion point</span> is undefined, call the <code
+    data-x="dom-document-open">open()</code> method on the <code data-x="Document">document</code>
+    object (with no arguments). If the user <span>refused to allow the document to be
+    unloaded</span>, then abort these steps. Otherwise, the <span>insertion point</span> will point
+    at just before the end of the (empty) <span>input stream</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Insert the string consisting of the concatenation of all the arguments to the method into the
+    <span>input stream</span> just before the <span>insertion point</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <code>Document</code> object's <span>reload override flag</span> is set, then append
+    the string consisting of the concatenation of all the arguments to the method to the
+    <code>Document</code>'s <span>reload override buffer</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If there is no <span>pending parsing-blocking script</span>, have the <span>HTML
+    parser</span> process the characters that were inserted, one at a time, processing resulting
+    tokens as they are emitted, and stopping when the tokenizer reaches the insertion point or when
+    the processing of the tokenizer is aborted by the tree construction stage (this can happen if a
+    <code>script</code> end tag token is emitted by the tokenizer).
+
+    <p class="note">If the <code data-x="dom-document-write">document.write()</code> method was
+    called from script executing inline (i.e. executing because the parser parsed a set of
+    <code>script</code> tags), then this is a <a href="#nestedParsing">reentrant invocation of the
+    parser</a>. If the <span>parser pause flag</span> is set, the tokenizer will abort immediately
+    and no HTML will be parsed, per the tokenizer's <a href="#check-parser-pause-flag">parser pause
+    flag check</a>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Finally, return from the method.</p>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+  

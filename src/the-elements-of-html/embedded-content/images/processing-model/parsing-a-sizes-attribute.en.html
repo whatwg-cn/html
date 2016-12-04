@@ -1,0 +1,65 @@
+<h6>Parsing a sizes attribute</h6>
+
+  <p>When asked to <dfn>parse a sizes attribute</dfn> from an element, with a fallback width
+  <var>width</var>, <span>parse a comma-separated list of component values</span> from the value of
+  the element's <span>sizes attribute</span> (or the empty string, if the attribute is
+  absent), and let <var>unparsed sizes list</var> be the result. <ref spec=CSSSYNTAX></p>
+
+  <p>For each <var>unparsed size</var> in <var>unparsed sizes list</var>:</p>
+
+  <ol>
+
+   <li><p>Remove all consecutive <span>&lt;whitespace-token></span>s
+   from the end of <var>unparsed size</var>.
+   If <var>unparsed size</var> is now empty,
+   that is a <span data-x="concept-microsyntax-parse-error">parse error</span>;
+   continue to the next iteration of this algorithm.</p></li>
+
+   <li><p>If the last <span>component value</span> in <var>unparsed size</var>
+   is a valid non-negative <span>&lt;source-size-value></span>,
+   let <var>size</var> be its value
+   and remove the <span>component value</span> from <var>unparsed size</var>.
+   Any CSS function other than the <span>'calc()'</span> function is invalid.
+   Otherwise, there is a <span data-x="concept-microsyntax-parse-error">parse error</span>;
+   continue to the next iteration of this algorithm.</p></li>
+
+   <li><p>Remove all consecutive <span>&lt;whitespace-token></span>s
+   from the end of <var>unparsed size</var>.
+   If <var>unparsed size</var> is now empty,
+   return <var>size</var> and exit this algorithm.
+   If this was not the last item in <var>unparsed sizes list</var>,
+   that is a <span data-x="concept-microsyntax-parse-error">parse error</span>.</p></li>
+
+   <li><p>Parse the remaining <span data-x="component value">component values</span> in <var>unparsed size</var>
+   as a <span>&lt;media-condition></span>.
+   If it does not parse correctly,
+   or it does parse correctly but the <span>&lt;media-condition></span> evaluates to false,
+   continue to the next iteration of this algorithm. <ref spec=MQ></p></li>
+
+   <li><p>Return <var>size</var> and exit this algorithm.</p></li>
+
+  </ol>
+
+  <p>If the above algorithm exhausts <var>unparsed sizes list</var> without returning a
+  <var>size</var> value, follow these steps:</p>
+
+  <ol>
+
+   <li><p>If <var>width</var> is not null, return a <span>&lt;length></span> with the value
+   <var>width</var> and the unit <span>'px'</span>.</p></li>
+
+   <li><p>Return <code data-x="">100vw</code>.</p></li>
+
+  </ol>
+
+  <p class="note">While a <span>valid source size list</span> only contains a bare <span>&lt;source-size-value></span>
+  (without an accompanying <span>&lt;media-condition></span>)
+  as the last entry in the <span>&lt;source-size-list></span>,
+  the parsing algorithm technically allows such at any point in the list,
+  and will accept it immediately as the size
+  if the preceding entries in the list weren't used.
+  This is to enable future extensions,
+  and protect against simple author errors such as a final trailing comma.</p>
+
+
+  

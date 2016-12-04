@@ -1,0 +1,548 @@
+<h4>Pseudo-classes</h4>
+
+  <p>There are a number of dynamic selectors that can be used with HTML. This section defines when
+  these selectors match HTML elements. <ref spec=SELECTORS> <ref spec=CSSUI></p>
+
+  <dl>
+
+   <dt><dfn data-export="" data-dfn-type="selector"><code
+   data-x="selector-defined">:defined</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-defined">:defined</code> <span>pseudo-class</span> must match
+    any element that is <span data-x="concept-element-defined">defined</span>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="selector-link">:link</code></dfn></dt>
+   <dt><dfn><code data-x="selector-visited">:visited</code></dfn></dt>
+
+   <dd>
+
+    <p>All <code>a</code> elements that have an <code data-x="attr-hyperlink-href">href</code>
+    attribute, all <code>area</code> elements that have an <code
+    data-x="attr-hyperlink-href">href</code> attribute, and all <code>link</code> elements that have
+    an <code data-x="attr-link-href">href</code> attribute, must match one of <code
+    data-x="selector-link">:link</code> and <code data-x="selector-visited">:visited</code>.</p>
+
+    <p>Other specifications might apply more specific rules regarding how these elements are to
+    match these <span data-x="pseudo-class">pseudo-classes</span>, to mitigate some privacy concerns
+    that apply with straightforward implementations of this requirement.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-active">:active</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-active">:active</code> <span>pseudo-class</span> is defined to
+    match an element
+    <q cite="https://drafts.csswg.org/selectors3/#the-user-action-pseudo-classes-hover-act">while an
+    element is <dfn><i data-x="concept-selector-active">being activated</i></dfn> by the user</q>.</p>
+
+    <p>To determine whether a particular element is <i data-x="concept-selector-active">being activated</i> for the purposes of
+    defining the <code data-x="selector-active">:active</code> <span>pseudo-class</span> only, an
+    HTML user agent must use the first relevant entry in the following list.</p>
+
+    <dl>
+
+
+     <dt>If the element has a descendant that is currently matching the <code
+     data-x="selector-active">:active</code> <span>pseudo-class</span></dt>
+
+     <dd><p>The element is <i data-x="concept-selector-active">being activated</i>.</p></dd>
+
+     <!-- this even trumps the <button disabled> stuff below:
+            https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=3355
+            https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=3356
+       -->
+
+
+     <dt>If the element is the <span>labeled control</span> of a <code>label</code> element that is
+     currently matching <code data-x="selector-active">:active</code></dt>
+
+     <dd><p>The element is <i data-x="concept-selector-active">being activated</i>.</p></dd>
+
+     <!-- this even trumps the <button disabled> stuff below:
+            https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=3354
+       -->
+
+
+     <dt>If the element is a <code>button</code> element</dt>
+
+     <dt>If the element is an <code>input</code> element whose <code
+     data-x="attr-input-type">type</code> attribute is in the <span
+     data-x="attr-input-type-submit">Submit Button</span>, <span
+     data-x="attr-input-type-image">Image Button</span>, <span data-x="attr-input-type-reset">Reset
+     Button</span>, or <span data-x="attr-input-type-button">Button</span> state</dt>
+
+     <dd>
+
+      <p>The element is <i data-x="concept-selector-active">being activated</i> if it is <span>in a formal activation state</span>
+      and it is not <span data-x="concept-fe-disabled">disabled</span>.</p>
+
+      <p class="example">For example, if the user is using a keyboard to push a <code>button</code>
+      element by pressing the space bar, the element would match this <span>pseudo-class</span> in
+      between the time that the element received the <code data-x="event-keydown">keydown</code>
+      event and the time the element received the <code data-x="event-keyup">keyup</code> event.</p>
+
+     </dd>
+
+
+     <dt>If the element is a <code>menuitem</code> element</dt>
+
+     <dd><p>The element is <i data-x="concept-selector-active">being activated</i> if it is <span>in a formal activation state</span>
+     and it does not have a <code data-x="attr-menuitem-disabled">disabled</code>
+     attribute.</p></dd>
+
+
+     <dt>If the element is an <code>a</code> element that has an <code
+     data-x="attr-hyperlink-href">href</code> attribute</dt>
+
+     <dt>If the element is an <code>area</code> element that has an <code
+     data-x="attr-hyperlink-href">href</code> attribute</dt>
+
+     <dt>If the element is a <code>link</code> element that has an <code
+     data-x="attr-link-href">href</code> attribute</dt>
+
+     <dt>If the element has its <span>tabindex focus flag</span> set</dt>
+
+     <dd><p>The element is <i data-x="concept-selector-active">being activated</i> if it is <span>in a formal activation
+     state</span>.</p></dd>
+
+
+     <dt>If the element is <span>being actively pointed at</span></dt>
+
+     <dd><p>The element is <i data-x="concept-selector-active">being activated</i>.</p></dd>
+
+    </dl>
+
+    <p>An element is said to be <dfn>in a formal activation state</dfn> between the time the user
+    begins to indicate an intent to trigger the element's <span>activation behavior</span> and
+    either the time the user stops indicating an intent to trigger the element's <span>activation
+    behavior</span>, or the time the element's <span>activation behavior</span> has finished
+    running, which ever comes first.</p>
+
+    <p>An element is said to be <dfn>being actively pointed at</dfn> while the user indicates the
+    element using a pointing device while that pointing device is in the "down" state (e.g. for a
+    mouse, between the time the mouse button is pressed and the time it is depressed; for a finger
+    in a multitouch environment, while the finger is touching the display surface).</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-hover">:hover</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-hover">:hover</code> <span>pseudo-class</span> is defined to match
+    an element <q
+    cite="https://drafts.csswg.org/selectors3/#the-user-action-pseudo-classes-hover-act">while the
+    user <i>designates</i> an element with a pointing device</q>. For the purposes of defining the
+    <code data-x="selector-hover">:hover</code> <span>pseudo-class</span> only, an HTML user agent
+    must consider an element as being one that the user <i>designates</i> if it is:</p>
+
+    <ul>
+
+     <li>
+
+      <p>An element that the user indicates using a pointing device.</p>
+
+     </li>
+
+     <li>
+
+      <p>An element that has a descendant that the user indicates using a pointing device.</p>
+
+     </li>
+
+     <li>
+
+      <p>An element that is the <span>labeled control</span> of a <code>label</code> element that is
+      currently matching <code data-x="selector-hover">:hover</code>.</p>
+
+     </li>
+
+    </ul>
+<!--
+Demos:
+ https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1315
+ https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1316
+ https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1317
+-->
+
+    <div class="example">
+
+     <p>Consider in particular a fragment such as:</p>
+
+     <pre>&lt;p> &lt;label for=c> &lt;input id=a> &lt;/label> &lt;span id=b> &lt;input id=c> &lt;/span> &lt;/p></pre>
+
+     <p>If the user designates the element with ID "<code data-x="">a</code>" with their pointing
+     device, then the <code>p</code> element (and all its ancestors not shown in the snippet above),
+     the <code>label</code> element, the element with ID "<code data-x="">a</code>", and the element
+     with ID "<code data-x="">c</code>" will match the <code data-x="selector-hover">:hover</code>
+     <span>pseudo-class</span>. The element with ID "<code data-x="">a</code>" matches it from
+     condition 1, the <code>label</code> and <code>p</code> elements match it because of condition 2
+     (one of their descendants is designated), and the element with ID "<code data-x="">c</code>"
+     matches it through condition 3 (its <code>label</code> element matches <code
+     data-x="selector-hover">:hover</code>). However, the element with ID "<code data-x="">b</code>"
+     does <em>not</em> match <code data-x="selector-hover">:hover</code>: its descendant is not
+     designated, even though it matches <code data-x="selector-hover">:hover</code>.</p>
+
+    </div>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-focus">:focus</code></dfn></dt>
+
+   <dd>
+
+    <p>For the purposes of the CSS <code data-x="selector-focus">:focus</code>
+    <span>pseudo-class</span>, an <dfn>element has the focus</dfn> when its <span>top-level browsing
+    context</span> has the system focus, it is not itself a <span>browsing context container</span>,
+    and it is one of the elements listed in the <span>focus chain</span> of the <span
+    data-x="currently focused area of a top-level browsing context">currently focused area of the
+    top-level browsing context</span>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="selector-target">:target</code></dfn></dt>
+
+   <dd>
+
+    <p>For the purposes of the CSS <code data-x="selector-focus">:target</code>
+    <span>pseudo-class</span>, the <code>Document</code>'s <i>target elements</i> are a list
+    containing the <code>Document</code>'s <span>target element</span>, if it is
+    not null, or containing no elements, if it is. <ref spec=SELECTORS></p>
+
+   </dd>
+
+   <dt><dfn><code data-x="selector-enabled">:enabled</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-enabled">:enabled</code> <span>pseudo-class</span> must match any
+    <code>button</code>, <code>input</code>, <code>select</code>, <code>textarea</code>,
+    <code>optgroup</code>, <code>option</code>, <code>menuitem</code>, or <code>fieldset</code>
+    element that is not <span data-x="concept-element-disabled">actually disabled</span>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-disabled">:disabled</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-disabled">:disabled</code> <span>pseudo-class</span> must match
+    any element that is <span data-x="concept-element-disabled">actually disabled</span>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-checked">:checked</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-checked">:checked</code> <span>pseudo-class</span> must match any
+    element falling into one of the following categories:</p>
+
+    <ul>
+
+     <li><code>input</code> elements whose <code data-x="attr-input-type">type</code> attribute is in
+     the <span data-x="attr-input-type-checkbox">Checkbox</span> state and whose <span
+     data-x="concept-fe-checked">checkedness</span> state is true</li>
+
+     <li><code>input</code> elements whose <code data-x="attr-input-type">type</code> attribute is in
+     the <span data-x="attr-input-type-radio">Radio Button</span> state and whose <span
+     data-x="concept-fe-checked">checkedness</span> state is true</li>
+
+     <li><code>option</code> elements whose <span
+     data-x="concept-option-selectedness">selectedness</span> is true</li>
+
+     <li><code>menuitem</code> elements whose <code data-x="attr-menuitem-type">type</code> attribute
+     is in the <span data-x="attr-menuitem-type-state-checkbox">Checkbox</span> state and that have a
+     <code data-x="attr-menuitem-checked">checked</code> attribute</li>
+
+     <li><code>menuitem</code> elements whose <code data-x="attr-menuitem-type">type</code> attribute
+     is in the <span data-x="attr-menuitem-type-state-radio">Radio</span> state and that have a <code
+     data-x="attr-menuitem-checked">checked</code> attribute</li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-indeterminate">:indeterminate</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-indeterminate">:indeterminate</code> <span>pseudo-class</span>
+    must match any element falling into one of the following categories:</p>
+
+    <ul>
+
+     <li><code>input</code> elements whose <code data-x="attr-input-type">type</code> attribute is in
+     the <span data-x="attr-input-type-checkbox">Checkbox</span> state and whose <code
+     data-x="dom-input-indeterminate">indeterminate</code> IDL attribute is set to true</li>
+
+     <li><code>input</code> elements whose <code data-x="attr-input-type">type</code> attribute is in
+     the <span data-x="attr-input-type-radio">Radio Button</span> state and whose <span>radio button
+     group</span> contains no <code>input</code> elements whose <span
+     data-x="concept-fe-checked">checkedness</span> state is true.</li>
+
+     <li><code>progress</code> elements with no <code data-x="attr-progress-value">value</code>
+     content attribute</li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-default">:default</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-default">:default</code> <span>pseudo-class</span> must match any
+    element falling into one of the following categories:</p>
+
+    <ul>
+
+     <li><code>button</code> elements that are their form's <span>default button</span></li>
+
+     <li><code>input</code> elements whose <code data-x="attr-input-type">type</code> attribute is in
+     the <span data-x="attr-input-type-submit">Submit Button</span> or <span
+     data-x="attr-input-type-image">Image Button</span> state, and that are their form's
+     <span>default button</span></li>
+
+     <li><code>input</code> elements to which the <code data-x="attr-input-checked">checked</code>
+     attribute applies and that have a <code data-x="attr-input-checked">checked</code>
+     attribute</li>
+
+     <li><code>option</code> elements that have a <code data-x="attr-option-selected">selected</code>
+     attribute</li>
+
+<!--
+     <li><code>menuitem</code> elements that have a <code
+     data-x="attr-menuitem-default">default</code> attribute</li>
+-->
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-placeholder-shown">:placeholder-shown</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-placeholder-shown">:placeholder-shown</code>
+    <span>pseudo-class</span> must match any element falling into one of the following
+    categories:</p>
+
+    <ul>
+
+     <li><code>input</code> elements that have a <code
+     data-x="attr-input-placeholder">placeholder</code> attribute whose value is currently being
+     presented to the user.</li>
+
+     <li><code>textarea</code> elements that have a <code
+     data-x="attr-textarea-placeholder">placeholder</code> attribute whose value is currently being
+     presented to the user.</li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-valid">:valid</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-valid">:valid</code> <span>pseudo-class</span> must match any
+    element falling into one of the following categories:</p>
+
+    <ul>
+
+     <li>elements that are <span data-x="candidate for constraint validation">candidates for
+     constraint validation</span> and that <span data-x="concept-fv-valid">satisfy their
+     constraints</span></li>
+
+     <li><code>form</code> elements that are not the <span>form owner</span> of any elements that
+     themselves are <span data-x="candidate for constraint validation">candidates for constraint
+     validation</span> but do not <span data-x="concept-fv-valid">satisfy their
+     constraints</span></li>
+
+     <li><code>fieldset</code> elements that have no descendant elements that themselves are <span
+     data-x="candidate for constraint validation">candidates for constraint validation</span> but do
+     not <span data-x="concept-fv-valid">satisfy their constraints</span></li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-invalid">:invalid</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-invalid">:invalid</code> <span>pseudo-class</span> must match any
+    element falling into one of the following categories:</p>
+
+    <ul>
+
+     <li>elements that are <span data-x="candidate for constraint validation">candidates for
+     constraint validation</span> but that do not <span data-x="concept-fv-valid">satisfy their
+     constraints</span></li>
+
+     <li><code>form</code> elements that are the <span>form owner</span> of one or more elements
+     that themselves are <span data-x="candidate for constraint validation">candidates for constraint
+     validation</span> but do not <span data-x="concept-fv-valid">satisfy their
+     constraints</span></li>
+
+     <li><code>fieldset</code> elements that have of one or more descendant elements that themselves
+     are <span data-x="candidate for constraint validation">candidates for constraint
+     validation</span> but do not <span data-x="concept-fv-valid">satisfy their
+     constraints</span></li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-in-range">:in-range</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-in-range">:in-range</code> <span>pseudo-class</span> must match
+    all elements that are <span data-x="candidate for constraint validation">candidates for
+    constraint validation</span>, <span>have range limitations</span>, and that are neither
+    <span>suffering from an underflow</span> nor <span>suffering from an overflow</span>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-out-of-range">:out-of-range</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-out-of-range">:out-of-range</code> <span>pseudo-class</span> must
+    match all elements that are <span data-x="candidate for constraint validation">candidates for
+    constraint validation</span>, <span>have range limitations</span>, and that are either
+    <span>suffering from an underflow</span> or <span>suffering from an overflow</span>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-required">:required</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-required">:required</code> <span>pseudo-class</span> must match
+    any element falling into one of the following categories:</p>
+
+    <ul>
+
+     <li><code>input</code> elements that are <i data-x="concept-input-required">required</i></li>
+
+     <li><code>select</code> elements that have a <code data-x="attr-select-required">required</code>
+     attribute</li>
+
+     <li><code>textarea</code> elements that have a <code
+     data-x="attr-textarea-required">required</code> attribute</li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-optional">:optional</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-optional">:optional</code> <span>pseudo-class</span> must match
+    any element falling into one of the following categories:</p>
+
+    <ul>
+
+     <li><code>input</code> elements to which the <code data-x="attr-input-required">required</code>
+     attribute applies that are not <i data-x="concept-input-required">required</i></li>
+
+     <li><code>select</code> elements that do not have a <code
+     data-x="attr-select-required">required</code> attribute</li>
+
+     <li><code>textarea</code> elements that do not have a <code
+     data-x="attr-textarea-required">required</code> attribute</li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-read-only">:read-only</code></dfn></dt>
+   <dt><dfn><code data-x="selector-read-write">:read-write</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-read-write">:read-write</code> <span>pseudo-class</span> must
+    match any element falling into one of the following categories, which for the purposes of
+    Selectors are thus considered <i>user-alterable</i>: <ref spec=SELECTORS></p>
+
+    <ul>
+
+     <li><code>input</code> elements to which the <code data-x="attr-input-readonly">readonly</code>
+     attribute applies, and that are <i data-x="concept-fe-mutable">mutable</i> (i.e. that do not
+     have the <code data-x="attr-input-readonly">readonly</code> attribute specified and that are not
+     <span data-x="concept-fe-disabled">disabled</span>)</li>
+
+     <li><code>textarea</code> elements that do not have a <code
+     data-x="attr-textarea-readonly">readonly</code> attribute, and that are not <span
+     data-x="concept-fe-disabled">disabled</span></li>
+
+     <li>elements that are <span data-x="editing host">editing hosts</span> or <span>editable</span>
+     and are neither <code>input</code> elements nor <code>textarea</code> elements</li>
+
+    </ul>
+
+    <p>The <code data-x="selector-read-only">:read-only</code> <span>pseudo-class</span> must match
+    all other <span>HTML elements</span>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="selector-ltr">:dir(ltr)</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-ltr">:dir(ltr)</code> <span>pseudo-class</span> must match all
+    elements whose <span data-x="the directionality">directionality</span> is '<span
+    data-x="concept-ltr">ltr</span>'.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="selector-rtl">:dir(rtl)</code></dfn></dt>
+
+   <dd>
+
+    <p>The <code data-x="selector-rtl">:dir(rtl)</code> <span>pseudo-class</span> must match all
+    elements whose <span data-x="the directionality">directionality</span> is '<span
+    data-x="concept-rtl">rtl</span>'.</p>
+
+   </dd>
+
+  </dl>
+
+  <p class="note">This specification does not define when an element matches the <code undefined
+  data-x="selector-lang()">:lang()</code> dynamic <span>pseudo-class</span>, as it is defined in
+  sufficient detail in a language-agnostic fashion in the Selectors specification.
+  <ref spec=SELECTORS></p>
+
+<!--REMOVE-TOPIC:CSS-->
+
+  </div>
+
+
+<!--TOPIC:Microdata-->
+
+  

@@ -1,0 +1,190 @@
+<h5>Seeking</h5>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-seeking">seeking</code></dt>
+
+   <dd>
+
+    <p>Returns true if the user agent is currently seeking.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-seekable">seekable</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>TimeRanges</code> object that represents the ranges of the <span>media
+    resource</span> to which it is possible for the user agent to seek.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-fastSeek">fastSeek</code>( <var>time</var> )</dt>
+
+   <dd>
+
+    <p>Seeks to near the given <var>time</var> as fast as possible, trading precision for
+    speed. (To seek to a precise time, use the <code
+    data-x="dom-media-currentTime">currentTime</code> attribute.)</p>
+
+    <p>This does nothing if the media resource has not been loaded.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-seeking">seeking</code></dfn> attribute must initially have the
+  value false.</p>
+
+  <p>The <dfn><code data-x="dom-media-fastSeek">fastSeek()</code></dfn> method must <span
+  data-x="dom-media-seek">seek</span> to the time given by the method's argument, with the
+  <i>approximate-for-speed</i> flag set.</p>
+
+  <p>When the user agent is required to <dfn data-x="dom-media-seek">seek</dfn> to a particular <var>new playback position</var> in the <span>media resource</span>, optionally with the
+  <i>approximate-for-speed</i> flag set, it means that the user agent must run the following steps.
+  This algorithm interacts closely with the <span>event loop</span> mechanism; in particular, it has
+  a <span>synchronous section</span> (which is triggered as part of the <span>event loop</span>
+  algorithm). Steps in that section are marked with &#x231B;.</p>
+
+  <ol>
+
+   <li><p>Set the <span>media element</span>'s <span>show poster flag</span> to false.</p></li>
+
+   <li><p>If the <span>media element</span>'s <code data-x="dom-media-readyState">readyState</code>
+   is <code data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, abort these steps.</p></li>
+
+   <li><p>If the element's <code data-x="dom-media-seeking">seeking</code> IDL attribute is true,
+   then another instance of this algorithm is already running. Abort that other instance of the
+   algorithm without waiting for the step that it is running to complete.</p></li>
+
+   <li><p>Set the <code data-x="dom-media-seeking">seeking</code> IDL attribute to true.</p></li>
+
+   <li><p>If the seek was in response to a DOM method call or setting of an IDL attribute, then
+   continue the script. The remainder of these steps must be run <span>in parallel</span>. With the exception
+   of the steps marked with &#x231B;, they could be aborted at any time by another instance of this
+   algorithm being invoked.</p></li>
+
+   <li><p>If the <var>new playback position</var> is later than the end of the <span>media
+   resource</span>, then let it be the end of the <span>media resource</span> instead.</p></li>
+
+   <li><p>If the <var>new playback position</var> is less than the <span>earliest possible
+   position</span>, let it be that position instead.</p></li>
+
+   <li><p>If the (possibly now changed) <var>new playback position</var> is not in one of
+   the ranges given in the <code data-x="dom-media-seekable">seekable</code> attribute, then let it
+   be the position in one of the ranges given in the <code
+   data-x="dom-media-seekable">seekable</code> attribute that is the nearest to the <var>new
+   playback position</var>. If two positions both satisfy that constraint (i.e. the <var>new playback position</var> is exactly in the middle between two ranges in the <code
+   data-x="dom-media-seekable">seekable</code> attribute) then use the position that is closest to
+   the <span>current playback position</span>. If there are no ranges given in the <code
+   data-x="dom-media-seekable">seekable</code> attribute then set the <code
+   data-x="dom-media-seeking">seeking</code> IDL attribute to false and abort these steps.</p></li>
+
+   <li>
+
+    <p>If the <i>approximate-for-speed</i> flag is set, adjust the <var>new playback
+    position</var> to a value that will allow for playback to resume promptly. If <var>new
+    playback position</var> before this step is before <span>current playback position</span>, then
+    the adjusted <var>new playback position</var> must also be before the <span>current
+    playback position</span>. Similarly, if the <var>new playback position</var> before
+    this step is after <span>current playback position</span>, then the adjusted <var>new
+    playback position</var> must also be after the <span>current playback position</span>.</p>
+
+    <p class="example">For example, the user agent could snap to a nearby key frame, so that it
+    doesn't have to spend time decoding then discarding intermediate frames before resuming
+    playback.</p>
+
+    </li>
+
+   <li><p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+   <code data-x="event-media-seeking">seeking</code> at the element.</p></li>
+
+   <li>
+
+    <p>Set the <span>current playback position</span> to the <var>new playback
+    position</var>.</p>
+
+    <p class="note">If the <span>media element</span> was <span>potentially playing</span>
+    immediately before it started seeking, but seeking caused its <code
+    data-x="dom-media-readyState">readyState</code> attribute to change to a value lower than <code
+    data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code>, then a <code
+    data-x="event-media-waiting">waiting</code> event <a href="#fire-waiting-when-waiting">will be
+    fired</a> at the element.</p> <!-- also, timeupdate -->
+
+    <p class="note">This step sets the <span>current playback position</span>, and thus can
+    immediately trigger other conditions, such as the rules regarding when playback "<a
+    href="#reaches-the-end">reaches the end of the media resource</a>" (part of the logic that
+    handles looping), even before the user agent is actually able to render the media data for that
+    position (as determined in the next step).</p>
+
+    <p class="note">The <code data-x="dom-media-currentTime">currentTime</code> attribute returns
+    the <span>official playback position</span>, not the <span>current playback position</span>, and
+    therefore gets updated before script execution, separate from this algorithm.</p>
+
+   </li>
+
+   <li><p>Wait until the user agent has established whether or not the <span>media data</span> for
+   the <var>new playback position</var> is available, and, if it is, until it has decoded
+   enough data to play back that position.</p></li>
+
+   <li><p><span>Await a stable state</span>. The <span>synchronous section</span> consists of all
+   the remaining steps of this algorithm. (Steps in the <span>synchronous section</span> are marked
+   with &#x231B;.)</p></li>
+
+   <li><p>&#x231B; Set the <code data-x="dom-media-seeking">seeking</code> IDL attribute to
+   false.</p></li>
+
+   <li><p>&#x231B; Run the <span>time marches on</span> steps.</p></li>
+
+   <li id="seekUpdate"><p>&#x231B; <span>Queue a task</span> to <span
+   data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-media-timeupdate">timeupdate</code> at the element.</p></li>
+
+   <li><p>&#x231B; <span>Queue a task</span> to <span data-x="concept-event-fire">fire an
+   event</span> named <code data-x="event-media-seeked">seeked</code> at the element.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-media-seekable">seekable</code></dfn> attribute must return a new
+  static <span>normalized <code>TimeRanges</code> object</span> that represents the ranges of the
+  <span>media resource</span>, if any, that the user agent is able to seek to, at the time the
+  attribute is evaluated.</p>
+
+  <p class="note">If the user agent can seek to anywhere in the <span>media resource</span>, e.g.
+  because it is a simple movie file and the user agent and the server support HTTP Range requests,
+  then the attribute would return an object with one range, whose start is the time of the first
+  frame (the <span>earliest possible position</span>, typically zero), and whose end is the same as
+  the time of the first frame plus the <code data-x="dom-media-duration">duration</code> attribute's
+  value (which would equal the time of the last frame, and might be positive Infinity).</p>
+
+  <p class="note">The range might be continuously changing, e.g. if the user agent is buffering a
+  sliding window on an infinite stream. This is the behavior seen with DVRs viewing live TV, for
+  instance.</p>
+
+  <p>User agents should adopt a very liberal and optimistic view of what is seekable. User
+  agents should also buffer recent content where possible to enable seeking to be fast.</p>
+
+  <p class="example">For instance, consider a large video file served on an HTTP server without
+  support for HTTP Range requests. A browser <em>could</em> implement this by only buffering the
+  current frame and data obtained for subsequent frames, never allow seeking, except for seeking to
+  the very start by restarting the playback. However, this would be a poor implementation. A high
+  quality implementation would buffer the last few minutes of content (or more, if sufficient
+  storage space is available), allowing the user to jump back and rewatch something surprising
+  without any latency, and would in addition allow arbitrary seeking by reloading the file from the
+  start if necessary, which would be slower but still more convenient than having to literally
+  restart the video and watch it all the way through just to get to an earlier unbuffered spot.</p>
+
+  <p><span data-x="media resource">Media resources</span> might be internally scripted or
+  interactive. Thus, a <span>media element</span> could play in a non-linear fashion. If this
+  happens, the user agent must act as if the algorithm for <span
+  data-x="dom-media-seek">seeking</span> was used whenever the <span>current playback position</span>
+  changes in a discontinuous fashion (so that the relevant events fire).</p>
+
+  </div>
+
+
+  

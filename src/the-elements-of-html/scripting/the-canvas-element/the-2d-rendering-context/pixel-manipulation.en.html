@@ -1,0 +1,463 @@
+<h6><dfn>Pixel manipulation</dfn></h6>
+
+  <dl class="domintro">
+
+   <dt><var>imagedata</var> = new <code data-x="dom-imagedata">ImageData</code>(<var>sw</var>, <var>sh</var>)</dt>
+   <dt><var>imagedata</var> = <var>context</var> . <code subdfn data-x="dom-context-2d-createImageData">createImageData</code>(<var>sw</var>, <var>sh</var>)</dt>
+
+   <dd>
+
+    <p>Returns an <code>ImageData</code> object with the given dimensions. All the pixels in the
+    returned object are transparent black.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if either of
+    the width or height arguments are zero.</p>
+
+   </dd>
+
+   <dt><var>imagedata</var> = <var>context</var> . <code data-x="dom-context-2d-createImageData">createImageData</code>(<var>imagedata</var>)</dt>
+
+   <dd>
+
+    <p>Returns an <code>ImageData</code> object with the same dimensions as the argument. All the
+    pixels in the returned object are transparent black.</p>
+
+   </dd>
+
+   <dt><var>imagedata</var> = new <code data-x="dom-imagedata">ImageData</code>(<var>data</var>, <var>sw</var> [, <var>sh</var> ] )</dt>
+
+   <dd>
+
+    <p>Returns an <code>ImageData</code> object using the data provided in the <code
+    data-x="idl-Uint8ClampedArray">Uint8ClampedArray</code> argument, interpreted using the given
+    dimensions.</p>
+
+    <p>As each pixel in the data is represented by four numbers, the length of the data needs to be
+    a multiple of four times the given width. If the height is provided as well, then the length
+    needs to be exactly the width times the height times 4.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the given
+    data and dimensions can't be interpreted consistently, or if either dimension is zero.</p>
+
+   </dd>
+
+   <dt><var>imagedata</var> = <var>context</var> . <code subdfn data-x="dom-context-2d-getImageData">getImageData</code>(<var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var>)</dt>
+
+   <dd>
+
+    <p>Returns an <code>ImageData</code> object containing the image data for the given rectangle of
+    the bitmap.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the either
+    of the width or height arguments are zero.</p>
+
+   </dd>
+
+   <dt><var>imagedata</var> . <code subdfn data-x="dom-imagedata-width">width</code></dt>
+   <dt><var>imagedata</var> . <code subdfn data-x="dom-imagedata-height">height</code></dt>
+
+   <dd>
+
+    <p>Returns the actual dimensions of the data in the <code>ImageData</code> object, in
+    pixels.</p>
+
+   </dd>
+
+   <dt><var>imagedata</var> . <code subdfn data-x="dom-imagedata-data">data</code></dt>
+
+   <dd>
+
+    <p>Returns the one-dimensional array containing the data in RGBA order, as integers in the range
+    0 to 255.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-putImageData">putImageData</code>(<var>imagedata</var>, <var>dx</var>, <var>dy</var> [, <var>dirtyX</var>, <var>dirtyY</var>, <var>dirtyWidth</var>, <var>dirtyHeight</var> ] )</dt>
+
+   <dd>
+
+    <p>Paints the data from the given <code>ImageData</code> object onto the bitmap. If a dirty
+    rectangle is provided, only the pixels from that rectangle are painted.</p>
+
+    <p>The <code data-x="dom-context-2d-globalAlpha">globalAlpha</code> and <code
+    data-x="dom-context-2d-globalCompositeOperation">globalCompositeOperation</code> attributes, as
+    well as the shadow attributes, are ignored for the purposes of this method call; pixels in the
+    canvas are replaced wholesale, with no composition, alpha blending, no shadows, etc.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the
+    <var>imagedata</var> object's data's [[<span>Detached</span>]] internal slot value is true.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Objects that implement the <code>CanvasImageData</code> interface provide the following methods
+  for reading and writing pixel data to the bitmap.</p>
+
+  <p>The <dfn><code data-x="dom-imagedata">ImageData()</code></dfn> constructors and the
+  <dfn><code data-x="dom-context-2d-createImageData">createImageData()</code></dfn> methods are
+  used to instantiate new <code>ImageData</code> objects.</p>
+
+  <p><code>ImageData</code> objects are <span>cloneable objects</span>.</p>
+
+  <p>Each <code>ImageData</code> object's [[<span>Clone</span>]] internal method, given
+  <var>targetRealm</var> and <var>memory</var>, must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>inputData</var> be the value of <b>this</b>'s <code
+   data-x="dom-imagedata-data">data</code> attribute.</p></li>
+
+   <li><p>Let <var>clonedData</var> be ? <span>StructuredClone</span>(<var>inputData</var>,
+   <var>targetRealm</var>, <var>memory</var>).</p></li>
+
+   <li><p>Return the result of <span data-x="create an ImageData object">creating an
+   <code>ImageData</code> object</span>, with parameter <var>pixelsPerRow</var> set to the value of
+   <b>this</b>'s <code data-x="dom-imagedata-width">width</code> attribute, <var>rows</var> set to
+   the value of <b>this</b>'s <code data-x="dom-imagedata-height">height</code> attribute, and using
+   <var>clonedData</var>.</p></li>
+  </ol>
+
+  <p>When the <code data-x="dom-imagedata">ImageData()</code> constructor is invoked with two
+  numeric arguments <var>sw</var> and <var>sh</var>, it must <span>create an <code>ImageData</code>
+  object</span> with parameter <var>pixelsPerRow</var> set to <var>sw</var>, and <var>rows</var> set
+  to <var>sh</var>. The image data of the newly created <code>ImageData</code> object must be
+  intializedzed to transparent black. If both <var>sw</var> and <var>sh</var> are non-zero, then
+  return the new <code>ImageData</code> object. If one or both of <var>sw</var> and <var>sh</var>
+  are zero, then the constructor must throw an <span>"<code>IndexSizeError</code>"</span>
+  <code>DOMException</code> instead.</p>
+
+  <p>When the <code data-x="dom-imagedata">ImageData()</code> constructor is invoked with its first
+  argument being an <code data-x="idl-Uint8ClampedArray">Uint8ClampedArray</code> <var>source</var>
+  and its second and optional third arguments being numeric arguments <var>sw</var> and
+  <var>sh</var>, it must run these steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>length</var> be the number of bytes in <var>source</var>.</p></li>
+
+   <li><p>If <var>length</var> is not a non-zero integral multiple of four, then throw an
+   <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>Let <var>length</var> be <var>length</var> divided by four.</p>
+
+   <li>
+
+    <p>If <var>length</var> is not an integral multiple of <var>sw</var>, then throw an
+    <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> and abort these steps.</p>
+
+    <p class="note">At this step, the length is guaranteed to be greater than zero (otherwise the
+    second step above would have aborted the steps), so if <var>sw</var> is zero, this
+    step will throw the exception and abort these steps.</p>
+
+   </li>
+
+   <li><p>Let <var>height</var> be <var>length</var> divided by <var>sw</var>.</p></li>
+
+   <li><p>If the <var>sh</var> argument was not omitted, and its value is not equal to
+   <var>height</var>, then throw an <span>"<code>IndexSizeError</code>"</span>
+   <code>DOMException</code> and abort these steps.</p></li>
+
+   <li>
+
+    <p><span>Create an <code>ImageData</code> object</span>, with parameter <var>pixelsPerRow</var>
+    set to <var>sw</var>, <var>rows</var> set to <var>sh</var>, and using <var>source</var>.
+    Return the newly created <code>ImageData</code> object.</p>
+
+    <p class="note">The resulting object's data is not a <em>copy</em> of <var>source</var>, it's
+    the actual <code data-x="idl-Uint8ClampedArray">Uint8ClampedArray</code> object passed as the
+    first argument to the constructor.</p>
+
+   </li>
+
+  </ol>
+
+  <p>When the <code data-x="dom-context-2d-createImageData">createImageData()</code> method is
+  invoked with two numeric arguments <var>sw</var> and <var>sh</var>, it must <span>create an
+  <code>ImageData</code> object</span>, with parameter <var>pixelsPerRow</var> set to the
+  absolute magnitude of <var>sw</var>, and parameter <var>rows</var> set to the absolute magnitude
+  of <var>sh</var>. Initialize the image data of the new <code>ImageData</code> object to
+  transparent black. If both <var>sw</var> and <var>sh</var> are non-zero, then return
+  the new <code>ImageData</code> object. If one or both of <var>sw</var> and <var>sh</var> are
+  zero, then throw an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>
+  instead.</p>
+
+  <p>When the <code data-x="dom-context-2d-createImageData">createImageData()</code> method is
+  invoked with a single <var>imagedata</var> argument, it must <span>create an
+  <code>ImageData</code> object</span>, with parameter <var>pixelsPerRow</var> set to the value of
+  the <code data-x="dom-imagedata-width">width</code> attribute of the <code>ImageData</code>
+  object passed as the argument, and the <var>rows</var> parameter set to the value of the
+  <code data-x="dom-imagedata-height">height</code> attribute.
+  Initialize the image data of the new <code>ImageData</code> object to transparent black. Return
+  the newly created <code>ImageData</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-getImageData">getImageData(<var>sx</var>,
+  <var>sy</var>, <var>sw</var>, <var>sh</var>)</code></dfn> method, when invoked, must,
+  if either the <var>sw</var> or <var>sh</var> arguments are zero, throw an
+  <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>; otherwise,
+  <!--ADD-TOPIC:Security-->
+  if the <code>CanvasRenderingContext2D</code>'s <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> flag is set to false, it must throw a
+  <span>"<code>SecurityError</code>"</span> <code>DOMException</code>;
+  <!--REMOVE-TOPIC:Security-->
+  otherwise, it must <span>create an <code>ImageData</code> object</span>, with parameter
+  <var>pixelsPerRow</var> set to <var>sw</var>, and parameter <var>rows</var> set to <var>sh</var>.
+  Set the pixel values of the image data of the newly created <code>ImageData</code> object to
+  represent the <span>output bitmap</span> for the area of that bitmap denoted by the rectangle
+  whose corners are the four points (<var>sx</var>, <var>sy</var>), (<span
+  data-x=""><var>sx</var>+<var>sw</var></span>, <var>sy</var>), (<span
+  data-x=""><var>sx</var>+<var>sw</var></span>, <span
+  data-x=""><var>sy</var>+<var>sh</var></span>), (<var>sx</var>,
+  <span data-x=""><var>sy</var>+<var>sh</var></span>), in the bitmap's coordinate space units.
+  Pixels outside the <span>output bitmap</span> must be set to transparent black. Pixel values
+  must not be premultiplied by alpha.</p>
+
+  <p>When the user agent is required to <dfn>create an <code>ImageData</code> object</dfn>, given a
+  positive integer number of rows <var>rows</var>, a positive integer number of pixels per row
+  <var>pixelsPerRow</var>, and an optional <code
+  data-x="idl-Uint8ClampedArray">Uint8ClampedArray</code> <var>source</var>, it must run these
+  steps:</p>
+
+  <ol>
+   <li><p>Let <var>imageData</var> be a new uninitialized <span>ImageData</span> object.</p></li>
+
+   <li><p>If <var>source</var> is specified, then assign the <dfn><code
+   data-x="dom-imagedata-data">data</code></dfn> attribute of <var>imageData</var> to
+   <var>source</var>.</p></li>
+
+   <li>
+    <p>If <var>source</var> is not specified, then initialize the <code
+    data-x="dom-imagedata-data">data</code> attribute of <var>imageData</var> to a new <code
+    data-x="idl-Uint8ClampedArray">Uint8ClampedArray</code> object. The <code
+    data-x="idl-Uint8ClampedArray">Uint8ClampedArray</code> object must use a new <span>Canvas
+    Pixel <code data-x="idl-ArrayBuffer">ArrayBuffer</code></span> for its storage, and must have a
+    zero start offset and a length equal to the length of its storage, in bytes. The <span>Canvas
+    Pixel <code data-x="idl-ArrayBuffer">ArrayBuffer</code></span> must have the correct size to
+    store <var>rows</var> × <var>pixelsPerRow</var> pixels.</p>
+
+    <p>If the <span>Canvas Pixel <code data-x="idl-ArrayBuffer">ArrayBuffer</code></span> cannot be
+    allocated, then rethrow the <code data-x="js-RangeError">RangeError</code> thrown by JavaScript,
+    and abort these steps.</p>
+   </li>
+
+   <li><p>Initialize the <dfn><code data-x="dom-imagedata-width">width</code></dfn> attribute of
+   <var>imageData</var> to <var>pixelsPerRow</var>.</p></li>
+
+   <li><p>Initialize the <dfn><code data-x="dom-imagedata-height">height</code></dfn> attribute of
+   <var>imageData</var> to <var>rows</var>.</p></li>
+
+   <li><p>Return <var>imageData</var>.</p></li>
+  </ol>
+
+  <p>A <dfn>Canvas Pixel <code data-x="idl-ArrayBuffer">ArrayBuffer</code></dfn> is an <code
+  data-x="idl-ArrayBuffer">ArrayBuffer</code> whose data is represented in left-to-right order, row
+  by row top to bottom, starting with the top left, with each pixel's red, green, blue, and alpha
+  components being given in that order for each pixel. Each component of each pixel represented in
+  this array must be in the range 0..255, representing the 8 bit value for that component. The
+  components must be assigned consecutive indices starting with 0 for the top left pixel's red
+  component.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-putImageData">putImageData()</code></dfn> method writes
+  data from <code>ImageData</code> structures back to the rendering context's <span>output
+  bitmap</span>. Its arguments are: <var>imagedata</var>, <var>dx</var>, <var>dy</var>,
+  <var>dirtyX</var>, <var>dirtyY</var>, <var>dirtyWidth</var>, and <var>dirtyHeight</var>.</p>
+
+  <p>When the last four arguments to this method are omitted, they must be assumed to have the
+  values 0, 0, the <code data-x="dom-imagedata-width">width</code> member of the <var>imagedata</var> structure, and the <code data-x="dom-imagedata-height">height</code>
+  member of the <var>imagedata</var> structure, respectively.</p>
+
+  <p>The method, when invoked, must act as follows:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If <var>imagedata</var>'s <code data-x="dom-imagedata-data">data</code> attribute value's
+    [[<span>Detached</span>]] internal slot value is true, then throw an
+    <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+    steps.</p>
+
+   <li>
+
+    <p>If <var>dirtyWidth</var> is negative, then let <var>dirtyX</var> be <span
+    data-x=""><var>dirtyX</var>+<var>dirtyWidth</var></span>, and let <var>dirtyWidth</var> be equal
+    to the absolute magnitude of <var>dirtyWidth</var>.</p>
+
+    <p>If <var>dirtyHeight</var> is negative, then let <var>dirtyY</var> be <span
+    data-x=""><var>dirtyY</var>+<var>dirtyHeight</var></span>, and let <var>dirtyHeight</var> be
+    equal to the absolute magnitude of <var>dirtyHeight</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>dirtyX</var> is negative, then let <var>dirtyWidth</var> be <span
+    data-x=""><var>dirtyWidth</var>+<var>dirtyX</var></span>, and let <var>dirtyX</var> be zero.</p>
+
+    <p>If <var>dirtyY</var> is negative, then let <var>dirtyHeight</var> be <span
+    data-x=""><var>dirtyHeight</var>+<var>dirtyY</var></span>, and let <var>dirtyY</var> be zero.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <span data-x=""><var>dirtyX</var>+<var>dirtyWidth</var></span> is greater than the <code
+    data-x="dom-imagedata-width">width</code> attribute of the <var>imagedata</var> argument, then
+    let <var>dirtyWidth</var> be the value of that <code data-x="dom-imagedata-width">width</code>
+    attribute, minus the value of <var>dirtyX</var>.</p>
+
+    <p>If <span data-x=""><var>dirtyY</var>+<var>dirtyHeight</var></span> is greater than the <code
+    data-x="dom-imagedata-height">height</code> attribute of the <var>imagedata</var> argument, then
+    let <var>dirtyHeight</var> be the value of that <code
+    data-x="dom-imagedata-height">height</code> attribute, minus the value of <var>dirtyY</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If, after those changes, either <var>dirtyWidth</var> or <var>dirtyHeight</var> are negative
+    or zero, then abort these steps without affecting any bitmaps.</p>
+
+   </li>
+
+   <li><p>For all integer values of <var>x</var> and <var>y</var> where <span
+   data-x=""><var>dirtyX</var>&nbsp;&le;&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<span
+   data-x=""><var>dirtyX</var>+<var>dirtyWidth</var></span></span> and <span
+   data-x=""><var>dirtyY</var>&nbsp;&le;&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<span
+   data-x=""><var>dirtyY</var>+<var>dirtyHeight</var></span></span>, copy the
+   four channels of the pixel with coordinate (<var>x</var>, <var>y</var>) in
+   the <var>imagedata</var> data structure's <span>Canvas Pixel
+   <code data-x="idl-ArrayBuffer">ArrayBuffer</code></span> to the pixel with coordinate (<span
+   data-x=""><var>dx</var>+<var>x</var></span>, <span data-x=""><var>dy</var>+<var>y</var></span>)
+   in the rendering context's <span>output bitmap</span>.</p></li>
+
+  </ol>
+
+  <p>The handling of pixel rounding when the specified coordinates are not integers is not defined
+  by this specification, except that the following must result in no visible changes to the
+  rendering:</p>
+
+  <pre>context.putImageData(context.getImageData(x, y, w, h), p, q);</pre>
+
+  <p>...for any value of <var>x</var>, <var>y</var>, <var>w</var>, and
+  <var>h</var> and where <var>p</var> is the smaller of <var>x</var>
+  and the sum of <var>x</var> and <var>w</var>, and <var>q</var> is
+  the smaller of <var>y</var> and the sum of <var>y</var> and <var>h</var>; and except that the following two calls:</p>
+
+  <pre>context.createImageData(w, h);
+context.getImageData(0, 0, w, h);</pre>
+
+  <p>...must return <code>ImageData</code> objects with the same dimensions as each other, for any
+  value of <var>w</var> and <var>h</var>. In other words, while user agents may
+  round the arguments of these methods, any rounding performed must be performed consistently for
+  all of the methods described in this section. (The constructors only work with integer
+  values.)</p>
+
+  <p class="note">Due to the lossy nature of converting to and from premultiplied alpha color
+  values, pixels that have just been set using <code
+  data-x="dom-context-2d-putImageData">putImageData()</code> might be returned to an equivalent
+  <code data-x="dom-context-2d-getImageData">getImageData()</code> as different values.</p>
+
+  <p>The current path, <span data-x="dom-context-2d-transformation">transformation matrix</span>,
+  <span data-x="shadows">shadow attributes</span>, <span data-x="dom-context-2d-globalAlpha">global
+  alpha</span>, the <span>clipping region</span>, and <span
+  data-x="dom-context-2d-globalCompositeOperation">global composition operator</span> must not
+  affect the methods described in this section.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, the script generates an <code>ImageData</code> object so that it can
+   draw onto it.</p>
+
+   <pre>// canvas is a reference to a &lt;canvas> element
+var context = canvas.getContext('2d');
+
+// create a blank slate
+var data = context.createImageData(canvas.width, canvas.height);
+
+// create some plasma
+FillPlasma(data, 'green'); // green plasma
+
+// add a cloud to the plasma
+AddCloud(data, data.width/2, data.height/2); // put a cloud in the middle
+
+// paint the plasma+cloud on the canvas
+context.putImageData(data, 0, 0);
+
+// support methods
+function FillPlasma(data, color) { ... }
+function AddCloud(data, x, y) { ... }</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here is an example of using <code
+   data-x="dom-context-2d-getImageData">getImageData()</code> and <code
+   data-x="dom-context-2d-putImageData">putImageData()</code> to implement an edge detection
+   filter.</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Edge detection demo&lt;/title>
+  &lt;script>
+   var image = new Image();
+   function init() {
+     image.onload = demo;
+     image.src = "image.jpeg";
+   }
+   function demo() {
+     var canvas = document.getElementsByTagName('canvas')[0];
+     var context = canvas.getContext('2d');
+
+     // draw the image onto the canvas
+     context.drawImage(image, 0, 0);
+
+     // get the image data to manipulate
+     var input = context.getImageData(0, 0, canvas.width, canvas.height);
+
+     // get an empty slate to put the data into
+     var output = context.createImageData(canvas.width, canvas.height);
+
+     // alias some variables for convenience
+     // In this case input.width and input.height
+     // match canvas.width and canvas.height
+     // but we'll use the former to keep the code generic.
+     var w = input.width, h = input.height;
+     var inputData = input.data;
+     var outputData = output.data;
+
+     // edge detection
+     for (var y = 1; y &lt; h-1; y += 1) {
+       for (var x = 1; x &lt; w-1; x += 1) {
+         for (var c = 0; c &lt; 3; c += 1) {
+           var i = (y*w + x)*4 + c;
+           outputData[i] = 127 + -inputData[i - w*4 - 4] -   inputData[i - w*4] - inputData[i - w*4 + 4] +
+                                 -inputData[i - 4]       + 8*inputData[i]       - inputData[i + 4] +
+                                 -inputData[i + w*4 - 4] -   inputData[i + w*4] - inputData[i + w*4 + 4];
+         }
+         outputData[(y*w + x)*4 + 3] = 255; // alpha
+       }
+     }
+
+     // put the image data back after manipulation
+     context.putImageData(output, 0, 0);
+   }
+  &lt;/script>
+ &lt;/head>
+ &lt;body onload="init()">
+  &lt;canvas>&lt;/canvas>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+
+
+  

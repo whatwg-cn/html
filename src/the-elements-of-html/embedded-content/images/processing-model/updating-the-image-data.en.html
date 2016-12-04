@@ -1,0 +1,493 @@
+<h6>Updating the image data</h6>
+
+  <p>When the user agent is to <dfn>update the image data</dfn> of an <code>img</code> element,
+  optionally with the <i>restart animations</i> flag set,
+  it must run the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the element's <span>node document</span> is not the <span>active document</span>,
+    then run these substeps:</p>
+
+    <ol>
+
+     <li><p>Continue running this algorithm <span>in parallel</span>.</p></li>
+
+     <li><p>Wait until the element's <span>node document</span> is the <span>active document</span>.</p></li>
+
+     <li><p>If another instance of this algorithm for this <code>img</code> element was started after this instance
+     (even if it aborted and is no longer running), then abort these steps.</p></li>
+
+     <li><p><span>Queue a microtask</span> to continue this algorithm.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the user agent cannot support images, or its support for images has been disabled, then
+   <span>abort the image request</span> for the <span>current request</span> and the <span>pending request</span>,
+   set <span>current request</span> to the <span data-x="img-none">unavailable</span> state,
+   let <span>pending request</span> be null,
+   and abort these steps.</p></li>
+
+   <li>
+
+    <p>If the element does not <span>use <code>srcset</code> or <code>picture</code></span>,
+    and it has a <code data-x="attr-img-src">src</code> attribute specified and
+    its value is not the empty string, let <var>selected source</var> be the value of the
+    element's <code data-x="attr-img-src">src</code> attribute, and <var>selected pixel
+    density</var> be 1.0. Otherwise, let <var>selected source</var> be null and <var>selected pixel density</var> be undefined.</p>
+
+   </li>
+
+   <li><p>Let the <code>img</code> element's <span>last selected source</span> be <var>selected source</var>.</p></li>
+
+   <li>
+
+    <p>If <var>selected source</var> is not null, run these substeps:</p>
+
+    <ol>
+
+     <li><p><span data-x="parse a url">Parse</span> <var>selected source</var>, relative to the
+     element's <span>node document</span>. If that is not successful, then abort this inner set of
+     steps. Otherwise, let <var>urlString</var> be the <span>resulting URL string</span>.</p></li>
+     <!-- This does not change currentSrc -->
+
+     <li><p>Let <var>key</var> be a tuple consisting of <var>urlString</var>, the <code>img</code>
+     element's <code data-x="attr-img-crossorigin">crossorigin</code> attribute's mode, and, if that
+     mode is not <span data-x="attr-crossorigin-none">No CORS</span>, the <span>node
+     document</span>'s <span>origin</span>.</p></li>
+
+     <li>
+
+      <p>If the <span>list of available images</span> contains an entry for <var>key</var>, run
+      these subsubsteps:</p>
+
+      <ol>
+
+        <li><p>Set the <span>ignore higher-layer caching</span> flag for that entry.</p></li>
+
+        <li><p><span>Abort the image request</span> for the <span>current request</span> and the
+        <span>pending request</span>.</p></li>
+
+        <li><p>Let <span>pending request</span> be null.</p></li>
+
+        <li><p>Let <span>current request</span> be a new <span>image request</span> whose <span
+        data-x="img-req-data">image data</span> is that of the entry and whose state is set to the
+        <span data-x="img-all">completely available</span> state.</p></li>
+
+        <li><p>Update the presentation of the image appropriately.</p></li>
+
+        <li><p>Let the <span>current request</span>'s <span>current pixel density</span> be
+        <var>selected pixel density</var>.</p></li>
+
+        <li><p><span>Queue a task</span> to <span>restart the animation</span> if <i>restart
+        animation</i> is set, change <span>current request</span>'s <span
+        data-x="img-req-url">current URL</span> to <var>urlString</var>, and then <span
+        data-x="concept-event-fire">fire an event</span> named <code data-x="event-load">load</code>
+        at the <code>img</code> element.</p></li>
+
+        <li><p>Abort the <span>update the image data</span> algorithm.</p></li>
+
+      </ol>
+
+     </li>
+
+     <!--
+     load is an event here
+     loadstart and loadend do not fire
+     -->
+
+    </ol>
+
+   </li>
+
+   <li><p><span>Await a stable state</span>, allowing the <span
+   data-x="concept-task">task</span> that invoked this algorithm to continue.
+   The <span>synchronous
+   section</span> consists of all the remaining steps of this algorithm until the algorithm says the
+   <span>synchronous section</span> has ended. (Steps in <span data-x="synchronous
+   section">synchronous sections</span> are marked with &#x231B;.)</p></li>
+
+   <li>
+
+    <p>&#x231B; If another instance of this algorithm for this <code>img</code> element was started
+    after this instance (even if it aborted and is no longer running), then abort these steps.</p>
+
+    <p class="note">Only the last instance takes effect, to avoid multiple requests when, for
+    example, the <code data-x="attr-img-src">src</code>, <code data-x="attr-img-srcset">srcset</code>,
+    and <code data-x="attr-img-crossorigin">crossorigin</code> attributes are all set in
+    succession.</p>
+
+   </li>
+
+   <li>
+
+    <p>&#x231B; Let <var>selected source</var> and <var>selected pixel density</var> be the
+    URL and pixel density that results from <span data-x="select an image source">selecting an image source</span>,
+    respectively.</p>
+
+   </li>
+
+   <li>
+
+    <p>&#x231B; If <var>selected source</var> is null, run these substeps:</p>
+
+    <ol>
+
+     <li><p>&#x231B; Set the <span>current request</span> to the <span data-x="img-error">broken</span> state,
+     <span>abort the image request</span> for the <span>current request</span> and the <span>pending request</span>,
+     and let <span>pending request</span> be null.</p></li>
+
+     <li><p>&#x231B; <span>Queue a task</span> to change the <span>current request</span>'s <span
+     data-x="img-req-url">current URL</span> to the empty string, and then, if the element has a
+     <code data-x="attr-img-src">src</code> attribute or it <span data-x="use srcset or
+     picture">uses <code>srcset</code> or <code>picture</code></span>, <span
+     data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+     at the <code>img</code> element.</p></li>
+
+     <!-- loadstart and loadend do not fire -->
+
+     <li><p>&#x231B; Abort this algorithm.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>&#x231B; <span>Queue a task</span> to <span>fire a progress event</span> named <code data-x="event-loadstart">loadstart</code> at
+    the <code>img</code> element.</p>
+
+   </li>
+
+   <li>
+
+    <p>&#x231B; <span data-x="parse a url">Parse</span> <var>selected source</var>, relative to the
+    element's <span>node document</span>, and let <var>urlString</var> be the <span>resulting URL
+    string</span>. If that is not successful, run these substeps:</p>
+
+    <ol>
+
+     <li><p>&#x231B; <span>Abort the image request</span> for the <span>current request</span> and
+     the <span>pending request</span>.</p></li>
+
+     <li><p>&#x231B; Set the <span>current request</span> to the <span
+     data-x="img-error">broken</span> state.</p></li>
+
+     <li><p>&#x231B; Let <span>pending request</span> be null.</p></li>
+
+     <li><p>&#x231B; <span>Queue a task</span> to change the <span>current request</span>'s <span
+     data-x="img-req-url">current URL</span> to <var>selected source</var>, <span
+     data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+     at the <code>img</code> element and then <span data-x="concept-event-fire">fire an event</span>
+     named <code data-x="event-loadend">loadend</code> at the <code>img</code> element.</p></li>
+
+     <li><p>&#x231B; Abort the <span>update the image data</span> algorithm.</p></li>
+
+    </ol>
+
+   <li>
+
+    <p>&#x231B; If the <span>pending request</span> is not null,
+    and <var>urlString</var> is the same as the <span>pending request</span>'s <span data-x="img-req-url">current URL</span>,
+    then abort these steps.</p>
+
+    <p>&#x231B; If <var>urlString</var> is the same as the <span>current request</span>'s <span data-x="img-req-url">current URL</span>,
+    and <span>current request</span> is in the <span data-x="img-inc">partially available</span> state,
+    then <span>abort the image request</span> for the <span>pending request</span>,
+    <span>queue a task</span> to <span>restart the animation</span> if <i>restart animation</i> is set,
+    and abort these steps.</p>
+
+    <p>&#x231B; If the <span>pending request</span> is not null,
+    <span>abort the image request</span> for the <span>pending request</span>.</p>
+
+    <p>&#x231B; Let <var>image request</var> be a new <span>image request</span>
+    whose <span data-x="img-req-url">current URL</span> is <var>urlString</var>.</p>
+
+    <p>&#x231B; If <span>current request</span> is in the <span data-x="img-none">unavailable</span> state
+    or the <span data-x="img-error">broken</span> state,
+    let the <span>current request</span> be <var>image request</var>.
+    Otherwise, let the <span>pending request</span> be <var>image request</var>.</p>
+
+    <p>&#x231B; Let <var>request</var> be the result of <span
+    data-x="create a potential-CORS request">creating a potential-CORS request</span> given
+    <var>urlString</var>, "<code data-x="">image</code>", and the current state of the element's
+    <code data-x="attr-img-crossorigin">crossorigin</code> content attribute.</p>
+
+    <p>&#x231B; Set <var>request</var>'s <span data-x="concept-request-client">client</span> to the
+    element's <span>node document</span>'s <code>Window</code> object's <span>environment settings
+    object</span> and <span data-x="concept-request-type">type</span> to "<code
+    data-x="">image</code>".</p>
+
+    <p>&#x231B; If the element <span data-x="use srcset or picture">uses <code>srcset</code> or
+    <code>picture</code></span>, set <var>request</var>'s <span
+    data-x="concept-request-initiator">initiator</span> to "<code data-x="">imageset</code>".</p>
+
+    <p>&#x231B; Set <var>request</var>'s
+    <span data-x="concept-request-referrer-policy">referrer policy</span> to the current state of
+    the element's <code data-x="attr-img-referrerpolicy">referrerpolicy</code> attribute.</p>
+
+    <!--FETCH--><p>&#x231B; <span data-x="concept-fetch">Fetch</span> <var>request</var>. Let this
+    instance of the <span data-x="concept-fetch">fetching</span> algorithm be associated with
+    <var>image request</var>.<!-- TODO "Interaction with the Preload Scanner" from the picture spec
+    --></p>
+
+    <p>The resource obtained in this fashion, if any, is <var>image request</var>'s <span data-x="img-req-data">image data</span>.
+    It can be either <span>CORS-same-origin</span> or <span>CORS-cross-origin</span>; this affects
+    the <span>origin</span> of the image itself (e.g. when used on a <code>canvas</code>).</p>
+
+    <!-- same text in <input type=image> section and similar text elsewhere -->
+    <p>Fetching the image must <span>delay the load event</span> of the element's <span>node document</span> until the
+    <span data-x="concept-task">task</span> that is <span data-x="queue a task">queued</span> by the
+    <span>networking task source</span> once the resource has been fetched (<a
+    href="#img-load">defined below</a>) has been run.
+    <!--TODO or the fetch was aborted, presumably --></p>
+
+    <p class="warning">This, unfortunately, can be used to perform a rudimentary port scan of the
+    user's local network (especially in conjunction with scripting, though scripting isn't actually
+    necessary to carry out such an attack). User agents may implement <span
+    data-x="origin">cross-origin</span> access control policies that are stricter than those
+    described above to mitigate this attack, but unfortunately such policies are typically not
+    compatible with existing Web content.</p>
+
+    <p>If the resource is <span>CORS-same-origin</span>, each <span data-x="concept-task">task</span>
+    that is <span data-x="queue a task">queued</span> by the <span>networking task source</span>
+    while the image is being fetched, if <var>image request</var> is the <span>current
+    request</span>, must <span>fire a progress event</span> named <code
+    data-x="event-progress">progress</code> at the <code>img</code> element.</p>
+
+   </li>
+
+   <li><p>End the <span>synchronous section</span>, continuing the remaining steps <span>in
+   parallel</span>, but without missing any data from fetching.</p></li>
+
+   <li>
+
+    <p>As soon as possible, jump to the first applicable entry from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the resource type is <code>multipart/x-mixed-replace</code></dt>
+
+     <dd>
+
+      <p>The next <span data-x="concept-task">task</span> that is <span data-x="queue a
+      task">queued</span> by the <span>networking task source</span> while the image is being
+      fetched must run the following steps:</p>
+
+      <ol>
+
+       <li>
+
+        <p>If <var>image request</var> is the <span>pending request</span>
+        and at least one body part has been completely decoded,
+        <span>abort the image request</span> for the <span>current request</span>,
+        <span>upgrade the pending request to the current request</span>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Otherwise, if <var>image request</var> is the <span>pending request</span>
+        and the user agent is able to determine that <var>image request</var>'s image
+        is corrupted in some fatal way such that the image dimensions cannot be obtained,
+        <span>abort the image request</span> for the <span>current request</span>,
+        <span>upgrade the pending request to the current request</span>
+        and set the <span>current request</span>'s state to <span data-x="img-error">broken</span>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Otherwise, if <var>image request</var> is the <span>current request</span>,
+        it is in the <span data-x="img-none">unavailable</span> state,
+        and the user agent is able to determine <var>image request</var>'s image's width and height,
+        set the <span>current request</span>'s state to <span data-x="img-inc">partially available</span>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Otherwise, if <var>image request</var> is the <span>current request</span>,
+        it is in the <span data-x="img-none">unavailable</span> state,
+        and the user agent is able to determine that <var>image request</var>'s image
+        is corrupted in some fatal way such that the image dimensions cannot be obtained,
+        set the <span>current request</span>'s state to <span data-x="img-error">broken</span>.
+        <!--TODO: abort the fetch? fire error event?--></p>
+
+       </li>
+
+      </ol>
+
+      <p>Each <span data-x="concept-task">task</span> that is <span data-x="queue a
+      task">queued</span> by the <span>networking task source</span> while the image is being
+      fetched must update the presentation of the image, but as each new body part comes in, it must
+      replace the previous image. Once one body part has been completely decoded, the user agent
+      must set the <code>img</code> element to the <span data-x="img-all">completely
+      available</span> state and <span>queue a task</span> to <span data-x="concept-event-fire">fire
+      an event</span> named <code data-x="event-load">load</code> at the <code>img</code>
+      element.</p>
+      <!--TODO what if the image is broken? -->
+
+      <p class="note">The <code data-x="event-progress">progress</code> and <code
+      data-x="event-loadend">loadend</code> events are not fired for
+      <code>multipart/x-mixed-replace</code> image streams.</p>
+
+     </dd>
+
+     <dt>If the resource type and data corresponds to a supported image format, <a
+     href="#img-determine-type">as described below</a></dt>
+
+     <dd>
+
+      <p>The next <span data-x="concept-task">task</span> that is <span data-x="queue a
+      task">queued</span> by the <span>networking task source</span> while the image is being
+      fetched must run the following steps:</p>
+
+      <ol>
+
+       <li>
+
+        <p>If the user agent is able to determine <var>image request</var>'s image's width and height,
+        and <var>image request</var> is <span>pending request</span>,
+        set <var>image request</var>'s state to <span data-x="img-inc">partially available</span>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Otherwise, if the user agent is able to determine <var>image request</var>'s image's width and height,
+        and <var>image request</var> is <span>current request</span>,
+        update the <code>img</code> element's presentation appropriately
+        and set <var>image request</var>'s state to <span data-x="img-inc">partially available</span>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Otherwise, if the user agent is able to determine that <var>image request</var>'s image
+        is corrupted in some fatal way such that the image dimensions cannot be obtained, and
+        <var>image request</var> is <span>pending request</span>, <span>abort the image
+        request</span> for the <span>current request</span> and the <span>pending request</span>,
+        <span>upgrade the pending request to the current request</span>, set <span>current
+        request</span> to the <span data-x="img-error">broken</span> state, <span
+        data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-error">error</code> at the <code>img</code> element, <span
+        data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-loadend">loadend</code> at the <code>img</code> element, and abort these
+        steps.</p>
+
+       </li>
+
+       <li>
+
+        <p>Otherwise, if the user agent is able to determine that <var>image request</var>'s image
+        is corrupted in some fatal way such that the image dimensions cannot be obtained, and
+        <var>image request</var> is <span>current request</span>, <span>abort the image
+        request</span> for <var>image request</var>, <span data-x="concept-event-fire">fire an
+        event</span> named <code data-x="event-error">error</code> at the <code>img</code> element,
+        <span data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-loadend">loadend</code> at the <code>img</code> element, and abort these
+        steps.</p>
+
+       </li>
+
+      </ol>
+
+      <p id="img-load">That <span data-x="concept-task">task</span>, and each subsequent <span
+      data-x="concept-task">task</span>, that is <span data-x="queue a task">queued</span> by the
+      <span>networking task source</span> while the image is being fetched, if <var>image
+      request</var> is the <span>current request</span>, must update the presentation of the image
+      appropriately (e.g., if the image is a progressive JPEG, each packet can improve the
+      resolution of the image).</p>
+
+      <p>Furthermore, the last <span data-x="concept-task">task</span> that is <span data-x="queue a
+      task">queued</span> by the <span>networking task source</span> once the resource has been
+      fetched must additionally run these steps:</p>
+
+      <ol>
+
+       <!--
+       the download was successful
+       the user agent was able to determine the image's width and height
+       image request is current request or pending request
+       pending request might be null or non-null
+       -->
+
+       <li><p>If <var>image request</var> is the <span>pending request</span>,
+       <span>abort the image request</span> for the <span>current request</span>,
+       <span>upgrade the pending request to the current request</span> and
+       update the <code>img</code> element's presentation appropriately.</p></li>
+
+       <li><p>Set <var>image request</var> to the <span data-x="img-all">completely
+       available</span> state.</p></li>
+
+       <li><p>Add the image to the <span>list of available images</span> using the key <var>key</var>, with the <span>ignore higher-layer caching</span> flag set.</p></li>
+
+       <li><p><span>Fire a progress event or event</span> named <code data-x="event-load">load</code>
+       at the <code>img</code> element, depending on the resource in <var>image request</var>.</p></li>
+
+       <li><p><span>Fire a progress event or event</span> named <code data-x="event-loadend">loadend</code>
+       at the <code>img</code> element, depending on the resource in <var>image request</var>.</p></li>
+
+      </ol>
+
+     </dd>
+
+     <dt>Otherwise</dt>
+
+     <dd>
+
+      <p>The image data is not in a supported file format; the user agent must set <var>image
+      request</var> to the <span data-x="img-error">broken</span> state, <span>abort the image
+      request</span> for the <span>current request</span> and the <span>pending request</span>,
+      <span>upgrade the pending request to the current request</span> if <var>image request</var> is
+      the <span>pending request</span>, and then <span>queue a task</span> to first <span
+      data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+      at the <code>img</code> element and then <span data-x="concept-event-fire">fire an
+      event</span> named <code data-x="event-loadend">loadend</code> at the <code>img</code>
+      element.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+  </ol>
+
+  <p>While a user agent is running the above algorithm for an element <var>x</var>, there must be a
+  strong reference from the element's <span>node document</span> to the element <var>x</var>, even
+  if that element is not <span>connected</span>.</p>
+
+  <p>To <dfn>abort the image request</dfn> for an <span>image request</span> <var>image request</var> means to run the following steps:</p>
+
+  <ol>
+
+   <li><p>Forget <var>image request</var>'s <span data-x="img-req-data">image data</span>, if any.</p></li>
+
+   <li><p>Abort any instance of the <span data-x="concept-fetch">fetching</span> algorithm for
+   <var>image request</var>, discarding any pending tasks generated by that algorithm.</p></li>
+
+  </ol>
+
+  <p>To <dfn>upgrade the pending request to the current request</dfn> for an <code>img</code> element means to run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let the <code>img</code> element's <span>current request</span> be the <span>pending request</span>.</p></li>
+
+   <li><p>Let the <code>img</code> element's <span>pending request</span> be null.</p></li>
+
+  </ol>
+
+  <p>To <dfn>fire a progress event or event</dfn> named <var>type</var> at an element <var>e</var>,
+  depending on resource <var>r</var>, means to <span>fire a progress event</span> named
+  <var>type</var> at <var>e</var> if <var>r</var> is <span>CORS-same-origin</span>, and otherwise
+  <span data-x="concept-event-fire">fire an event</span> named <var>type</var> at <var>e</var>.</p>
+
+
+  

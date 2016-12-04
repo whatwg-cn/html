@@ -1,0 +1,39 @@
+<h4>Introduction</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <div class="example">
+
+   <p>For example, if document A contains an <code>iframe</code> element that contains document B,
+   and script in document A calls <code data-x="dom-window-postMessage">postMessage()</code> on the
+   <code>Window</code> object of document B, then a message event will be fired on that object,
+   marked as originating from the <code>Window</code> of document A. The script in document A might
+   look like:</p>
+
+   <pre>var o = document.getElementsByTagName('iframe')[0];
+o.contentWindow.postMessage('Hello world', 'https://b.example.org/');</pre>
+
+   <p>To register an event handler for incoming events, the script would use <code
+   data-x="">addEventListener()</code> (or similar mechanisms). For example, the script in document B
+   might look like:</p>
+
+   <pre>window.addEventListener('message', receiver, false);
+function receiver(e) {
+  if (e.origin == 'https://example.com') {
+    if (e.data == 'Hello world') {
+      e.source.postMessage('Hello', e.origin);
+    } else {
+      alert(e.data);
+    }
+  }
+}</pre>
+
+   <p>This script first checks the domain is the expected domain, and then looks at the message,
+   which it either displays to the user, or responds to by sending a message back to the document
+   which sent the message in the first place.</p>
+
+  </div>
+
+
+<!--ADD-TOPIC:Security-->
+  

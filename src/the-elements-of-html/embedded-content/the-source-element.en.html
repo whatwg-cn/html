@@ -1,0 +1,249 @@
+<h4>The <dfn><code>source</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>picture</code> element, before the <code>img</code> element.</dd>
+   <dd>As a child of a <span>media element</span>, before any <span>flow content</span> or
+   <code>track</code> elements.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-source-src">src</code></dd>
+   <dd><code data-x="attr-source-type">type</code></dd>
+   <dd><code data-x="attr-source-srcset">srcset</code></dd>
+   <dd><code data-x="attr-source-sizes">sizes</code></dd>
+   <dd><code data-x="attr-source-media">media</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt>
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLSourceElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-source-src">src</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-source-type">type</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-source-srcset">srcset</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-source-sizes">sizes</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-source-media">media</span>;
+};</pre>
+   </dd>
+  </dl>
+
+  <p>The <code>source</code> element allows authors to specify multiple alternative
+  <span data-x="source set">source sets</span> for <code>img</code> elements or multiple alternative
+  <span data-x="media resource">media resources</span> for <span data-x="media element">media
+  elements</span>. It does not <span data-x="represents">represent</span> anything on its own.</p>
+
+  <p>The <dfn data-x="attr-source-type"><code>type</code></dfn> attribute may be present. If
+  present, the value must be a <span>valid MIME type</span>.</p>
+
+  <p>The remainder of the requirements depend on whether the parent is a <code>picture</code>
+  element or a <span>media element</span>:</p>
+
+  <dl class="switch">
+   <dt><code>source</code> element's parent is a <code>picture</code> element</dt>
+
+   <dd>
+    <p>The <dfn data-x="attr-source-srcset"><code>srcset</code></dfn> attribute must be present, and
+    is a <span>srcset attribute</span>.</p>
+
+    <p>The <code data-x="attr-source-srcset">srcset</code> attribute contributes the <span
+    data-x="image source">image sources</span> to the <span>source set</span>, if the
+    <code>source</code> element is selected.</p>
+
+    <p>If the <code data-x="attr-source-srcset">srcset</code> attribute has any <span data-x="image
+    candidate string">image candidate strings</span> using a <span>width descriptor</span>, the <dfn
+    data-x="attr-source-sizes"><code>sizes</code></dfn> attribute must also be present, and is a
+    <span>sizes attribute</span>. The <code data-x="attr-source-sizes">sizes</code> attribute
+    contributes the <span>source size</span> to the <span>source set</span>, if the
+    <code>source</code> element is selected.</p>
+
+    <p>The <dfn data-x="attr-source-media"><code>media</code></dfn> attributes may also be present.
+    If present, the value must contain a <span>valid media query list</span>. The user agent will
+    skip to the next <code>source</code> element if the value does not <span data-x="matches the
+    environment">match the environment</span>.</p>
+
+    <p>The <code data-x="attr-source-type">type</code> gives the type of the images in the
+    <span>source set</span>, to allow the user agent to skip to the next <code>source</code> element
+    if it does not support the given type.</p>
+
+    <p class="note">If the <code data-x="attr-source-type">type</code> attribute is <em>not</em>
+    specified, the user agent will not select a different <code>source</code> element if it finds
+    that it does not support the image format after fetching it.</p>
+
+    <p>When a <code>source</code> element has a following sibling <code>source</code> element or
+    <code>img</code> element with a <code data-x="attr-img-srcset">srcset</code> attribute
+    specified, it must have at least one of the following:</p>
+
+    <ul>
+     <li><p>A <code data-x="attr-source-media">media</code> attribute specified with a value that,
+     after <span data-x="strip leading and trailing whitespace">stripping leading and trailing
+     whitespace</span>, is not the empty string and is not an <span>ASCII case-insensitive</span>
+     match for the string "<code data-x="">all</code>".</p></li>
+
+     <li><p>A <code data-x="attr-source-type">type</code> attribute specified.</p></li>
+    </ul>
+
+    <p>The <code data-x="attr-source-src">src</code> attribute must not be present.</p>
+   </dd>
+
+   <dt><code>source</code> element's parent is a <span>media element</span></dt>
+
+   <dd>
+    <p>The <dfn><code data-x="attr-source-src">src</code></dfn> attribute gives the <span>URL</span>
+    of the <span>media resource</span>. The value must be a <span>valid non-empty URL potentially
+    surrounded by spaces</span>. This attribute must be present.</p>
+
+    <p class="note">Dynamically modifying a <code>source</code> element and its attribute when the
+    element is already inserted in a <code>video</code> or <code>audio</code> element will have no
+    effect. To change what is playing, just use the <code data-x="attr-media-src">src</code>
+    attribute on the <span>media element</span> directly, possibly making use of the <code
+    data-x="dom-navigator-canPlayType">canPlayType()</code> method to pick from amongst available
+    resources. Generally, manipulating <code>source</code> elements manually after the document has
+    been parsed is an unnecessarily complicated approach.</p>
+
+    <p>The <code data-x="attr-source-type">type</code> attribute gives the type of the <span>media
+    resource</span>, to help the user agent determine if it can play this <span>media
+    resource</span> before fetching it. The <code data-x="">codecs</code> parameter, which certain
+    MIME types define, might be necessary to specify exactly how the resource is encoded. <ref
+    spec=RFC6381></p>
+
+    <div class="example">
+
+     <p>The following list shows some examples of how to use the <code data-x="">codecs=</code> MIME
+     parameter in the <code data-x="attr-source-type">type</code> attribute.</p>
+
+     <dl>
+
+      <dt>H.264 Constrained baseline profile video (main and extended video compatible) level 3 and Low-Complexity AAC audio in MP4 container</dt>
+      <dd><pre>&lt;source src='video.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></pre></dd>
+
+      <dt>H.264 Extended profile video (baseline-compatible) level 3 and Low-Complexity AAC audio in MP4 container</dt>
+      <dd><pre>&lt;source src='video.mp4' type='video/mp4; codecs="avc1.58A01E, mp4a.40.2"'></pre></dd>
+
+      <dt>H.264 Main profile video level 3 and Low-Complexity AAC audio in MP4 container</dt>
+      <dd><pre>&lt;source src='video.mp4' type='video/mp4; codecs="avc1.4D401E, mp4a.40.2"'></pre></dd>
+
+      <dt>H.264 'High' profile video (incompatible with main, baseline, or extended profiles) level 3 and Low-Complexity AAC audio in MP4 container</dt>
+      <dd><pre>&lt;source src='video.mp4' type='video/mp4; codecs="avc1.64001E, mp4a.40.2"'></pre></dd>
+
+
+      <dt>MPEG-4 Visual Simple Profile Level 0 video and Low-Complexity AAC audio in MP4 container</dt>
+      <dd><pre>&lt;source src='video.mp4' type='video/mp4; codecs="mp4v.20.8, mp4a.40.2"'></pre></dd>
+
+      <dt>MPEG-4 Advanced Simple Profile Level 0 video and Low-Complexity AAC audio in MP4 container</dt>
+      <dd><pre>&lt;source src='video.mp4' type='video/mp4; codecs="mp4v.20.240, mp4a.40.2"'></pre></dd>
+
+      <dt>MPEG-4 Visual Simple Profile Level 0 video and AMR audio in 3GPP container</dt>
+      <dd><pre>&lt;source src='video.3gp' type='video/3gpp; codecs="mp4v.20.8, samr"'></pre></dd>
+
+
+      <dt>Theora video and Vorbis audio in Ogg container</dt>
+      <dd><pre>&lt;source src='video.ogv' type='video/ogg; codecs="theora, vorbis"'></pre></dd>
+
+      <dt>Theora video and Speex audio in Ogg container</dt>
+      <dd><pre>&lt;source src='video.ogv' type='video/ogg; codecs="theora, speex"'></pre></dd>
+
+      <dt>Vorbis audio alone in Ogg container</dt>
+      <dd><pre>&lt;source src='audio.ogg' type='audio/ogg; codecs=vorbis'></pre></dd>
+
+      <dt>Speex audio alone in Ogg container</dt>
+      <dd><pre>&lt;source src='audio.spx' type='audio/ogg; codecs=speex'></pre></dd>
+
+      <dt>FLAC audio alone in Ogg container</dt>
+      <dd><pre>&lt;source src='audio.oga' type='audio/ogg; codecs=flac'></pre></dd>
+
+      <dt>Dirac video and Vorbis audio in Ogg container</dt>
+      <dd><pre>&lt;source src='video.ogv' type='video/ogg; codecs="dirac, vorbis"'></pre></dd>
+
+<!-- awaiting definition by the Matroska guys:
+      <dt>Theora video and Vorbis audio in Matroska container</dt>
+      <dd><pre>&lt;source src='video.mkv' type='video/x-matroska; codecs="theora, vorbis"'></pre></dd>
+-->
+
+<!-- awaiting definition by the Ogg or BBC guys:
+      <dt>Dirac video and Vorbis audio in Matroska container</dt>
+      <dd><pre>&lt;source src='video.mkv' type='video/x-matroska; codecs='></pre></dd>
+-->
+
+<!-- awaiting definition by the Microsoft guys:
+      <dt>WMV9 video and WMA 2 audio in ASF container</dt>
+      <dd><pre>&lt;source src='video.wmv' type='video/x-ms-wmv; codecs='></pre></dd>
+
+      <dt>WMV8 video and WMA 2 audio in ASF container</dt>
+      <dd><pre>&lt;source src='video.wmv' type='video/x-ms-wmv; codecs='></pre></dd>
+
+      <dt>VC-1 video and WMA 10 Pro audio in ASF container</dt>
+      <dd><pre>&lt;source src='video.wmv' type='video/x-ms-wmv; codecs='></pre></dd>
+
+      <dt>XviD video and MP3 audio in AVI container</dt>
+      <dd><pre>&lt;source src='video.avi' type='video/x-msvideo; codecs='></pre></dd>
+
+      <dt>Motion-JPEG video and uncompressed PCM audio in AVI container</dt>
+      <dd><pre>&lt;source src='video.avi' type='video/x-msvideo; codecs='></pre></dd>
+-->
+
+<!-- awaiting definition by Real:
+      <dt>Real Video 10 video and High-Efficiency AAC audio in Real Media container</dt>
+      <dd><pre>&lt;source src='video.rm' type='application/vnd.rn-realmedia; codecs='></pre></dd>
+-->
+
+<!--  undefined:
+      <dt>MPEG-1 video and MPEG-1 Audio Layer II audio in MPEG-1 program stream</dt>
+      <dd><pre>&lt;source src='video.mpg' type='video/mpeg; codecs='></pre></dd>
+-->
+     </dl>
+    </div>
+
+    <p>The <code data-x="attr-source-srcset">srcset</code>, <code
+    data-x="attr-source-sizes">sizes</code>, and <code data-x="attr-source-media">media</code>
+    attributes must not be present.</p>
+   </dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>If a <code>source</code> <span data-x="nodes are inserted">element is inserted</span> as a
+  child of a <span>media element</span> that has no <code data-x="attr-media-src">src</code>
+  attribute and whose <code data-x="dom-media-networkState">networkState</code> has the value <code
+  data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code>, the user agent must invoke the <span>media
+  element</span>'s <span data-x="concept-media-load-algorithm">resource selection
+  algorithm</span>.</p>
+
+  <p>The IDL attributes <dfn><code data-x="dom-source-src">src</code></dfn>, <dfn><code
+  data-x="dom-source-type">type</code></dfn>, <dfn
+  data-x="dom-source-srcset"><code>srcset</code></dfn>, <dfn
+  data-x="dom-source-sizes"><code>sizes</code></dfn> and <dfn
+  data-x="dom-source-media"><code>media</code></dfn> must <span>reflect</span> the respective
+  content attributes of the same name.</p>
+
+  </div>
+
+  <div class="example">
+   <p>If the author isn't sure if user agents will all be able to render the media resources
+   provided, the author can listen to the <code data-x="event-error">error</code> event on the last
+   <code>source</code> element and trigger fallback behavior:</p>
+
+   <pre>&lt;script>
+ function fallback(video) {
+   // replace &lt;video> with its contents
+   while (video.hasChildNodes()) {
+     if (video.firstChild instanceof HTMLSourceElement)
+       video.removeChild(video.firstChild);
+     else
+       video.parentNode.insertBefore(video.firstChild, video);
+   }
+   video.parentNode.removeChild(video);
+ }
+&lt;/script>
+&lt;video controls autoplay>
+ &lt;source src='video.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+ &lt;source src='video.ogv' type='video/ogg; codecs="theora, vorbis"'
+         onerror="fallback(parentNode)">
+ ...
+&lt;/video></pre>
+  </div>
+
+
+
+  

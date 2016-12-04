@@ -1,0 +1,288 @@
+<h6>A key part of the content</h6>
+
+  <p>In some cases, the image is a critical part of the content. This could be the case, for
+  instance, on a page that is part of a photo gallery. The image is the whole <em>point</em> of the
+  page containing it.</p>
+
+  <p>How to provide alternative text for an image that is a key part of the content depends on the
+  image's provenance.</p>
+
+  <dl>
+
+   <dt>The general case</dt>
+
+   <dd>
+
+    <p>When it is possible for detailed alternative text to be provided, for example if the image is
+    part of a series of screenshots in a magazine review, or part of a comic strip, or is a
+    photograph in a blog entry about that photograph, text that can serve as a substitute for the
+    image must be given as the contents of the <code data-x="attr-img-alt">alt</code> attribute.</p>
+
+    <div class="example">
+
+     <p>A screenshot in a gallery of screenshots for a new OS, with some alternative text:</p>
+
+     <pre>&lt;figure>
+ <strong>&lt;img src="KDE%20Light%20desktop.png"
+      alt="The desktop is blue, with icons along the left hand side in
+           two columns, reading System, Home, K-Mail, etc. A window is
+           open showing that menus wrap to a second line if they
+           cannot fit in the window. The window has a list of icons
+           along the top, with an address bar below it, a list of
+           icons for tabs along the left edge, a status bar on the
+           bottom, and two panes in the middle. The desktop has a bar
+           at the bottom of the screen with a few buttons, a pager, a
+           list of open applications, and a clock."></strong>
+ &lt;figcaption>Screenshot of a KDE desktop.&lt;/figcaption>
+&lt;/figure></pre>
+
+    </div>
+
+    <div class="example">
+
+     <p>A graph in a financial report:</p>
+
+     <pre><strong>&lt;img src="sales.gif"
+     title="Sales graph"
+     alt="From 1998 to 2005, sales increased by the following percentages
+     with each year: 624%, 75%, 138%, 40%, 35%, 9%, 21%"></strong></pre>
+
+     <p>Note that "sales graph" would be inadequate alternative text for a sales graph. Text that
+     would be a good <em>caption</em> is not generally suitable as replacement text.</p>
+
+    </div>
+
+   </dd>
+
+
+   <dt>Images that defy a complete description</dt>
+
+   <dd>
+
+    <p>In certain cases, the nature of the image might be such that providing thorough alternative
+    text is impractical. For example, the image could be indistinct, or could be a complex fractal,
+    or could be a detailed topographical map.</p>
+
+    <p>In these cases, the <code data-x="attr-img-alt">alt</code> attribute must contain some
+    suitable alternative text, but it may be somewhat brief.</p>
+
+    <div class="example">
+
+     <p>Sometimes there simply is no text that can do justice to an image. For example, there is
+     little that can be said to usefully describe a Rorschach inkblot test. However, a description,
+     even if brief, is still better than nothing:</p>
+
+     <pre>&lt;figure>
+ <strong>&lt;img src="/commons/a/a7/Rorschach1.jpg" alt="A shape with left-right
+ symmetry with indistinct edges, with a small gap in the center, two
+ larger gaps offset slightly from the center, with two similar gaps
+ under them. The outline is wider in the top half than the bottom
+ half, with the sides extending upwards higher than the center, and
+ the center extending below the sides."></strong>
+ &lt;figcaption>A black outline of the first of the ten cards
+ in the Rorschach inkblot test.&lt;/figcaption>
+&lt;/figure></pre>
+
+     <p>Note that the following would be a very bad use of alternative text:</p>
+
+     <pre class="bad">&lt;!-- This example is wrong. Do not copy it. -->
+&lt;figure>
+ &lt;img src="/commons/a/a7/Rorschach1.jpg" alt="A black outline
+ of the first of the ten cards in the Rorschach inkblot test.">
+ &lt;figcaption>A black outline of the first of the ten cards
+ in the Rorschach inkblot test.&lt;/figcaption>
+&lt;/figure></pre>
+
+     <p>Including the caption in the alternative text like this isn't useful because it effectively
+     duplicates the caption for users who don't have images, taunting them twice yet not helping
+     them any more than if they had only read or heard the caption once.</p>
+
+    </div>
+
+    <div class="example">
+
+     <p>Another example of an image that defies full description is a fractal, which, by definition,
+     is infinite in detail.</p>
+
+     <p>The following example shows one possible way of providing alternative text for the full view
+     of an image of the Mandelbrot set.</p>
+
+     <pre><strong>&lt;img src="ms1.jpeg" alt="The Mandelbrot set appears as a cardioid with
+its cusp on the real axis in the positive direction, with a smaller
+bulb aligned along the same center line, touching it in the negative
+direction, and with these two shapes being surrounded by smaller bulbs
+of various sizes."></strong></pre>
+
+    </div>
+
+    <div class="example">
+
+     <p>Similarly, a photograph of a person's face, for example in a biography, can be considered
+     quite relevant and key to the content, but it can be hard to fully substitute text for:</p>
+
+     <pre>&lt;section class="bio">
+ &lt;h1>A Biography of Isaac Asimov&lt;/h1>
+ &lt;p>Born &lt;b>Isaak Yudovich Ozimov&lt;/b> in 1920, Isaac was a prolific author.&lt;/p>
+ &lt;p>&lt;img src="headpics/asimov.jpeg" alt="Isaac Asimov had dark hair, a tall forehead, and wore glasses.
+ Later in life, he wore long white sideburns.">
+ &lt;p>Asimov was born in Russia, and moved to the US when he was three years old.&lt;/p>
+ &lt;p>...
+&lt;/section></pre>
+
+     <p>In such cases it is unnecessary (and indeed discouraged) to include a reference to the
+     presence of the image itself in the alternative text, since such text would be redundant with
+     the browser itself reporting the presence of the image. For example, if the alternative text
+     was "A photo of Isaac Asimov", then a conforming user agent might read that out as "(Image) A
+     photo of Isaac Asimov" rather than the more useful "(Image) Isaac Asimov had dark hair, a tall
+     forehead, and wore glasses...".</p>
+
+    </div>
+
+   </dd>
+
+
+   <dt id="unknown-images">Images whose contents are not known</dt>
+
+   <dd>
+
+    <p>In some unfortunate cases, there might be no alternative text available at all, either
+    because the image is obtained in some automated fashion without any associated alternative text
+    (e.g. a Webcam), or because the page is being generated by a script using user-provided images
+    where the user did not provide suitable or usable alternative text (e.g. photograph sharing
+    sites), or because the author does not themself know what the images represent (e.g. a blind
+    photographer sharing an image on their blog).</p>
+
+    <p>In such cases, the <code data-x="attr-img-alt">alt</code> attribute may be omitted, but one of
+    the following conditions must be met as well:</p>
+
+    <ul>
+
+     <!-- when editing this list, search for the two other occurrences of 'critical-no-alt' -->
+
+     <!-- NOTE: the order of these steps is important; it's intended to encourage using <figcaption>
+     rather than data-x="" -->
+
+     <li id="figcaption-as-alt-condition"><p>The <code>img</code> element is in a
+     <code>figure</code> element that contains a <code>figcaption</code> element that contains
+     content other than <span>inter-element whitespace</span>, and, ignoring the
+     <code>figcaption</code> element and its descendants, the <code>figure</code> element has no
+     <span>flow content</span> descendants other than <span>inter-element whitespace</span> and the
+     <code>img</code> element.</p></li>
+
+     <li>
+
+      <p>The <code data-x="attr-title">title</code> attribute is present and has a non-empty
+      value.</p>
+
+      <!-- search for title-warning if modifying this paragraph -->
+      <p class="note">Relying on the <code data-x="attr-title">title</code> attribute is currently
+      discouraged as many user agents do not expose the attribute in an accessible manner as
+      required by this specification (e.g. requiring a pointing device such as a mouse to cause a
+      tooltip to appear, which excludes keyboard-only users and touch-only users, such as anyone
+      with a modern phone or tablet).</p>
+
+     </li>
+
+    </ul>
+
+    <p class="note">Such cases are to be kept to an absolute minimum. If there is even the slightest
+    possibility of the author having the ability to provide real alternative text, then it would not
+    be acceptable to omit the <code data-x="attr-img-alt">alt</code> attribute.</p>
+
+    <div class="example">
+
+     <p>A photo on a photo-sharing site, if the site received the image with no metadata other than
+     the caption, could be marked up as follows:</p>
+
+     <pre>&lt;figure>
+ <strong>&lt;img src="1100670787_6a7c664aef.jpg"></strong>
+ &lt;figcaption>Bubbles traveled everywhere with us.&lt;/figcaption>
+&lt;/figure></pre>
+
+     <p>It would be better, however, if a detailed description of the important parts of the image
+     obtained from the user and included on the page.</p>
+
+    </div>
+
+    <div class="example">
+
+     <p>A blind user's blog in which a photo taken by the user is shown. Initially, the user might
+     not have any idea what the photo they took shows:</p>
+
+     <pre>&lt;article>
+ &lt;h1>I took a photo&lt;/h1>
+ &lt;p>I went out today and took a photo!&lt;/p>
+ &lt;figure>
+  <strong>&lt;img src="photo2.jpeg"></strong>
+  &lt;figcaption>A photograph taken blindly from my front porch.&lt;/figcaption>
+ &lt;/figure>
+&lt;/article></pre>
+
+     <p>Eventually though, the user might obtain a description of the image from their friends and
+     could then include alternative text:</p>
+
+     <pre>&lt;article>
+ &lt;h1>I took a photo&lt;/h1>
+ &lt;p>I went out today and took a photo!&lt;/p>
+ &lt;figure>
+  <strong>&lt;img src="photo2.jpeg" alt="The photograph shows my squirrel
+  feeder hanging from the edge of my roof. It is half full, but there
+  are no squirrels around. In the background, out-of-focus trees fill the
+  shot. The feeder is made of wood with a metal grate, and it contains
+  peanuts. The edge of the roof is wooden too, and is painted white
+  with light blue streaks."></strong>
+  &lt;figcaption>A photograph taken blindly from my front porch.&lt;/figcaption>
+ &lt;/figure>
+&lt;/article></pre>
+
+    </div>
+
+    <div class="example">
+
+     <p>Sometimes the entire point of the image is that a textual description is not available, and
+     the user is to provide the description. For instance, the point of a CAPTCHA image is to see if
+     the user can literally read the graphic. Here is one way to mark up a CAPTCHA (note the <code
+     data-x="attr-title">title</code> attribute):</p>
+
+     <pre>&lt;p>&lt;label>What does this image say?
+<strong>&lt;img src="captcha.cgi?id=8934" title="CAPTCHA"></strong>
+&lt;input type=text name=captcha>&lt;/label>
+(If you cannot see the image, you can use an &lt;a
+href="?audio">audio&lt;/a> test instead.)&lt;/p></pre>
+
+     <p>Another example would be software that displays images and asks for alternative text
+     precisely for the purpose of then writing a page with correct alternative text. Such a page
+     could have a table of images, like this:</p>
+
+     <pre>&lt;table>
+ &lt;thead>
+  &lt;tr> &lt;th> Image &lt;th> Description
+ &lt;tbody>
+  &lt;tr>
+   &lt;td> <strong>&lt;img src="2421.png" title="Image 640 by 100, filename 'banner.gif'"></strong>
+   &lt;td> &lt;input name="alt2421">
+  &lt;tr>
+   &lt;td> <strong>&lt;img src="2422.png" title="Image 200 by 480, filename 'ad3.gif'"></strong>
+   &lt;td> &lt;input name="alt2422">
+&lt;/table></pre>
+
+     <p>Notice that even in this example, as much useful information as possible is still included
+     in the <code data-x="attr-title">title</code> attribute.</p>
+
+    </div>
+
+    <p class="note">Since some users cannot use images at all (e.g. because they have a very slow
+    connection, or because they are using a text-only browser, or because they are listening to the
+    page being read out by a hands-free automobile voice Web browser, or simply because they are
+    blind), the <code data-x="attr-img-alt">alt</code> attribute is only allowed to be omitted rather
+    than being provided with replacement text when no alternative text is available and none can be
+    made available, as in the above examples. Lack of effort from the part of the author is not an
+    acceptable reason for omitting the <code data-x="attr-img-alt">alt</code> attribute.</p>
+
+   </dd>
+
+  </dl>
+
+
+
+  

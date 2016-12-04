@@ -1,0 +1,25 @@
+<h4>Image maps</h4>
+
+  <p>Shapes on an <span>image map</span> are expected to act, for the purpose of the CSS cascade, as
+  elements independent of the original <code>area</code> element that happen to match the same style
+  rules but inherit from the <code>img</code> or <code>object</code> element.</p>
+
+  <p>For the purposes of the rendering, only the <span>'cursor'</span> property is expected to have
+  any effect on the shape.</p>
+
+  <p class="example">Thus, for example, if an <code>area</code> element has a <code
+  data-x="attr-style">style</code> attribute that sets the <span>'cursor'</span> property to 'help',
+  then when the user designates that shape, the cursor would change to a Help cursor.</p>
+
+  <p class="example">Similarly, if an <code>area</code> element had a CSS rule that set its
+  <span>'cursor'</span> property to 'inherit' (or if no rule setting the <span>'cursor'</span>
+  property matched the element at all), the shape's cursor would be inherited from the
+  <code>img</code> or <code>object</code> element of the <span>image map</span>, not from the parent
+  of the <code>area</code> element.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

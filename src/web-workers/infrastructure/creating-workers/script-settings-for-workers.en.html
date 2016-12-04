@@ -1,0 +1,129 @@
+<h5>Script settings for workers</h5>
+
+  <p>When the user agent is required to <dfn>set up a worker environment settings object</dfn>,
+  given a <span>JavaScript execution context</span> <var>execution context</var> and
+  <span>environment settings object</span> <var>outside settings</var>, it must run the following
+  steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>inherited responsible browsing context</var> be <var>outside settings</var>'s
+   <span>responsible browsing context</span>.</p></li>
+
+   <li><p>Let <var>inherited origin</var> be <var>outside settings</var>'s <span
+   data-x="concept-settings-object-origin">origin</span>.</p></li>
+
+   <li><p>Let <var>worker event loop</var> be a newly created <span>event
+   loop</span>.</p></li>
+
+   <li><p>Let <var>realm</var> be the value of <var>execution context</var>'s Realm
+   component.</p></li>
+
+   <li><p>Let <var>worker global scope</var> be <var>realm</var>'s <span
+   data-x="concept-realm-global">global object</span>.</p></li>
+
+   <li>
+
+    <p>Let <var>settings object</var> be a new <span>environment settings object</span> whose algorithms
+    are defined as follows:</p>
+
+    <dl>
+
+     <dt>The <span>realm execution context</span></dt>
+     <dd>
+
+      <p>Return <var>execution context</var>.
+
+     </dd>
+
+     <dt>The <span data-x="concept-settings-object-module-map">module map</span></dt>
+     <dd>
+
+      <p>Return <var>worker global scope</var>'s <span
+      data-x="concept-WorkerGlobalScope-module-map">module map</span>.</p>
+
+     </dd>
+
+     <dt>The <span>responsible browsing context</span></dt>
+     <dd>
+
+      <p>Return <var>inherited responsible browsing context</var>.</p>
+
+     </dd>
+
+     <dt>The <span>responsible event loop</span></dt>
+     <dd>
+
+      <p>Return <var>worker event loop</var>.</p>
+
+     </dd>
+
+     <dt>The <span>responsible document</span></dt>
+     <dd>
+
+      <p>Not applicable (the <span>responsible event loop</span> is not a <span>browsing context</span>
+      <span>event loop</span>).</p>
+
+     </dd>
+
+     <dt>The <span>API URL character encoding</span></dt>
+     <dd>
+
+      <p>Return <span>UTF-8</span>.</p>
+
+     </dd>
+
+     <dt>The <span>API base URL</span></dt>
+     <dd>
+
+      <p>Return <var>worker global scope</var>'s <span
+      data-x="concept-WorkerGlobalScope-url">url</span>.</p>
+
+     </dd>
+
+     <dt>The <span data-x="concept-settings-object-origin">origin</span></dt>
+     <dd>
+
+      <p>Return a unique <span data-x="concept-origin-opaque">opaque origin</span> if <var>worker
+      global scope</var>'s <span data-x="concept-WorkerGlobalScope-url">url</span>'s <span
+      data-x="concept-url-scheme">scheme</span> is "<code data-x="">data</code>", and <var>inherited
+      origin</var> otherwise.</p>
+
+     </dd>
+
+     <dt>The <span>HTTPS state</span></dt>
+     <dd>
+
+      <p>Return <var>worker global scope</var>'s <span
+      data-x="concept-WorkerGlobalScope-https-state">HTTPS state</span>.</p>
+
+     </dd>
+
+     <dt>The <span data-x="concept-settings-object-referrer-policy">referrer policy</span></dt>
+     <dd>
+
+      <p>Return <var>worker global scope</var>'s <span
+      data-x="concept-WorkerGlobalScope-referrer-policy">referrer policy</span>.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Set <var>settings object</var>'s <span data-x="concept-environment-id">id</span> to a new
+   unique opaque string, <var>settings object</var>'s <span
+   data-x="concept-environment-creation-url">creation URL</span> to <var>worker global
+   scope</var>'s <span>url</span>, <var>settings object</var>'s <span
+   data-x="concept-environment-target-browsing-context">target browsing context</span> to null, and
+   <var>settings object</var>'s <span data-x="concept-environment-active-service-worker">active
+   service worker</span> to null.</p></li>
+
+   <li><p>Set <var>realm</var>'s [[HostDefined]] field to <var>settings object</var>.</p></li>
+
+   <li><p>Return <var>settings object</var>.</p></li>
+
+  </ol>
+
+
+  

@@ -1,0 +1,77 @@
+<h5>Dedicated workers and the <code>DedicatedWorkerGlobalScope</code> interface</h5>
+
+  <pre class="idl">[Global=(Worker,DedicatedWorker),Exposed=DedicatedWorker]
+interface <dfn>DedicatedWorkerGlobalScope</dfn> : <span>WorkerGlobalScope</span> {
+  void <span data-x="dom-DedicatedWorkerGlobalScope-postMessage">postMessage</span>(any message, optional sequence&lt;<span data-x="idl-object">object</span>&gt; transfer = []);
+
+  void <span data-x="dom-DedicatedWorkerGlobalScope-close">close</span>();
+
+  attribute <span>EventHandler</span> <span data-x="handler-DedicatedWorkerGlobalScope-onmessage">onmessage</span>;
+};</pre>
+
+  <p><code>DedicatedWorkerGlobalScope</code> objects act as if they had an implicit
+  <code>MessagePort</code> associated with them. This port is part of a channel that is set up when
+  the worker is created, but it is not exposed. This object must never be garbage collected before
+  the <code>DedicatedWorkerGlobalScope</code> object.</p>
+
+  <p>All messages received by that port must immediately be retargeted at the
+  <code>DedicatedWorkerGlobalScope</code> object.</p>
+
+  <dl class="domintro">
+   <dt><var>dedicatedWorkerGlobal</var> . <code subdfn
+   data-x="dom-DedicatedWorkerGlobalScope-postMessage">postMessage</code>(<var>message</var> [,
+   <var>transfer</var> ])</dt>
+   <dd>Clones <var>message</var> and transmits it to the <code>Worker</code> object associated with
+   <var>dedicatedWorkerGlobal</var>. <var>transfer</var> can be passed as a list of objects that are
+   to be transferred rather than cloned.</dd>
+
+   <dt><var>dedicatedWorkerGlobal</var> . <code subdfn
+   data-x="dom-DedicatedWorkerGlobalScope-close">close</code>()</dt>
+   <dd>Aborts <var>dedicatedWorkerGlobal</var>.</dd>
+  </dl>
+
+  <p>The <dfn><code data-x="dom-DedicatedWorkerGlobalScope-postMessage">postMessage()</code></dfn>
+  method on <code>DedicatedWorkerGlobalScope</code> objects must act as if, when invoked, it
+  immediately invoked <span data-x="dom-MessagePort-postMessage">the method of the same name</span>
+  on the port, with the same arguments, and returned the same return value.</p>
+
+  <div w-nodev>
+
+  <p>To <dfn data-export="">close a worker</dfn>, given a <var>workerGlobal</var>, run these
+  steps:</p>
+
+  <ol>
+   <li><p>Discard any <span data-x="concept-task">tasks</span> that have been added to
+   <var>workerGlobal</var>'s <span>event loop</span>'s <span data-x="task queue">task
+   queues</span>.</p>
+
+   <li><p>Set <var>workerGlobal</var>'s <span data-x="dom-WorkerGlobalScope-closing">closing</span>
+   flag to true. (This prevents any further tasks from being queued.)</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-DedicatedWorkerGlobalScope-close">close()</code></dfn> method, when
+  invoked, must <span>close a worker</span> with this <code>DedicatedWorkerGlobalScope</code>
+  object.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event
+  handler IDL attributes</span>, by objects implementing the <code>DedicatedWorkerGlobalScope</code>
+  interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-DedicatedWorkerGlobalScope-onmessage">onmessage</code></dfn> <td> <code data-x="event-message">message</code>
+  </table>
+
+  <p>For the purposes of the <span>application cache</span> networking model, a dedicated worker is
+  an extension of the <span>cache host</span> from which it was created.</p>
+
+
+
+  

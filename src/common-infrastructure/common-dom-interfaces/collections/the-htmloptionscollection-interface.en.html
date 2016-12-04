@@ -1,0 +1,201 @@
+<h5>The <code>HTMLOptionsCollection</code> interface</h5>
+
+  <p>The <code>HTMLOptionsCollection</code> interface is used for <span
+  data-x="concept-collection">collections</span> of <code>option</code> elements. It is always
+  rooted on a <code>select</code> element and has attributes and methods that manipulate that
+  element's descendants.</p>
+
+  <pre class="idl">interface <dfn>HTMLOptionsCollection</dfn> : <span>HTMLCollection</span> {
+  // inherits <span data-x="dom-HTMLCollection-item">item</span>(), <span data-x="dom-HTMLCollection-namedItem">namedItem</span>()
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-HTMLOptionsCollection-length">length</span>; // shadows inherited <span data-x="dom-HTMLCollection-length">length</span>
+  [<span>CEReactions</span>] <a href="#dom-htmloptionscollection-setter">setter</a> void (unsigned long index, <span>HTMLOptionElement</span>? option);
+  [<span>CEReactions</span>] void <span data-x="dom-HTMLOptionsCollection-add">add</span>((<span>HTMLOptionElement</span> or <span>HTMLOptGroupElement</span>) element, optional (<span>HTMLElement</span> or long)? before = null);
+  [<span>CEReactions</span>] void <span data-x="dom-HTMLOptionsCollection-remove">remove</span>(long index);
+  attribute long <span data-x="dom-HTMLOptionsCollection-selectedIndex">selectedIndex</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>collection</var> . <code subdfn data-x="dom-HTMLOptionsCollection-length">length</code> [ = <var>value</var> ]</dt>
+   <dd>
+    <p>Returns the number of elements in the collection.</p>
+    <p>When set to a smaller number, truncates the number of <code>option</code> elements in the corresponding container.</p>
+    <p>When set to a greater number, adds new blank <code>option</code> elements to that container.</p>
+   </dd>
+
+   <dt><var>element</var> = <var>collection</var> . <code data-x="dom-HTMLCollection-item">item</code>(<var>index</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>[<var>index</var>]</dt>
+   <dd>
+    <p>Returns the item with index <var>index</var> from the collection. The items are sorted in <span>tree order</span>.</p>
+   </dd>
+
+   <dt><var>collection</var>[<var>index</var>] = <var>element</var></dt>
+   <dd>
+    <p>When <var>index</var> is a greater number than the number of items in the collection, adds
+    new blank <code>option</code> elements in the corresponding container.
+    <p>When set to null, removes the item at index <var>index</var> from the collection.</p>
+    <p>When set to an <code>option</code> element, adds or replaces it at index <var>index</var>
+    from the collection.</p>
+   </dd>
+
+   <dt><var>element</var> = <var>collection</var> . <code subdfn data-x="dom-HTMLCollection-namedItem">namedItem</code>(<var>name</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>[<var>name</var>]</dt>
+   <dd>
+    <p>Returns the item with <span data-x="concept-id">ID</span> or <code data-x="attr-option-name">name</code> <var>name</var> from the collection.</p>
+    <p>If there are multiple matching items, then the first is returned.</p>
+   </dd>
+
+   <dt><var>collection</var> . <code subdfn data-x="dom-HTMLOptionsCollection-add">add</code>(<var>element</var> [, <var>before</var> ] )</dt>
+   <dd>
+    <p>Inserts <var>element</var> before the node given by <var>before</var>.</p>
+    <p>The <var>before</var> argument can be a number, in which case <var>element</var> is inserted before the item with that number, or an element from the
+    collection, in which case <var>element</var> is inserted before that element.</p>
+    <p>If <var>before</var> is omitted, null, or a number out of range, then <var>element</var> will be added at the end of the list.</p>
+    <p>This method will throw a <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code> if
+    <var>element</var> is an ancestor of the element into which it is to be inserted.</p>
+   </dd>
+
+   <dt><var>collection</var> . <code subdfn data-x="dom-HTMLOptionsCollection-remove">remove</code>(<var>index</var>)</dt>
+   <dd>
+    <p>Removes the item with index <var>index</var> from the collection.</p>
+   </dd>
+
+   <dt><var>collection</var> . <code subdfn data-x="dom-HTMLOptionsCollection-selectedIndex">selectedIndex</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the index of the first selected item, if any, or &#x2212;1 if there is no selected
+    item.</p>
+
+    <p>Can be set, to change the selection.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The object's <span>supported property indices</span> are as defined for
+  <code>HTMLCollection</code> objects.</p>
+
+  <p>On getting, the <dfn><code data-x="dom-HTMLOptionsCollection-length">length</code></dfn>
+  attribute must return the number of nodes <span>represented by the collection</span>.</p>
+
+  <p>On setting, the behavior depends on whether the new value is equal to, greater than, or less
+  than the number of nodes <span>represented by the collection</span> at that time. If the number is
+  the same, then setting the attribute must do nothing. If the new value is greater, then <var>n</var> new <code>option</code> elements with no attributes and no child nodes must be
+  appended to the <code>select</code> element on which the <code>HTMLOptionsCollection</code> is
+  rooted, where <var>n</var> is the difference between the two numbers (new value minus old
+  value). Mutation events must be fired as if a <code>DocumentFragment</code> containing the new
+  <code>option</code> elements had been inserted. If the new value is lower, then the last <var>n</var> nodes in the collection must be removed from their parent nodes, where <var>n</var> is the difference between the two numbers (old value minus new value).</p>
+
+  <p class="note">Setting <code data-x="dom-HTMLOptionsCollection-length">length</code> never removes
+  or adds any <code>optgroup</code> elements, and never adds new children to existing
+  <code>optgroup</code> elements (though it can remove children from them).</p>
+
+  <p>The <span>supported property names</span> consist of the non-empty values of all the <code
+  data-x="attr-id">id</code> and <code data-x="attr-option-name">name</code> attributes of all the
+  elements <span>represented by the collection</span>, in <span>tree order</span>, ignoring later
+  duplicates, with the <code data-x="attr-id">id</code> of an element preceding its <code
+  data-x="attr-option-name">name</code> if it contributes both, they differ from each other, and neither is
+  the duplicate of an earlier entry.</p>
+
+  <p id="dom-htmloptionscollection-setter">When the user agent is to <span>set the value of a new
+  indexed property</span> or <span>set the value of an existing indexed property</span> for a given
+  property index <var>index</var> to a new value <var>value</var>, it must run the following
+  algorithm:</p>
+
+  <ol>
+
+   <li><p>If <var>value</var> is null, invoke the steps for the <code
+   data-x="dom-HTMLOptionsCollection-remove">remove</code> method with <var>index</var> as
+   the argument, and abort these steps.</p></li>
+
+   <li><p>Let <var>length</var> be the number of nodes <span>represented by the
+   collection</span>.</p></li>
+
+   <li><p>Let <var>n</var> be <var>index</var> minus <var>length</var>.</p></li>
+
+   <li><p>If <var>n</var> is greater than zero, then <span
+   data-x="concept-node-append">append</span> a <code>DocumentFragment</code> consisting of <span
+   data-x=""><var>n</var>-1</span> new <code>option</code> elements with no attributes and
+   no child nodes to the <code>select</code> element on which the <code>HTMLOptionsCollection</code>
+   is rooted.</p></li>
+
+   <li><p>If <var>n</var> is greater than or equal to zero, <span
+   data-x="concept-node-append">append</span> <var>value</var> to the <code>select</code>
+   element. Otherwise, <span data-x="concept-node-replace">replace</span> the <var>index</var>th element in the collection by <var>value</var>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-HTMLOptionsCollection-add">add(<var>element</var>, <var>before</var>)</code></dfn> method must act according to the following algorithm:</p>
+
+  <ol>
+
+   <li><p>If <var>element</var> is an ancestor of the <code>select</code> element on which
+   the <code>HTMLOptionsCollection</code> is rooted, then throw a
+   <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code> and abort these
+   steps.</li>
+
+   <li><p>If <var>before</var> is an element, but that element isn't a descendant of the
+   <code>select</code> element on which the <code>HTMLOptionsCollection</code> is rooted, then throw
+   a <span>"<code>NotFoundError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>If <var>element</var> and <var>before</var> are the same element, then
+   return and abort these steps.</li>
+
+   <li><p>If <var>before</var> is a node, then let <var>reference</var> be that
+   node. Otherwise, if <var>before</var> is an integer, and there is a <var>before</var>th node in the collection, let <var>reference</var> be that node.
+   Otherwise, let <var>reference</var> be null.</p></li>
+
+   <li><p>If <var>reference</var> is not null, let <var>parent</var> be the parent
+   node of <var>reference</var>. Otherwise, let <var>parent</var> be the
+   <code>select</code> element on which the <code>HTMLOptionsCollection</code> is rooted.</p></li>
+
+   <li><p><span>Pre-insert</span> <var>element</var> into <var>parent</var> node before
+   <var>reference</var>.</p>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-HTMLOptionsCollection-remove">remove(<var>index</var>)</code></dfn> method must act according to the following algorithm:</p>
+
+  <ol>
+
+   <li><p>If the number of nodes <span>represented by the collection</span> is zero, abort these
+   steps.</li>
+
+   <li><p>If <var>index</var> is not a number greater than or equal to 0 and less than the
+   number of nodes <span>represented by the collection</span>, abort these steps.</p></li>
+   <!-- note that Web IDL converts 'a', NaN, -0.5, 0.5, most objects, and null to 0, and numbers in
+   general truncate. so what we're checking against here in a way has very little to do with what's
+   going on in the JS -->
+   <!-- objects get converted by calling ToNumber which calls ToPrimitive which eventually calls valueOf:
+         https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2828
+         https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2833
+    -->
+   <!-- same for select.remove(), which calls this algorithm also:
+         https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2826
+         https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2825
+         https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2827
+     -->
+
+   <li><p>Let <var>element</var> be the <var>index</var>th element in the
+   collection.</p></li>
+
+   <li><p>Remove <var>element</var> from its parent node.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-HTMLOptionsCollection-selectedIndex">selectedIndex</code></dfn> IDL
+  attribute must act like the identically named attribute on the <code>select</code> element on
+  which the <code>HTMLOptionsCollection</code> is rooted</p>
+
+  <!-- see also https://ln.hixie.ch/?start=1161042744&count=1 -->
+
+  </div>
+
+
+  <div w-nodev>
+
+  

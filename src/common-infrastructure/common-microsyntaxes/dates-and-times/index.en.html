@@ -1,0 +1,34 @@
+<h4>Dates and times</h4>
+
+  <p>In the algorithms below, the <dfn>number of days in month <var>month</var> of year
+  <var>year</var></dfn> is: <em>31</em> if <var>month</var> is 1, 3, 5, 7, 8,
+  10, or 12; <em>30</em> if <var>month</var> is 4, 6, 9, or 11; <em>29</em> if <var>month</var> is 2 and <var>year</var> is a number divisible by 400, or if <var>year</var> is a number divisible by 4 but not by 100; and <em>28</em> otherwise. This
+  takes into account leap years in the Gregorian calendar. <ref spec=GREGORIAN></p>
+
+  <p>When <span>ASCII digits</span> are used in the date and time syntaxes defined in this section,
+  they express numbers in base ten.</p>
+
+  <div w-nodev>
+
+  <p class="note">While the formats described here are intended to be subsets of the corresponding
+  ISO8601 formats, this specification defines parsing rules in much more detail than ISO8601.
+  Implementors are therefore encouraged to carefully examine any date parsing libraries before using
+  them to implement the parsing rules described below; ISO8601 libraries might not parse dates and
+  times in exactly the same manner. <ref spec=ISO8601></p>
+
+  </div>
+
+  <p>Where this specification refers to the <dfn>proleptic Gregorian calendar</dfn>, it means the
+  modern Gregorian calendar, extrapolated backwards to year 1. A date in the <span>proleptic
+  Gregorian calendar</span>, sometimes explicitly referred to as a <dfn>proleptic-Gregorian
+  date</dfn>, is one that is described using that calendar even if that calendar was not in use at
+  the time (or place) in question. <ref spec=GREGORIAN></p>
+
+  <p class="note">The use of the Gregorian calendar as the wire format in this specification is an
+  arbitrary choice resulting from the cultural biases of those involved in the decision. See also
+  the section discussing <a href="#input-author-notes">date, time, and number formats</a> in forms
+  <span w-nodev>(for authors), <a href="#input-impl-notes">implementation notes regarding
+  localization of form controls</a>,</span> and the <code>time</code> element.</p>
+
+
+  

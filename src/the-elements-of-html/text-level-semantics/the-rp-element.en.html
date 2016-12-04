@@ -1,0 +1,62 @@
+<h4>The <dfn><code>rp</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>ruby</code> element, either immediately before or immediately after an <code>rt</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="text content">Text</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>rp</code> element can be used to provide parentheses or other content around a ruby
+  text component of a ruby annotation, to be shown by user agents that don't support ruby
+  annotations.</p>
+
+  <p>An <code>rp</code> element <span w-nodev>that is a child of a <code>ruby</code>
+  element</span> <span>represents</span> nothing. <span w-nodev>An <code>rp</code> element
+  whose parent element is not a <code>ruby</code> element <span>represents</span> its
+  children.</span></p>
+
+  <div class="example">
+
+   <p>The example above, in which each ideograph in the text <span data-x=""
+   lang="ja">&#28450;&#23383;</span> is annotated with its phonetic reading, could be expanded to
+   use <code>rp</code> so that in legacy user agents the readings are in parentheses:</p>
+
+   <pre lang="ja">...
+&lt;ruby>&#28450;&lt;rp> (&lt;/rp>&lt;rt>&#12363;&#12435;&lt;/rt>&lt;rp>) &lt;/rp>&#23383;&lt;rp> (&lt;/rp>&lt;rt>&#12376;&lt;/rt>&lt;rp>) &lt;/rp>&lt;/ruby>
+...</pre>
+
+   <p>In conforming user agents the rendering would be as above, but in user agents that do not
+   support ruby, the rendering would be:</p>
+
+   <pre lang="ja">... &#28450; (&#12363;&#12435;) &#23383; (&#12376;) ...</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>When there are multiple annotations for a segment, <code>rp</code> elements can also be placed
+   between the annotations. Here is another copy of an earlier contrived example showing some
+   symbols with names given in English and French, but this time with <code>rp</code> elements as
+   well:
+
+   <pre>&lt;ruby>
+&#x2665;&lt;rp>: &lt;/rp>&lt;rt>Heart&lt;/rt>&lt;rp>, &lt;/rp>&lt;rt lang=fr>C&oelig;ur&lt;/rt>&lt;rp>.&lt;/rp>
+&#x2618;&lt;rp>: &lt;/rp>&lt;rt>Shamrock&lt;/rt>&lt;rp>, &lt;/rp>&lt;rt lang=fr>Tr&egrave;fle&lt;/rt>&lt;rp>.&lt;/rp>
+&#x2736;&lt;rp>: &lt;/rp>&lt;rt>Star&lt;/rt>&lt;rp>, &lt;/rp>&lt;rt lang=fr>&Eacute;toile&lt;/rt>&lt;rp>.&lt;/rp>
+&lt;/ruby></pre>
+
+   <p>This would make the example render as follows in non-ruby-capable user agents:
+
+   <pre>&#x2665;: Heart, <span lang=fr>C&oelig;ur</span>. &#x2618;: Shamrock, <span lang=fr>Tr&egrave;fle</span>. &#x2736;: Star, <span lang=fr>&Eacute;toile</span>.</pre>
+
+  </div>
+
+
+  

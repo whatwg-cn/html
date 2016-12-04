@@ -1,0 +1,184 @@
+<h4>Reflecting content attributes in IDL attributes</h4>
+
+  <p>Some IDL attributes are defined to <dfn>reflect</dfn> a particular content attribute. This
+  means that on getting, the IDL attribute returns the current value of the content attribute, and
+  on setting, the IDL attribute changes the value of the content attribute to the given value.</p>
+
+  <div w-nodev>
+
+  <p>In general, on getting, if the content attribute is not present, the IDL attribute must act as
+  if the content attribute's value is the empty string; and on setting, if the content attribute is
+  not present, it must first be added.</p>
+
+  <p>If a reflecting IDL attribute is a <code data-x="idl-USVString">USVString</code> attribute
+  whose content attribute is defined to contain a <span>URL</span>, then on getting, if the
+  content attribute is absent, the IDL attribute must return the empty string. Otherwise, the IDL
+  attribute must <span data-x="parse a url">parse</span> the value of the content attribute relative
+  to the element's <span>node document</span> and if that is successful, return the <span>resulting
+  URL string</span>. If parsing fails, then the value of the content attribute must be returned
+  instead, <span data-x="concept-idl-convert">converted</span> to a <code
+  data-x="idl-USVString">USVString</code>. On setting, the content attribute must be set to the
+  specified new value.</p>
+
+  <p>If a reflecting IDL attribute is a <code data-x="idl-DOMString">DOMString</code> attribute
+  whose content attribute is an <span>enumerated attribute</span>, and the IDL attribute is
+  <dfn>limited to only known values</dfn>, then, on getting, the IDL attribute must return the
+  conforming value associated with the state the attribute is in (in its canonical case), if any, or
+  the empty string if the attribute is in a state that has no associated keyword value or if the
+  attribute is not in a defined state (e.g. the attribute is missing and there is no <i
+  data-x="missing value default">missing value default</i>). On setting, the content attribute must
+  be set to the specified new value.</p>
+
+  <p>If a reflecting IDL attribute is a nullable <code data-x="idl-DOMString">DOMString</code>
+  attribute whose content attribute is an <span>enumerated attribute</span>, then, on getting, if
+  the corresponding content attribute is in its <i>missing value default</i> then the IDL attribute
+  must return null, otherwise, the IDL attribute must return the conforming value associated with
+  the state the attribute is in (in its canonical case). On setting, if the new value is null, the
+  content attribute must be removed, and otherwise, the content attribute must be set to the
+  specified new value.</p>
+
+  <p>If a reflecting IDL attribute is a <code data-x="idl-DOMString">DOMString</code> or <code
+  data-x="idl-USVString">USVString</code> attribute but doesn't fall into any of the above
+  categories, then the getting and setting must be done in a transparent, case-preserving manner.</p>
+
+  <p>If a reflecting IDL attribute is an <span>IDL enumeration</span> attribute, then, on getting,
+  if the corresponding content attribute's value <span
+  data-x="case-sensitive">case-sensitively</span> matches one of the enumerated values, then the IDL
+  attribute must return the content attribute's value; otherwise it must return the content
+  attribute's default value. On setting, the content attribute must be set to the specified new
+  value.</p>
+
+  <p>If a reflecting IDL attribute is a <code data-x="idl-boolean">boolean</code> attribute, then on
+  getting the IDL attribute must return true if the content attribute is set, and false if it is
+  absent. On setting, the content attribute must be removed if the IDL attribute is set to false,
+  and must be set to the empty string if the IDL attribute is set to true. (This corresponds to the
+  rules for <span data-x="boolean attribute">boolean content attributes</span>.)</p>
+
+  <p>If a reflecting IDL attribute has a signed integer type (<code data-x="idl-long">long</code>)
+  then, on getting, the content attribute must be parsed according to the <span data-x="rules for
+  parsing integers">rules for parsing signed integers</span>, and if that is successful, and the
+  value is in the range of the IDL attribute's type, the resulting value must be returned. If, on
+  the other hand, it fails or returns an out of range value, or if the attribute is absent, then the
+  default value must be returned instead, or 0 if there is no default value. On setting, the given
+  value must be converted to the shortest possible string representing the number as a <span>valid
+  integer</span> and then that string must be used as the new content attribute value.</p>
+
+  <p>If a reflecting IDL attribute has a signed integer type (<code data-x="idl-long">long</code>)
+  that is <dfn>limited to only non-negative numbers</dfn> then, on getting, the content attribute
+  must be parsed according to the <span>rules for parsing non-negative integers</span>, and if that
+  is successful, and the value is in the range of the IDL attribute's type, the resulting value must
+  be returned. If, on the other hand, it fails or returns an out of range value, or if the attribute
+  is absent, the default value must be returned instead, or &#x2212;1 if there is no default value.
+  On setting, if the value is negative, the user agent must throw an
+  <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>. Otherwise, the given value
+  must be converted to the shortest possible string representing the number as a <span>valid
+  non-negative integer</span> and then that string must be used as the new content attribute
+  value.</p>
+
+  <p>If a reflecting IDL attribute has an <em>unsigned</em> integer type (<code
+  data-x="idl-unsigned-long">unsigned long</code>) then, on getting, the content attribute must be
+  parsed according to the <span>rules for parsing non-negative integers</span>, and if that is
+  successful, and the value is in the range 0 to 2147483647 inclusive, the resulting value must be
+  returned. If, on the other hand, it fails or returns an out of range value, or if the attribute is
+  absent, the default value must be returned instead, or 0 if there is no default value. On setting,
+  first, if the new value is in the range 0 to 2147483647, then let <var>n</var> be the new value,
+  otherwise let <var>n</var> be the default value, or 0 if there is no default value; then,
+  <var>n</var> must be converted to the shortest possible string representing the number as a
+  <span>valid non-negative integer</span> and that string must be used as the new content attribute
+  value.</p>
+  <!-- see https://www.w3.org/Bugs/Public/show_bug.cgi?id=10352
+           https://bugzilla.mozilla.org/show_bug.cgi?id=586118
+           https://www.w3.org/Bugs/Public/show_bug.cgi?id=17705
+       ...for why the range is clamped to 2147483647 rather the normal unsigned long maximum value
+       of 4294967295 -->
+
+  <p>If a reflecting IDL attribute has an unsigned integer type (<code
+  data-x="idl-unsigned-long">unsigned long</code>) that is <dfn>limited to only non-negative numbers
+  greater than zero</dfn>, then the behavior is similar to the previous case, but zero is not
+  allowed. On getting, the content attribute must first be parsed according to the <span>rules for
+  parsing non-negative integers</span>, and if that is successful, and the value is in the range 1
+  to 2147483647 inclusive, the resulting value must be returned. If, on the other hand, it fails or
+  returns an out of range value, or if the attribute is absent, the default value must be returned
+  instead, or 1 if there is no default value. On setting, if the value is zero, the user agent must
+  throw an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>. Otherwise, first,
+  if the new value is in the range 1 to 2147483647, then let <var>n</var> be the new value,
+  otherwise let <var>n</var> be the default value, or 1 if there is no default value; then,
+  <var>n</var> must be converted to the shortest possible string representing the number as a
+  <span>valid non-negative integer</span> and that string must be used as the new content attribute
+  value.</p> <!-- see previous paragraph for note about the weird range -->
+
+  <p>If a reflecting IDL attribute has an unsigned integer type (<code
+  data-x="idl-unsigned-long">unsigned long</code>) that is <dfn>limited to only non-negative numbers
+  greater than zero with fallback</dfn>, then the behavior is similar to the previous case, but
+  disallowed values are converted to the default value. On getting, the content attribute must first
+  be parsed according to the <span>rules for parsing non-negative integers</span>, and if that is
+  successful, and the value is in the range 1 to 2147483647 inclusive, the resulting value must be
+  returned. If, on the other hand, it fails or returns an out of range value, or if the attribute is
+  absent, the default value must be returned instead. On setting, first, if the new value is in the
+  range 1 to 2147483647, then let <var>n</var> be the new value, otherwise let <var>n</var> be the
+  default value; then, <var>n</var> must be converted to the shortest possible string representing
+  the number as a <span>valid non-negative integer</span> and that string must be used as the new
+  content attribute value.</p> <!-- see previous paragraph for note about the weird range -->
+
+  <p>If a reflecting IDL attribute has a floating-point number type (<code
+  data-x="idl-double">double</code> or <code data-x="idl-unrestricted-double">unrestricted
+  double</code>), then, on getting, the content attribute must be parsed according to the
+  <span>rules for parsing floating-point number values</span>, and if that is successful, the
+  resulting value must be returned. If, on the other hand, it fails, or if the attribute is absent,
+  the default value must be returned instead, or 0.0 if there is no default value. On setting, the
+  given value must be converted to the <span>best representation of the number as a floating-point
+  number</span> and then that string must be used as the new content attribute value.</p>
+
+  <p>If a reflecting IDL attribute has a floating-point number type (<code
+  data-x="idl-double">double</code> or <code data-x="idl-unrestricted-double">unrestricted
+  double</code>) that is <dfn>limited to numbers greater than zero</dfn>, then the behavior is
+  similar to the previous case, but zero and negative values are not allowed. On getting, the
+  content attribute must be parsed according to the <span>rules for parsing floating-point number
+  values</span>, and if that is successful and the value is greater than 0.0, the resulting value
+  must be returned. If, on the other hand, it fails or returns an out of range value, or if the
+  attribute is absent, the default value must be returned instead, or 0.0 if there is no default
+  value. On setting, if the value is less than or equal to zero, then the value must be ignored.
+  Otherwise, the given value must be converted to the <span>best representation of the number as a
+  floating-point number</span> and then that string must be used as the new content attribute
+  value.</p>
+
+  <p class="note">The values Infinity and Not-a-Number (NaN) values throw an exception on setting,
+  as defined in the Web IDL specification. <ref spec=WEBIDL></p>
+
+  <p>If a reflecting IDL attribute has the type <code>DOMTokenList</code>, then on getting it must
+  return a <code>DOMTokenList</code> object whose associated element is the element in question and
+  whose associated attribute's local name is the name of the attribute in question.</p>
+
+  <p>If a reflecting IDL attribute has the type <code>HTMLElement</code>, or an interface that
+  descends from <code>HTMLElement</code>, then, on getting, it must run the following algorithm
+  (stopping at the first point where a value is returned):</p>
+
+  <ol>
+
+   <li>If the corresponding content attribute is absent, then the IDL attribute must return
+   null.</li>
+
+   <li>Let <var>candidate</var> be the element that the <code
+   data-x="dom-Document-getElementById">document.getElementById()</code> method would find when
+   called on the content attribute's element's <span>node document</span> if it were passed as its argument the current value of
+   the corresponding content attribute.</li>
+
+   <li>If <var>candidate</var> is null, or if it is not type-compatible with the IDL
+   attribute, then the IDL attribute must return null.</li>
+
+   <li>Otherwise, it must return <var>candidate</var>.</li>
+
+  </ol>
+
+  <p>On setting, if the given element has an <code data-x="attr-id">id</code> attribute, and has the
+  same <span>tree</span> as the element of the attribute being set, and the given element is the
+  first element in that <span>tree</span> whose <span data-x="concept-ID">ID</span> is the value of
+  that <code data-x="attr-id">id</code> attribute, then the content attribute must be set to the
+  value of that <code data-x="attr-id">id</code> attribute. Otherwise, the content attribute must be
+  set to the empty string.</p>
+
+  </div>
+
+
+<!--TOPIC:DOM APIs-->
+  

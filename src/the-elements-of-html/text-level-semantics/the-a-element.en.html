@@ -1,0 +1,230 @@
+<h4 data-dfn-type="element" data-lt="a">The <dfn><code>a</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd>If the element has an <code data-x="attr-hyperlink-href">href</code> attribute: <span>Interactive content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Transparent</span>, but there must be no <span>interactive content</span> or <code>a</code> element descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-hyperlink-href">href</code></dd>
+   <dd><code data-x="attr-hyperlink-target">target</code></dd>
+   <dd><code data-x="attr-hyperlink-download">download</code></dd>
+   <dd><code data-x="attr-hyperlink-ping">ping</code></dd>
+   <dd><code data-x="attr-hyperlink-rel">rel</code></dd>
+   <dd><code data-x="attr-hyperlink-hreflang">hreflang</code></dd>
+   <dd><code data-x="attr-hyperlink-type">type</code></dd>
+   <dd><code data-x="attr-hyperlink-referrerpolicy">referrerpolicy</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLAnchorElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-a-target">target</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-a-download">download</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-a-ping">ping</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-a-rel">rel</span>;
+  [<span>CEReactions</span>, SameObject, PutForwards=<span data-x="dom-DOMTokenList-value">value</span>] readonly attribute <span>DOMTokenList</span> <span data-x="dom-a-relList">relList</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-a-hreflang">hreflang</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-a-type">type</span>;
+
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-a-text">text</span>;
+
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-a-referrerPolicy">referrerPolicy</span>;
+};
+<span>HTMLAnchorElement</span> implements <span>HTMLHyperlinkElementUtils</span>;</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>If the <code>a</code> element has an <code data-x="attr-hyperlink-href">href</code> attribute,
+  then it <span>represents</span> a <span>hyperlink</span> (a hypertext anchor) labeled by its
+  contents.</p>
+
+  <!-- v2: Eric Meyer requests the ability to nest links so that a big hyperlink, e.g. representing
+  a calendar event, can be clickable, while within it there are subareas that represent links to
+  distinct areas, e.g. a link to see photos of the event, or to edit the event, or some such. -->
+
+  <p>If the <code>a</code> element has no <code data-x="attr-hyperlink-href">href</code> attribute,
+  then the element <span>represents</span> a placeholder for where a link might otherwise have been
+  placed, if it had been relevant, consisting of just the element's contents.</p>
+
+  <p>The <code data-x="attr-hyperlink-target">target</code>, <code
+  data-x="attr-hyperlink-download">download</code>, <code data-x="attr-hyperlink-ping">ping</code>,
+  <code data-x="attr-hyperlink-rel">rel</code>, <code
+  data-x="attr-hyperlink-hreflang">hreflang</code>, <code data-x="attr-hyperlink-type">type</code>,
+  and <code data-x="attr-hyperlink-referrerpolicy">referrerpolicy</code> attributes must be omitted
+  if the <code data-x="attr-hyperlink-href">href</code> attribute is not present.</p>
+
+  <p>If the <code data-x="attr-itemprop">itemprop</code> attribute is specified on an <code>a</code> element,
+  then the <code data-x="attr-hyperlink-href">href</code> attribute must also be specified.</p>
+
+  <div class="example">
+
+   <p>If a site uses a consistent navigation toolbar on every page, then the link that would
+   normally link to the page itself could be marked up using an <code>a</code> element:</p>
+
+   <pre>&lt;nav>
+ &lt;ul>
+  &lt;li> &lt;a href="/">Home&lt;/a> &lt;/li>
+  &lt;li> &lt;a href="/news">News&lt;/a> &lt;/li>
+  &lt;li> &lt;a>Examples&lt;/a> &lt;/li>
+  &lt;li> &lt;a href="/legal">Legal&lt;/a> &lt;/li>
+ &lt;/ul>
+&lt;/nav></pre>
+
+  </div>
+
+  <div w-nodev>
+
+  <p>The <code data-x="attr-hyperlink-href">href</code>, <code
+  data-x="attr-hyperlink-target">target</code>, <code
+  data-x="attr-hyperlink-download">download</code>, <code data-x="attr-hyperlink-ping">ping</code>,
+  and <code data-x="attr-hyperlink-referrerpolicy">referrerpolicy</code> attributes affect what
+  happens when users <span data-x="following hyperlinks">follow hyperlinks</span> or <span
+  data-x="downloading hyperlinks">download hyperlinks</span> created using the <code>a</code>
+  element. The <code data-x="attr-hyperlink-rel">rel</code>, <code
+  data-x="attr-hyperlink-hreflang">hreflang</code>, and <code data-x="attr-hyperlink-type">type</code>
+  attributes may be used to indicate to the user the likely nature of the target resource before the
+  user follows the link.</p>
+
+  <p>The <span>activation behavior</span> of <code>a</code> elements that create <span
+  data-x="hyperlink">hyperlinks</span> is to run the following steps:</p>
+
+  <ol><!-- c.f. <area>'s similar section, also <link>'s -->
+
+   <li><p>If the <code>a</code> element's <span>node document</span> is not <span>fully active</span>, then abort these steps.</p></li>
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2033 -->
+   <!-- https://www.hixie.ch/tests/adhoc/html/navigation/iframe/002.html -->
+
+   <li>
+
+    <p>If either the <code>a</code> element has a <code
+    data-x="attr-hyperlink-download">download</code> attribute and the algorithm is not
+    <span>triggered by user activation</span>; or, if the user has not indicated a specific
+    <span>browsing context</span> for following the link, and the element's <code
+    data-x="attr-hyperlink-target">target</code> attribute is present, and applying <span>the rules
+    for choosing a browsing context given a browsing context name</span>, using the value of the
+    <code data-x="attr-hyperlink-target">target</code> attribute as the browsing context name, would
+    result in there not being a chosen browsing context, then run these substeps:</p>
+
+    <ol>
+
+     <li><p>If there is an <span>entry settings object</span>, throw an
+     <span>"<code>InvalidAccessError</code>"</span> <code>DOMException</code>.</p></li>
+
+     <li><p>Abort these steps without following the hyperlink.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the target of the <code data-x="event-click">click</code> event is an <code>img</code>
+   element with an <code data-x="attr-img-ismap">ismap</code> attribute specified, then server-side
+   image map processing must be performed, as follows:</p>
+
+    <ol>
+
+     <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C%21DOCTYPE%20html%3E%0A...%3Ca%20href%3D%22%23%22%3E%3Cimg%20ismap%20usemap%3D%22%23a%22%20src%3D/resources/images/smallcats%3E%3C/a%3E%0A%3Cmap%20name%3Da%3E%3Carea%20shape%3Drect%20coords%3D0%2C0%2C50%2C50%20href%3Db%3E%3C/map%3E -->
+
+     <li>Let <var>x</var> and <var>y</var> be zero.</li>
+
+     <li>If the <code data-x="event-click">click</code> event was a real pointing-device-triggered
+     <code data-x="event-click">click</code> event on the <code>img</code> element, then set
+     <var>x</var> to the distance in <span data-x="'px'">CSS pixels</span> from the left edge of the
+     image to the location of the click, and set <var>y</var> to the distance in <span
+     data-x="'px'">CSS pixels</span> from the top edge of the image to the location of the
+     click.</li>
+
+     <li>If <var>x</var> is negative, set <var>x</var> to zero.</li>
+
+     <li>If <var>y</var> is negative, set <var>y</var> to zero.</li>
+
+     <li>Let <var>hyperlink suffix</var> be a U+003F QUESTION MARK character, the value of
+     <var>x</var> expressed as a base-ten integer using <span>ASCII digits</span>, a U+002C COMMA
+     character (,), and the value of <var>y</var> expressed as a base-ten integer using <span>ASCII
+     digits</span>.</li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Finally, the user agent must <span data-x="following hyperlinks">follow the
+   hyperlink</span> or <span data-x="downloading hyperlinks">download the hyperlink</span> created
+   by the <code>a</code> element, as determined by the <code
+   data-x="attr-hyperlink-download">download</code> attribute and any expressed user preference,
+   passing <var>hyperlink suffix</var>, if the steps above defined it.</p></li>
+
+  </ol>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>a</var> . <code subdfn data-x="dom-a-text">text</code></dt>
+
+   <dd>
+
+    <p>Same as <code>textContent</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The IDL attributes <dfn><code data-x="dom-a-download">download</code></dfn>, <dfn
+  data-dfn-for="a" data-dfn-type="element-attr" data-export=""><code
+  data-x="dom-a-ping">ping</code></dfn>, <dfn><code data-x="dom-a-target">target</code></dfn>,
+  <dfn><code data-x="dom-a-rel">rel</code></dfn>, <dfn><code
+  data-x="dom-a-hreflang">hreflang</code></dfn>, and <dfn><code
+  data-x="dom-a-type">type</code></dfn>, must <span>reflect</span> the respective content attributes
+  of the same name.</p>
+
+  <p>The IDL attribute <dfn><code data-x="dom-a-rellist">relList</code></dfn> must
+  <span>reflect</span> the <code data-x="attr-hyperlink-rel">rel</code> content attribute.</p>
+
+  <p>The IDL attribute <dfn><code data-x="dom-a-referrerPolicy">referrerPolicy</code></dfn> must
+  <span>reflect</span> the <code data-x="attr-hyperlink-referrerpolicy">referrerpolicy</code>
+  content attribute, <span>limited to only known values</span>.</p>
+
+  <p>The <dfn><code data-x="dom-a-text">text</code></dfn> IDL attribute, on getting, must return the
+  same value as the <code>textContent</code> IDL attribute on the element, and on setting, must act
+  as if the <code>textContent</code> IDL attribute on the element had been set to the new value.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>The <code>a</code> element may be wrapped around entire paragraphs, lists, tables, and so
+   forth, even entire sections, so long as there is no interactive content within (e.g. buttons or
+   other links). This example shows how this can be used to make an entire advertising block into a
+   link:</p>
+
+   <pre>&lt;aside class="advertising">
+ &lt;h1>Advertising&lt;/h1>
+ &lt;a href="https://ad.example.com/?adid=1929&amp;amp;pubid=1422">
+  &lt;section>
+   &lt;h1>Mellblomatic 9000!&lt;/h1>
+   &lt;p>Turn all your widgets into mellbloms!&lt;/p>
+   &lt;p>Only $9.99 plus shipping and handling.&lt;/p>
+  &lt;/section>
+ &lt;/a>
+ &lt;a href="https://ad.example.com/?adid=375&amp;amp;pubid=1422">
+  &lt;section>
+   &lt;h1>The Mellblom Browser&lt;/h1>
+   &lt;p>Web browsing at the speed of light.&lt;/p>
+   &lt;p>No other browser goes faster!&lt;/p>
+  &lt;/section>
+ &lt;/a>
+&lt;/aside></pre>
+
+  </div>
+
+
+  

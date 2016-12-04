@@ -1,0 +1,90 @@
+<h4>The <dfn><code>em</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>em</code> element <span>represents</span> stress emphasis of its contents.</p>
+
+  <p>The level of stress that a particular piece of content has is given by its number of ancestor
+  <code>em</code> elements.</p>
+
+  <p>The placement of stress emphasis changes the meaning of the sentence. The element thus forms an
+  integral part of the content. The precise way in which stress is used in this way depends on the
+  language.</p>
+
+  <div class="example">
+
+   <p>These examples show how changing the stress emphasis changes the meaning. First, a general
+   statement of fact, with no stress:</p>
+
+   <pre>&lt;p>Cats are cute animals.&lt;/p></pre>
+
+   <p>By emphasizing the first word, the statement implies that the kind of animal under discussion
+   is in question (maybe someone is asserting that dogs are cute):</p>
+
+   <pre>&lt;p>&lt;em>Cats&lt;/em> are cute animals.&lt;/p></pre>
+
+   <p>Moving the stress to the verb, one highlights that the truth of the entire sentence is in
+   question (maybe someone is saying cats are not cute):</p>
+
+   <pre>&lt;p>Cats &lt;em>are&lt;/em> cute animals.&lt;/p></pre>
+
+   <p>By moving it to the adjective, the exact nature of the cats is reasserted (maybe someone
+   suggested cats were <em>mean</em> animals):</p>
+
+   <pre>&lt;p>Cats are &lt;em>cute&lt;/em> animals.&lt;/p></pre>
+
+   <p>Similarly, if someone asserted that cats were vegetables, someone correcting this might
+   emphasize the last word:</p>
+
+   <pre>&lt;p>Cats are cute &lt;em>animals&lt;/em>.&lt;/p></pre>
+
+   <p>By emphasizing the entire sentence, it becomes clear that the speaker is fighting hard to get
+   the point across. This kind of stress emphasis also typically affects the punctuation, hence the
+   exclamation mark here.</p>
+
+   <pre>&lt;p>&lt;em>Cats are cute animals!&lt;/em>&lt;/p></pre>
+
+   <p>Anger mixed with emphasizing the cuteness could lead to markup such as:</p>
+
+   <pre>&lt;p>&lt;em>Cats are &lt;em>cute&lt;/em> animals!&lt;/em>&lt;/p></pre>
+
+  </div>
+
+  <div class="note">
+
+   <p>The <code>em</code> element isn't a generic "italics" element. Sometimes, text is intended to
+   stand out from the rest of the paragraph, as if it was in a different mood or voice. For this,
+   the <code>i</code> element is more appropriate.</p>
+
+   <p>The <code>em</code> element also isn't intended to convey importance; for that purpose, the
+   <code>strong</code> element is more appropriate.</p>
+
+   <!--
+
+    Thus the following is a bad use of <em>:
+
+      <p><em>Note</em>: ...</p>
+
+    You should use <strong> or <i> for this instead (depending on
+    exactly what you're doing).
+
+   -->
+
+  </div>
+
+
+
+  

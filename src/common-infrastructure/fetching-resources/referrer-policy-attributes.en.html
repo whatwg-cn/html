@@ -1,0 +1,33 @@
+<h4>Referrer policy attributes</h4>
+
+  <p>A <dfn data-export="">referrer policy attribute</dfn> is an <span>enumerated attribute</span>.
+  Each <span>referrer policy</span>, including the empty string, is a keyword for this attribute,
+  mapping to a state of the same name.</p>
+
+  <p>The attribute's <i data-x="invalid value default">invalid value default</i> and <i
+  data-x="missing value default">missing value default</i> are both the empty string state.</p>
+
+  <p>The impact of these states on the processing model of various <span
+  data-x="concept-fetch">fetches</span> is defined in more detail throughout this specification, in
+  the WHATWG Fetch standard, and in <cite>Referrer Policy</cite>. <ref spec=FETCH> <ref
+  spec=REFERRERPOLICY></p>
+
+  <div class="note">
+   <p>Several signals can contribute to which processing model is used for a given <span
+   data-x="concept-fetch">fetch</span>; a <span>referrer policy attribute</span> is only one of
+   them. In general, the order in which these signals are processed are:</p>
+
+   <ol>
+    <li><p>First, the presence of a <code data-x="rel-noreferrer">noreferrer</code> link
+    type;</p></li>
+    <li><p>Then, the value of a <span>referrer policy attribute</span>;</p></li>
+    <li><p>Then, the presence of any <code>meta</code> element with <code
+    data-x="attr-meta-name">name</code> attribute set to <code
+    data-x="meta-referrer">referrer</code>.</p></li>
+    <li><p>Finally, the `<code data-x="http-referrer-policy">Referrer-Policy</code>` HTTP
+    header.</p></li>
+   </ol>
+  </div>
+
+
+  

@@ -1,0 +1,105 @@
+<h5>Other metadata names</h5>
+
+  <p><dfn data-x="concept-meta-extensions">Extensions to the predefined set of metadata names</dfn>
+  may be registered in the <a href="https://wiki.whatwg.org/wiki/MetaExtensions">WHATWG Wiki
+  MetaExtensions page</a>. <ref spec=WHATWGWIKI></p>
+
+  <p>Anyone is free to edit the WHATWG Wiki MetaExtensions page at any time to add a type. These new
+  names must be specified with the following information:</p>
+
+  <dl>
+
+   <dt>Keyword</dt>
+
+   <dd><p>The actual name being defined. The name should not be confusingly similar to any other
+   defined name (e.g. differing only in case).</p></dd>
+
+
+   <dt>Brief description</dt>
+
+   <dd><p>A short non-normative description of what the metadata name's meaning is, including the
+   format the value is required to be in.</p></dd>
+
+
+   <dt>Specification</dt>
+
+   <dd>A link to a more detailed description of the metadata name's semantics and requirements. It
+   could be another page on the Wiki, or a link to an external page.</dd>
+
+
+   <dt>Synonyms</dt>
+
+   <dd><p>A list of other names that have exactly the same processing requirements. Authors should
+   not use the names defined to be synonyms, they are only intended to allow user agents to support
+   legacy content. Anyone may remove synonyms that are not used in practice; only names that need to
+   be processed as synonyms for compatibility with legacy content are to be registered in this
+   way.</p></dd>
+
+
+   <dt>Status</dt>
+
+   <dd>
+
+    <p>One of the following:</p>
+
+    <dl>
+
+     <dt>Proposed</dt>
+
+     <dd>The name has not received wide peer review and approval. Someone has proposed it and is, or
+     soon will be, using it.</dd>
+
+     <dt>Ratified</dt>
+
+     <dd>The name has received wide peer review and approval. It has a specification that
+     unambiguously defines how to handle pages that use the name, including when they use it in
+     incorrect ways.</dd>
+
+     <dt>Discontinued</dt>
+
+     <dd>The metadata name has received wide peer review and it has been found wanting. Existing
+     pages are using this metadata name, but new pages should avoid it. The "brief description" and
+     "specification" entries will give details of what authors should use instead, if anything.</dd>
+
+    </dl>
+
+    <p>If a metadata name is found to be redundant with existing values, it should be removed and
+    listed as a synonym for the existing value.</p>
+
+    <p>If a metadata name is registered in the "proposed" state for a period of a month or more
+    without being used or specified, then it may be removed from the registry.</p>
+
+    <p>If a metadata name is added with the "proposed" status and found to be redundant with
+    existing values, it should be removed and listed as a synonym for the existing value. If a
+    metadata name is added with the "proposed" status and found to be harmful, then it should be
+    changed to "discontinued" status.</p>
+
+    <p>Anyone can change the status at any time, but should only do so in accordance with the
+    definitions above.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Conformance checkers must use the information given on the WHATWG Wiki MetaExtensions page to
+  establish if a value is allowed or not: values defined in this specification or marked as
+  "proposed" or "ratified" must be accepted, whereas values marked as "discontinued" or not listed
+  in either this specification or on the aforementioned page must be rejected as invalid.
+  Conformance checkers may cache this information (e.g. for performance reasons or to avoid the use
+  of unreliable network connectivity).</p>
+
+  <p>When an author uses a new metadata name not defined by either this specification or the Wiki
+  page, conformance checkers should offer to add the value to the Wiki, with the details described
+  above, with the "proposed" status.</p>
+
+  </div>
+
+  <p>Metadata names whose values are to be <span data-x="URL">URLs</span> must not be proposed or
+  accepted. Links must be represented using the <code>link</code> element, not the <code>meta</code>
+  element.</p>
+
+
+
+  

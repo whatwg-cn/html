@@ -1,0 +1,50 @@
+<h4>Global identifiers for items</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Sometimes, an <span data-x="concept-item">item</span> gives information about a topic that has a
+  global identifier. For example, books can be identified by their ISBN number.</p>
+
+  <p>Vocabularies (as identified by the <code data-x="attr-itemtype">itemtype</code> attribute) can
+  be designed such that <span data-x="concept-item">items</span> get associated with their global
+  identifier in an unambiguous way by expressing the global identifiers as <span
+  data-x="URL">URLs</span> given in an <code data-x="attr-itemid">itemid</code> attribute.</p>
+
+  <p>The exact meaning of the <span data-x="URL">URLs</span> given in <code
+  data-x="attr-itemid">itemid</code> attributes depends on the vocabulary used.</p>
+
+  <div class="example">
+
+   <p>Here, an item is talking about a particular book:</p>
+
+<pre>&lt;dl itemscope
+    itemtype="https://vocab.example.net/book"
+    <strong>itemid="urn:isbn:0-330-34032-8"</strong>>
+ &lt;dt>Title
+ &lt;dd itemprop="title">The Reality Dysfunction
+ &lt;dt>Author
+ &lt;dd itemprop="author">Peter F. Hamilton
+ &lt;dt>Publication date
+ &lt;dd>&lt;time itemprop="pubdate" datetime="1996-01-26">26 January 1996&lt;/time>
+&lt;/dl></pre>
+
+   <p>The "<code data-x="">https://vocab.example.net/book</code>" vocabulary in this example would
+   define that the <code data-x="attr-itemid">itemid</code> attribute takes a <code data-x="urn
+   protocol">urn:</code> <span>URL</span> pointing to the ISBN of the book.</p>
+
+  </div>
+
+  <!-- (commented out since itemtype="" defines the meaning of the
+        identifier for now)
+  <p>Although it is common practice, authors are encouraged not to use the same URL to identify
+  multiple topics; in particular, an HTTP URL usually identifies a specific resource (such as an
+  image or document), and authors are encouraged to not use them to identify people, non-Web
+  resources like companies, movies, and products, or other abstract concepts. Using an HTTP URL as a
+  global identifier for something other than the resource actually designated by the URL leads to a
+  situation where it is ambiguous whether the identifier, and thus the set of properties specified
+  in the microdata, references the page or something else.</p>
+  -->
+
+
+
+  

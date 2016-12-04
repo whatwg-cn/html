@@ -1,0 +1,71 @@
+<h6>Srcset attributes</h6>
+
+  <p>A <dfn>srcset attribute</dfn> is an attribute with requirements defined in this section.</p>
+
+  <p>If present, its value must consist of one or more <span data-x="image candidate string">image
+  candidate strings</span>, each separated from the next by a U+002C COMMA character (,). If an
+  <span>image candidate string</span> contains no descriptors and no <span data-x="space
+  character">space characters</span> after the URL, the following <span>image candidate
+  string</span>, if there is one, must begin with one or more <span data-x="space character">space
+  characters</span>.</p>
+
+  <p>An <dfn>image candidate string</dfn> consists of the following components, in order, with the
+  further restrictions described below this list:</p>
+
+  <ol>
+
+   <li><p>Zero or more <span data-x="space character">space characters</span>.</p></li>
+
+   <li><p>A <span>valid non-empty URL</span> that does not start or end with a U+002C COMMA
+   character (,), referencing a non-interactive, optionally animated, image resource that is neither
+   paged nor scripted.</p></li>
+
+   <li><p>Zero or more <span data-x="space character">space characters</span>.</p></li>
+
+   <li>
+
+    <p>Zero or one of the following:</p>
+
+    <ul>
+
+     <li><p>A <dfn>width descriptor</dfn>, consisting of: a <span>space character</span>, a
+     <span>valid non-negative integer</span> giving a number greater than zero representing the
+     <dfn>width descriptor value</dfn>, and a U+0077 LATIN SMALL LETTER W character.</p></li>
+
+     <li><p>A <dfn>pixel density descriptor</dfn>, consisting of: a <span>space character</span>, a
+     <span>valid floating-point number</span> giving a number greater than zero representing the
+     <dfn>pixel density descriptor value</dfn>, and a U+0078 LATIN SMALL LETTER X
+     character.</p></li>
+
+    </ul>
+
+   </li>
+
+   <li><p>Zero or more <span data-x="space character">space characters</span>.</p></li>
+
+  </ol>
+
+  <p>There must not be an <span>image candidate string</span> for an element that has the same
+  <span>width descriptor value</span> as another <span>image candidate string</span>'s <span>width
+  descriptor value</span> for the same element.</p>
+
+  <p>There must not be an <span>image candidate string</span> for an element that has the same
+  <span>pixel density descriptor value</span> as another <span>image candidate string</span>'s
+  <span>pixel density descriptor value</span> for the same element. For the purpose of this
+  requirement, an <span>image candidate string</span> with no descriptors is equivalent to an
+  <span>image candidate string</span> with a <code data-x="">1x</code> descriptor.</p>
+
+  <p>If an <span>image candidate string</span> for an element has the <span>width descriptor</span>
+  specified, all other <span data-x="image candidate string">image candidate strings</span> for that
+  element must also have the <span>width descriptor</span> specified.</p>
+
+  <p>The specified width in an <span>image candidate string</span>'s <span>width descriptor</span>
+  must match the <span>intrinsic width</span> in the resource given by the
+  <span>image candidate string</span>'s URL, if it has an <span>intrinsic width</span>.</p>
+
+  <p>If an element has a <span>srcset attribute</span> present, all <span data-x="image
+  candidate string">image candidate strings</span> for that element must have the <span>width
+  descriptor</span> specified.</p>
+
+
+  

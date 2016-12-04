@@ -1,0 +1,319 @@
+<h4>The <dfn><code>keygen</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Interactive content</span>.</dd>
+   <dd><span data-x="category-listed">Listed</span>, <span data-x="category-label">labelable</span>, <span data-x="category-submit">submittable</span>, and <span data-x="category-reset">resettable</span> <span>form-associated element</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-fe-autofocus">autofocus</code></dd>
+   <dd><code data-x="attr-keygen-challenge">challenge</code></dd>
+   <dd><code data-x="attr-fe-disabled">disabled</code></dd>
+   <dd><code data-x="attr-fae-form">form</code></dd>
+   <dd><code data-x="attr-keygen-keytype">keytype</code></dd>
+   <dd><code data-x="attr-fe-name">name</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">// Note: <a href="#customized-built-in-element-restrictions">intentionally</a> not [<span>HTMLConstructor</span>]
+interface <dfn>HTMLKeygenElement</dfn> : <span>HTMLElement</span> {
+  attribute boolean <span data-x="dom-fe-autofocus">autofocus</span>;
+  attribute DOMString <span data-x="dom-keygen-challenge">challenge</span>;
+  attribute boolean <span data-x="dom-fe-disabled">disabled</span>;
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-fae-form">form</span>;
+  attribute DOMString <span data-x="dom-keygen-keytype">keytype</span>;
+  attribute DOMString <span data-x="dom-fe-name">name</span>;
+
+  readonly attribute DOMString <span data-x="dom-keygen-type">type</span>;
+
+  readonly attribute boolean <span data-x="dom-cva-willValidate">willValidate</span>;
+  readonly attribute <span>ValidityState</span> <span data-x="dom-cva-validity">validity</span>;
+  readonly attribute DOMString <span data-x="dom-cva-validationMessage">validationMessage</span>;
+  boolean <span data-x="dom-cva-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-cva-reportValidity">reportValidity</span>();
+  void <span data-x="dom-cva-setCustomValidity">setCustomValidity</span>(DOMString error);
+
+  [SameObject] readonly attribute <span>NodeList</span> <span data-x="dom-lfe-labels">labels</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <div class="critical">
+   <p>This feature is in the process of being removed from the Web platform. (This
+   is a long process that takes many years.) Using the <code>keygen</code> element at this time is
+   highly discouraged. It is already not supported in at least one major Web browser, and others are
+   actively removing support.</p>
+
+   <p>This removal is occuring for several reasons. <code>keygen</code> is unique in that in
+   practice it allows pages to persistently modify the user's operating system, by virtue of
+   inserting keys into the operating system keystore and thus affecting all installed applications
+   and all origins. It is inherently insecure due to the use of MD5 as a signing algorithm. And it
+   is underspecified and inconsistently implemented, with various vendor extensions causing
+   interopability issues, and an in-practice dependency on unspecified <code
+   data-x="">application/x-x509-*-cert</code> handling.</p>
+
+   <p>For more background, see <a
+   href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/pX5NbX0Xack/kmHsyMGJZAMJ">Chromium's
+   intent to deprecate</a>. Follow progress toward complete removal in <a
+   href="https://github.com/whatwg/html/issues/2079">issue #2079</a>.</p>
+  </div>
+
+  <p>The <code>keygen</code> element <span>represents</span> a key pair generator control. When the
+  control's form is submitted, the private key is stored in the local keystore, and the public key
+  is packaged and sent to the server.</p>
+
+  <p>The <dfn><code data-x="attr-keygen-challenge">challenge</code></dfn> attribute may be specified.
+  Its value will be packaged with the submitted key.</p>
+
+  <p>The <dfn><code data-x="attr-keygen-keytype">keytype</code></dfn> attribute is an
+  <span>enumerated attribute</span>. The following table lists the keywords and states for the
+  attribute &mdash; the keywords in the left column map to the states listed in the cell in the
+  second column on the same row as the keyword. User agents are not required to support these
+  values, and must only recognize values whose corresponding algorithms they support.</p>
+
+  <table>
+   <thead> <tr> <th> Keyword <th> State
+   <tbody>
+    <tr>
+     <td> <code data-x="">rsa</code>
+     <td> <i>RSA</i>
+<!-- v2 (see below)
+    <tr>
+     <td> <code data-x="">ec</code>
+     <td> <i>EC</i>
+-->
+  </table>
+
+  <p>The <i data-x="invalid value default">invalid value default</i> state is the <i>unknown</i> state. The <i data-x="missing value default">missing value default</i> state is the <i>RSA</i> state, if it is supported, or the <i>unknown</i> state otherwise.</p>
+
+  <p class="note">This specification does not specify what key types user agents are to support
+  &mdash; it is possible for a user agent to not support any key types at all.</p>
+
+  <div w-nodev>
+
+  <p>The user agent may expose a user interface for each <code>keygen</code> element to allow the
+  user to configure settings of the element's key pair generator, e.g. the key length.</p>
+
+  <p>The <span data-x="concept-form-reset-control">reset algorithm</span> for <code>keygen</code>
+  elements is to set these various configuration settings back to their defaults.</p>
+
+  <p>The element's <span data-x="concept-fe-value">value</span> is the string returned from the
+  following algorithm:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Use the appropriate step from the following list:</p>
+
+    <dl class="switch">
+
+     <!-- v2 (see above)
+
+     <dt>If the <code data-x="attr-keygen-keytype">keytype</code> attribute is in the <i>EC</i> state</dt>
+
+     <dd>
+
+      <p>...
+
+      https://www.mail-archive.com/dev-tech-crypto@lists.mozilla.org/msg05902.html
+
+     </dd>
+
+     -->
+
+     <dt>If the <code data-x="attr-keygen-keytype">keytype</code> attribute is in the <i>RSA</i> state</dt>
+
+     <dd>
+
+      <p>Generate an RSA key pair using the settings given by the user, if appropriate, using the
+      <code data-x="">md5WithRSAEncryption</code> RSA signature algorithm (the signature algorithm
+      with MD5 and the RSA encryption algorithm) referenced in section 2.2.1 ("RSA Signature
+      Algorithm") of RFC 3279, and defined in RFC 3447. <ref spec=RFC3279> <ref spec=RFC3447></p>
+
+     </dd>
+
+     <dt>Otherwise, the <code data-x="attr-keygen-keytype">keytype</code> attribute is in the <i>unknown</i> state</dt>
+
+     <dd>
+
+      <p>The given key type is not supported. Return the empty string and abort this algorithm.</p>
+
+     </dd>
+
+    </dl>
+
+    <p>Let <var>private key</var> be the generated private key.</p>
+
+    <p>Let <var>public key</var> be the generated public key.</p>
+
+    <p>Let <var>signature algorithm</var> be the selected signature algorithm.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the element has a <code data-x="attr-keygen-challenge">challenge</code> attribute, then let
+    <var>challenge</var> be that attribute's value. Otherwise, let <var>challenge</var> be the empty string.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>algorithm</var> be an ASN.1 <code data-x="">AlgorithmIdentifier</code>
+    structure as defined by RFC 5280, with the <code data-x="">algorithm</code> field giving the
+    ASN.1 OID used to identify <var>signature algorithm</var>, using the OIDs defined in
+    section 2.2 ("Signature Algorithms") of RFC 3279, and the <code data-x="">parameters</code> field
+    set up as required by RFC 3279 for <code data-x="">AlgorithmIdentifier</code> structures for that
+    algorithm. <ref spec=X690> <ref spec=RFC5280> <ref spec=RFC3279></p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>spki</var> be an ASN.1 <code data-x="">SubjectPublicKeyInfo</code> structure
+    as defined by RFC 5280, with the <code data-x="">algorithm</code> field set to the <var>algorithm</var> structure from the previous step, and the <code
+    data-x="">subjectPublicKey</code> field set to the BIT STRING value resulting from ASN.1 DER
+    encoding the <var>public key</var>. <ref spec=X690> <ref spec=RFC5280></p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>publicKeyAndChallenge</var> be an ASN.1 <code>PublicKeyAndChallenge</code>
+    structure as defined below, with the <code data-x="">spki</code> field set to the <var>spki</var> structure from the previous step, and the <code data-x="">challenge</code>
+    field set to the string <var>challenge</var> obtained earlier. <ref spec=X690></p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>signature</var> be the BIT STRING value resulting from ASN.1 DER encoding
+    the signature generated by applying the <var>signature algorithm</var> to the byte
+    string obtained by ASN.1 DER encoding the <var>publicKeyAndChallenge</var> structure,
+    using <var>private key</var> as the signing key. <ref spec=X690></p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>signedPublicKeyAndChallenge</var> be an ASN.1
+    <code>SignedPublicKeyAndChallenge</code> structure as defined below, with the <code
+    data-x="">publicKeyAndChallenge</code> field set to the <var>publicKeyAndChallenge</var>
+    structure, the <code data-x="">signatureAlgorithm</code> field set to the <var>algorithm</var> structure, and the <code data-x="">signature</code> field set to the BIT
+    STRING <var>signature</var> from the previous step. <ref spec=X690></p>
+
+   </li>
+
+   <li>
+
+    <p>Return the result of base64 encoding the result of ASN.1 DER encoding the <var>signedPublicKeyAndChallenge</var> structure. <ref spec=RFC4648><!--base64--> <ref spec=X690></p>
+
+   </li>
+
+  </ol>
+
+  <p>The data objects used by the above algorithm are defined as follows. These definitions use the
+  same "ASN.1-like" syntax defined by RFC 5280. <ref spec=RFC5280></p>
+
+  <pre class="asn"><dfn>PublicKeyAndChallenge</dfn> ::= SEQUENCE {
+    spki SubjectPublicKeyInfo,
+    challenge IA5STRING
+}
+
+<dfn>SignedPublicKeyAndChallenge</dfn> ::= SEQUENCE {
+    publicKeyAndChallenge <span>PublicKeyAndChallenge</span>,
+    signatureAlgorithm AlgorithmIdentifier,
+    signature BIT STRING
+}</pre>
+
+  <hr>
+
+  <p><strong>Constraint validation</strong>: The <code>keygen</code> element is <span>barred from
+  constraint validation</span>.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-fae-form">form</code> attribute is used to explicitly associate the
+  <code>keygen</code> element with its <span>form owner</span>. The <code
+  data-x="attr-fe-name">name</code> attribute represents the element's name. The <code
+  data-x="attr-fe-disabled">disabled</code> attribute is used to make the control non-interactive and
+  to prevent its value from being submitted. The <code data-x="attr-fe-autofocus">autofocus</code>
+  attribute controls focus.</p>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>keygen</var> . <code data-x="dom-keygen-type">type</code></dt>
+
+   <dd>
+
+    <p>Returns the string "<code data-x="">keygen</code>".</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-keygen-challenge">challenge</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-keygen-keytype">keytype</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name, <span>limited to only known
+  values</span>.</p>
+
+  <p>The <dfn><code data-x="dom-keygen-type">type</code></dfn> IDL attribute must return the value
+  "<code data-x="">keygen</code>".</p>
+
+  <p>The <code data-x="dom-cva-willValidate">willValidate</code>, <code
+  data-x="dom-cva-validity">validity</code>, and <code
+  data-x="dom-cva-validationMessage">validationMessage</code> IDL attributes, and the <code
+  data-x="dom-cva-checkValidity">checkValidity()</code>, <code
+  data-x="dom-cva-reportValidity">reportValidity()</code>, and <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> methods, are part of the
+  <span>constraint validation API</span>. The <code data-x="dom-lfe-labels">labels</code> IDL
+  attribute provides a list of the element's <code>label</code>s. The <code
+  data-x="dom-fe-autofocus">autofocus</code>, <code data-x="dom-fe-disabled">disabled</code>, <code
+  data-x="dom-fae-form">form</code>, and <code data-x="dom-fe-name">name</code> IDL attributes are
+  part of the element's forms API.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <p class="note">This specification does not specify how the private key generated is to be used.
+  It is expected that after receiving the <code>SignedPublicKeyAndChallenge</code> (SPKAC)
+  structure, the server will generate a client certificate and offer it back to the user for
+  download; this certificate, once downloaded and stored in the key store along with the private
+  key, can then be used to authenticate to services that use TLS and certificate authentication. For
+  more information, see e.g. <a
+  href="https://wiki.mozilla.org/CA:Certificate_Download_Specification">this MDN article</a>.</p>
+  <!-- or maybe https://developer.mozilla.org/en-US/docs/NSS_Certificate_Download_Specification ? -->
+
+  <!-- how does the UA know which private key is associated with a certificate it gets back after
+  the server has taken the public key created by <keygen> and turned it into a client cert? -->
+
+  <div class="example">
+
+   <p>To generate a key pair, add the private key to the user's key store, and submit the public key
+   to the server, markup such as the following can be used:</p>
+
+   <pre>&lt;form action="processkey.cgi" method="post" enctype="multipart/form-data">
+ &lt;p>&lt;keygen name="key">&lt;/p>
+ &lt;p>&lt;input type=submit value="Submit key...">&lt;/p>
+&lt;/form></pre>
+
+   <p>The server will then receive a form submission with a packaged RSA public key as the value of
+   "<code data-x="">key</code>". This can then be used for various purposes, such as generating a
+   client certificate, as mentioned above.</p>
+
+  </div>
+
+
+  

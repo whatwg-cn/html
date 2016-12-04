@@ -1,0 +1,1230 @@
+<h5>Loading the media resource</h5>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-load">load</code>()</dt>
+
+   <dd>
+
+    <p>Causes the element to reset and start selecting and loading a new <span>media resource</span>
+    from scratch.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>All <span data-x="media element">media elements</span> have an <dfn>autoplaying flag</dfn>,
+  which must begin in the true state, and a <dfn>delaying-the-load-event flag</dfn>, which must
+  begin in the false state. While the <span>delaying-the-load-event flag</span> is true, the element
+  must <span>delay the load event</span> of its document.</p>
+
+  <p>When the <dfn><code data-x="dom-media-load">load()</code></dfn> method on a <span>media
+  element</span> is invoked, the user agent must run the <span>media element load
+  algorithm</span>.</p>
+
+  <p>The <dfn>media element load algorithm</dfn> consists of the following steps.</p>
+
+  <ol>
+
+   <li><p>Abort any already-running instance of the <span
+   data-x="concept-media-load-algorithm">resource selection algorithm</span> for this
+   element.</p></li>
+
+   <li><p>Let <var>pending tasks</var> be a list of all <span data-x="concept-task">tasks</span>
+   from the <span>media element</span>'s <span>media element event task source</span> in one of the
+   <span data-x="task queue">task queues</span>.</p></li>
+
+   <li><p>For each task in <var>pending tasks</var> that would <span>resolve pending play
+   promises</span> or <span>reject pending play promises</span>, immediately resolve or reject those
+   promises in the order the corresponding tasks were queued.</p></li>
+
+   <li>
+
+    <p>Remove each <span data-x="concept-task">task</span> in <var>pending tasks</var> from its
+    <span>task queue</span></p>
+
+    <p class="note">Basically, pending events and callbacks are discarded and promises in-flight to
+    be resolved/rejected are resolved/rejected immediately when the media element starts loading a
+    new resource.</p>
+
+   </li>
+
+
+<!--
+    <p>If there are any <span data-x="concept-task">tasks</span> that were <span data-x="queue a
+    task">queued</span> by the <span data-x="concept-media-load-algorithm">resource selection
+    algorithm</span> (including the algorithms that it itself invokes) for this same <span>media
+    element</span> from the <span>DOM manipulation task source</span> in one of the <span
+    data-x="task queue">task queues</span>, then remove those tasks.</p>
+-->
+
+   <li><p>If the <span>media element</span>'s <code
+   data-x="dom-media-networkState">networkState</code> is set to <code
+   data-x="dom-media-NETWORK_LOADING">NETWORK_LOADING</code> or <code
+   data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code>, <span>queue a task</span> to <span
+   data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-media-abort">abort</code> at the <span>media element</span>.</p></li>
+
+   <li>
+
+    <p>If the <span>media element</span>'s <code data-x="dom-media-networkState">networkState</code>
+    is not set to <code data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code>, then run these
+    substeps:</p>
+
+    <ol>
+
+     <li><p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span>
+     named <code data-x="event-media-emptied">emptied</code> at the <span>media
+     element</span>.</p></li>
+
+     <li><p>If a fetching process is in progress for the <span>media
+     element</span>, the user agent should stop it.</p></li>
+
+     <li><p>If the <span>media element</span>'s <span>assigned media provider object</span> is a
+     <code>MediaSource</code> object, then <span data-x="Detaching from a media
+     element">detach</span> it.</p></li>
+
+     <!--(no point doing this, since we always call the resource selection algorithm immediately
+     at the end of this algorithm, and that switches it to NETWORK_NO_SOURCE and sets the flag)
+     <li><p>Set the <code data-x="dom-media-networkState">networkState</code> attribute to <code
+     data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code>.</p></li>
+     <li><p>Set the element's <span>show poster flag</span> to true.</p></li>
+     -->
+
+     <li><p><span>Forget the media element's media-resource-specific tracks</span>.</p></li>
+
+     <li><p>If <code data-x="dom-media-readyState">readyState</code> is not set to <code
+     data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, then set it to that state.</p></li>
+
+     <li>
+
+     <p>If the <code data-x="dom-media-paused">paused</code> attribute is false, then run these
+     substeps:</p>
+
+      <ol>
+
+       <li><p>Set the <code data-x="dom-media-paused">paused</code> attribute to true.</p></li>
+
+       <li><p><span>Take pending play promises</span> and <span>reject pending play promises</span>
+       with the result and an <span>"<code>AbortError</code>"</span>
+       <code>DOMException</code>.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>If <code data-x="dom-media-seeking">seeking</code> is true, set it to false.</p></li>
+
+     <li>
+
+      <p>Set the <span>current playback position</span> to 0.</p>
+
+      <p>Set the <span>official playback position</span> to 0.</p>
+
+      <p>If this changed the <span>official playback position</span>, then <span>queue a task</span>
+      to <span data-x="concept-event-fire">fire an event</span> named <code
+      data-x="event-media-timeupdate">timeupdate</code> at the <span>media element</span>.</p>
+
+     </li>
+
+     <li><p>Set the <span>timeline offset</span> to Not-a-Number (NaN).</p></li>
+
+     <li>
+
+      <p>Update the <code data-x="dom-media-duration">duration</code> attribute to Not-a-Number
+      (NaN).</p>
+
+      <p class="note">The user agent <a href="#durationChange">will not</a> fire a <code
+      data-x="event-media-durationchange">durationchange</code> event for this particular change of
+      the duration.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Set the <code data-x="dom-media-playbackRate">playbackRate</code> attribute to the value of
+   the <code data-x="dom-media-defaultPlaybackRate">defaultPlaybackRate</code> attribute.</p></li>
+
+   <li><p>Set the <code data-x="dom-media-error">error</code> attribute to null and the
+   <span>autoplaying flag</span> to true.</p></li>
+
+   <li><p>Invoke the <span>media element</span>'s <span
+   data-x="concept-media-load-algorithm">resource selection algorithm</span>.</li>
+
+   <li>
+
+    <p class="note">Playback of any previously playing <span>media resource</span> for this element
+    stops.</p>
+
+   </li>
+
+  </ol>
+
+  <p>The <dfn data-x="concept-media-load-algorithm">resource selection algorithm</dfn> for a
+  <span>media element</span> is as follows. This algorithm is always invoked as part of a <span data-x="concept-task">task</span>, but one
+  of the first steps in the algorithm is to return and continue running the remaining steps
+  <span>in parallel</span>. In addition, this algorithm interacts
+  closely with the <span>event loop</span> mechanism; in particular, it has <span data-x="synchronous
+  section">synchronous sections</span> (which are triggered as part of the <span>event loop</span>
+  algorithm). Steps in such sections are marked with &#x231B;.</p>
+
+  <ol>
+
+   <!-- precondition: networkState == NETWORK_EMPTY or we're coming straight from the algorithm above
+                      (where setting it to empty is commented out) -->
+
+   <li><p>Set the element's <code data-x="dom-media-networkState">networkState</code> attribute to
+   the <code data-x="dom-media-NETWORK_NO_SOURCE">NETWORK_NO_SOURCE</code> value.</p></li>
+
+   <li><p>Set the element's <span>show poster flag</span> to true.</p></li>
+
+   <li><p>Set the <span>media element</span>'s <span>delaying-the-load-event flag</span> to true
+   (this <span data-x="delay the load event">delays the load event</span>).</p></li>
+
+   <li><p><span>Await a stable state</span>, allowing the <span
+   data-x="concept-task">task</span> that invoked this algorithm to continue. The <span>synchronous
+   section</span> consists of all the remaining steps of this algorithm until the algorithm says the
+   <span>synchronous section</span> has ended. (Steps in <span data-x="synchronous
+   section">synchronous sections</span> are marked with &#x231B;.)</p></li>
+
+   <li>
+
+    <p>&#x231B; If the <span>media element</span>'s <span>blocked-on-parser</span> flag is false,
+    then <span>populate the list of pending text tracks</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>&#x231B; If the <span>media element</span> has an <span>assigned media provider
+    object</span>, then let <var>mode</var> be <i>object</i>.</p>
+
+    <p>&#x231B; Otherwise, if the <span>media element</span> has no <span>assigned media provider
+    object</span> but has a <code data-x="attr-media-src">src</code>
+    attribute, then let <var>mode</var> be <i>attribute</i>.</p>
+
+    <p>&#x231B; Otherwise, if the <span>media element</span> does not have an <span>assigned media provider
+    object</span> and does not have a <code
+    data-x="attr-media-src">src</code> attribute, but does have a <code>source</code> element child, then
+    let <var>mode</var> be <i>children</i> and let <var>candidate</var>
+    be the first such <code>source</code> element child in <span>tree order</span>.</p>
+
+    <p>&#x231B; Otherwise the <span>media element</span> has no <span>assigned media provider
+    object</span> and has neither a <code
+    data-x="attr-media-src">src</code> attribute nor a <code>source</code> element child: set the
+    <code data-x="dom-media-networkState">networkState</code> to <code
+    data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code><!-- no need to set the <span>show poster
+    flag</span> to true since we set it up there already -->, and abort these steps; the
+    <span>synchronous section</span> ends.</p>
+
+   </li>
+
+   <li><p>&#x231B; Set the <span>media element</span>'s <code
+   data-x="dom-media-networkState">networkState</code> to <code
+   data-x="dom-media-NETWORK_LOADING">NETWORK_LOADING</code>.</p></li>
+
+   <li><p>&#x231B; <span>Queue a task</span> to <span data-x="concept-event-fire">fire an
+   event</span> named <code data-x="event-media-loadstart">loadstart</code> at the <span>media
+   element</span>.</p></li>
+
+   <li>
+
+    <p>Run the appropriate steps from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If <var>mode</var> is <i>object</i></dt>
+
+     <dd>
+
+      <ol>
+
+       <li><p>&#x231B; Set the <code data-x="dom-media-currentSrc">currentSrc</code> attribute to
+       the empty string.</p></li>
+
+       <li><p>End the <span>synchronous section</span>, continuing the remaining steps
+       <span>in parallel</span>.</p></li>
+
+       <li><p>Run the <span data-x="concept-media-load-resource">resource fetch algorithm</span>
+       with the <span>assigned media provider object</span>. If that algorithm returns without
+       aborting <em>this</em> one, then the load failed.</p></li>
+
+       <li><p><i>Failed with media provider</i>: Reaching this step indicates that the media
+       resource failed to load. <span>Take pending play promises</span> and <span>queue a
+       task</span> to run the <span>dedicated media source failure steps</span> with the
+       result.</p></li>
+
+       <li><p>Wait for the <span data-x="concept-task">task</span> queued by the previous step to have
+       executed.</p></li>
+
+       <li><p>Abort these steps. The element won't attempt to load another resource until this
+       algorithm is triggered again.</p></li>
+
+      </ol>
+
+     </dd>
+
+     <dt>If <var>mode</var> is <i>attribute</i></dt>
+
+     <dd>
+
+      <ol>
+
+       <li><p>&#x231B; If the <code data-x="attr-media-src">src</code>
+       attribute's value is the empty string, then end the <span>synchronous section</span>, and jump
+       down to the <i>failed with attribute</i> step below.</p></li>
+
+       <li><p>&#x231B; Let <var>urlString</var> and <var>urlRecord</var> be the <span>resulting URL
+       string</span> and the <span>resulting URL record</span>, respectively, that would have
+       resulted from <span data-x="parse a url">parsing</span> the <span>URL</span> specified by the
+       <code data-x="attr-media-src">src</code> attribute's value relative to the <span>media
+       element</span>'s <span>node document</span> when the <code data-x="attr-media-src">src</code>
+       attribute was last changed.</p> <!-- i.e. changing <base> after src="" has no effect -->
+
+       <li><p>&#x231B; If <var>urlString</var> was obtained successfully, set the <code
+       data-x="dom-media-currentSrc">currentSrc</code> attribute to <var>urlString</var>.</p></li>
+
+       <li><p>End the <span>synchronous section</span>, continuing the remaining steps
+       <span>in parallel</span>.</p></li>
+
+       <li><p>If <var>urlRecord</var> was obtained successfully, run the <span
+       data-x="concept-media-load-resource">resource fetch algorithm</span> with
+       <var>urlRecord</var>. If that algorithm returns without aborting <em>this</em> one, then the
+       load failed.</p></li>
+
+       <li><p><i>Failed with attribute</i>: Reaching this step indicates that the media resource
+       failed to load or that the given <span>URL</span> could not be <span data-x="parse a
+       url">parsed</span>. <span>Take pending play promises</span> and <span>queue a task</span> to
+       run the <span>dedicated media source failure steps</span> with the result.</p></li>
+
+       <li><p>Wait for the <span data-x="concept-task">task</span> queued by the previous step to have
+       executed.</p></li>
+
+       <li><p>Abort these steps. The element won't attempt to load another resource until this
+       algorithm is triggered again.</p></li>
+       <!-- it took its ball and went home, sulking. -->
+
+      </ol>
+
+     </dd>
+
+     <dt>Otherwise (<var>mode</var> is <i>children</i>)</dt>
+
+     <dd>
+
+      <ol>
+
+       <li>
+
+        <p>&#x231B; Let <var>pointer</var> be a position defined by two adjacent nodes in the
+        <span>media element</span>'s child list, treating the start of the list (before the first
+        child in the list, if any) and end of the list (after the last child in the list, if any) as
+        nodes in their own right. One node is the node before <var>pointer</var>, and the
+        other node is the node after <var>pointer</var>. Initially, let <var>pointer</var> be the position between the <var>candidate</var> node and the
+        next node, if there are any, or the end of the list, if it is the last node.</p>
+
+        <p>As <span>nodes are inserted</span> and <span data-x="nodes are removed">removed</span> into the <span>media element</span>, <var>pointer</var> must be updated as follows:</p>
+
+        <dl>
+
+         <dt>If a new <span data-x="nodes are inserted">node is inserted</span> between the two nodes that define <var>pointer</var></dt>
+
+         <dd>Let <var>pointer</var> be the point between the node before <var>pointer</var> and the new node. In other words, insertions at <var>pointer</var> go after <var>pointer</var>.</dd>
+
+         <dt>If the node before <var>pointer</var> is removed</dt>
+
+         <dd>Let <var>pointer</var> be the point between the node after <var>pointer</var> and the node before the node after <var>pointer</var>. In
+         other words, <var>pointer</var> doesn't move relative to the remaining nodes.</dd>
+
+         <dt>If the node after <var>pointer</var> is removed</dt>
+
+         <dd>Let <var>pointer</var> be the point between the node before <var>pointer</var> and the node after the node before <var>pointer</var>. Just
+         as with the previous case, <var>pointer</var> doesn't move relative to the remaining
+         nodes.</dd>
+
+        </dl>
+
+        <p>Other changes don't affect <var>pointer</var>.</p>
+
+       </li>
+
+       <li><p>&#x231B; <i>Process candidate</i>: If <var>candidate</var> does not have a
+       <code data-x="attr-source-src">src</code> attribute, or if its <code
+       data-x="attr-source-src">src</code> attribute's value is the empty string, then end the
+       <span>synchronous section</span>, and jump down to the <i>failed with elements</i> step
+       below.</p></li>
+
+       <li><p>&#x231B; Let <var>urlString</var> and <var>urlRecord</var> be the <span>resulting URL
+       string</span> and the <span>resulting URL record</span>, respectively, that would have
+       resulted from <span data-x="parse a url">parsing</span> the <span>URL</span> specified by
+       <var>candidate</var>'s <code data-x="attr-source-src">src</code> attribute's value relative
+       to the <var>candidate</var>'s <span>node document</span> when the <code
+       data-x="attr-source-src">src</code> attribute was last changed.</p> <!-- i.e. changing <base>
+       after src="" has no effect -->
+
+       <li><p>&#x231B; If <var>urlString</var> was not obtained successfully, then end the
+       <span>synchronous section</span>, and jump down to the <i>failed with elements</i> step
+       below.</p></li>
+
+       <li><p>&#x231B; If <var>candidate</var> has a <code
+       data-x="attr-source-type">type</code> attribute whose value, when parsed as a <span>MIME
+       type</span> (including any codecs described by the <code data-x="">codecs</code> parameter, for
+       types that define that parameter), represents <span>a type that the user agent knows it cannot
+       render</span>, then end the <span>synchronous section</span>, and jump down to the <i>failed with elements</i> step below.</p></li>
+
+       <li><p>&#x231B; Set the <code data-x="dom-media-currentSrc">currentSrc</code> attribute to
+       <var>urlString</var>.</p></li>
+
+       <li><p>End the <span>synchronous section</span>, continuing the remaining steps
+       <span>in parallel</span>.</p></li>
+
+       <li><p>Run the <span data-x="concept-media-load-resource">resource fetch algorithm</span>
+       with <var>urlRecord</var>. If that algorithm returns without aborting <em>this</em> one,
+       then the load failed.</p></li>
+
+       <li><p><i>Failed with elements</i>: <span>Queue a task</span> to <span
+       data-x="concept-event-fire">fire an event</span> named <code
+       data-x="event-source-error">error</code> at the <var>candidate</var> element.</p></li>
+
+       <li><p><span>Await a stable state</span>. The <span>synchronous section</span>
+       consists of all the remaining steps of this algorithm until the algorithm says the
+       <span>synchronous section</span> has ended. (Steps in <span data-x="synchronous
+       section">synchronous sections</span> are marked with &#x231B;.)</p></li>
+
+       <li><p>&#x231B; <span>Forget the media element's media-resource-specific
+       tracks</span>.</p></li>
+
+       <li><p>&#x231B; <i>Find next candidate</i>: Let <var>candidate</var> be
+       null.</p></li>
+
+       <li><p>&#x231B; <i>Search loop</i>: If the node after <var>pointer</var> is
+       the end of the list, then jump to the <i>waiting</i> step below.</p></li>
+
+       <li><p>&#x231B; If the node after <var>pointer</var> is a <code>source</code> element,
+       let <var>candidate</var> be that element.</p></li>
+
+       <li><p>&#x231B; Advance <var>pointer</var> so that the node before <var>pointer</var> is now the node that was after <var>pointer</var>, and the node
+       after <var>pointer</var> is the node after the node that used to be after <var>pointer</var>, if any.</p></li>
+
+       <li><p>&#x231B; If <var>candidate</var> is null, jump back to the <i>search
+       loop</i> step. Otherwise, jump back to the <i>process candidate</i> step.</p></li>
+
+       <li><p>&#x231B; <i>Waiting</i>: Set the element's <code
+       data-x="dom-media-networkState">networkState</code> attribute to the <code
+       data-x="dom-media-NETWORK_NO_SOURCE">NETWORK_NO_SOURCE</code> value.</p></li>
+
+       <li><p>&#x231B; Set the element's <span>show poster flag</span> to true.</p></li>
+
+       <li><p>&#x231B; <span>Queue a task</span> to set the element's <span>delaying-the-load-event
+       flag</span> to false. This stops <span data-x="delay the load event">delaying the load
+       event</span>.</p></li>
+
+       <li><p>End the <span>synchronous section</span>, continuing the remaining steps
+       <span>in parallel</span>.</p></li>
+
+       <li><p>Wait until the node after <var>pointer</var> is a node other than the end of
+       the list. (This step might wait forever.)</p></li>
+
+       <li><p><span>Await a stable state</span>. The <span>synchronous section</span>
+       consists of all the remaining steps of this algorithm until the algorithm says the
+       <span>synchronous section</span> has ended. (Steps in <span data-x="synchronous
+       section">synchronous sections</span> are marked with &#x231B;.)</p></li>
+
+       <li><p>&#x231B; Set the element's <span>delaying-the-load-event flag</span> back to true (this
+       <span data-x="delay the load event">delays the load event</span> again, in case it hasn't been
+       fired yet).</p>
+
+       <li><p>&#x231B; Set the <code data-x="dom-media-networkState">networkState</code> back to <code
+       data-x="dom-media-NETWORK_LOADING">NETWORK_LOADING</code>.</p></li>
+
+       <li><p>&#x231B; Jump back to the <i>find next candidate</i> step above.</p></li>
+
+      </ol>
+
+     </dd>
+
+    </dl>
+
+    <p>The <dfn>dedicated media source failure steps</dfn> with a list of promises
+    <var>promises</var> are the following steps:</p>
+
+    <ol>
+
+     <li><p>Set the <code data-x="dom-media-error">error</code> attribute to a new
+     <code>MediaError</code> object whose <code data-x="dom-MediaError-code">code</code> attribute
+     is set to <code
+     data-x="dom-MediaError-MEDIA_ERR_SRC_NOT_SUPPORTED">MEDIA_ERR_SRC_NOT_SUPPORTED</code>.</p></li>
+
+     <li><p><span>Forget the media element's media-resource-specific tracks</span>.</p></li>
+
+     <li><p>Set the element's <code data-x="dom-media-networkState">networkState</code> attribute to
+     the <code data-x="dom-media-NETWORK_NO_SOURCE">NETWORK_NO_SOURCE</code> value.</p></li>
+
+     <li><p>Set the element's <span>show poster flag</span> to true.</p></li>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-media-error">error</code> at the <span>media element</span>.</p></li>
+
+     <li><p><span>Reject pending play promises</span> with <var>promises</var> and a
+     <span>"<code>NotSupportedError</code>"</span> <code>DOMException</code>.</p></li>
+
+     <li><p>Set the element's <span>delaying-the-load-event flag</span> to false. This stops <span
+     data-x="delay the load event">delaying the load event</span>.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>The <dfn data-x="concept-media-load-resource">resource fetch algorithm</dfn> for a <span>media
+  element</span> and a given <span>URL record</span> or <span>media provider object</span> is as
+  follows:</p>
+
+  <ol>
+
+   <li><p>If the algorithm was invoked with <span>media provider object</span> or a <span>URL
+   record</span> whose <span data-x="concept-url-object">object</span> is a <span>media provider
+   object</span>, then let <var>mode</var> be <i>local</i>. Otherwise let <var>mode</var> be
+   <i>remote</i>.</p></li>
+
+   <li><p>If <var>mode</var> is <i>remote</i>, then let the <var>current media resource</var> be the
+   resource given by the <span>URL record</span> passed to this algorithm; otherwise, let the
+   <var>current media resource</var> be the resource given by the <span>media provider
+   object</span>. Either way, the <var>current media resource</var> is now the element's <span>media
+   resource</span>.</p></li>
+
+   <li><p>Remove all <span data-x="media-resource-specific text track">media-resource-specific text
+   tracks</span> from the <span>media element</span>'s <span>list of pending text tracks</span>, if
+   any.</p>
+
+
+   <li>
+
+    <p>Run the appropriate steps from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If <var>mode</var> is remote</dt>
+
+     <dd>
+
+      <ol>
+
+       <li>
+
+        <p>Optionally, run the following substeps. This is the expected behavior if the user agent
+        intends to not attempt to fetch the resource until the user requests it explicitly (e.g. as
+        a way to implement the <code data-x="attr-media-preload">preload</code> attribute's <code
+        data-x="attr-media-preload-none">none</code> keyword).</p>
+
+        <ol>
+
+         <li><p>Set the <code data-x="dom-media-networkState">networkState</code> to <code
+         data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code>.</p></li>
+
+         <li><p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span>
+         named <code data-x="event-media-suspend">suspend</code> at the element.</p></li>
+
+         <li><p><span>Queue a task</span> to set the element's <span>delaying-the-load-event flag</span>
+         to false. This stops <span data-x="delay the load event">delaying the load
+         event</span>.</p></li>
+
+         <li><p>Wait for the task to be run.</p></li>
+
+         <li><p>Wait for an implementation-defined event (e.g. the user requesting that the media
+         element begin playback).</p></li>
+
+         <li><p>Set the element's <span>delaying-the-load-event flag</span> back to true (this <span
+         data-x="delay the load event">delays the load event</span> again, in case it hasn't been fired
+         yet).</p>
+
+         <li><p>Set the <code data-x="dom-media-networkState">networkState</code> to <code
+         data-x="dom-media-NETWORK_LOADING">NETWORK_LOADING</code>.</p></li>
+
+        </ol>
+
+       </li>
+
+       <li>
+
+        <p>Let <var>request</var> be the result of <span
+        data-x="create a potential-CORS request">creating a potential-CORS request</span> given
+        <var>current media resource</var>'s <span>URL record</span>, "<code data-x="">media</code>",
+        and the <span>media element</span>'s <code
+        data-x="attr-media-crossorigin">crossorigin</code> content attribute value.
+
+        <p>Set <var>request</var>'s <span data-x="concept-request-client">client</span> to the
+        <span>media element</span>'s <span>node document</span>'s <code>Window</code> object's
+        <span>environment settings object</span> and <span data-x="concept-request-type">type</span>
+        to "<code data-x="">audio</code>" if the <span>media element</span> is an <code>audio</code>
+        element and to "<code data-x="">video</code>" otherwise.
+
+        <!--FETCH--><p><span data-x="concept-fetch">Fetch</span> <var>request</var>.
+
+        <p>The <var>response</var>'s <span>unsafe response</span> obtained in this fashion, if any,
+        contains the <span>media data</span>. It can be <span>CORS-same-origin</span> or
+        <span>CORS-cross-origin</span>; this affects whether subtitles referenced in the <span>media
+        data</span> are exposed in the API and, for <code>video</code> elements, whether a
+        <code>canvas</code> gets tainted when the video is drawn on it.</p>
+
+        <p>The <dfn>stall timeout</dfn> is a user-agent defined length of time, which should be
+        about three seconds. When a <span>media element</span> that is actively attempting to obtain
+        <span>media data</span> has failed to receive any data for a duration equal to the
+        <span>stall timeout</span>, the user agent must <span>queue a task</span> to <span
+        data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-media-stalled">stalled</code> at the element.</p>
+
+        <p>User agents may allow users to selectively block or slow <span>media data</span> downloads.
+        When a <span>media element</span>'s download has been blocked altogether, the user agent must
+        act as if it was stalled (as opposed to acting as if the connection was closed). The rate of the
+        download may also be throttled automatically by the user agent, e.g. to balance the download
+        with other connections sharing the same bandwidth.</p>
+
+        <p id="resourceSuspend">User agents may decide to not download more content at any time, e.g.
+        after buffering five minutes of a one hour media resource, while waiting for the user to decide
+        whether to play the resource or not, while waiting for user input in an interactive resource, or
+        when the user navigates away from the page. When a <span>media element</span>'s download has
+        been suspended, the user agent must <span>queue a task</span>, to set the <code
+        data-x="dom-media-networkState">networkState</code> to <code
+        data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code> and <span
+        data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-media-suspend">suspend</code> at the element. If and when downloading of the
+        resource resumes, the user agent must <span>queue a task</span> to set the <code
+        data-x="dom-media-networkState">networkState</code> to <code
+        data-x="dom-media-NETWORK_LOADING">NETWORK_LOADING</code>. Between the queuing of these
+        tasks, the load is suspended (so <code data-x="event-media-progress">progress</code> events
+        don't fire, as described above).</p>
+
+        <p class="note">The <code data-x="attr-media-preload">preload</code> attribute provides a hint
+        regarding how much buffering the author thinks is advisable, even in the absence of the <code
+        data-x="attr-media-autoplay">autoplay</code> attribute.</p>
+
+        <p>When a user agent decides to completely suspend a download, e.g., if it is waiting until
+        the user starts playback before downloading any further content, the user agent must
+        <span>queue a task</span> to set the element's <span>delaying-the-load-event flag</span> to
+        false. This stops <span data-x="delay the load event">delaying the load event</span>.</p>
+
+        <p>The user agent may use whatever means necessary to fetch the resource (within the constraints
+        put forward by this and other specifications); for example, reconnecting to the server in the
+        face of network errors, using HTTP range retrieval requests, or switching to a streaming
+        protocol. The user agent must consider a resource erroneous only if it has given up trying to
+        fetch it.</p>
+
+        <p>To determine the format of the <span>media resource</span>, the user agent must use the
+        <span data-x="Content-Type sniffing: video">rules for sniffing audio and video specifically</span>.</p>
+
+        <p>While the load is not suspended (see below), every 350ms (&#xB1;200ms) or for every byte
+        received, whichever is <em>least</em> frequent, <span>queue a task</span> to <span
+        data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-media-progress">progress</code> at the element.</p>
+
+        <p>The <span>networking task source</span> <span data-x="concept-task">tasks</span> to
+        process the data as it is being fetched must each <span>immediately</span> <span>queue a task</span> to
+        run the first appropriate steps from the <span>media data processing steps list</span>
+        below. (A new task is used for this so that the work described below occurs relative to the
+        <span>media element event task source</span> rather than the <span>networking task
+        source</span>.)</p>
+
+        <p>When the <span>networking task source</span> has <span data-x="queue a
+        task">queued</span> the last <span data-x="concept-task">task</span> as part of fetching the
+        <span>media resource</span> (i.e. once the download has completed), if the fetching process
+        completes without errors, including decoding the media data, and if all of the data is available
+        to the user agent without network access, then, the user agent must move on to the <i>final step</i> below.
+        This might never happen, e.g. when streaming an infinite resource such as Web radio, or if the
+        resource is longer than the user agent's ability to cache data.</p>
+
+        <p>While the user agent might still need network access to obtain parts of the <span>media
+        resource</span>, the user agent must remain on this step.</p>
+
+        <p class="example">For example, if the user agent has discarded the first half of a video, the
+        user agent will remain at this step even once the <span data-x="ended playback">playback has
+        ended</span>, because there is always the chance the user will seek back to the start. In fact,
+        in this situation, once <span data-x="ended playback">playback has ended</span>, the user agent
+        will end up firing a <code data-x="event-media-suspend">suspend</code> event, as described
+        earlier.</p>
+
+       </li>
+
+      </ol>
+
+     </dd>
+
+     <dt>Otherwise (<var>mode</var> is <i>local</i>)</dt>
+
+     <dd>
+
+      <p>The resource described by the <var>current media resource</var>, if any, contains the
+      <span>media data</span>. It is <span>CORS-same-origin</span>. </p>
+
+      <p>If the <var>current media resource</var> is a raw data stream (e.g. from a
+      <code>File</code> object), then to determine the format of the <span>media resource</span>,
+      the user agent must use the <span data-x="Content-Type sniffing: video">rules for sniffing audio and video specifically</span>.
+      Otherwise, if the data stream is pre-decoded, then the format is the format given by the
+      relevant specification.</p>
+
+      <p>Whenever new data for the <var>current media resource</var> becomes available, <span>queue
+      a task</span> to run the first appropriate steps from the <span>media data processing steps
+      list</span> below.</p>
+
+      <p>When the <var>current media resource</var> is permanently exhausted (e.g. all the bytes of
+      a <code>Blob</code> have been processed), if there were no decoding errors, then the user
+      agent must move on to the <i>final step</i> below. This might never happen, e.g. if the
+      <var>current media resource</var> is a <code>MediaStream</code>.</p>
+
+     </dd>
+
+    </dl>
+
+    <p>The <dfn>media data processing steps list</dfn> is as follows:</p>
+
+    <dl class="switch">
+
+     <dt>If the <span>media data</span> cannot be fetched at all, due to network errors, causing the
+     user agent to give up trying to fetch the resource</dt>
+
+     <dt>If the <span>media data</span> can be fetched but is found by inspection to be in an
+     unsupported format, or can otherwise not be rendered at all</dt>
+
+     <dd>
+
+      <p>DNS errors, HTTP 4xx and 5xx errors (and equivalents in other protocols), and other fatal
+      network errors that occur before the user agent has established whether the <var>current media resource</var> is usable, as well as the file using an unsupported
+      container format, or using unsupported codecs for all the data, must cause the user agent to
+      execute the following steps:</p>
+
+      <ol>
+
+       <li><p>The user agent should cancel the fetching process.</p></li>
+
+       <li><p>Abort this subalgorithm, returning to the <span
+       data-x="concept-media-load-algorithm">resource selection algorithm</span>.</p>
+
+      </ol>
+
+     </dd>
+
+
+     <dt id="found-another-audio-track">If the <span>media resource</span> is found to have an audio
+     track</dt>
+
+     <dd>
+
+      <ol>
+
+       <li><p>Create an <code>AudioTrack</code> object to represent the audio track.</p></li>
+
+       <li><p>Update the <span>media element</span>'s <code
+       data-x="dom-media-audioTracks">audioTracks</code> attribute's <code>AudioTrackList</code>
+       object with the new <code>AudioTrack</code> object.</p></li>
+
+       <li><p>Let <var>enable</var> be <i>unknown</i>.</p></li>
+
+       <li>
+
+        <p>If either the <span>media resource</span> or the <span>URL</span> of the <var>current
+        media resource</var> indicate a particular set of audio tracks to enable, or if the user
+        agent has information that would facilitate the selection of specific audio tracks to
+        improve the user's experience, then: if this audio track is one of the ones to enable, then
+        set <var>enable</var> to <i>true</i>, otherwise, set <var>enable</var>
+        to <i>false</i>.</p>
+
+        <p class="example">This could be triggered by <span>media fragment syntax</span>, but it
+        could also be triggered e.g. by the user agent selecting a 5.1 surround sound audio track
+        over a stereo audio track.</p>
+
+       </li>
+
+       <li><p>If <var>enable</var> is still <i>unknown</i>, then, if the <span>media
+       element</span> does not yet have an <span data-x="dom-AudioTrack-enabled">enabled</span>
+       audio track, then set <var>enable</var> to <i>true</i>, otherwise, set <var>enable</var> to <i>false</i>.</p></li>
+
+       <li><p>If <var>enable</var> is <i>true</i>, then enable this audio track,
+       otherwise, do not enable this audio track.</p></li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-addtrack">addtrack</code> at this <code>AudioTrackList</code> object,
+       using <code>TrackEvent</code>, with the <code data-x="dom-TrackEvent-track">track</code>
+       attribute initialized to the new <code>AudioTrack</code> object.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt id="found-another-video-track">If the <span>media resource</span> is found to have a video
+     track</dt>
+
+     <dd>
+
+      <ol>
+
+       <li><p>Create a <code>VideoTrack</code> object to represent the video track.</p></li>
+
+       <li><p>Update the <span>media element</span>'s <code
+       data-x="dom-media-videoTracks">videoTracks</code> attribute's <code>VideoTrackList</code>
+       object with the new <code>VideoTrack</code> object.</p></li>
+
+       <li><p>Let <var>enable</var> be <i>unknown</i>.</p></li>
+
+       <li>
+
+        <p>If either the <span>media resource</span> or the <span>URL</span> of the <var>current
+        media resource</var> indicate a particular set of video tracks to enable, or if the user
+        agent has information that would facilitate the selection of specific video tracks to
+        improve the user's experience, then: if this video track is the first such video track, then
+        set <var>enable</var> to <i>true</i>, otherwise, set <var>enable</var>
+        to <i>false</i>.</p>
+
+        <p class="example">This could again be triggered by <span>media fragment syntax</span>.</p>
+
+       </li>
+
+       <li><p>If <var>enable</var> is still <i>unknown</i>, then, if the <span>media
+       element</span> does not yet have a <span data-x="dom-VideoTrack-selected">selected</span>
+       video track, then set <var>enable</var> to <i>true</i>, otherwise, set <var>enable</var> to <i>false</i>.</p></li>
+
+       <li><p>If <var>enable</var> is <i>true</i>, then select this track and unselect any
+       previously selected video tracks, otherwise, do not select this video track. If other tracks
+       are unselected, then <a href="#toggle-video-track">a <code
+       data-x="event-media-change">change</code> event will be fired.</a></p></li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-addtrack">addtrack</code> at this <code>VideoTrackList</code> object,
+       using <code>TrackEvent</code>, with the <code data-x="dom-TrackEvent-track">track</code>
+       attribute initialized to the new <code>VideoTrack</code> object.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt id="getting-media-metadata">Once enough of the <span>media data</span> has been fetched to
+     determine the duration of the <span>media resource</span>, its dimensions, and other
+     metadata</dt>
+
+     <dd>
+
+      <p>This indicates that the resource is usable. The user agent must follow these substeps:</p>
+
+      <ol>
+
+       <li>
+
+        <p><span>Establish the media timeline</span> for the purposes of the <span>current playback
+        position</span> and the <span>earliest possible position</span>, based on the <span>media data</span>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Update the <span>timeline offset</span> to the date and time that corresponds to the zero
+        time in the <span>media timeline</span> established in the previous step, if any. If no
+        explicit time and date is given by the <span>media resource</span>, the <span>timeline
+        offset</span> must be set to Not-a-Number (NaN).</p>
+
+       </li>
+
+       <li><p>Set the <span>current playback position</span> and the <span>official playback
+       position</span> to the <span>earliest possible position</span>.</p></li>
+
+       <li>
+
+        <p>Update the <code data-x="dom-media-duration">duration</code> attribute with the time of
+        the last frame of the resource, if known, on the <span>media timeline</span> established
+        above. If it is not known (e.g. a stream that is in principle infinite), update the <code
+        data-x="dom-media-duration">duration</code> attribute to the value positive Infinity.</p>
+
+        <p class="note">The user agent <a href="#durationChange">will</a> <span>queue a task</span>
+        to <span data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-media-durationchange">durationchange</code> at the element at this point.</p>
+
+       </li>
+
+       <li>
+
+        <p>For <code>video</code> elements, set the <code
+        data-x="dom-video-videoWidth">videoWidth</code> and <code
+        data-x="dom-video-videoHeight">videoHeight</code> attributes, and <span>queue a task</span>
+        to <span data-x="concept-event-fire">fire an event</span> named <code
+        data-x="event-media-resize">resize</code> at the <span>media element</span>.</p>
+
+        <p class="note">Further <code data-x="event-media-resize">resize</code> events will be fired
+        if the dimensions subsequently change.</p>
+
+       </li>
+
+       <li>
+
+        <p>Set the <code data-x="dom-media-readyState">readyState</code> attribute to <code
+        data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code>.</p>
+
+        <p class="note">A <code data-x="event-media-loadedmetadata">loadedmetadata</code> DOM event
+        <a href="#fire-loadedmetadata">will be fired</a> as part of setting the <code
+        data-x="dom-media-readyState">readyState</code> attribute to a new value.</p>
+
+       </li>
+
+       <li><p>Let <var>jumped</var> be false.</p></li>
+
+       <li><p>If the <span>media element</span>'s <span>default playback start position</span> is
+       greater than zero, then <span data-x="dom-media-seek">seek</span> to that time, and let <var>jumped</var> be true.</p></li>
+
+       <li><p>Let the <span>media element</span>'s <span>default playback
+       start position</span> be zero.</p></li>
+
+       <li><p>Let the <var>initial playback position</var> be zero.</p></li>
+
+       <li>
+
+        <p>If either the <span>media resource</span> or the <span>URL</span> of the <var>current
+        media resource</var> indicate a particular start time, then set the <var>initial playback
+        position</var> to that time and, if <var>jumped</var> is still false, <span
+        data-x="dom-media-seek">seek</span> to that time.</p>
+
+        <p class="example">For example, with media formats that support <span>media fragment
+        syntax</span>, the <span data-x="concept-url-fragment">fragment</span> can be used to
+        indicate a start position.</p>
+
+       </li>
+
+       <li><p>If there is no <span data-x="dom-AudioTrack-enabled">enabled</span> audio track, then
+       enable an audio track. This <a href="#toggle-audio-track">will cause a <code
+       data-x="event-media-change">change</code> event to be fired</a>.</p></li>
+
+       <li><p>If there is no <span data-x="dom-VideoTrack-selected">selected</span> video track,
+       then select a video track. This <a href="#toggle-video-track">will cause a <code
+       data-x="event-media-change">change</code> event to be fired</a>.</p></li>
+
+      </ol>
+
+      <p>Once the <code data-x="dom-media-readyState">readyState</code> attribute reaches <code
+      data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code>, <a href="#fire-loadeddata">after
+      the <code data-x="event-media-loadeddata">loadeddata</code> event has been fired</a>, set the
+      element's <span>delaying-the-load-event flag</span> to false. This stops <span data-x="delay
+      the load event">delaying the load event</span>.</p>
+
+      <p class="note">A user agent that is attempting to reduce network usage while still fetching
+      the metadata for each <span>media resource</span> would also stop buffering at this point,
+      following <a href="#resourceSuspend">the rules described previously</a>, which involve the
+      <code data-x="dom-media-networkState">networkState</code> attribute switching to the <code
+      data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code> value and a <code
+      data-x="event-media-suspend">suspend</code> event firing.</p>
+
+      <p class="note">The user agent is <em>required</em> to determine the duration of the
+      <span>media resource</span> and go through this step before playing.</p> <!-- actually defined
+      in the 'duration' section -->
+
+     </dd>
+
+
+     <dt>Once the entire <span>media resource</span> has been fetched (but potentially before any of
+     it has been decoded)</dt>
+
+     <dd>
+
+      <p><span data-x="concept-event-fire">Fire an event</span> named <code
+      data-x="event-media-progress">progress</code> at the <span>media element</span>.</p>
+
+      <p>Set the <code data-x="dom-media-networkState">networkState</code> to <code
+      data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code> and <span
+      data-x="concept-event-fire">fire an event</span> named
+      <code data-x="event-media-suspend">suspend</code> at the <span>media element</span>.</p>
+
+      <p>If the user agent ever discards any <span>media data</span> and then needs to resume the
+      network activity to obtain it again, then it must <span>queue a task</span> to set the <code
+      data-x="dom-media-networkState">networkState</code> to <code
+      data-x="dom-media-NETWORK_LOADING">NETWORK_LOADING</code>.</p>
+
+      <p class="note">If the user agent can keep the <span>media resource</span> loaded, then the
+      algorithm will continue to its <i>final step</i> below, which aborts the algorithm.</p>
+
+     </dd>
+
+
+     <dt>If the connection is interrupted after some <span>media data</span> has been received,
+     causing the user agent to give up trying to fetch the resource</dt>
+
+     <dd>
+
+      <p>Fatal network errors that occur after the user agent has established whether the <var>current media resource</var> is usable (i.e. once the <span>media element</span>'s
+      <code data-x="dom-media-readyState">readyState</code> attribute is no longer <code
+      data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>) must cause the user agent to execute the
+      following steps:</p>
+
+      <ol>
+
+       <li><p>The user agent should cancel the fetching process.</p></li>
+
+       <li><p>Set the <code data-x="dom-media-error">error</code> attribute to a new
+       <code>MediaError</code> object whose <code data-x="dom-MediaError-code">code</code> attribute
+       is set to <code data-x="dom-MediaError-MEDIA_ERR_NETWORK">MEDIA_ERR_NETWORK</code>.</p></li>
+
+       <li><p>Set the element's <code data-x="dom-media-networkState">networkState</code> attribute
+       to the <code data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code> value.</p></li>
+
+       <li><p>Set the element's <span>delaying-the-load-event flag</span> to false. This stops <span
+       data-x="delay the load event">delaying the load event</span>.</p></li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-error">error</code> at the <span>media element</span>.</p></li>
+
+       <li><p>Abort the overall <span data-x="concept-media-load-algorithm">resource selection
+       algorithm</span>.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt id="fatal-decode-error">If the <span>media data</span> is corrupted</dt>
+
+     <dd>
+
+      <p>Fatal errors in decoding the <span>media data</span> that occur after the user agent has
+      established whether the <var>current media resource</var> is usable (i.e. once the <span>media element</span>'s
+      <code data-x="dom-media-readyState">readyState</code> attribute is no longer <code
+      data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>) must cause the
+      user agent to execute the following steps:</p>
+
+      <ol>
+
+       <li><p>The user agent should cancel the fetching process.</p></li>
+
+       <li><p>Set the <code data-x="dom-media-error">error</code> attribute to a new
+       <code>MediaError</code> object whose <code data-x="dom-MediaError-code">code</code> attribute
+       is set to <code data-x="dom-MediaError-MEDIA_ERR_DECODE">MEDIA_ERR_DECODE</code>.</p></li>
+
+       <li><p>Set the element's <code data-x="dom-media-networkState">networkState</code> attribute
+       to the <code data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code> value.</p></li>
+
+       <li><p>Set the element's <span>delaying-the-load-event flag</span> to false. This stops <span
+       data-x="delay the load event">delaying the load event</span>.</p></li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-error">error</code> at the <span>media element</span>.</p></li>
+
+       <li><p>Abort the overall <span data-x="concept-media-load-algorithm">resource selection
+       algorithm</span>.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt>If the <span>media data</span> fetching process is aborted by the user</dt>
+
+     <dd>
+
+      <p>The fetching process is aborted by the user, e.g. because the user
+      pressed a "stop" button, the user agent must execute the following steps. These steps are not
+      followed if the <code data-x="dom-media-load">load()</code> method itself is invoked while
+      these steps are running, as the steps above handle that particular kind of abort.</p>
+
+      <ol>
+
+       <li><p>The user agent should cancel the fetching process.</p></li>
+
+       <li><p>Set the <code data-x="dom-media-error">error</code> attribute to a new
+       <code>MediaError</code> object whose <code data-x="dom-MediaError-code">code</code> attribute
+       is set to <code data-x="dom-MediaError-MEDIA_ERR_ABORTED">MEDIA_ERR_ABORTED</code>.</p></li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-abort">abort</code> at the <span>media element</span>.</p></li>
+
+       <li>
+
+        <p>If the <span>media element</span>'s <code data-x="dom-media-readyState">readyState</code>
+        attribute has a value equal to <code data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, set
+        the element's <code data-x="dom-media-networkState">networkState</code> attribute to the
+        <code data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code> value, set the element's
+        <span>show poster flag</span> to true, and <span data-x="concept-event-fire">fire an
+        event</span> named <code data-x="event-media-emptied">emptied</code> at the element.</p>
+
+        <p>Otherwise, set the element's <code data-x="dom-media-networkState">networkState</code>
+        attribute to the <code data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code> value.</p>
+
+       </li>
+
+       <li><p>Set the element's <span>delaying-the-load-event flag</span> to false. This stops <span
+       data-x="delay the load event">delaying the load event</span>.</p></li>
+
+       <li><p>Abort the overall <span data-x="concept-media-load-algorithm">resource selection
+       algorithm</span>.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt id="non-fatal-media-error">If the <span>media data</span> can be fetched but has non-fatal
+     errors or uses, in part, codecs that are unsupported, preventing the user agent from rendering
+     the content completely correctly but not preventing playback altogether</dt>
+
+     <dd>
+
+      <p>The server returning data that is partially usable but cannot be optimally rendered must
+      cause the user agent to render just the bits it can handle, and ignore the rest.</p>
+
+      <!-- v2: fire a 'warning' event and set the 'error' flag to 'MEDIA_ERR_SUBOPTIMAL' or something -->
+
+     </dd>
+
+
+     <dt id="found-a-media-resource-specific-timed-track">If the <span>media resource</span> is
+     found to declare a <span>media-resource-specific text track</span> that the user agent
+     supports</dt>
+
+     <dd>
+
+      <p>If the <span>media data</span> is <span>CORS-same-origin</span>, run the <span>steps to
+      expose a media-resource-specific text track</span> with the relevant data.</p>
+
+      <p class="note">Cross-origin videos do not expose their subtitles, since that would allow
+      attacks such as hostile sites reading subtitles from confidential videos on a user's
+      intranet.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <!-- this step is mentioned above, search for "final step" -->
+   <li><p><i>Final step:</i> If the user agent ever reaches this step (which can only happen if the entire resource
+   gets loaded and kept available): abort the overall <span
+   data-x="concept-media-load-algorithm">resource selection algorithm</span>.</p></li>
+
+  </ol>
+
+  <p>When a <span>media element</span> is to <dfn>forget the media element's media-resource-specific
+  tracks</dfn>, the user agent must remove from the <span>media element</span>'s <span>list of text
+  tracks</span> all the <span data-x="media-resource-specific text track">media-resource-specific
+  text tracks</span>, then empty the <span>media element</span>'s <code
+  data-x="dom-media-audioTracks">audioTracks</code> attribute's <code>AudioTrackList</code> object,
+  then empty the <span>media element</span>'s <code data-x="dom-media-videoTracks">videoTracks</code>
+  attribute's <code>VideoTrackList</code> object. No events (in particular, no <code
+  data-x="event-media-removetrack">removetrack</code> events) are fired as part of this; the <code
+  data-x="event-media-error">error</code> and <code data-x="event-media-emptied">emptied</code>
+  events, fired by the algorithms that invoke this one, can be used instead.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-media-preload">preload</code></dfn> attribute is an <span>enumerated
+  attribute</span>. The following table lists the keywords and states for the attribute &mdash; the
+  keywords in the left column map to the states in the cell in the second column on the same row as
+  the keyword. The attribute can be changed even once the <span>media resource</span> is being
+  buffered or played; the descriptions in the table below are to be interpreted with that in
+  mind.</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th> Keyword
+     <th> State
+     <th> Brief description
+   <tbody>
+    <tr>
+     <td><dfn><code data-x="attr-media-preload-none">none</code></dfn>
+     <td><dfn data-x="attr-media-preload-none-state">None</dfn>
+     <td>Hints to the user agent that either the author does not expect the user to need the media resource, or that the server wants to minimize unnecessary traffic.
+         This state does not provide a hint regarding how aggressively to actually download the media resource if buffering starts anyway (e.g. once the user hits "play").
+    <tr>
+     <td><dfn><code data-x="attr-media-preload-metadata">metadata</code></dfn>
+     <td><dfn data-x="attr-media-preload-metadata-state">Metadata</dfn>
+     <td>Hints to the user agent that the author does not expect the user to need the media resource, but that fetching the resource metadata (dimensions, track list, duration, etc), and maybe even the first few frames, is reasonable. If the user agent precisely fetches no more than the metadata, then the <span>media element</span> will end up with its <code data-x="dom-media-readyState">readyState</code> attribute set to <code data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code>; typically though, some frames will be obtained as well and it will probably be <code data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> or <code data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code>.
+         When the media resource is playing, hints to the user agent that bandwidth is to be considered scarce, e.g. suggesting throttling the download so that the media data is obtained at the slowest possible rate that still maintains consistent playback.
+    <tr>
+     <td><dfn><code data-x="attr-media-preload-auto">auto</code></dfn>
+     <td><dfn data-x="attr-media-preload-auto-state">Automatic</dfn>
+     <td>Hints to the user agent that the user agent can put the user's needs first without risk to the server, up to and including optimistically downloading the entire resource.
+  </table>
+
+  <p>The empty string is also a valid keyword, and maps to the <span
+  data-x="attr-media-preload-auto-state">Automatic</span> state. The attribute's <i data-x="missing
+  value default">missing value default</i> is user-agent defined, though the <span
+  data-x="attr-media-preload-metadata-state">Metadata</span> state is suggested as a compromise
+  between reducing server load and providing an optimal user experience.</p>
+
+  <p class="note">Authors might switch the attribute from "<code
+  data-x="attr-media-preload-none">none</code>" or "<code
+  data-x="attr-media-preload-metadata">metadata</code>" to "<code
+  data-x="attr-media-preload-auto">auto</code>" dynamically once the user begins playback. For
+  example, on a page with many videos this might be used to indicate that the many videos are not to
+  be downloaded unless requested, but that once one <em>is</em> requested it is to be downloaded
+  aggressively.</p>
+
+  <div w-nodev>
+
+  <p>The <code data-x="attr-media-preload">preload</code> attribute is intended to provide a hint to
+  the user agent about what the author thinks will lead to the best user experience. The attribute
+  may be ignored altogether, for example based on explicit user preferences or based on the
+  available connectivity.</p>
+
+  <p>The <dfn><code data-x="dom-media-preload">preload</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name, <span>limited to only known
+  values</span>.</p>
+
+  </div>
+
+  <p class="note">The <code data-x="attr-media-autoplay">autoplay</code> attribute can override the
+  <code data-x="attr-media-preload">preload</code> attribute (since if the media plays, it naturally
+  has to buffer first, regardless of the hint given by the <code
+  data-x="attr-media-preload">preload</code> attribute). Including both is not an error, however.</p>
+
+  <hr>
+
+<!--v3BUF (when readding this, also add a domintro block)
+  <p>The <dfn><code data-x="dom-media-bufferingRate">bufferingRate</code></dfn> attribute must return
+  the average number of bits received per second for the current download over the past few seconds.
+  If there is no download in progress, the attribute must return 0.</p>
+
+  <p>The <dfn><code data-x="dom-media-bufferingThrottled">bufferingThrottled</code></dfn> attribute
+  must return true if the user agent is intentionally throttling the bandwidth used by the download
+  (including when throttling to zero to pause the download altogether), and false otherwise.</p>
+
+  <hr>
+-->
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-buffered">buffered</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>TimeRanges</code> object that represents the ranges of the <span>media
+    resource</span> that the user agent has buffered.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-buffered">buffered</code></dfn> attribute must return a new
+  static <span>normalized <code>TimeRanges</code> object</span> that represents the ranges of the
+  <span>media resource</span>, if any, that the user agent has buffered, at the time the attribute
+  is evaluated. Users agents must accurately determine the ranges available, even for media streams
+  where this can only be determined by tedious inspection.</p>
+
+  <p class="note">Typically this will be a single range anchored at the zero point, but if, e.g. the
+  user agent uses HTTP range requests in response to seeking, then there could be multiple
+  ranges.</p>
+
+  <p>User agents may discard previously buffered data.</p>
+
+  <p class="note">Thus, a time position included within a range of the objects return by the <code
+  data-x="dom-media-buffered">buffered</code> attribute at one time can end up being not included in
+  the range(s) of objects returned by the same attribute at later times.</p>
+
+  </div>
+
+
+
+  

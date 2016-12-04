@@ -1,0 +1,92 @@
+<h5 id="custom-elements-customized-builtin-example">Creating a customized built-in element</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p><span data-x="customized built-in element">Customized built-in elements</span> are a distinct
+  kind of <span>custom element</span>, which are defined slightly differently and used very
+  differently compared to <span data-x="autonomous custom element">autonomous custom
+  elements</span>. They exist to allow reuse of behaviors from the existing elements of HTML, by
+  extending those elements with new custom functionality. This is important since many of the
+  existing behaviors of HTML elements can unfortunately not be duplicated by using purely <span
+  data-x="autonomous custom element">autonomous custom elements</span>. Instead, <span
+  data-x="customized built-in element">customized built-in elements</span> allow the installation of
+  custom construction behavior, lifecycle hooks, and prototype chain onto existing elements,
+  essentially "mixing in" these capabilities on top of the already-existing element.</p>
+
+  <p><span data-x="customized built-in element">Customized built-in elements</span> require a
+  distinct syntax from <span data-x="autonomous custom element">autonomous custom elements</span>
+  because user agents and other software key off an element's local name in order to identify the
+  element's semantics and behavior. That is, the concept of <span data-x="customized built-in
+  element">customized built-in elements</span> building on top of existing behavior depends
+  crucially on the extended elements retaining their original local name.</p>
+
+  <p>In this example, we'll be creating a <span>customized built-in element</span> named <code
+  data-x="">plastic-button</code>, which behaves like a normal button but gets fancy animation
+  effects added whenever you click on it. We start by defining a class, just like before, although
+  this time we extend <code>HTMLButtonElement</code> instead of <code>HTMLElement</code>:</p>
+
+  <pre>class PlasticButton extends HTMLButtonElement {
+  constructor() {
+    super();
+
+    this.addEventListener("click", () => {
+      // Draw some fancy animation effects!
+    });
+  }
+}</pre>
+
+  <p>When defining our custom element, we have to also specify the <code data-x="">extends</code>
+  option:</p>
+
+  <pre>customElements.define("plastic-button", PlasticButton, { extends: "button" });</pre>
+
+  <p>In general, the name of the element being extended cannot be determined simply by looking at
+  what element interface it extends, as many elements share the same interface (such as
+  <code>q</code> and <code>blockquote</code> both sharing <code>HTMLQuoteElement</code>).</p>
+
+  <p>To use our <span>customized built-in element</span>, we use the <code
+  data-x="attr-is">is</code> attribute on a <code>button</code> element:</p>
+
+  <pre>&lt;button is="plastic-button">Click Me!&lt;/button></pre>
+
+  <p>Trying to use a <span>customized built-in element</span> as an <span>autonomous custom
+  element</span> will <em>not</em> work; that is, <code data-x="">&lt;plastic-button>Click
+  me?&lt;/plastic-button></code> will simply create an <code>HTMLElement</code> with no special
+  behavior.</p>
+
+  <p>If you need to create a type-extended element programmatically, you can use the following form
+  of <code data-x="dom-Document-createElement">createElement()</code>:</p>
+
+  <pre>const plasticButton = document.createElement("button", { is: "plastic-button" });
+plasticButton.textContent = "Click me!";</pre>
+
+  <p>And as before, the constructor will also work:</p>
+
+  <pre>const plasticButton2 = new PlasticButton();
+console.log(plasticButton2.localName);          // will output "button"
+console.log(plasticButton2.getAttribute("is")); // will output "plastic-button"</pre>
+
+  <p>Notably, all the of the ways in which <code>button</code> is special apply to such "plastic
+  buttons" as well: their focus behavior, ability to participate in <span
+  data-x="concept-form-submit">form submission</span>, the <code
+  data-x="attr-fe-disabled">disabled</code> attribute, and so on.</p>
+
+  <p id="customized-built-in-element-restrictions"><span data-x="customized built-in
+  element">Customized built-in elements</span> are designed to allow extension of existing HTML
+  elements that have useful user-agent supplied behavior or APIs. As such, they can only extend
+  existing HTML elements defined in this specification, and cannot extend legacy elements such as
+  <code>bgsound</code>, <code>blink</code>, <code>isindex</code>, <code>multicol</code>,
+  <code>nextid</code>, or <code>spacer</code> that have been defined to use
+  <code>HTMLUnknownElement</code> as their <span>element interface</span>.</p>
+
+  <p>One reason for this requirement is future-compatibility: if a <span>customized built-in
+  element</span> was defined that extended a currently-unknown element, for example <code
+  data-x="">combobox</code>, this would prevent this specification from defining a <code
+  data-x="">combobox</code> element in the future, as consumers of the derived <span>customized
+  built-in element</span> would have come to depend on their base element having no interesting
+  user-agent-supplied behavior.</p>
+
+  <p>Additionally, <code>applet</code> and <code>keygen</code> elements cannot be extended, as they
+  are in the process of being removed from the Web platform.</p>
+
+  

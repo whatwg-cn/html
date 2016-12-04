@@ -1,0 +1,62 @@
+<h4>Extracting character encodings from <code>meta</code> elements</h4>
+
+  <p>The <dfn>algorithm for extracting a character encoding from a <code>meta</code> element</dfn>,
+  given a string <var>s</var>, is as follows. It either returns a character encoding or
+  nothing.</p>
+
+  <ol> <!-- https://www.hixie.ch/tests/adhoc/html/parsing/encoding/all.html -->
+
+   <li><p>Let <var>position</var> be a pointer into <var>s</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><i>Loop</i>: Find the first seven characters in <var>s</var> after <var>position</var> that are an <span>ASCII case-insensitive</span> match for the word "<code
+   data-x="">charset</code>". If no such match is found, return nothing and abort these
+   steps.</p></li>
+
+   <li><p>Skip any <span data-x="space character">space characters</span> that immediately follow the
+   word "<code data-x="">charset</code>" (there might not be any).</p></li>
+
+   <li><p>If the next character is not a U+003D EQUALS SIGN (=), then move <var>position</var> to point just before that next character, and jump back to the step
+   labeled <i>loop</i>.</p></li>
+
+   <li><p>Skip any <span data-x="space character">space characters</span> that immediately follow the
+   equals sign (there might not be any).</p></li>
+
+   <li>
+
+    <p>Process the next character as follows:</p>
+
+    <dl class="switch">
+
+     <dt>If it is a U+0022 QUOTATION MARK character (") and there is a later U+0022 QUOTATION MARK character (") in <var>s</var></dt>
+     <dt>If it is a U+0027 APOSTROPHE character (') and there is a later U+0027 APOSTROPHE character (') in <var>s</var></dt>
+     <dd>Return the result of <span>getting an encoding</span> from the substring that is between
+     this character and the next earliest occurrence of this character.</dd>
+
+     <dt>If it is an unmatched U+0022 QUOTATION MARK character (")</dt>
+     <dt>If it is an unmatched U+0027 APOSTROPHE character (')</dt>
+     <dt>If there is no next character</dt>
+     <dd>Return nothing.</dd>
+
+     <dt>Otherwise</dt>
+     <dd>Return the result of <span>getting an encoding</span> from the substring that consists of
+     this character up to but not including the first <span>space character</span> or U+003B
+     SEMICOLON character (;), or the end of <var>s</var>, whichever comes first.</dd>
+
+    </dl>
+
+   </li>
+
+  </ol>
+
+  <p class="note">This algorithm is distinct from those in the HTTP specification (for example, HTTP
+  doesn't allow the use of single quotes and requires supporting a backslash-escape mechanism that
+  is not supported by this algorithm<!-- not to mention not having any rules for error-handling,
+  which is of course why we're having to define it ourselves -->). While the algorithm is used in
+  contexts that, historically, were related to HTTP, the syntax as supported by implementations
+  diverged some time ago. <ref spec=HTTP></p>
+
+  </div>
+
+
+  

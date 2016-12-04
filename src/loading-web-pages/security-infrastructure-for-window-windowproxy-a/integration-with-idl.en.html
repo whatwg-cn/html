@@ -1,0 +1,42 @@
+<h4>Integration with IDL</h4>
+
+  <p>When <span>perform a security check</span> is invoked, with a <var>platformObject</var>,
+  <var>identifier</var>, and <var>type</var>, run these steps:</p>
+
+  <ol>
+   <li>
+    <p>If <var>platformObject</var> is a <code>Window</code> or <code>Location</code> object,
+    then:</p>
+
+    <ol>
+     <li>
+      <p>Repeat for each <var>e</var> that is an element of
+      <span>CrossOriginProperties</span>(<var>platformObject</var>):</p>
+
+      <ol>
+       <li>
+        <p>If <span>SameValue</span>(<var>e</var>.[[Property]], <var>identifier</var>) is true,
+        then:</p>
+
+        <ol>
+         <li><p>If <var>type</var> is "<code data-x="">method</code>" and <var>e</var> has neither
+         [[NeedsGet]] nor [[NeedsSet]], then return.</p></li>
+
+         <li><p>Otherwise, if <var>type</var> is "<code data-x="">getter</code>" and
+         <var>e</var>.[[NeedsGet]] is true, then return.</p></li>
+
+         <li><p>Otherwise, if <var>type</var> is "<code data-x="">setter</code>" and
+         <var>e</var>.[[NeedsSet]] is true, then return.</p></li>
+        </ol>
+       </li>
+      </ol>
+     </li>
+    </ol>
+   </li>
+
+   <li><p>If <span>IsPlatformObjectSameOrigin</span>(<var>platformObject</var>) is false, then throw
+   a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+  </ol>
+
+
+  

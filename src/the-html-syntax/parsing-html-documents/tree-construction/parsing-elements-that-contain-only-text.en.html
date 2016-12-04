@@ -1,0 +1,25 @@
+<h5>Parsing elements that contain only text</h5>
+
+  <p>The <dfn>generic raw text element parsing algorithm</dfn> and the <dfn>generic RCDATA element
+  parsing algorithm</dfn> consist of the following steps. These algorithms are always invoked in
+  response to a start tag token.</p>
+
+  <ol>
+
+   <li><p><span>Insert an HTML element</span> for the token.</p></li>
+
+   <li><p>If the algorithm that was invoked is the <span>generic raw text element parsing
+   algorithm</span>, switch the tokenizer to the <span>RAWTEXT state</span>; otherwise the algorithm
+   invoked was the <span>generic RCDATA element parsing algorithm</span>, switch the tokenizer to
+   the <span>RCDATA state</span>.</p></li>
+
+   <li><p>Let the <span>original insertion mode</span> be the current <span>insertion
+   mode</span>.</p>
+
+   <li><p>Then, switch the <span>insertion mode</span> to "<span data-x="insertion mode:
+   text">text</span>".</p></li>
+
+  </ol>
+
+
+  

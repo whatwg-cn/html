@@ -1,0 +1,226 @@
+<h4>APIs for creating and navigating browsing contexts by name</h4>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> = <var>window</var> . <code subdfn data-x="dom-open">open</code>( [ <var>url</var> [, <var>target</var> [, <var>features</var> ] ] ] )</dt>
+
+   <dd>
+
+    <p>Opens a window to show <var>url</var> (defaults to <code>about:blank</code>), and returns it.
+    The <var>target</var> argument gives the name of the new window. If a window exists with that
+    name already, it is reused. The <var data-x="dom-open-features">features</var> argument can be
+    used to influence the rendering of the new window.</p>
+
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-name">name</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the name of the window.</p>
+
+    <p>Can be set, to change the name.</p>
+
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-close">close</code>()</dt>
+
+   <dd>
+
+    <p>Closes the window.</p>
+
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-closed">closed</code></dt>
+
+   <dd>
+
+    <p>Returns true if the window has been closed, false otherwise.</p>
+
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-stop">stop</code>()</dt>
+
+   <dd>
+
+    <p>Cancels the document load.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-open">open(<var>url</var>, <var>target</var>,
+  <var>features</var>)</code></dfn> method on <code>Window</code> objects provides a mechanism for
+  <span data-x="navigate">navigating</span> an existing <span>browsing context</span> or opening and
+  navigating an <span>auxiliary browsing context</span>.</p>
+
+  <p>When the method is invoked, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>entry settings</var> be the <span>entry settings object</span>.</p></li>
+
+   <li><p>Let <var>source browsing context</var> be the <span>responsible browsing context</span>
+   specified by <var>entry settings</var>.</p></li>
+
+   <li><p>If <var>target</var> is the empty string, let it be the string "<code
+   data-x="">_blank</code>" instead.</p></li>
+
+   <li>
+
+    <p>If the user has indicated a preference for which <span>browsing context</span> to navigate,
+    follow these substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>target browsing context</var> be the <span>browsing context</span> indicated by
+     the user.</p></li>
+
+     <li><p>If <var>target browsing context</var> is a new <span>top-level browsing context</span>,
+     let the <var>source browsing context</var> be set as <var>target browsing context</var>'s
+     <span>one permitted sandboxed navigator</span>.</p></li>
+
+    </ol>
+
+    <p class="example">For example, suppose there is a user agent that supports control-clicking a
+    link to open it in a new tab. If a user clicks in that user agent on an element whose <code
+    data-x="handler-onclick">onclick</code> handler uses the <code
+    data-x="dom-open">window.open()</code> API to open a page in an iframe, but, while doing so,
+    holds the control key down, the user agent could override the selection of the target browsing
+    context to instead target a new tab.</p>
+
+    <p>Otherwise, apply <span>the rules for choosing a browsing context given a browsing context
+    name</span> using <var>target</var> as the name and <var>source browsing context</var> as the
+    context in which the algorithm is executed. If this results in there not being a chosen browsing
+    context, then return null. Otherwise, let <var>target browsing context</var> be the
+    <span>browsing context</span> so obtained.</p>
+
+   </li>
+
+   <li><p>If <var>target browsing context</var> was just created, either as part of <span>the rules
+   for choosing a browsing context given a browsing context name</span> or due to the user
+   indicating a preference for navigating a new <span>top-level browsing context</span>, then let
+   <var>new</var> be true. Otherwise, let it be false.</p></li>
+
+   <li><p>Interpret <var>features</var> <span data-x="dom-open-features">as defined in the CSSOM
+   View specification</span>. <ref spec="CSSOMVIEW"></p></li>
+
+   <li>
+
+    <p>If <var>url</var> is the empty string, run the appropriate steps from the following list:</p>
+
+    <dl>
+
+     <dt>If <var>new</var> is false</dt>
+
+     <dd><p>Jump to the step labeled <i>end</i>.</p></dd>
+
+     <dt>If <var>new</var> is true</dt>
+
+     <dd><p>Let <var>resource</var> be the <span>URL</span> "<code>about:blank</code>".</p></dd>
+
+    </dl>
+
+    <p>Otherwise, <span data-x="parse a url">parse</span> <var>url</var> relative to <var>entry
+    settings</var>, and let <var>resource</var> be the <span>resulting URL record</span>, if any. If
+    the <span>parse a URL</span> algorithm failed, then run one of the following two steps
+    instead:</p>
+
+    <ul>
+
+     <li><p>Let <var>resource</var> be a resource representing an inline error page.</p></li>
+
+     <li><p>If <var>new</var> is false, jump to the step labeled <i>end</i>, otherwise, let
+     <var>resource</var> be the <span>URL</span> "<code>about:blank</code>".</p></li>
+
+    </ul>
+
+   </li>
+
+   <li>
+
+    <p>If <var>resource</var> is "<code>about:blank</code>" and <var>new</var> is true, then
+    <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-load">load</code> at <var>target browsing context</var>'s <code>Window</code>
+    object, with <var>legacy target override flag</var> set.</p>
+
+    <p>Otherwise, <span>navigate</span><!--DONAV window.open()--> <var>target browsing context</var>
+    to <var>resource</var>, with the <var><span>exceptions enabled flag</span></var> set. If
+    <var>new</var> is true, then <span data-x="replacement enabled">replacement must be
+    enabled</span>. The <span>source browsing context</span> is <var>source browsing context</var>.
+    Rethrow any exceptions.</p>
+
+   </li>
+
+
+   <li>
+    <p><i>End</i>:</p>
+
+    <ol>
+
+     <li><p>If the result of <span data-x="split a string on commas">splitting <var>features</var>
+     on commas</span> contains the token "<code data-x="">noopener</code>", then <span
+     data-x="disowned its opener">disown <var>target browsing context</var>'s opener</span> and
+     return null.</p></li>
+
+     <li><p>Otherwise, return the <code>WindowProxy</code> object of <var>target browsing
+     context</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-name">name</code></dfn> attribute of the <code>Window</code> object
+  must, on getting, return the current <span data-x="browsing context name">name</span> of the
+  <span>browsing context</span>; and, on setting, set the <span data-x="browsing context
+  name">name</span> of the <span>browsing context</span> to the new value.</p>
+
+  <p class="note">The name <a href="#resetBCName">gets reset</a> when the browsing context is
+  <span data-x="navigate">navigated</span> to another <span>origin</span>.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-window-close">close()</code></dfn> method on <code>Window</code>
+  objects should, if all the following conditions are met, <span data-x="close a browsing
+  context">close</span> the <span>browsing context</span> <var>A</var>:
+
+  <ul class="brief">
+
+   <li>The corresponding <span>browsing context</span> <var>A</var> is
+   <span>script-closable</span>.</li>
+
+   <li>The <span>responsible browsing context</span> specified by the <span>incumbent settings
+   object</span> is <span>familiar with</span> the <span>browsing context</span> <var>A</var>.</li>
+
+   <li id="sandboxClose">The <span>responsible browsing context</span> specified by the
+   <span>incumbent settings object</span> is <span>allowed to navigate</span> the <span>browsing
+   context</span> <var>A</var>.</li>
+
+  </ul>
+
+  <p>A <span>browsing context</span> is <dfn>script-closable</dfn> if it is an <span>auxiliary
+  browsing context</span> that was created by a script (as opposed to by an action of the user), or
+  if it is a <span>top-level browsing context</span> whose <span>session history</span> contains
+  only one <code>Document</code>.</p>
+
+  <p>The <dfn><code data-x="dom-window-closed">closed</code></dfn> attribute on <code>Window</code>
+  objects must return true if the <code>Window</code> object's <span>browsing context</span> has
+  been <span data-x="a browsing context is discarded">discarded</span>, and false otherwise.</p>
+
+  <p>The <dfn><code data-x="dom-window-stop">stop()</code></dfn> method on <code>Window</code>
+  objects should, if there is an existing attempt to <span>navigate</span> the <span>browsing
+  context</span> and that attempt is not currently running the <span>unload a document</span>
+  algorithm, cancel that <span data-x="navigate">navigation</span>; then, it must <span
+  data-x="abort a document">abort</span> the <span>active document</span> of the <span>browsing
+  context</span> of the <code>Window</code> object on which it was invoked.</p>
+
+  </div>
+
+
+  

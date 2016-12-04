@@ -1,0 +1,521 @@
+<h5>Pragma directives</h5>
+
+  <p>When the <dfn data-export="" data-dfn-for="meta" data-dfn-type="element-attr"><code
+  data-x="attr-meta-http-equiv">http-equiv</code></dfn> attribute is specified on a
+  <code>meta</code> element, the element is a pragma directive.</p>
+
+  <p>The <code data-x="attr-meta-http-equiv">http-equiv</code> attribute is an <span>enumerated
+  attribute</span>. The following table lists the keywords defined for this attribute. The states
+  given in the first cell of the rows with keywords give the states to which those keywords map.
+  <span w-nodev>Some of the keywords are non-conforming, as noted in the last
+  column.</span></p>
+
+<!-- things that are neither conforming nor do anything are commented out -->
+  <table id="table-http-equiv">
+   <thead>
+    <tr>
+     <th>State
+     <th>Keyword
+     <th>Notes
+   <tbody>
+    <tr w-nodev>
+     <td><span data-x="attr-meta-http-equiv-content-language">Content Language</span>
+     <td><code data-x="">content-language</code>
+     <td>Non-conforming
+    <tr>
+     <td><span data-x="attr-meta-http-equiv-content-type">Encoding declaration</span>
+     <td><code data-x="">content-type</code>
+     <td>
+<!--
+    <tr w-nodev>
+     <td><span data-x="attr-meta-http-equiv-content-script-type">Content-Script-Type</span>
+     <td><code data-x="">Content-Script-Type</code>
+     <td>Non-conforming
+    <tr w-nodev>
+     <td><span data-x="attr-meta-http-equiv-content-style-type">Content-Style-Type</span>
+     <td><code data-x="">Content-Style-Type</code>
+     <td>Non-conforming
+-->
+    <tr>
+     <td><span data-x="attr-meta-http-equiv-default-style">Default style</span>
+     <td><code data-x="">default-style</code>
+     <td>
+    <tr>
+     <td><span data-x="attr-meta-http-equiv-refresh">Refresh</span>
+     <td><code data-x="">refresh</code>
+     <td>
+    <tr w-nodev>
+     <td><span data-x="attr-meta-http-equiv-set-cookie">Cookie setter</span>
+     <td><code data-x="">set-cookie</code>
+     <td>Non-conforming
+    <tr>
+     <td><span data-x="attr-meta-http-equiv-x-ua-compatible">X-UA-Compatible</span>
+     <td><code data-x="">x-ua-compatible</code>
+     <td>
+    <tr>
+     <td><span data-x="attr-meta-http-equiv-content-security-policy">Content security policy</span>
+     <td><code data-x="">Content-Security-Policy</code>
+     <td>
+  </table>
+
+<!--
+DATA: According to Henri's validator stats, here are common
+non-conforming values used by people who validate (sample of 400
+pages):
+
+COUNT ERROR
+   20 Bad value "Content-Language" for attribute "http-equiv" on element "meta".
+   17 Bad value "Content-Style-Type" for attribute "http-equiv" on element "meta".
+   12 Bad value "Expires" for attribute "http-equiv" on element "meta".
+   11 Bad value "Pragma" for attribute "http-equiv" on element "meta".
+   11 Bad value "imagetoolbar" for attribute "http-equiv" on element "meta".
+   10 Bad value "Content-Script-Type" for attribute "http-equiv" on element "meta".
+   10 Bad value "content-language" for attribute "http-equiv" on element "meta".
+ [...]
+https://hsivonen.com/test/moz/analysis.txt
+
+Here's some more data, this time from Philip`, on a sample of 15k pages.
+
+  COUNT VALUE
+   1181 Content-Language
+    430 Content-Style-Type
+    342 imagetoolbar
+    276 content-language
+    269 Pragma
+    260 expires
+    227 Expires
+    211 pragma
+    146 Content-Script-Type
+    132 keywords
+    119 Page-Enter
+    116 description
+    106 reply-to
+    102 Cache-Control
+   [...]
+https://philip.html5.org/data/meta-http-equiv.txt
+
+These numbers are low; further study is required to establish what
+people expect to have work and what is necessary.
+-->
+
+  <div w-nodev>
+
+  <p>When a <code>meta</code> element is <span data-x="node is inserted into a document">inserted
+  into the document</span>, if its <code data-x="attr-meta-http-equiv">http-equiv</code> attribute is
+  present and represents one of the above states, then the user agent must run the algorithm
+  appropriate for that state, as described in the following list:</p>
+
+  </div>
+
+  <dl>
+
+   <dt w-nodev><dfn data-x="attr-meta-http-equiv-content-language">Content language state</dfn>
+   (<code data-x="">http-equiv="content-language"</code>)
+
+   <dd w-nodev>
+
+    <p class="note">This feature is non-conforming. Authors are encouraged to use the <code
+    data-x="attr-lang">lang</code> attribute instead.</p>
+
+    <p>This pragma sets the <dfn>pragma-set default language</dfn>. Until such a pragma is
+    successfully processed, there is no <span>pragma-set default language</span>.</p>
+
+    <!-- https://www.hixie.ch/tests/adhoc/html/meta/content-language/ -->
+
+    <ol>
+
+     <li><p>If the <code>meta</code> element has no <code data-x="attr-meta-content">content</code>
+     attribute, then abort these steps.</p></li>
+
+     <li><p>If the element's <code data-x="attr-meta-content">content</code> attribute contains a
+     U+002C COMMA character (,) then abort these steps.</p></li><!-- if you remove this,
+     un-comment-out the corresponding bits in the step below. -->
+
+     <li><p>Let <var>input</var> be the value of the element's <code
+     data-x="attr-meta-content">content</code> attribute.</p></li>
+
+     <li><p>Let <var>position</var> point at the first character of <var>input</var>.</p></li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+     <li><p><span>Collect a sequence of characters</span> that are not<!--neither--> <span
+     data-x="space character">space characters</span><!-- nor a U+002C COMMA character
+     (,)-->.</p></li>
+
+     <li><p>Let <var>candidate</var> be the string that resulted from the previous
+     step.</p></li>
+
+     <li><p>If <var>candidate</var> is the empty string, abort these steps.</p></li>
+
+     <li>
+
+      <p>Set the <span>pragma-set default language</span> to <var>candidate</var>.</p>
+
+      <p class="note">If the value consists of multiple space-separated tokens, tokens after the
+      first are ignored.</p>
+
+     </li>
+
+    </ol>
+
+    <p class="note">This pragma is almost, but not quite, entirely unlike the HTTP `<code
+    data-x="http-content-language">Content-Language</code>` header of the same name. <ref
+    spec=HTTP></p>
+
+   </dd>
+
+   <dt><dfn data-x="attr-meta-http-equiv-content-type">Encoding declaration state</dfn> (<code data-x="">http-equiv="content-type"</code>)
+
+   <dd>
+
+    <p>The <span data-x="attr-meta-http-equiv-content-type">Encoding declaration state</span> is
+    just an alternative form of setting the <code data-x="attr-meta-charset">charset</code>
+    attribute: it is a <span>character encoding declaration</span>. <span w-nodev>This state's user
+    agent requirements are all handled by the parsing section of the specification.</span></p>
+
+    <p>For <code>meta</code> elements with an <code data-x="attr-meta-http-equiv">http-equiv</code>
+    attribute in the <span data-x="attr-meta-http-equiv-content-type">Encoding declaration
+    state</span>, the <code data-x="attr-meta-content">content</code> attribute must have a value
+    that is an <span>ASCII case-insensitive</span> match for a string that consists of: the literal
+    string "<code data-x="">text/html;</code>", optionally followed by any number of <span
+    data-x="space character">space characters</span>, followed by the literal string "<code
+    data-x="">charset=</code>", followed by one of the <span data-x="encoding label">labels</span> of
+    the <span data-x="encoding">character encoding</span> of the <span>character encoding
+    declaration</span>.</p>
+
+    <p>A document must not contain both a <code>meta</code> element with an <code
+    data-x="attr-meta-http-equiv">http-equiv</code> attribute in the <span
+    data-x="attr-meta-http-equiv-content-type">Encoding declaration state</span> and a
+    <code>meta</code> element with the <code data-x="attr-meta-charset">charset</code> attribute
+    present.</p>
+
+    <p>The <span data-x="attr-meta-http-equiv-content-type">Encoding declaration state</span> may be
+    used in <span>HTML documents</span>, but elements with an <code
+    data-x="attr-meta-http-equiv">http-equiv</code> attribute in that state must not be used in
+    <span>XML documents</span>.</p>
+
+   </dd>
+
+   <dt><dfn data-x="attr-meta-http-equiv-default-style">Default style state</dfn> (<code data-x="">http-equiv="default-style"</code>)
+
+   <dd>
+
+    <p>This pragma sets the <span data-x="CSS style sheet set name">name</span> of the default
+    <span>CSS style sheet set</span>.</p>
+
+    <div w-nodev>
+
+    <ol>
+
+     <li><p>If the <code>meta</code> element has no <code data-x="attr-meta-content">content</code>
+     attribute, or if that attribute's value is the empty string, then abort these steps.</p></li>
+
+     <li><p><span>Change the preferred CSS style sheet set name</span> with the name being the value
+     of the element's <code data-x="attr-meta-content">content</code> attribute. <ref
+     spec=CSSOM></p></li>
+
+    </ol>
+
+    </div>
+
+   </dd>
+
+   <dt><dfn data-x="attr-meta-http-equiv-refresh">Refresh state</dfn> (<code data-x="">http-equiv="refresh"</code>)
+
+   <dd>
+
+    <p>This pragma acts as timed redirect.</p>
+
+    <div w-nodev>
+
+    <ol>
+     <!-- TESTS: https://www.hixie.ch/tests/adhoc/html/meta/refresh/ -->
+     <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=734 -->
+
+     <li><p>If another <code>meta</code> element with an <code
+     data-x="attr-meta-http-equiv">http-equiv</code> attribute in the <span
+     data-x="attr-meta-http-equiv-refresh">Refresh state</span> has already been successfully
+     processed (i.e. when it was inserted the user agent processed it and reached the step labeled
+     <i>end</i>), then abort these steps.</p></li>
+
+     <li><p>If the <code>meta</code> element has no <code data-x="attr-meta-content">content</code>
+     attribute, or if that attribute's value is the empty string, then abort these steps.</p></li>
+
+     <li><p>Let <var>input</var> be the value of the element's <code
+     data-x="attr-meta-content">content</code> attribute.</p></li>
+
+     <li><p>Let <var>position</var> point at the first character of <var>input</var>.</p></li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+     <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>, and
+     parse the resulting string using the <span>rules for parsing non-negative integers</span>. If
+     the sequence of characters collected is the empty string, then no number will have been parsed;
+     abort these steps. Otherwise, let <var>time</var> be the parsed number.</p></li>
+
+     <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span> and
+     U+002E FULL STOP characters (.). Ignore any collected characters.</p></li>
+
+     <li><p>Let <var>url</var> be the <code>meta</code> element's <span>node document</span>'s
+     <span data-x="concept-document-URL">URL</span>.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, jump to the step labeled
+     <i>end</i>.</p></li>
+
+     <li><p>If the character in <var>input</var> pointed to by <var>position</var> is not a U+003B
+     SEMICOLON character (;), a U+002C COMMA character (,), or a <span>space character</span>, then
+     abort these steps.</p></li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+     <li><p>If the character in <var>input</var> pointed to by <var>position</var> is a U+003B
+     SEMICOLON character (;), a U+002C COMMA character (,), then advance <var>position</var> to the
+     next character.</p></li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, jump to the step labeled
+     <i>end</i>.</p></li>
+
+     <li><p>Let <var>url</var> be equal to the substring of <var>input</var> from
+     the character at <var>position</var> to the end of the string.</p></li>
+
+     <li><p>If the character in <var>input</var> pointed to by <var>position</var>
+     is a U+0055 LATIN CAPITAL LETTER U character (U) or a U+0075 LATIN SMALL LETTER U character
+     (u), then advance <var>position</var> to the next character. Otherwise, jump to the step
+     labeled <i>skip quotes</i>.</p></li>
+
+     <li><p>If the character in <var>input</var> pointed to by <var>position</var>
+     is a U+0052 LATIN CAPITAL LETTER R character (R) or a U+0072 LATIN SMALL LETTER R character
+     (r), then advance <var>position</var> to the next character. Otherwise, jump to the step
+     labeled <i>parse</i>.</p></li>
+
+     <li><p>If the character in <var>input</var> pointed to by <var>position</var>
+     is s U+004C LATIN CAPITAL LETTER L character (L) or a U+006C LATIN SMALL LETTER L character
+     (l), then advance <var>position</var> to the next character. Otherwise, jump to the step
+     labeled <i>parse</i>.</p></li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+     <li><p>If the character in <var>input</var> pointed to by <var>position</var>
+     is a U+003D EQUALS SIGN (=), then advance <var>position</var> to the next character. Otherwise,
+     jump to the step labeled <i>parse</i>.</p></li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+     <li><p><i>Skip quotes</i>: If the character in <var>input</var> pointed to by
+     <var>position</var> is either a U+0027 APOSTROPHE character (') or U+0022 QUOTATION MARK
+     character ("), then let <var>quote</var> be that character, and advance <var>position</var> to
+     the next character. Otherwise, let <var>quote</var> be the empty string.</p></li>
+
+     <li><p>Let <var>url</var> be equal to the substring of <var>input</var> from
+     the character at <var>position</var> to the end of the string.</p></li>
+
+     <li><p>If <var>quote</var> is not the empty string, and there is a character in <var>url</var>
+     equal to <var>quote</var>, then truncate <var>url</var> at that character, so that it and all
+     subsequent characters are removed.</p>
+
+     <li><p><i>Parse</i>: <span data-x="parse a url">Parse</span> <var>url</var> relative to the
+     <code>meta</code> element's <span>node document</span>. If that fails, abort these steps.
+     Otherwise, let <var>urlRecord</var> be the <span>resulting URL record</span></p></li>
+
+     <li>
+
+      <p><i>End</i>: Perform one or more of the following steps:</p>
+
+      <ul>
+
+       <li>
+
+        <p>After the refresh has come due (as defined below), if the user has not canceled the
+        redirect and if the <code>meta</code> element's <span>node document</span>'s <span>active
+        sandboxing flag set</span> does not have the <span>sandboxed automatic features browsing
+        context flag</span> set, <span data-x="navigate">navigate</span><!--DONAV meta refresh-->
+        the <code>Document</code>'s <span data-x="concept-document-bc">browsing context</span> to
+        <var>urlRecord</var>, with <span>replacement enabled</span>, and with the
+        <code>Document</code>'s <span data-x="concept-document-bc">browsing context</span> as the
+        <span>source browsing context</span>.</p>
+
+        <p>For the purposes of the previous paragraph, a refresh is said to have come due as soon as
+        the <em>later</em> of the following two conditions occurs:</p>
+
+        <ul>
+
+         <li>At least <var>time</var> seconds have elapsed since the document has
+         <span>completely loaded</span>, adjusted to take into account user or user agent
+         preferences.</li>
+         <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=774 -->
+
+         <li>At least <var>time</var> seconds have elapsed since the <code>meta</code> element was
+         <span data-x="node is inserted into a document">inserted into the document</span>, adjusted
+         to take into account user or user agent preferences.</li>
+         <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=772 -->
+
+        </ul>
+
+       </li>
+
+       <li><p>Provide the user with an interface that, when selected, <span
+       data-x="navigate">navigates</span><!--DONAV meta refresh--> a <span>browsing context</span>
+       to <var>urlRecord</var>, with the <code>Document</code>'s <span
+       data-x="concept-document-bc">browsing context</span> as the <span>source browsing
+       context</span>.</p></li>
+
+       <li><p>Do nothing.</p></li>
+
+      </ul>
+
+      <p>In addition, the user agent may, as with anything, inform the user of any and all aspects
+      of its operation, including the state of any timers, the destinations of any timed redirects,
+      and so forth.</p>
+
+     </li>
+
+    </ol>
+
+    </div>
+
+    <p>For <code>meta</code> elements with an <code data-x="attr-meta-http-equiv">http-equiv</code>
+    attribute in the <span data-x="attr-meta-http-equiv-refresh">Refresh state</span>, the <code
+    data-x="attr-meta-content">content</code> attribute must have a value consisting either of:</p>
+
+    <ul>
+
+     <li>just a <span>valid non-negative integer</span>, or</li>
+
+     <li>a <span>valid non-negative integer</span>, followed by a U+003B SEMICOLON character
+     (;)<!--(add this at some point once the browsers all support it) or a U+002C COMMA character
+     (,)-->, followed by one or more <span data-x="space character">space characters</span>, followed
+     by a substring that is an <span>ASCII case-insensitive</span> match for the string "<code
+     data-x="">URL</code>", followed by a U+003D EQUALS SIGN character (=), followed by a <span>valid
+     URL</span> that does not start with a literal U+0027 APOSTROPHE (') or U+0022 QUOTATION MARK
+     (") character.</li>
+
+    </ul>
+
+    <p>In the former case, the integer represents a number of seconds before the page is to be
+    reloaded; in the latter case the integer represents a number of seconds before the page is to be
+    replaced by the page at the given <span>URL</span>.</p>
+
+    <div class="example">
+
+     <p>A news organization's front page could include the following markup in the page's
+     <code>head</code> element, to ensure that the page automatically reloads from the server every
+     five minutes:</p>
+
+     <pre>&lt;meta http-equiv="Refresh" content="300"></pre>
+
+    </div>
+
+    <div class="example">
+
+     <p>A sequence of pages could be used as an automated slide show by making each page refresh to
+     the next page in the sequence, using markup such as the following:</p>
+
+     <pre>&lt;meta http-equiv="Refresh" content="20; URL=page4.html"></pre>
+
+    </div>
+
+   </dd>
+
+   <dt w-nodev><dfn data-x="attr-meta-http-equiv-set-cookie">Cookie setter</dfn> (<code data-x="">http-equiv="set-cookie"</code>)
+
+   <dd w-nodev>
+
+    <p>This pragma sets an HTTP cookie. <ref spec=COOKIES></p>
+
+    <p>It is non-conforming. Real HTTP headers should be used instead.</p>
+
+    <ol>
+
+     <li><p>If the <code>meta</code> element has no <code data-x="attr-meta-content">content</code>
+     attribute, or if that attribute's value is the empty string, then abort these steps.</p></li>
+
+     <li><p>Act as if <span data-x="receives a set-cookie-string">receiving a
+     set-cookie-string</span> for the document's <span data-x="concept-document-url">URL</span> via
+     a "non-HTTP" API, consisting of the value of the element's <code
+     data-x="attr-meta-content">content</code> attribute <span data-x="utf-8 encode">encoded as
+     UTF-8</span>. <ref spec=COOKIES> <ref spec=ENCODING></p></li>
+
+    </ol>
+
+   </dd>
+
+
+   <dt><dfn data-x="attr-meta-http-equiv-x-ua-compatible">X-UA-Compatible state</dfn> (<code data-x="">http-equiv="x-ua-compatible"</code>)
+
+   <dd>
+
+    <p>In practice, this pragma encourages Internet Explorer to more closely follow the
+    specifications.</p>
+
+    <p>For <code>meta</code> elements with an <code data-x="attr-meta-http-equiv">http-equiv</code>
+    attribute in the <span data-x="attr-meta-http-equiv-x-ua-compatible">X-UA-Compatible state</span>, the
+    <code data-x="attr-meta-content">content</code> attribute must have a value that is an
+    <span>ASCII case-insensitive</span> match for the string "<code data-x="">IE=edge</code>".</p>
+
+    <p>User agents are required to ignore this pragma.</p>
+
+   </dd>
+
+
+   <dt><dfn data-x="attr-meta-http-equiv-content-security-policy" data-export="" data-dfn-type="dfn">Content security policy state</dfn> (<code data-x="">http-equiv="content-security-policy"</code>)
+
+   <dd>
+
+    <p>This pragma <span data-x="enforce the policy">enforces</span> a <span>Content Security
+    Policy</span> on a <code>Document</code>. <ref spec="CSP"></p>
+
+    <div w-nodev>
+
+    <ol>
+     <li><p>If the <code>meta</code> element is not a child of a <code>head</code> element,
+     abort these steps.</p></li>
+
+     <li><p>If the <code>meta</code> element has no <code data-x="attr-meta-content">content</code>
+     attribute, or if that attribute's value is the empty string, then abort these steps.</p></li>
+
+     <li><p>Let <var>policy</var> be the result of executing Content Security Policy's <span>parse
+     a serialized Content Security Policy</span> algorithm on the <code>meta</code> element's
+     <code data-x="attr-meta-content">content</code> attribute's value.</p></li>
+
+     <li><p>Remove all occurrences of the <code
+     data-x="report-uri directive">report-uri</code>, <code
+     data-x="frame-ancestors directive">frame-ancestors</code>, and <code
+     data-x="sandbox directive">sandbox</code> <span data-x="Content Security Policy
+     directive">directives</span> from <var>policy</var>.</p></li>
+
+     <li><p><span>Enforce the policy</span> <var>policy</var>.</p></li>
+    </ol>
+
+    </div>
+
+    <p>For <code>meta</code> elements with an <code data-x="attr-meta-http-equiv">http-equiv</code>
+    attribute in the <span data-x="attr-meta-http-equiv-content-security-policy">Content security
+    policy state</span>, the <code data-x="attr-meta-content">content</code> attribute must have a
+    value consisting of a <span data-x="Content Security Policy syntax">valid Content Security
+    Policy</span>, but must not contain any <code data-x="report-uri directive">report-uri</code>,
+    <code data-x="frame-ancestors directive">frame-ancestors</code>, or <code data-x="sandbox
+    directive">sandbox</code> <span data-x="Content Security Policy directive">directives</span>.
+    The <span>Content Security Policy</span> given in the <code
+    data-x="attr-meta-content">content</code> attribute will be <span
+    data-x="enforce the policy">enforced</span> upon the current document. <ref spec="CSP"></p>
+
+    <div class="example">
+
+     <p>A page might choose to mitigate the risk of cross-site scripting attacks by preventing the
+     execution of inline JavaScript, as well as blocking all plugin content, using a policy such
+     as the following:
+
+     <pre>&lt;meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none'"></pre>
+
+    </div>
+   </dd>
+
+  </dl>
+
+  <p>There must not be more than one <code>meta</code> element with any particular state in the
+  document at a time.</p>
+
+
+  

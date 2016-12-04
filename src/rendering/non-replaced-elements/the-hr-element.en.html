@@ -1,0 +1,54 @@
+<h4>The <code>hr</code> element</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+hr {
+  color: gray;
+  border-style: inset;
+  border-width: 1px;
+  margin-block-start: 0.5em;
+  margin-inline-end: auto;
+  margin-block-end: 0.5em;
+  margin-inline-start: auto;
+}</pre>
+
+  <p>The following rules are also expected to apply, as <span>presentational hints</span>:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+hr[align=left i] { margin-left: 0; margin-right: auto; }
+hr[align=right i] { margin-left: auto; margin-right: 0; }
+hr[align=center i] { margin-left: auto; margin-right: auto; }
+hr[color], hr[noshade] { border-style: solid; }</pre>
+
+  <p>If an <code>hr</code> element has either a <code data-x="attr-hr-color">color</code> attribute
+  or a <code data-x="attr-hr-noshade">noshade</code> attribute, and furthermore also has a <code
+  data-x="attr-hr-size">size</code> attribute, and parsing that attribute's value using the
+  <span>rules for parsing non-negative integers</span> doesn't generate an error, then the user
+  agent is expected to use the parsed value divided by two as a pixel length for
+  <span>presentational hints</span> for the properties <span>'border-top-width'</span>,
+  <span>'border-right-width'</span>, <span>'border-bottom-width'</span>, and
+  <span>'border-left-width'</span> on the element.</p>
+
+  <p>Otherwise, if an <code>hr</code> element has neither a <code data-x="attr-hr-color">color</code>
+  attribute nor a <code data-x="attr-hr-noshade">noshade</code> attribute, but does have a <code
+  data-x="attr-hr-size">size</code> attribute, and parsing that attribute's value using the
+  <span>rules for parsing non-negative integers</span> doesn't generate an error, then: if the
+  parsed value is one, then the user agent is expected to use the attribute as a <span
+  data-x="presentational hints">presentational hint</span> setting the element's
+  <span>'border-bottom-width'</span> to 0; otherwise, if the parsed value is greater than one, then
+  the user agent is expected to use the parsed value minus two as a pixel length for
+  <span>presentational hints</span> for the <span>'height'</span> property on the element.</p>
+
+  <p>The <code data-x="attr-hr-width">width</code> attribute on an <code>hr</code> element <span>maps
+  to the dimension property</span> <span>'width'</span> on the element.</p>
+
+  <p>When an <code>hr</code> element has a <code data-x="attr-hr-color">color</code> attribute, its
+  value is expected to be parsed using the <span>rules for parsing a legacy color value</span>, and
+  if that does not return an error, the user agent is expected to treat the attribute as a <span
+  data-x="presentational hints">presentational hint</span> setting the element's
+  <span>'color'</span> property to the resulting color.</p>
+
+
+
+  

@@ -1,0 +1,44 @@
+<h5>Security with <code>canvas</code> elements</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p><strong>Information leakage</strong> can occur if scripts from one <span>origin</span> can
+  access information (e.g. read pixels) from images from another origin (one that isn't the <span
+  data-x="same origin">same</span>).</p>
+
+  <p>To mitigate this, bitmaps used with <code>canvas</code> elements and <code>ImageBitmap</code>
+  objects are defined to have a flag indicating whether they are <span
+  data-x="concept-canvas-origin-clean">origin-clean</span>. All bitmaps start with their <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> set to true. The flag is set to false
+  when cross-origin images are used.</p>
+
+  <p>The <code data-x="dom-canvas-toDataURL">toDataURL()</code>, <code
+  data-x="dom-canvas-toBlob">toBlob()</code>, and <code
+  data-x="dom-context-2d-getImageData">getImageData()</code> methods check the flag and will
+  throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code> rather than leak
+  cross-origin data.</p>
+
+  <p>The value of the <span data-x="concept-canvas-origin-clean">origin-clean</span> flag is
+  propagated from a source <code>canvas</code> element's bitmap to a new <code>ImageBitmap</code>
+  object by <code data-x="dom-createImageBitmap">createImageBitmap()</code>. Conversely, a
+  destination <code>canvas</code> element's bitmap will have its <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> flags set to false by <code
+  data-x="dom-context-2d-drawImage">drawImage</code> if the source image is an
+  <code>ImageBitmap</code> object whose bitmap has its <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> flag set to false.</p>
+
+  <p>The flag can be reset in certain situations; for example, when changing the value of the
+  <code data-x="attr-canvas-width">width</code> or the <code
+  data-x="attr-canvas-height">height</code> content attribute of the <code>canvas</code> element
+  to which a <code>CanvasRenderingContext2D</code> is bound, the bitmap is
+  cleared and its <span data-x="concept-canvas-origin-clean">origin-clean</span> flag is reset.</p>
+
+  <p>When using an <code>ImageBitmapRenderingContext</code>, the value of the <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> flag is propagated from
+  <code>ImageBitmap</code> objects when they are transferred to the <code>canvas</code>
+  via <span
+  data-x="dom-ImageBitmapRenderingContext-transferFromImageBitmap">transferFromImageBitmap()</span>.</p>
+
+  </div>
+
+  

@@ -1,0 +1,104 @@
+<h5>The <code data-x="attr-translate">translate</code> attribute</h5>
+
+  <!-- v2: a way to translate the declensions of the word(s), but keep the actual roots the same
+           for examples, see https://www.w3.org/Bugs/Public/show_bug.cgi?id=17954 -->
+
+  <p>The <dfn><code data-x="attr-translate">translate</code></dfn> attribute is an <span>enumerated
+  attribute</span> that is used to specify whether an element's attribute values and the values of
+  its <code>Text</code> node children are to be translated when the page is localized, or whether to
+  leave them unchanged.</p>
+
+  <p>The attribute's keywords are the empty string, <code data-x="">yes</code>, and <code
+  data-x="">no</code>. The empty string and the <code data-x="">yes</code> keyword map to the
+  <i>yes</i> state. The <code data-x="">no</code> keyword maps to the <i>no</i> state. In addition,
+  there is a third state, the <i>inherit</i> state, which is the <i data-x="missing value default">missing value default</i> (and
+  the <i data-x="invalid value default">invalid value default</i>).</p>
+
+  <p>Each element (even non-HTML elements) has a <dfn>translation mode</dfn>, which is in either the
+  <span>translate-enabled</span> state or the <span>no-translate</span> state. If an <span
+  data-x="HTML elements">HTML element</span>'s <code data-x="attr-translate">translate</code>
+  attribute is in the <i>yes</i> state, then the element's <span>translation mode</span> is in the
+  <span>translate-enabled</span> state; otherwise, if the element's <code
+  data-x="attr-translate">translate</code> attribute is in the <i>no</i> state, then the element's
+  <span>translation mode</span> is in the <span>no-translate</span> state. Otherwise, either the
+  element's <code data-x="attr-translate">translate</code> attribute is in the <i>inherit</i> state,
+  or the element is not an <span data-x="HTML elements">HTML element</span> and thus does not have a
+  <code data-x="attr-translate">translate</code> attribute; in either case, the element's
+  <span>translation mode</span> is in the same state as its parent element's, if any, or in the
+  <span>translate-enabled</span> state, if the element is a <span>document element</span>.</p>
+
+  <p>When an element is in the <dfn>translate-enabled</dfn> state, the element's <span>translatable
+  attributes</span> and the values of its <code>Text</code> node children are to be translated when
+  the page is localized.</p>
+
+  <p>When an element is in the <dfn>no-translate</dfn> state, the element's attribute values and the
+  values of its <code>Text</code> node children are to be left as-is when the page is localized,
+  e.g. because the element contains a person's name or a name of a computer program.</p>
+
+  <p>The following attributes are <dfn>translatable attributes</dfn>:</p>
+
+  <ul class="brief">
+   <li><code data-x="attr-th-abbr">abbr</code> on <code>th</code> elements</li>
+   <li><code data-x="">alt</code> on <code data-x="attr-area-alt">area</code>,
+                                     <code data-x="attr-img-alt">img</code>, and
+                                     <code data-x="attr-input-alt">input</code> elements</li>
+   <li><code data-x="attr-meta-content">content</code> on <code>meta</code> elements, if the <code data-x="attr-meta-name">name</code> attribute specifies a metadata name whose value is known to be translatable</li>
+   <li><code data-x="attr-hyperlink-download">download</code> on <code>a</code> and
+                                                                 <code>area</code> elements</li>
+   <li><code data-x="">label</code> on <code data-x="attr-menuitem-label">menuitem</code>,
+                                       <code data-x="attr-menu-label">menu</code>,
+                                       <code data-x="attr-optgroup-label">optgroup</code>,
+                                       <code data-x="attr-option-label">option</code>, and
+                                       <code data-x="attr-track-label">track</code> elements</li>
+   <li><code data-x="attr-lang">lang</code> on <span>HTML elements</span>; must be "translated" to match the language used in the translation</li>
+   <li><code data-x="">placeholder</code> on <code data-x="attr-input-placeholder">input</code> and
+                                             <code data-x="attr-textarea-placeholder">textarea</code> elements</li>
+   <li><code data-x="attr-iframe-srcdoc">srcdoc</code> on <code>iframe</code> elements; must be parsed and recursively processed</li>
+   <li><code data-x="attr-style">style</code> on <span>HTML elements</span>; must be parsed and
+   recursively processed (e.g. for the values of <span>'content'</span> properties)</li>
+   <li><code data-x="attr-title">title</code> on all <span>HTML elements</span></li>
+   <li><code data-x="attr-input-value">value</code> on <code>input</code> elements with a
+       <code data-x="attr-input-type">type</code> attribute in the <span data-x="attr-input-type-button">Button</span> state
+       or the <span data-x="attr-input-type-reset">Reset Button</span> state</li>
+       <!-- <input value> on other types is excluded since we can't predict if it interferes with server-side processing -->
+  </ul>
+
+  <p>Other specifications may define other attributes that are also <span>translatable
+  attributes</span>. For example, ARIA would define the <code
+  data-x="attr-aria-label">aria-label</code> attribute as translatable.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-translate">translate</code></dfn> IDL attribute must, on getting,
+  return true if the element's <span>translation mode</span> is <span>translate-enabled</span>, and
+  false otherwise. On setting, it must set the content attribute's value to "<code
+  data-x="">yes</code>" if the new value is true, and set the content attribute's value to "<code
+  data-x="">no</code>" otherwise.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, everything in the document is to be translated when the page is localized,
+   except the sample keyboard input and sample program output:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang=en> &lt;!-- default on the document element is translate=yes -->
+ &lt;head>
+  &lt;title>The Bee Game&lt;/title> &lt;!-- implied translate=yes inherited from ancestors -->
+ &lt;/head>
+ &lt;body>
+  &lt;p>The Bee Game is a text adventure game in English.&lt;/p>
+  &lt;p>When the game launches, the first thing you should do is type
+  &lt;kbd <strong>translate=no</strong>>eat honey&lt;/kbd>. The game will respond with:&lt;/p>
+  &lt;pre>&lt;samp <strong>translate=no</strong>>Yum yum! That was some good honey!&lt;/samp>&lt;/pre>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,45 @@
+<h4>Runtime script errors</h4>
+
+  <p>Whenever an uncaught runtime script error occurs in one of the worker's scripts, if the error
+  did not occur while handling a previous script error, the user agent must <span>report the
+  error</span> for that <span data-x="concept-script">script</span>, with the position (line number
+  and column number) where the error occurred, using the <code>WorkerGlobalScope</code> object as
+  the target.</p>
+
+  <p>For shared workers, if the error is still <i data-x="concept-error-nothandled">not handled</i>
+  afterwards, the error may be reported to a developer console.</p>
+
+  <p>For dedicated workers, if the error is still <i data-x="concept-error-nothandled">not
+  handled</i> afterwards, the user agent must <span>queue a task</span> to run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>notHandled</var> be the result of <span data-x="concept-event-fire">firing an
+   event</span> named <code data-x="event-error">error</code> at <code>Worker</code> object
+   associated with the worker, using <code>ErrorEvent</code>, with the <code
+   data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true, the <code
+   data-x="dom-ErrorEvent-message">message</code>, <code
+   data-x="dom-ErrorEvent-filename">filename</code>, <code
+   data-x="dom-ErrorEvent-lineno">lineno</code>, and <code
+   data-x="dom-ErrorEvent-colno">colno</code> attributes initialized appropriately, and the <code
+   data-x="dom-ErrorEvent-error">error</code> attribute initialized to null.</p></li>
+
+   <li><p>If <var>notHandled</var> is true, then the user agent must act as if the uncaught runtime
+   script error had occurred in the global scope that the <code>Worker</code> object is in, thus
+   repeating the entire runtime script error reporting process one level up.</p></li>
+  </ol>
+
+  <p>If the implicit port connecting the worker to its <code>Worker</code> object has been
+  disentangled (i.e. if the parent worker has been terminated), then the user agent must act as if
+  the <code>Worker</code> object had no <code data-x="event-error">error</code> event handler and as
+  if that worker's <code data-x="handler-WorkerGlobalScope-onerror">onerror</code> attribute was
+  null, but must otherwise act as described above.</p>
+
+  <p class="note">Thus, error reports propagate up to the chain of dedicated workers up to the
+  original <code>Document</code>, even if some of the workers along this chain have been terminated
+  and garbage collected.</p>
+
+  <p>The <span>task source</span> for the task mentioned above is the <span>DOM manipulation task
+  source</span>.</p>
+
+
+  

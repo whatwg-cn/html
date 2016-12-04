@@ -1,0 +1,46 @@
+<h4>Introduction</h4>
+
+  <p>Links are a conceptual construct, created by <code>a</code>, <code>area</code>, and
+  <code>link</code> elements, that <span data-x="represents">represent</span> a connection between
+  two resources, one of which is the current <code>Document</code>. There are two kinds of links in
+  HTML:</p>
+
+  <dl>
+
+   <dt><dfn data-x="external resource link" data-lt="external resource link" data-export="">Links to
+   external resources</dfn></dt>
+
+   <dd><p>These are links to resources that are to be used to augment the current document,
+   generally automatically processed by the user agent.</p></dd>
+
+   <dt><dfn data-x="hyperlink" data-lt="hyperlink" data-export="">Hyperlinks</dfn></dt>
+
+   <dd><p>These are links to other resources that are generally exposed to the user by the user
+   agent so that the user can cause the user agent to <span>navigate</span> to those resources, e.g.
+   to visit them in a browser or download them.</p></dd>
+
+  </dl>
+
+  <p>For <code>link</code> elements with an <code data-x="attr-link-href">href</code> attribute and a
+  <code data-x="attr-link-rel">rel</code> attribute, links must be created for the keywords of the
+  <code data-x="attr-link-rel">rel</code> attribute, as defined for those keywords in the <a
+  href="#linkTypes">link types</a> section.</p>
+
+  <p>Similarly, for <code>a</code> and <code>area</code> elements with an <code
+  data-x="attr-hyperlink-href">href</code> attribute and a <code
+  data-x="attr-hyperlink-rel">rel</code> attribute, links must be created for the keywords of the
+  <code data-x="attr-hyperlink-rel">rel</code> attribute as defined for those keywords in the <a
+  href="#linkTypes">link types</a> section. Unlike <code>link</code> elements, however,
+  <code>a</code> and <code>area</code> elements with an <code data-x="attr-hyperlink-href">href</code>
+  attribute that either do not have a <code data-x="attr-hyperlink-rel">rel</code> attribute, or
+  whose <code data-x="attr-hyperlink-rel">rel</code> attribute has no keywords that are defined as
+  specifying <span data-x="hyperlink">hyperlinks</span>, must also create a <span>hyperlink</span>.
+  This implied hyperlink has no special meaning (it has no <a href="#linkTypes">link type</a>)
+  beyond linking the element's <span>node document</span> to the resource given by the element's <code
+  data-x="attr-hyperlink-href">href</code> attribute.</p>
+
+  <p>A <span>hyperlink</span> can have one or more <dfn data-x="hyperlink annotation">hyperlink
+  annotations</dfn> that modify the processing semantics of that hyperlink.</p>
+
+
+  

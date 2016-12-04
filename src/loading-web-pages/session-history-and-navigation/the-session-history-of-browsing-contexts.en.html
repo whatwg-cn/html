@@ -1,0 +1,141 @@
+<h4>The session history of browsing contexts</h4>
+
+  <p>The sequence of <code>Document</code>s in a <span>browsing context</span> is its <dfn>session
+  history</dfn>. Each <span>browsing context</span>, including <span data-x="nested browsing
+  context">nested browsing contexts</span>, has a distinct session history. A <span>browsing
+  context</span>'s session history consists of a flat list of <span data-x="session history
+  entry">session history entries</span>. Each <dfn>session history entry</dfn> consists, at a
+  minimum, of a <span>URL</span>, and each entry may in addition have a <span>state object</span>, a
+  title, a <code>Document</code> object, form data, a <span>scroll restoration mode</span>, a scroll
+  position, a <span>browsing context name</span>, and other information associated with it.</p>
+
+  <p class="note">Each entry, when first created, has a <code>Document</code>. However, when a
+  <code>Document</code> is not <span data-x="fully active">active</span>, it's possible for it to be
+  <span data-x="discard a Document">discarded</span> to free resources. The <span>URL</span> and
+  other data in a <span>session history entry</span> is then used to bring a new
+  <code>Document</code> into being to take the place of the original, should the user agent find
+  itself having to reactivate that <code>Document</code>.</p>
+
+  <p class="note">Titles associated with <span data-x="session history entry">session history
+  entries</span> need not have any relation with the current <code>title</code> of the
+  <code>Document</code>. The title of a <span>session history entry</span> is intended to explain
+  the state of the document at that point, so that the user can navigate the document's history.</p>
+
+  <p>URLs without associated <span data-x="state object">state objects</span> are added to the
+  session history as the user (or script) navigates from page to page.</p>
+
+  <hr>
+
+  <p>Each <code>Document</code> object in a <span>browsing context</span>'s <span>session
+  history</span> is associated with a unique <code>History</code> object which must all model the
+  same underlying <span>session history</span>.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-history">history</code></dfn> attribute of the <code>Window</code>
+  interface must return the object implementing the <code>History</code> interface for this
+  <code>Window</code> object's <span data-x="concept-document-window">associated
+  <code>Document</code></span>.</p>
+
+  </div>
+
+  <hr>
+
+  <p>A <dfn>state object</dfn> is an object representing a user interface state.</p>
+
+  <p>Pages can <span data-x="dom-history-pushState">add</span> <span data-x="state object">state
+  objects</span> to the session history. These are then <span data-x="event-popstate">returned to the
+  script</span> when the user (or script) goes back in the history, thus enabling authors to use the
+  "navigation" metaphor even in one-page applications.</p>
+
+  <div class="note">
+
+   <p><span data-x="state object">State objects</span> are intended to be used for two main purposes:
+   first, storing a preparsed description of the state in the <span>URL</span> so that in the simple
+   case an author doesn't have to do the parsing (though one would still need the parsing for
+   handling <span data-x="URL">URLs</span> passed around by users, so it's only a minor
+   optimization), and second, so that the author can store state that one wouldn't store in the URL
+   because it only applies to the current <code>Document</code> instance and it would have to be
+   reconstructed if a new <code>Document</code> were opened.</p>
+
+   <p>An example of the latter would be something like keeping track of the precise coordinate from
+   which a pop-up <code>div</code> was made to animate, so that if the user goes back, it can be
+   made to animate to the same location. Or alternatively, it could be used to keep a pointer into a
+   cache of data that would be fetched from the server based on the information in the
+   <span>URL</span>, so that when going back and forward, the information doesn't have to be fetched
+   again.</p>
+
+  </div>
+
+  <hr>
+
+  <p>At any point, one of the entries in the session history is the <dfn>current entry</dfn>. This
+  is the entry representing the <span>active document</span> of the <span>browsing context</span>.
+  Which entry is the <span>current entry</span> is changed by the algorithms defined in this
+  specification, e.g. during <span data-x="traverse the history">session history
+  traversal</span>.</p>
+
+  <p class="note">The <span>current entry</span> is usually an entry for the <span
+  data-x="concept-document-url">URL</span> of the <code>Document</code>. However, it can also be one
+  of the entries for <span data-x="state object">state objects</span> added to the history by that
+  document.</p>
+
+  <p><dfn>An entry with persisted user state</dfn> is one that also has user-agent defined state.
+  This specification does not specify what kind of state can be stored.</p>
+
+  <p class="example">For example, some user agents might want to persist the scroll position, or the
+  values of form controls.</p>
+
+  <p class="note">User agents that persist the value of form controls are encouraged to also persist
+  their directionality (the value of the element's <code data-x="attr-dir">dir</code> attribute).
+  This prevents values from being displayed incorrectly after a history traversal when the user had
+  originally entered the values with an explicit, non-default directionality.</p>
+
+  <p>An entry's <dfn>scroll restoration mode</dfn> indicates whether the user agent should
+  restore the persisted scroll position (if any) when traversing to it. The scroll restoration
+  mode may be one of the following:</p>
+
+  <dl>
+   <dt>"<dfn><code subdfn data-x="dom-ScrollRestoration-auto">auto</code></dfn>"</dt>
+   <dd>The user agent is responsible for restoring the scroll position upon navigation.</dd>
+   <dt>"<dfn><code subdfn data-x="dom-ScrollRestoration-manual">manual</code></dfn>"</dt>
+   <dd>The page is responsible for restoring the scroll position and the user agent does not
+   attempt to do so automatically</dd>
+  </dl>
+
+  <p>If unspecified, the <span>scroll restoration mode</span> of a new entry must be set to
+  "<code data-x="dom-ScrollRestoration-auto">auto</code>".</p>
+
+  <p>Entries that consist of <span data-x="state object">state objects</span> share the same
+  <code>Document</code> as the entry for the page that was active when they were added.</p>
+
+  <p>Contiguous entries that differ just by their <span data-x="URL">URLs</span>' <span
+  data-x="concept-url-fragment">fragments</span> also share the same <code>Document</code>.</p>
+
+  <p class="note">All entries that share the same <code>Document</code> (and that are therefore
+  merely different states of one particular document) are contiguous by definition.</p>
+
+  <p>Each <code>Document</code> in a <span>browsing context</span> can also have a <dfn>latest
+  entry</dfn>. This is the entry for that <code>Document</code> to which the <span>browsing
+  context</span>'s <span>session history</span> was most recently traversed. When a
+  <code>Document</code> is created, it initially has no <span>latest entry</span>.</p>
+
+  <div w-nodev>
+
+  <p>User agents may <span data-x="discard a Document">discard</span> the <code>Document</code>
+  objects of entries other than the <span>current entry</span> that are not referenced from any
+  script, reloading the pages afresh when the user or script navigates back to such pages. This
+  specification does not specify when user agents should discard <code>Document</code> objects and
+  when they should cache them.</p>
+
+  <p>Entries that have had their <code>Document</code> objects discarded must, for the purposes of
+  the algorithms given below, act as if they had not. When the user or script navigates back or
+  forwards to a page which has no in-memory DOM objects, any other entries that shared the same
+  <code>Document</code> object with it must share the new object as well.</p>
+
+  </div>
+
+
+
+<!--TOPIC:DOM APIs-->
+  

@@ -1,0 +1,651 @@
+<h6>Building paths</h6>
+
+  <p>Objects that implement the <code>CanvasPath</code> interface have a <span
+  data-x="concept-path">path</span>. A <dfn data-x="concept-path">path</dfn> has a list of zero or
+  more subpaths. Each subpath consists of a list of one or more points, connected by straight or
+  curved <dfn>line segments</dfn>, and a flag indicating whether the subpath is closed or not. A
+  closed subpath is one where the last point of the subpath is connected to the first point of the
+  subpath by a straight line. Subpaths with only one point are ignored when painting the path.</p>
+
+  <p><span data-x="concept-path">Paths</span> have a <dfn>need new subpath</dfn> flag. When this
+  flag is set, certain APIs create a new subpath rather than extending the previous one. When a
+  <span data-x="concept-path">path</span> is created, its <span>need new subpath</span> flag must be
+  set.</p>
+
+  <p>When an object implementing the <code>CanvasPath</code> interface is created, its <span
+  data-x="concept-path">path</span> must be initialized to zero subpaths.</p>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-moveTo">moveTo</code>(<var>x</var>, <var>y</var>)</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-moveTo">moveTo</code>(<var>x</var>, <var>y</var>)</dt>
+
+   <dd>
+
+    <p>Creates a new subpath with the given point.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-closePath">closePath</code>()</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-closePath">closePath</code>()</dt>
+
+   <dd>
+
+    <p>Marks the current subpath as closed, and starts a new subpath with a point the same as the
+    start and end of the newly closed subpath.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-lineTo">lineTo</code>(<var>x</var>, <var>y</var>)</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-lineTo">lineTo</code>(<var>x</var>, <var>y</var>)</dt>
+
+   <dd>
+
+    <p>Adds the given point to the current subpath, connected to the previous one by a straight
+    line.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-quadraticCurveTo">quadraticCurveTo</code>(<var>cpx</var>, <var>cpy</var>, <var>x</var>, <var>y</var>)</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-quadraticCurveTo">quadraticCurveTo</code>(<var>cpx</var>, <var>cpy</var>, <var>x</var>, <var>y</var>)</dt>
+
+   <dd>
+
+    <p>Adds the given point to the current subpath, connected to the previous one by a quadratic
+    B&eacute;zier curve with the given control point.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-bezierCurveTo">bezierCurveTo</code>(<var>cp1x</var>, <var>cp1y</var>, <var>cp2x</var>, <var>cp2y</var>, <var>x</var>, <var>y</var>)</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-bezierCurveTo">bezierCurveTo</code>(<var>cp1x</var>, <var>cp1y</var>, <var>cp2x</var>, <var>cp2y</var>, <var>x</var>, <var>y</var>)</dt>
+
+   <dd>
+
+    <p>Adds the given point to the current subpath, connected to the previous one by a cubic
+    B&eacute;zier curve with the given control points.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-arcTo">arcTo</code>(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>, <var>radiusX</var> [, <var>radiusY</var>, <var>rotation</var> ] )</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-arcTo">arcTo</code>(<var>x1</var>, <var>y1</var>, <var>x2</var>, <var>y2</var>, <var>radiusX</var> [, <var>radiusY</var>, <var>rotation</var> ] )</dt>
+
+   <dd>
+
+    <p>Adds an arc with the given control points and radius to the current subpath, connected to the
+    previous point by a straight line.</p>
+
+    <p>If two radii are provided, then the first controls the width of the arc's ellipse, and the
+    second controls the height. If only one is provided, or if they are the same, then the arc is
+    from a circle. In the case of an ellipse, the rotation argument controls the clockwise
+    inclination of the ellipse relative to the x-axis.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the given
+    radius is negative.</p>
+
+    <figure class="diagrams">
+     <!-- if anyone wants to try writing alternative text for these,
+     be my guest. I can't work out how to describe them. -->
+     <img src="/images/arcTo1.png" alt="" width=357 height=254>
+     <img src="/images/arcTo2.png" alt="" width=468 height=310>
+     <img src="/images/arcTo3.png" alt="" width=513 height=233>
+    </figure>
+
+<!--
+
+c.clearRect(0, 0, 640, 480);
+c.save();
+try {
+  var x0 = 150;
+  var y0 = 100;
+  var x1 = 375;
+  var y1 = 100;
+  var x2 = x1;
+  var y2 = 250;
+  var r = 50;
+
+  var bottom = 210;
+  var center = 100;
+
+  var fontSize = 16;
+  var margin = 50;
+  var dotHalfSize = 5;
+
+  // (also update the label positions at the bottom)
+
+
+  // ========
+
+  function extendLine(xa,ya,xb,yb) {
+    var dx = xb-xa;
+    var dy = yb-ya;
+    var theta = Math.atan2(dx,dy);
+    var extX = margin * Math.sin(theta);
+    var extY = margin * Math.cos(theta);
+    c.beginPath();
+    c.moveTo(xa-extX,ya-extY);
+    c.lineTo(xb+extX,yb+extY);
+    c.stroke();
+  }
+
+  function dot(x,y,s) {
+    c.beginPath();
+    c.arc(x,y,dotHalfSize,0,Math.PI*2);
+    c.fill();
+    c.textAlign = 'left';
+    c.textBaseline = 'top';
+    c.fillText(s,x+dotHalfSize,y);
+  }
+
+  c.font = fontSize + 'px Gill Sans';
+  c.fillStyle = 'black';
+  c.lineWidth = 1;
+  c.strokeStyle = 'red';
+  extendLine(x0,y0,x1,y1);
+  extendLine(x1,y1,x2,y2);
+
+  c.lineWidth = 1;
+  c.strokeStyle = 'silver';
+  c.beginPath();
+  c.moveTo(x0,y0);
+
+  // based on https://lists.freedesktop.org/archives/cairo/2005-August/004801.html
+  var angle0, angle1, angle2, angled;
+  var xc, yc, dc;
+  angle0 = Math.atan2(y0 - y1, x0 - x1);
+  angle2 = Math.atan2(y2 - y1, x2 - x1);
+  angle1 = (angle0 + angle2) / 2;
+  angled = angle2 - angle0;
+  if (angled > Math.PI || (angled < 0 && angled > -Math.PI)) {
+    angle1 += Math.PI;
+    angled = 2 * Math.PI - angled;
+    angle0 += Math.PI*2;
+    angle2 -= Math.PI*2;
+  } else {
+    angle0 -= Math.PI*2;
+    angle2 += Math.PI*2;
+  }
+  dc = r / Math.sin (angled / 2);
+  yc = Math.sin(angle1);
+  xc = Math.cos(angle1);
+  xc = x1 + xc * dc;
+  yc = y1 + yc * dc;
+
+  c.lineWidth = 1;
+  c.strokeStyle = 'blue';
+  c.beginPath();
+  c.moveTo(xc,yc);
+  c.arc(xc,yc,r, Math.PI*3/4, Math.PI*(3/4));
+  c.stroke();
+  c.beginPath();
+  c.strokeStyle = 'silver';
+  c.arc(xc,yc,r, Math.PI*3/4,Math.PI*(2+3/4));
+  c.stroke();
+  c.save();
+  try {
+    c.translate(xc, yc);
+    c.rotate(-Math.PI/4);
+    c.textAlign = 'center';
+    c.textBaseline = 'top';
+    c.fillText("radius", -r/2, 0);
+  } finally {
+    c.restore();
+  }
+
+  c.lineWidth = 15;
+  c.lineCap = 'round';
+  c.strokeStyle = 'rgba(20,200,40,0.8)';
+  c.beginPath();
+  c.moveTo(x0,y0);
+  c.arcTo(x1,y1,x2,y2,r);
+  c.stroke();
+
+  dot(x0,y0, "x\u2080,y\u2080");
+  dot(x1,y1, "x\u2081,y\u2081");
+  dot(x2,y2, "x\u2082,y\u2082");
+  dot(xc,yc, '');
+
+  c.textAlign = 'left';
+  c.textBaseline = 'alphabetic';
+  var L = 0;
+
+  function print(s) {
+    c.fillText(s, center, bottom+L*fontSize*1.3);
+    L += 1;
+  }
+  print('// the thick line corresponds to:');
+  print('context.moveTo(x\u2080, y\u2080)');
+  print('context.arcTo(x\u2081, y\u2081, x\u2082, y\u2082, radius)');
+  print('context.stroke()');
+
+  c.fillStyle = 'green';
+  c.fillText("\u25be initial line", 160, 70);
+  c.textAlign = 'right';
+  c.fillText("arc \u25b8", x1-25, 115);
+
+} finally {
+  c.restore();
+}
+
+-->
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-arc">arc</code>(<var>x</var>, <var>y</var>, <var>radius</var>, <var>startAngle</var>, <var>endAngle</var> [, <var>anticlockwise</var> ] )</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-arc">arc</code>(<var>x</var>, <var>y</var>, <var>radius</var>, <var>startAngle</var>, <var>endAngle</var> [, <var>anticlockwise</var> ] )</dt>
+
+   <dd>
+
+    <p>Adds points to the subpath such that the arc described by the circumference of the circle
+    described by the arguments, starting at the given start angle and ending at the given end angle,
+    going in the given direction (defaulting to clockwise), is added to the path, connected to the
+    previous point by a straight line.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the given
+    radius is negative.</p>
+
+    <figure class="diagrams">
+     <!-- if anyone wants to try writing alternative text for this, be my guest. I can't work out how to describe it. -->
+     <img src="/images/arc1.png" alt="" width=590 height=255>
+    </figure>
+
+<!--
+
+c.clearRect(0, 0, 640, 480);
+c.save();
+try {
+  var x0 = 50;
+  var y0 = 200;
+  var x = 255;
+  var y = 150;
+  var radius = 100;
+  var startAngle = 2.0;
+  var endAngle = 5.7;
+  var direction = false;
+
+  var bottom = 110;
+  var center = 380;
+
+  var fontSize = 16;
+  var margin = 50;
+  var dotHalfSize = 5;
+  var arrowHead = 5;
+
+  // (also update the label positions at the bottom)
+
+  // ========
+
+  function dot(x,y,s) {
+    c.beginPath();
+    c.arc(x,y,dotHalfSize,0,Math.PI*2);
+    c.fill();
+    c.textAlign = 'center';
+    c.textBaseline = 'top';
+    c.fillText(s,x,y+dotHalfSize);
+  }
+
+  function arc(x, y, r, sA, eA, d, fr, s) {
+    c.lineWidth = 1;
+    c.strokeStyle = 'red';
+    c.beginPath();
+    c.arc(x, y, r, sA, eA, d);
+    c.stroke();
+
+    c.save();
+    c.translate(x, y);
+    c.rotate(eA);
+    c.beginPath();
+    c.moveTo(r-arrowHead, d?arrowHead:-arrowHead);
+    c.lineTo(r, 0);
+    c.lineTo(r+arrowHead, d?arrowHead:-arrowHead);
+    c.stroke();
+    c.strokeStyle = 'silver';
+    c.beginPath();
+    c.moveTo(0, 0);
+    c.lineTo(fr, 0);
+    c.stroke();
+    c.restore();
+
+    c.fillStyle = 'black';
+    if (eA<Math.PI) {
+      c.save();
+      c.translate(x, y);
+      c.rotate(sA+(eA-sA)/2-Math.PI/2);
+      c.translate(0, r);
+      c.rotate(-(sA+(eA-sA)/2-Math.PI/2));
+      c.beginPath();
+      c.textAlign = 'center';
+      c.textBaseline = 'bottom';
+      c.fillText(s + '  ',0,0);
+      c.restore();
+    } else {
+      c.save();
+      c.beginPath();
+      c.textAlign = 'left';
+      c.textBaseline = 'middle';
+      c.fillText(' ' + s,x-r,y);
+      c.restore();
+    }
+  }
+
+  function radial(x, y, length, rotation, s) {
+    c.lineWidth = 1;
+    c.strokeStyle = 'blue';
+    c.save();
+    c.translate(x, y);
+    c.rotate(rotation);
+    c.beginPath();
+    c.moveTo(0, 0);
+    c.lineTo(length, 0);
+    c.stroke();
+    c.textAlign = 'center';
+    c.textBaseline = 'bottom';
+    c.fillStyle = 'black';
+    c.fillText(s,length/2,0);
+    c.restore();
+  }
+
+  c.font = fontSize + 'px Gill Sans';
+
+  // construction lines
+  c.lineWidth = 1;
+  c.strokeStyle = 'silver';
+  // circle
+  c.beginPath();
+  c.arc(x, y, radius, 0, 2*Math.PI);
+  c.stroke();
+  // angles
+  arc(x, y, radius/10+2*radius/3, 0, startAngle, false, radius, '\u03B1');
+  arc(x, y, radius/10+radius/3, 0, endAngle, false, radius, '\u03B2');
+  // radii
+  radial(x, y, radius, 0, 'radius');
+
+  // the line
+  c.lineWidth = 15;
+  c.lineCap = 'round';
+  c.strokeStyle = 'rgba(20,200,40,0.8)';
+  c.beginPath();
+  c.moveTo(x0,y0);
+  c.arc(x,y,radius,startAngle,endAngle,direction);
+  c.stroke();
+
+  dot(x0,y0, "x\u2080,y\u2080");
+  dot(x,y, "x,y");
+
+  c.textAlign = 'left';
+  c.textBaseline = 'alphabetic';
+  var L = 0;
+
+  function print(s) {
+    c.fillText(s, center, bottom+L*fontSize*1.3);
+    L += 1;
+  }
+  print('// the thick line corresponds to:');
+  print('context.moveTo(x\u2080, y\u2080)');
+  print('context.arc(x, y, radius, \u03B1, \u03B2)');
+  print('context.stroke()');
+
+  c.fillStyle = 'green';
+
+  c.textBaseline = 'top';
+  c.fillText("initial line \u25b4", x0+20, y0+fontSize*2);
+
+  c.textAlign = 'right';
+  c.textBaseline = 'middle';
+  c.fillText("arc \u25b8", x-radius-15, y);
+
+} finally {
+  c.restore();
+}
+-->
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-ellipse">ellipse</code>(<var>x</var>, <var>y</var>, <var>radiusX</var>, <var>radiusY</var>, <var>rotation</var>, <var>startAngle</var>, <var>endAngle</var> [, <var>anticlockwise</var>] )</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-ellipse">ellipse</code>(<var>x</var>, <var>y</var>, <var>radiusX</var>, <var>radiusY</var>, <var>rotation</var>, <var>startAngle</var>, <var>endAngle</var> [, <var>anticlockwise</var>] )</dt>
+
+   <dd>
+
+    <p>Adds points to the subpath such that the arc described by the circumference of the ellipse
+    described by the arguments, starting at the given start angle and ending at the given end angle,
+    going in the given direction (defaulting to clockwise), is added to the path, connected to the
+    previous point by a straight line.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the given
+    radius is negative.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-rect">rect</code>(<var>x</var>, <var>y</var>, <var>w</var>, <var>h</var>)</dt>
+   <dt><var>path</var> . <code data-x="dom-context-2d-rect">rect</code>(<var>x</var>, <var>y</var>, <var>w</var>, <var>h</var>)</dt>
+
+   <dd>
+
+    <p>Adds a new closed subpath to the path, representing the given rectangle.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The following methods allow authors to manipulate the <span data-x="concept-path">paths</span>
+  of objects implementing the <code>CanvasPath</code> interface.</p>
+
+  <p>For objects implementing the <code>CanvasDrawPath</code> and <code>CanvasTransform</code>
+  interfaces, the points passed to the methods, and the resulting lines added to <span>current
+  default path</span> by these methods, must be transformed according to the <span
+  data-x="dom-context-2d-transformation">current transformation matrix</span> before being added to
+  the path.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-moveTo">moveTo(<var>x</var>, <var>y</var>)</code></dfn>
+  method, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If either of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>Create a new subpath with the specified point as its first (and only) point.</p></li>
+  </ol>
+
+  <p>When the user agent is to <dfn>ensure there is a subpath</dfn> for a coordinate (<var>x</var>,
+  <var>y</var>) on a <span data-x="concept-path">path</span>, the user agent must check to see if
+  the <span data-x="concept-path">path</span> has its <span>need new subpath</span> flag set. If it
+  does, then the user agent must create a new subpath with the point (<var>x</var>, <var>y</var>) as
+  its first (and only) point, as if the <code data-x="dom-context-2d-moveTo">moveTo()</code> method
+  had been called, and must then unset the <span data-x="concept-path">path</span>'s <span>need new
+  subpath</span> flag.</p>
+
+
+  <p>The <dfn><code data-x="dom-context-2d-closePath">closePath()</code></dfn> method, when invoked,
+  must do nothing if the object's path has no subpaths. Otherwise, it must mark the last subpath as
+  closed, create a new subpath whose first point is the same as the previous subpath's first point,
+  and finally add this new subpath to the path.</p>
+
+  <p class="note">If the last subpath had more than one point in its list of points, then this is
+  equivalent to adding a straight line connecting the last point back to the first point, thus
+  "closing" the shape, and then repeating the last (possibly implied) <code
+  data-x="dom-context-2d-moveTo">moveTo()</code> call.</p>
+
+
+  <p>New points and the lines connecting them are added to subpaths using the methods described
+  below. In all cases, the methods only modify the last subpath in the object's path.</p>
+
+
+  <p>The <dfn><code data-x="dom-context-2d-lineTo">lineTo(<var>x</var>, <var>y</var>)</code></dfn>
+  method, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If either of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>If the object's path has no subpaths, then <span>ensure there is a subpath</span> for
+   <span data-x="">(<var>x</var>, <var>y</var>)</span>.</p></li>
+
+   <li><p>Otherwise, connect the last point in the subpath to the given point (<var>x</var>,
+   <var>y</var>) using a straight line, and then add the given point (<var>x</var>, <var>y</var>) to
+   the subpath.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-context-2d-quadraticCurveTo">quadraticCurveTo(<var>cpx</var>,
+  <var>cpy</var>, <var>x</var>, <var>y</var>)</code></dfn> method, when invoked, must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p><span>Ensure there is a subpath</span> for <span data-x="">(<var>cpx</var>,
+   <var>cpy</var>)</span></p></li>
+
+   <li><p>Connect the last point in the subpath to the given point (<var>x</var>, <var>y</var>)
+   using a quadratic B&eacute;zier curve with control point (<var>cpx</var>, <var>cpy</var>). <ref
+   spec=BEZIER></p></li>
+
+   <li><p>Add the given point (<var>x</var>, <var>y</var>) to the subpath.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-context-2d-bezierCurveTo">bezierCurveTo(<var>cp1x</var>,
+  <var>cp1y</var>, <var>cp2x</var>, <var>cp2y</var>, <var>x</var>, <var>y</var>)</code></dfn>
+  method, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p><span>Ensure there is a subpath</span> for <span data-x="">(<var>cp1x</var>,
+   <var>cp1y</var>)</span>.</p></li>
+
+   <li><p>Connect the last point in the subpath to the given point (<var>x</var>, <var>y</var>)
+   using a cubic B&eacute;zier curve with control points (<var>cp1x</var>, <var>cp1y</var>) and
+   (<var>cp2x</var>, <var>cp2y</var>). <ref spec=BEZIER></p></li>
+
+   <li><p>Add the point (<var>x</var>, <var>y</var>) to the subpath.</p></li>
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-arcTo">arcTo(<var>x1</var>, <var>y1</var>, <var>x2</var>,
+  <var>y2</var>, <var>radiusX</var>, <var>radiusY</var>, <var>rotation</var>)</code></dfn> method,
+  when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p><span>Ensure there is a subpath</span> for <span data-x="">(<var>x1</var>,
+   <var>y1</var>)</span>.</p></li>
+
+   <li><p>If either <var>radiusX</var> or <var>radiusY</var> are negative, then throw an
+   <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If <var>radiusY</var> is omitted, then set <var>radiusY</var> to
+   <var>radiusX</var>.</p></li>
+
+   <li><p>Let the point (<var>x0</var>, <var>y0</var>) be the last point in the subpath, transformed
+   by the inverse of the <span data-x="dom-context-2d-transformation">current transformation
+   matrix</span> (so that it is in the same coordinate system as the points passed to the
+   method).</p></li>
+
+   <li><p>If the point (<var>x0</var>, <var>y0</var>) is equal to the point (<var>x1</var>,
+   <var>y1</var>), or if the point (<var>x1</var>, <var>y1</var>) is equal to the point
+   (<var>x2</var>, <var>y2</var>), or if both <var>radiusX</var> and <var>radiusY</var> are zero,
+   then add the point (<var>x1</var>, <var>y1</var>) to the subpath, and connect that point to the
+   previous point (<var>x0</var>, <var>y0</var>) by a straight line.</p></li>
+
+   <li><p>Otherwise, if the points (<var>x0</var>, <var>y0</var>), (<var>x1</var>, <var>y1</var>),
+   and (<var>x2</var>, <var>y2</var>) all lie on a single straight line, then add the point
+   (<var>x1</var>, <var>y1</var>) to the subpath, and connect that point to the previous point
+   (<var>x0</var>, <var>y0</var>) by a straight line.</p></li>
+
+   <li><p>Otherwise, let <var>The Arc</var> be the shortest arc given by circumference of the
+   ellipse that has radius <var>radiusX</var> on the major axis and radius <var>radiusY</var> on the
+   minor axis, and whose semi-major axis is rotated <var>rotation</var> radians clockwise from the
+   positive x-axis, and that has one point tangent to the half-infinite line that crosses the point
+   (<var>x0</var>, <var>y0</var>) and ends at the point (<var>x1</var>, <var>y1</var>), and that has
+   a different point tangent to the half-infinite line that ends at the point (<var>x1</var>,
+   <var>y1</var>) and crosses the point (<var>x2</var>, <var>y2</var>). The points at which this
+   ellipse touches these two lines are called the start and end tangent points respectively. Connect
+   the point (<var>x0</var>, <var>y0</var>) to the start tangent point by a straight line, adding
+   the start tangent point to the subpath, and then connect the start tangent point to the end
+   tangent point by <var>The Arc</var>, adding the end tangent point to the subpath.</p></li>
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-arc">arc(<var>x</var>, <var>y</var>,
+  <var>radius</var>, <var>startAngle</var>, <var>endAngle</var>, <var>anticlockwise</var>)</code></dfn> and <dfn><code data-x="dom-context-2d-ellipse">ellipse(<var>x</var>, <var>y</var>, <var>radiusX</var>, <var>radiusY</var>, <var>rotation</var>, <var>startAngle</var>, <var>endAngle</var>, <var>anticlockwise</var>)</code></dfn> methods draw arcs.</p>
+
+  <p>The <code data-x="dom-context-2d-arc">arc()</code> method is equivalent to the <code
+  data-x="dom-context-2d-ellipse">ellipse()</code> method in the case where the two radii are equal.
+  When the <code data-x="dom-context-2d-arc">arc()</code> method is invoked, it must act as if the
+  <code data-x="dom-context-2d-ellipse">ellipse()</code> method had been invoked with the <var>radiusX</var> and <var>radiusY</var> arguments set to the value of the <var>radius</var> argument, the <var>rotation</var> argument set to zero, and the
+  other arguments set to the same values as their identically named arguments on the <code
+  data-x="dom-context-2d-arc">arc()</code> method.</p>
+
+  <p>The <code data-x="dom-context-2d-ellipse">ellipse()</code> method, when invoked, must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>If either <var>radiusX</var> or <var>radiusY</var> are negative, then throw an
+   <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If the object's path has any subpaths, then add a straight line from the last point in the
+   subpath to the start point of the arc.</p></li>
+
+   <li>
+    <p>Add the start and end points of the arc to the subpath, and connect them with an arc. The arc
+    and its start and end points are defined as follows:</p>
+
+    <p>Consider an ellipse that has its origin at (<var>x</var>, <var>y</var>), that has a
+    major-axis radius <var>radiusX</var> and a minor-axis radius <var>radiusY</var>, and that is
+    rotated about its origin such that its semi-major axis is inclined <var>rotation</var> radians
+    clockwise from the x-axis.</p>
+
+    <p>If <var>anticlockwise</var> is false and <span
+    data-x=""><var>endAngle</var>-<var>startAngle</var></span> is equal to or greater than <span
+    data-x="">2&pi;</span>, or, if <var>anticlockwise</var> is <em>true</em> and <span
+    data-x=""><var>startAngle</var>-<var>endAngle</var></span> is equal to or greater than <span
+    data-x="">2&pi;</span>, then the arc is the whole circumference of this ellipse, and the point
+    at <var>startAngle</var> along this circle's circumference, measured in radians clockwise from
+    the ellipse's semi-major axis, acts as both the start point and the end point.</p>
+
+    <p>Otherwise, the points at <var>startAngle</var> and <var>endAngle</var> along this circle's
+    circumference, measured in radians clockwise from the ellipse's semi-major axis, are the start
+    and end points respectively, and the arc is the path along the circumference of this ellipse
+    from the start point to the end point, going anti-clockwise if <var>anticlockwise</var> is true,
+    and clockwise otherwise. Since the points are on the ellipse, as opposed to being simply angles
+    from zero, the arc can never cover an angle greater than <span data-x="">2&pi;</span>
+    radians.</p>
+
+    <p class="note">Even if the arc covers the entire circumference of the ellipse and there are no
+    other points in the subpath, the path is not closed unless the <code
+    data-x="dom-context-2d-closePath">closePath()</code> method is appropriately invoked.</p>
+   </li>
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-rect">rect(<var>x</var>, <var>y</var>, <var>w</var>,
+  <var>h</var>)</code></dfn> method, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>Create a new subpath containing just the four points (<var>x</var>, <var>y</var>),
+   (<var>x</var>+<var>w</var>, <var>y</var>), (<var>x</var>+<var>w</var>,
+   <var>y</var>+<var>h</var>), (<var>x</var>, <var>y</var>+<var>h</var>), in that order, with those
+   four points connected by straight lines.</p></li>
+
+   <li><p>Mark the subpath as closed.</p></li>
+
+   <li><p>Create a new subpath with the point (<var>x</var>, <var>y</var>) as the only point in the
+   subpath.</p></li>
+  </ol>
+
+  <!-- v6 feature request:
+        * points as a primitive shape
+          http://home.comcast.net/~urbanjost/canvas/vogle4.html
+  -->
+
+  </div>
+
+
+
+  

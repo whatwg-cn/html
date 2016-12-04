@@ -1,0 +1,73 @@
+<h6>Best practices for metadata text tracks</h6>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Text tracks can be used for storing data relating to the media data, for interactive or
+  augmented views.</p>
+
+  <p>For example, a page showing a sports broadcast could include information about the current
+  score. Suppose a robotics competition was being streamed live. The image could be overlayed with
+  the scores, as follows:</p>
+
+  <p><iframe src="data:text/html;charset=utf-8,%3C!DOCTYPE%20html%3E%0A%3Cstyle%3E%0A%20body%2C%20html%20%7B%20margin%3A%200%3B%20padding%3A%200%3B%20overflow%3A%20hidden%3B%20%7D%0A%20div%20%7B%20width%3A%20600px%3B%20height%3A%20400px%3B%20position%3A%20relative%3B%20%7D%0A%20p%20%7B%20position%3A%20absolute%3B%20top%3A%200%3B%20margin%3A%200.25em%3B%20font%3A%20small-caps%20900%202em%20sans-serif%3B%20text-shadow%3A%20white%200%200%204px%3B%20%7D%0A%20span%20%7B%20display%3A%20block%3B%20%7D%0A%20.left%20%7B%20color%3A%20red%3B%20left%3A%200%3B%20text-align%3A%20left%3B%20%7D%0A%20.right%20%7B%20color%3A%20blue%3B%20right%3A%200%3B%20text-align%3A%20right%3B%20%7D%0A%20.middle%20%7B%20color%3A%20white%3B%20top%3A%20auto%3B%20bottom%3A%200%3B%20left%3A%200%3B%20right%3A%200%3B%20text-align%3A%20center%3B%20text-shadow%3A%20black%200%200%204px%3B%20%7D%0A%20.middle%20span%20%7B%20display%3A%20inline-block%3B%20margin%3A%200%201em%3B%20font-size%3A%200.75em%3B%20text-transform%3A%20uppercase%3B%20%7D%0A%3C%2Fstyle%3E%0A%3Cdiv%3E%0A%20%3Cimg%20src%3D%22https%3A%2F%2Fhtml.spec.whatwg.org%2Fimages%2Frobots.jpeg%22%3E%0A%20%3Cp%20class%3D%22score%20left%22%3E%3Cspan%3ERed%20Alliance%3C%2Fspan%3E%20%3Cspan%3E78%3C%2Fspan%3E%3C%2Fp%3E%0A%20%3Cp%20class%3D%22score%20right%22%3E%3Cspan%3EBlue%20Alliance%3C%2Fspan%3E%20%3Cspan%3E66%3C%2Fspan%3E%3C%2Fp%3E%0A%20%3Cp%20class%3D%22score%20middle%22%3E%3Cspan%3EQual%20Match%2037%3C%2Fspan%3E%20%3Cspan%3EFriday%2014%3A21%3C%2Fspan%3E%0A%3C%2Fdiv%3E" width="600" height="400"></iframe>
+
+  <p>In order to make the score display render correctly whenever the user seeks to an arbitrary
+  point in the video, the metadata text track cues need to be as long as is appropriate for the
+  score. For example, in the frame above, there would be maybe one cue that lasts the length of the
+  match that gives the match number, one cue that lasts until the blue alliance's score changes, and
+  one cue that lasts until the red alliance's score changes. If the video is just a stream of the
+  live event, the time in the bottom right would presumably be automatically derived from the
+  current video time, rather than based on a cue. However, if the video was just the highlights,
+  then that might be given in cues also.</p>
+
+  <p>The following shows what fragments of this could look like in a WebVTT file:</p>
+
+  <pre>WEBVTT
+
+...
+
+05:10:00.000 --> 05:12:15.000
+matchtype:qual
+matchnumber:37
+
+...
+
+05:11:02.251 --> 05:11:17.198
+red:78
+
+05:11:03.672 --> 05:11:54.198
+blue:66
+
+05:11:17.198 --> 05:11:25.912
+red:80
+
+05:11:25.912 --> 05:11:26.522
+red:83
+
+05:11:26.522 --> 05:11:26.982
+red:86
+
+05:11:26.982 --> 05:11:27.499
+red:89
+
+...</pre>
+
+  <p>The key here is to notice that the information is given in cues that span the length of time to
+  which the relevant event applies. If, instead, the scores were given as zero-length (or very
+  brief, nearly zero-length) cues when the score changes, for example saying "red+2" at
+  05:11:17.198, "red+3" at 05:11:25.912, etc, problems arise: primarily, seeking is much harder to
+  implement, as the script has to walk the entire list of cues to make sure that no notifications
+  have been missed; but also, if the cues are short it's possible the script will never see that
+  they are active unless it listens to them specifically.</p>
+
+  <p>When using cues in this manner, authors are encouraged to use the <code
+  data-x="event-media-cuechange">cuechange</code> event to update the current annotations. (In
+  particular, using the <code data-x="event-media-timeupdate">timeupdate</code> event would be less
+  appropriate as it would require doing work even when the cues haven't changed, and, more
+  importantly, would introduce a higher latency between when the metadata cues become active and
+  when the display is updated, since <code data-x="event-media-timeupdate">timeupdate</code> events
+  are rate-limited.)</p>
+
+
+
+  

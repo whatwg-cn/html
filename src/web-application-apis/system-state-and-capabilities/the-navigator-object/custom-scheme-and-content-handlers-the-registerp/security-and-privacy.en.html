@@ -1,0 +1,86 @@
+<h6>Security and privacy</h6>
+
+  <p>These mechanisms can introduce a number of concerns, in particular privacy concerns.</p>
+
+  <p><strong>Hijacking all Web usage.</strong> User agents should not allow schemes that are key to
+  its normal operation, such as an <span>HTTP(S) scheme</span>, to be rerouted through third-party
+  sites. This would allow a user's activities to be trivially tracked, and would allow user
+  information, even in secure connections, to be collected.</p>
+
+  <p><strong>Hijacking defaults.</strong> User agents are strongly urged to not automatically change
+  any defaults, as this could lead the user to send data to remote hosts that the user is not
+  expecting. New handlers registering themselves should never automatically cause those sites to be
+  used.</p>
+
+  <p><strong>Registration spamming.</strong> User agents should consider the possibility that a site
+  will attempt to register a large number of handlers, possibly from multiple domains (e.g. by
+  redirecting through a series of pages each on a different domain, and each registering a handler
+  for <code>video/mpeg</code> &mdash; analogous practices abusing other Web browser features have
+  been used by pornography Web sites for many years). User agents should gracefully handle such
+  hostile attempts, protecting the user.</p>
+
+  <p><strong>Misleading titles.</strong> User agents should not rely wholly on the <var>title</var>
+  argument to the methods when presenting the registered handlers to the user, since sites could
+  easily lie. For example, a site <code data-x="">hostile.example.net</code> could claim that it was
+  registering the "Cuddly Bear Happy Content Handler". User agents should therefore use the
+  handler's domain in any UI along with any title.</p>
+
+  <p><strong>Hostile handler metadata.</strong> User agents should protect against typical attacks
+  against strings embedded in their interface, for example ensuring that markup or escape characters
+  in such strings are not executed, that null bytes are properly handled, that over-long strings do
+  not cause crashes or buffer overruns, and so forth.</p>
+
+  <p><strong>Leaking Intranet URLs.</strong> The mechanism described in this section can result in
+  secret Intranet URLs being leaked, in the following manner:</p>
+
+  <ol>
+
+   <li>The user registers a third-party content handler as the default handler for a content
+   type.</li>
+
+   <li>The user then browses their corporate Intranet site and accesses a document that uses that
+   content type.</li>
+
+   <li>The user agent contacts the third party and hands the third party the URL to the Intranet
+   content.</li>
+
+  </ol>
+
+  <p>No actual confidential file data is leaked in this manner, but the URLs themselves could
+  contain confidential information. For example, the URL could be <code
+  data-x="">https://www.corp.example.com/upcoming-aquisitions/the-sample-company.egf</code>, which
+  might tell the third party that Example Corporation is intending to merge with The Sample Company.
+  Implementors might wish to consider allowing administrators to disable this feature for certain
+  subdomains, content types, or schemes.</p>
+
+  <p><strong>Leaking secure URLs.</strong> User agents should not send HTTPS URLs to third-party
+  sites registered as content handlers without the user's informed consent, for the same reason that
+  user agents sometimes avoid sending `<code data-x="http-referer">Referer</code>` (sic) HTTP
+  headers from secure sites to third-party sites.</p>
+
+  <p><strong>Leaking credentials.</strong> User agents must never send username or password
+  information in the URLs that are escaped and included sent to the handler sites. User agents may
+  even avoid attempting to pass to Web-based handlers the URLs of resources that are known to
+  require authentication to access, as such sites would be unable to access the resources in
+  question without prompting the user for credentials themselves (a practice that would require the
+  user to know whether to trust the third-party handler, a decision many users are unable to make or
+  even understand).</p>
+
+  <p><strong>Interface interference.</strong> User agents should be prepared to handle intentionally
+  long arguments to the methods. For example, if the user interface exposed consists of an "accept"
+  button and a "deny" button, with the "accept" binding containing the name of the handler, it's
+  important that a long name not cause the "deny" button to be pushed off the screen.</p>
+
+  <p><strong>Fingerprinting users.</strong> Since a site can detect if it has attempted to register
+  a particular handler or not, whether or not the user responds, the mechanism can be used to store
+  data. User agents are therefore strongly urged to treat registrations in the same manner as
+  cookies: clearing cookies for a site should also clear all registrations for that site, and
+  disabling cookies for a site should also disable registrations.</p>
+
+  </div>
+<!--REMOVE-TOPIC:Security-->
+
+
+  <div w-nodev>
+
+  

@@ -1,0 +1,31 @@
+<h4>Closing browsing contexts</h4>
+
+  <p>When the user agent is required to <dfn>close a browsing context</dfn>, it must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>specified browsing context</var> be the <span>browsing context</span>
+   being closed.</p></li>
+
+   <li><p><span data-x="prompt to unload a document">Prompt to unload</span> the <span>active
+   document</span> of the <var>specified browsing context</var>. If the user <span>refused
+   to allow the document to be unloaded</span>, then abort these steps.</p></li>
+
+   <li><p><span data-x="unload a document">Unload</span> the <span>active document</span> of the <var>specified browsing context</var> with the <var>recycle</var> parameter set to
+   false.</p></li>
+
+   <li><p>Remove the <var>specified browsing context</var> from the user interface (e.g.
+   close or hide its tab in a tabbed browser).</p></li>
+
+   <li><p><span data-x="a browsing context is discarded">Discard</span> the <var>specified
+   browsing context</var>.</p></li>
+
+  </ol>
+
+  <p>User agents should offer users the ability to arbitrarily <span data-x="close a browsing
+  context">close</span> any <span>top-level browsing context</span>.</p>
+
+
+
+  

@@ -1,0 +1,260 @@
+<h6>Incumbent</h6>
+
+  <p>All <span data-x="JavaScript execution context">JavaScript execution contexts</span> must
+  contain, as part of their code evaluation state, a <dfn>skip-when-determining-incumbent
+  counter</dfn> value, which is initially zero. In the process of <span data-x="prepare to run a
+  callback">preparing to run a callback</span> and <span data-x="clean up after running a
+  callback">cleaning up after running a callback</span>, this value will be incremented and
+  decremented.</p>
+
+  <p>Every <span>event loop</span> has an associated <dfn>backup incumbent settings object
+  stack</dfn>, initially empty. Roughly speaking, it is used to determine the <span>incumbent
+  settings object</span> when no author code is on the stack, but author code is responsible for the
+  current algorithm having been run in some way. The process of <span data-x="prepare to run a
+  callback">preparing to run a callback</span> and <span data-x="clean up after running a
+  callback">cleaning up after running a callback</span> manipulate this stack. <ref
+  spec="WEBIDL"></p>
+
+  <p>When Web IDL is used to <span data-x="es-invoking-callback-functions">invoke</span> author
+  code, or when <span>EnqueueJob</span> invokes a promise job, they use the following algorithms to
+  track relevant data for determining the <span>incumbent settings object</span>:</p>
+
+  <p>To <dfn data-export="">prepare to run a callback</dfn> with an <span>environment settings
+  object</span> <var>settings</var>:</p>
+
+  <ol>
+   <li><p>Push <var>settings</var> onto the <span>backup incumbent settings object
+   stack</span>.</p></li>
+
+   <li><p>Let <var>context</var> be the <span>topmost script-having execution
+   context</span>.</p></li>
+
+   <li><p>If <var>context</var> is not null, increment <var>context</var>'s
+   <span>skip-when-determining-incumbent counter</span>.</p></li>
+  </ol>
+
+  <p>To <dfn data-export="">clean up after running a callback</dfn> with an <span>environment
+  settings object</span> <var>settings</var>:</p>
+
+  <ol>
+   <li>
+    <p>Let <var>context</var> be the <span>topmost script-having execution context</span>.</p>
+
+    <p class="note">This will be the same as the <span>topmost script-having execution
+    context</span> inside the corresponding invocation of <span>prepare to run a
+    callback</span>.</p>
+   </li>
+
+   <li><p>If <var>context</var> is not null, decrement <var>context</var>'s
+   <span>skip-when-determining-incumbent counter</span>.</p></li>
+
+   <li><p>Assert: the topmost entry of the <span>backup incumbent settings object stack</span> is
+   <var>settings</var>.</p></li>
+
+   <li><p>Remove <var>settings</var> from the <span>backup incumbent settings object
+   stack</span>.</p></li>
+  </ol>
+
+  <p>Here, the <dfn>topmost script-having execution context</dfn> is the topmost entry of the
+  <span>JavaScript execution context stack</span> that has a non-null ScriptOrModule component, or
+  null if there is no such entry in the <span>JavaScript execution context stack</span>.</p>
+
+  <p>With all this in place, the <dfn data-export="">incumbent settings object</dfn> is determined
+  as follows:</p>
+
+  <ol>
+   <li><p>Let <var>context</var> be the <span>topmost script-having execution
+   context</span>.</p></li>
+
+   <li>
+    <p>If <var>context</var> is null, or if <var>context</var>'s
+    <span>skip-when-determining-incumbent counter</span> is greater than zero, then:</p>
+
+    <ol>
+     <li>
+      <p>Assert: the <span>backup incumbent settings object stack</span> is not empty.</p>
+
+      <p class="note">This assert would fail if you try to obtain the <span>incumbent settings
+      object</span> from inside an algorithm that was triggered neither by <a
+      href="#calling-scripts">calling scripts</a> nor by Web IDL <span
+      data-x="es-invoking-callback-functions">invoking</span> a callback. For example, it would
+      trigger if you tried to obtain the <span>incumbent settings object</span> inside an algorithm
+      that ran periodically as part of the <span>event loop</span>, with no involvement of author
+      code. In such cases the <span data-x="concept-incumbent-everything">incumbent</span> concept
+      cannot be used.</p>
+     </li>
+
+     <li><p>Return the topmost entry of the <span>backup incumbent settings object
+     stack</span>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Return <var>context</var>'s Realm component's <span
+   data-x="concept-realm-settings-object">settings obect</span>.</p></li>
+  </ol>
+
+  <p>Then, the <dfn data-x="concept-incumbent-realm">incumbent Realm</dfn> is the <span
+  data-x="environment settings object's Realm">Realm</span> of the <span>incumbent settings
+  object</span>.</p>
+
+  <p>Similarly, the <dfn data-x="concept-incumbent-global">incumbent global object</dfn> is the
+  <span data-x="concept-settings-object-global">global object</span> of the <span>incumbent
+  settings object</span>.</p>
+
+  <hr>
+
+  <p>The following series of examples is intended to make it clear how all of the different
+  mechanisms contribute to the definition of the <a href="#incumbent">incumbent</a> concept:</p>
+
+  <div class="example">
+   <p>Consider the following very simple example:</p>
+
+   <pre>&lt;!DOCTYPE html>
+&lt;iframe>&lt;/iframe>
+&lt;script>
+  new frames[0].MessageChannel();
+&lt;/script></pre>
+
+   <p>When the <code data-x="dom-MessageChannel">MessageChannel()</code> constructor looks up the
+   <span>incumbent settings object</span> to use as the <span
+   data-x="concept-port-owner">owner</span> of the new <code>MessagePort</code> objects, the
+   <span>topmost script-having execution context</span> will be that corresponding to the
+   <code>script</code> element: it was pushed onto the <span>JavaScript execution context
+   stack</span> as part of <span data-x="js-ScriptEvaluation">ScriptEvaluation</span> during the
+   <span>run a classic script</span> algorithm. Since there are no Web IDL callback invocations
+   involved, the context's <span>skip-when-determining-incumbent counter</span> is zero, so it is
+   used to determine the <span>incumbent settings object</span>; the result is the <span>environment
+   settings object</span> of <code data-x="">window</code>.</p>
+
+   <p>(In this example, the <span>environment settings object</span> of <code
+   data-x="">frames[0]</code> is not involved at all. It is the <span>current settings
+   object</span>, but the <code data-x="dom-MessageChannel">MessageChannel()</code> constructor
+   cares only about the incumbent, not current.)</p>
+  </div>
+
+  <div class="example">
+   <p>Consider the following more complicated example:</p>
+
+   <pre>&lt;!DOCTYPE html>
+&lt;iframe>&lt;/iframe>
+&lt;script>
+  const bound = frames[0].postMessage.bind(frames[0], "some data", "*");
+  window.setTimeout(bound);
+&lt;/script></pre>
+
+   <p>There are two interesting <span data-x="environment settings object">environment settings
+   objects</span> here: that of <code data-x="">window</code>, and that of <code
+   data-x="">frames[0]</code>. Our concern is: what is the <span>incumbent settings object</span> at
+   the time that the algorithm for <code data-x="dom-window-postMessage">postMessage()</code>
+   executes?</p>
+
+   <p>It should be that of <code data-x="">window</code>, to capture the intuitive notion that the
+   author script responsible for causing the algorithm to happen is executing in <code
+   data-x="">window</code>, not <code data-x="">frames[0]</code>. Another way of capturing the
+   intuition here is that invoking algorithms asynchronously (in this case via <code
+   data-x="dom-setTimeout">setTimeout()</code>) should not change the <span
+   data-x="concept-incumbent-everything">incumbent</span> concept.</p>
+
+   <p>Let us now explain how the steps given above give us our intuitively-desired result of <code
+   data-x="">window</code>'s <span>relevant settings object</span>.</p>
+
+   <p>When <code data-x="">bound</code> is <span data-x="concept-idl-convert">converted</span> to a
+   Web IDL callback type, the <span>incumbent settings object</span> is that corresponding to <code
+   data-x="">window</code> (in the same manner as in our simple example above). Web IDL stores this
+   as the resulting callback value's <span>callback context</span>.</p>
+
+   <p>When the <span data-x="concept-task">task</span> posted by <code
+   data-x="dom-setTimeout">setTimeout()</code> executes, the algorithm for that task uses Web IDL to
+   <span data-x="es-invoking-callback-functions">invoke</span> the stored callback value. Web IDL in
+   turn calls the above <span>prepare to run a callback</span> algorithm. This pushes the stored
+   <span>callback context</span> onto the <span>backup incumbent settings object stack</span>. At
+   this time (inside the timer task) there is no author code on the stack, so the <span>topmost
+   script-having execution context</span> is null, and nothing gets its
+   <span>skip-when-determining-incumbent counter</span> incremented.</p>
+
+   <p>Invoking the callback then calls <code data-x="">bound</code>, which in turn calls
+   the <code data-x="dom-window-postMessage">postMessage()</code> method of <code
+   data-x="">frames[0]</code>. When the <code data-x="dom-window-postMessage">postMessage()</code>
+   algorithm looks up the <span>incumbent settings object</span>, there is still no author code on
+   the stack, since the bound function just directly calls the built-in method. So the
+   <span>topmost script-having execution context</span> will be null: the <span>JavaScript execution
+   context</span> stack only contains an execution context corresponding to <code
+   data-x="dom-window-postMessage">postMessage()</code>, with no <span
+   data-x="js-ScriptEvaluation">ScriptEvaluation</span> context or similar below it.</p>
+
+   <p>This is where we fall back to the <span>backup incumbent settings object stack</span>. As
+   noted above, it will contain as its topmost entry the <span>relevant settings object</span> of
+   <code data-x="">window</code>. So that is what is used as the <span>incumbent settings
+   object</span> while executing the <code data-x="dom-window-postMessage">postMessage()</code>
+   algorithm.</p>
+  </div>
+
+  <div class="example">
+   <p>Consider this final, even more convoluted example:</p>
+
+   <pre>&lt;!-- a.html -->
+&lt;!DOCTYPE html>
+&lt;button>click me&lt;/button>
+&lt;iframe>&lt;/iframe>
+&lt;script>
+const bound = frames[0].location.assign.bind(frames[0].location, "https://example.com/");
+document.querySelector("button").addEventListener("click", bound);
+&lt;/script>
+
+&lt;!-- b.html -->
+&lt;!DOCTYPE html>
+&lt;iframe src="a.html">&lt;/iframe>
+&lt;script>
+  const iframe = document.querySelector("iframe");
+  iframe.onload = function onLoad() {
+    iframe.contentWindow.document.querySelector("button").click();
+  };
+&lt;/script></pre>
+
+   <p>Again there are two interesting <span data-x="environment settings object">environment
+   settings objects</span> in play: that of <code data-x="">a.html</code>, and that of <code
+   data-x="">b.html</code>. When the <code data-x="dom-location-assign">location.assign()</code>
+   method triggers the <span><code>Location</code>-object navigate</span> algorithm, what will be
+   the <span>incumbent settings object</span>? As before, it should intuitively be that of <code
+   data-x="">a.html</code>: the <code data-x="event-click">click</code> listener was originally
+   scheduled by <code data-x="">a.html</code>, so even if something involving <code
+   data-x="">b.html</code> causes the listener to fire, the <a
+   href="#incumbent-everything">incumbent</a> responsible is that of <code
+   data-x="">a.html</code>.</p>
+
+   <p>The callback setup is similar to the previous example: when <code data-x="">bound</code> is
+   <span data-x="concept-idl-convert">converted</span> to a Web IDL callback type, the
+   <span>incumbent settings object</span> is that corresponding to <code data-x="">a.html</code>,
+   which is stored as the callback's <span>callback context</span>.</p>
+
+   <p>When the <code data-x="dom-click">click()</code> method is called inside <code
+   data-x="">b.html</code>, it <span data-x="concept-event-dispatch">dispatches</span> a <code
+   data-x="event-click">click</code> event on the button that is inside <code
+   data-x="">a.html</code>. This time, when the <span>prepare to run a callback</span> algorithm
+   executes as part of event dispatch, there <em>is</em> author code on the stack; the <span>topmost
+   script-having execution context</span> is that of the <code data-x="">onLoad</code> function,
+   whose <span>skip-when-determining-incumbent counter</span> gets incremented. Additionally, <code
+   data-x="">a.html</code>'s <span>environment settings object</span> (stored as the
+   <code>EventHandler</code>'s <span>callback context</span>) is pushed onto the
+   <span>backup incumbent settings object stack</span>.</p>
+
+   <p>Now, when the <span><code>Location</code>-object navigate</span> algorithm looks up the
+   <span>incumbent settings object</span>, the <span>topmost script-having execution
+   context</span> is still that of the <code data-x="">onLoad</code> function (due to the fact we
+   are using a bound function as the callback). Its <span>skip-when-determining-incumbent
+   counter</span> value is one, however, so we fall back to the <span>backup incumbent settings
+   object stack</span>. This gives us the <span>environment settings object</span> of <code
+   data-x="">a.html</code>, as expected.</p>
+
+   <p>Note that this means that even though it is the <code>iframe</code> inside <code
+   data-x="">a.html</code> that navigates, it is <code data-x="">a.html</code> itself that is used
+   as the <span>source browsing context</span>, which determines among other things the <span
+   data-x="concept-request-client">request client</span>. This is <a
+   href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=26603#c36">perhaps the only justifiable use
+   of the incumbent concept on the web platform</a>; in all other cases the consequences of using it
+   are simply confusing and we hope to one day switch them to use <a
+   href="#current-everything">current</a> or <a href="#relevant-everything">relevant</a> as
+   appropriate.</p>
+  </div>
+
+  

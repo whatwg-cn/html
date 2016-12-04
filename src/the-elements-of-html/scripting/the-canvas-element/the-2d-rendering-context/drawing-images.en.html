@@ -1,0 +1,153 @@
+<h6>Drawing images</h6>
+
+  <p>Objects that implement the <code>CanvasDrawImage</code> interface have the <dfn><code
+  data-x="dom-context-2d-drawImage">drawImage</code></dfn> method to draw images.</p>
+
+  <div w-nodev>
+
+  <p>This method can be invoked with three different sets of arguments:</p>
+
+  <ul class="brief">
+   <li><code data-x="">drawImage(<var>image</var>, <var>dx</var>, <var>dy</var>)</code>
+   <li><code data-x="">drawImage(<var>image</var>, <var>dx</var>, <var>dy</var>, <var>dw</var>, <var>dh</var>)</code>
+   <li><code data-x="">drawImage(<var>image</var>, <var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var>, <var>dx</var>, <var>dy</var>, <var>dw</var>, <var>dh</var>)</code>
+  </ul>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-drawImage">drawImage</code>(<var>image</var>, <var>dx</var>, <var>dy</var>)</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-drawImage">drawImage</code>(<var>image</var>, <var>dx</var>, <var>dy</var>, <var>dw</var>, <var>dh</var>)</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-drawImage">drawImage</code>(<var>image</var>, <var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var>, <var>dx</var>, <var>dy</var>, <var>dw</var>, <var>dh</var>)</dt>
+
+   <dd>
+
+    <p>Draws the given image onto the canvas. The arguments are
+    interpreted as follows:</p>
+
+    <p><img src="/images/drawImage.png" width="356" height="356" alt="The sx and sy parameters give the x and y coordinates of the source rectangle; the sw and sh arguments give the width and height of the source rectangle; the dx and dy give the x and y coordinates of the destination rectangle; and the dw and dh arguments give the width and height of the destination rectangle."></p>
+
+    <p>If the image isn't yet fully decoded, then nothing is drawn. If the image is a canvas with no
+    data, throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>When the <code data-x="dom-context-2d-drawImage">drawImage()</code> method is invoked, the user
+  agent must run these steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p><span>Check the usability of the <var>image</var> argument</span>. If this
+   returns <i>aborted</i>, then an exception has been thrown and the method doesn't return anything;
+   abort these steps. If it returns <i>bad</i>, then abort these steps without drawing anything.
+   Otherwise it returns <i>good</i>; continue with these steps.</p></li>
+
+   <li>
+
+    <p>Establish the source and destination rectangles as follows:</p>
+
+    <p>If not specified, the <var>dw</var> and <var>dh</var> arguments must default to the values of
+    <var>sw</var> and <var>sh</var>, interpreted such that one <span data-x="'px'">CSS pixel</span>
+    in the image is treated as one unit in the <span>output bitmap</span>'s coordinate space. If the
+    <var>sx</var>, <var>sy</var>, <var>sw</var>, and <var>sh</var> arguments are omitted, then they
+    must default to 0, 0, the image's <span>intrinsic width</span> in image pixels, and the image's
+    <span>intrinsic height</span> in image pixels, respectively. If the image has no <span>intrinsic
+    dimensions</span>, then the <i>concrete object size</i> must be used instead, as determined
+    using the CSS "<a href="https://drafts.csswg.org/css-images/#default-sizing">Concrete Object
+    Size Resolution</a>" algorithm, with the <i>specified size</i> having neither a definite width
+    nor height, nor any additional constraints, the object's intrinsic properties being those of the
+    <var>image</var> argument, and the <span>default object size</span> being the size of the
+    <span>output bitmap</span>. <ref spec=CSSIMAGES></p>
+
+    <p>The source rectangle is the rectangle whose corners are the four points (<var>sx</var>, <var>sy</var>), (<span data-x=""><var>sx</var>+<var>sw</var></span>, <var>sy</var>), (<span data-x=""><var>sx</var>+<var>sw</var></span>, <span data-x=""><var>sy</var>+<var>sh</var></span>),
+    (<var>sx</var>, <span data-x=""><var>sy</var>+<var>sh</var></span>).</p>
+
+    <p>The destination rectangle is the rectangle whose corners are the four points (<var>dx</var>, <var>dy</var>), (<span data-x=""><var>dx</var>+<var>dw</var></span>, <var>dy</var>), (<span data-x=""><var>dx</var>+<var>dw</var></span>, <span data-x=""><var>dy</var>+<var>dh</var></span>),
+    (<var>dx</var>, <span data-x=""><var>dy</var>+<var>dh</var></span>).</p>
+
+    <p>When the source rectangle is outside the source image, the source rectangle must be clipped
+    to the source image and the destination rectangle must be clipped in the same proportion.</p>
+
+    <p class="note">When the destination rectangle is outside the destination image (the
+    <span>output bitmap</span>), the pixels that land outside the <span>output bitmap</span> are
+    discarded, as if the destination was an infinite canvas whose rendering was clipped to the
+    dimensions of the <span>output bitmap</span>.</p>
+
+   </li>
+
+   <li><p>If one of the <var>sw</var> or <var>sh</var> arguments is zero, then abort
+   these steps. Nothing is painted.</p></li>
+
+   <li>
+
+    <p>Paint the region of the <var>image</var> argument specified by the source rectangle
+    on the region of the rendering context's <span>output bitmap</span> specified by the
+    destination rectangle, after applying the <span data-x="dom-context-2d-transformation">current
+    transformation matrix</span> to the destination rectangle.</p>
+
+    <p>The image data must be processed in the original direction, even if the dimensions given are
+    negative. <!-- note: that last sentence has several times been needed to correct people who
+    suggested that 5,5,-2,-2 was different than 3,3,2,2 --></p>
+
+    <p>When scaling up, if the <code
+    data-x="dom-context-2d-imageSmoothingEnabled">imageSmoothingEnabled</code> attribute is set to
+    true, the user agent should attempt to apply a smoothing algorithm to the image data when it is
+    scaled. User agents which support multiple filtering algorithms may use the value of the <code
+    data-x="dom-context-2d-imageSmoothingQuality">imageSmoothingQuality</code> attribute to guide
+    the choice of filtering algorithm when the <code
+    data-x="dom-context-2d-imageSmoothingEnabled">imageSmoothingEnabled</code> attribute is set to
+    true. Otherwise, the image must be rendered using nearest-neighbor interpolation.</p>
+
+    <p class="note">This specification does not define the precise algorithm to use when scaling an
+    image down, or when scaling an image up when the <code
+    data-x="dom-context-2d-imageSmoothingEnabled">imageSmoothingEnabled</code> attribute is set to
+    true.</p>
+
+    <p class="note">When a <code>canvas</code> element is drawn onto itself, the <span>drawing
+    model</span> requires the source to be copied before the image is drawn, so it is possible to
+    copy parts of a <code>canvas</code> element onto overlapping parts of itself.</p>
+
+    <p>If the original image data is a bitmap image, then the value painted at a point in the
+    destination rectangle is computed by filtering the original image data. The user agent may use
+    any filtering algorithm (for example bilinear interpolation or nearest-neighbor). When the
+    filtering algorithm requires a pixel value from outside the original image data, it must instead
+    use the value from the nearest edge pixel. (That is, the filter uses 'clamp-to-edge' behavior.)
+    When the filtering algorithm requires a pixel value from outside the source rectangle but inside
+    the original image data, then the value from the original image data must be used.</p>
+    <!-- see CORE-32111 and:
+         http://krijnhoetmer.nl/irc-logs/whatwg/20100818#l-737
+         https://www.w3.org/Bugs/Public/show_bug.cgi?id=10799#c11
+    -->
+    <!-- createPattern() has a similar paragraph with different rules -->
+
+    <p class="note">Thus, scaling an image in parts or in whole will have the same effect. This does
+    mean that when sprites coming from a single sprite sheet are to be scaled, adjacent images in
+    the sprite sheet can interfere. This can be avoided by ensuring each sprite in the sheet is
+    surrounded by a border of transparent black, or by copying sprites to be scaled into temporary
+    <code>canvas</code> elements and drawing the scaled sprites from there.</p>
+
+    <p>Images are painted without affecting the current path, and are subject to <span
+    data-x="shadows">shadow effects</span>, <span data-x="dom-context-2d-globalAlpha">global
+    alpha</span>, the <span>clipping region</span>, and <span
+    data-x="dom-context-2d-globalCompositeOperation">global composition operators</span>.</p>
+
+   </li>
+
+<!--ADD-TOPIC:Security-->
+   <li><p>If <span>the <var>image argument</var> is not origin-clean</span>, then set the
+   <code>CanvasRenderingContext2D</code>'s <span
+   data-x="concept-canvas-origin-clean">origin-clean</span> flag to false.</p></li>
+<!--REMOVE-TOPIC:Security-->
+
+  </ol>
+
+  </div>
+
+
+  

@@ -1,0 +1,65 @@
+<h4>Dynamic changes to base URLs</h4>
+
+  <p>When a document's <span>document base URL</span> changes, all elements in that document are
+  <span>affected by a base URL change</span>.</p>
+
+  <p>The following are <span>base URL change steps</span>, which run when an element is
+  <span>affected by a base URL change</span> (as defined by the DOM specification):</p>
+
+  <dl class="switch">
+
+   <dt>If the element creates a <span>hyperlink</span></dt>
+
+   <dd>
+
+    <p>If the <span>URL</span> identified by the hyperlink is being shown to the user, or if any
+    data derived from that <span>URL</span> is affecting the display, then the <code
+    data-x="attr-hyperlink-href">href</code> attribute should be <span data-x="parse a
+    url">reparsed</span> relative to the element's <span>node document</span> and the UI updated
+    appropriately.</p>
+
+    <p class="example">For example, the CSS <code data-x="selector-link">:link</code>/<code
+    data-x="selector-visited">:visited</code> <span data-x="pseudo-class">pseudo-classes</span>
+    might have been affected.</p>
+
+    <p>If the hyperlink has a <code data-x="attr-hyperlink-ping">ping</code> attribute and its
+    <span data-x="URL">URL(s)</span> are being shown to the user, then the <code
+    data-x="attr-hyperlink-ping">ping</code> attribute's tokens should be <span data-x="parse a
+    url">reparsed</span> relative to the element's <span>node document</span> and the UI updated
+    appropriately.</p>
+
+   </dd>
+
+   <dt>If the element is a <code>q</code>, <code>blockquote</code>, <code>ins</code>, or
+   <code>del</code> element with a <code data-x="">cite</code> attribute</dt>
+
+   <dd>
+
+    <p>If the <span>URL</span> identified by the <code data-x="">cite</code> attribute is being
+    shown to the user, or if any data derived from that <span>URL</span> is affecting the display,
+    then the <span>URL</span> should be <span data-x="parse a url">reparsed</span> relative to the
+    element's <span>node document</span> and the UI updated appropriately.</p>
+
+   </dd>
+
+   <dt>Otherwise</dt>
+
+   <dd>
+
+    <p>The element is not directly affected.</p>
+
+    <p class="example">For instance, changing the base URL doesn't affect the image displayed by
+    <code>img</code> elements, although subsequent accesses of the <code
+    data-x="dom-img-src">src</code> IDL attribute from script will return a new <span>absolute
+    URL</span> that might no longer correspond to the image being shown.</p>
+
+   </dd>
+
+  </dl>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

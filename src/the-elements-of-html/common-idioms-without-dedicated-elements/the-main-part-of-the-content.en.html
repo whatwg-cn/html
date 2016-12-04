@@ -1,0 +1,156 @@
+<h4>The main part of the content</h4>
+
+  <p>The main content of a page &mdash; not including headers and footers, navigation links,
+  sidebars, advertisements, and so forth &mdash; can be marked up in a variety of ways, depending on
+  the needs of the author.</p>
+
+  <p>The simplest solution is to not mark up the main content at all, and just leave it as implicit.
+  Another way to think of this is that the <code>body</code> elements marks up the main content of
+  the page, and the bits that aren't main content are excluded through the use of more appropriate
+  elements like <code>aside</code> and <code>nav</code>.</p>
+
+  <div class="example">
+
+   <p>Here is a short Web page marked up along this minimalistic school of thought. The main content
+   is highlighted. Notice how all the <em>other</em> content in the <code>body</code> is marked up
+   with elements to indicate that it's not part of the main content, in this case
+   <code>header</code>, <code>nav</code>, and <code>footer</code>.</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title> My Toys &lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;header>
+   &lt;h1>My toys&lt;/h1>
+  &lt;/header>
+  &lt;nav>
+   &lt;p>&lt;a href="/">Home&lt;/a>&lt;/p>
+   &lt;p>&lt;a href="/contact">Contact&lt;/a>&lt;/p>
+  &lt;/nav>
+<strong>  &lt;p>I really like my chained book and my telephone. I'm not such a
+  fan of my big ball.&lt;/p>
+  &lt;p>Another toy I like is my mirror.&lt;/p></strong>
+  &lt;footer>
+   &lt;p>&copy; copyright 2010 by the boy&lt;/p>
+  &lt;/footer>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+  <p>If the main content is an independent unit of content that one could imagine syndicating
+  independently, then the <code>article</code> element would be appropriate to mark up the main
+  content of the document.</p>
+
+  <div class="example">
+
+   <p>The document in the previous example is here recast as a blog post:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title> The Boy Blog: My Toys &lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;header>
+   &lt;h1>The Boy Blog&lt;/h1>
+  &lt;/header>
+  &lt;nav>
+   &lt;p>&lt;a href="/">Home&lt;/a>&lt;/p>
+   &lt;p>&lt;a href="/contact">Contact&lt;/a>&lt;/p>
+  &lt;/nav>
+<strong>  &lt;article>
+   &lt;header>
+    &lt;h1>My toys&lt;/h1>
+    &lt;p>Published August 4th&lt;/p>
+   &lt;/header>
+   &lt;p>I really like my chained book and my telephone. I'm not such a
+   fan of my big ball.&lt;/p>
+   &lt;p>Another toy I like is my mirror.&lt;/p>
+  &lt;/article></strong>
+  &lt;footer>
+   &lt;p>&copy; copyright 2010 by the boy&lt;/p>
+  &lt;/footer>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+  <p>If the main content is not an independent unit of content so much as a section of a larger
+  work, for instance a chapter, then the <code>section</code> element would be appropriate to mark
+  up the main content of the document.</p>
+
+  <div class="example">
+
+   <p>Here is the same document, but as a chapter in an online book:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title> Chapter 2: My Toys &mdash; The Book of the Boy &lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;header>
+   &lt;hgroup>
+    &lt;h1>The Book of the Boy&lt;/h1>
+    &lt;h2>A book about boy stuff&lt;/h2>
+   &lt;/hgroup>
+  &lt;/header>
+  &lt;nav>
+   &lt;p>&lt;a href="/">Front Page&lt;/a>&lt;/p>
+   &lt;p>&lt;a href="/toc">Table of Contents&lt;/a>&lt;/p>
+   &lt;p>&lt;a href="/c1">Chapter 1&lt;/a> &mdash; &lt;a href="/c3">Chapter 3&lt;/a>&lt;/p>
+  &lt;/nav>
+<strong>  &lt;section>
+   &lt;h1>Chapter 2: My Toys&lt;/h1>
+   &lt;p>I really like my chained book and my telephone. I'm not such a
+   fan of my big ball.&lt;/p>
+   &lt;p>Another toy I like is my mirror.&lt;/p>
+  &lt;/section></strong>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+  <p>If neither <code>article</code> nor <code>section</code> would be appropriate, but the main
+  content still needs an explicit element, for example for styling purposes, then the
+  <code>main</code> element can be used.</p>
+
+  <div class="example">
+
+   <p>This is the same as the original example, but using <code>main</code> for the main content
+   instead of leaving it implied:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title> My Toys &lt;/title>
+  &lt;style>
+   body > main { background: navy; color: yellow; }
+  &lt;/style>
+ &lt;/head>
+ &lt;body>
+  &lt;header>
+   &lt;h1>My toys&lt;/h1>
+  &lt;/header>
+  &lt;nav>
+   &lt;p>&lt;a href="/">Home&lt;/a>&lt;/p>
+   &lt;p>&lt;a href="/contact">Contact&lt;/a>&lt;/p>
+  &lt;/nav>
+<strong>  &lt;main>
+   &lt;p>I really like my chained book and my telephone. I'm not such a
+   fan of my big ball.&lt;/p>
+   &lt;p>Another toy I like is my mirror.&lt;/p>
+  &lt;/main></strong>
+  &lt;footer>
+   &lt;p>&copy; copyright 2010 by the boy&lt;/p>
+  &lt;/footer>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+  

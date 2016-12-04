@@ -1,0 +1,60 @@
+<h4>Introduction</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Each element that can be activated or focused can be assigned a single key combination to
+  activate it, using the <code data-x="attr-accesskey">accesskey</code> attribute.</p>
+
+  <p>The exact shortcut is determined by the user agent, based on information about the user's
+  keyboard, what keyboard shortcuts already exist on the platform, and what other shortcuts have
+  been specified on the page, using the information provided in the <code
+  data-x="attr-accesskey">accesskey</code> attribute as a guide.</p>
+
+  <p>In order to ensure that a relevant keyboard shortcut is available on a wide variety of input
+  devices, the author can provide a number of alternatives in the <code
+  data-x="attr-accesskey">accesskey</code> attribute.</p>
+
+  <p>Each alternative consists of a single character, such as a letter or digit.</p>
+
+  <p>User agents can provide users with a list of the keyboard shortcuts, but authors are encouraged
+  to do so also. The <code data-x="dom-accessKeyLabel">accessKeyLabel</code> IDL attribute returns a
+  string representing the actual key combination assigned by the user agent.</p>
+
+  <div class="example">
+
+   <p>In this example, an author has provided a button that can be invoked using a shortcut key. To
+   support full keyboards, the author has provided "C" as a possible key. To support devices
+   equipped only with numeric keypads, the author has provided "1" as another possibly key.</p>
+
+   <pre>&lt;input type=button value=Collect onclick="collect()"
+       <strong>accesskey="C 1"</strong> id=c></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>To tell the user what the shortcut key is, the author has this script here opted to explicitly
+   add the key combination to the button's label:</p>
+
+   <pre>function addShortcutKeyLabel(button) {
+<strong>  if (button.accessKeyLabel != '')
+    button.value += ' (' + button.accessKeyLabel + ')';</strong>
+}
+addShortcutKeyLabel(document.getElementById('c'));</pre>
+
+   <p>Browsers on different platforms will show different labels, even for the same key combination,
+   based on the convention prevalent on that platform. For example, if the key combination is the
+   Control key, the Shift key, and the letter C, a Windows browser might display
+   "<samp>Ctrl+Shift+C</samp>", whereas a Mac browser might display "<samp>^&#x21E7;C</samp>", while
+   an Emacs browser might just display "<samp>C-C</samp>". Similarly, if the key combination is the
+   Alt key and the Escape key, Windows might use "<samp>Alt+Esc</samp>", Mac might use
+   "<samp>&#x2325;&#x238B;</samp>", and an Emacs browser might use "<samp>M-ESC</samp>" or
+   "<samp>ESC ESC</samp>".</p>
+
+   <p>In general, therefore, it is unwise to attempt to parse the value returned from the <code
+   data-x="dom-accessKeyLabel">accessKeyLabel</code> IDL attribute.</p>
+
+  </div>
+
+
+  

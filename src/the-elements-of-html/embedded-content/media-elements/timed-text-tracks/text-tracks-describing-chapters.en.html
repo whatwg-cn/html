@@ -1,0 +1,125 @@
+<h6>Text tracks describing chapters</h6>
+
+  <p>Chapters are segments of a <span>media resource</span> with a given title. Chapters can be
+  nested, in the same way that sections in a document outline can have subsections.</p>
+
+  <p>Each <span>text track cue</span> in a <span>text track</span> being used for describing
+  chapters has three key features: the <span>text track cue start time</span>, giving the start time
+  of the chapter, the <span>text track cue end time</span>, giving the end time of the chapter, and
+  the <span>text track rules for extracting the chapter title</span>.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn>rules for constructing the chapter tree from a text track</dfn> are as follows. They
+  produce a potentially nested list of chapters, each of which have a start time, end time, title,
+  and a list of nested chapters. This algorithm discards cues that do not correctly nest within each
+  other, or that are out of order.</p>
+
+  <ol>
+
+   <li><p>Let <var>list</var> be a copy of the <span data-x="text track list of cues">list
+   of cues</span> of the <span>text track</span> being processed.</p></li>
+
+   <li><p>Remove from <var>list</var> any <span>text track cue</span> whose <span>text
+   track cue end time</span> is before its <span>text track cue start time</span>.</p></li>
+
+   <li><p>Let <var>output</var> be an empty list of chapters, where a chapter is a record
+   consisting of a start time, an end time, a title, and a (potentially empty) list of nested
+   chapters. For the purpose of this algorithm, each chapter also has a parent chapter.</p></li>
+
+   <li><p>Let <var>current chapter</var> be a stand-in chapter whose start time is negative
+   infinity, whose end time is positive infinity, and whose list of nested chapters is <var>output</var>. (This is just used to make the algorithm easier to describe.)</p></li>
+
+   <!-- while not empty... -->
+   <li><p><i>Loop</i>: If <var>list</var> is empty, jump to the step labeled
+   <i>end</i>.</p></li>
+
+   <!-- do... -->
+   <li><p>Let <var>current cue</var> be the first cue in <var>list</var>, and then
+   remove it from <var>list</var>.</p></li>
+
+   <li><p>If <var>current cue</var>'s <span>text track cue start time</span> is less than
+   the start time of <var>current chapter</var>, then return to the step labeled
+   <i>loop</i>.</p> <!-- out of order chapter -->
+
+   <li><p>While <var>current cue</var>'s <span>text track cue start time</span> is greater
+   than or equal to <var>current chapter</var>'s end time, let <var>current
+   chapter</var> be <var>current chapter</var>'s parent chapter.</p></li>
+
+   <li><p>If <var>current cue</var>'s <span>text track cue end time</span> is greater than
+   the end time of <var>current chapter</var>, then return to the step labeled
+   <i>loop</i>.</p> <!-- misnested chapter -->
+
+   <li>
+
+    <p>Create a new chapter <var>new chapter</var>, whose start time is <var>current cue</var>'s <span>text track cue start time</span>, whose end time is <var>current cue</var>'s <span>text track cue end time</span>, whose title is the result of running <var>current cue</var>'s <span>text track rules for extracting the chapter title</span>, and whose list of nested chapters is
+    empty.</p>
+
+   </li>
+
+   <li><p>Append <var>new chapter</var> to <var>current chapter</var>'s list of
+   nested chapters, and let <var>current chapter</var> be <var>new chapter</var>'s
+   parent.</p></li>
+
+   <li><p>Let <var>current chapter</var> be <var>new chapter</var>.</p></li>
+
+   <li><p>Return to the step labeled <i>loop</i>.</p></li>
+   <!-- ...end while -->
+
+   <li><p><i>End</i>: Return <var>output</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following snippet of a <span>WebVTT file</span> shows how nested chapters can be marked
+   up. The file describes three 50-minute chapters, "Astrophysics", "Computational Physics", and
+   "General Relativity". The first has three subchapters, the second has four, and the third has
+   two. <ref spec=WEBVTT></p>
+
+   <pre>WEBVTT
+
+00:00:00.000 --> 00:50:00.000
+Astrophysics
+
+00:00:00.000 --> 00:10:00.000
+Introduction to Astrophysics
+
+00:10:00.000 --> 00:45:00.000
+The Solar System
+
+00:00:00.000 --> 00:10:00.000
+Coursework Description
+
+00:50:00.000 --> 01:40:00.000
+Computational Physics
+
+00:50:00.000 --> 00:55:00.000
+Introduction to Programming
+
+00:55:00.000 --> 01:30:00.000
+Data Structures
+
+01:30:00.000 --> 01:35:00.000
+Answers to Last Exam
+
+01:35:00.000 --> 01:40:00.000
+Coursework Description
+
+01:40:00.000 --> 02:30:00.000
+General Relativity
+
+01:40:00.000 --> 02:00:00.000
+Tensor Algebra
+
+02:00:00.000 --> 02:30:00.000
+The General Relativistic Field Equations</pre>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

@@ -1,0 +1,71 @@
+<h4>The <dfn><code>var</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>var</code> element <span>represents</span> a variable. This could be an actual
+  variable in a mathematical expression or programming context, an identifier representing a
+  constant, a symbol identifying a physical quantity, a function parameter, or just be a term used
+  as a placeholder in prose.</p>
+
+  <div class="example">
+   <p>In the paragraph below, the letter "n" is being used as a
+   variable in prose:</p>
+   <pre>&lt;p>If there are &lt;var>n&lt;/var> pipes leading to the ice
+cream factory then I expect at &lt;em>least&lt;/em> &lt;var>n&lt;/var>
+flavors of ice cream to be available for purchase!&lt;/p></pre>
+  </div>
+
+  <p>For mathematics, in particular for anything beyond the simplest of expressions, MathML is more
+  appropriate. However, the <code>var</code> element can still be used to refer to specific
+  variables that are then mentioned in MathML expressions.</p>
+
+  <div class="example">
+
+   <p>In this example, an equation is shown, with a legend that references the variables in the
+   equation. The expression itself is marked up with MathML, but the variables are mentioned in the
+   figure's legend using <code>var</code>.</p>
+
+   <pre>&lt;figure>
+ &lt;math>
+  &lt;mi>a&lt;/mi>
+  &lt;mo>=&lt;/mo>
+  &lt;msqrt>
+   &lt;msup>&lt;mi>b&lt;/mi>&lt;mn>2&lt;/mn>&lt;/msup>
+   &lt;mi>+&lt;/mi>
+   &lt;msup>&lt;mi>c&lt;/mi>&lt;mn>2&lt;/mn>&lt;/msup>
+  &lt;/msqrt>
+ &lt;/math>
+ &lt;figcaption>
+  Using Pythagoras' theorem to solve for the hypotenuse &lt;var>a&lt;/var> of
+  a triangle with sides &lt;var>b&lt;/var> and &lt;var>c&lt;/var>
+ &lt;/figcaption>
+&lt;/figure></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here, the equation describing mass-energy equivalence is used in a sentence, and the
+   <code>var</code> element is used to mark the variables and constants in that equation:</p>
+
+   <pre>&lt;p>Then she turned to the blackboard and picked up the chalk. After a few moment's
+thought, she wrote &lt;var>E&lt;/var> = &lt;var>m&lt;/var> &lt;var>c&lt;/var>&lt;sup>2&lt;/sup>. The teacher
+looked pleased.&lt;/p></pre>
+
+  </div>
+
+
+  

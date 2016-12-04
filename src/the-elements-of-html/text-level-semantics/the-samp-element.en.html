@@ -1,0 +1,62 @@
+<h4>The <dfn><code>samp</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>samp</code> element <span>represents</span> sample or quoted output from another
+  program or computing system.</p>
+
+  <p class="note">See the <code>pre</code> and <code>kbd</code> elements for more details.</p>
+
+  <p class="note">This element can be contrasted with the <code>output</code> element, which can be
+  used to provide immediate output in a Web application.</p>
+
+  <div class="example">
+   <p>This example shows the <code>samp</code> element being used
+   inline:</p>
+   <pre>&lt;p>The computer said &lt;samp>Too much cheese in tray
+two&lt;/samp> but I didn't know what that meant.&lt;/p></pre>
+  </div>
+
+  <div class="example">
+
+   <p>This second example shows a block of sample output from a console program. Nested
+   <code>samp</code> and <code>kbd</code> elements allow for the styling of specific elements
+   of the sample output using a style sheet. There's also a few parts of the <code>samp</code> that
+   are annotated with even more detailed markup, to enable very precise styling. To achieve this,
+   <code>span</code> elements are used.</p>
+
+   <pre>&lt;pre>&lt;samp>&lt;span class="prompt">jdoe@mowmow:~$&lt;/span> &lt;kbd>ssh demo.example.com&lt;/kbd>
+Last login: Tue Apr 12 09:10:17 2005 from mowmow.example.com on pts/1
+Linux demo 2.6.10-grsec+gg3+e+fhs6b+nfs+gr0501+++p3+c4a+gr2b-reslog-v6.189 #1 SMP Tue Feb 1 11:22:36 PST 2005 i686 unknown
+
+&lt;span class="prompt">jdoe@demo:~$&lt;/span> &lt;span class="cursor">_&lt;/span>&lt;/samp>&lt;/pre></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>This third example shows a block of input and its respective output. The example uses
+   both <code>code</code> and <code>samp</code> elements.</p>
+
+   <pre>&lt;pre>
+&lt;code class=&quot;language-javascript&quot;>console.log(2.3 + 2.4)&lt;/code>
+&lt;samp>4.699999999999999&lt;/samp>
+&lt;/pre></pre>
+
+  </div>
+
+
+  

@@ -1,0 +1,249 @@
+<h5 id="parsing-main-inforeign">The rules for parsing tokens <dfn data-x="insertion mode: in foreign content">in foreign content</dfn></h5>
+
+  <p>When the user agent is to apply the rules for parsing tokens in foreign content, the user agent
+  must handle the token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token that is U+0000 NULL</dt>
+   <dd>
+
+    <p><span>Parse error</span>. <span data-x="insert a character">Insert a U+FFFD REPLACEMENT
+    CHARACTER character</span>.</p>
+
+   </dd>
+
+   <dt>A character token that is one of U+0009 CHARACTER TABULATION, U+000A LINE FEED (LF), U+000C
+   FORM FEED (FF), U+000D CARRIAGE RETURN (CR), or U+0020 SPACE</dt>
+   <dd>
+
+    <p><span data-x="insert a character">Insert the token's character</span>.</p>
+
+   </dd>
+
+   <dt>Any other character token</dt>
+   <dd>
+
+    <p><span data-x="insert a character">Insert the token's character</span>.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+
+    <p><span>Insert a comment</span>.</p>
+
+   </dd>
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is one of: <!--"a",--> "b", "big", "blockquote", "body"<!--by
+   inspection-->, "br", "center", "code", "dd", "div", "dl", "dt"<!-- so that dd and dt can be
+   handled uniformly throughout the parser -->, "em", "embed", "h1", "h2", "h3", "h4"<!--for
+   completeness-->, "h5", "h6"<!--for completeness-->, "head"<!--by inspection-->, "hr", "i", "img",
+   "li", "listing"<!-- so that pre and listing can be handled uniformly throughout the parser -->,
+   "menu", "meta", "nobr", "ol"<!-- so that dl, ul, and ol can be handled uniformly throughout the
+   parser -->, "p", "pre", "ruby", "s", <!--"script",--> "small", "span", "strong", "strike"<!-- so
+   that s and strike can be handled uniformly throughout the parser -->, <!--"style",--> "sub",
+   "sup", "table"<!--by inspection-->, "tt", "u", "ul", "var"</dt> <!-- this list was determined
+   empirically by studying over 6,000,000,000 pages that were specifically not XML pages -->
+   <dt>A start tag whose tag name is "font", if the token has any attributes named "color", "face",
+   or "size"</dt> <!-- the attributes here are required so that SVG <font> will go through as SVG
+   but legacy <font>s won't -->
+
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <!-- for sanity's sake, we limit this wacked quirk to legacy full-document parsing, not to
+    innerHTML. We have no data showing whether (or that) this is needed for innerHTML. If innerHTML
+    is used on an SVG or MathML node, it definitely doesn't make any sense (there's nothing to pop
+    to in the first place). Therefore, rather than trying to figure out in what convoluted
+    conditions we could actually do this quirk for innerHTML, we just don't do it at all. -->
+
+    <p>If the parser was originally created for the <span>HTML fragment parsing algorithm</span>,
+    then act as described in the "any other start tag" entry below. (<span>fragment case</span>)</p>
+
+    <p>Otherwise:</p>
+
+    <p>Pop an element from the <span>stack of open elements</span>, and then keep popping more
+    elements from the <span>stack of open elements</span> until the <span>current node</span> is a
+    <span>MathML text integration point</span>, an <span>HTML integration point</span>, or an
+    element in the <span>HTML namespace</span>.</p>
+
+    <p>Then, reprocess the token.</p>
+
+   </dd>
+
+   <dt>Any other start tag</dt>
+   <dd>
+
+    <p>If the <span>adjusted current node</span> is an element in the <span>MathML namespace</span>,
+    <span>adjust MathML attributes</span> for the token. (This fixes the case of MathML attributes
+    that are not all lowercase.)</p>
+
+    <p>If the <span>adjusted current node</span> is an element in the <span>SVG namespace</span>, and the
+    token's tag name is one of the ones in the first column of the following table, change the tag
+    name to the name given in the corresponding cell in the second column. (This fixes the case of
+    SVG elements that are not all lowercase.)</p>
+
+    <table>
+     <thead>
+      <tr> <th> Tag name <th> Element name
+     <tbody>
+      <tr> <td> <code data-x="">altglyph</code> <td> <code data-x="">altGlyph</code>
+      <tr> <td> <code data-x="">altglyphdef</code> <td> <code data-x="">altGlyphDef</code>
+      <tr> <td> <code data-x="">altglyphitem</code> <td> <code data-x="">altGlyphItem</code>
+      <tr> <td> <code data-x="">animatecolor</code> <td> <code data-x="">animateColor</code>
+      <tr> <td> <code data-x="">animatemotion</code> <td> <code data-x="">animateMotion</code>
+      <tr> <td> <code data-x="">animatetransform</code> <td> <code data-x="">animateTransform</code>
+      <tr> <td> <code data-x="">clippath</code> <td> <code data-x="">clipPath</code>
+      <tr> <td> <code data-x="">feblend</code> <td> <code data-x="">feBlend</code>
+      <tr> <td> <code data-x="">fecolormatrix</code> <td> <code data-x="">feColorMatrix</code>
+      <tr> <td> <code data-x="">fecomponenttransfer</code> <td> <code data-x="">feComponentTransfer</code>
+      <tr> <td> <code data-x="">fecomposite</code> <td> <code data-x="">feComposite</code>
+      <tr> <td> <code data-x="">feconvolvematrix</code> <td> <code data-x="">feConvolveMatrix</code>
+      <tr> <td> <code data-x="">fediffuselighting</code> <td> <code data-x="">feDiffuseLighting</code>
+      <tr> <td> <code data-x="">fedisplacementmap</code> <td> <code data-x="">feDisplacementMap</code>
+      <tr> <td> <code data-x="">fedistantlight</code> <td> <code data-x="">feDistantLight</code>
+      <tr> <td> <code data-x="">fedropshadow</code> <td> <code data-x="">feDropShadow</code>
+      <tr> <td> <code data-x="">feflood</code> <td> <code data-x="">feFlood</code>
+      <tr> <td> <code data-x="">fefunca</code> <td> <code data-x="">feFuncA</code>
+      <tr> <td> <code data-x="">fefuncb</code> <td> <code data-x="">feFuncB</code>
+      <tr> <td> <code data-x="">fefuncg</code> <td> <code data-x="">feFuncG</code>
+      <tr> <td> <code data-x="">fefuncr</code> <td> <code data-x="">feFuncR</code>
+      <tr> <td> <code data-x="">fegaussianblur</code> <td> <code data-x="">feGaussianBlur</code>
+      <tr> <td> <code data-x="">feimage</code> <td> <code data-x="">feImage</code>
+      <tr> <td> <code data-x="">femerge</code> <td> <code data-x="">feMerge</code>
+      <tr> <td> <code data-x="">femergenode</code> <td> <code data-x="">feMergeNode</code>
+      <tr> <td> <code data-x="">femorphology</code> <td> <code data-x="">feMorphology</code>
+      <tr> <td> <code data-x="">feoffset</code> <td> <code data-x="">feOffset</code>
+      <tr> <td> <code data-x="">fepointlight</code> <td> <code data-x="">fePointLight</code>
+      <tr> <td> <code data-x="">fespecularlighting</code> <td> <code data-x="">feSpecularLighting</code>
+      <tr> <td> <code data-x="">fespotlight</code> <td> <code data-x="">feSpotLight</code>
+      <tr> <td> <code data-x="">fetile</code> <td> <code data-x="">feTile</code>
+      <tr> <td> <code data-x="">feturbulence</code> <td> <code data-x="">feTurbulence</code>
+      <tr> <td> <code data-x="">foreignobject</code> <td> <code data-x="">foreignObject</code>
+      <tr> <td> <code data-x="">glyphref</code> <td> <code data-x="">glyphRef</code>
+      <tr> <td> <code data-x="">lineargradient</code> <td> <code data-x="">linearGradient</code>
+      <tr> <td> <code data-x="">radialgradient</code> <td> <code data-x="">radialGradient</code>
+      <!--<tr> <td> <code data-x="">solidcolor</code> <td> <code data-x="">solidColor</code> (SVG 1.2)-->
+      <tr> <td> <code data-x="">textpath</code> <td> <code data-x="">textPath</code>
+    </table>
+
+    <p>If the <span>adjusted current node</span> is an element in the <span>SVG namespace</span>,
+    <span>adjust SVG attributes</span> for the token. (This fixes the case of SVG attributes that
+    are not all lowercase.)</p>
+
+    <p><span>Adjust foreign attributes</span> for the token. (This fixes the use of namespaced
+    attributes, in particular XLink in SVG.)</p>
+
+    <p><span>Insert a foreign element</span> for the token, in the same namespace as the
+    <span>adjusted current node</span>.</p>
+
+    <p>If the token has its <i data-x="self-closing flag">self-closing flag</i> set, then run the appropriate steps from the
+    following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the token's tag name is "script", and the new <span>current node</span> is in the <span>SVG namespace</span></dt>
+
+     <dd>
+
+      <p><span data-x="acknowledge self-closing flag">Acknowledge the token's <i data-x="self-closing flag">self-closing
+      flag</i></span>, and then act as described in the steps for a "script" end tag below.</p>
+
+     </dd>
+
+     <dt>Otherwise</dt>
+
+     <dd>
+
+      <p>Pop the <span>current node</span> off the <span>stack of open elements</span> and <span
+      data-x="acknowledge self-closing flag">acknowledge the token's <i data-x="self-closing flag">self-closing
+      flag</i></span>.</p>
+
+     </dd>
+
+    </dl>
+
+   </dd>
+
+   <dt id="scriptForeignEndTag">An end tag whose tag name is "script", if the <span>current
+   node</span> is an <span>SVG <code>script</code></span> element</dt>
+   <dd>
+
+    <p>Pop the <span>current node</span> off the <span>stack of open elements</span>.</p>
+
+    <p>Let the <var>old insertion point</var> have the same value as the current
+    <span>insertion point</span>. Let the <span>insertion point</span> be just before the <span>next
+    input character</span>.</p>
+
+    <p>Increment the parser's <span>script nesting level</span> by one. Set the <span>parser pause
+    flag</span> to true.</p>
+
+    <p><a href="https://www.w3.org/TR/SVGMobile12/script.html#ScriptContentProcessing">Process the
+    SVG <code data-x="">script</code> element</a> according to the SVG rules, if the user agent
+    supports SVG. <ref spec=SVG></p>
+
+    <p class="note">Even if this causes <span data-x="dom-document-write">new characters to be
+    inserted into the tokenizer</span>, the parser will not be executed reentrantly, since the
+    <span>parser pause flag</span> is true.</p>
+
+    <p>Decrement the parser's <span>script nesting level</span> by one. If the parser's <span>script
+    nesting level</span> is zero, then set the <span>parser pause flag</span> to false.</p>
+
+    <p>Let the <span>insertion point</span> have the value of the <var>old insertion
+    point</var>. (In other words, restore the <span>insertion point</span> to its previous value.
+    This value might be the "undefined" value.)</p>
+
+   </dd>
+
+   <dt>Any other end tag</dt>
+
+   <dd>
+
+    <p>Run these steps:</p>
+
+    <ol>
+
+     <li><p>Initialize <var>node</var> to be the <span>current node</span> (the bottommost
+     node of the stack).</p></li>
+
+     <li><p>If <var>node</var>'s tag name, <span>converted to ASCII lowercase</span>, is
+     not the same as the tag name of the token, then this is a <span>parse error</span>.</p></li>
+
+     <li><p><i>Loop</i>: If <var>node</var> is the topmost element in the <span>stack of
+     open elements</span>, abort these steps. (<span>fragment case</span>)</p></li>
+
+     <li><p>If <var>node</var>'s tag name, <span>converted to ASCII lowercase</span>, is
+     the same as the tag name of the token, pop elements from the <span>stack of open
+     elements</span> until <var>node</var> has been popped from the stack, and then abort
+     these steps.</p></li>
+
+     <li><p>Set <var>node</var> to the previous entry in the <span>stack of open
+     elements</span>.</p></li>
+
+     <li><p>If <var>node</var> is not an element in the <span>HTML namespace</span>, return
+     to the step labeled <i>loop</i>.</p></li>
+
+     <li><p>Otherwise, process the token according to the rules given in the section corresponding
+     to the current <span>insertion mode</span> in HTML content.</li>
+
+    </ol>
+
+   </dd>
+
+  </dl>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

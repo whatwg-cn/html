@@ -1,0 +1,1650 @@
+<h4 data-dfn-type="element" data-lt="input">The <dfn><code>input</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd>If the <code data-x="attr-input-type">type</code> attribute is <em>not</em> in the <span data-x="attr-input-type-hidden">Hidden</span> state: <span>Interactive content</span>.</dd>
+   <dd>If the <code data-x="attr-input-type">type</code> attribute is <em>not</em> in the <span data-x="attr-input-type-hidden">Hidden</span> state: <span data-x="category-listed">Listed</span>, <span data-x="category-label">labelable</span>, <span data-x="category-submit">submittable</span>, and <span data-x="category-reset">resettable</span> <span>form-associated element</span>.</dd>
+   <dd>If the <code data-x="attr-input-type">type</code> attribute is in the <span data-x="attr-input-type-hidden">Hidden</span> state: <span data-x="category-listed">Listed</span>, <span data-x="category-submit">submittable</span>, and <span data-x="category-reset">resettable</span> <span>form-associated element</span>.</dd>
+   <dd>If the <code data-x="attr-input-type">type</code> attribute is <em>not</em> in the <span data-x="attr-input-type-hidden">Hidden</span> state: <span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-input-accept">accept</code></dd>
+   <dd><code data-x="attr-input-alt">alt</code></dd>
+   <dd><code data-x="attr-fe-autocomplete">autocomplete</code></dd>
+   <dd><code data-x="attr-fe-autofocus">autofocus</code></dd>
+   <dd><code data-x="attr-input-checked">checked</code></dd>
+   <dd><code data-x="attr-fe-dirname">dirname</code></dd>
+   <dd><code data-x="attr-fe-disabled">disabled</code></dd>
+   <dd><code data-x="attr-fae-form">form</code></dd>
+   <dd><code data-x="attr-fs-formaction">formaction</code></dd>
+   <dd><code data-x="attr-fs-formenctype">formenctype</code></dd>
+   <dd><code data-x="attr-fs-formmethod">formmethod</code></dd>
+   <dd><code data-x="attr-fs-formnovalidate">formnovalidate</code></dd>
+   <dd><code data-x="attr-fs-formtarget">formtarget</code></dd>
+   <dd><code data-x="attr-dim-height">height</code></dd>
+   <dd><code data-x="attr-fe-inputmode">inputmode</code></dd>
+   <dd><code data-x="attr-input-list">list</code></dd>
+   <dd><code data-x="attr-input-max">max</code></dd>
+   <dd><code data-x="attr-input-maxlength">maxlength</code></dd>
+   <dd><code data-x="attr-input-min">min</code></dd>
+   <dd><code data-x="attr-input-minlength">minlength</code></dd>
+   <dd><code data-x="attr-input-multiple">multiple</code></dd>
+   <dd><code data-x="attr-fe-name">name</code></dd>
+   <dd><code data-x="attr-input-pattern">pattern</code></dd>
+   <dd><code data-x="attr-input-placeholder">placeholder</code></dd>
+   <dd><code data-x="attr-input-readonly">readonly</code></dd>
+   <dd><code data-x="attr-input-required">required</code></dd>
+   <dd><code data-x="attr-input-size">size</code></dd>
+   <dd><code data-x="attr-input-src">src</code></dd>
+   <dd><code data-x="attr-input-step">step</code></dd>
+   <dd><code data-x="attr-input-type">type</code></dd>
+   <dd><code data-x="attr-input-value">value</code></dd>
+   <dd><code data-x="attr-dim-width">width</code></dd>
+   <dd>Also, the <code data-x="attr-input-title">title</code> attribute <span data-x="attr-input-title">has special semantics</span> on this element.</dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLInputElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-accept">accept</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-alt">alt</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fe-autocomplete">autocomplete</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fe-autofocus">autofocus</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-input-defaultChecked">defaultChecked</span>;
+  attribute boolean <span data-x="dom-input-checked">checked</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-dirName">dirName</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fe-disabled">disabled</span>;
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-fae-form">form</span>;
+  readonly attribute <span>FileList</span>? <span data-x="dom-input-files">files</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-fs-formAction">formAction</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-formEnctype">formEnctype</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-formMethod">formMethod</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fs-formNoValidate">formNoValidate</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-formTarget">formTarget</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-input-height">height</span>;
+  attribute boolean <span data-x="dom-input-indeterminate">indeterminate</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-inputMode">inputMode</span>;
+  readonly attribute <span>HTMLElement</span>? <span data-x="dom-input-list">list</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-max">max</span>;
+  [<span>CEReactions</span>] attribute long <span data-x="dom-input-maxLength">maxLength</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-min">min</span>;
+  [<span>CEReactions</span>] attribute long <span data-x="dom-input-minLength">minLength</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-input-multiple">multiple</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fe-name">name</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-pattern">pattern</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-placeholder">placeholder</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-input-readOnly">readOnly</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-input-required">required</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-input-size">size</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-input-src">src</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-step">step</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-type">type</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-input-defaultValue">defaultValue</span>;
+  [<span>CEReactions</span>, TreatNullAs=EmptyString] attribute DOMString <span data-x="dom-input-value">value</span>;
+  attribute <span data-x="idl-object">object</span>? <span data-x="dom-input-valueAsDate">valueAsDate</span>;
+  attribute unrestricted double <span data-x="dom-input-valueAsNumber">valueAsNumber</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-input-width">width</span>;
+
+  void <span data-x="dom-input-stepUp">stepUp</span>(optional long n = 1);
+  void <span data-x="dom-input-stepDown">stepDown</span>(optional long n = 1);
+
+  readonly attribute boolean <span data-x="dom-cva-willValidate">willValidate</span>;
+  readonly attribute <span>ValidityState</span> <span data-x="dom-cva-validity">validity</span>;
+  readonly attribute DOMString <span data-x="dom-cva-validationMessage">validationMessage</span>;
+  boolean <span data-x="dom-cva-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-cva-reportValidity">reportValidity</span>();
+  void <span data-x="dom-cva-setCustomValidity">setCustomValidity</span>(DOMString error);
+
+  [SameObject] readonly attribute <span>NodeList</span> <span data-x="dom-lfe-labels">labels</span>;
+
+  void <span data-x="dom-textarea/input-select">select</span>();
+  attribute unsigned long? <span data-x="dom-textarea/input-selectionStart">selectionStart</span>;
+  attribute unsigned long? <span data-x="dom-textarea/input-selectionEnd">selectionEnd</span>;
+  attribute DOMString? <span data-x="dom-textarea/input-selectionDirection">selectionDirection</span>;
+  void <span data-x="dom-textarea/input-setRangeText">setRangeText</span>(DOMString replacement);
+  void <span data-x="dom-textarea/input-setRangeText">setRangeText</span>(DOMString replacement, unsigned long start, unsigned long end, optional <span>SelectionMode</span> selectionMode = "preserve");
+  void <span data-x="dom-textarea/input-setSelectionRange">setSelectionRange</span>(unsigned long start, unsigned long end, optional DOMString direction);
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>input</code> element <span>represents</span> a typed data field, usually with a form
+  control to allow the user to edit the data.</p>
+
+  <p>The <dfn><code data-x="attr-input-type">type</code></dfn> attribute controls the data type (and
+  associated control) of the element. It is an <span>enumerated attribute</span>. The following
+  table lists the keywords and states for the attribute &mdash; the keywords in the left column map
+  to the states in the cell in the second column on the same row as the keyword.</p>
+
+  <table id="attr-input-type-keywords">
+   <thead>
+    <tr>
+     <th> Keyword
+     <th> State
+     <th> Data type
+     <th> Control type
+   <tbody>
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-hidden-keyword">hidden</code></dfn>
+     <td> <span data-x="attr-input-type-hidden">Hidden</span>
+     <td> An arbitrary string
+     <td> n/a
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-text-keyword">text</code></dfn>
+     <td> <span data-x="attr-input-type-text">Text</span>
+     <td> Text with no line breaks
+     <td> A text control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-search-keyword">search</code></dfn>
+     <td> <span data-x="attr-input-type-search">Search</span>
+     <td> Text with no line breaks
+     <td> Search control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-tel-keyword">tel</code></dfn>
+     <td> <span data-x="attr-input-type-tel">Telephone</span>
+     <td> Text with no line breaks
+     <td> A text control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-url-keyword">url</code></dfn>
+     <td> <span data-x="attr-input-type-url">URL</span>
+     <td> An absolute URL
+     <td> A text control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-email-keyword">email</code></dfn>
+     <td> <span data-x="attr-input-type-email">E-mail</span>
+     <td> An e-mail address or list of e-mail addresses
+     <td> A text control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-password-keyword">password</code></dfn>
+     <td> <span data-x="attr-input-type-password">Password</span>
+     <td> Text with no line breaks (sensitive information)
+     <td> A text control that obscures data entry
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-date-keyword">date</code></dfn>
+     <td> <span data-x="attr-input-type-date">Date</span>
+     <td> A date (year, month, day) with no time zone
+     <td> A date control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-month-keyword">month</code></dfn>
+     <td> <span data-x="attr-input-type-month">Month</span>
+     <td> A date consisting of a year and a month with no time zone
+     <td> A month control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-week-keyword">week</code></dfn>
+     <td> <span data-x="attr-input-type-week">Week</span>
+     <td> A date consisting of a week-year number and a week number with no time zone
+     <td> A week control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-time-keyword">time</code></dfn>
+     <td> <span data-x="attr-input-type-time">Time</span>
+     <td> A time (hour, minute, seconds, fractional seconds) with no time zone
+     <td> A time control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-datetime-local-keyword">datetime-local</code></dfn>
+     <td> <span data-x="attr-input-type-datetime-local">Local Date and Time</span>
+     <td> A date and time (year, month, day, hour, minute, second, fraction of a second) with no time zone
+     <td> A date and time control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-number-keyword">number</code></dfn>
+     <td> <span data-x="attr-input-type-number">Number</span>
+     <td> A numerical value
+     <td> A text control or spinner control
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-range-keyword">range</code></dfn>
+     <td> <span data-x="attr-input-type-range">Range</span>
+     <td> A numerical value, with the extra semantic that the exact value is not important
+     <td> A slider control or similar
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-color-keyword">color</code></dfn>
+     <td> <span data-x="attr-input-type-color">Color</span>
+     <td> An sRGB color with 8-bit red, green, and blue components
+     <td> A color picker
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-checkbox-keyword">checkbox</code></dfn>
+     <td> <span data-x="attr-input-type-checkbox">Checkbox</span>
+     <td> A set of zero or more values from a predefined list
+     <td> A checkbox
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-radio-keyword">radio</code></dfn>
+     <td> <span data-x="attr-input-type-radio">Radio Button</span>
+     <td> An enumerated value
+     <td> A radio button
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-file-keyword">file</code></dfn>
+     <td> <span data-x="attr-input-type-file">File Upload</span>
+     <td> Zero or more files each with a <span>MIME type</span> and optionally a file name
+     <td> A label and a button
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-submit-keyword">submit</code></dfn>
+     <td> <span data-x="attr-input-type-submit">Submit Button</span>
+     <td> An enumerated value, with the extra semantic that it must be the last value selected and initiates form submission
+     <td> A button
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-image-keyword">image</code></dfn>
+     <td> <span data-x="attr-input-type-image">Image Button</span>
+     <td> A coordinate, relative to a particular image's size, with the extra semantic that it must
+     be the last value selected and initiates form submission
+     <td> Either a clickable image, or a button
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-reset-keyword">reset</code></dfn>
+     <td> <span data-x="attr-input-type-reset">Reset Button</span>
+     <td> n/a
+     <td> A button
+    <tr>
+     <td> <dfn><code data-x="attr-input-type-button-keyword">button</code></dfn>
+     <td> <span data-x="attr-input-type-button">Button</span>
+     <td> n/a
+     <td> A button
+  </table>
+
+  <p>The <i data-x="missing value default">missing value default</i> is the <span data-x="attr-input-type-text">Text</span>
+  state.</p>
+
+  <p>Which of the
+   <code data-x="attr-input-accept">accept</code>,
+   <code data-x="attr-input-alt">alt</code>,
+   <code data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code data-x="attr-input-checked">checked</code>,
+   <code data-x="attr-fe-dirname">dirname</code>,
+   <code data-x="attr-fs-formaction">formaction</code>,
+   <code data-x="attr-fs-formenctype">formenctype</code>,
+   <code data-x="attr-fs-formmethod">formmethod</code>,
+   <code data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code data-x="attr-fs-formtarget">formtarget</code>,
+   <code data-x="attr-dim-height">height</code>,
+   <code data-x="attr-fe-inputmode">inputmode</code>,
+   <code data-x="attr-input-list">list</code>,
+   <code data-x="attr-input-max">max</code>,
+   <code data-x="attr-input-maxlength">maxlength</code>,
+   <code data-x="attr-input-min">min</code>,
+   <code data-x="attr-input-minlength">minlength</code>,
+   <code data-x="attr-input-multiple">multiple</code>,
+   <code data-x="attr-input-pattern">pattern</code>,
+   <code data-x="attr-input-placeholder">placeholder</code>,
+   <code data-x="attr-input-readonly">readonly</code>,
+   <code data-x="attr-input-required">required</code>,
+   <code data-x="attr-input-size">size</code>,
+   <code data-x="attr-input-src">src</code>,
+   <code data-x="attr-input-step">step</code>, and
+   <code data-x="attr-dim-width">width</code> content attributes, the
+   <code data-x="dom-input-checked">checked</code>,
+   <code data-x="dom-input-files">files</code>,
+   <code data-x="dom-input-valueAsDate">valueAsDate</code>,
+   <code data-x="dom-input-valueAsNumber">valueAsNumber</code>, and
+   <code data-x="dom-input-list">list</code> IDL attributes, the
+   <code data-x="dom-textarea/input-select">select()</code> method, the
+   <code data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code data-x="dom-textarea/input-selectionEnd">selectionEnd</code>, and
+   <code data-x="dom-textarea/input-selectionDirection">selectionDirection</code>, IDL attributes, the
+   <code data-x="dom-textarea/input-setRangeText">setRangeText()</code> and
+   <code data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code> methods, the
+   <code data-x="dom-input-stepUp">stepUp()</code> and
+   <code data-x="dom-input-stepDown">stepDown()</code> methods, and the
+   <code data-x="event-input">input</code> and
+   <code data-x="event-change">change</code> events <dfn data-x="concept-input-apply">apply</dfn> to an
+   <code>input</code> element depends on the state of its
+   <code data-x="attr-input-type">type</code> attribute.
+  The subsections that define each type also clearly define in normative "bookkeeping" sections
+  which of these feature apply, and which <dfn>do not apply</dfn>, to each type. The behavior of
+  these features depends on whether they apply or not, as defined in their various sections (q.v.
+  for <a href="#common-input-element-attributes">content attributes</a>, for <a
+  href="#common-input-element-apis">APIs</a>, for <a
+  href="#common-input-element-events">events</a>).</p>
+
+  <p>The following table <span w-nodev>is non-normative and</span> summarizes which of those
+  content attributes, IDL attributes, methods, and events <span
+  data-x="concept-input-apply">apply</span> to each state:</p>
+
+  <table class="applies" id="input-type-attr-summary">
+   <thead>
+    <tr>
+     <th>
+     <th> <span data-x=""><span data-x="attr-input-type-hidden">Hidden</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-text">Text</span>,</span>
+          <span data-x=""><span data-x="attr-input-type-search">Search</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-url">URL</span>,</span>
+          <span data-x=""><span data-x="attr-input-type-tel">Telephone</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-email">E-mail</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-password">Password</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-date">Date</span>,</span>
+          <span data-x=""><span data-x="attr-input-type-month">Month</span>,</span>
+          <span data-x=""><span data-x="attr-input-type-week">Week</span>,</span>
+          <span data-x=""><span data-x="attr-input-type-time">Time</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-datetime-local">Local Date and Time</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-number">Number</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-range">Range</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-color">Color</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-checkbox">Checkbox</span>,</span>
+          <span data-x=""><span data-x="attr-input-type-radio">Radio Button</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-file">File Upload</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-submit">Submit Button</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-image">Image Button</span></span>
+     <th> <span data-x=""><span data-x="attr-input-type-reset">Reset Button</span>,</span>
+          <span data-x=""><span data-x="attr-input-type-button">Button</span></span>
+
+   <tbody>
+    <tr>
+     <th scope="rowgroup" colspan="16">Content attributes
+
+    <tr>
+     <th> <code data-x="attr-input-accept">accept</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="yes"> Yes     <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-alt">alt</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fe-autocomplete">autocomplete</code>
+     <td class="yes"> Yes     <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="yes"> Yes     <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-checked">checked</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="yes"> Yes     <!-- Checkbox -->
+<!-- <td class="yes"> Yes          Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fe-dirname">dirname</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fs-formaction">formaction</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="yes"> Yes     <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fs-formenctype">formenctype</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="yes"> Yes     <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fs-formmethod">formmethod</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="yes"> Yes     <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fs-formnovalidate">formnovalidate</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="yes"> Yes     <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fs-formtarget">formtarget</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="yes"> Yes     <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-dim-height">height</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-fe-inputmode">inputmode</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-list">list</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="yes"> Yes     <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-max">max</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-maxlength">maxlength</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-min">min</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-minlength">minlength</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-multiple">multiple</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone --> <!-- if you change this, you can merge this line with the next to save room on the chart -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="yes"> Yes     <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-pattern">pattern</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-placeholder">placeholder</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-readonly">readonly</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-required">required</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="yes"> Yes     <!-- Checkbox -->
+<!-- <td class="yes"> Yes          Radio Button -->
+     <td class="yes"> Yes     <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-size">size</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-src">src</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-input-step">step</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="attr-dim-width">width</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="yes"> Yes     <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+   <tbody>
+    <tr>
+     <th scope="rowgroup" colspan="16">IDL attributes and methods
+
+    <tr>
+     <th> <code data-x="dom-input-checked">checked</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="yes"> Yes     <!-- Checkbox -->
+<!-- <td class="yes"> Yes          Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-input-files">files</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="yes"> Yes     <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr w-nodev>
+     <th> <code data-x="dom-input-value">value</code>
+     <td class="yes"> <span data-x="dom-input-value-default">default</span> <!-- Hidden -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- Text -->
+<!-- <td class="yes"> <span data-x="dom-input-value-value">value</span>      Search -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- URL, Telephone -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- E-mail -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- Password -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- Date -->
+<!-- <td class="yes"> <span data-x="dom-input-value-value">value</span>      Month -->
+<!-- <td class="yes"> <span data-x="dom-input-value-value">value</span>      Week -->
+<!-- <td class="yes"> <span data-x="dom-input-value-value">value</span>      Time -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- Local Date and Time -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- Number -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- Range -->
+     <td class="yes"> <span data-x="dom-input-value-value">value</span> <!-- Color -->
+     <td class="yes"> <span data-x="dom-input-value-default-on">default/on</span> <!-- Checkbox -->
+<!-- <td class="yes"> <span data-x="dom-input-value-default-on">default/on</span>      Radio Button -->
+     <td class="yes"> <span data-x="dom-input-value-filename">filename</span> <!-- File Upload -->
+     <td class="yes"> <span data-x="dom-input-value-default">default</span> <!-- Submit Button -->
+     <td class="yes"> <span data-x="dom-input-value-default">default</span> <!-- Image Button -->
+     <td class="yes"> <span data-x="dom-input-value-default">default</span> <!-- Reset Button -->
+<!-- <td class="yes"> <span data-x="dom-input-value-default">default</span>      Button -->
+
+    <tr>
+     <th> <code data-x="dom-input-valueAsDate">valueAsDate</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-input-valueAsNumber">valueAsNumber</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-input-list">list</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="yes"> Yes     <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-textarea/input-select">select()</code>
+     <td class="no"> &middot;     <!-- Hidden -->
+     <td class="yes"> Yes         <!-- Text -->
+<!-- <td class="yes"> Yes              Search -->
+     <td class="yes"> Yes         <!-- URL, Telephone -->
+     <td class="yes"> Yes&dagger; <!-- E-mail -->
+     <td class="yes"> Yes         <!-- Password -->
+     <td class="yes"> Yes&dagger; <!-- Date -->
+<!-- <td class="yes"> Yes              Month -->
+<!-- <td class="yes"> Yes              Week -->
+<!-- <td class="yes"> Yes              Time -->
+     <td class="yes"> Yes&dagger; <!-- Local Date and Time -->
+     <td class="yes"> Yes&dagger; <!-- Number -->
+     <td class="no"> &middot;     <!-- Range -->
+     <td class="yes"> Yes&dagger; <!-- Color -->
+     <td class="no"> &middot;     <!-- Checkbox -->
+<!-- <td class="no"> &middot;          Radio Button -->
+     <td class="yes"> Yes&dagger; <!-- File Upload -->
+     <td class="no"> &middot;     <!-- Submit Button -->
+     <td class="no"> &middot;     <!-- Image Button -->
+     <td class="no"> &middot;     <!-- Reset Button -->
+<!-- <td class="no"> &middot;          Button -->
+
+    <tr>
+     <th> <code data-x="dom-textarea/input-selectionStart">selectionStart</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-textarea/input-selectionEnd">selectionEnd</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-textarea/input-selectionDirection">selectionDirection</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-textarea/input-setRangeText">setRangeText()</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="no"> &middot; <!-- Date -->
+<!-- <td class="no"> &middot;      Month -->
+<!-- <td class="no"> &middot;      Week -->
+<!-- <td class="no"> &middot;      Time -->
+     <td class="no"> &middot; <!-- Local Date and Time -->
+     <td class="no"> &middot; <!-- Number -->
+     <td class="no"> &middot; <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-input-stepDown">stepDown()</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <code data-x="dom-input-stepUp">stepUp()</code>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="no"> &middot; <!-- Text -->
+<!-- <td class="no"> &middot;      Search -->
+     <td class="no"> &middot; <!-- URL, Telephone -->
+     <td class="no"> &middot; <!-- E-mail -->
+     <td class="no"> &middot; <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="no"> &middot; <!-- Color -->
+     <td class="no"> &middot; <!-- Checkbox -->
+<!-- <td class="no"> &middot;      Radio Button -->
+     <td class="no"> &middot; <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+   <tbody>
+    <tr>
+     <th scope="rowgroup" colspan="16">Events
+
+    <tr>
+     <th> <span data-x=""><code data-x="event-input">input</code> event</span>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="yes"> Yes     <!-- Color -->
+     <td class="yes"> Yes     <!-- Checkbox -->
+<!-- <td class="yes"> Yes          Radio Button -->
+     <td class="yes"> Yes     <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+    <tr>
+     <th> <span data-x=""><code data-x="event-change">change</code> event</span>
+     <td class="no"> &middot; <!-- Hidden -->
+     <td class="yes"> Yes     <!-- Text -->
+<!-- <td class="yes"> Yes          Search -->
+     <td class="yes"> Yes     <!-- URL, Telephone -->
+     <td class="yes"> Yes     <!-- E-mail -->
+     <td class="yes"> Yes     <!-- Password -->
+     <td class="yes"> Yes     <!-- Date -->
+<!-- <td class="yes"> Yes          Month -->
+<!-- <td class="yes"> Yes          Week -->
+<!-- <td class="yes"> Yes          Time -->
+     <td class="yes"> Yes     <!-- Local Date and Time -->
+     <td class="yes"> Yes     <!-- Number -->
+     <td class="yes"> Yes     <!-- Range -->
+     <td class="yes"> Yes     <!-- Color -->
+     <td class="yes"> Yes     <!-- Checkbox -->
+<!-- <td class="yes"> Yes          Radio Button -->
+     <td class="yes"> Yes     <!-- File Upload -->
+     <td class="no"> &middot; <!-- Submit Button -->
+     <td class="no"> &middot; <!-- Image Button -->
+     <td class="no"> &middot; <!-- Reset Button -->
+<!-- <td class="no"> &middot;      Button -->
+
+  </table>
+
+  <p class="tablenote"><small>&dagger; If the control has no selectable text, the <code
+  data-x="dom-textarea/input-select">select()</code> method results in a no-op, with no
+  <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>.</small></p>
+
+  <div w-nodev>
+
+  <p>Some states of the <code data-x="attr-input-type">type</code> attribute define a <dfn>value
+  sanitization algorithm</dfn>.</p>
+
+  <p>Each <code>input</code> element has a <span data-x="concept-fe-value">value</span>, which is
+  exposed by the <code data-x="dom-input-value">value</code> IDL attribute. Some states define an
+  <dfn data-x="concept-input-value-string-number">algorithm to convert a string to a number</dfn>,
+  an <dfn data-x="concept-input-value-number-string">algorithm to convert a number to a
+  string</dfn>, an <dfn data-x="concept-input-value-string-date">algorithm to convert a string to a
+  <code>Date</code> object</dfn>, and an <dfn data-x="concept-input-value-date-string">algorithm to
+  convert a <code>Date</code> object to a string</dfn>, which are used by <code
+  data-x="attr-input-max">max</code>, <code data-x="attr-input-min">min</code>, <code
+  data-x="attr-input-step">step</code>, <code data-x="dom-input-valueAsDate">valueAsDate</code>,
+  <code data-x="dom-input-valueAsNumber">valueAsNumber</code>, and <code
+  data-x="dom-input-stepUp">stepUp()</code>.</p>
+
+  <p>Each <code>input</code> element has a boolean <dfn data-x="concept-input-value-dirty-flag">dirty
+  value flag</dfn>. The <span data-x="concept-input-value-dirty-flag">dirty value flag</span> must be
+  initially set to false when the element is created, and must be set to true whenever the user
+  interacts with the control in a way that changes the <span data-x="concept-fe-value">value</span>.
+  (It is also set to true when the value is programmatically changed, as described in the definition
+  of the <code data-x="dom-input-value">value</code> IDL attribute.)</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-input-value">value</code></dfn> content attribute gives the default
+  <span data-x="concept-fe-value">value</span> of the <code>input</code> element. <span
+  w-nodev>When the <code data-x="attr-input-value">value</code> content attribute is added, set,
+  or removed, if the control's <span data-x="concept-input-value-dirty-flag">dirty value flag</span>
+  is false, the user agent must set the <span data-x="concept-fe-value">value</span> of the element
+  to the value of the <code data-x="attr-input-value">value</code> content attribute, if there is
+  one, or the empty string otherwise, and then run the current <span>value sanitization
+  algorithm</span>, if one is defined.</span></p>
+
+  <div w-nodev>
+
+  <p>Each <code>input</code> element has a <span data-x="concept-fe-checked">checkedness</span>,
+  which is exposed by the <code data-x="dom-input-checked">checked</code> IDL attribute.</p>
+
+  <p>Each <code>input</code> element has a boolean <dfn
+  data-x="concept-input-checked-dirty-flag">dirty checkedness flag</dfn>. When it is true, the
+  element is said to have a <dfn data-x="concept-input-checked-dirty"><i>dirty checkedness</i></dfn>.
+  The <span data-x="concept-input-checked-dirty-flag">dirty checkedness flag</span> must be initially
+  set to false when the element is created, and must be set to true whenever the user interacts with
+  the control in a way that changes the <span data-x="concept-fe-checked">checkedness</span>.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-input-checked">checked</code></dfn> content attribute is a
+  <span>boolean attribute</span> that gives the default <span
+  data-x="concept-fe-checked">checkedness</span> of the <code>input</code> element. <span
+  w-nodev>When the <code data-x="attr-input-checked">checked</code> content attribute is added,
+  if the control does not have <i data-x="concept-input-checked-dirty">dirty checkedness</i>, the
+  user agent must set the <span data-x="concept-fe-checked">checkedness</span> of the element to
+  true; when the <code data-x="attr-input-checked">checked</code> content attribute is removed, if
+  the control does not have <i data-x="concept-input-checked-dirty">dirty checkedness</i>, the user
+  agent must set the <span data-x="concept-fe-checked">checkedness</span> of the element to
+  false.</span></p>
+
+  <div w-nodev>
+
+  <p>The <span data-x="concept-form-reset-control">reset algorithm</span> for <code>input</code>
+  elements is to set the <span data-x="concept-input-value-dirty-flag">dirty value flag</span> and
+  <span data-x="concept-input-checked-dirty-flag">dirty checkedness flag</span> back to false, set
+  the <span data-x="concept-fe-value">value</span> of the element to the value of the <code
+  data-x="attr-input-value">value</code> content attribute, if there is one, or the empty string
+  otherwise, set the <span data-x="concept-fe-checked">checkedness</span> of the element to true if
+  the element has a <code data-x="attr-input-checked">checked</code> content attribute and false if
+  it does not, empty the list of <span data-x="concept-input-type-file-selected">selected
+  files</span>, and then invoke the <span>value sanitization algorithm</span>, if the <code
+  data-x="attr-input-type">type</code> attribute's current state defines one.</p>
+
+  <p>Each <code>input</code> element can be <i data-x="concept-fe-mutable">mutable</i>. Except where
+  otherwise specified, an <code>input</code> element is always <i
+  data-x="concept-fe-mutable">mutable</i>. Similarly, except where otherwise specified, the user
+  agent should not allow the user to modify the element's <span
+  data-x="concept-fe-value">value</span> or <span data-x="concept-fe-checked">checkedness</span>.</p>
+
+  <p>When an <code>input</code> element is <span
+  data-x="concept-fe-disabled">disabled</span>, it is not <i
+  data-x="concept-fe-mutable">mutable</i>.</p>
+
+  <p class="note">The <code data-x="attr-input-readonly">readonly</code> attribute can also in some
+  cases (e.g. for the <span data-x="attr-input-type-date">Date</span> state, but not the <span
+  data-x="attr-input-type-checkbox">Checkbox</span> state) stop an <code>input</code> element from
+  being <i data-x="concept-fe-mutable">mutable</i>.</p>
+
+  <p>The <span data-x="concept-node-clone-ext">cloning steps</span> for <code>input</code> elements
+  must propagate the <span data-x="concept-fe-value">value</span>, <span
+  data-x="concept-input-value-dirty-flag">dirty value flag</span>, <span
+  data-x="concept-fe-checked">checkedness</span>, and <span
+  data-x="concept-input-checked-dirty-flag">dirty checkedness flag</span> from the node being cloned
+  to the copy.</p>
+
+  <p>The <span>activation behavior</span> for <code>input</code> elements are these steps:</p>
+
+  <ol>
+   <li><p>If this element is not <i data-x="concept-fe-mutable">mutable</i>, then abort these
+   steps.</p></li>
+
+   <li><p>Run this element's <dfn>input activation behavior</dfn>, if any, and do nothing
+   otherwise.</p></li>
+  </ol>
+
+  <p>The <span>legacy-pre-activation behavior</span> for <code>input</code> elements are these
+  steps:</p>
+
+  <ol>
+   <li><p>If this element is not <i data-x="concept-fe-mutable">mutable</i>, then abort these
+   steps.</p></li>
+
+   <li><p>If this element's <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-checkbox">Checkbox state</span>, then set this element's <span
+   data-x="concept-fe-checked">checkedness</span> to its opposite value (i.e. true if it is false,
+   false if it is true) and set this element's <code
+   data-x="dom-input-indeterminate">indeterminate</code> IDL attribute to false.</p></li>
+
+   <li><p>If this element's <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-radio">Radio Button state</span>, then get a reference to the element in
+   this element's <span>radio button group</span> that has its <span
+   data-x="concept-fe-checked">checkedness</span> set to true, if any, and then set this element's
+   <span data-x="concept-fe-checked">checkedness</span> to true.</p></li>
+  </ol>
+
+  <p>The <span>legacy-canceled-activation behavior</span> for <code>input</code> elements are these
+  steps:</p>
+
+  <ol>
+   <li><p>If the element is not <i data-x="concept-fe-mutable">mutable</i>, then abort these
+   steps.</p></li>
+
+   <li><p>If the element's <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-checkbox">Checkbox state</span>, then set the element's <span
+   data-x="concept-fe-checked">checkedness</span> and the element's <code
+   data-x="dom-input-indeterminate">indeterminate</code> IDL attribute back to the values they had
+   before the <span>legacy-pre-activation behavior</span> was run.</p></li>
+
+   <li><p>If this element's <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-radio">Radio Button state</span>, then if the element to which a
+   reference was obtained in the <span>legacy-pre-activation behavior</span>, if any, is still in
+   what is now this element's <span>radio button group</span>, if it still has one, and if so,
+   setting that element's <span data-x="concept-fe-checked">checkedness</span> to true; or else, if
+   there was no such element, or that element is no longer in this element's <span>radio button
+   group</span>, or if this element no longer has a <span>radio button group</span>, setting this
+   element's <span data-x="concept-fe-checked">checkedness</span> to false.
+  </ol>
+
+  <!--
+    http://software.hixie.ch/utilities/js/live-dom-viewer/?saved=3094
+    http://software.hixie.ch/utilities/js/live-dom-viewer/?saved=3095
+    http://software.hixie.ch/utilities/js/live-dom-viewer/?saved=3096
+  -->
+
+  <hr>
+
+  <p>When an <code>input</code> element is first created, the element's rendering and behavior must
+  be set to the rendering and behavior defined for the <code data-x="attr-input-type">type</code>
+  attribute's state, and the <span>value sanitization algorithm</span>, if one is defined for the
+  <code data-x="attr-input-type">type</code> attribute's state, must be invoked.</p>
+
+  </div>
+
+  <div id="input-type-change" w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute
+  changes state, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=602 -->
+
+   <li><p>If the previous state of the element's <code data-x="attr-input-type">type</code> attribute
+   put the <code data-x="dom-input-value">value</code> IDL attribute in the <i
+   data-x="dom-input-value-value">value</i> mode, and the element's <span
+   data-x="concept-fe-value">value</span> is not the empty string, and the new state of the element's
+   <code data-x="attr-input-type">type</code> attribute puts the <code
+   data-x="dom-input-value">value</code> IDL attribute in either the <i
+   data-x="dom-input-value-default">default</i> mode or the <i
+   data-x="dom-input-value-default-on">default/on</i> mode, then set the element's <code
+   data-x="attr-input-value">value</code> content attribute to the element's <span
+   data-x="concept-fe-value">value</span>.</p></li>
+
+   <li><p>Otherwise, if the previous state of the element's <code
+   data-x="attr-input-type">type</code> attribute put the <code data-x="dom-input-value">value</code>
+   IDL attribute in any mode other than the <i data-x="dom-input-value-value">value</i> mode, and the
+   new state of the element's <code data-x="attr-input-type">type</code> attribute puts the <code
+   data-x="dom-input-value">value</code> IDL attribute in the <i
+   data-x="dom-input-value-value">value</i> mode, then set the <span
+   data-x="concept-fe-value">value</span> of the element to the value of the <code
+   data-x="attr-input-value">value</code> content attribute, if there is one, or the empty string
+   otherwise, and then set the control's <span data-x="concept-input-value-dirty-flag">dirty value
+   flag</span> to false.</p></li>
+
+   <!-- This step is present for the sake of clarity and safety so that the previous internal value
+   can't be accidentally referenced while we're in the type=file state. This step's effect isn't
+   (or at least shouldn't be) observable by script, due to the #input-type-change and
+   #dom-input-value state machines. -->
+   <li><p>Otherwise, if the previous state of the element's <code
+   data-x="attr-input-type">type</code> attribute put the <code
+   data-x="dom-input-value">value</code> IDL attribute in any mode other than the <i
+   data-x="dom-input-value-filename">filename</i> mode, and the new state of the element's <code
+   data-x="attr-input-type">type</code> attribute puts the <code
+   data-x="dom-input-value">value</code> IDL attribute in the <i
+   data-x="dom-input-value-filename">filename</i> mode, then set the <span
+   data-x="concept-fe-value">value</span> of the element to the empty string.</p></li>
+
+   <li><p>Update the element's rendering and behavior to the new state's.</p></li>
+
+   <li><p><dfn>Signal a type change</dfn> for the element. (The <span
+   data-x="attr-input-type-radio">Radio Button</span> state uses this, in particular.)</p></li>
+
+   <li><p>Invoke the <span>value sanitization algorithm</span>, if one is defined for the <code
+   data-x="attr-input-type">type</code> attribute's new state.</p></li>
+
+  </ol>
+
+  </div>
+
+  <hr>
+
+  <p>
+  The <code data-x="attr-fe-name">name</code> attribute represents the element's name.
+  The <code data-x="attr-fe-dirname">dirname</code> attribute controls how the element's <span data-x="the directionality">directionality</span> is submitted.
+  The <code data-x="attr-fe-disabled">disabled</code> attribute is used to make the control non-interactive and to prevent its value from being submitted.
+  The <code data-x="attr-fae-form">form</code> attribute is used to explicitly associate the <code>input</code> element with its <span>form owner</span>.
+  The <code data-x="attr-fe-autofocus">autofocus</code> attribute controls focus.
+  The <code data-x="attr-fe-inputmode">inputmode</code> attribute controls the user interface's input modality for the control.
+  The <code data-x="attr-fe-autocomplete">autocomplete</code> attribute controls how the user agent provides autofill behavior.
+  </p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-input-indeterminate">indeterminate</code></dfn> IDL attribute must
+  initially be set to false. On getting, it must return the last value it was set to. On setting, it
+  must be set to the new value. It has no effect except for changing the appearance of <span
+  data-x="attr-input-type-checkbox">checkbox</span> controls.</p>
+
+  <p>The <dfn><code data-x="dom-input-accept">accept</code></dfn>, <dfn><code data-x="dom-input-alt">alt</code></dfn>, <dfn><code data-x="dom-input-max">max</code></dfn>,
+  <dfn><code data-x="dom-input-min">min</code></dfn>, <dfn><code data-x="dom-input-multiple">multiple</code></dfn>, <dfn><code data-x="dom-input-pattern">pattern</code></dfn>, <dfn><code data-x="dom-input-placeholder">placeholder</code></dfn>, <dfn><code data-x="dom-input-required">required</code></dfn>, <dfn><code data-x="dom-input-size">size</code></dfn>, <dfn><code data-x="dom-input-src">src</code></dfn>,
+  and <dfn><code data-x="dom-input-step">step</code></dfn> IDL attributes must <span>reflect</span>
+  the respective content attributes of the same name. The <dfn><code data-x="dom-input-dirName">dirName</code></dfn> IDL attribute must <span>reflect</span> the
+  <code data-x="attr-fe-dirname">dirname</code> content attribute. The <dfn><code data-x="dom-input-readOnly">readOnly</code></dfn> IDL attribute must <span>reflect</span> the
+  <code data-x="attr-input-readonly">readonly</code> content attribute. The <dfn><code data-x="dom-input-defaultChecked">defaultChecked</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-input-checked">checked</code> content attribute. The
+  <dfn><code data-x="dom-input-defaultValue">defaultValue</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-input-value">value</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-input-type">type</code></dfn> IDL attribute must <span>reflect</span>
+  the respective content attribute of the same name, <span>limited to only known values</span>. The
+  <dfn><code data-x="dom-input-inputmode">inputMode</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-fe-inputmode">inputmode</code> content attribute,
+  <span>limited to only known values</span>. The <dfn><code data-x="dom-input-maxLength">maxLength</code></dfn> IDL attribute must <span>reflect</span>
+  the <code data-x="attr-input-maxlength">maxlength</code> content attribute, <span>limited to only
+  non-negative numbers</span>.  The <dfn><code data-x="dom-input-minLength">minLength</code></dfn> IDL attribute must <span>reflect</span>
+  the <code data-x="attr-input-minlength">minlength</code> content attribute, <span>limited to only
+  non-negative numbers</span>.</p>
+
+  <p>The IDL attributes <dfn><code data-x="dom-input-width">width</code></dfn> and <dfn><code
+  data-x="dom-input-height">height</code></dfn> must return the rendered width and height of the
+  image, in <span data-x="'px'">CSS pixels</span>, if an image is <span>being rendered</span>, and
+  is being rendered to a visual medium; or else the <span data-x="intrinsic dimensions">intrinsic
+  width and height</span> of the image, in <span data-x="'px'">CSS pixels</span>, if an image is <i
+  data-x="input-img-available">available</i> but not being rendered to a visual medium; or else 0,
+  if no image is <i data-x="input-img-available">available</i>. When the <code>input</code>
+  element's <code data-x="attr-input-type">type</code> attribute is not in the <span
+  data-x="attr-input-type-image">Image Button</span> state, then no image is <i
+  data-x="input-img-available">available</i>. <ref spec=CSS></p>
+
+  <p>On setting, they must act as if they <span data-x="reflect">reflected</span> the respective
+  content attributes of the same name.</p>
+
+  <p>The <code data-x="dom-cva-willValidate">willValidate</code>, <code
+  data-x="dom-cva-validity">validity</code>, and <code
+  data-x="dom-cva-validationMessage">validationMessage</code> IDL attributes, and the <code
+  data-x="dom-cva-checkValidity">checkValidity()</code>, <code
+  data-x="dom-cva-reportValidity">reportValidity()</code>, and <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> methods, are part of the
+  <span>constraint validation API</span>. The <code data-x="dom-lfe-labels">labels</code> IDL
+  attribute provides a list of the element's <code>label</code>s. The <code
+  data-x="dom-textarea/input-select">select()</code>, <code
+  data-x="dom-textarea/input-selectionStart">selectionStart</code>, <code
+  data-x="dom-textarea/input-selectionEnd">selectionEnd</code>, <code
+  data-x="dom-textarea/input-selectionDirection">selectionDirection</code>, <code
+  data-x="dom-textarea/input-setRangeText">setRangeText()</code>, and <code
+  data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code> methods and IDL attributes
+  expose the element's text selection. The <code data-x="dom-fe-autofocus">autofocus</code>, <code
+  data-x="dom-fe-disabled">disabled</code>, <code data-x="dom-fae-form">form</code>, and <code
+  data-x="dom-fe-name">name</code> IDL attributes are part of the element's forms API.</p>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,151 @@
+<h4>Conversations</h4>
+
+  <!-- https://lists.w3.org/Archives/Public/public-whatwg-archive/2009Sep/0043.html -->
+
+  <p>This specification does not define a specific element for marking up conversations, meeting
+  minutes, chat transcripts, dialogues in screenplays, instant message logs, and other situations
+  where different players take turns in discourse.</p>
+
+  <p>Instead, authors are encouraged to mark up conversations using <code>p</code> elements and
+  punctuation. Authors who need to mark the speaker for styling purposes are encouraged to use
+  <code>span</code> or <code>b</code>. Paragraphs with their text wrapped in the <code>i</code>
+  element can be used for marking up stage directions.</p>
+
+  <div class="example">
+
+   <p>This example demonstrates this using an extract from Abbot and Costello's famous sketch,
+   <cite>Who's on first</cite>:</p>
+
+<pre>&lt;p> Costello: Look, you gotta first baseman?
+&lt;p> Abbott: Certainly.
+&lt;p> Costello: Who's playing first?
+&lt;p> Abbott: That's right.
+&lt;p> Costello becomes exasperated.
+&lt;p> Costello: When you pay off the first baseman every month, who gets the money?
+&lt;p> Abbott: Every dollar of it.</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following extract shows how an IM conversation log could be marked up, using the
+   <code>data</code> element to provide Unix timestamps for each line. Note that the timestamps are
+   provided in a format that the <code>time</code> element does not support, so the
+   <code>data</code> element is used instead (namely, Unix <code data-x="">time_t</code> timestamps).
+   Had the author wished to mark up the data using one of the date and time formats supported by the
+   <code>time</code> element, that element could have been used instead of <code>data</code>. This
+   could be advantageous as it would allow data analysis tools to detect the timestamps
+   unambiguously, without coordination with the page author.</p>
+
+   <pre>&lt;p> &lt;data value="1319898155">14:22&lt;/data> &lt;b>egof&lt;/b> I'm not that nerdy, I've only seen 30% of the star trek episodes
+&lt;p> &lt;data value="1319898192">14:23&lt;/data> &lt;b>kaj&lt;/b> if you know what percentage of the star trek episodes you have seen, you are inarguably nerdy
+&lt;p> &lt;data value="1319898200">14:23&lt;/data> &lt;b>egof&lt;/b> it's unarguably
+&lt;p> &lt;data value="1319898228">14:23&lt;/data> &lt;i>* kaj blinks&lt;/i>
+&lt;p> &lt;data value="1319898260">14:24&lt;/data> &lt;b>kaj&lt;/b> you are not helping your case</pre>
+   <!-- with thanks to http://bash.org/?854262 -->
+
+  </div>
+
+  <div class="example">
+
+   <p>HTML does not have a good way to mark up graphs, so descriptions of interactive conversations
+   from games are more difficult to mark up. This example shows one possible convention using
+   <code>dl</code> elements to list the possible responses at each point in the conversation.
+   Another option to consider is describing the conversation in the form of a DOT file, and
+   outputting the result as an SVG image to place in the document. <ref spec=DOT></p>
+
+   <pre>&lt;p> Next, you meet a fisher. You can say one of several greetings:
+&lt;dl>
+ &lt;dt> "Hello there!"
+ &lt;dd>
+  &lt;p> She responds with "Hello, how may I help you?"; you can respond with:
+  &lt;dl>
+   &lt;dt> "I would like to buy a fish."
+   &lt;dd> &lt;p> She sells you a fish and the conversation finishes.
+   &lt;dt> "Can I borrow your boat?"
+   &lt;dd>
+    &lt;p> She is surprised and asks "What are you offering in return?".
+    &lt;dl>
+     &lt;dt> "Five gold." (if you have enough)
+     &lt;dt> "Ten gold." (if you have enough)
+     &lt;dt> "Fifteen gold." (if you have enough)
+     &lt;dd> &lt;p> She lends you her boat. The conversation ends.
+     &lt;dt> "A fish." (if you have one)
+     &lt;dt> "A newspaper." (if you have one)
+     &lt;dt> "A pebble." (if you have one)
+     &lt;dd> &lt;p> "No thanks", she replies. Your conversation options
+     at this point are the same as they were after asking to borrow
+     her boat, minus any options you've suggested before.
+    &lt;/dl>
+   &lt;/dd>
+  &lt;/dl>
+ &lt;/dd>
+ &lt;dt> "Vote for me in the next election!"
+ &lt;dd> &lt;p> She turns away. The conversation finishes.
+ &lt;dt> "Madam, are you aware that your fish are running away?"
+ &lt;dd>
+  &lt;p> She looks at you skeptically and says "Fish cannot run, miss".
+  &lt;dl>
+   &lt;dt> "You got me!"
+   &lt;dd> &lt;p> The fisher sighs and the conversation ends.
+   &lt;dt> "Only kidding."
+   &lt;dd> &lt;p> "Good one!" she retorts. Your conversation options at this
+   point are the same as those following "Hello there!" above.
+   &lt;dt> "Oh, then what are they doing?"
+   &lt;dd> &lt;p> She looks at her fish, giving you an opportunity to steal
+   her boat, which you do. The conversation ends.
+  &lt;/dl>
+ &lt;/dd>
+&lt;/dl></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In some games, conversations are simpler: each character merely has a fixed set of lines that
+   they say. In this example, a game FAQ/walkthrough lists some of the known possible responses for
+   each character:</p>
+
+   <pre>&lt;section>
+ &lt;h1>Dialogue&lt;/h1>
+ &lt;p>&lt;small>Some characters repeat their lines in order each time you interact
+ with them, others randomly pick from amongst their lines. Those who respond in
+ order have numbered entries in the lists below.&lt;/small>
+ &lt;h2>The Shopkeeper&lt;/h2>
+ &lt;ul>
+  &lt;li>How may I help you?
+  &lt;li>Fresh apples!
+  &lt;li>A loaf of bread for madam?
+ &lt;/ul>
+ &lt;h2>The pilot&lt;/h2>
+ &lt;p>Before the accident:
+ &lt;ul>
+  &lt;li>I'm about to fly out, sorry!
+  &lt;li>Sorry, I'm just waiting for flight clearance and then I'll be off!
+ &lt;/ul>
+ &lt;p>After the accident:
+ &lt;ol>
+  &lt;li>I'm about to fly out, sorry!
+  &lt;li>Ok, I'm not leaving right now, my plane is being cleaned.
+  &lt;li>Ok, it's not being cleaned, it needs a minor repair first.
+  &lt;li>Ok, ok, stop bothering me! Truth is, I had a crash.
+ &lt;/ol>
+ &lt;h2>Clan Leader&lt;/h2>
+ &lt;p>During the first clan meeting:
+ &lt;ul>
+  &lt;li>Hey, have you seen my daughter? I bet she's up to something nefarious again...
+  &lt;li>Nice weather we're having today, eh?
+  &lt;li>The name is Bailey, Jeff Bailey. How can I help you today?
+  &lt;li>A glass of water? Fresh from the well!
+ &lt;/ul>
+ &lt;p>After the earthquake:
+ &lt;ol>
+  &lt;li>Everyone is safe in the shelter, we just have to put out the fire!
+  &lt;li>I'll go and tell the fire brigade, you keep hosing it down!
+ &lt;/ol>
+&lt;/section></pre>
+
+  </div>
+
+
+  

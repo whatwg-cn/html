@@ -1,0 +1,128 @@
+<h6>The <code data-x="attr-input-min">min</code> and <code data-x="attr-input-max">max</code> attributes</h6>
+
+  <!-- if more numeric control types start supporting multiple="", this will need to be refactored -->
+
+  <p>Some form controls can have explicit constraints applied limiting the allowed range of values
+  that the user can provide. Normally, such a range would be linear and continuous. A form control
+  can <dfn data-x="has a periodic domain">have a periodic domain</dfn>, however, in which case the
+  form control's broadest possible range is finite, and authors can specify explicit ranges within
+  it that span the boundaries.</p>
+
+  <p class="example">Specifically, the broadest range of a <code
+  data-x="attr-input-type-time">type=time</code> control is midnight to midnight (24 hours), and
+  authors can set both continuous linear ranges (such as 9pm to 11pm) and discontinuous ranges
+  spanning midnight (such as 11pm to 1am).</p>
+
+  <p>The <dfn><code data-x="attr-input-min">min</code></dfn> and <dfn><code data-x="attr-input-max">max</code></dfn> attributes indicate the allowed range of values for
+  the element.</p>
+
+  <div w-nodev>
+
+  <p>Their syntax is defined by the section that defines the <code
+  data-x="attr-input-type">type</code> attribute's current state.</p>
+
+  <p>If the element has a <code data-x="attr-input-min">min</code> attribute, and the result of
+  applying the <span data-x="concept-input-value-string-number">algorithm to convert a string to a
+  number</span> to the value of the <code data-x="attr-input-min">min</code> attribute is a number,
+  then that number is the element's <dfn data-x="concept-input-min">minimum</dfn>; otherwise, if the
+  <code data-x="attr-input-type">type</code> attribute's current state defines a <dfn
+  data-x="concept-input-min-default">default minimum</dfn>, then that is the <span
+  data-x="concept-input-min">minimum</span>; otherwise, the element has no <span
+  data-x="concept-input-min">minimum</span>.</p>
+
+  <p>The <code data-x="attr-input-min">min</code> attribute also defines the <span
+  data-x="concept-input-min-zero">step base</span>.</p>
+
+  <p>If the element has a <code data-x="attr-input-max">max</code> attribute, and the result of
+  applying the <span data-x="concept-input-value-string-number">algorithm to convert a string to a
+  number</span> to the value of the <code data-x="attr-input-max">max</code> attribute is a number,
+  then that number is the element's <dfn data-x="concept-input-max">maximum</dfn>; otherwise, if the
+  <code data-x="attr-input-type">type</code> attribute's current state defines a <dfn
+  data-x="concept-input-max-default">default maximum</dfn>, then that is the <span
+  data-x="concept-input-max">maximum</span>; otherwise, the element has no <span
+  data-x="concept-input-max">maximum</span>.</p>
+
+  </div>
+
+  <p>If the element does not <span data-x="has a periodic domain">have a periodic domain</span>, the
+  <code data-x="attr-input-max">max</code> attribute's value (the <span
+  data-x="concept-input-max">maximum</span>) must not be less than the <code
+  data-x="attr-input-min">min</code> attribute's value (its <span
+  data-x="concept-input-min">minimum</span>).</p>
+
+  <div w-nodev>
+
+  <p class="note">If an element that does not <span data-x="has a periodic domain">have a periodic
+  domain</span> has a <span data-x="attr-input-max">maximum</span> that is less than its <span
+  data-x="attr-input-min">minimum</span>, then so long as the element has a <span
+  data-x="concept-fe-value">value</span>, it will either be <span>suffering from an underflow</span>
+  or <span>suffering from an overflow</span>.</p>
+
+  <p>An element <dfn>has a reversed range</dfn> if it <span>has a periodic domain</span> and its
+  <span data-x="concept-input-max">maximum</span> is less than its <span
+  data-x="concept-input-min">minimum</span>.</p>
+
+  </div>
+
+  <p>An element <dfn data-x="have range limitations">has range limitations</dfn> if it has a defined
+  <span data-x="concept-input-min">minimum</span> or a defined <span
+  data-x="concept-input-max">maximum</span>.</p>
+
+  <div w-nodev>
+
+  <p><strong>Constraint validation</strong>: When the element has a <span
+  data-x="attr-input-min">minimum</span> and does not <span data-x="has a reversed range">have a
+  reversed range</span>, and the result of applying the <span
+  data-x="concept-input-value-string-number">algorithm to convert a string to a number</span> to
+  the string given by the element's <span data-x="concept-fe-value">value</span> is a number, and
+  the number obtained from that algorithm is less than the <span
+  data-x="attr-input-min">minimum</span>, the element is <span>suffering from an
+  underflow</span>.</p>
+
+  <p><strong>Constraint validation</strong>: When the element has a <span
+  data-x="attr-input-max">maximum</span> and does not <span data-x="has a reversed range">have a
+  reversed range</span>, and the result of applying the <span
+  data-x="concept-input-value-string-number">algorithm to convert a string to a number</span> to
+  the string given by the element's <span data-x="concept-fe-value">value</span> is a number, and
+  the number obtained from that algorithm is more than the <span
+  data-x="attr-input-max">maximum</span>, the element is <span>suffering from an
+  overflow</span>.</p>
+
+  <p><strong>Constraint validation</strong>: When an element <span>has a reversed range</span>,
+  and the result of applying the <span data-x="concept-input-value-string-number">algorithm to
+  convert a string to a number</span> to the string given by the element's <span
+  data-x="concept-fe-value">value</span> is a number, and the number obtained from that algorithm
+  is more than the <span data-x="attr-input-max">maximum</span> <em>and</em> less than the <span
+  data-x="attr-input-min">minimum</span>, the element is simultaneously <span>suffering from an
+  underflow</span> and <span>suffering from an overflow</span>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following date control limits input to dates that are before the 1980s:</p>
+
+   <pre>&lt;input name=bday type=date max="1979-12-31"></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following number control limits input to whole numbers greater than zero:</p>
+
+   <pre>&lt;input name=quantity required="" type="number" min="1" value="1"></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following time control limits input to those minutes that occur between 9pm and 6am,
+   defaulting to midnight:</p>
+
+   <pre>&lt;input name="sleepStart" type=time min="21:00" max="06:00" step="60" value="00:00"></pre>
+
+  </div>
+
+
+
+  

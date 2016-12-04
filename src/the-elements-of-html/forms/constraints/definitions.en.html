@@ -1,0 +1,100 @@
+<h5>Definitions</h5>
+
+  <div w-nodev>
+
+  <p>A <span data-x="category-submit">submittable element</span> is a <dfn>candidate for constraint
+  validation</dfn> except when a condition has <dfn data-x="barred from constraint validation">barred
+  the element from constraint validation</dfn>. (For example, an element is <span>barred from
+  constraint validation</span> if it is an <code>object</code> element.)</p>
+
+  <p>An element can have a <dfn>custom validity error message</dfn> defined. Initially, an element
+  must have its <span>custom validity error message</span> set to the empty string. When its value
+  is not the empty string, the element is <span>suffering from a custom error</span>. It can be set
+  using the <code data-x="dom-cva-setCustomValidity">setCustomValidity()</code> method. The user
+  agent should use the <span>custom validity error message</span> when alerting the user to the
+  problem with the control.</p>
+
+  <p>An element can be constrained in various ways. The following is the list of <dfn>validity
+  states</dfn> that a form control can be in, making the control invalid for the purposes of
+  constraint validation. (The definitions below are non-normative; other parts of this specification
+  define more precisely when each state applies or does not.)</p>
+
+  <dl>
+
+   <dt> <dfn>Suffering from being missing</dfn> </dt>
+
+   <dd> <p>When a control has no <span data-x="concept-fe-value">value</span> but has a <code
+   data-x="">required</code> attribute (<code>input</code> <code
+   data-x="attr-input-required">required</code>, <code>textarea</code> <code
+   data-x="attr-textarea-required">required</code>); or, more complicated rules for
+   <code>select</code> elements and controls in <span data-x="radio button group">radio button
+   groups</span>, as specified in their sections.</p></dd>
+
+   <dt> <dfn>Suffering from a type mismatch</dfn> </dt>
+
+   <dd> <p>When a control that allows arbitrary user input has a <span
+   data-x="concept-fe-value">value</span> that is not in the correct syntax (<span
+   data-x="attr-input-type-email">E-mail</span>, <span data-x="attr-input-type-url">URL</span>).
+   </p></dd>
+
+   <dt> <dfn>Suffering from a pattern mismatch</dfn> </dt>
+
+   <dd> <p>When a control has a <span data-x="concept-fe-value">value</span> that doesn't satisfy the
+   <code data-x="attr-input-pattern">pattern</code> attribute.</p></dd>
+
+   <dt> <dfn>Suffering from being too long</dfn> </dt>
+
+   <dd> <p>When a control has a <span data-x="concept-fe-value">value</span> that is too long for the
+   <span data-x="attr-fe-maxlength">form control <code data-x="">maxlength</code> attribute</span>
+   (<code>input</code> <code data-x="attr-input-maxlength">maxlength</code>, <code>textarea</code>
+   <code data-x="attr-textarea-maxlength">maxlength</code>). </p></dd>
+
+   <dt> <dfn>Suffering from being too short</dfn> </dt>
+
+   <dd> <p>When a control has a <span data-x="concept-fe-value">value</span> that is too short for the
+   <span data-x="attr-fe-minlength">form control <code data-x="">minlength</code> attribute</span>
+   (<code>input</code> <code data-x="attr-input-minlength">minlength</code>, <code>textarea</code>
+   <code data-x="attr-textarea-minlength">minlength</code>). </p></dd>
+
+   <dt> <dfn>Suffering from an underflow</dfn> </dt>
+
+   <dd> <p>When a control has a <span data-x="concept-fe-value">value</span> that is not the empty
+   string and is too low for the <code data-x="attr-input-min">min</code> attribute.</p></dd>
+
+   <dt> <dfn>Suffering from an overflow</dfn> </dt>
+
+   <dd> <p>When a control has a <span data-x="concept-fe-value">value</span> that is not the empty
+   string and is too high for the <code data-x="attr-input-max">max</code> attribute.</p></dd>
+
+   <dt> <dfn>Suffering from a step mismatch</dfn> </dt>
+
+   <dd> <p>When a control has a <span data-x="concept-fe-value">value</span> that doesn't fit the
+   rules given by the <code data-x="attr-input-step">step</code> attribute.</p></dd>
+
+   <dt> <dfn>Suffering from bad input</dfn> </dt>
+
+   <dd> <p>When a control has incomplete input and the user agent does not think the user ought to
+   be able to submit the form in its current state.</p></dd>
+
+   <dt> <dfn>Suffering from a custom error</dfn> </dt>
+
+   <dd> <p>When a control's <span>custom validity error message</span> (as set by the element's
+   <code data-x="dom-cva-setCustomValidity">setCustomValidity()</code> method) is not the empty
+   string.</p> </dd>
+
+  </dl>
+
+  <p class="note">An element can still suffer from these states even when the element is <span
+  data-x="concept-fe-disabled">disabled</span>; thus these states can be represented in the DOM even
+  if validating the form during submission wouldn't indicate a problem to the user.</p>
+
+  <p>An element <dfn data-x="concept-fv-valid">satisfies its constraints</dfn> if it is not suffering
+  from any of the above <span>validity states</span>.</p>
+
+  </div>
+
+
+
+  <div w-nodev>
+
+  

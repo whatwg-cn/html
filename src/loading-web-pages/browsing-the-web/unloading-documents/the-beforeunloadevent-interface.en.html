@@ -1,0 +1,34 @@
+<h5>The <code>BeforeUnloadEvent</code> interface</h5>
+
+  <pre class="idl">interface <dfn>BeforeUnloadEvent</dfn> : <span>Event</span> {
+  attribute DOMString <span data-x="dom-BeforeUnloadEvent-returnValue">returnValue</span>;
+};</pre>
+
+  <p class="note">There are no <code>BeforeUnloadEvent</code>-specific initialization methods.</p>
+
+  <p>The <code>BeforeUnloadEvent</code> interface is a legacy interface which allows <span
+  data-x="prompt to unload a document">prompting to unload the document</span> to be controlled
+  not only by canceling the event, but by setting the <code
+  data-x="dom-BeforeUnloadEvent-returnValue">returnValue</code> attribute to a value besides the
+  empty string. Authors should use the <code
+  data-x="dom-Event-preventDefault">preventDefault()</code> method, or other means of canceling
+  events, instead of using <code data-x="dom-BeforeUnloadEvent-returnValue">returnValue</code>.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-BeforeUnloadEvent-returnValue">returnValue</code></dfn> attribute
+  controls the process of <span data-x="prompt to unload a document">prompting to unload the
+  document</span>. When the event is created, the attribute must be set to
+  the empty string. On getting, it must return the last value it was set to. On setting, the
+  attribute must be set to the new value.</p>
+
+  <p class="note">This attribute is a <code data-x="">DOMString</code> only for historical reasons.
+  Any value besides the empty string will be treated as a request to ask the user for
+  confirmation.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

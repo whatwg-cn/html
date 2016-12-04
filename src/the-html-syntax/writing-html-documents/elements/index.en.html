@@ -1,0 +1,117 @@
+<h4>Elements</h4>
+
+  <p>There are five different kinds of <dfn data-x="syntax-elements">elements</dfn>: <span>void
+  elements</span>, <span>raw text elements</span>, <span>escapable raw text elements</span>,
+  <span>foreign elements</span>, and <span>normal elements</span>.</p>
+
+  <dl>
+
+   <dt><dfn>Void elements</dfn></dt>
+
+   <dd><code>area</code>, <code>base</code>, <code>br</code>, <code>col</code>, <code>embed</code>,
+   <code>hr</code>, <code>img</code>, <code>input</code>, <code>keygen</code>, <code>link</code>,
+   <code>meta</code>, <code>param</code>, <code>source</code>, <code>track</code>,
+   <code>wbr</code></dd>
+   <!-- see also other places that say VOIDLIST -->
+
+   <dt><dfn>Raw text elements</dfn></dt>
+
+   <dd><code>script</code>, <code>style</code></dd> <!-- iframe and noscript don't count as raw text
+   for syntax purposes -->
+
+   <dt><dfn>escapable raw text elements</dfn></dt>
+
+   <dd><code>textarea</code>, <code>title</code></dd>
+
+   <dt><dfn>Foreign elements</dfn></dt>
+
+   <dd>Elements from the <span>MathML namespace</span> and the <span>SVG namespace</span>.</dd>
+
+   <dt><dfn>Normal elements</dfn></dt>
+
+   <dd>All other allowed <span>HTML elements</span> are normal elements.</dd>
+
+  </dl>
+
+  <p><dfn data-x="syntax-tags">Tags</dfn> are used to delimit the start and end of elements in the
+  markup. <span data-x="raw text elements">Raw text</span>, <span data-x="escapable raw text
+  elements">escapable raw text</span>, and <span data-x="normal elements">normal</span> elements have
+  a <span data-x="syntax-start-tag">start tag</span> to indicate where they begin, and an <span
+  data-x="syntax-end-tag">end tag</span> to indicate where they end. The start and end tags of
+  certain <span>normal elements</span> can be <span data-x="syntax-tag-omission">omitted</span>, as
+  described below in the section on <span data-x="syntax-tag-omission">optional tags</span>. Those
+  that cannot be omitted must not be omitted. <span>Void elements</span> only have a start tag; end
+  tags must not be specified for <span>void elements</span>. <span>Foreign elements</span> must
+  either have a start tag and an end tag, or a start tag that is marked as self-closing, in which
+  case they must not have an end tag.</p>
+
+  <p>The <span data-x="concept-html-contents">contents</span> of the element must be placed between
+  just after the start tag (which <span data-x="syntax-tag-omission">might be implied, in certain
+  cases</span>) and just before the end tag (which again, <span data-x="syntax-tag-omission">might be
+  implied in certain cases</span>). The exact allowed contents of each individual element depend on
+  the <span data-x="content models">content model</span> of that element, as described earlier in
+  this specification. Elements must not contain content that their content model disallows. In
+  addition to the restrictions placed on the contents by those content models, however, the five
+  types of elements have additional <em>syntactic</em> requirements.</p>
+
+  <p><span>Void elements</span> can't have any contents (since there's no end tag, no content can be
+  put between the start tag and the end tag).</p>
+
+  <p><span>Raw text elements</span> can have <span data-x="syntax-text">text</span>, though it has <a
+  href="#cdata-rcdata-restrictions">restrictions</a> described below.</p>
+
+  <p><span>Escapable raw text elements</span> can have <span data-x="syntax-text">text</span> and
+  <span data-x="syntax-charref">character references</span>, but the text must not contain an <span
+  data-x="syntax-ambiguous-ampersand">ambiguous ampersand</span>. There are also <a
+  href="#cdata-rcdata-restrictions">further restrictions</a> described below.</p>
+
+  <p><span>Foreign elements</span> whose start tag is marked as self-closing can't have any contents
+  (since, again, as there's no end tag, no content can be put between the start tag and the end
+  tag). <span>Foreign elements</span> whose start tag is <em>not</em> marked as self-closing can
+  have <span data-x="syntax-text">text</span>, <span data-x="syntax-charref">character
+  references</span>, <span data-x="syntax-cdata">CDATA sections</span>, other <span
+  data-x="syntax-elements">elements</span>, and <span data-x="syntax-comments">comments</span>, but
+  the text must not contain the character U+003C LESS-THAN SIGN (&lt;) or an <span
+  data-x="syntax-ambiguous-ampersand">ambiguous ampersand</span>.</p>
+
+  <div class="note">
+
+   <p>The HTML syntax does not support namespace declarations, even in <span>foreign
+   elements</span>.</p>
+
+   <p>For instance, consider the following HTML fragment:</p>
+
+   <pre>&lt;p>
+ &lt;svg>
+  &lt;metadata>
+   &lt;!-- this is invalid -->
+   &lt;cdr:license xmlns:cdr="https://www.example.com/cdr/metadata" name="MIT"/>
+  &lt;/metadata>
+ &lt;/svg>
+&lt;/p></pre>
+
+   <p>The innermost element, <code data-x="">cdr:license</code>, is actually in the SVG namespace, as
+   the "<code data-x="">xmlns:cdr</code>" attribute has no effect (unlike in XML). In fact, as the
+   comment in the fragment above says, the fragment is actually non-conforming. This is because the
+   SVG specification does not define any elements called "<code data-x="">cdr:license</code>" in the
+   SVG namespace.</p>
+
+  </div>
+
+  <p><span>Normal elements</span> can have <span data-x="syntax-text">text</span>, <span
+  data-x="syntax-charref">character references</span>, other <span
+  data-x="syntax-elements">elements</span>, and <span data-x="syntax-comments">comments</span>, but
+  the text must not contain the character U+003C LESS-THAN SIGN (&lt;) or an <span
+  data-x="syntax-ambiguous-ampersand">ambiguous ampersand</span>. Some <span>normal elements</span>
+  also have <a href="#element-restrictions">yet more restrictions</a> on what content they are
+  allowed to hold, beyond the restrictions imposed by the content model and those described in this
+  paragraph. Those restrictions are described below.</p>
+
+  <p>Tags contain a <dfn data-x="syntax-tag-name">tag name</dfn>, giving the element's name. HTML
+  elements all have names that only use <span>alphanumeric ASCII characters</span>. In the HTML
+  syntax, tag names, even those for <span>foreign elements</span>, may be written with any mix of
+  lower- and uppercase letters that, when converted to all-lowercase, matches the element's tag
+  name; tag names are case-insensitive.</p>
+
+
+  

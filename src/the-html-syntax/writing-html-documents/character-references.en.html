@@ -1,0 +1,50 @@
+<h4>Character references</h4>
+
+  <p>In certain cases described in other sections, <span data-x="syntax-text">text</span> may be
+  mixed with <dfn data-x="syntax-charref">character references</dfn>. These can be used to escape
+  characters that couldn't otherwise legally be included in <span
+  data-x="syntax-text">text</span>.</p>
+
+  <p>Character references must start with a U+0026 AMPERSAND character (&amp;). Following this,
+  there are three possible kinds of character references:</p>
+
+  <dl>
+
+   <dt>Named character references</dt>
+
+   <dd>The ampersand must be followed by one of the names given in the <span>named character
+   references</span> section, using the same case. <span w-nodev>The name must be one that is
+   terminated by a U+003B SEMICOLON character (;).</span></dd>
+
+
+   <dt>Decimal numeric character reference</dt>
+
+   <dd>The ampersand must be followed by a U+0023 NUMBER SIGN character (#), followed by one or more
+   <span>ASCII digits</span>, representing a base-ten integer that corresponds to a Unicode code
+   point that is allowed according to the definition below. The digits must then be followed by a
+   U+003B SEMICOLON character (;).</dd>
+
+
+   <dt>Hexadecimal numeric character reference</dt>
+
+   <dd>The ampersand must be followed by a U+0023 NUMBER SIGN character (#), which must be followed
+   by either a U+0078 LATIN SMALL LETTER X character (x) or a U+0058 LATIN CAPITAL LETTER X
+   character (X), which must then be followed by one or more <span>ASCII hex digits</span>,
+   representing a hexadecimal integer that corresponds to a Unicode code point that is allowed
+   according to the definition below. The digits must then be followed by a U+003B SEMICOLON
+   character (;).</dd>
+
+  </dl>
+
+  <p>The numeric character reference forms described above are allowed to reference any Unicode code
+  point other than U+0000, U+000D, permanently undefined Unicode characters (noncharacters),
+  surrogates (U+D800&ndash;U+DFFF), and <span>control characters</span> other than <span
+  data-x="space character">space characters</span>.</p>
+
+  <p>An <dfn data-x="syntax-ambiguous-ampersand">ambiguous ampersand</dfn> is a U+0026 AMPERSAND
+  character (&amp;) that is followed by one or more <span>alphanumeric ASCII characters</span>,
+  followed by a U+003B SEMICOLON character (;), where these characters do not match any of the names
+  given in the <span>named character references</span> section.</p>
+
+
+  

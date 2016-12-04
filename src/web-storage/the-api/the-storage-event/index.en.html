@@ -1,0 +1,43 @@
+<h4>The <code data-x="event-storage">storage</code> event</h4>
+
+  <p>The <code data-x="event-storage">storage</code> event is fired on a <code>Document</code>'s
+  <code>Window</code> object when a storage area changes, as described in the previous two sections
+  (<a href="#sessionStorageEvent">for session storage</a>, <a href="#localStorageEvent">for local
+  storage</a>).</p>
+
+  <p>When a user agent is to <dfn>send a storage notification</dfn> for a <code>Document</code>, the
+  user agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+  event</span> named <code>storage</code> at the <code>Document</code> object's <code>Window</code>
+  object, using <code>StorageEvent</code>.</p>
+
+  <p class="note">Such a <code>Document</code> object is not necessarily <span>fully active</span>,
+  but events fired on such objects are ignored by the <span>event loop</span> until the
+  <code>Document</code> becomes <span>fully active</span> again.</p>
+
+  <p>The <span>task source</span> for these tasks is the <span>DOM manipulation task
+  source</span>.</p>
+
+  <p>If the event is being fired due to an invocation of the <code
+  data-x="dom-Storage-setItem">setItem()</code> or <code
+  data-x="dom-Storage-removeItem">removeItem()</code> methods, the event must have its <code
+  data-x="dom-StorageEvent-key">key</code> attribute initialized to the name of the key in question,
+  its <code data-x="dom-StorageEvent-oldValue">oldValue</code> attribute initialized to the old
+  value of the key in question, or null if the key is newly added, and its <code
+  data-x="dom-StorageEvent-newValue">newValue</code> attribute initialized to the new value of the
+  key in question, or null if the key was removed.</p>
+
+  <p>Otherwise, if the event is being fired due to an invocation of the <code
+  data-x="dom-Storage-clear">clear()</code> method, the event must have its <code
+  data-x="dom-StorageEvent-key">key</code>, <code data-x="dom-StorageEvent-oldValue">oldValue</code>,
+  and <code data-x="dom-StorageEvent-newValue">newValue</code> attributes initialized to null.</p>
+
+  <p>In addition, the event must have its <code data-x="dom-StorageEvent-url">url</code> attribute
+  initialized to the <span data-x="concept-document-url">URL</span> of the document whose
+  <code>Storage</code> object was affected; and its <code
+  data-x="dom-StorageEvent-storageArea">storageArea</code> attribute initialized to the
+  <code>Storage</code> object from the <code>Window</code> object of the target
+  <code>Document</code> that represents the same kind of <code>Storage</code> area as was affected
+  (i.e. session or local).</p>
+
+
+  

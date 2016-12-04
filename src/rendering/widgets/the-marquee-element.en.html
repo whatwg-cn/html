@@ -1,0 +1,158 @@
+<h4>The <code>marquee</code> element</h4>
+
+  <p>The <code>marquee</code> element, while <span data-x="concept-marquee-on">turned on</span>, is
+  expected to render in an animated fashion according to its attributes as follows:</p>
+
+  <dl>
+
+   <dt>If the element's <code data-x="attr-marquee-behavior">behavior</code> attribute is in the
+   <span data-x="attr-marquee-behavior-scroll">scroll</span> state</dt>
+
+   <dd>
+
+    <p>Slide the contents of the element in the direction described by the <code
+    data-x="attr-marquee-direction">direction</code> attribute as defined below, such that it begins
+    off the start side of the <code>marquee</code>, and ends flush with the inner end side.</p>
+
+    <p class="example">For example, if the <code data-x="attr-marquee-direction">direction</code>
+    attribute is <span data-x="attr-marquee-direction-left">left</span> (the default), then the
+    contents would start such that their left edge are off the side of the right edge of the
+    <code>marquee</code>'s <span>content area</span>, and the contents would then slide up to the
+    point where the left edge of the contents are flush with the left inner edge of the
+    <code>marquee</code>'s <span>content area</span>.</p>
+
+    <p>Once the animation has ended, the user agent is expected to <span>increment the marquee
+    current loop index</span>. If the element is still <span data-x="concept-marquee-on">turned
+    on</span> after this, then the user agent is expected to restart the animation.</p>
+
+   </dd>
+
+   <dt>If the element's <code data-x="attr-marquee-behavior">behavior</code> attribute is in the
+   <span data-x="attr-marquee-behavior-slide">slide</span> state</dt>
+
+   <dd>
+
+    <p>Slide the contents of the element in the direction described by the <code
+    data-x="attr-marquee-direction">direction</code> attribute as defined below, such that it begins
+    off the start side of the <code>marquee</code>, and ends off the end side of the
+    <code>marquee</code>.</p>
+
+    <p class="example">For example, if the <code data-x="attr-marquee-direction">direction</code>
+    attribute is <span data-x="attr-marquee-direction-left">left</span> (the default), then the
+    contents would start such that their left edge are off the side of the right edge of the
+    <code>marquee</code>'s <span>content area</span>, and the contents would then slide up to the
+    point where the <em>right</em> edge of the contents are flush with the left inner edge of the
+    <code>marquee</code>'s <span>content area</span>.</p>
+
+    <p>Once the animation has ended, the user agent is expected to <span>increment the marquee
+    current loop index</span>. If the element is still <span data-x="concept-marquee-on">turned
+    on</span> after this, then the user agent is expected to restart the animation.</p>
+
+   </dd>
+
+   <dt>If the element's <code data-x="attr-marquee-behavior">behavior</code> attribute is in the
+   <span data-x="attr-marquee-behavior-alternate">alternate</span> state</dt>
+
+   <dd>
+
+    <p>When the <span>marquee current loop index</span> is even (or zero), slide the contents of the
+    element in the direction described by the <code data-x="attr-marquee-direction">direction</code>
+    attribute as defined below, such that it begins flush with the start side of the
+    <code>marquee</code>, and ends flush with the end side of the <code>marquee</code>.</p>
+
+    <p>When the <span>marquee current loop index</span> is odd, slide the contents of the element in
+    the opposite direction than that described by the <code
+    data-x="attr-marquee-direction">direction</code> attribute as defined below, such that it begins
+    flush with the end side of the <code>marquee</code>, and ends flush with the start side of the
+    <code>marquee</code>.</p>
+
+    <p class="example">For example, if the <code data-x="attr-marquee-direction">direction</code>
+    attribute is <span data-x="attr-marquee-direction-left">left</span> (the default), then the
+    contents would with their right edge flush with the right inner edge of the
+    <code>marquee</code>'s <span>content area</span>, and the contents would then slide up to the
+    point where the <em>left</em> edge of the contents are flush with the left inner edge of the
+    <code>marquee</code>'s <span>content area</span>.</p>
+
+    <p>Once the animation has ended, the user agent is expected to <span>increment the marquee
+    current loop index</span>. If the element is still <span data-x="concept-marquee-on">turned
+    on</span> after this, then the user agent is expected to continue the animation.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>The <code data-x="attr-marquee-direction">direction</code> attribute has the meanings described
+  in the following table:</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th><code data-x="attr-marquee-direction">direction</code> attribute state
+     <th>Direction of animation
+     <th>Start edge
+     <th>End edge
+     <th>Opposite direction
+   <tbody>
+    <tr>
+     <td><span data-x="attr-marquee-direction-left">left</span>
+     <td>&larr; Right to left
+     <td>Right
+     <td>Left
+     <td>&rarr; Left to Right
+    <tr>
+     <td><span data-x="attr-marquee-direction-right">right</span>
+     <td>&rarr; Left to Right
+     <td>Left
+     <td>Right
+     <td>&larr; Right to left
+    <tr>
+     <td><span data-x="attr-marquee-direction-up">up</span>
+     <td>&uarr; Up (Bottom to Top)
+     <td>Bottom
+     <td>Top
+     <td>&darr; Down (Top to Bottom)
+    <tr>
+     <td><span data-x="attr-marquee-direction-down">down</span>
+     <td>&darr; Down (Top to Bottom)
+     <td>Top
+     <td>Bottom
+     <td>&uarr; Up (Bottom to Top)
+  </table>
+
+  <p>In any case, the animation should proceed such that there is a delay given by the <span>marquee
+  scroll interval</span> between each frame, and such that the content moves at most the distance
+  given by the <span>marquee scroll distance</span> with each frame.</p>
+
+  <p>When a <code>marquee</code> element has a <code undefined data-x="attr-marquee-bgcolor">bgcolor</code>
+  attribute set, the value is expected to be parsed using the <span>rules for parsing a legacy color
+  value</span>, and if that does not return an error, the user agent is expected to treat the
+  attribute as a <span data-x="presentational hints">presentational hint</span> setting the element's
+  <span>'background-color'</span> property to the resulting color.</p>
+
+  <p>The <code undefined data-x="attr-marquee-width">width</code> and <code
+  undefined data-x="attr-marquee-height">height</code> attributes on a <code>marquee</code> element
+  <span data-x="maps to the dimension property">map to the dimension properties</span>
+  <span>'width'</span> and <span>'height'</span> on the element respectively.</p>
+
+  <p>The <span>intrinsic height</span> of a <code>marquee</code> element with its <code
+  data-x="attr-marquee-direction">direction</code> attribute in the <span
+  data-x="attr-marquee-direction-up">up</span> or <span
+  data-x="attr-marquee-direction-down">down</span> states is 200 <span data-x="'px'">CSS
+  pixels</span>.</p>
+
+  <p>The <code undefined data-x="attr-marquee-vspace">vspace</code> attribute of a
+  <code>marquee</code> element <span data-x="maps to the dimension property">maps to the dimension
+  properties</span> <span>'margin-top'</span> and <span>'margin-bottom'</span> on the element. The
+  <code undefined data-x="attr-marquee-hspace">hspace</code> attribute of a <code>marquee</code>
+  element <span data-x="maps to the dimension property">maps to the dimension properties</span>
+  <span>'margin-left'</span> and <span>'margin-right'</span> on the element.</p>
+
+  <p>The <span>'overflow'</span> property on the <code>marquee</code> element is expected to be
+  ignored; overflow is expected to always be hidden.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

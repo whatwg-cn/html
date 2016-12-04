@@ -1,0 +1,165 @@
+<h4>Script settings for browsing contexts</h4>
+
+  <p>When the user agent is required to <dfn>set up a browsing context environment settings
+  object</dfn>, given a <span>JavaScript execution context</span> <var>execution context</var> and
+  an optional <span>environment</span> <var>reserved environment</var>, it must run the following
+  steps:</p>
+
+  <ol>
+   <li><p>Let <var>realm</var> be the value of <var>execution context</var>'s Realm
+   component.</p></li>
+
+   <li><p>Let <var>window</var> be <var>realm</var>'s <span data-x="concept-realm-global">global
+   object</span>.</p></li>
+
+   <li><p>Let <var>url</var> be a copy of the <span data-x="concept-document-url">URL</span> of
+   <var>window</var>'s <span data-x="concept-document-window">associated
+   <code>Document</code></span>.</p></li>
+
+   <li>
+    <p>Let <var>settings object</var> be a new <span>environment settings object</span> whose
+    algorithms are defined as follows:</p>
+
+    <dl>
+
+     <dt>The <span>realm execution context</span></dt>
+     <dd>
+
+      <p>Return <var>execution context</var>.</p>
+
+     </dd>
+
+     <dt>The <span data-x="concept-settings-object-module-map">module map</span></dt>
+     <dd>
+
+      <p>Return the <span data-x="concept-document-module-map">module map</span> of
+      <var>window</var>'s <span data-x="concept-document-window">associated
+      <code>Document</code></span>.</p>
+
+     </dd>
+
+     <dt>The <span>responsible browsing context</span></dt>
+     <dd>
+
+      <p>Return the <span>browsing context</span> with which <var>window</var> is associated.</p>
+
+     </dd>
+
+     <dt>The <span>responsible event loop</span></dt>
+     <dd>
+
+      <p>Return the <span>event loop</span> that is associated with the <span>unit of related
+      similar-origin browsing contexts</span> to which <var>window</var>'s <span>browsing
+      context</span> belongs.</p>
+
+     </dd>
+
+     <dt>The <span>responsible document</span></dt>
+     <dd>
+
+      <p>Return <var>window</var>'s <span data-x="concept-document-window">associated
+      <code>Document</code></span>.</p>
+
+     </dd>
+
+     <dt>The <span>API URL character encoding</span></dt>
+     <dd>
+
+      <p>Return the current <span data-x="document's character encoding">character encoding</span>
+      of <var>window</var>'s <span data-x="concept-document-window">associated
+      <code>Document</code></span>.</p>
+
+     </dd>
+
+     <dt>The <span>API base URL</span></dt>
+     <dd>
+
+      <p>Return the current <span data-x="document base URL">base URL</span> of <var>window</var>'s
+      <span data-x="concept-document-window">associated <code>Document</code></span>.</p>
+
+     </dd>
+
+     <dt>The <span data-x="concept-settings-object-origin">origin</span></dt>
+     <dd>
+
+      <p>Return the <span>origin</span> of <var>window</var>'s <span
+      data-x="concept-document-window">associated <code>Document</code></span>.</p>
+
+     </dd>
+
+     <dt>The <span>HTTPS state</span></dt>
+     <dd>
+
+      <p>Return the <span data-x="concept-document-https-state">HTTPS state</span> of
+      <var>window</var>'s <span data-x="concept-document-window">associated
+      <code>Document</code></span>.</p>
+
+     </dd>
+
+     <dt>The <span data-x="concept-settings-object-referrer-policy">referrer policy</span></dt>
+     <dd>
+
+      <ol>
+       <li><p>Let <var>document</var> be the <code>Document</code> with which <var>window</var> is
+       currently associated.</p></li>
+
+       <li><p>While <var>document</var> is <span>an <code>iframe</code>
+       <code data-x="attr-iframe-srcdoc">srcdoc</code> document</span> and <var>document</var>'s
+       <span data-x="concept-document-referrer-policy">referrer policy</span> is the empty
+       string, set <var>document</var> to <var>document</var>'s
+       <span data-x="concept-document-bc">browsing context</span>'s
+       <span>browsing context container</span>'s <span>node document</span>.</p></li>
+
+       <li><p>Return <var>document</var>'s <span data-x="concept-document-referrer-policy">referrer
+       policy</span>.</p></li>
+      </ol>
+
+    </dl>
+   </li>
+
+   <li>
+    <p>If <var>reserved environment</var> is given, then:</p>
+
+    <ol>
+     <li><p>Set <var>settings object</var>'s <span data-x="concept-environment-id">id</span> to
+     <var>reserved environment</var>'s <span data-x="concept-environment-id">id</span>,
+     <var>settings object</var>'s <span data-x="concept-environment-creation-url">creation
+     URL</span> to <var>reserved environment</var>'s <span
+     data-x="concept-environment-creation-url">creation URL</span>, <var>settings object</var>'s
+     <span data-x="concept-environment-target-browsing-context">target browsing context</span> to
+     <var>reserved environment</var>'s <span
+     data-x="concept-environment-target-browsing-context">target browsing context</span>, and
+     <var>settings object</var>'s <span data-x="concept-environment-active-service-worker">active
+     service worker</span> to <var>reserved environment</var>'s <span
+     data-x="concept-environment-active-service-worker">active service worker</span>.</p></li>
+
+     <li>
+      <p>Set <var>reserved environment</var>'s <span data-x="concept-environment-id">id</span> to
+      the empty string.</p>
+
+      <p class="note">The identity of the reserved environment is considered to be fully
+      transferred to the created <span>environment settings object</span>. The reserved environment
+      is not searchable by the <span>environment</span>’s <span
+      data-x="concept-environment-id">id</span> from this point on.</p>
+     </li>
+    </ol>
+   </li>
+
+   <li><p>Otherwise, set <var>settings object</var>'s <span
+   data-x="concept-environment-id">id</span> to a new unique opaque string, <var>settings
+   object</var>'s <span data-x="concept-environment-creation-url">creation URL</span> to
+   <var>url</var>, <var>settings object</var>'s <span
+   data-x="concept-environment-target-browsing-context">target browsing context</span> to null, and
+   <var>settings object</var>'s <span data-x="concept-environment-active-service-worker">active
+   service worker</span> to null.</p></li>
+
+   <li><p>Set <var>realm</var>'s [[HostDefined]] field to <var>settings object</var>.</p></li>
+
+   <li><p>Return <var>settings object</var>.</p></li>
+  </ol>
+
+  </div>
+
+
+
+  

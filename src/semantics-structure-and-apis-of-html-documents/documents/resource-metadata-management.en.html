@@ -1,0 +1,195 @@
+<h4><dfn>Resource metadata management</dfn></h4>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-referrer">referrer</code></dt>
+   <dd>
+
+    <p>Returns the <span data-x="concept-document-url">URL</span> of the <code>Document</code>
+    from which the user navigated to this one, unless it was blocked or there was no such document,
+    in which case it returns the empty string.</p>
+
+    <p>The <code data-x="rel-noreferrer">noreferrer</code> link type can be used to block the
+    referrer.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-referrer">referrer</code></dfn> attribute must return
+  <span>the document's referrer</span>.</p>
+
+  </div>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-cookie">cookie</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns the HTTP cookies that apply to the <code>Document</code>. If there are no cookies or
+    cookies can't be applied to this resource, the empty string will be returned.</p>
+
+    <p>Can be set, to add a new cookie to the element's set of HTTP cookies.</p>
+
+    <p>If the contents are <span data-x="sandboxed origin browsing context flag">sandboxed into a
+    unique origin</span> (e.g. in an <code>iframe</code> with the <code
+    data-x="attr-iframe-sandbox">sandbox</code> attribute), a
+    <span>"<code>SecurityError</code>"</span> <code>DOMException</code> will be thrown on getting
+    and setting.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-cookie">cookie</code></dfn> attribute represents the
+  cookies of the resource identified by the document's <span
+  data-x="concept-document-url">URL</span>.</p>
+
+  <p>A <code>Document</code> object that falls into one of the following conditions is a
+  <dfn>cookie-averse <code>Document</code> object</dfn>:</p>
+
+  <ul>
+
+   <li>A <code>Document</code> that has no <span data-x="concept-document-bc">browsing
+   context</span>.</li>
+
+   <li>A <code>Document</code> whose <span data-x="concept-document-url">URL</span>'s <span
+   data-x="concept-url-scheme">scheme</span> is not a <span>network scheme</span>.</li>
+
+  </ul>
+
+  <!--Other specifications can also define <code>Document</code> objects as being <span
+  data-x="cookie-averse Document object">cookie-averse <code>Document</code> objects</span>.-->
+
+  <p id="sandboxCookies">On getting, if the document is a <span>cookie-averse <code>Document</code>
+  object</span>, then the user agent must return the empty string. Otherwise, if the
+  <code>Document</code>'s <span>origin</span> is an <span data-x="concept-origin-opaque">opaque
+  origin</span>, the user agent must throw a <span>"<code>SecurityError</code>"</span>
+  <code>DOMException</code>. Otherwise, the user agent must return the <span>cookie-string</span>
+  for the document's <span data-x="concept-document-url">URL</span> for a "non-HTTP" API, decoded
+  using <span>UTF-8 decode without BOM</span>. <ref spec=COOKIES><!--INSERT FINGERPRINT--></p>
+
+  <p>On setting, if the document is a <span>cookie-averse <code>Document</code> object</span>, then
+  the user agent must do nothing. Otherwise, if the <code>Document</code>'s <span>origin</span> is
+  an <span data-x="concept-origin-opaque">opaque origin</span>, the user agent must throw a
+  <span>"<code>SecurityError</code>"</span> <code>DOMException</code>. Otherwise, the user agent
+  must act as it would when <span data-x="receives a set-cookie-string">receiving a
+  set-cookie-string</span> for the document's <span data-x="concept-document-url">URL</span> via a
+  "non-HTTP" API, consisting of the new value <span data-x="utf-8 encode">encoded as UTF-8</span>.
+  <ref spec=COOKIES> <ref spec=ENCODING></p>
+
+  <p class="note">Since the <code data-x="dom-document-cookie">cookie</code> attribute is accessible
+  across frames, the path restrictions on cookies are only a tool to help manage which cookies are
+  sent to which parts of the site, and are not in any way a security feature.</p>
+
+  <p class="warning">The <code data-x="dom-document-cookie">cookie</code> attribute's getter and
+  setter synchronously access shared state. Since there is no locking mechanism, other browsing
+  contexts in a multiprocess user agent can modify cookies while scripts are running. A site could,
+  for instance, try to read a cookie, increment its value, then write it back out, using the new
+  value of the cookie as a unique identifier for the session; if the site does this twice in two
+  different browser windows at the same time, it might end up using the same "unique" identifier for
+  both sessions, with potentially disastrous effects.</p>
+
+  <hr>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-lastmodified">lastModified</code></dt>
+   <dd>
+    <p>Returns the date of the last modification to the document, as reported by the server, in the
+    form "<code data-x="">MM/DD/YYYY&nbsp;hh:mm:ss</code>", in the user's local time zone.</p>
+    <p>If the last modification date is not known, the current time is returned instead.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-lastModified">lastModified</code></dfn> attribute, on
+  getting, must return the date and time of the <code>Document</code>'s source file's last
+  modification, in the user's local time zone, in the following format:</p>
+
+  <ol>
+
+   <li> The month component of the date. </li>
+
+   <li> A U+002F SOLIDUS character (/). </li>
+
+   <li> The day component of the date. </li>
+
+   <li> A U+002F SOLIDUS character (/). </li>
+
+   <li> The year component of the date. </li>
+
+   <li> A U+0020 SPACE character. </li>
+
+   <li> The hours component of the time. </li>
+
+   <li> A U+003A COLON character (:). </li>
+
+   <li> The minutes component of the time. </li>
+
+   <li> A U+003A COLON character (:). </li>
+
+   <li> The seconds component of the time. </li>
+
+  </ol>
+
+  <p>All the numeric components above, other than the year, must be given as two <span>ASCII
+  digits</span> representing the number in base ten, zero-padded if necessary. The year must be
+  given as the shortest possible string of four or more <span>ASCII digits</span> representing the
+  number in base ten, zero-padded if necessary.</p>
+
+  <p>The <code>Document</code>'s source file's last modification date and time must be derived from
+  relevant features of the networking protocols used, e.g. from the value of the HTTP `<code
+  data-x="http-last-modified">Last-Modified</code>` header of the document, or from metadata in the
+  file system for local files. If the last modification date and time are not known, the attribute
+  must return the current date and time in the above format.</p>
+
+  <hr>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-readyState">readyState</code></dt>
+   <dd>
+    <p>Returns "<code data-x="">loading</code>" while the <code>Document</code> is loading, "<code
+    data-x="">interactive</code>" once it is finished parsing but still loading sub-resources, and
+    "<code data-x="">complete</code>" once it has loaded.</p>
+    <p>The <code data-x="event-readystatechange">readystatechange</code> event fires on the
+    <code>Document</code> object when this value changes.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Each document has a <dfn>current document readiness</dfn>. When a <code>Document</code> object
+  is created, it must have its <span>current document readiness</span> set to the string "<code
+  data-x="">loading</code>" if the document is associated with an <span>HTML parser</span>, an
+  <span>XML parser</span>, or an XSLT processor, and to the string "<code data-x="">complete</code>"
+  otherwise. Various algorithms during page loading affect this value. When the value is set, the
+  user agent must <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-readystatechange">readystatechange</code> at the <code>Document</code> object.</p>
+
+  <p>A <code>Document</code> is said to have an <dfn>active parser</dfn> if it is associated with an
+  <span>HTML parser</span> or an <span>XML parser</span> that has not yet been <span data-x="stop
+  parsing">stopped</span> or <span data-x="abort a parser">aborted</span>.</p>
+
+  <p>The <dfn><code data-x="dom-document-readyState">readyState</code></dfn> IDL attribute must, on
+  getting, return the <span>current document readiness</span>.</p>
+
+  </div>
+
+
+
+  

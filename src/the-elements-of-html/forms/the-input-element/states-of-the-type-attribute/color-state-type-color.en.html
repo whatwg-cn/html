@@ -1,0 +1,107 @@
+<h6 id="color-state-(type=color)"><dfn data-x="attr-input-type-color">Color</dfn> state (<code data-x="">type=color</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-color">Color</span> state, the rules in this section apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a color well control, for setting the
+  element's <span data-x="concept-fe-value">value</span> to a string representing a <span>simple
+  color</span>.</p>
+
+  <div w-nodev>
+
+  <p class="note">In this state, there is always a color picked, and there is no way to set the
+  value to the empty string.</p>
+
+  <p>If the element is <i data-x="concept-fe-mutable">mutable</i>, the user agent should allow the
+  user to change the color represented by its <span data-x="concept-fe-value">value</span>, as
+  obtained from applying the <span>rules for parsing simple color values</span> to it. User agents
+  must not allow the user to set the <span data-x="concept-fe-value">value</span> to a string that is
+  not a <span>valid lowercase simple color</span>. If the user agent provides a user interface for
+  selecting a color, then the <span data-x="concept-fe-value">value</span> must be set to the result
+  of using the <span>rules for serializing simple color values</span> to the user's selection. User
+  agents must not allow the user to set the <span data-x="concept-fe-value">value</span> to the empty
+  string.</p>
+
+  <p><strong>Constraint validation</strong>: While the user interface describes input that the user
+  agent cannot convert to a <span>valid lowercase simple color</span>, the control is
+  <span>suffering from bad input</span>.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-input-value">value</code> attribute, if specified and not empty, must
+  have a value that is a <span>valid simple color</span>.</p>
+
+  <div w-nodev>
+
+  <p><strong>The <span>value sanitization algorithm</span> is as follows</strong>: If the <span
+  data-x="concept-fe-value">value</span> of the element is a <span>valid simple color</span>, then
+  set it to the <span data-x="concept-fe-value">value</span> of the element <span>converted to ASCII
+  lowercase</span>; otherwise, set it to the string "<code data-x="">#000000</code>".</p>
+
+  </div>
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content attributes and IDL attributes <span
+   data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-fe-autocomplete">autocomplete</code> and
+   <code data-x="attr-input-list">list</code> content attributes;
+   <code data-x="dom-input-list">list</code> and
+   <code data-x="dom-input-value">value</code> IDL attributes;
+   <code data-x="dom-textarea/input-select">select()</code> method.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is in mode <span
+   data-x="dom-input-value-value">value</span>.</p>
+
+   <p>The <code data-x="event-input">input</code> and <code
+   data-x="event-change">change</code> events <span
+   data-x="concept-input-apply">apply</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-max">max</code>,
+   <code class="no-backref" data-x="attr-input-maxlength">maxlength</code>,
+   <code class="no-backref" data-x="attr-input-min">min</code>,
+   <code class="no-backref" data-x="attr-input-minlength">minlength</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-pattern">pattern</code>,
+   <code class="no-backref" data-x="attr-input-placeholder">placeholder</code>,
+   <code class="no-backref" data-x="attr-input-readonly">readonly</code>,
+   <code class="no-backref" data-x="attr-input-required">required</code>,
+   <code class="no-backref" data-x="attr-input-size">size</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>,
+   <code class="no-backref" data-x="attr-input-step">step</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionDirection">selectionDirection</code>,
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code> and,
+   <code class="no-backref" data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code class="no-backref" data-x="dom-textarea/input-setRangeText">setRangeText()</code>,
+   <code class="no-backref" data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code>,
+   <code class="no-backref" data-x="dom-input-stepDown">stepDown()</code>, and
+   <code class="no-backref" data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+  </div>
+
+
+  

@@ -1,0 +1,60 @@
+<h5>Setting minimum input length requirements: the <code data-x="attr-fe-minlength">minlength</code> attribute</h5>
+
+  <p>A <dfn data-x="attr-fe-minlength">form control <code data-x="">minlength</code> attribute</dfn>,
+  controlled by a <var>dirty value flag</var>, declares a lower bound on the number of
+  characters a user can input. The "number of characters" is measured using <span>code-unit
+  length</span> and, in the case of <code>textarea</code> elements, with all line breaks normalized
+  to a single character (as opposed to CRLF pairs).</p>
+
+  <p class="note">The <code data-x="attr-fe-minlength">minlength</code> attribute does not imply the
+  <code data-x="">required</code> attribute. If the form control has no <code
+  data-x="">required</code> attribute, then the value can still be omitted; the <code
+  data-x="attr-fe-minlength">minlength</code> attribute only kicks in once the user has entered a
+  value at all. If the empty string is not allowed, then the <code data-x="">required</code>
+  attribute also needs to be set.</p>
+
+  <p>If an element has its <span data-x="attr-fe-minlength">form control <code
+  data-x="">minlength</code> attribute</span> specified, the attribute's value must be a <span>valid
+  non-negative integer</span>. If the attribute is specified and applying the <span>rules for
+  parsing non-negative integers</span> to its value results in a number, then that number is the
+  element's <dfn>minimum allowed value length</dfn>. If the attribute is omitted or parsing its
+  value results in an error, then there is no <span>minimum allowed value length</span>.</p>
+
+  <p>If an element has both a <span>maximum allowed value length</span> and a <span>minimum allowed
+  value length</span>, the <span>minimum allowed value length</span> must be smaller than or equal
+  to the <span>maximum allowed value length</span>.</p>
+
+  <div w-nodev>
+
+  <p><strong>Constraint validation</strong>: If an element has a <span>minimum allowed value
+  length</span>, its <var>dirty value flag</var> is true, its <span
+  data-x="concept-fe-value">value</span> was last changed by a user edit (as opposed to a change
+  made by a script), its <span data-x="concept-fe-value">value</span> is not the empty string, and
+  the <span>code-unit length</span> of the element's <span data-x="concept-fe-api-value">API
+  value</span> is less than the element's <span>minimum allowed value length</span>, then the
+  element is <span>suffering from being too short</span>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, there are four text controls. The first is required, and has to be at least 5
+   characters long. The other three are optional, but if the user fills one in, the user has to
+   enter at least 10 characters.</p>
+
+   <pre>&lt;form action="/events/menu.cgi" method="post">
+ &lt;p>&lt;label>Name of Event: &lt;input required minlength=5 maxlength=50 name=event>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Describe what you would like for breakfast, if anything:
+    &lt;textarea name="breakfast" minlength="10">&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Describe what you would like for lunch, if anything:
+    &lt;textarea name="lunch" minlength="10">&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Describe what you would like for dinner, if anything:
+    &lt;textarea name="dinner" minlength="10">&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;input type=submit value="Submit Request">&lt;/p>
+&lt;/form></pre>
+
+
+  </div>
+
+
+  

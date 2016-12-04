@@ -1,0 +1,17 @@
+<h5><dfn>CDATA section bracket state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+    <dt>U+005D RIGHT SQUARE BRACKET (])</dt>
+    <dd>Switch to the <span>CDATA section end state</span>.</dd>
+
+    <dt>Anything else</dt>
+    <dd>Emit a U+005D RIGHT SQUARE BRACKET character token. <span>Reconsume</span> in the
+    <span>CDATA section state</span>.</dd>
+
+  </dl>
+
+
+  

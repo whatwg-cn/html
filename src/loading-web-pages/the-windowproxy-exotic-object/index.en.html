@@ -1,0 +1,25 @@
+<h3>The <code>WindowProxy</code> exotic object</h3>
+
+  <p>A <dfn data-export="" data-dfn-type="interface"><code>WindowProxy</code></dfn> is an exotic
+  object that wraps a <code>Window</code> ordinary object, indirecting most operations through to
+  the wrapped object. Each <span>browsing context</span> has an associated <code>WindowProxy</code>
+  object. When the <span>browsing context</span> is <span data-x="navigate">navigated</span>, the
+  <code>Window</code> object wrapped by the <span>browsing context</span>'s associated
+  <code>WindowProxy</code> object is changed.</p>
+
+  <p>There is no <code>WindowProxy</code> <span>interface object</span>.</p>
+
+  <p>Every <code>WindowProxy</code> object has a
+  [[<dfn data-x="concept-windowproxy-window">Window</dfn>]] internal slot representing the wrapped
+  <code>Window</code> object.</p>
+
+  <p>The <code>WindowProxy</code> object internal methods are described in the subsections
+  below.</p>
+
+  <p class="note">Although <code>WindowProxy</code> is named as a "proxy", it does not do
+  polymorphic dispatch on its target's internal methods as a real proxy would, due to a desire to
+  reuse machinery between <code>WindowProxy</code> and <code>Location</code> objects. As long as the
+  <code>Window</code> object remains an ordinary object this is unobservable and can be implemented
+  either way.</p>
+
+  

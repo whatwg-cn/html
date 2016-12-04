@@ -1,0 +1,56 @@
+<h4>Comma-separated tokens</h4>
+
+  <p>A <dfn>set of comma-separated tokens</dfn> is a string containing zero or more tokens each
+  separated from the next by a single U+002C COMMA character (,), where tokens consist of any string
+  of zero or more characters, neither beginning nor ending with <span data-x="space character">space
+  characters</span>, nor containing any U+002C COMMA characters (,), and optionally surrounded by
+  <span data-x="space character">space characters</span>.</p>
+
+  <p class="example">For instance, the string "<code
+  data-x="">&nbsp;a&nbsp;,b,,d&nbsp;d&nbsp;</code>" consists of four tokens: "a", "b", the empty
+  string, and "d&nbsp;d". Leading and trailing whitespace around each token doesn't count as part of
+  the token, and the empty string can be a token.</p>
+
+  <p><span data-x="set of comma-separated tokens">Sets of comma-separated tokens</span> sometimes
+  have further restrictions on what consists a valid token. When such restrictions are defined, the
+  tokens must all fit within those restrictions; other values are non-conforming. If no such
+  restrictions are specified, then all values are conforming.</p>
+
+  <div w-nodev>
+
+  <p>When a user agent has to <dfn data-export="">split a string on commas</dfn>, it must use the
+  following algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p>Let <var>tokens</var> be an ordered list of tokens, initially empty.</p></li>
+
+   <li><p><i>Token</i>: If <var>position</var> is past the end of <var>input</var>, jump to the last step.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are not U+002C COMMA characters (,).
+   Let <var>s</var> be the resulting sequence (which might be the empty string).</p></li>
+
+   <li><p><span>Strip leading and trailing whitespace</span> from <var>s</var>.</p></li>
+
+   <li><p>Append <var>s</var> to <var>tokens</var>.</p></li>
+
+   <li><p>If <var>position</var> is not past the end of <var>input</var>, then
+   the character at <var>position</var> is a U+002C COMMA character (,); advance <var>position</var> past that character.</p></li>
+
+   <li><p>Jump back to the step labeled <i>token</i>.</p></li>
+
+   <li><p>Return <var>tokens</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+
+
+  

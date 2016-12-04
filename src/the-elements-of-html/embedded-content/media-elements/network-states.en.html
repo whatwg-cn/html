@@ -1,0 +1,59 @@
+<h5>Network states</h5>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-networkState">networkState</code></dt>
+
+   <dd>
+
+    <p>Returns the current state of network activity for the element, from the codes in the list
+    below.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>As <span data-x="media element">media elements</span> interact with the network, their current
+  network activity is represented by the <dfn><code data-x="dom-media-networkState">networkState</code></dfn> attribute. On getting, it must
+  return the current network state of the element, which must be one of the following values:</p>
+
+  </div>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code></dfn> (numeric value 0)</dt>
+
+   <dd>The element has not yet been initialized. All attributes are in their initial states.</dd>
+
+   <dt><dfn><code data-x="dom-media-NETWORK_IDLE">NETWORK_IDLE</code></dfn> (numeric value 1)</dt>
+
+   <dd>The element<span w-nodev>'s <span data-x="concept-media-load-algorithm">resource
+   selection algorithm</span> is active and</span> has selected a <span data-x="media
+   resource">resource</span>, but it is not actually using the network at this time.</dd>
+
+   <dt><dfn><code data-x="dom-media-NETWORK_LOADING">NETWORK_LOADING</code></dfn> (numeric value 2)</dt>
+
+   <dd>The user agent is actively trying to download data.</dd>
+
+   <dt><dfn><code data-x="dom-media-NETWORK_NO_SOURCE">NETWORK_NO_SOURCE</code></dfn> (numeric value 3)</dt>
+
+   <dd>The element<span w-nodev>'s <span data-x="concept-media-load-algorithm">resource
+   selection algorithm</span> is active, but it</span> has not yet found a <span data-x="media
+   resource">resource</span> to use.</dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <span data-x="concept-media-load-algorithm">resource selection algorithm</span> defined
+  below describes exactly when the <code data-x="dom-media-networkState">networkState</code>
+  attribute changes value and what events fire to indicate changes in this state.</p>
+
+  </div>
+
+
+
+
+  

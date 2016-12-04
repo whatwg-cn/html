@@ -1,0 +1,511 @@
+<h4 id="focus-processing-model"><span id="processing-model-5"></span>Processing model</h4>
+
+  <p>The <dfn data-export="">focusing steps</dfn> for an object <var>new focus target</var> that is
+  either a <span>focusable area</span>, or an element that is not a <span>focusable area</span>, or
+  a <span>browsing context</span>, are as follows. They can optionally be run with a <i>fallback
+  target</i>.</p>
+
+  <ol>
+
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2816 div.focus() when it's got a scroll region -->
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2817 img.focus() when it's got an image map -->
+
+   <li>
+
+    <p>If <var>new focus target</var> is neither a <code>dialog</code> element that has an
+    <code data-x="attr-dialog-open">open</code> attribute specified and that is <span>being
+    rendered</span> (i.e. that is a <span>control group owner object</span>), nor a <span>focusable
+    area</span>, then run the first matching set of steps from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If <var>new focus target</var> is an <code>area</code> element with one or more
+     shapes that are <span data-x="focusable area">focusable areas</span></dt>
+
+     <dd>
+
+      <p>Let <var>new focus target</var> be the shape corresponding to the first
+      <code>img</code> element in <span>tree order</span> that uses the image map to which the <code>area</code>
+      element belongs.</p>
+
+     </dd>
+
+
+     <dt>If <var>new focus target</var> is an element with one or more scrollable regions
+     that are <span data-x="focusable area">focusable areas</span></dt>
+
+     <dd>
+
+      <p>Let <var>new focus target</var> be the element's first scrollable region,
+      according to a pre-order, depth-first traversal of the box tree. <ref spec=CSS></p>
+
+     </dd>
+
+
+     <dt>If <var>new focus target</var> is the <span>document element</span> of its
+     <code>Document</code></dt>
+
+     <dd>
+
+      <p>Let <var>new focus target</var> be the <code>Document</code>'s <span>viewport</span>.</p>
+
+     </dd>
+
+
+     <dt>If <var>new focus target</var> is a <span>browsing context</span></dt>
+
+     <dd>
+
+      <p>Let <var>new focus target</var> be the <span>browsing context</span>'s
+      <span>active document</span>.</p>
+
+     </dd>
+
+
+     <dt>If <var>new focus target</var> is a <span>browsing context container</span> with a non-null
+     <span>nested browsing context</span></dt>
+
+     <dd>
+
+      <p>Let <var>new focus target</var> be the <span>browsing context container</span>'s <span>nested browsing context</span>'s
+      <span>active document</span>.</p>
+
+     </dd>
+
+
+     <dt>Otherwise</dt>
+
+     <dd>
+
+      <p>If no <i>fallback target</i> was specified, abort the <span>focusing steps</span>.</p>
+
+      <p>Otherwise, let <var>new focus target</var> be the <i>fallback target</i>.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>If <var>new focus target</var> is a <span>control group owner object</span> that is
+    not a <span>focusable area</span>, but does have a <span>dialog group</span>, and that <span>dialog group</span>
+    has a designated <span data-x="focused dialog of the dialog group">focused dialog</span>, then
+    let <var>new focus target</var> be the <span>focused dialog of the dialog
+    group</span>, and redo this step.</p>
+
+    <p>Otherwise, if <var>new focus target</var> is a <span>control group owner
+    object</span> that is not a <span>focusable area</span>, and its <span>control group</span> is not empty,
+    then designate <var>new focus target</var> as the <span>focused area of the control
+    group</span>, and redo this step.</p>
+
+    <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2818 -->
+    <p>Otherwise, if <var>new focus target</var> is a <span>browsing context container</span> with
+    non-null <span>nested browsing context</span>, then let <var>new focus target</var> be the
+    <span>nested browsing context</span>'s <span>active document</span>, and redo this step.</p>
+
+    <p class="note">A <code>dialog</code> element can be both a <span>control group owner
+    object</span> and a <span>focusable area</span>, if it has both an <code
+    data-x="attr-dialog-open">open</code> attribute specified and a <code
+    data-x="attr-tabindex">tabindex</code> attribute specified and is <span>being
+    rendered</span>.</p>
+
+   </li>
+
+   <li><p>If <var>new focus target</var> is a <span>focusable area</span> and its <span>DOM
+   anchor</span> is <span>inert</span>, then abort these steps.</p></li>
+
+   <li><p>If <var>new focus target</var> is the <span>currently focused area of a
+   top-level browsing context</span>, then abort these steps.</p></li>
+
+   <li><p>Let <var>old chain</var> be the <span>focus chain</span> of the <span
+   data-x="currently focused area of a top-level browsing context">currently focused area of the
+   top-level browsing context</span> in which <var>new focus target</var> finds
+   itself.</p></li>
+
+   <li><p>Let <var>new chain</var> be the <span>focus chain</span> of <var>new
+   focus target</var>.</p></li>
+
+   <li><p>Run the <span>focus update steps</span> with <var>old chain</var>, <var>new chain</var>, and <var>new focus target</var> respectively.</p></li>
+
+  </ol>
+
+  <p>User agents must <span>immediately</span> run the <span>focusing steps</span> for a <span>focusable area</span>,
+  <code>dialog</code>, or <span>browsing context</span> <var>candidate</var> whenever the
+  user attempts to move the focus to <var>candidate</var>.</p>
+
+  <p>The <dfn>unfocusing steps</dfn> for an object <var>old focus target</var> that is
+  either a <span>focusable area</span> or an element that is not a <span>focusable area</span> are as
+  follows:</p>
+
+  <ol>
+
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2819 -->
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2822 -->
+
+   <li><p>If <var>old focus target</var> is <span>inert</span>, then abort these
+   steps.</p></li>
+
+   <li>
+
+    <p>If <var>old focus target</var> is an <code>area</code> element and one of its shapes is the
+    <span>currently focused area of a top-level browsing context</span>, or, if <var>old focus
+    target</var> is an element with one or more scrollable regions, and one of them is the
+    <span>currently focused area of a top-level browsing context</span>, then let <var>old focus
+    target</var> be that <span>currently focused area of a top-level browsing context</span>.</p>
+
+   </li>
+
+   <li><p>Let <var>old chain</var> be the <span>focus chain</span> of the <span>currently
+   focused area of a top-level browsing context</span>.</p></li>
+
+   <li><p>If <var>old focus target</var> is not one of the entries in <var>old
+   chain</var>, then abort these steps.</p></li>
+
+   <li>
+
+    <p>If <var>old focus target</var> is a <code>dialog</code> in a <span>dialog group</span>, and
+    the <span>dialog group manager</span> has a non-empty <span>control group</span>, then let
+    <var>new focus target</var> be the designated <span data-x="focused area of the control
+    group">focused area of that focus group</span>.</p>
+
+    <p>Otherwise, if <var>old focus target</var> is a <span>focusable area</span>, then let <var>new
+    focus target</var> be the first <span>focusable area</span> of its <span>control group</span>
+    (if the <span>control group owner object</span> is a <code>Document</code>, this will always be
+    a <span>viewport</span>).</p>
+
+    <p>Otherwise, let <var>new focus target</var> be null.</p>
+
+   </li>
+
+   <li><p>If <var>new focus target</var> is not null, then run the <span>focusing
+   steps</span> for <var>new focus target</var>.</p></li>
+
+  </ol>
+
+  <p>When the <span>currently focused area of a top-level browsing context</span> is somehow
+  unfocused without another element being explicitly focused in its stead, the user agent must
+  <span>immediately</span> run the <span>unfocusing steps</span> for that object.</p>
+
+  <p class="note">The <span>unfocusing steps</span> do not always result in the focus changing, even
+  when applied to the <span>currently focused area of a top-level browsing context</span>. For
+  example, if the <span>currently focused area of a top-level browsing context</span> is a
+  <span>viewport</span>, then it will usually keep its focus regardless until another
+  <span>focusable area</span> is explicitly focused with the <span>focusing steps</span>.</p>
+
+  <hr>
+
+  <p>When a <span>focusable area</span> is added to an empty <span>control group</span>, it must be designated
+  the <span>focused area of the control group</span>.</p>
+
+  <p>When a <span>dialog group</span> is formed, if the <span>dialog group manager</span> has an empty
+  <span>control group</span>, the first non-<span>inert</span> <code>dialog</code> in the <span>dialog
+  group</span>, if any, or else the first <code>dialog</code> in the <span>dialog group</span> regardless of
+  <span data-x="inert">inertness</span>, must be designated the <span>focused dialog of the dialog
+  group</span>.</p>
+
+  <p><dfn>Focus fixup rule one</dfn>: When the designated <span data-x="focused area of the control
+  group">focused area of a control group</span> is removed from that <span>control group</span> in
+  some way (e.g. it stops being a <span>focusable area</span>, it is removed from the DOM, it
+  becomes <span>expressly inert</span>, etc), and the <span>control group</span> is still not
+  empty: designate the first non-<span>inert</span> <span>focusable area</span> in that
+  <span>control group</span> to be the new <span>focused area of the control group</span>, if any;
+  if they are all <span>inert</span>, then designate the first <span>focusable area</span> in that
+  <span>control group</span> to be the new <span>focused area of the control group</span> regardless
+  of <span data-x="inert">inertness</span>. If such a removal instead results in the <span>control
+  group</span> being empty, then there is simply no longer a <span>focused area of the control
+  group</span>.</p>
+
+  <p class="example">For example, this might happen because an element is removed from its
+  <code>Document</code>, or has a <code data-x="attr-hidden">hidden</code> attribute added. It might
+  also happen to an <code>input</code> element when the element gets <span
+  data-x="concept-fe-disabled">disabled</span>.</p>
+
+  <p class="example">In a <code>Document</code> without <code>dialog</code> elements, whose <span
+  data-x="focused area of the control group">focused area</span> is a <code>button</code> element,
+  removing, disabling, or hiding that button would cause the page's new <span data-x="focused area
+  of the control group">focused area</span> to be the <span>viewport</span> of the
+  <code>Document</code>. This would, in turn, be reflected through the <code
+  data-x="dom-document-activeElement">activeElement</code> API as <span>the body
+  element</span>.</p>
+
+  <p><dfn>Focus fixup rule two</dfn>: When a <span>dialog group</span> has no designated <span>focused
+  dialog of the dialog group</span>, and its <span>dialog group manager</span>'s <span>control
+  group</span> changes from being non-empty to being empty, the first non-<span>inert</span>
+  <code>dialog</code> in the <span>dialog group</span>, if any, or else the first <code>dialog</code> in
+  the <span>dialog group</span> regardless of <span data-x="inert">inertness</span>, must be designated
+  the <span>focused dialog of the dialog group</span>.</p>
+
+  <p><dfn>Focus fixup rule three</dfn>: When the designated <span data-x="focused dialog of the
+  dialog group">focused dialog of a dialog group</span> is removed from that <span>dialog
+  group</span> in some way (e.g. it stops <span>being rendered</span>, it loses its <code
+  data-x="attr-dialog-open">open</code> attribute, it becomes <span>expressly inert</span>, etc),
+  and there is still a <span>dialog group</span> (because the <code>dialog</code> in question was
+  not the last <code>dialog</code> in that <span>dialog group</span>): if the <span>dialog
+  group</span>'s <span data-x="dialog group manager">manager</span>'s <span>control group</span> is
+  non-empty, let there be no designated <span>focused dialog of the dialog group</span> any more;
+  otherwise (in the case that the <span>control group</span> is empty), designate the first
+  non-<span>inert</span> <code>dialog</code> in the <span>dialog group</span> to be the
+  <span>focused dialog of the dialog group</span>, or, if they are all <span>inert</span>, designate
+  the first <code>dialog</code> in the <span>dialog group</span> to be the <span>focused dialog of
+  the dialog group</span> regardless of <span data-x="inert">inertness</span>.</p>
+
+  <p>When the <span>currently focused area of a top-level browsing context</span> was a <span>focusable
+  area</span> but stops being a <span>focusable area</span>, or when it was a <code>dialog</code> in a
+  <span>dialog group</span> and stops being part of that <span>dialog group</span>, or when it
+  starts being <span>inert</span>, the user agent must run the following steps:</p>
+
+  <ol> <!-- this is basically a special-cased version of the focusing steps -->
+
+   <li><p>Let <var>old focus target</var> be whatever the <span data-x="currently focused
+   area of a top-level browsing context">currently focused area of the top-level browsing
+   context</span> was immediately before this algorithm became applicable (e.g. before the element
+   was disabled, or the dialog was closed, or whatever caused this algorithm to run).</p></li>
+
+   <li><p>Let <var>old chain</var> be the <span>focus chain</span> of the <span
+   data-x="currently focused area of a top-level browsing context">currently focused area of the
+   top-level browsing context</span> at the same time.</p></li>
+
+   <li><p>Make sure that the changes implied by the focus fixup rules <span data-x="focus fixup rule
+   one">one</span>, <span data-x="focus fixup rule two">two</span>, and <span data-x="focus fixup
+   rule three">three</span> above are applied.</p></li>
+
+   <li><p>Let <var>new focus target</var> be the <span>currently focused area of a
+   top-level browsing context</span>.</p></li>
+
+   <li><p>If <var>old focus target</var> and <var>new focus target</var> are the
+   same, abort these steps.</p></li>
+
+   <li><p>Let <var>new chain</var> be the <span>focus chain</span> of <var>new
+   focus target</var>.</p></li>
+
+   <li><p>Run the <span>focus update steps</span> with <var>old chain</var>, <var>new chain</var>, and <var>new focus target</var> respectively.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn>focus update steps</dfn>, given an <var>old chain</var>, a <var>new chain</var>, and a <var>new focus target</var> respectively, are as
+  follows:</p>
+
+  <ol>
+
+   <!-- focusin/focusout?: https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=723 -->
+
+   <li><p>If the last entry in <var>old chain</var> and the last entry in <var>new chain</var> are the same, pop the last entry from <var>old chain</var>
+   and the last entry from <var>new chain</var> and redo this step.</p></li>
+
+   <li>
+
+    <p>For each entry <var>entry</var> in <var>old chain</var>, in order, run
+    these substeps:</p>
+
+    <ol>
+
+     <li id="unfocus-causes-change-event"><p>If <var>entry</var> is an <code>input</code>
+     element, and the <code data-x="event-change">change</code> event <span
+     data-x="concept-input-apply">applies</span> to the element, and the element does not have a
+     defined <span>activation behavior</span>, and the user has changed the element's <span
+     data-x="concept-fe-value">value</span> or its list of <span
+     data-x="concept-input-type-file-selected">selected files</span> while the control was focused
+     without committing that change (such that it is different to what it was when the control was
+     first focused), then <span data-x="concept-event-fire">fire an event</span> named <code
+     data-x="event-change">change</code> at the element, with the <code
+     data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true.</p>
+
+     <li>
+
+      <p>If <var>entry</var> is an element, let <var>blur event target</var> be
+      <var>entry</var>.</p>
+
+      <p>If <var>entry</var> is a <code>Document</code> object, let <var>blur
+      event target</var> be that <code>Document</code> object's <code>Window</code> object.</p>
+
+      <p>Otherwise, let <var>blur event target</var> be null.</p>
+
+     </li>
+
+     <li><p>If <var>entry</var> is the last entry in <var>old chain</var>, and
+     <var>entry</var> is an <code>Element</code>, and the last entry in <var>new
+     chain</var> is also an <code>Element</code>, then let <var>related blur target</var>
+     be the last entry in <var>new chain</var>. Otherwise, let <var>related blur
+     target</var> be null.</p></li>
+
+     <li>
+
+      <p>If <var>blur event target</var> is not null, <span>fire a focus event</span>
+      named <code data-x="event-blur">blur</code> at <var>blur event target</var>, with
+      <var>related blur target</var> as the related target.</p>
+
+      <p class="note">In some cases, e.g. if <var>entry</var> is an <code>area</code>
+      element's shape, a scrollable region, or a <span>viewport</span>, no event is fired.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Apply any relevant platform-specific conventions for focusing <var>new focus
+   target</var>. (For example, some platforms select the contents of a text control when that
+   control is focused.)</p></li>
+
+   <li>
+
+    <p>For each entry <var>entry</var> in <var>new chain</var>, in reverse
+    order, run these substeps:</p>
+
+    <ol>
+
+     <li><p>If <var>entry</var> is a <code>dialog</code> element: Let <var>entry</var> be the designated <span data-x="focused dialog of the dialog
+     group">focused dialog of its dialog group</span>.</p></li>
+
+     <li>
+
+      <p>If <var>entry</var> is a <span>focusable area</span>: Designate <var>entry</var> as the
+      <span>focused area of the control group</span>. If its <span>control group</span>'s <span
+      data-x="control group owner object">owner object</span> is also a <span>dialog group
+      manager</span>, then let there be no designated <span data-x="focused dialog of the dialog
+      group">focused dialog</span> in that <span>dialog group</span>.</p>
+
+      <p class="note">It is possible for <var>entry</var> to be both a <code>dialog</code>
+      element and a <span>focusable area</span>, in which case it is its own <span>control group
+      owner object</span>.</p>
+
+     </li>
+
+     <li>
+
+      <p>If <var>entry</var> is an element, let <var>focus event target</var> be
+      <var>entry</var>.</p>
+
+      <p>If <var>entry</var> is a <code>Document</code> object, let <var>focus
+      event target</var> be that <code>Document</code> object's <code>Window</code> object.</p>
+
+      <p>Otherwise, let <var>focus event target</var> be null.</p>
+
+     </li>
+
+     <li><p>If <var>entry</var> is the last entry in <var>new chain</var>, and
+     <var>entry</var> is an <code>Element</code>, and the last entry in <var>old
+     chain</var> is also an <code>Element</code>, then let <var>related focus target</var>
+     be the last entry in <var>old chain</var>. Otherwise, let <var>related
+     focus target</var> be null.</p></li>
+
+     <li>
+
+      <p>If <var>focus event target</var> is not null, <span>fire a focus event</span>
+      named <code data-x="event-focus">focus</code> at <var>focus event target</var>, with
+      <var>related focus target</var> as the related target.</p>
+
+      <p class="note">In some cases, e.g. if <var>entry</var> is an <code>area</code>
+      element's shape, a scrollable region, or a <span>viewport</span>, no event is fired.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>To <dfn>fire a focus event</dfn> named <var>e</var> at an element <var>t</var> and with a given
+  related target <var>r</var>, <span data-x="concept-event-fire">fire an event</span> named
+  <var>e</var> at <var>t</var>, using <code>FocusEvent</code>, with the <code
+  data-x="dom-FocusEvent-relatedTarget">relatedTarget</code> attribute initialized to <var>r</var>
+  and the <code data-x="dom-UIEvent-view">view</code> attribute initialized to <var>t</var>'s
+  <span>node document</span>'s <code>Window</code> object.</p>
+
+  <hr>
+
+  <p>When a key event is to be routed in a <span>top-level browsing context</span>, the user agent
+  must run the following steps:</p>
+
+  <!-- interaction event spec point -->
+
+  <ol>
+
+   <li><p>Let <var>target area</var> be the <span data-x="currently focused area of a
+   top-level browsing context">currently focused area of the top-level browsing
+   context</span>.</p></li>
+
+   <li><p>If <var>target area</var> is a <span>focusable area</span>, let <var>target
+   node</var> be <var>target area</var>'s <span>DOM anchor</span>. Otherwise, <var>target area</var> is a <code>dialog</code>; let <var>target node</var> be
+   <var>target area</var>.</p></li>
+
+   <li>
+
+    <p>If <var>target node</var> is a <code>Document</code> that has a <span data-x="the
+    body element">body element</span>, then let <var>target node</var> be <span>the body
+    element</span> of that <code>Document</code>.</p>
+
+    <p>Otherwise, if <var>target node</var> is a <code>Document</code> object that has a non-null
+    <span>document element</span>, then let <var>target node</var> be that <span>document
+    element</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>target node</var> is not <span>inert</span>, then:</p>
+
+    <p class="note">It is possible for the <span>currently focused area of a top-level browsing
+    context</span> to be <span>inert</span>, for example if a <span
+    data-x="dom-dialog-showModal">modal dialog is shown</span>, and then that <code>dialog</code>
+    element is made <span>inert</span>. It is likely to be the result of a logic error in the
+    application, though.</p>
+
+    <ol>
+     <li><p>Let <var>canHandle</var> be the result of <span
+     data-x="concept-event-dispatch">dispatching</span> the key event at <var>target
+     node</var>.</p></li>
+
+     <li><p>If <var>canHandle</var> is true, then let <var>target area</var> handle the key event.
+     This might include <span data-x="fire a click event">firing a <code
+     data-x="event-click">click</code> event</span> at <var>target node</var>.</p></li>
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn data-export="">has focus steps</dfn>, given a <code>Document</code> object
+  <var>target</var>, are as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>candidate</var> be the <code>Document</code> of the <span>top-level browsing
+   context</span>.</p></li>
+
+   <li><p>If <var>candidate</var> is <var>target</var>, return true and abort these steps.</p></li>
+
+   <li>
+
+    <p>If <var>candidate</var> has a <span>dialog group</span> with a designated <span>focused
+    dialog of the dialog group</span>, then let <var>candidate</var> be the designated
+    <span>focused dialog of the dialog group</span>, and redo this step.</p>
+
+    <p>Otherwise, if <var>candidate</var> has a non-empty <span>control group</span>, and the
+    designated <span>focused area of the control group</span> is a <span>browsing context
+    container</span> with a non-null <span>nested browsing context</span>, and the <span>active
+    document</span> of that <span>browsing context container</span>'s <span>nested browsing
+    context</span> is <var>target</var>, then return true and abort these steps.</p>
+
+    <p>Otherwise, if <var>candidate</var> has a non-empty <span>control group</span>, and the
+    designated <span>focused area of the control group</span> is a <span>browsing context
+    container</span> with a non-null <span>nested browsing context</span>, then let
+    <var>candidate</var> be the <span>active document</span> of that <span>browsing context
+    container</span>'s <span>nested browsing context</span>, and redo this step.</p>
+
+    <p>Otherwise, return false and abort these steps.</p>
+
+   </li>
+
+  </ol>
+
+
+
+  

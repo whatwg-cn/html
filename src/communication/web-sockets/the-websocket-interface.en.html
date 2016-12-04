@@ -1,0 +1,423 @@
+<h4>The <code>WebSocket</code> interface</h4>
+
+  <pre class="idl">enum <dfn>BinaryType</dfn> { "<span data-x="dom-BinaryType-blob">blob</span>", "<span data-x="dom-BinaryType-arraybuffer">arraybuffer</span>" };
+[<span data-x="dom-WebSocket">Constructor</span>(USVString url, optional (DOMString or sequence&lt;DOMString&gt;) protocols = []), Exposed=(Window,Worker)]
+interface <dfn>WebSocket</dfn> : <span>EventTarget</span> {
+  readonly attribute USVString <span data-x="dom-WebSocket-url">url</span>;
+
+  // ready state
+  const unsigned short <span data-x="dom-WebSocket-CONNECTING">CONNECTING</span> = 0;
+  const unsigned short <span data-x="dom-WebSocket-OPEN">OPEN</span> = 1;
+  const unsigned short <span data-x="dom-WebSocket-CLOSING">CLOSING</span> = 2;
+  const unsigned short <span data-x="dom-WebSocket-CLOSED">CLOSED</span> = 3;
+  readonly attribute unsigned short <span data-x="dom-WebSocket-readyState">readyState</span>;
+  readonly attribute unsigned long long <span data-x="dom-WebSocket-bufferedAmount">bufferedAmount</span>;
+
+  // networking
+  attribute <span>EventHandler</span> <span data-x="handler-WebSocket-onopen">onopen</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-WebSocket-onerror">onerror</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-WebSocket-onclose">onclose</span>;
+  readonly attribute DOMString <span data-x="dom-WebSocket-extensions">extensions</span>;
+  readonly attribute DOMString <span data-x="dom-WebSocket-protocol">protocol</span>;
+  void <span data-x="dom-WebSocket-close">close</span>([Clamp] optional unsigned short code, optional <span data-x="idl-USVString">USVString</span> reason);
+
+  // messaging
+  attribute <span>EventHandler</span> <span data-x="handler-WebSocket-onmessage">onmessage</span>;
+  attribute <span>BinaryType</span> <span data-x="dom-WebSocket-binaryType">binaryType</span>;
+  void <span data-x="dom-WebSocket-send">send</span>(<span data-x="idl-USVString">USVString</span> data);
+  void <span data-x="dom-WebSocket-send">send</span>(<span>Blob</span> data);
+  void <span data-x="dom-WebSocket-send">send</span>(<span data-x="idl-ArrayBuffer">ArrayBuffer</span> data);
+  void <span data-x="dom-WebSocket-send">send</span>(<span data-x="idl-ArrayBufferView">ArrayBufferView</span> data);
+};</pre>
+
+  <p>Each <code>WebSocket</code> object has an associated <dfn
+  data-x="concept-websocket-url">url</dfn> (a <span>URL record</span>).
+
+  <p>The <dfn><code data-x="dom-WebSocket">WebSocket(<var>url</var>,
+  <var>protocols</var>)</code></dfn> constructor takes one or two arguments. The first argument,
+  <var>url</var>, specifies the <span>URL</span> to which to connect. The second,
+  <var>protocols</var>, if present, is either a string or an array of strings. If it is a string, it
+  is equivalent to an array consisting of just that string; if it is omitted, it is equivalent to
+  the empty array. Each string in the array is a subprotocol name. The connection will only be
+  established if the server reports that it has selected one of these subprotocols. The subprotocol
+  names must all be strings that match the requirements for elements that comprise the value of
+  <code data-x="http-sec-websocket-protocol">Sec-WebSocket-Protocol</code> fields as defined by the
+  WebSocket protocol specification. <ref spec=WSP></p>
+
+  <p>The <code data-x="dom-WebSocket">WebSocket(<var>url</var>, <var>protocols</var>)</code>
+  constructor, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>urlRecord</var> be the result of applying the <span>URL parser</span> to
+   <var>url</var>.</p></li>
+
+   <li><p>If <var>urlRecord</var> is failure, then throw a <span>"<code>SyntaxError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li><p>If <var>urlRecord</var>'s <span data-x="concept-url-scheme">scheme</span> is not "<code
+   data-x="">ws</code>" or "<code data-x="">wss</code>", then throw a
+   <span>"<code>SyntaxError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If <var>urlRecord</var>'s <span data-x="concept-url-fragment">fragment</span> is non-null,
+   then throw a <span>"<code>SyntaxError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If <var>protocols</var> is a string, set <var>protocols</var> to a sequence consisting of
+   just that string.</p></li>
+
+   <li><p>If any of the values in <var>protocols</var> occur more than once or otherwise fail to
+   match the requirements for elements that comprise the value of <code
+   data-x="http-sec-websocket-protocol">Sec-WebSocket-Protocol</code> fields as defined by the
+   WebSocket protocol specification, then throw a <span>"<code>SyntaxError</code>"</span>
+   <code>DOMException</code> and abort these steps. <ref spec=WSP></p></li>
+
+   <li><p>Return a new <code>WebSocket</code> object whose <span
+   data-x="concept-websocket-url">url</span> is <var>urlRecord</var>, but continue these steps
+   <span>in parallel</span>.</p></li>
+
+   <li>
+    <p><span data-x="concept-websocket-establish">Establish a WebSocket connection</span> given
+    <var>urlRecord</var>, <var>protocols</var>, and the <span>entry settings object</span>. <ref
+    spec=FETCH></p>
+
+    <p class="note">If the <span data-x="concept-websocket-establish">establish a WebSocket
+    connection</span> algorithm fails, it triggers the <i data-x="concept-websocket-fail">fail the
+    WebSocket connection</i> algorithm, which then invokes the <i
+    data-x="concept-websocket-close">close the WebSocket connection</i> algorithm, which then
+    establishes that <i data-x="concept-websocket-closed">the WebSocket connection is closed</i>,
+    which fires the <code data-x="event-close">close</code> event <a href="#closeWebSocket">as
+    described below</a>.</p>
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-WebSocket-url">url</code></dfn> attribute's getter must return this
+  <code>WebSocket</code> object's <span data-x="concept-websocket-url">url</span>, <span
+  data-x="concept-url-serializer">serialized</span>.</p>
+
+  <p>The <dfn><code data-x="dom-WebSocket-readyState">readyState</code></dfn> attribute represents
+  the state of the connection. It can have the following values:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-WebSocket-CONNECTING">CONNECTING</code></dfn> (numeric value 0)</dt>
+
+   <dd>The connection has not yet been established.</dd>
+
+   <dt><dfn><code data-x="dom-WebSocket-OPEN">OPEN</code></dfn> (numeric value 1)</dt>
+
+   <dd><i data-x="concept-websocket-established">The WebSocket connection is established</i> and
+   communication is possible.</dd>
+
+   <dt><dfn><code data-x="dom-WebSocket-CLOSING">CLOSING</code></dfn> (numeric value 2)</dt>
+
+   <dd>The connection is going through the closing handshake, or the <code
+   data-x="dom-WebSocket-close">close()</code> method has been invoked.</dd>
+
+   <dt><dfn><code data-x="dom-WebSocket-CLOSED">CLOSED</code></dfn> (numeric value 3)</dt>
+
+   <dd>The connection has been closed or could not be opened.</dd>
+
+  </dl>
+
+  <p>When the object is created its <code data-x="dom-WebSocket-readyState">readyState</code> must be
+  set to <code data-x="dom-WebSocket-CONNECTING">CONNECTING</code> (0).</p>
+
+  <p>The <dfn><code data-x="dom-WebSocket-extensions">extensions</code></dfn> attribute must
+  initially return the empty string. After <i data-x="concept-websocket-established">the WebSocket
+  connection is established</i>, its value might change, as defined below.</p>
+
+  <p class="note">The <code data-x="dom-WebSocket-extensions">extensions</code> attribute returns
+  the extensions selected by the server, if any.</p>
+
+  <p>The <dfn><code data-x="dom-WebSocket-protocol">protocol</code></dfn> attribute must initially
+  return the empty string. After <i data-x="concept-websocket-established">the WebSocket connection
+  is established</i>, its value might change, as defined below.</p>
+
+  <p class="note">The <code data-x="dom-WebSocket-protocol">protocol</code> attribute returns the
+  subprotocol selected by the server, if any. It can be used in conjunction with the array form of
+  the constructor's second argument to perform subprotocol negotiation.</p>
+
+  <p>The <dfn><code data-x="dom-WebSocket-close">close(<var>code</var>,
+  <var>reason</var>)</code></dfn> method, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If <var>code</var> is present, but is neither an integer equal to 1000 nor an integer in
+   the range 3000 to 4999, inclusive, throw an <span>"<code>InvalidAccessError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li>
+    <p>If <var>reason</var> is present, then run these substeps:</p>
+
+    <ol>
+     <li><p>Let <var>reasonBytes</var> be the result of <span data-x="UTF-8 encode">encoding</span>
+     <var>reason</var>.</p></li>
+
+     <li><p>If <var>reasonBytes</var> is longer than 123 bytes, then throw a
+     <span>"<code>SyntaxError</code>"</span> <code>DOMException</code>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Run the first matching steps from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the <code data-x="dom-WebSocket-readyState">readyState</code> attribute is in the <code
+     data-x="dom-WebSocket-CLOSING">CLOSING</code> (2) or <code
+     data-x="dom-WebSocket-CLOSED">CLOSED</code> (3) state</dt>
+
+     <dd>
+
+      <p>Do nothing.</p>
+
+      <p class="note">The connection is already closing or is already closed. If it has not already,
+      a <code data-x="event-close">close</code> event will eventually fire <a
+      href="#closeWebSocket">as described below</a>.</p>
+
+     </dd>
+
+
+     <dt>If the WebSocket connection is not yet <i data-x="concept-websocket-established">established</i> <ref spec=WSP></dt>
+
+     <dd>
+
+      <p><i data-x="concept-websocket-fail">Fail the WebSocket connection</i> and set the <code
+      data-x="dom-WebSocket-readyState">readyState</code> attribute's value to <code
+      data-x="dom-WebSocket-CLOSING">CLOSING</code> (2). <ref spec=WSP></p>
+
+      <p class="note">The <i data-x="concept-websocket-fail">fail the WebSocket connection</i>
+      algorithm invokes the <i data-x="concept-websocket-close">close the WebSocket connection</i>
+      algorithm, which then establishes that <i data-x="concept-websocket-closed">the WebSocket
+      connection is closed</i>, which fires the <code data-x="event-close">close</code> event <a
+      href="#closeWebSocket">as described below</a>.</p>
+
+     </dd>
+
+
+     <dt>If the WebSocket closing handshake has not yet been <i
+     data-x="concept-websocket-closing-handshake">started</i> <ref spec=WSP></dt>
+
+     <dd>
+
+      <p><i data-x="concept-websocket-start-closing-handshake">Start the WebSocket closing
+      handshake</i> and set the <code data-x="dom-WebSocket-readyState">readyState</code>
+      attribute's value to <code data-x="dom-WebSocket-CLOSING">CLOSING</code> (2). <ref
+      spec=WSP></p>
+
+      <p>If neither <var>code</var> nor <var>reason</var> is present, the WebSocket Close message
+      must not have a body.</p>
+
+      <p class="note">The WebSocket Protocol specification erroneously states that the status code
+      is required for the <i data-x="concept-websocket-start-closing-handshake">start the WebSocket
+      closing handshake</i> algorithm.</p>
+
+      <p>If <var>code</var> is present, then the status code<!--CLOSE CODE--> to use in the
+      WebSocket Close message must be the integer given by <var>close</var>. <ref spec=WSP></p>
+
+      <p>If <var>reason</var> is also present, then <var>reasonBytes</var> must be provided in the
+      Close message after the status code<!--CLOSE CODE-->. <ref spec=WSP></p>
+
+      <p class="note">The <i data-x="concept-websocket-start-closing-handshake">start the WebSocket
+      closing handshake</i> algorithm eventually invokes the <i
+      data-x="concept-websocket-close">close the WebSocket connection</i> algorithm, which then
+      establishes that <i data-x="concept-websocket-closed">the WebSocket connection is closed</i>,
+      which fires the <code data-x="event-close">close</code> event <a href="#closeWebSocket">as
+      described below</a>.</p>
+
+     </dd>
+
+
+     <dt>Otherwise</dt>
+
+     <dd>
+
+      <p>Set the <code data-x="dom-WebSocket-readyState">readyState</code> attribute's value to <code
+      data-x="dom-WebSocket-CLOSING">CLOSING</code> (2).</p>
+
+      <p class="note"><i data-x="concept-websocket-closing-handshake">The WebSocket closing
+      handshake is started</i>, and will eventually invoke the <i
+      data-x="concept-websocket-close">close the WebSocket connection</i> algorithm, which will
+      establish that <i data-x="concept-websocket-closed">the WebSocket connection is closed</i>,
+      and thus the <code data-x="event-close">close</code> event will fire, <a
+      href="#closeWebSocket">as described below</a>.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+  </ol>
+
+  <p class="note">The <code data-x="dom-WebSocket-close">close()</code> method does not discard
+  previously sent messages before starting the WebSocket closing handshake &mdash; even if, in
+  practice, the user agent is still busy sending those messages, the handshake will only start after
+  the messages are sent.</p> <!-- this is trivially true in this spec, because we don't buffer at
+  all. We just tell the WebSocket API spec to do it. -->
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-WebSocket-bufferedAmount">bufferedAmount</code></dfn> attribute must
+  return the number of bytes of application data (UTF-8 text and binary data) that have been queued
+  using <code data-x="dom-WebSocket-send">send()</code> but that, as of the last time the
+  <span>event loop</span> reached <a href="#step1">step 1</a>, had not yet been transmitted to the network. (This thus
+  includes any text sent during the execution of the current task, regardless of whether the user
+  agent is able to transmit text in the background <span>in parallel</span> with script execution.) This does not include
+  framing overhead incurred by the protocol, or buffering done by the operating system or network
+  hardware. If the connection is closed, this attribute's value will only increase with each call to
+  the <code data-x="dom-WebSocket-send">send()</code> method (the number does not reset to zero once
+  the connection closes).</p>
+
+  <div class="example">
+
+   <p>In this simple example, the <code data-x="dom-WebSocket-bufferedAmount">bufferedAmount</code>
+   attribute is used to ensure that updates are sent either at the rate of one update every 50ms, if
+   the network can handle that rate, or at whatever rate the network <em>can</em> handle, if that is
+   too fast.</p>
+
+   <pre>var socket = new WebSocket('ws://game.example.com:12010/updates');
+socket.onopen = function () {
+  setInterval(function() {
+    if (socket.bufferedAmount == 0)
+      socket.send(getUpdateData());
+  }, 50);
+};</pre>
+
+   <p>The <code data-x="dom-WebSocket-bufferedAmount">bufferedAmount</code> attribute can also be
+   used to saturate the network without sending the data at a higher rate than the network can
+   handle, though this requires more careful monitoring of the value of the attribute over time.</p>
+
+  </div>
+
+  <hr>
+
+  <p>When a <code>WebSocket</code> object is created, its <dfn><code
+  data-x="dom-WebSocket-binaryType">binaryType</code></dfn> IDL attribute must be set to the string
+  "<code data-x="dom-BinaryType-blob">blob</code>". On getting, it must return the last value it was
+  set to. On setting, the user agent must set the IDL attribute to the new value.</p>
+
+  <p class="note">This attribute allows authors to control how binary data is exposed to scripts. By
+  setting the attribute to "<dfn><code data-x="dom-BinaryType-blob">blob</code></dfn>", binary data
+  is returned in <code>Blob</code> form; by setting it to "<dfn><code
+  data-x="dom-BinaryType-arraybuffer">arraybuffer</code></dfn>", it is returned in
+  <code data-x="idl-ArrayBuffer">ArrayBuffer</code> form. User agents can use this as a hint for
+  how to handle incoming binary data: if the attribute is set to "<code
+  data-x="dom-BinaryType-blob">blob</code>", it is safe to spool it to disk, and if it is set to
+  "<code data-x="dom-BinaryType-arraybuffer">arraybuffer</code>", it is likely more efficient to
+  keep the data in memory. Naturally, user agents are encouraged to use more subtle heuristics to
+  decide whether to keep incoming data in memory or not, e.g. based on how big the data is or how
+  common it is for a script to change the attribute at the last minute. This latter aspect is
+  important in particular because it is quite possible for the attribute to be changed after the
+  user agent has received the data but before the user agent has fired the event for it.</p>
+
+  <p>The <dfn><code data-x="dom-WebSocket-send">send(<var>data</var>)</code></dfn> method transmits
+  data using the connection. If the <code data-x="dom-WebSocket-readyState">readyState</code>
+  attribute is <code data-x="dom-WebSocket-CONNECTING">CONNECTING</code>, it must throw an
+  <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>. Otherwise, the user agent
+  must run the appropriate set of steps from the following list:</p>
+
+  <dl>
+
+   <dt>If the argument is a string</dt>
+
+   <dd>
+
+    <p>If <i data-x="concept-websocket-established">the WebSocket connection is
+    established</i> and <i data-x="concept-websocket-closing-handshake">the WebSocket closing
+    handshake has not yet started</i>, then the user agent must <i
+    data-x="concept-websocket-send">send a WebSocket Message</i> comprised of the <var>data</var> argument using
+    a text frame opcode; if the data cannot be sent, e.g. because it would need to be buffered but
+    the buffer is full, the user agent must <span data-x="concept-websocket-close-fail">flag the
+    WebSocket as full</span> and then <i data-x="concept-websocket-close">close the WebSocket
+    connection</i>. Any invocation of this method with a string argument that does not throw an
+    exception must increase the <code data-x="dom-WebSocket-bufferedAmount">bufferedAmount</code>
+    attribute by the number of bytes needed to express the argument as UTF-8. <ref spec=UNICODE>
+    <ref spec=ENCODING> <ref spec=WSP></p>
+
+   </dd>
+
+
+   <dt>If the argument is a <code>Blob</code> object</dt>
+
+   <dd>
+
+    <p>If <i data-x="concept-websocket-established">the WebSocket connection is established</i>, and
+    <i data-x="concept-websocket-closing-handshake">the WebSocket closing handshake has not yet
+    started</i>, then the user agent must <i data-x="concept-websocket-send">send a WebSocket
+    Message</i> comprised of <var>data</var> using a binary frame opcode; if the data cannot be
+    sent, e.g. because it would need to be buffered but the buffer is full, the user agent must
+    <span data-x="concept-websocket-close-fail">flag the WebSocket as full</span> and then <i
+    data-x="concept-websocket-close">close the WebSocket connection</i>. The data to be sent is the
+    raw data represented by the <code>Blob</code> object. <!-- that sentence is meant to invoke
+    "This interface represents immutable raw data." --> Any invocation of this method with a
+    <code>Blob</code> argument that does not throw an exception must increase the <code
+    data-x="dom-WebSocket-bufferedAmount">bufferedAmount</code> attribute by the size of the
+    <code>Blob</code> object's raw data, in bytes. <!-- that sentence is meant to invoke the same as
+    Blob.size --> <ref spec=WSP> <ref spec=FILEAPI></p>
+
+   </dd>
+
+
+   <dt>If the argument is an <code data-x="idl-ArrayBuffer">ArrayBuffer</code> object</dt>
+
+   <dd>
+
+    <p>If <i data-x="concept-websocket-established">the WebSocket connection is established</i>, and
+    <i data-x="concept-websocket-closing-handshake">the WebSocket closing handshake has not yet
+    started</i>, then the user agent must <i data-x="concept-websocket-send">send a WebSocket
+    Message</i> comprised of <var>data</var> using a binary frame opcode; if the data cannot be
+    sent, e.g. because it would need to be buffered but the buffer is full, the user agent must
+    <span data-x="concept-websocket-close-fail">flag the WebSocket as full</span> and then <i
+    data-x="concept-websocket-close">close the WebSocket connection</i>. The data to be sent is the
+    data stored in the buffer described by the <code data-x="idl-ArrayBuffer">ArrayBuffer</code>
+    object. Any invocation of this method with an <code data-x="idl-ArrayBuffer">ArrayBuffer</code>
+    argument that does not throw an exception must increase the <code
+    data-x="dom-WebSocket-bufferedAmount">bufferedAmount</code> attribute by the length of the
+    <code data-x="idl-ArrayBuffer">ArrayBuffer</code> in bytes. <ref spec=WSP></p>
+
+   </dd>
+
+
+   <dt>If the argument is an object that matches the <code
+   data-x="idl-ArrayBufferView">ArrayBufferView</code> type definition</dt>
+
+   <dd>
+
+    <p>If <i data-x="concept-websocket-established">the WebSocket connection is established</i>, and
+    <i data-x="concept-websocket-closing-handshake">the WebSocket closing handshake has not yet
+    started</i>, then the user agent must <i data-x="concept-websocket-send">send a WebSocket
+    Message</i> comprised of <var>data</var> using a binary frame opcode; if the data cannot be
+    sent, e.g. because it would need to be buffered but the buffer is full, the user agent must
+    <span data-x="concept-websocket-close-fail">flag the WebSocket as full</span> and then <i
+    data-x="concept-websocket-close">close the WebSocket connection</i>. The data to be sent is the
+    data stored in the section of the buffer described by the <code
+    data-x="idl-ArrayBuffer">ArrayBuffer</code> object that <var>data</var> references. Any
+    invocation of this method with this kind of argument that does not throw an exception must
+    increase the <code data-x="dom-WebSocket-bufferedAmount">bufferedAmount</code> attribute by the
+    length of <var>data</var>'s buffer in bytes. <ref spec=WSP></p>
+
+   </dd>
+
+  </dl>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event
+  handler IDL attributes</span>, by all objects implementing the <code>WebSocket</code>
+  interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-WebSocket-onopen">onopen</code></dfn> <td> <code data-x="event-open">open</code>
+    <tr><td><dfn><code data-x="handler-WebSocket-onmessage">onmessage</code></dfn> <td> <code data-x="event-message">message</code>
+    <tr><td><dfn><code data-x="handler-WebSocket-onerror">onerror</code></dfn> <td> <code data-x="event-error">error</code>
+    <tr><td><dfn><code data-x="handler-WebSocket-onclose">onclose</code></dfn> <td> <code data-x="event-close">close</code>
+  </table>
+
+
+
+  

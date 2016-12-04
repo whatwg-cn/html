@@ -1,0 +1,21 @@
+<h4>Scope</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>This specification defines an API for running scripts in the background independently of any
+  user interface scripts.</p>
+
+  <p>This allows for long-running scripts that are not interrupted by scripts that respond to clicks
+  or other user interactions, and allows long tasks to be executed without yielding to keep the page
+  responsive.</p>
+
+  <p>Workers (as these background scripts are called herein) are relatively heavy-weight, and are
+  not intended to be used in large numbers. For example, it would be inappropriate to launch one
+  worker for each pixel of a four megapixel image. The examples below show some appropriate uses of
+  workers.</p>
+
+  <p>Generally, workers are expected to be long-lived, have a high start-up performance cost, and a
+  high per-instance memory cost.</p>
+
+
+  

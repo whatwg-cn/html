@@ -1,0 +1,23 @@
+<h4 id="transfer-abstract-op" data-export="" data-lt="Transfer" data-dfn-type="abstract-op"><dfn
+  data-x="transfer-abstract-op">Transfer</dfn> ( <var>input</var>, <var>targetRealm</var> )</h4>
+
+  <ol>
+   <li>
+    <p>If <var>input</var> has an [[ArrayBufferData]] internal slot, then:</p>
+
+    <ol>
+     <li><p>Let <var>output</var> be a new ArrayBuffer object in <var>targetRealm</var> whose
+     [[ArrayBufferByteLength]] internal slot value is the [[ArrayBufferByteLength]] internal slot
+     value of <var>input</var>, and whose [[ArrayBufferData]] internal slot value is the
+     [[ArrayBufferData]] internal slot value of <var>input</var>.</p></li>
+
+     <li><p>Perform ! <span>DetachArrayBuffer</span>(<var>input</var>).</p></li>
+
+     <li><p>Return <var>output</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Return ? <var>input</var>.[[<span>Transfer</span>]](<var>targetRealm</var>).</p></li>
+  </ol>
+
+  

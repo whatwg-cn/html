@@ -1,0 +1,89 @@
+<h4>The <dfn><code>optgroup</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>select</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Zero or more <code>option</code> and <span data-x="script-supporting elements">script-supporting</span> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-optgroup-disabled">disabled</code></dd>
+   <dd><code data-x="attr-optgroup-label">label</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLOptGroupElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-optgroup-disabled">disabled</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-optgroup-label">label</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>optgroup</code> element <span>represents</span> a group of <code>option</code>
+  elements with a common label.</p>
+
+  <p>The element's group of <code>option</code> elements consists of the <code>option</code>
+  elements that are children of the <code>optgroup</code> element.</p>
+
+  <div w-nodev>
+
+  <p>When showing <code>option</code> elements in <code>select</code> elements, user agents should
+  show the <code>option</code> elements of such groups as being related to each other and separate
+  from other <code>option</code> elements.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-optgroup-disabled">disabled</code></dfn> attribute is a
+  <span>boolean attribute</span> and can be used to <span
+  data-x="concept-option-disabled">disable</span> a group of <code>option</code> elements
+  together.</p>
+
+  <p>The <dfn><code data-x="attr-optgroup-label">label</code></dfn> attribute must be specified. Its
+  value gives the name of the group, for the purposes of the user interface. <span w-nodev>User
+  agents should use this attribute's value when labeling the group of <code>option</code> elements
+  in a <code>select</code> element.</span></p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-optgroup-disabled">disabled</code></dfn> and <dfn><code data-x="dom-optgroup-label">label</code></dfn> attributes must <span>reflect</span> the
+  respective content attributes of the same name.</p>
+
+  </div>
+
+  <p class="note">There is no way to select an <code>optgroup</code> element. Only
+  <code>option</code> elements can be selected. An <code>optgroup</code> element merely provides a
+  label for a group of <code>option</code> elements.</p>
+
+  <div class="example">
+
+   <p>The following snippet shows how a set of lessons from three courses could be offered in a
+   <code>select</code> drop-down widget:</p>
+
+   <pre>&lt;form action="courseselector.dll" method="get">
+ &lt;p>Which course would you like to watch today?
+ &lt;p>&lt;label>Course:
+  &lt;select name="c">
+   &lt;optgroup label="8.01 Physics I: Classical Mechanics">
+    &lt;option value="8.01.1">Lecture 01: Powers of Ten
+    &lt;option value="8.01.2">Lecture 02: 1D Kinematics
+    &lt;option value="8.01.3">Lecture 03: Vectors
+   &lt;optgroup label="8.02 Electricity and Magnestism">
+    &lt;option value="8.02.1">Lecture 01: What holds our world together?
+    &lt;option value="8.02.2">Lecture 02: Electric Field
+    &lt;option value="8.02.3">Lecture 03: Electric Flux
+   &lt;optgroup label="8.03 Physics III: Vibrations and Waves">
+    &lt;option value="8.03.1">Lecture 01: Periodic Phenomenon
+    &lt;option value="8.03.2">Lecture 02: Beats
+    &lt;option value="8.03.3">Lecture 03: Forced Oscillations with Damping
+  &lt;/select>
+ &lt;/label>
+ &lt;p>&lt;input type=submit value="&#x25B6; Play">
+&lt;/form></pre>
+
+  </div>
+
+
+
+  

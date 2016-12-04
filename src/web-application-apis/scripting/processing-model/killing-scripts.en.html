@@ -1,0 +1,41 @@
+<h5>Killing scripts</h5>
+
+  <p>Although the JavaScript specification does not account for this possibility, it's sometimes
+  necessary to <dfn>abort a running script</dfn>. This causes any <span
+  data-x="js-ScriptEvaluation">ScriptEvaluation</span> or <span
+  data-x="js-ModuleEvaluation">ModuleEvaluation</span> to cease immediately, emptying the
+  <span>JavaScript execution context stack</span> without triggering any of the normal mechanisms
+  like <code data-x="">finally</code> blocks. <ref spec=JAVASCRIPT></p>
+
+  <p>User agents may impose resource limitations on scripts, for example CPU quotas, memory limits,
+  total execution time limits, or bandwidth limitations. When a script exceeds a limit, the user
+  agent may either throw a <span>"<code>QuotaExceededError</code>"</span> <code>DOMException</code>,
+  <span data-x="abort a running script">abort the script</span> without an exception, prompt the
+  user, or throttle script execution.</p>
+
+  <div class="example">
+
+   <p>For example, the following script never terminates. A user agent could, after waiting for a
+   few seconds, prompt the user to either terminate the script or let it continue.</p>
+
+   <pre>&lt;script>
+ while (true) { /* loop */ }
+&lt;/script></pre>
+
+  </div>
+
+  <p>User agents are encouraged to allow users to disable scripting whenever the user is prompted
+  either by a script (e.g. using the <code data-x="dom-alert">window.alert()</code> API) or because
+  of a script's actions (e.g. because it has exceeded a time limit).</p>
+
+  <p>If scripting is disabled while a script is executing, the script should be terminated
+  immediately.</p>
+
+  <p>User agents may allow users to specifically disable scripts just for the purposes of closing a
+  <span>browsing context</span>.</p>
+
+  <p class="example">For example, the prompt mentioned in the example above could also offer the
+  user with a mechanism to just close the page entirely, without running any <code
+  data-x="event-unload">unload</code> event handlers.</p>
+
+  

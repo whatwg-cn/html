@@ -1,0 +1,393 @@
+<h6>Fill and stroke styles</h6>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-fillStyle">fillStyle</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current style used for filling shapes.</p>
+
+    <p>Can be set, to change the fill style.</p>
+
+    <p>The style can be either a string containing a CSS color, or a <code>CanvasGradient</code> or
+    <code>CanvasPattern</code> object. Invalid values are ignored.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-strokeStyle">strokeStyle</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current style used for stroking shapes.</p>
+
+    <p>Can be set, to change the stroke style.</p>
+
+    <p>The style can be either a string containing a CSS color, or a <code>CanvasGradient</code> or
+    <code>CanvasPattern</code> object. Invalid values are ignored.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <!-- v6 feature requests:
+
+   * Getting and setting colors by component to bypass the CSS value parsing.
+
+     Either:
+        context.fillStyle.red += 1;
+
+     Or:
+        var array = context.fillStyle;
+        array[1] += 1;
+        context.fillStyle = array;
+
+   * A more performant way of setting colors in general, e.g.:
+
+       context.setFillColor(r,g,b,a) // already supported by webkit
+
+     Or:
+
+       context.fillStyle = 0xRRGGBBAA; // set a 32bit int directly
+
+  -->
+
+  <p>Objects that implement the <code>CanvasFillStrokeStyles</code> interface have attributes and
+  methods (defined in this section) that control how shapes are treated by the object.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-fillStyle">fillStyle</code></dfn> attribute represents the
+  color or style to use inside shapes, and the <dfn><code data-x="dom-context-2d-strokeStyle">strokeStyle</code></dfn> attribute represents the color
+  or style to use for the lines around the shapes.</p>
+
+  <p>Both attributes can be either strings, <code>CanvasGradient</code>s, or
+  <code>CanvasPattern</code>s. On setting, strings must be <span data-x="parsed as a CSS
+  &lt;color&gt; value">parsed as CSS &lt;color&gt; values</span> and the color assigned, and
+  <code>CanvasGradient</code> and <code>CanvasPattern</code> objects must be assigned themselves. <ref spec=CSSCOLOR> If the value is a string but cannot be <span>parsed as a CSS
+  &lt;color&gt; value</span>, then it must be ignored, and the attribute must retain its previous
+  value.
+<!--ADD-TOPIC:Security-->
+  If the new value is a <code>CanvasPattern</code> object that is marked as <span
+  data-x="concept-canvas-pattern-not-origin-clean">not origin-clean</span>, then the
+  <code>CanvasRenderingContext2D</code>'s <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> flag must be set to false.
+<!--REMOVE-TOPIC:Security-->
+  </p>
+
+  <p>When set to a <code>CanvasPattern</code> or <code>CanvasGradient</code> object, the assignment
+  is <span>live</span>, meaning that changes made to the object after the assignment do affect
+  subsequent stroking or filling of shapes.</p>
+
+  <p>On getting, if the value is a color, then the <span data-x="serialization of a
+  color">serialization of the color</span> must be returned. Otherwise, if it is not a color but a
+  <code>CanvasGradient</code> or <code>CanvasPattern</code>, then the respective object must be
+  returned. (Such objects are opaque and therefore only useful for assigning to other attributes or
+  for comparison to other gradients or patterns.)</p>
+
+  <p>The <!--en-GB--><dfn id="serialisation-of-a-color">serialization of a color</dfn> for a color
+  value is a string, computed as follows: if it has alpha equal to 1.0, then the string is a
+  lowercase six-digit hex value, prefixed with a "#" character (U+0023 NUMBER SIGN), with the first
+  two digits representing the red component, the next two digits representing the green component,
+  and the last two digits representing the blue component, the digits being <span>lowercase ASCII
+  hex digits</span>. Otherwise, the color value has alpha less than 1.0, and the string is the color
+  value in the CSS <code data-x="">rgba()</code> functional-notation format: the literal string
+  "<code data-x="">rgba</code>" (U+0072 U+0067 U+0062 U+0061) followed by a U+0028 LEFT PARENTHESIS,
+  a base-ten integer in the range 0-255 representing the red component (using <span>ASCII
+  digits</span> in the shortest form possible), a literal U+002C COMMA and U+0020 SPACE, an integer
+  for the green component, a comma and a space, an integer for the blue component, another comma and
+  space, a U+0030 DIGIT ZERO, if the alpha value is greater than zero then a U+002E FULL STOP
+  (representing the decimal point), if the alpha value is greater than zero then one or more
+  <span>ASCII digits</span> representing the fractional part of the alpha<!-- value with no trailing
+  zeros (implied by next sentence)-->, and finally a U+0029 RIGHT PARENTHESIS. User agents must
+  express the fractional part of the alpha value, if any, with the level of precision necessary for
+  the alpha value, when reparsed, to be interpreted as the same alpha value.</p> <!-- if people
+  complain this is unreadable, expand it into a <dl> with two nested <ol>s -->
+
+  <p>When the context is created, the <code
+  data-x="dom-context-2d-fillStyle">fillStyle</code> and <code
+  data-x="dom-context-2d-strokeStyle">strokeStyle</code> attributes
+  must initially have the string value <code
+  data-x="">#000000</code>.</p>
+
+  <p>When the value is a color, it must not be affected by the transformation matrix when used to
+  draw on bitmaps.</p> <!-- so singular matrices don't affect solid color fillStyles -->
+
+  </div>
+
+  <hr>
+
+  <p>There are two types of gradients, linear gradients and radial gradients, both represented by
+  objects implementing the opaque <code>CanvasGradient</code> interface.</p>
+
+  <p id="interpolation">Once a gradient has been created (see below), stops are placed along it to
+  define how the colors are distributed along the gradient. <span w-nodev>The color of the
+  gradient at each stop is the color specified for that stop. Between each such stop, the colors and
+  the alpha component must be linearly interpolated over the RGBA space without premultiplying the
+  alpha value to find the color to use at that offset. Before the first stop, the color must be the
+  color of the first stop. After the last stop, the color must be the color of the last stop. When
+  there are no stops, the gradient is transparent black.</span></p>
+
+  <dl class="domintro">
+
+   <dt><var>gradient</var> . <code subdfn data-x="dom-canvasgradient-addColorStop">addColorStop</code>(<var>offset</var>, <var>color</var>)</dt>
+
+   <dd>
+
+    <p>Adds a color stop with the given color to the gradient at the given offset. 0.0 is the offset
+    at one end of the gradient, 1.0 is the offset at the other end.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the offset
+    is out of range. Throws a <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> if
+    the color cannot be parsed.</p>
+
+   </dd>
+
+   <dt><var>gradient</var> = <var>context</var> . <code subdfn data-x="dom-context-2d-createLinearGradient">createLinearGradient</code>(<var>x0</var>, <var>y0</var>, <var>x1</var>, <var>y1</var>)</dt>
+
+   <dd>
+
+    <p>Returns a <code>CanvasGradient</code> object that represents a
+    linear gradient that paints along the line given by the
+    coordinates represented by the arguments.</p>
+
+   </dd>
+
+   <dt><var>gradient</var> = <var>context</var> . <code subdfn data-x="dom-context-2d-createRadialGradient">createRadialGradient</code>(<var>x0</var>, <var>y0</var>, <var>r0</var>, <var>x1</var>, <var>y1</var>, <var>r1</var>)</dt>
+
+   <dd>
+
+    <p>Returns a <code>CanvasGradient</code> object that represents a
+    radial gradient that paints along the cone given by the circles
+    represented by the arguments.</p>
+
+    <p>If either of the radii are negative, throws an
+    <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> exception.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-canvasgradient-addColorStop">addColorStop(<var>offset</var>,
+  <var>color</var>)</code></dfn> method on the <code>CanvasGradient</code> interface adds a new stop
+  to a gradient. If the <var>offset</var> is less than 0 or greater than 1 then an
+  <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> must be thrown. If the
+  <var>color</var> cannot be <span>parsed as a CSS &lt;color&gt; value</span>, then a
+  <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> must be thrown. Otherwise, the
+  gradient must have a new stop placed, at offset <var>offset</var> relative to the whole gradient,
+  and with the color obtained by <span data-x="parsed as a CSS &lt;color&gt; value">parsing
+  <var>color</var> as a CSS &lt;color&gt; value</span>. If multiple stops are added at the same
+  offset on a gradient, then they must be placed in the order added, with the first one closest to
+  the start of the gradient, and each subsequent one infinitesimally further along towards the end
+  point (in effect causing all but the first and last stop added at each point to be ignored).</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-createLinearGradient">createLinearGradient(<var>x0</var>,
+  <var>y0</var>, <var>x1</var>, <var>y1</var>)</code></dfn> method takes four arguments that
+  represent the start point (<var>x0</var>, <var>y0</var>) and end point (<var>x1</var>,
+  <var>y1</var>) of the gradient. The method, when invoked, must return a linear
+  <code>CanvasGradient</code> initialized with the specified line.</p>
+
+  <p>Linear gradients must be rendered such that all points on a line perpendicular to the line that
+  crosses the start and end points have the color at the point where those two lines cross (with the
+  colors coming from the <a href="#interpolation">interpolation and extrapolation</a> described
+  above). The points in the linear gradient must be transformed as described by the <span
+  data-x="dom-context-2d-transformation">current transformation matrix</span> when rendering.</p>
+
+  <p>If <span data-x=""><var>x0</var>&nbsp;=&nbsp;<var>x1</var></span> and <span
+  data-x=""><var>y0</var>&nbsp;=&nbsp;<var>y1</var></span>, then the linear
+  gradient must paint nothing.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-createRadialGradient">createRadialGradient(<var>x0</var>,
+  <var>y0</var>, <var>r0</var>, <var>x1</var>, <var>y1</var>, <var>r1</var>)</code></dfn> method
+  takes six arguments, the first three representing the start circle with origin (<var>x0</var>,
+  <var>y0</var>) and radius <var>r0</var>, and the last three representing the end circle with
+  origin (<var>x1</var>, <var>y1</var>) and radius <var>r1</var>. The values are in coordinate space
+  units. If either of <var>r0</var> or <var>r1</var> are negative, then an
+  <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> must be thrown. Otherwise,
+  the method, when invoked, must return a radial <code>CanvasGradient</code> initialized with the
+  two specified circles.</p>
+
+  <p>Radial gradients must be rendered by following these steps:</p>
+
+  <ol>
+
+   <li><p>If <span data-x=""><var>x<sub>0</sub></var>&nbsp;=&nbsp;<var>x<sub>1</sub></var></span> and <span data-x=""><var>y<sub>0</sub></var>&nbsp;=&nbsp;<var>y<sub>1</sub></var></span> and <span data-x=""><var>r<sub>0</sub></var>&nbsp;=&nbsp;<var>r<sub>1</sub></var></span>, then the radial gradient must
+   paint nothing. Abort these steps.</p></li>
+
+   <li>
+
+    <p>Let <span data-x="">x(<var>&omega;</var>)&nbsp;=&nbsp;(<var>x<sub>1</sub></var>-<var>x<sub>0</sub></var>)<var>&omega;</var>&nbsp;+&nbsp;<var>x<sub>0</sub></var></span></p>
+
+    <p>Let <span data-x="">y(<var>&omega;</var>)&nbsp;=&nbsp;(<var>y<sub>1</sub></var>-<var>y<sub>0</sub></var>)<var>&omega;</var>&nbsp;+&nbsp;<var>y<sub>0</sub></var></span></p>
+
+    <p>Let <span data-x="">r(<var>&omega;</var>)&nbsp;=&nbsp;(<var>r<sub>1</sub></var>-<var>r<sub>0</sub></var>)<var>&omega;</var>&nbsp;+&nbsp;<var>r<sub>0</sub></var></span></p>
+
+    <p>Let the color at <var>&omega;</var> be the color at that position on the gradient
+    (with the colors coming from the <a href="#interpolation">interpolation and extrapolation</a>
+    described above).</p>
+
+   </li>
+
+   <li><p>For all values of <var>&omega;</var> where <span data-x="">r(<var>&omega;</var>)&nbsp;&gt;&nbsp;0</span>, starting with the value of <var>&omega;</var> nearest to positive infinity and ending with the value of <var>&omega;</var> nearest to negative infinity, draw the circumference of the circle with
+   radius <span data-x="">r(<var>&omega;</var>)</span> at position (<span data-x="">x(<var>&omega;</var>)</span>, <span data-x="">y(<var>&omega;</var>)</span>), with the
+   color at <var>&omega;</var>, but only painting on the parts of the bitmap that have not
+   yet been painted on by earlier circles in this step for this rendering of the gradient.</p></li>
+
+  </ol>
+
+  <p class="note">This effectively creates a cone, touched by the two circles defined in the
+  creation of the gradient, with the part of the cone before the start circle (0.0) using the color
+  of the first offset, the part of the cone after the end circle (1.0) using the color of the last
+  offset, and areas outside the cone untouched by the gradient (transparent black).</p>
+
+  <p>The resulting radial gradient must then be transformed as described by the <span
+  data-x="dom-context-2d-transformation">current transformation matrix</span> when rendering.</p>
+
+  <p>Gradients must be painted only where the relevant stroking or filling effects requires that
+  they be drawn.</p>
+
+  </div>
+
+  <hr>
+
+  <p>Patterns are represented by objects implementing the opaque <code>CanvasPattern</code>
+  interface.</p>
+
+  <dl class="domintro">
+
+   <dt><var>pattern</var> = <var>context</var> . <code subdfn data-x="dom-context-2d-createPattern">createPattern</code>(<var>image</var>, <var>repetition</var>)</dt>
+
+   <dd>
+
+    <p>Returns a <code>CanvasPattern</code> object that uses the given image and repeats in the
+    direction(s) given by the <var>repetition</var> argument.</p>
+
+    <p>The allowed values for <var>repetition</var> are <code data-x="">repeat</code> (both
+    directions), <code data-x="">repeat-x</code> (horizontal only), <code data-x="">repeat-y</code>
+    (vertical only), and <code data-x="">no-repeat</code> (neither). If the <var>repetition</var> argument is empty, the value <code data-x="">repeat</code> is used.</p>
+
+    <p>If the image isn't yet fully decoded, then nothing is drawn. If the image is a canvas with no
+    data, throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>.</p>
+
+   </dd>
+
+   <dt><var>pattern</var> . <code subdfn data-x="dom-canvaspattern-setTransform">setTransform</code>(<var>transform</var>)</dt>
+
+   <dd>
+
+    <p>Sets the transformation matrix that will be used when rendering the pattern during a fill or
+    stroke painting operation.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-context-2d-createPattern">createPattern(<var>image</var>,
+  <var>repetition</var>)</code></dfn> method, when invoked, must run these steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>image</var> be the first argument and <var>repetition</var> be
+   the second argument.</p></li>
+
+   <li><p><span>Check the usability of the <var>image</var> argument</span>. If this
+   returns <i>aborted</i>, then an exception has been thrown and the method doesn't return anything;
+   abort these steps. If it returns <i>bad</i>, then return null and abort these steps. Otherwise it
+   returns <i>good</i>; continue with these steps.</p></li>
+
+   <li><p>If <var>repetition</var> is the empty string, then set it to "<code
+   data-x="">repeat</code>".</p>
+
+   <li><p>If <var>repetition</var> is not a <span>case-sensitive</span> match for one of
+   "<code data-x="">repeat</code>", "<code data-x="">repeat-x</code>", "<code
+   data-x="">repeat-y</code>", or "<code data-x="">no-repeat</code>", then throw a
+   <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> and abort these steps.</p></li>
+
+   <li><p>Create a new <code>CanvasPattern</code> object with the image <var>image</var>
+   and the repetition behavior given by <var>repetition</var>.</p></li>
+
+<!--ADD-TOPIC:Security-->
+   <li><p>If <span>the <var>image argument</var> is not origin-clean</span>, then mark the
+   <code>CanvasPattern</code> object as <dfn data-x="concept-canvas-pattern-not-origin-clean">not
+   origin-clean</dfn>.</p></li>
+<!--REMOVE-TOPIC:Security-->
+
+   <li><p>Return the <code>CanvasPattern</code> object.</p></li>
+
+  </ol>
+
+  <p>Modifying the <var>image</var> used when creating a <code>CanvasPattern</code> object
+  after calling the <code data-x="dom-context-2d-createPattern">createPattern()</code> method must
+  not affect the pattern(s) rendered by the <code>CanvasPattern</code> object.</p>
+
+  <p>Patterns have a transformation matrix, which controls how the pattern is used when it is
+  painted. Initially, a pattern's transformation matrix must be the identity transform.</p>
+
+  <p>The <dfn><code
+  data-x="dom-canvaspattern-setTransform">setTransform(<var>transform</var>)</code></dfn> method,
+  when invoked, must reset the pattern's transformation matrix to the value represented by the
+  result of <span data-x="create a DOMMatrix from a dictionary">creating a <code>DOMMatrix</code>
+  from a dictionary</span> <var>transform</var>.</p>
+
+  <p>When a pattern is to be rendered within an area, the user agent must run the following steps to
+  determine what is rendered:</p>
+
+  <ol>
+
+   <li><p>Create an infinite transparent black bitmap.</p></li>
+
+   <li>
+
+    <p>Place a copy of the image on the bitmap, anchored such that its top left corner is at the
+    origin of the coordinate space, with one coordinate space unit per <span data-x="'px'">CSS
+    pixel</span> of the image, then place repeated copies of this image horizontally to the left and
+    right, if the repetition behavior is "<code data-x="">repeat-x</code>", or vertically up and
+    down, if the repetition behavior is "<code data-x="">repeat-y</code>", or in all four
+    directions all over the bitmap, if the repetition behavior is "<code
+    data-x="">repeat</code>".</p>
+
+    <p>If the original image data is a bitmap image, then the value painted at a point in the area
+    of the repetitions is computed by filtering the original image data. When scaling up, if the
+    <code data-x="dom-context-2d-imageSmoothingEnabled">imageSmoothingEnabled</code> attribute is
+    set to false, then the image must be rendered using nearest-neighbor interpolation. Otherwise,
+    the user agent may use any filtering algorithm (for example bilinear interpolation or
+    nearest-neighbor). User agents which support multiple filtering algorithms may use the value of
+    the <code data-x="dom-context-2d-imageSmoothingQuality">imageSmoothingQuality</code> attribute
+    to guide the choice of filtering algorithm. When such a filtering algorithm requires a pixel
+    value from outside the original image data, it must instead use the value from wrapping the
+    pixel's coordinates to the original image's dimensions. (That is, the filter uses 'repeat'
+    behavior, regardless of the value of the pattern's repetition behavior.)</p> <!-- drawImage()
+    has similar paragraphs with different rules -->
+
+   </li>
+
+   <li><p>Transform the resulting bitmap according to the pattern's transformation matrix.</p></li>
+
+   <li><p>Transform the resulting bitmap again, this time according to the <span
+   data-x="dom-context-2d-transformation">current transformation matrix</span>.</p></li>
+
+   <li><p>Replace any part of the image outside the area in which the pattern is to be rendered with
+   transparent black.</p></li>
+
+   <li><p>The resulting bitmap is what is to be rendered, with the same origin and same
+   scale.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>If a radial gradient or repeated pattern is used when the transformation matrix is singular,
+  then the resulting style must be transparent black (otherwise the gradient or pattern would be
+  collapsed to a point or line, leaving the other pixels undefined). Linear gradients and solid
+  colors always define all points even with singular transformation matrices.</p>
+
+  </div>
+
+
+
+
+  

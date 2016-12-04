@@ -1,0 +1,57 @@
+<h5>Misnested tags: &lt;b>&lt;p>&lt;/b>&lt;/p></h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>A case similar to the previous one is the following:</p>
+
+  <pre>&lt;b>1&lt;p>2&lt;/b>3&lt;/p></pre>
+
+  <p>Up to the "2" the parsing here is straightforward:</p>
+
+  <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">1</span></li><li class="t1"><code>p</code><ul><li class="t3"><code>#text</code>: <span data-x="">2</span></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+  <p>The interesting part is when the end tag token with the tag name "b" is parsed.</p>
+
+  <p>Before that token is seen, the <span>stack of open elements</span> has four elements on it:
+  <code>html</code>, <code>body</code>, <code>b</code>, and <code>p</code>. The <span>list of active
+  formatting elements</span> just has the one: <code>b</code>. The <span>insertion mode</span> is
+  "<span data-x="insertion mode: in body">in body</span>".</p>
+
+  <p>Upon receiving the end tag token with the tag name "b", the "<a href="#adoptionAgency">adoption
+  agency algorithm</a>" is invoked, as in the previous example. However, in this case, there
+  <em>is</em> a <var>furthest block</var>, namely the <code>p</code> element. Thus, this
+  time the adoption agency algorithm isn't skipped over.</p>
+
+  <p>The <var>common ancestor</var> is the <code>body</code> element. A conceptual
+  "bookmark" marks the position of the <code>b</code> in the <span>list of active formatting
+  elements</span>, but since that list has only one element in it, the bookmark won't have much
+  effect.</p>
+
+  <p>As the algorithm progresses, <var>node</var> ends up set to the formatting element
+  (<code>b</code>), and <var>last node</var> ends up set to the <var>furthest
+  block</var> (<code>p</code>).</p>
+
+  <p>The <var>last node</var> gets appended (moved) to the <var>common
+  ancestor</var>, so that the DOM looks like:</p>
+
+  <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">1</span></li></ul></li><li class="t1"><code>p</code><ul><li class="t3"><code>#text</code>: <span data-x="">2</span></li></ul></li></ul></li></ul></li></ul>
+
+  <p>A new <code>b</code> element is created, and the children of the <code>p</code> element are
+  moved to it:</p>
+
+  <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">1</span></li></ul></li><li class="t1"><code>p</code></li></ul></li></ul></li></ul>
+  <ul class="domTree"><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">2</span></li></ul></li></ul>
+
+  <p>Finally, the new <code>b</code> element is appended to the <code>p</code> element, so that the
+  DOM looks like:</p>
+
+  <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">1</span></li></ul></li><li class="t1"><code>p</code><ul><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">2</span></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+  <p>The <code>b</code> element is removed from the <span>list of active formatting elements</span>
+  and the <span>stack of open elements</span>, so that when the "3" is parsed, it is appended to the
+  <code>p</code> element:</p>
+
+  <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">1</span></li></ul></li><li class="t1"><code>p</code><ul><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">2</span></li></ul></li><li class="t3"><code>#text</code>: <span data-x="">3</span></li></ul></li></ul></li></ul></li></ul>
+
+
+  

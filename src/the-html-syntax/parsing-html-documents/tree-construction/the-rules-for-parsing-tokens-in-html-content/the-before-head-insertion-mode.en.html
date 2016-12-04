@@ -1,0 +1,81 @@
+<h6>The "<dfn data-x="insertion mode: before head">before head</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: before
+  head">before head</span>" <span>insertion mode</span>, the user agent must handle the token as
+  follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token that is one of U+0009 CHARACTER
+   TABULATION, U+000A LINE FEED (LF), U+000C FORM FEED (FF),
+   U+000D CARRIAGE RETURN (CR), or U+0020 SPACE</dt>
+   <dd>
+    <p>Ignore the token.</p> <!-- :-( -->
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+    <p><span>Insert a comment</span>.</p>
+   </dd>
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "html"</dt>
+   <dd>
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "head"</dt>
+   <dd>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p>Set the <span><code data-x="">head</code> element pointer</span> to the newly created
+    <code>head</code> element.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in head">in
+    head</span>".</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "head", "body", "html", "br"</dt>
+   <dd>
+
+    <p>Act as described in the "anything else" entry below.</p>
+
+   </dd>
+
+   <dt>Any other end tag</dt>
+   <dd>
+
+    <p><span>Parse error</span>. Ignore the token.</p>
+
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <!-- fake <head> -->
+
+    <p><span>Insert an HTML element</span> for a "head" start tag token with no attributes.</p>
+
+    <p>Set the <span><code data-x="">head</code> element pointer</span> to the newly created
+    <code>head</code> element.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in head">in
+    head</span>".</p>
+
+    <!-- end of fake <head> -->
+
+    <p>Reprocess the current token.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

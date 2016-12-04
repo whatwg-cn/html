@@ -1,0 +1,46 @@
+<h4>The <dfn><code>wbr</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>wbr</code> element <span>represents</span> a line break opportunity.</p>
+
+  <div class="example">
+
+   <p>In the following example, someone is quoted as saying something which, for effect, is written
+   as one long word. However, to ensure that the text can be wrapped in a readable fashion, the
+   individual words in the quote are separated using a <code>wbr</code> element.</p>
+
+   <pre>&lt;p&gt;So then she pointed at the tiger and screamed
+"there&lt;wbr>is&lt;wbr>no&lt;wbr>way&lt;wbr>you&lt;wbr>are&lt;wbr>ever&lt;wbr>going&lt;wbr>to&lt;wbr>catch&lt;wbr>me"!&lt;/p&gt;</pre>
+
+  </div>
+
+  <div w-nodev>
+
+   <p>Any content inside <code>wbr</code> elements must not be considered part of the surrounding
+   text.</p>
+
+   <pre class="example">var wbr = document.createElement("wbr");
+wbr.textContent = "This is wrong";
+document.body.appendChild(wbr);</pre>
+
+   <p class="note">This element <a href="#bidireq">has rendering requirements involving the
+   bidirectional algorithm</a>.</p>
+
+  </div>
+
+
+
+  

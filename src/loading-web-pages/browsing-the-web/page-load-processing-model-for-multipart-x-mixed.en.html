@@ -1,0 +1,22 @@
+<h4 id="read-multipart-x-mixed-replace"><dfn data-x="navigate-multipart-x-mixed-replace">Page load processing model for <code>multipart/x-mixed-replace</code> resources</dfn></h4>
+
+  <p>When a resource with the type <code>multipart/x-mixed-replace</code> is to be loaded in a
+  <span>browsing context</span>, the user agent must parse the resource using the rules for
+  multipart types. <ref spec=RFC2046></p>
+
+  <p>For each body part obtained from the resource, the user agent must run <span>process a navigate
+  response</span> using the new body part and the same <span>browsing context</span>, with
+  <span>replacement enabled</span> if a previous body part from the same resource resulted in a
+  <code>Document</code> object being created and <span data-x="initialize the Document
+  object">initialized</span>, and otherwise using the same setup as the <span>navigate</span>
+  attempt that caused this section to be invoked in the first place.</p>
+
+  <p>For the purposes of algorithms processing these body parts as if they were complete stand-alone
+  resources, the user agent must act as if there were no more bytes for those resources whenever the
+  boundary following the body part is reached.</p>
+
+  <p class="note">Thus, <code data-x="event-load">load</code> events (and for that matter <code
+  data-x="event-unload">unload</code> events) do fire for each body part loaded.</p>
+
+
+  

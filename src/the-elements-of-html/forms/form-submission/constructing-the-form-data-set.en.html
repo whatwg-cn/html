@@ -1,0 +1,221 @@
+<h5 id="constructing-form-data-set">Constructing the form data set</h5>
+
+  <p>The algorithm to <dfn data-x="constructing the form data set" data-export=""
+  data-lt="constructing the form data set">construct the form data set</dfn> for a form
+  <var>form</var> optionally in the context of a submitter <var>submitter</var> is as follows. If
+  not specified otherwise, <var>submitter</var> is null.</p>
+
+  <ol>
+
+   <li><p>Let <var>controls</var> be a list of all the <span
+   data-x="category-submit">submittable elements</span> whose <span>form owner</span> is <var>form</var>, in <span>tree order</span>.</p></li>
+
+   <li><p>Let the <var>form data set</var> be a list of name-value-type tuples, initially
+   empty.</p></li>
+
+   <li>
+
+    <p><i>Loop</i>: For each element <var>field</var> in <var>controls</var>, in
+    <span>tree order</span>, run the following substeps:</p>
+
+    <ol>
+
+     <li>
+
+      <p>If any of the following conditions are met, then skip these substeps for this element:</p>
+
+      <ul>
+
+       <li>The <var>field</var> element has a <code>datalist</code> element ancestor.</li>
+
+       <li>The <var>field</var> element is <span
+       data-x="concept-fe-disabled">disabled</span>.</li>
+
+       <li>The <var>field</var> element is a <span data-x="concept-button">button</span> but
+       it is not <var>submitter</var>.</li>
+
+       <li>The <var>field</var> element is an <code>input</code> element whose <code
+       data-x="attr-input-type">type</code> attribute is in the <span
+       data-x="attr-input-type-checkbox">Checkbox</span> state and whose <span
+       data-x="concept-fe-checked">checkedness</span> is false.</li>
+
+       <li>The <var>field</var> element is an <code>input</code> element whose <code
+       data-x="attr-input-type">type</code> attribute is in the <span
+       data-x="attr-input-type-radio">Radio Button</span> state and whose <span
+       data-x="concept-fe-checked">checkedness</span> is false.</li>
+
+       <li>The <var>field</var> element is not an <code>input</code> element whose <code
+       data-x="attr-input-type">type</code> attribute is in the <span
+       data-x="attr-input-type-image">Image Button</span> state, and either the <var>field</var> element does not have a <code data-x="attr-fe-name">name</code> attribute
+       specified, or its <code data-x="attr-fe-name">name</code> attribute's value is the empty
+       string.</li>
+
+       <li>The <var>field</var> element is an <code>object</code> element that is not using
+       a <span>plugin</span>.</li>
+
+      </ul>
+
+      <p>Otherwise, process <var>field</var> as follows:</p>
+
+     </li>
+
+     <li><p>Let <var>type</var> be the value of the <code data-x="">type</code> IDL
+     attribute of <var>field</var>.</p></li> <!-- if the field is an <object> element, this
+     will get ignored. -->
+
+     <li>
+
+      <p>If the <var>field</var> element is an <code>input</code> element whose <code
+      data-x="attr-input-type">type</code> attribute is in the <span
+      data-x="attr-input-type-image">Image Button</span> state, then run these further nested
+      substeps:</p>
+
+      <ol>
+
+       <li><p>If the <var>field</var> element has a <code data-x="attr-fe-name">name</code>
+       attribute specified and its value is not the empty string, let <var>name</var> be
+       that value followed by a single U+002E FULL STOP character (.). Otherwise, let <var>name</var> be the empty string.</p></li>
+
+       <li><p>Let <var>name<sub>x</sub></var> be the string consisting of the
+       concatenation of <var>name</var> and a single U+0078 LATIN SMALL LETTER X character
+       (x).</p></li>
+
+       <li><p>Let <var>name<sub>y</sub></var> be the string consisting of the
+       concatenation of <var>name</var> and a single U+0079 LATIN SMALL LETTER Y character
+       (y).</p></li>
+
+       <li><p>The <var>field</var> element is <var>submitter</var>, and before
+       this algorithm was invoked the user <span
+       data-x="concept-input-type-image-coordinate">indicated a coordinate</span>. Let <var>x</var> be the <var>x</var>-component of the coordinate selected by the
+       user, and let <var>y</var> be the <var>y</var>-component of the coordinate
+       selected by the user.</p></li>
+
+       <li><p>Append an entry to the <var>form data set</var> with the name <var>name<sub>x</sub></var>, the value <var>x</var>, and the type <var>type</var>.</p></li>
+
+       <li><p>Append an entry to the <var>form data set</var> with the name <var>name<sub>y</sub></var> and the value <var>y</var>, and the type
+       <var>type</var>.</p></li>
+
+       <li><p>Skip the remaining substeps for this element: if there are any more elements in <var>controls</var>, return to the top of the <i>loop</i> step, otherwise, jump to the
+       <i>end</i> step below.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>Let <var>name</var> be the value of the <var>field</var> element's
+     <code data-x="attr-fe-name">name</code> attribute.</p></li>
+
+     <li><p>If the <var>field</var> element is a <code>select</code> element, then for each
+     <code>option</code> element in the <code>select</code> element's <span
+     data-x="concept-select-option-list">list of options</span> whose <span
+     data-x="concept-option-selectedness">selectedness</span> is true and that is not <span
+     data-x="concept-option-disabled">disabled</span>, append an entry to the <var>form data
+     set</var> with the <var>name</var> as the name, the <span
+     data-x="concept-option-value">value</span> of the <code>option</code> element as the value, and
+     <var>type</var> as the type.</p></li>
+
+     <li>
+
+      <p>Otherwise, if the <var>field</var> element is an <code>input</code> element whose
+      <code data-x="attr-input-type">type</code> attribute is in the <span
+      data-x="attr-input-type-checkbox">Checkbox</span> state or the <span
+      data-x="attr-input-type-radio">Radio Button</span> state, then run these further nested
+      substeps:</p>
+
+      <ol>
+
+       <li><p>If the <var>field</var> element has a <code
+       data-x="attr-input-value">value</code> attribute specified, then let <var>value</var>
+       be the value of that attribute; otherwise, let <var>value</var> be the string "<code
+       data-x="">on</code>".</p></li>
+
+       <li><p>Append an entry to the <var>form data set</var> with <var>name</var>
+       as the name, <var>value</var> as the value, and <var>type</var> as the
+       type.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>Otherwise, if the <var>field</var> element is an <code>input</code> element
+     whose <code data-x="attr-input-type">type</code> attribute is in the <span
+     data-x="attr-input-type-file">File Upload</span> state, then for each file <span
+     data-x="concept-input-type-file-selected">selected</span> in the <code>input</code> element,
+     append an entry to the <var>form data set</var> with the <var>name</var> as
+     the name, the file (consisting of the name, the type, and the body) as the value, and <var>type</var> as the type. If there are no <span
+     data-x="concept-input-type-file-selected">selected files</span>, then append an entry to the
+     <var>form data set</var> with the <var>name</var> as the name, the empty
+     string as the value, and <code>application/octet-stream</code> as the type.</p></li> <!--
+     https://bugzilla.mozilla.org/show_bug.cgi?id=529859 -->
+
+     <li><p>Otherwise, if the <var>field</var> element is an <code>object</code> element:
+     try to obtain a form submission value from the <span>plugin</span><!-- using NPAPI's
+     NPP_GetValue() entry point with the NPPVformValue variable -->, and if that is successful,
+     append an entry to the <var>form data set</var> with <var>name</var> as the
+     name, the returned form submission value as the value, and the string "<code
+     data-x="">object</code>" as the type.</p></li>
+
+     <li><p>Otherwise, append an entry to the <var>form data set</var> with <var>name</var> as the name, the <span data-x="concept-fe-value">value</span> of the <var>field</var> element as the value, and <var>type</var> as the type.</p></li>
+
+     <li>
+
+      <p>If the element has a <code data-x="attr-fe-dirname">dirname</code> attribute, and that
+      attribute's value is not the empty string, then run these substeps:</p>
+
+      <ol>
+
+       <li><p>Let <var>dirname</var> be the value of the element's <code
+       data-x="attr-fe-dirname">dirname</code> attribute.</p></li>
+
+       <li><p>Let <var>dir</var> be the string "<code data-x="">ltr</code>" if <span>the
+       directionality</span> of the element is '<span data-x="concept-ltr">ltr</span>', and "<code
+       data-x="">rtl</code>" otherwise (i.e. when <span>the directionality</span> of the element is
+       '<span data-x="concept-rtl">rtl</span>').</p></li>
+
+       <li><p>Append an entry to the <var>form data set</var> with <var>dirname</var> as the name, <var>dir</var> as the value, and the string
+       "<code data-x="">direction</code>" as the type.</p></li>
+
+      </ol>
+
+      <p class="note">An element can only have a <code data-x="attr-fe-dirname">dirname</code>
+      attribute if it is a <code>textarea</code> element or an <code>input</code> element whose
+      <code data-x="attr-input-type">type</code> attribute is in either the <span
+      data-x="attr-input-type-text">Text</span> state or the <span
+      data-x="attr-input-type-search">Search</span> state.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p><i>End</i>: For the name of each entry in the <var>form data set</var>, and for the
+    value of each entry in the <var>form data set</var> whose type is not "<code
+    data-x="">file</code>" or "<code data-x="">textarea</code>", replace every occurrence of a U+000D
+    CARRIAGE RETURN (CR) character not followed by a U+000A LINE FEED (LF) character, and every
+    occurrence of a U+000A LINE FEED (LF) character not preceded by a U+000D CARRIAGE RETURN (CR)
+    character, by a two-character string consisting of a U+000D CARRIAGE RETURN U+000A LINE FEED
+    (CRLF) character pair.</p>
+
+    <p class="note">In the case of the <span data-x="concept-fe-value">value</span> of
+    <code>textarea</code> elements, this newline normalization is already performed during the
+    conversion of the control's <span data-x="concept-textarea-raw-value">raw value</span> into the
+    control's <span data-x="concept-fe-value">value</span> (which also performs any necessary line
+    wrapping). In the case of <code>input</code> elements <code data-x="attr-input-type">type</code>
+    attributes in the <span data-x="attr-input-type-file">File Upload</span> state, the value is not
+    normalized.</p>
+
+   </li>
+
+   <li><p>Return the <var>form data set</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

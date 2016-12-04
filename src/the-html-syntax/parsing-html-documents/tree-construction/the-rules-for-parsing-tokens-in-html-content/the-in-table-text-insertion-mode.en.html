@@ -1,0 +1,57 @@
+<h6 id="parsing-main-intabletext">The "<dfn data-x="insertion mode: in table text">in table text</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in table
+  text">in table text</span>" <span>insertion mode</span>, the user agent must handle the token as
+  follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token that is U+0000 NULL</dt>
+   <dd>
+
+    <p><span>Parse error</span>. Ignore the token.</p>
+
+   </dd>
+
+
+   <dt>Any other character token</dt>
+   <dd>
+
+    <p>Append the character token to the <var data-x="concept-pending-table-char-tokens">pending
+    table character tokens</var> list.</p>
+
+   </dd>
+
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <!-- this can only be called if the current node is one of the table model elements -->
+
+    <p>If any of the tokens in the <var data-x="concept-pending-table-char-tokens">pending table
+    character tokens</var> list are character tokens that are not <span data-x="space
+    character">space characters</span>, then this is a <span>parse error</span>: reprocess the
+    character tokens in the <var data-x="concept-pending-table-char-tokens">pending table character
+    tokens</var> list using the rules given in the "anything else" entry in the "<span
+    data-x="insertion mode: in table">in table</span>" insertion mode.</p>
+
+    <!-- if there's active formatting elements, it'll recreate those and foster parent the top one
+    and then put the text nodes in the formatting elements; otherwise, it'll foster parent the
+    character tokens. -->
+
+    <p>Otherwise, <span data-x="insert a character">insert the characters</span> given by the <var
+    data-x="concept-pending-table-char-tokens">pending table character tokens</var> list.</p> <!--
+    i.e. inter-element whitespace in the table model isn't foster parented -->
+
+    <!-- no need to empty the list, we're leaving the insertion mode and the list is always emptied
+    before we reenter the mode -->
+
+    <p>Switch the <span>insertion mode</span> to the <span>original insertion mode</span> and
+    reprocess the token.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

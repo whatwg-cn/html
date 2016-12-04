@@ -1,0 +1,102 @@
+<h4>The <dfn><code>datalist</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Either: <span>phrasing content</span>.</dd> <!-- we don't require a <select> element descendant, since there might be zero suggestions -->
+   <dd>Or: Zero or more <code>option</code> and <span data-x="script-supporting elements">script-supporting</span> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLDataListElement</dfn> : <span>HTMLElement</span> {
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-datalist-options">options</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>datalist</code> element represents a set of <code>option</code> elements that
+  represent predefined options for other controls. In the rendering, the <code>datalist</code>
+  element <span>represents</span> nothing<span w-nodev> and it, along with its children, should
+  be hidden</span>.</p>
+
+  <p>The <code>datalist</code> element can be used in two ways. In the simplest case, the
+  <code>datalist</code> element has just <code>option</code> element children.</p>
+
+  <div class="example">
+
+   <pre>&lt;label>
+ Sex:
+ &lt;input name=sex list=sexes>
+ &lt;datalist id=sexes>
+  &lt;option value="Female">
+  &lt;option value="Male">
+ &lt;/datalist>
+&lt;/label></pre>
+
+  </div>
+
+  <p>In the more elaborate case, the <code>datalist</code> element can be given contents that are to
+  be displayed for down-level clients that don't support <code>datalist</code>. In this case, the
+  <code>option</code> elements are provided inside a <code>select</code> element inside the
+  <code>datalist</code> element.</p>
+
+  <div class="example">
+
+   <pre>&lt;label>
+ Sex:
+ &lt;input name=sex list=sexes>
+&lt;/label>
+&lt;datalist id=sexes>
+ &lt;label>
+  or select from the list:
+  &lt;select name=sex>
+   &lt;option value="">
+   &lt;option>Female
+   &lt;option>Male
+  &lt;/select>
+ &lt;/label>
+&lt;/datalist></pre>
+
+  </div>
+
+  <p>The <code>datalist</code> element is hooked up to an <code>input</code> element using the <code
+  data-x="attr-input-list">list</code> attribute on the <code>input</code> element.</p>
+
+  <p>Each <code>option</code> element that is a descendant of the <code>datalist</code> element,
+  that is not <span data-x="concept-option-disabled">disabled</span>, and whose <span
+  data-x="concept-option-value">value</span> is a string that isn't the empty string, represents a
+  suggestion. Each suggestion has a <span data-x="concept-option-value">value</span> and a <span
+  data-x="concept-option-label">label</span>.
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>datalist</var> . <code subdfn data-x="dom-datalist-options">options</code></dt>
+
+   <dd>
+    <p>Returns an <code>HTMLCollection</code> of the <code>option</code> elements of the
+    <code>datalist</code> element.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-datalist-options">options</code></dfn> IDL attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>datalist</code> node, whose filter matches
+  <code>option</code> elements.</p>
+
+  <p><strong>Constraint validation</strong>: If an element has a <code>datalist</code> element
+  ancestor, it is <span>barred from constraint validation</span>.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+  

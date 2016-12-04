@@ -1,0 +1,251 @@
+<h6><dfn data-x="attr-input-type-range">Range</dfn> state (<code data-x="">type=range</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-range">Range</span> state, the rules in this section apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a control for setting the element's
+  <span data-x="concept-fe-value">value</span> to a string representing a number, but with the
+  caveat that the exact value is not important, letting UAs provide a simpler interface than they
+  do for the <span data-x="attr-input-type-number">Number</span> state.</p>
+
+  <div w-nodev>
+
+  <p>If the element is <i data-x="concept-fe-mutable">mutable</i>, the user agent should allow the
+  user to change the number represented by its <span data-x="concept-fe-value">value</span>, as
+  obtained from applying the <span>rules for parsing floating-point number values</span> to it.
+  User agents must not allow the user to set the <span data-x="concept-fe-value">value</span> to a
+  string that is not a <span>valid floating-point number</span>. If the user agent provides a user
+  interface for selecting a number, then the <span data-x="concept-fe-value">value</span> must be
+  set to a <span data-x="best representation of the number as a floating-point number">best
+  representation of the number representing the user's selection as a floating-point
+  number</span>. User agents must not allow the user to set the <span
+  data-x="concept-fe-value">value</span> to the empty string.</p>
+
+  <p><strong>Constraint validation</strong>: While the user interface describes input that the
+  user agent cannot convert to a <span>valid floating-point number</span>, the control is
+  <span>suffering from bad input</span>.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-input-value">value</code> attribute, if specified, must have a value
+  that is a <span>valid floating-point number</span>.</p> <!-- ok to set out-of-range value, we
+  never know when we might have to represent bogus input; not ok to not have a value if the
+  attribute is present, since you can't not have a value (attribute missing is treated as implying
+  a default value) -->
+
+  <div w-nodev>
+
+  <p><strong>The <span>value sanitization algorithm</span> is as follows</strong>: If the <span
+  data-x="concept-fe-value">value</span> of the element is not a <span>valid floating-point
+  number</span>, then set it to the <span data-x="best representation of the number as a
+  floating-point number">best representation, as a floating-point number</span>, of the <span
+  data-x="concept-input-value-default-range">default value</span>.</p>
+
+  </div>
+
+  <p>The <dfn data-x="concept-input-value-default-range">default value</dfn> is the <span
+  data-x="concept-input-min">minimum</span> plus half the difference between the <span
+  data-x="concept-input-min">minimum</span> and the <span
+  data-x="concept-input-max">maximum</span>, unless the <span
+  data-x="concept-input-max">maximum</span> is less than the <span
+  data-x="concept-input-min">minimum</span>, in which case the <span
+  data-x="concept-input-value-default-range">default value</span> is the <span
+  data-x="concept-input-min">minimum</span>.</p>
+
+  <div w-nodev>
+
+  <p>When the element is <span>suffering from an underflow</span>, the user agent must set the
+  element's <span data-x="concept-fe-value">value</span> to the <span data-x="best representation
+  of the number as a floating-point number">best representation, as a floating-point
+  number</span>, of the <span data-x="concept-input-min">minimum</span>.</p>
+
+  <p>When the element is <span>suffering from an overflow</span>, if the <span
+  data-x="concept-input-max">maximum</span> is not less than the <span
+  data-x="concept-input-min">minimum</span>, the user agent must set the element's <span
+  data-x="concept-fe-value">value</span> to a <span>valid floating-point number</span> that
+  represents the <span data-x="concept-input-max">maximum</span>.</p>
+
+  <p>When the element is <span>suffering from a step mismatch</span>, the user agent must round
+  the element's <span data-x="concept-fe-value">value</span> to the nearest number for which the
+  element would not <span data-x="suffering from a step mismatch">suffer from a step
+  mismatch</span>, and which is greater than or equal to the <span
+  data-x="concept-input-min">minimum</span>, and, if the <span
+  data-x="concept-input-max">maximum</span> is not less than the <span
+  data-x="concept-input-min">minimum</span>, which is less than or equal to the <span
+  data-x="concept-input-max">maximum</span>, if there is a number that matches these constraints.
+  If two numbers match these constraints, then user agents must use the one nearest to positive
+  infinity.</p>
+
+  <p class="example">For example, the markup
+  <code data-x="">&lt;input&nbsp;type="range"&nbsp;min=0&nbsp;max=100&nbsp;step=20&nbsp;value=50></code>
+  results in a range control whose initial value is 60.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here is an example of a range control using an autocomplete list with the <code
+   data-x="attr-input-list">list</code> attribute. This could be useful if there are values along
+   the full range of the control that are especially important, such as preconfigured light levels
+   or typical speed limits in a range control used as a speed control. The following markup
+   fragment:</p>
+
+   <pre>&lt;input type="range" min="-100" max="100" value="0" step="10" name="power" list="powers"&gt;
+&lt;datalist id="powers"&gt;
+&lt;option value="0"&gt;
+&lt;option value="-30"&gt;
+&lt;option value="30"&gt;
+<span class="bad"> &lt;option value="++50"&gt;</span>
+&lt;/datalist&gt;
+</pre>
+
+   <p>...with the following style sheet applied:</p>
+
+   <pre>input { height: 75px; width: 49px; background: #D5CCBB; color: black; }</pre>
+
+   <p>...might render as:</p>
+
+   <p><img src="/images/sample-range.png" width="49" height="75" alt="A vertical slider control whose primary color is black and whose background color is beige, with the slider having five tick marks, one long one at each extremity, and three short ones clustered around the midpoint.">
+
+   <p>Note how the UA determined the orientation of the control from the ratio of the
+   style-sheet-specified height and width properties. The colors were similarly derived from the
+   style sheet. The tick marks, however, were derived from the markup. In particular, the <code
+   data-x="attr-input-step">step</code> attribute has not affected the placement of tick marks,
+   the UA deciding to only use the author-specified completion values and then adding longer tick
+   marks at the extremes.</p>
+
+   <p>Note also how the invalid value <code data-x="">++50</code> was completely ignored.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>For another example, consider the following markup fragment:</p>
+
+   <pre>&lt;input name=x type=range min=100 max=700 step=9.09090909 value=509.090909></pre>
+
+   <p>A user agent could display in a variety of ways, for instance:</p>
+
+   <p><img src="/images/sample-range-2a.png" width="231" height="57" alt="As a dial."></p>
+
+   <p>Or, alternatively, for instance:</p>
+
+   <p><img src="/images/sample-range-2b.png" width="445" height="56" alt="As a long horizontal slider with tick marks."></p>
+
+   <p>The user agent could pick which one to display based on the dimensions given in the style
+   sheet. This would allow it to maintain the same resolution for the tick marks, despite the
+   differences in width.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Finally, here is an example of a range control with two labeled values:</p>
+
+   <pre>&lt;input type="range" name="a" list="a-values"&gt;
+&lt;datalist id="a-values"&gt;
+&lt;option value="10" label="Low"&gt;
+&lt;option value="90" label="High"&gt;
+&lt;/datalist&gt;
+</pre>
+
+   <p>With styles that make the control draw vertically, it might look as follows:</p>
+
+   <p><img src="/images/sample-range-labels.png" width="103" height="164" alt="A vertical slider control with two tick marks, one near the top labeled 'High', and one near the bottom labeled 'Low'.">
+
+  </div>
+
+  <p class="note">In this state, the range and step constraints are enforced even during user input,
+  and there is no way to set the value to the empty string.</p>
+
+  <p>The <code data-x="attr-input-min">min</code> attribute, if specified, must have a value that is
+  a <span>valid floating-point number</span>. The <span data-x="concept-input-min-default">default
+  minimum</span> is 0. The <code data-x="attr-input-max">max</code> attribute, if specified, must
+  have a value that is a <span>valid floating-point number</span>. The <span
+  data-x="concept-input-max-default">default maximum</span> is 100.</p>
+
+  <p><span w-nodev>The <span data-x="concept-input-step-scale">step scale factor</span> is
+  1.</span> The <span data-x="concept-input-step-default">default step</span> is 1 (allowing only
+  integers, unless the <code data-x="attr-input-min">min</code> attribute has a non-integer
+  value).</p>
+
+  <div w-nodev>
+
+  <p><strong>The <span data-x="concept-input-value-string-number">algorithm to convert a string to a
+  number</span>, given a string <var>input</var>, is as follows</strong>: If applying the
+  <span>rules for parsing floating-point number values</span> to <var>input</var> results
+  in an error, then return an error; otherwise, return the resulting number.</p>
+
+  <p><strong>The <span data-x="concept-input-value-number-string">algorithm to convert a number to a
+  string</span>, given a number <var>input</var>, is as follows</strong>: Return the <span
+  data-x="best representation of the number as a floating-point number">best representation, as a
+  floating-point number</span>, of <var>input</var>.</p>
+
+  </div>
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content attributes, IDL attributes, and
+   methods <span data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code data-x="attr-input-list">list</code>,
+   <code data-x="attr-input-max">max</code>,
+   <code data-x="attr-input-min">min</code>, and
+   <code data-x="attr-input-step">step</code> content attributes;
+   <code data-x="dom-input-list">list</code>,
+   <code data-x="dom-input-value">value</code>, and
+   <code data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code data-x="dom-input-stepDown">stepDown()</code> and
+   <code data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is in mode <span
+   data-x="dom-input-value-value">value</span>.</p>
+
+   <p>The <code data-x="event-input">input</code> and <code
+   data-x="event-change">change</code> events <span
+   data-x="concept-input-apply">apply</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-maxlength">maxlength</code>,
+   <code class="no-backref" data-x="attr-input-minlength">minlength</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-pattern">pattern</code>,
+   <code class="no-backref" data-x="attr-input-placeholder">placeholder</code>,
+   <code class="no-backref" data-x="attr-input-readonly">readonly</code>,
+   <code class="no-backref" data-x="attr-input-required">required</code>,
+   <code class="no-backref" data-x="attr-input-size">size</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionDirection">selectionDirection</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code> IDL attributes;
+   <code class="no-backref" data-x="dom-textarea/input-select">select()</code>,
+   <code class="no-backref" data-x="dom-textarea/input-setRangeText">setRangeText()</code>, and
+   <code class="no-backref" data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code> methods.</p>
+
+  </div>
+
+
+
+  

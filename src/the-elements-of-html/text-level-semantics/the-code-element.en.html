@@ -1,0 +1,62 @@
+<h4>The <dfn><code>code</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>code</code> element <span>represents</span> a fragment of computer code. This could
+  be an XML element name, a file name, a computer program, or any other string that a computer would
+  recognize.</p>
+
+  <p>There is no formal way to indicate the language of computer code being marked up. Authors who
+  wish to mark <code>code</code> elements with the language used, e.g. so that syntax highlighting
+  scripts can use the right rules, can use the <code data-x="attr-class">class</code> attribute, e.g.
+  by adding a class prefixed with "<code data-x="">language-</code>" to the element.</p>
+
+  <div class="example">
+
+   <p>The following example shows how the element can be used in a paragraph to mark up element
+   names and computer code, including punctuation.</p>
+
+   <pre>&lt;p>The &lt;code>code&lt;/code> element represents a fragment of computer
+code.&lt;/p>
+
+&lt;p>When you call the &lt;code>activate()&lt;/code> method on the
+&lt;code>robotSnowman&lt;/code> object, the eyes glow.&lt;/p>
+
+&lt;p>The example below uses the &lt;code>begin&lt;/code> keyword to indicate
+the start of a statement block. It is paired with an &lt;code>end&lt;/code>
+keyword, which is followed by the &lt;code>.&lt;/code> punctuation character
+(full stop) to indicate the end of the program.&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows how a block of code could be marked up using the <code>pre</code>
+   and <code>code</code> elements.</p>
+
+   <pre>&lt;pre>&lt;code class="language-pascal">var i: Integer;
+begin
+   i := 1;
+end.&lt;/code>&lt;/pre></pre>
+
+   <p>A class is used in that example to indicate the language used.</p>
+
+  </div>
+
+  <p class="note">See the <code>pre</code> element for more details.</p>
+
+
+  

@@ -1,0 +1,379 @@
+<h6>Drawing text to the bitmap</h6>
+
+  <dl class="domintro" id="text-0">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-fillText">fillText</code>(<var>text</var>, <var>x</var>, <var>y</var> [, <var>maxWidth</var> ] )</dt>
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-strokeText">strokeText</code>(<var>text</var>, <var>x</var>, <var>y</var> [, <var>maxWidth</var> ] )</dt>
+
+   <dd>
+
+    <p>Fills or strokes (respectively) the given text at the given position. If a maximum width is
+    provided, the text will be scaled to fit that width if necessary.</p>
+
+   </dd>
+
+   <dt><var>metrics</var> = <var>context</var> . <code subdfn data-x="dom-context-2d-measureText">measureText</code>(<var>text</var>)</dt>
+
+   <dd>
+
+    <p>Returns a <code>TextMetrics</code> object with the metrics of the given text in the current
+    font.</p>
+
+   </dd>
+
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-width">width</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-actualBoundingBoxLeft">actualBoundingBoxLeft</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-actualBoundingBoxRight">actualBoundingBoxRight</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-fontBoundingBoxAscent">fontBoundingBoxAscent</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-fontBoundingBoxDescent">fontBoundingBoxDescent</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-actualBoundingBoxAscent">actualBoundingBoxAscent</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-actualBoundingBoxDescent">actualBoundingBoxDescent</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-emHeightAscent">emHeightAscent</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-emHeightDescent">emHeightDescent</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-hangingBaseline">hangingBaseline</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-alphabeticBaseline">alphabeticBaseline</code></dt>
+   <dt><var>metrics</var> . <code subdfn data-x="dom-textmetrics-ideographicBaseline">ideographicBaseline</code></dt>
+
+   <dd>
+
+    <p>Returns the measurement described below.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Objects that implement the <code>CanvasText</code> interface provide the following methods for
+  rendering text.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-fillText">fillText()</code></dfn> and <dfn><code
+  data-x="dom-context-2d-strokeText">strokeText()</code></dfn> methods take three or four arguments,
+  <var>text</var>, <var>x</var>, <var>y</var>, and optionally <var>maxWidth</var>, and render the
+  given <var>text</var> at the given (<var>x</var>, <var>y</var>) coordinates ensuring that the text
+  isn't wider than <var>maxWidth</var> if specified, using the current <code
+  data-x="dom-context-2d-font">font</code>, <code
+  data-x="dom-context-2d-textAlign">textAlign</code>, and <code
+  data-x="dom-context-2d-textBaseline">textBaseline</code> values. Specifically, when the methods
+  are invoked, the user agent must run these steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>Run the <span>text preparation algorithm</span>, passing it <var>text</var>, the object
+   implementing the <code>CanvasText</code> interface, and, if the <var>maxWidth</var> argument was
+   provided, that argument. Let <var>glyphs</var> be the result.</p>
+
+   <li><p>Move all the shapes in <var>glyphs</var> to the right by <var>x</var>
+   <span data-x="'px'">CSS pixels</span> and down by <var>y</var> <span data-x="'px'">CSS
+   pixels</span>.</p></li>
+
+   <li>
+
+    <p>Paint the shapes given in <var>glyphs</var>, as transformed by the <span
+    data-x="dom-context-2d-transformation">current transformation matrix</span>, with each <span
+    data-x="'px'">CSS pixel</span> in the coordinate space of <var>glyphs</var> mapped to one
+    coordinate space unit.</p>
+
+    <p>For <code data-x="dom-context-2d-fillText">fillText()</code>, <code
+    data-x="dom-context-2d-fillStyle">fillStyle</code> must be applied to the shapes and <code
+    data-x="dom-context-2d-strokeStyle">strokeStyle</code> must be ignored. For <code
+    data-x="dom-context-2d-strokeText">strokeText()</code>, the reverse holds: <code
+    data-x="dom-context-2d-strokeStyle">strokeStyle</code> must be applied to the result of <span
+    data-x="trace a path">tracing</span> the shapes using the object implementing the
+    <code>CanvasText</code> interface for the line styles, and <code
+    data-x="dom-context-2d-fillStyle">fillStyle</code> must be ignored.</p>
+
+    <p>These shapes are painted without affecting the current path, and are subject to <span
+    data-x="shadows">shadow effects</span>, <span data-x="dom-context-2d-globalAlpha">global
+    alpha</span>, the <span>clipping region</span>, and <span
+    data-x="dom-context-2d-globalCompositeOperation">global composition operators</span>.</p>
+
+   </li>
+
+  </ol>
+
+<!--v6DVT - this is commented out until CSS can get its act together
+enough to actual specify vertical text rendering (how long have we
+been waiting now?)
+
+WHEN EDITING THIS, FIX THE PARTS MARKED "&#x0058;&#x0058;&#x0058;" BELOW
+
+ALSO NOTE THAT THIS PROBABLY NEEDS ENTIRELY REVISITING NOW THAT WE
+HAVE REJIGGED HOW TEXT WORKS IN v5 (e.g. remember security)
+
+  <p>The <dfn><code data-x="dom-context-2d-fillVerticalText">fillVerticalText()</code></dfn> and
+  <dfn><code data-x="dom-context-2d-strokeVerticalText">strokeVerticalText()</code></dfn> methods
+  take three or four arguments, <var>text</var>, <var>x</var>, <var>y</var>, and optionally
+  <var>maxHeight</var>, and render the given <var>text</var> as vertical text at the given
+  (<var>x</var>, <var>y</var>) coordinates ensuring that the text isn't taller than
+  <var>maxHeight</var> if specified, using the current <code
+  data-x="dom-context-2d-font">font</code> and <code
+  data-x="dom-context-2d-textAlign">textAlign</code> values. Specifically, when the methods are
+  invoked, the user agent must run these steps:</p>
+
+  <ol>
+
+   <li><p>If <var>maxHeight</var> is present but less than or equal to zero, then return without
+   doing anything; abort these steps.</p></li>
+
+   <li><p>Let <var>font</var> be the current font of the context, as given by the <code
+   data-x="dom-context-2d-font">font</code> attribute.</p></li>
+
+   <li><p>Replace all the <span data-x="space character">space characters</span> in <var>text</var> with U+0020 SPACE characters.</p></li>
+
+   <li><p>Form a <em class="&#x0058;&#x0058;&#x0058;">whatever CSS ends up calling vertical line
+   boxes and inline boxes</em> containing the text <var>text</var>, with all the properties
+   at their initial values except the <span>'font'</span> property of the <span>inline box</span>
+   set to <var>font</var> and the <span>'direction'</span> property of the <span>inline box</span>
+   set to <span>the directionality</span> of the <code>canvas</code> element.</p></li>
+
+   <!- - if you insert a step here, make sure to adjust the next step's final words - ->
+
+   <li><p>If the <var>maxHeight</var> argument was specified and the hypothetical height of
+   the <em class="&#x0058;&#x0058;&#x0058;">box</em> in the hypothetical <span>line box</span> is
+   greater than <var>maxHeight</var> <span data-x="'px'">CSS pixels</span>, then change
+   <var>font</var> to have a more condensed font (if one is available or if a reasonably readable
+   one can be synthesized by applying an appropriate scale factor to the font) or a smaller font,
+   and return to the previous step.</p></li>
+
+   <li>
+
+    <p>Let the <var>anchor point</var> be a point on the <em
+    class="&#x0058;&#x0058;&#x0058;">inline box</var>, determined by the <code
+    data-x="dom-context-2d-textAlign">textAlign</code>, as follows:</p>
+
+    <p>Vertical position:</p>
+
+    <dl>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="">start</code></dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code data-x="">left</code>
+     and <span>the directionality</span> of the <code>canvas</code> element is 'ltr'</dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code data-x="">right</code>
+     and <span>the directionality</span> of the <code>canvas</code> element is 'rtl'</dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be the top edge of the <em
+     class="&#x0058;&#x0058;&#x0058;">inline box</em>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="">end</code></dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code data-x="">right</code>
+     and <span>the directionality</span> of the <code>canvas</code> element is 'ltr'</dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code data-x="">left</code>
+     and <span>the directionality</span> of the <code>canvas</code> element is 'rtl'</dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical
+     position be the bottom edge of the <em class="&#x0058;&#x0058;&#x0058;">inline
+     box</em>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="">center</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be half way between the top
+     and bottom edges of the <em class="&#x0058;&#x0058;&#x0058;">inline box</em>.</dd>
+
+    </dl>
+
+    <p>Let the horizontal position be half way between the left and right edges of the em box of the
+    first available font of the <em class="&#x0058;&#x0058;&#x0058;">inline box</em>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Paint the hypothetical <span>inline box</span> as the shape given by the text's glyphs, as
+    transformed by the <span
+    data-x="dom-context-2d-transformation">current transformation matrix</span>, and anchored and
+    sized so that before applying the <span data-x="dom-context-2d-transformation">current
+    transformation matrix</span>, the <var>anchor point</var> is at (<var>x</var>, <var>y</var>) and
+    each <span data-x="'px'">CSS pixel</span> is mapped to one coordinate space unit.</p>
+
+    <p>For <code data-x="dom-context-2d-fillVerticalText">fillVerticalText()</code> <code
+    data-x="dom-context-2d-fillStyle">fillStyle</code> must be applied and <code
+    data-x="dom-context-2d-strokeStyle">strokeStyle</code> must be ignored. For <code
+    data-x="dom-context-2d-strokeVerticalText">strokeVerticalText()</code> the reverse holds and
+    <code data-x="dom-context-2d-strokeStyle">strokeStyle</code> must be applied and <code
+    data-x="dom-context-2d-fillStyle">fillStyle</code> must be ignored.</p>
+
+    <p>Text is painted without affecting the current path, and is subject to <span
+    data-x="shadows">shadow effects</span>, <span data-x="dom-context-2d-globalAlpha">global
+    alpha</span>, the <span>clipping region</span>, and <span
+    data-x="dom-context-2d-globalCompositeOperation">global composition operators</span>.</p>
+
+   </li>
+
+  </ol>
+
+v6DVT (also check for '- -' bits in the part above) -->
+
+  <p>The <dfn><code data-x="dom-context-2d-measureText">measureText()</code></dfn> method takes one
+  argument, <var>text</var>. When the method is invoked, the user agent must run the
+  <span>text preparation algorithm</span>, passing it <var>text</var> and the object implementing
+  the <code>CanvasText</code> interface, and then using the returned <span>inline box</span> must
+  create a new <code>TextMetrics</code> object with its attributes set as described in the following
+  list.
+<!--ADD-TOPIC:Security-->
+  If doing these measurements requires using a font that has an <span>origin</span> that is not the
+  <span data-x="same origin">same</span> as that of the <code>Document</code> object that owns the
+  <code>canvas</code> element (even if "using a font" means just checking if that font has a
+  particular glyph in it before falling back to another font), then the method, when invoked, must
+  throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.
+<!--REMOVE-TOPIC:Security-->
+  Otherwise, it must return the new <code>TextMetrics</code> object.
+  <ref spec=CSS>
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  </div>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-textmetrics-width">width</code></dfn> attribute</dt>
+
+   <dd><p>The width of that <span>inline box</span>, in <span data-x="'px'">CSS pixels</span>. (The
+   text's advance width.)</p></dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-actualBoundingBoxLeft">actualBoundingBoxLeft</code></dfn> attribute</dt>
+
+   <dd>
+
+    <p>The distance parallel to the baseline from the alignment point given by the <code
+    data-x="dom-context-2d-textAlign">textAlign</code> attribute to the left side of the bounding
+    rectangle of the given text, in <span data-x="'px'">CSS pixels</span>; positive numbers
+    indicating a distance going left from the given alignment point.
+
+    <p class="note">The sum of this value and the next (<code
+    data-x="dom-textmetrics-actualBoundingBoxRight">actualBoundingBoxRight</code>) can be wider than
+    the width of the <span>inline box</span> (<code data-x="dom-textmetrics-width">width</code>), in
+    particular with slanted fonts where characters overhang their advance width.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-actualBoundingBoxRight">actualBoundingBoxRight</code></dfn> attribute</dt>
+
+   <dd>
+
+    <p>The distance parallel to the baseline from the alignment point given by the <code
+    data-x="dom-context-2d-textAlign">textAlign</code> attribute to the right side of the bounding
+    rectangle of the given text, in <span data-x="'px'">CSS pixels</span>; positive numbers
+    indicating a distance going right from the given alignment point.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-fontBoundingBoxAscent">fontBoundingBoxAscent</code></dfn> attribute</dt>
+
+   <dd>
+
+    <p>The distance from the horizontal line indicated by the <code
+    data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the top of the highest
+    bounding rectangle of all the fonts used to render the text, in <span data-x="'px'">CSS
+    pixels</span>; positive numbers indicating a distance going up from the given baseline.</p>
+
+    <p class="note">This value and the next are useful when rendering a background that must have a
+    consistent height even if the exact text being rendered changes. The <code
+    data-x="dom-textmetrics-actualBoundingBoxAscent">actualBoundingBoxAscent</code> attribute (and
+    its corresponding attribute for the descent) are useful when drawing a bounding box around
+    specific text.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-fontBoundingBoxDescent">fontBoundingBoxDescent</code></dfn> attribute</dt>
+
+   <dd><p>The distance from the horizontal line indicated by the <code
+   data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the bottom of the lowest
+   bounding rectangle of all the fonts used to render the text, in <span data-x="'px'">CSS
+   pixels</span>; positive numbers indicating a distance going down from the given
+   baseline.</p></dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-actualBoundingBoxAscent">actualBoundingBoxAscent</code></dfn> attribute</dt>
+
+   <dd>
+
+    <p>The distance from the horizontal line indicated by the <code
+    data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the top of the bounding
+    rectangle of the given text, in <span data-x="'px'">CSS pixels</span>; positive numbers
+    indicating a distance going up from the given baseline.
+
+    <p class="note">This number can vary greatly based on the input text, even if the first font
+    specified covers all the characters in the input. For example, the <code
+    data-x="dom-textmetrics-actualBoundingBoxAscent">actualBoundingBoxAscent</code> of a lowercase
+    "o" from an alphabetic baseline would be less than that of an uppercase "F". The value can
+    easily be negative; for example, the distance from the top of the em box (<code
+    data-x="dom-context-2d-textBaseline">textBaseline</code> value "<code
+    data-x="dom-context-2d-textBaseline-top">top</code>") to the top of the bounding rectangle when
+    the given text is just a single comma "<code data-x="">,</code>" would likely (unless the font is
+    quite unusual) be negative.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-actualBoundingBoxDescent">actualBoundingBoxDescent</code></dfn> attribute</dt>
+
+   <dd><p>The distance from the horizontal line indicated by the <code
+   data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the bottom of the bounding
+   rectangle of the given text, in <span data-x="'px'">CSS pixels</span>; positive numbers
+   indicating a distance going down from the given baseline.</p></dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-emHeightAscent">emHeightAscent</code></dfn> attribute</dt>
+
+   <dd><p>The distance from the horizontal line indicated by the <code
+   data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the highest top of the em
+   squares in the <span>line box</span>, in <span data-x="'px'">CSS pixels</span>; positive numbers
+   indicating that the given baseline is below the top of that em square (so this value will usually
+   be positive). Zero if the given baseline is the top of that em square; half the font size if the
+   given baseline is the middle of that em square.</p></dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-emHeightDescent">emHeightDescent</code></dfn> attribute</dt>
+
+   <dd><p>The distance from the horizontal line indicated by the <code
+   data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the lowest bottom of the em
+   squares in the <span>line box</span>, in <span data-x="'px'">CSS pixels</span>; positive numbers
+   indicating that the given baseline is below the bottom of that em square (so this value will
+   usually be negative). (Zero if the given baseline is the bottom of that em square.)</p></dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-hangingBaseline">hangingBaseline</code></dfn> attribute</dt>
+
+   <dd><p>The distance from the horizontal line indicated by the <code
+   data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the hanging baseline of the
+   <span>line box</span>, in <span data-x="'px'">CSS pixels</span>; positive numbers indicating that
+   the given baseline is below the hanging baseline. (Zero if the given baseline is the hanging
+   baseline.)</p></dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-alphabeticBaseline">alphabeticBaseline</code></dfn> attribute</dt>
+
+   <dd><p>The distance from the horizontal line indicated by the <code
+   data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the alphabetic baseline of
+   the <span>line box</span>, in <span data-x="'px'">CSS pixels</span>; positive numbers indicating
+   that the given baseline is below the alphabetic baseline. (Zero if the given baseline is the
+   alphabetic baseline.)</p></dd>
+
+   <dt><dfn><code data-x="dom-textmetrics-ideographicBaseline">ideographicBaseline</code></dfn> attribute</dt>
+
+   <dd><p>The distance from the horizontal line indicated by the <code
+   data-x="dom-context-2d-textBaseline">textBaseline</code> attribute to the ideographic baseline of
+   the <span>line box</span>, in <span data-x="'px'">CSS pixels</span>; positive numbers indicating
+   that the given baseline is below the ideographic baseline. (Zero if the given baseline is the
+   ideographic baseline.)</p></dd>
+
+  </dl>
+
+  <p class="note">Glyphs rendered using <code data-x="dom-context-2d-fillText">fillText()</code> and
+  <code data-x="dom-context-2d-strokeText">strokeText()</code> can spill out of the box given by the
+  font size (the em square size) and the width returned by <code
+  data-x="dom-context-2d-measureText">measureText()</code> (the text width). Authors are encouraged
+  to use the bounding box values described above if this is an issue.</p>
+
+  <p class="note">A future version of the 2D context API may provide a way to render fragments of
+  documents, rendered using CSS, straight to the canvas. This would be provided in preference to a
+  dedicated way of doing multiline layout.</p>
+
+
+
+  

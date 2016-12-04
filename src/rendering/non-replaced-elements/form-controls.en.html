@@ -1,0 +1,27 @@
+<h4>Form controls</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+input, select, option, optgroup, button, textarea, keygen {
+  text-indent: initial;
+}
+
+input:matches([type=radio i], [type=checkbox i], [type=reset i], [type=button i],
+[type=submit i], [type=search i]), select, button {
+  box-sizing: border-box;
+}
+
+textarea { white-space: pre-wrap; }</pre>
+
+  <p>In <span>quirks mode</span>, the following rules are also expected to apply:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+input:not([type=image i]), textarea { box-sizing: border-box; }</pre>
+
+  <p>Each kind of form control is also described in the <a href="#widgets">Widgets</a> section,
+  which describes the look and feel of the control.</p>
+
+
+
+  

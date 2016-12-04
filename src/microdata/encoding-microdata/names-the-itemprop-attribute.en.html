@@ -1,0 +1,111 @@
+<h4>Names: the <dfn><code data-x="attr-itemprop">itemprop</code></dfn> attribute</h4>
+
+  <p>Every <span data-x="HTML elements">HTML element</span> may have an <code
+  data-x="attr-itemprop">itemprop</code> attribute specified, if doing so <span data-x="the properties
+  of an item">adds one or more properties</span> to one or more <span
+  data-x="concept-item">items</span> (as defined below).</p>
+
+  <p>The <code data-x="attr-itemprop">itemprop</code> attribute, if specified, must have a value that
+  is an <span>unordered set of unique space-separated tokens</span> that are
+  <span>case-sensitive</span>, representing the names of the name-value pairs that it adds. The
+  attribute's value must have at least one token.</p>
+
+  <p>Each token must be either:</p>
+
+  <ul>
+
+   <li>If the item is a <span>typed item</span>: a <dfn>defined property name</dfn> allowed in this
+   situation according to the specification that defines the <span>relevant types</span> for the
+   item, or</li>
+
+   <li>A <span>valid URL</span> that is an <span>absolute URL</span> defined as an item property
+   name allowed in this situation by a vocabulary specification, or</li>
+
+   <li>A <span>valid URL</span> that is an <span>absolute URL</span>, used as a proprietary item
+   property name (i.e. one used by the author for private purposes, not defined in a public
+   specification), or</li>
+
+   <li>If the item is not a <span>typed item</span>: a string that contains no U+002E FULL STOP
+   characters (.) and no U+003A COLON characters (:), used as a proprietary item property name (i.e.
+   one used by the author for private purposes, not defined in a public specification).</li>
+
+  </ul>
+
+  <p>Specifications that introduce <span data-x="defined property name">defined property names</span>
+  must ensure all such property names contain no U+002E FULL STOP characters (.), no U+003A COLON
+  characters (:), and no <span data-x="space character">space characters</span>.</p>
+
+  <p class="note">The rules above disallow U+003A COLON characters (:) in non-URL values because
+  otherwise they could not be distinguished from URLs. Values with U+002E FULL STOP characters (.)
+  are reserved for future extensions. <span data-x="space character">Space characters</span> are
+  disallowed because otherwise the values would be parsed as multiple tokens.</p>
+
+  <p>When an element with an <code data-x="attr-itemprop">itemprop</code> attribute <span data-x="the
+  properties of an item">adds a property</span> to multiple <span data-x="concept-item">items</span>,
+  the requirement above regarding the tokens applies for each <span data-x="concept-item">item</span>
+  individually.</p>
+
+  <!--
+
+   e.g.:
+
+     <div itemscope itemtype="https://example.com/a"> <ref refid="x"> </div>
+     <div itemscope itemtype="https://example.com/b"> <ref refid="x"> </div>
+     <meta id="x" itemprop="z" content="">
+
+     "z" had better be valid for both https://example.com/a and https://example.com/b
+
+  -->
+
+  <p>The <dfn>property names</dfn> of an element are the tokens that the element's <code
+  data-x="attr-itemprop">itemprop</code> attribute is found to contain when its value is <span
+  data-x="split a string on spaces">split on spaces</span>, with the order preserved but with
+  duplicates removed (leaving only the first occurrence of each name).</p>
+
+  <p>Within an <span data-x="concept-item">item</span>, the properties are unordered with respect to
+  each other, except for properties with the same name, which are ordered in the order they are
+  given by the algorithm that defines <span>the properties of an item</span>.</p>
+
+  <div class="example">
+
+   <p>In the following example, the "a" property has the values "1" and "2", <em>in that order</em>,
+   but whether the "a" property comes before the "b" property or not is not important:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p itemprop="a">1&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+ &lt;p itemprop="b">test&lt;/p>
+&lt;/div></pre>
+
+   <p>Thus, the following is equivalent:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p itemprop="b">test&lt;/p>
+ &lt;p itemprop="a">1&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+&lt;/div></pre>
+
+   <p>As is the following:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p itemprop="a">1&lt;/p>
+ &lt;p itemprop="b">test&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+&lt;/div></pre>
+
+   <p>And the following:</p>
+
+   <pre>&lt;div id="x">
+ &lt;p itemprop="a">1&lt;/p>
+&lt;/div>
+&lt;div itemscope itemref="x">
+ &lt;p itemprop="b">test&lt;/p>
+ &lt;p itemprop="a">2&lt;/p>
+&lt;/div>
+</pre>
+
+  </div>
+
+
+
+  

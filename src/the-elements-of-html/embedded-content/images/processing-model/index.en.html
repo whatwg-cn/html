@@ -1,0 +1,129 @@
+<h5 id="images-processing-model">Processing model</h5>
+
+  <p>The <span>task source</span> for the <span data-x="concept-task">tasks</span> <span data-x="queue
+  a task">queued</span> by algorithms in this section is the <span>DOM manipulation task
+  source</span>.</p>
+
+  <hr>
+
+  <p>An <code>img</code> element has a <dfn>current request</dfn> and a <dfn>pending request</dfn>.
+  The <span>current request</span> is initially set to a new <span>image request</span>.
+  The <span>pending request</span> is initially set to null.
+  The <span>current request</span> is usually referred to as the <code>img</code> element itself.</p>
+
+  <p>An <dfn>image request</dfn> has a <dfn data-x="img-req-state">state</dfn>, <dfn data-x="img-req-url">current URL</dfn> and <dfn data-x="img-req-data">image data</dfn>.</p>
+
+  <p>An <span>image request</span>'s <span data-x="img-req-state">state</span> is one of the following:</p>
+
+  <dl>
+
+   <dt><dfn data-x="img-none">Unavailable</dfn></dt>
+   <dd>The user agent hasn't obtained any image data,
+   or has obtained some or all of the image data but
+   hasn't yet decoded enough of the image to get the image dimensions.</dd>
+
+   <dt><dfn data-x="img-inc">Partially available</dfn></dt>
+   <dd>The user agent has obtained some of the image data and at least the image dimensions are
+   available.</dd>
+
+   <dt><dfn data-x="img-all">Completely available</dfn></dt>
+   <dd>The user agent has obtained all of the image data and at least the image dimensions are
+   available.</dd>
+
+   <dt><dfn data-x="img-error">Broken</dfn></dt>
+   <dd>The user agent has obtained all of the image data that it can, but it cannot even decode the
+   image enough to get the image dimensions (e.g. the image is corrupted, or the format is not
+   supported, or no data could be obtained).</dd>
+
+  </dl>
+
+  <p>An <span>image request</span>'s <span data-x="img-req-url">current URL</span> is initially the empty string.</p>
+
+  <p>An <span>image request</span>'s <span data-x="img-req-data">image data</span> is the decoded image data.</p>
+
+  <p>When an <span>image request</span> is either in the <span data-x="img-inc">partially
+  available</span> state or in the <span data-x="img-all">completely available</span> state, it is
+  said to be <dfn data-x="img-available">available</dfn>.</p>
+
+  <p>When an <code>img</code> element is in the <span data-x="img-all">completely available</span>
+  state <em>and</em> the user agent can decode the media data without errors, then the
+  <code>img</code> element is said to be <dfn data-x="img-good">fully decodable</dfn>.</p>
+
+  <p>An <span>image request</span> is initially <span data-x="img-none">unavailable</span>.</p>
+
+  <p>When an <code>img</code> element is <span data-x="img-available">available</span>,
+  it provides a <span>paint source</span>
+  whose width is the image's <span data-x="density-corrected intrinsic width and height">density-corrected intrinsic width</span> (if any),
+  whose height is the image's <span data-x="density-corrected intrinsic width and height">density-corrected intrinsic height</span> (if any),
+  and whose appearance is the intrinsic appearance of the image.</p>
+
+  <hr>
+
+  <p>An <code>img</code> element is said to <dfn>use <code>srcset</code> or
+  <code>picture</code></dfn> if it has a <code data-x="attr-img-srcset">srcset</code> attribute
+  specified or if it has a parent that is a <code>picture</code> element.</p>
+
+  <hr>
+
+  <p>Each <code>img</code> element has a <dfn>last selected source</dfn>, which must initially be
+  null.</p>
+
+  <p>Each <span>image request</span> has a <dfn>current pixel density</dfn>, which must initially be undefined.</p>
+
+  <p>When an <code>img</code> element has a <span>current pixel density</span> that is not 1.0, the
+  element's image data must be treated as if its resolution, in device pixels per <span
+  data-x="'px'">CSS pixels</span>, was the <span>current pixel density</span>. The image's
+  <dfn>density-corrected intrinsic width and height</dfn> are the <span data-x="intrinsic
+  dimensions">intrinsic width and height</span> after taking into account the <span>current pixel
+  density</span>.</p>
+
+  <p class="example">For example, if the <span>current pixel density</span> is 3.125, that means
+  that there are 300 device pixels per <span data-x="'in'">CSS inch</span>, and thus if the image
+  data is 300x600, it has <span>intrinsic dimensions</span> of 96 <span data-x="'px'">CSS
+  pixels</span> by 192 <span data-x="'px'">CSS pixels</span>.</p>
+
+  <p>An <code>img</code> element is associated with a <span>source set</span>.</p>
+
+  <p>A <dfn>source set</dfn> is an ordered set of zero or more <span data-x="image source">image sources</span>
+  and a <span>source size</span>.</p>
+
+  <p>An <dfn>image source</dfn> is a <span>URL</span>, and optionally either a <span>pixel density
+  descriptor</span>, or a <span>width descriptor</span>.</p>
+
+  <p>A <dfn>source size</dfn> is a <span>&lt;source-size-value></span>.
+  When a <span>source size</span> has a unit relative to the <span>viewport</span>,
+  it must be interpreted relative to the <code>img</code> element's <span>node document</span>'s
+  <span>viewport</span>.
+  Other units must be interpreted the same as in Media Queries. <ref spec=MQ></p>
+
+  <hr>
+
+  <p>A <dfn data-x="concept-microsyntax-parse-error">parse error</dfn> for algorithms in this
+  section indicates a non-fatal mismatch between input and requirements. User agents are encouraged
+  to expose <span data-x="concept-microsyntax-parse-error">parse error</span>s somehow.</p>
+
+  <hr>
+
+  <p>Whether the image is fetched successfully or not (e.g. whether the response status was an
+  <span>ok status</span>) must be ignored when determining the image's type and whether it is a
+  valid image.</p>
+
+  <p class="note">This allows servers to return images with error responses, and have them
+  displayed.</p>
+
+  <p id="img-determine-type">The user agent should apply the <span data-x="Content-Type sniffing:
+  image">image sniffing rules</span> to determine the type of the image, with the image's <span
+  data-x="Content-Type">associated Content-Type headers</span> giving the <var>official
+  type</var>. If these rules are not applied, then the type of the image must be the type given by
+  the image's <span data-x="Content-Type">associated Content-Type headers</span>.</p>
+
+  <p>User agents must not support non-image resources with the <code>img</code> element (e.g. XML
+  files whose <span>document element</span> is an HTML element). User agents must not run executable
+  code (e.g. scripts) embedded in the image resource. User agents must only display the first page
+  of a multipage resource (e.g. a PDF file). User agents must not allow the resource to act in an
+  interactive fashion, but should honour any animation in the resource.</p>
+
+  <p>This specification does not specify which image types are to be supported.</p>
+
+
+  

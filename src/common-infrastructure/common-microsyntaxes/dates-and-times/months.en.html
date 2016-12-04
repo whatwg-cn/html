@@ -1,0 +1,72 @@
+<h5>Months</h5>
+
+  <p>A <dfn data-x="concept-month">month</dfn> consists of a specific <span>proleptic-Gregorian
+  date</span> with no time-zone information and no date information beyond a year and a month. <ref spec=GREGORIAN></p>
+
+  <p>A string is a <dfn>valid month string</dfn> representing a year <var>year</var> and
+  month <var>month</var> if it consists of the following components in the given order:</p>
+
+  <ol>
+
+   <li>Four or more <span>ASCII digits</span>, representing <var>year</var>, where <var>year</var>&nbsp;&gt;&nbsp;0</li>
+
+   <li>A U+002D HYPHEN-MINUS character (-)</li>
+
+   <li>Two <span>ASCII digits</span>, representing the month <var>month</var>, in the range
+   1&nbsp;&le;&nbsp;<var>month</var>&nbsp;&le;&nbsp;12</li>
+
+  </ol>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a month string</dfn> are as follows. This will return either a year and
+  month, or nothing. If at any point the algorithm says that it "fails", this means that it is
+  aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Parse a month component</span> to obtain <var>year</var> and <var>month</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the
+   end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Return <var>year</var> and <var>month</var>.</p></li>
+
+  </ol>
+
+  <p>The rules to <dfn>parse a month component</dfn>, given an <var>input</var> string and
+  a <var>position</var>, are as follows. This will return either a year and a month, or
+  nothing. If at any point the algorithm says that it "fails", this means that it is aborted at that
+  point and returns nothing.</p>
+
+  <ol>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not at least four characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>year</var>.</p></li>
+
+   <li><p>If <var>year</var> is not a number greater than zero, then fail.</p></li>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is not a U+002D HYPHEN-MINUS character, then fail.
+   Otherwise, move <var>position</var> forwards one character.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not exactly two characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>month</var>.</p></li>
+
+   <li><p>If <var>month</var> is not a number in the range 1&nbsp;&le;&nbsp;<var>month</var>&nbsp;&le;&nbsp;12, then fail.</p></li>
+
+   <li><p>Return <var>year</var> and <var>month</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

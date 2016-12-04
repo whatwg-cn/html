@@ -1,0 +1,102 @@
+<h5>Examples</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <div class="example">
+
+   <p>Here is a long example vCard for a fictional character called "Jack Bauer":</p>
+
+   <pre>&lt;section id="jack" itemscope itemtype="http://microformats.org/profile/hcard">
+ &lt;h1 itemprop="fn">
+  &lt;span itemprop="n" itemscope>
+   &lt;span itemprop="given-name">Jack&lt;/span>
+   &lt;span itemprop="family-name">Bauer&lt;/span>
+  &lt;/span>
+ &lt;/h1>
+ &lt;img itemprop="photo" alt="" src="jack-bauer.jpg">
+ &lt;p itemprop="org" itemscope>
+  &lt;span itemprop="organization-name">Counter-Terrorist Unit&lt;/span>
+  (&lt;span itemprop="organization-unit">Los Angeles Division&lt;/span>)
+ &lt;/p>
+ &lt;p>
+  &lt;span itemprop="adr" itemscope>
+   &lt;span itemprop="street-address">10201 W. Pico Blvd.&lt;/span>&lt;br>
+   &lt;span itemprop="locality">Los Angeles&lt;/span>,
+   &lt;span itemprop="region">CA&lt;/span>
+   &lt;span itemprop="postal-code">90064&lt;/span>&lt;br>
+   &lt;span itemprop="country-name">United States&lt;/span>&lt;br>
+  &lt;/span>
+  &lt;span itemprop="geo">34.052339;-118.410623&lt;/span>
+ &lt;/p>
+ &lt;h2>Assorted Contact Methods&lt;/h2>
+ &lt;ul>
+  &lt;li itemprop="tel" itemscope>
+   &lt;span itemprop="value">+1 (310) 597 3781&lt;/span> &lt;span itemprop="type">work&lt;/span>
+   &lt;meta itemprop="type" content="voice">
+  &lt;/li>
+  &lt;li>&lt;a itemprop="url" href="https://en.wikipedia.org/wiki/Jack_Bauer">I'm on Wikipedia&lt;/a>
+  so you can leave a message on my user talk page.&lt;/li>
+  &lt;li>&lt;a itemprop="url" href="http://www.jackbauerfacts.com/">Jack Bauer Facts&lt;/a>&lt;/li>
+  &lt;li itemprop="email">&lt;a href="mailto:j.bauer@la.ctu.gov.invalid">j.bauer@la.ctu.gov.invalid&lt;/a>&lt;/li>
+  &lt;li itemprop="tel" itemscope>
+   &lt;span itemprop="value">+1 (310) 555 3781&lt;/span> &lt;span>
+   &lt;meta itemprop="type" content="cell">mobile phone&lt;/span>
+  &lt;/li>
+ &lt;/ul>
+ &lt;ins datetime="2008-07-20 21:00:00+01:00">
+  &lt;meta itemprop="rev" content="2008-07-20 21:00:00+01:00">
+  &lt;p itemprop="tel" itemscope>&lt;strong>Update!&lt;/strong>
+  My new &lt;span itemprop="type">home&lt;/span> phone number is
+  &lt;span itemprop="value">01632 960 123&lt;/span>.&lt;/p>
+ &lt;/ins>
+&lt;/section></pre>
+
+   <p>The odd line wrapping is needed because newlines are meaningful in microdata: newlines would
+   be preserved in a conversion to, for example, the vCard format.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>This example shows a site's contact details (using the <code>address</code> element)
+   containing an address with two street components:</p>
+
+   <pre>&lt;address itemscope itemtype="http://microformats.org/profile/hcard">
+ &lt;strong itemprop="fn">&lt;span itemprop="n" itemscope>&lt;span itemprop="given-name">Alfred&lt;/span>
+ &lt;span itemprop="family-name">Person&lt;/span>&lt;/span>&lt;/strong> &lt;br>
+ &lt;span itemprop="adr" itemscope>
+  &lt;span itemprop="street-address">1600 Amphitheatre Parkway&lt;/span> &lt;br>
+  &lt;span itemprop="street-address">Building 43, Second Floor&lt;/span> &lt;br>
+  &lt;span itemprop="locality">Mountain View&lt;/span>,
+   &lt;span itemprop="region">CA&lt;/span> &lt;span itemprop="postal-code">94043&lt;/span>
+ &lt;/span>
+&lt;/address></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The vCard vocabulary can be used to just mark up people's names:</p>
+
+   <pre>&lt;span itemscope itemtype="http://microformats.org/profile/hcard"
+>&lt;span itemprop=fn>&lt;span itemprop="n" itemscope>&lt;span itemprop="given-name"
+>George&lt;/span> &lt;span itemprop="family-name">Washington&lt;/span>&lt;/span
+>&lt;/span>&lt;/span></pre>
+
+   <p>This creates a single item with a two name-value pairs, one with the name "fn" and the value
+   "George Washington", and the other with the name "n" and a second item as its value, the second
+   item having the two name-value pairs "given-name" and "family-name" with the values "George" and
+   "Washington" respectively. This is defined to map to the following vCard:</p>
+
+   <pre>BEGIN:VCARD
+PROFILE:VCARD
+VERSION:4.0
+SOURCE:<var>document's address</var>
+FN:George Washington
+N:Washington;George;;;
+END:VCARD</pre>
+
+  </div>
+
+
+  

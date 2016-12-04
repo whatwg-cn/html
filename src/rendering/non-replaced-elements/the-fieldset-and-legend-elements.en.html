@@ -1,0 +1,67 @@
+<h4>The <code>fieldset</code> and <code>legend</code> elements</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+fieldset {
+  display: block;
+  margin-inline-start: 2px;
+  margin-inline-end: 2px;
+  border: groove 2px ThreeDFace;
+  padding-block-start: 0.35em;
+  padding-inline-end: 0.625em;
+  padding-block-end: 0.75em;
+  padding-inline-start: 0.625em;
+  min-width: min-content;
+}
+
+legend {
+  padding-inline-start: 2px; padding-inline-end: 2px;
+}</pre>
+
+  <p>The <code>fieldset</code> element is expected to establish a new block formatting context.</p>
+
+  <p>If the <code>fieldset</code> element has a <span data-x="concept-tree-child">child</span> that
+  matches the conditions in the list below, then the first such child is the <code>fieldset</code>
+  element's <dfn>rendered legend</dfn>:</p>
+
+  <ul class="brief">
+
+   <li>The child is a <code>legend</code> element.</li>
+
+   <li>The child is not <span>out-of-flow</span> (e.g. not absolutely positioned or floated).</li>
+
+   <li>The child is generating a box (e.g. it is not 'display:none' or 'display:contents').</li>
+
+  </ul>
+
+  <p>A <code>fieldset</code> element's <span>rendered legend</span>, if any, is expected to be
+  rendered over the <span>block-start</span> <span>border edge</span> of the <code>fieldset</code>
+  element as a <span>block box</span> (overriding any explicit <span>'display'</span> value). In the
+  absence of an explicit <span>inline size</span>, the box should shrink-wrap. If the
+  <code>legend</code> element in question has an <code data-x="attr-legend-align">align</code>
+  attribute, and its value is an <span>ASCII case-insensitive</span> match for one of the strings in
+  the first column of the following table, then the <code>legend</code> is expected to be rendered
+  aligned in the inline direction over the <span>border edge</span> in the position given in the
+  corresponding cell on the same row in the second column. If the attribute is absent or has a value
+  that doesn't match any of the cases in the table, then the position is expected to be on the
+  <span>inline-start</span> side. <ref spec=CSSWM></p>
+
+  <table>
+   <thead>
+    <tr>
+     <th>Attribute value
+     <th>Alignment position
+   <tbody>
+    <tr>
+     <td><code data-x="">left</code>
+     <td>On the <span>line-left</span> side
+    <tr>
+     <td><code data-x="">right</code>
+     <td>On the <span>line-right</span> side
+    <tr>
+     <td><code data-x="">center</code>
+     <td>In the middle
+  </table>
+
+
+  

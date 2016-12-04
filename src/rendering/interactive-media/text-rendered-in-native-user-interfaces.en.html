@@ -1,0 +1,128 @@
+<h4>Text rendered in native user interfaces</h4>
+
+  <p>User agents are expected to honor the Unicode semantics of text that is exposed in user
+  interfaces, for example supporting the bidirectional algorithm in text shown in dialogs, title
+  bars, pop-up menus, and tooltips. Text from the contents of elements is expected to be rendered in
+  a manner that honors <span>the directionality</span> of the element from which the text was
+  obtained. Text from attributes is expected to be rendered in a manner that honours the
+  <span>directionality of the attribute</span>.</p>
+
+  <div class="example">
+
+   <p>Consider the following markup, which has Hebrew text asking for a programming language, the
+   languages being text for which a left-to-right direction is important given the punctuation in
+   some of their names:</p>
+
+   <pre>&lt;p dir="rtl" lang="he">
+ &lt;label>
+  <span data-x="" dir="rtl" lang="he">&#x5d1;&#x5d7;&#x5e8; &#x5e9;&#x5e4;&#x5ea; &#x5ea;&#x5db;&#x5e0;&#x5d5;&#x5ea;:</span>
+  &lt;select>
+   &lt;option dir="ltr">C++&lt;/option>
+   &lt;option dir="ltr">C#&lt;/option>
+   &lt;option dir="ltr">FreePascal&lt;/option>
+   &lt;option dir="ltr">F#&lt;/option>
+  &lt;/select>
+ &lt;/label>
+&lt;/p></pre>
+
+   <p>If the <code>select</code> element was rendered as a drop down box, a correct rendering would
+   ensure that the punctuation was the same both in the drop down, and in the box showing the
+   current selection.</p>
+
+   <p><img src="/images/bidiselect.png" width="206" height="105" alt=""></p> <!-- no need for alt
+   text, the previous paragraph describes it completely -->
+
+  </div>
+
+  <div class="example">
+
+   <p>The directionality of attributes depends on the attribute and on the element's <code
+   data-x="attr-dir">dir</code> attribute, as the following example demonstrates. Consider this
+   markup:</p>
+
+   <pre><bdo dir=ltr>&lt;table>
+ &lt;tr>
+  &lt;th abbr="(&#x05D0;" dir=ltr>A
+  &lt;th abbr="(&#x05D0;" dir=rtl>A
+  &lt;th abbr="(&#x05D0;" dir=auto>A
+&lt;/table></bdo></pre>
+
+   <p>If the <code data-x="attr-th-abbr">abbr</code> attributes are rendered, e.g. in a tooltip or
+   other user interface, the first will have a left parenthesis (because the direction is 'ltr'),
+   the second will have a right parenthesis (because the direction is 'rtl'), and the third will
+   have a right parenthesis (because the direction is determined <em>from the attribute value</em>
+   to be 'rtl').</p>
+
+   <p>However, if instead the attribute was not a <span>directionality-capable attribute</span>, the
+   results would be different:</p>
+
+   <pre><bdo dir=ltr>&lt;table>
+ &lt;tr>
+  &lt;th data-abbr="(&#x05D0;" dir=ltr>A
+  &lt;th data-abbr="(&#x05D0;" dir=rtl>A
+  &lt;th data-abbr="(&#x05D0;" dir=auto>A
+&lt;/table></bdo></pre>
+
+   <p>In this case, if the user agent were to expose the <code data-x="">data-abbr</code> attribute
+   in the user interface (e.g. in a debugging environment), the last case would be rendered with a
+   <em>left</em> parenthesis, because the direction would be determined from the element's
+   contents.</p>
+
+  </div>
+
+  <p>A string provided by a script (e.g. the argument to <code
+  data-x="dom-alert">window.alert()</code>) is expected to be treated as an independent set of one or
+  more bidirectional algorithm paragraphs when displayed, as defined by the bidirectional algorithm,
+  including, for instance, supporting the paragraph-breaking behavior of U+000A LINE FEED (LF)
+  characters. For the purposes of determining the paragraph level of such text in the bidirectional
+  algorithm, this specification does <em>not</em> provide a higher-level override of rules P2 and
+  P3. <ref spec=BIDI></p>
+
+  <p>When necessary, authors can enforce a particular direction for a given paragraph by starting it
+  with the Unicode U+200E LEFT-TO-RIGHT MARK or U+200F RIGHT-TO-LEFT MARK characters.</p>
+
+  <div class="example">
+
+   <p>Thus, the following script:</p>
+
+   <pre>alert('\u05DC\u05DE\u05D3 HTML \u05D4\u05D9\u05D5\u05DD!')</pre>
+
+   <p>...would always result in a message reading
+        "<bdo lang="" data-x="" dir=rtl>&#x05DC;&#x05DE;&#x05D3;&nbsp;LMTH&nbsp;&#x05D4;&#x05D9;&#x05D5;&#x05DD;!</bdo>"
+   (not "<bdo lang="" data-x="" dir=ltr>&#x05D3;&#x05DE;&#x05DC;&nbsp;HTML&nbsp;&#x05DD;&#x05D5;&#x05D9;&#x05D4;!</bdo>"),
+   regardless of the language of the user agent interface or the
+   direction of the page or any of its elements.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>For a more complex example, consider the following script:</p>
+
+   <pre class="bad">/* Warning: this script does not handle right-to-left scripts correctly */
+var s;
+if (s = prompt('What is your name?')) {
+  alert(s + '! Ok, Fred, ' + s + ', and Wilma will get the car.');
+}</pre>
+
+   <p>When the user enters "<kbd>Kitty</kbd>", the user agent would alert "<samp>Kitty! Ok, Fred,
+   Kitty, and Wilma will get the car.</samp>". However, if the user enters "<kbd dir="rtl"
+   lang="ar">&#x644;&#x627;&nbsp;&#x623;&#x641;&#x647;&#x645;</kbd>", then the bidirectional
+   algorithm will determine that the direction of the paragraph is right-to-left, and so the output
+   will be the following unintended mess: "<samp lang=""><bdo
+   dir="rtl">&#x644;&#x627;&nbsp;&#x623;&#x641;&#x647;&#x645;!&nbsp;derF&nbsp;,kO,&nbsp;&#x644;&#x627;&nbsp;&#x623;&#x641;&#x647;&#x645;,&nbsp;rac&nbsp;eht&nbsp;teg&nbsp;lliw&nbsp;amliW&nbsp;dna.</bdo></samp>"</p>
+
+   <p>To force an alert that starts with user-provided text (or other text of unknown
+   directionality) to render left-to-right, the string can be prefixed with a U+200E LEFT-TO-RIGHT
+   MARK character:</p>
+
+   <pre>var s;
+if (s = prompt('What is your name?')) {
+  alert('<strong>\u200E</strong>' + s + '! Ok, Fred, ' + s + ', and Wilma will get the car.');
+}</pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,58 @@
+<h4>Plugins</h4>
+
+  <p>The term <dfn>plugin</dfn> refers to a user-agent defined set of content handlers used by the
+  user agent that can take part in the user agent's rendering of a <code>Document</code> object, but
+  that neither act as <span data-x="child browsing context">child browsing contexts</span> of the
+  <code>Document</code> nor introduce any <code>Node</code> objects to the <code>Document</code>'s
+  DOM.</p>
+
+  <p>Typically such content handlers are provided by third parties, though a user agent can also
+  designate built-in content handlers as plugins.</p>
+
+  <div w-nodev>
+
+  <p>A user agent must not consider the types <code>text/plain</code> and
+  <code>application/octet-stream</code> as having a registered <span>plugin</span>.</p> <!-- because
+  of the way <object> elements handles those types, if nothing else (it also doesn't make any sense
+  to have a plugin registered for those types, of course) -->
+
+  </div>
+
+  <p class="example">One example of a plugin would be a PDF viewer that is instantiated in a
+  <span>browsing context</span> when the user navigates to a PDF file. This would count as a plugin
+  regardless of whether the party that implemented the PDF viewer component was the same as that
+  which implemented the user agent itself. However, a PDF viewer application that launches separate
+  from the user agent (as opposed to using the same interface) is not a plugin by this
+  definition.</p>
+
+  <p class="note">This specification does not define a mechanism for interacting with plugins, as it
+  is expected to be user-agent- and platform-specific. Some UAs might opt to support a plugin
+  mechanism such as the Netscape Plugin API; others might use remote content converters or have
+  built-in support for certain types. Indeed, this specification doesn't require user agents to
+  support plugins at all. <ref spec=NPAPI></p>
+
+  <p>A plugin can be <dfn data-x="concept-plugin-secure">secured</dfn> if it honors the semantics of
+  the <code data-x="attr-iframe-sandbox">sandbox</code> attribute.</p>
+
+  <p class="example">For example, a secured plugin would prevent its contents from creating pop-up
+  windows when the plugin is instantiated inside a sandboxed <code>iframe</code>.</p>
+
+  <div w-nodev>
+
+  <p class="warning">Browsers should take extreme care when interacting with external content
+  intended for <span data-x="plugin">plugins</span>. When third-party software is run with the same
+  privileges as the user agent itself, vulnerabilities in the third-party software become as
+  dangerous as those in the user agent.</p>
+
+  <p>Since different users having different sets of <span data-x="plugin">plugins</span> provides a
+  fingerprinting vector that increases the chances of users being uniquely identified, user agents
+  are encouraged to support the exact same set of <span data-x="plugin">plugins</span> for each
+  user.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  </div>
+
+
+
+  

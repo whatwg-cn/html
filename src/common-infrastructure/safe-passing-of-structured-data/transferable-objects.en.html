@@ -1,0 +1,35 @@
+<h4 data-export="" data-lt="transferable object"><dfn>Transferable objects</dfn></h4>
+
+  <p><span>Transferable objects</span> support being transferred across <span data-x="event
+  loop">event loops</span>. Transferring is effectively recreating the object while sharing a
+  reference to the underlying data and then detaching the object being transferred. This is useful
+  to transfer ownership of expensive resources. Not all objects are <span>transferable
+  objects</span> and not all aspects of objects that are <span>transferable objects</span> are
+  necessarily preserved when transferred.</p>
+
+  <p class="note">Transferring is an irreversible and non-idempotent operation. Once an object has
+  been transferred, it cannot be transferred, or indeed used, again.</p>
+
+  <p><span data-x="platform object">Platform objects</span> that are <span>transferable
+  objects</span> have a [[<dfn>Detached</dfn>]] internal slot and the following internal method:</p>
+
+  <p>[[<dfn>Transfer</dfn>]] ( <var>targetRealm</var> )</p>
+  <!-- If we ever add /memory/ support here we need to update the language around replacing
+       references -->
+
+  <p class="note">Whereas all <span data-x="platform object">platform objects</span> have a
+  [[<span>Clone</span>]] internal method, not all have a [[<span>Detached</span>]] internal slot and
+  a [[<span>Transfer</span>]] internal method.</p>
+
+  <p><span data-x="platform object">Platform objects</span> that are <span>transferable
+  objects</span> must define the [[<span>Transfer</span>]] internal method such that it either
+  throws an exception or returns a clone of <b>this</b>, created in <var>targetRealm</var>, with
+  <b>this</b>'s underlying data shared with the return value, and <b>this</b>'s
+  [[<span>Detached</span>]] internal slot value set to true. It is up to such objects to define what
+  transferring means for them.</p>
+
+  <p>Objects defined in the JavaScript specification are handled by the
+  <span>StructuredCloneWithTransfer</span> abstract operation directly. (Technically, by
+  <span>IsTransferable</span> and <span data-x="transfer-abstract-op">Transfer</span>.)</p>
+
+  

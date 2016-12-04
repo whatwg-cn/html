@@ -1,0 +1,23 @@
+<h5><dfn>Decimal character reference state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+    <dt><span data-x="ASCII digits">ASCII digit</span></dt>
+    <dd>Multiply the <var data-x="character reference code">character reference code</var> by 10.
+    Add a numeric version of the <span>current input character</span> (subtract 0x0030 from the
+    character's code point) to the <var data-x="character reference code">character reference
+    code</var>.</dd>
+
+    <dt>U+003B SEMICOLON</dt>
+    <dd>Switch to the <span>numeric character reference end state</span>.</dd>
+
+    <dt>Anything else</dt>
+    <dd><span>Parse error</span>. <span>Reconsume</span> in the <span>numeric character reference
+    end state</span>.</dd>
+
+  </dl>
+
+
+  

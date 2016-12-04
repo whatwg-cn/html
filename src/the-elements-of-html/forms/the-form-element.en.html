@@ -1,0 +1,408 @@
+<h4 data-dfn-type="element" data-lt="form">The <dfn><code>form</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no <code>form</code> element descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-form-accept-charset">accept-charset</code></dd>
+   <dd><code data-x="attr-fs-action">action</code></dd>
+   <dd><code data-x="attr-form-autocomplete">autocomplete</code></dd>
+   <dd><code data-x="attr-fs-enctype">enctype</code></dd>
+   <dd><code data-x="attr-fs-method">method</code></dd>
+   <dd><code data-x="attr-form-name">name</code></dd>
+   <dd><code data-x="attr-fs-novalidate">novalidate</code></dd>
+   <dd><code data-x="attr-fs-target">target</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[OverrideBuiltins, LegacyUnenumerableNamedProperties, <span>HTMLConstructor</span>]
+interface <dfn>HTMLFormElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-form-acceptCharset">acceptCharset</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-fs-action">action</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-form-autocomplete">autocomplete</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-enctype">enctype</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-encoding">encoding</span>;<!-- historical artefact -->
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-method">method</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-form-name">name</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fs-noValidate">noValidate</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-target">target</span>;
+
+  [SameObject] readonly attribute <span>HTMLFormControlsCollection</span> <span data-x="dom-form-elements">elements</span>;
+  readonly attribute unsigned long <span data-x="dom-form-length">length</span>;
+  <a href="#dom-form-item">getter</a> <span>Element</span> (unsigned long index);
+  <a href="#dom-form-nameditem">getter</a> (<span>RadioNodeList</span> or <span>Element</span>) (DOMString name);
+
+  void <span data-x="dom-form-submit">submit</span>();
+  [<span>CEReactions</span>] void <span data-x="dom-form-reset">reset</span>();
+  boolean <span data-x="dom-form-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-form-reportValidity">reportValidity</span>();
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>form</code> element <span>represents</span> a collection of <span
+  data-x="form-associated element">form-associated elements</span>, some of which can represent
+  editable values that can be submitted to a server for processing.</p>
+
+  <p>The <dfn><code data-x="attr-form-accept-charset">accept-charset</code></dfn> attribute gives the
+  character encodings that are to be used for the submission. If specified, the value must be an
+  <span>ordered set of unique space-separated tokens</span> that are <span>ASCII
+  case-insensitive</span>, and each token must be an <span>ASCII case-insensitive</span> match for
+  one of the <span data-x="encoding label">labels</span> of an <span>ASCII-compatible
+  encoding</span>. <ref spec=ENCODING></p>
+
+  <p>The <dfn><code data-x="attr-form-name">name</code></dfn> attribute represents the
+  <code>form</code>'s name within the <code data-x="dom-document-forms">forms</code> collection. The
+  value must not be the empty string, and the value must be unique amongst the <code>form</code>
+  elements in the <code data-x="dom-document-forms">forms</code> collection that it is in, if
+  any.</p>
+
+  <p>The <dfn><code data-x="attr-form-autocomplete">autocomplete</code></dfn> attribute is an
+  <span>enumerated attribute</span>. The attribute has two states. The <dfn><code
+  data-x="attr-form-autocomplete-on">on</code></dfn> keyword maps to the <dfn
+  data-x="attr-form-autocomplete-on-state">on</dfn> state, and the <dfn><code
+  data-x="attr-form-autocomplete-off">off</code></dfn> keyword maps to the <dfn
+  data-x="attr-form-autocomplete-off-state">off</dfn> state. The attribute may also be omitted. The
+  <i data-x="missing value default">missing value default</i> is the <span
+  data-x="attr-form-autocomplete-on-state">on</span> state. The <span
+  data-x="attr-form-autocomplete-off-state">off</span> state indicates that by default, form
+  controls in the form will have their <span>autofill field name</span> set to "<code
+  data-x="attr-fe-autocomplete-off">off</code>"; the <span
+  data-x="attr-form-autocomplete-on-state">on</span> state indicates that by default, form controls
+  in the form will have their <span>autofill field name</span> set to "<code
+  data-x="attr-fe-autocomplete-on">on</code>".</p>
+
+  <p>The <code data-x="attr-fs-action">action</code>, <code data-x="attr-fs-enctype">enctype</code>,
+  <code data-x="attr-fs-method">method</code>, <code data-x="attr-fs-novalidate">novalidate</code>,
+  and <code data-x="attr-fs-target">target</code> attributes are <span>attributes for form
+  submission</span>.</p>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>form</var> . <code subdfn data-x="dom-form-elements">elements</code></dt>
+
+   <dd>
+
+    <p>Returns an <code>HTMLFormControlsCollection</code> of the form controls in the form (excluding image
+    buttons for historical reasons).</p>
+
+   </dd>
+
+   <dt><var>form</var> . <code subdfn data-x="dom-form-length">length</code></dt>
+
+   <dd>
+
+    <p>Returns the number of form controls in the form (excluding image buttons for historical
+    reasons).</p>
+
+   </dd>
+
+   <dt><var>form</var>[<var>index</var>]</dt>
+
+   <dd>
+
+    <p>Returns the <var>index</var>th element in the form (excluding image buttons for
+    historical reasons).</p>
+
+   </dd>
+
+   <dt><var>form</var>[<var>name</var>]</dt>
+
+   <dd>
+
+    <p>Returns the form control (or, if there are several, a <code>RadioNodeList</code> of the form
+    controls) in the form with the given <span data-x="concept-id">ID</span> or <code
+    data-x="attr-fe-name">name</code> (excluding image buttons for historical reasons); or, if there
+    are none, returns the <code>img</code> element with the given ID.</p>
+
+    <p>Once an element has been referenced using a particular name, that name will continue being
+    available as a way to reference that element in this method, even if the element's actual <span
+    data-x="concept-id">ID</span> or <code data-x="attr-fe-name">name</code> changes, for as long as
+    the element remains in the <span>tree</span>.</p>
+
+    <p>If there are multiple matching items, then a <code>RadioNodeList</code> object containing all
+    those elements is returned.</p>
+
+   </dd>
+
+   <dt><var>form</var> . <code subdfn data-x="dom-form-submit">submit</code>()</dt>
+
+   <dd>
+
+    <p>Submits the form.</p>
+
+   </dd>
+
+   <dt><var>form</var> . <code subdfn data-x="dom-form-reset">reset</code>()</dt>
+
+   <dd>
+
+    <p>Resets the form.</p>
+
+   </dd>
+
+   <dt><var>form</var> . <code subdfn data-x="dom-form-checkValidity">checkValidity</code>()</dt>
+
+   <dd>
+
+    <p>Returns true if the form's controls are all valid; otherwise, returns false.</p>
+
+   </dd>
+
+   <dt><var>form</var> . <code subdfn data-x="dom-form-reportValidity">reportValidity</code>()</dt>
+
+   <dd>
+
+    <p>Returns true if the form's controls are all valid; otherwise, returns false and informs the user.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-form-autocomplete">autocomplete</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name, <span>limited to only known
+  values</span>.</p>
+
+  <p>The <dfn><code data-x="dom-form-name">name</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-form-acceptCharset">acceptCharset</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-form-accept-charset">accept-charset</code> content
+  attribute.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-form-elements">elements</code></dfn> IDL attribute must return an
+  <code>HTMLFormControlsCollection</code> rooted at the <code>form</code> element, whose filter
+  matches <span data-x="category-listed">listed elements</span> whose <span>form owner</span> is the
+  <code>form</code> element, with the exception of <code>input</code> elements whose <code
+  data-x="attr-input-type">type</code> attribute is in the <span
+  data-x="attr-input-type-image">Image Button</span> state, which must, for historical reasons, be
+  excluded from this particular collection.</p>
+
+  <p>The <dfn><code data-x="dom-form-length">length</code></dfn> IDL attribute must return the number
+  of nodes <span data-x="represented by the collection">represented</span> by the <code
+  data-x="dom-form-elements">elements</code> collection.</p>
+
+  <p>The <span>supported property indices</span> at any instant are the indices supported by the
+  object returned by the <code data-x="dom-form-elements">elements</code> attribute at that
+  instant.</p>
+
+  <p id="dom-form-item">To <span>determine the value of an indexed property</span> for a
+  <code>form</code> element, the user agent must return the value returned by the <code
+  data-x="dom-HTMLCollection-item">item</code> method on the <code
+  data-x="dom-form-elements">elements</code> collection, when invoked with the given index as its
+  argument.</p>
+
+  <hr>
+
+  <!-- Welcome to crazy town. Population: The Web. -->
+
+  <p>Each <code>form</code> element has a mapping of names to elements called the <dfn>past names
+  map</dfn>. It is used to persist names of controls even when they change names.</p>
+
+  <p>The <span>supported property names</span> consist of the names obtained from the following
+  algorithm, in the order obtained from this algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>sourced names</var> be an initially empty ordered list of tuples
+   consisting of a string, an element, a source, where the source is either <i>id</i>, <i>name</i>,
+   or <i>past</i>, and, if the source is <i>past</i>, an age.</p></li>
+
+   <li>
+
+    <p>For each <span data-x="category-listed">listed element</span> <var>candidate</var>
+    whose <span>form owner</span> is the <code>form</code> element, with the exception of any
+    <code>input</code> elements whose <code data-x="attr-input-type">type</code> attribute is in the
+    <span data-x="attr-input-type-image">Image Button</span> state, run these substeps:</p>
+
+    <ol>
+
+     <li><p>If <var>candidate</var> has an <code data-x="attr-id">id</code> attribute, add
+     an entry to <var>sourced names</var> with that <code data-x="attr-id">id</code>
+     attribute's value as the string, <var>candidate</var> as the element, and <i>id</i> as
+     the source.</p></li>
+
+     <li><p>If <var>candidate</var> has a <code data-x="attr-fe-name">name</code> attribute,
+     add an entry to <var>sourced names</var> with that <code
+     data-x="attr-fe-name">name</code> attribute's value as the string, <var>candidate</var>
+     as the element, and <i>name</i> as the source.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>For each <code>img</code> element <var>candidate</var> whose <span>form owner</span>
+    is the <code>form</code> element, run these substeps:</p>
+
+    <ol><!-- this is the same as the above list, except 'name' xrefs to something different -->
+
+     <li><p>If <var>candidate</var> has an <code data-x="attr-id">id</code> attribute, add
+     an entry to <var>sourced names</var> with that <code data-x="attr-id">id</code>
+     attribute's value as the string, <var>candidate</var> as the element, and <i>id</i> as
+     the source.</p></li>
+
+     <li><p>If <var>candidate</var> has a <code data-x="attr-img-name">name</code> attribute,
+     add an entry to <var>sourced names</var> with that <code
+     data-x="attr-img-name">name</code> attribute's value as the string, <var>candidate</var>
+     as the element, and <i>name</i> as the source.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>For each entry <var>past entry</var> in the <span>past names map</span> add an entry
+    to <var>sourced names</var> with the <var>past entry</var>'s name as the
+    string, <var>past entry</var>'s element as the element, <i>past</i> as the source, and
+    the length of time <var>past entry</var> has been in the <span>past names map</span> as
+    the age.</p>
+
+   </li>
+
+   <li><p>Sort <var>sourced names</var> by <span>tree order</span> of the element entry of
+   each tuple, sorting entries with the same element by putting entries whose source is <i>id</i>
+   first, then entries whose source is <i>name</i>, and finally entries whose source is <i>past</i>,
+   and sorting entries with the same element and source by their age, oldest first.</p></li>
+
+   <li><p>Remove any entries in <var>sourced names</var> that have the empty string as
+   their name.</p></li>
+
+   <li><p>Remove any entries in <var>sourced names</var> that have the same name as an
+   earlier entry in the map.</p></li>
+
+   <li><p>Return the list of names from <var>sourced names</var>, maintaining their
+   relative order.</p></li>
+
+  </ol>
+
+  <p id="dom-form-nameditem">To <span>determine the value of a named property</span> <var>name</var>
+  for a <code>form</code> element, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>candidates</var> be a <span>live</span> <code>RadioNodeList</code> object
+   containing all the <span data-x="category-listed">listed elements</span>, whose <span>form
+   owner</span> is the <code>form</code> element, that have either an <code
+   data-x="attr-id">id</code> attribute or a <code data-x="attr-fe-name">name</code> attribute equal
+   to <var>name</var>, with the exception of <code>input</code> elements whose <code
+   data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-image">Image Button</span> state, in <span>tree order</span>.</p></li>
+
+   <!-- we return RadioNodeList here for consistency -->
+   <li><p>If <var>candidates</var> is empty, let <var>candidates</var> be a <span>live</span>
+   <code>RadioNodeList</code> object containing all the <code>img</code> elements, whose <span>form
+   owner</span> is the <code>form</code> element, that have either an <code
+   data-x="attr-id">id</code> attribute or a <code data-x="attr-img-name">name</code> attribute
+   equal to <var>name</var>, in <span>tree order</span>.</p></li>
+
+   <li><p>If <var>candidates</var> is empty, <var>name</var> is the name of one of
+   the entries in the <code>form</code> element's <span>past names map</span>: return the object
+   associated with <var>name</var> in that map.</p></li>
+
+   <li><p>If <var>candidates</var> contains more than one node, return <var>candidates</var> and abort these steps.</p></li>
+
+   <li><p>Otherwise, <var>candidates</var> contains exactly one node. Add a mapping from
+   <var>name</var> to the node in <var>candidates</var> in the <code>form</code>
+   element's <span>past names map</span>, replacing the previous entry with the same name, if
+   any.</p></li>
+
+   <li><p>Return the node in <var>candidates</var>.</p></li>
+
+  </ol>
+
+  <p>If an element listed in a <code>form</code> element's <span>past names map</span> changes
+  <span>form owner</span>, then its entries must be removed from that map.</p>
+
+  <!--
+    This ridiculous setup is intended to do as much of the right thing while still supporting code
+    written to work in IE7. IE versions prior to IE8 do not update the names on the <form> element
+    collection to match new names when elements are renamed, and there are enough pages that rename
+    elements and then access them by their old name that we have to support this.
+
+    But we still want to expose them using the new names, so as far as possible we pretend the
+    legacy names aren't there except if there's no other element actually named that way.
+
+    Removing the element did remove the legacy name in IE7:
+    https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C!DOCTYPE%20html%3E...%3Cform%20action%3D%22%2F%22%3E%3Cinput%20name%3Dsubmit%3E%3C%2Fform%3E%0A%3Cscript%3E%0A%20w(document.forms%5B0%5D.submit)%3B%0A%20w(document.forms%5B0%5D.removeChild(document.getElementsByTagName('input')%5B0%5D))%3B%0A%20w(document.forms%5B0%5D.length)%3B%0A%20try%20%7B%20document.forms%5B0%5D.submit()%3B%20%7D%20catch%20(e)%20%20%7B%20w(e.message)%20%7D%0A%3C%2Fscript%3E
+
+    There's no interop on what happens when the name was originally a duplicate name, so we don't
+    persist such accesses - at the time of writing, Safari returned the first element, Firefox
+    returned null (as we do), and IE7 returned the original collection:
+    https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C!DOCTYPE%20html%3E...%3Cform%20action%3D%22%2F%22%3E%3Cinput%20name%3Da%20id%3Dfirst%3E%3Cinput%20name%3Da%20id%3Dsecond%3E%3C%2Fform%3E%0A%3Cscript%3E%0A%20w%28document.forms[0].a%29%3B%0A%20document.getElementsByTagName%28%27input%27%29[0].name%20%3D%20%27b%27%3B%0A%20document.getElementsByTagName%28%27input%27%29[1].name%20%3D%20%27b%27%3B%0A%20w%28document.forms[0].length%29%3B%0A%20w%28document.forms[0].a.id%29%3B%0A%3C%2Fscript%3E
+
+    In addition, the <img> fallback nonsense is similarly here for legacy reasons. As is the
+    exclusion of <input type=image>.
+
+    Also, check these out:
+    https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1220
+    https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2388
+
+  -->
+
+  <!-- Now leaving crazy town. -->
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-form-submit">submit()</code></dfn> method, when invoked, must <span
+  data-x="concept-form-submit">submit</span> the <code>form</code> element from the <code>form</code>
+  element itself, with the <var>submitted from <code
+  data-x="dom-form-submit">submit()</code> method</var> flag set.</p>
+
+  <p>The <dfn><code data-x="dom-form-reset">reset()</code></dfn> method, when invoked, must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>form</code> element is marked as <i data-x="locked for reset">locked for reset</i>, then abort these
+   steps.</p></li>
+
+   <li><p>Mark the <code>form</code> element as <dfn>locked for reset</dfn>.</p></li>
+
+   <li><p><span data-x="concept-form-reset">Reset</span> the <code>form</code> element.</p></li>
+
+   <li><p>Unmark the <code>form</code> element as <i data-x="locked for reset">locked for reset</i>.</p></li>
+
+  </ol>
+
+  <p>If the <dfn><code data-x="dom-form-checkValidity">checkValidity()</code></dfn> method is
+  invoked, the user agent must <span>statically validate the constraints</span> of the
+  <code>form</code> element, and return true if the constraint validation return a <i>positive</i>
+  result, and false if it returned a <i>negative</i> result.</p>
+
+  <p>If the <dfn><code data-x="dom-form-reportValidity">reportValidity()</code></dfn> method is
+  invoked, the user agent must <span>interactively validate the constraints</span> of the
+  <code>form</code> element, and return true if the constraint validation return a <i>positive</i>
+  result, and false if it returned a <i>negative</i> result.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>This example shows two search forms:</p>
+
+   <pre>&lt;form action="https://www.google.com/search" method="get">
+ &lt;label>Google: &lt;input type="search" name="q">&lt;/label> &lt;input type="submit" value="Search...">
+&lt;/form>
+&lt;form action="https://www.bing.com/search" method="get">
+ &lt;label>Bing: &lt;input type="search" name="q">&lt;/label> &lt;input type="submit" value="Search...">
+&lt;/form></pre>
+
+  </div>
+
+
+
+  

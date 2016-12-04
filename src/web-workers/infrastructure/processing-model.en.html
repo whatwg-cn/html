@@ -1,0 +1,315 @@
+<h4 id="worker-processing-model"><span id="processing-model-10"></span>Processing model</h4>
+
+  <p>When a user agent is to <dfn data-export="">run a worker</dfn> for a script with
+  <code>Worker</code> or <code>SharedWorker</code> object <var>worker</var>, <span>URL</span>
+  <var>url</var>, <span>environment settings object</span> <var>outside settings</var>,
+  <code>MessagePort</code> <var>outside port</var>, a <code>WorkerOptions</code> dictionary
+  <var>options</var>, and an optional string <var>name</var>, it must run the following steps.
+  (<var>name</var> is always provided when <var>worker</var> is a <code>SharedWorker</code>.)</p>
+
+  <ol>
+
+   <li id="worker-processing-model-top">
+
+    <p>Create a separate parallel execution environment (i.e. a separate thread or process or
+    equivalent construct), and run the rest of these steps in that context.</p>
+
+    <p>For the purposes of timing APIs, this is the <dfn data-export="">official moment of
+    creation</dfn> of the worker.</p>
+
+   </li>
+
+   <li><p>Let <var>is shared</var> be true if <var>worker</var> is a <code>SharedWorker</code>
+   object, and false otherwise.</p></li>
+
+   <li><p>Let <var>docs</var> be the <span>list of relevant <code>Document</code> objects to
+   add</span> given <var>outside settings</var>.</p></li>
+
+   <li><p>Let <var>parent worker global scope</var> be null.</p>
+
+   <li><p>If <var>outside settings</var>'s <span data-x="concept-settings-object-global">global
+   object</span> is a <code>WorkerGlobalScope</code> object (i.e. we are creating a nested worker),
+   set <var>parent worker global scope</var> to <var>outside settings</var>'s <span
+   data-x="concept-settings-object-global">global object</span>.</p></li>
+
+   <li>
+    <p>Call the JavaScript <span
+    data-x="js-InitializeHostDefinedRealm">InitializeHostDefinedRealm()</span> abstract
+    operation with the following customizations:</p>
+
+    <ul>
+     <li><p>For the global object, if <var>is shared</var> is true, create a new
+     <code>SharedWorkerGlobalScope</code> object. Otherwise, create a new
+     <code>DedicatedWorkerGlobalScope</code> object. Let <var>worker global scope</var> be the
+     created object.</p></li>
+
+     <li><p>Let <var>realm execution context</var> be the created <span>JavaScript execution
+     context</span>.</p></li>
+    </ul>
+   </li>
+
+   <li><p><span>Set up a worker environment settings object</span> with <var>realm execution
+   context</var> and <var>outside settings</var>, and let <var>inside settings</var> be the
+   result.</p></li>
+
+   <li>
+    <p>If <var>is shared</var> is true, then:</p>
+
+    <ol>
+     <li><p>Set <var>worker global scope</var>'s <span
+     data-x="concept-SharedWorkerGlobalScope-constructor-origin">constructor origin</span> to
+     <var>outside settings</var>'s <span
+     data-x="concept-settings-object-origin">origin</span>.</p></li>
+
+     <li><p>Set <var>worker global scope</var>'s <span
+     data-x="concept-SharedWorkerGlobalScope-constructor-url">constructor url</span> to
+     <var>url</var>.</p></li>
+
+     <li><p>Set <var>worker global scope</var>'s <span
+     data-x="concept-SharedWorkerGlobalScope-name">name</span> to <var>name</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Let <var>destination</var> be "<code data-x="">sharedworker</code>" if <var>is
+   shared</var> is true, and "<code data-x="">worker</code>" otherwise.</p></li>
+
+   <li>
+    <p>Obtain <var>script</var> by switching on the value of <var>options</var>'s <code
+    data-x="">type</code> member:</p>
+
+    <dl class="switch">
+     <dt>"<code data-x="">classic</code>"</dt>
+     <dd><span>Fetch a classic worker script</span> given <var>url</var>, <var>outside
+     settings</var>, <var>destination</var>, and <var>inside settings</var>.</dd>
+
+     <dt>"<code data-x="">module</code>"</dt>
+     <dd><span>Fetch a module worker script graph</span> given <var>url</var>, <var>outside
+     settings</var>, <var>destination</var>, the value of the <code data-x="">credentials</code>
+     member of <var>options</var>, and <var>inside settings</var>.</dd>
+    </dl>
+
+    <p>In both cases, to <span data-x="fetching-scripts-perform-fetch">perform the fetch</span>
+    given <var>request</var>, perform the following steps if the <var
+    data-x="fetching-scripts-is-top-level">is top-level</var> flag is set:</p>
+
+    <ol>
+     <li>Set <var>request</var>'s <span data-x="concept-request-reserved-client">reserved
+     client</span> to <var>inside settings</var>.</li>
+
+     <li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>, and asynchronously wait
+     to run the remaining steps as part of fetch's <span>process response</span> for the <span
+     data-x="concept-response">response</span> <var>response</var>.</p></li>
+
+     <li><p>Set <var>worker global scope</var>'s <span
+     data-x="concept-WorkerGlobalScope-url">url</span> to <var>response</var>'s <span
+     data-x="concept-response-url">url</span>.</p></li>
+
+     <li><p>Set <var>worker global scope</var>'s <span
+     data-x="concept-WorkerGlobalScope-https-state">HTTPS state</span> to <var>response</var>'s
+     <span data-x="concept-response-https-state">HTTPS state</span>.</p></li>
+
+     <li><p>Set <var>worker global scope</var>'s <span
+     data-x="concept-WorkerGlobalScope-referrer-policy">referrer policy</span> to the result of
+     <span data-x="parse-referrer-policy-header">parsing the `<code>Referrer-Policy</code>`
+     header</span> of <var>response</var>.</p></li>
+
+     <li><p>Execute the <span>Initialize a <code data-x="">global object</code>'s CSP list</span>
+     algorithm on <var>worker global scope</var> and <var>response</var>. <ref spec="CSP"></p></li>
+
+     <li><p>Asynchronously complete the <span data-x="fetching-scripts-perform-fetch">perform the
+     fetch</span> steps with <var>response</var>.</p></li>
+    </ol>
+
+    <p>If the algorithm asynchronously completes with null, <span>queue a task</span> to <span
+    data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+    at <var>worker</var>, and abort these steps. Otherwise, continue the rest of these steps after
+    the algorithm's asynchronous completion, with <var>script</var> being the asynchronous
+    completion value.</p>
+   </li>
+
+   <li><p>Associate <var>worker</var> with <var>worker global scope</var>.</p></li>
+
+   <li><p><span>Create a new <code>MessagePort</code> object</span> whose <span
+   data-x="concept-port-owner">owner</span> is <var>inside settings</var>. Let <var>inside
+   port</var> be this new object.</p></li>
+
+   <li><p>Associate <var>inside port</var> with <var>worker global scope</var>.</p></li>
+
+   <li><p><span>Entangle</span> <var>outside port</var> and <var>inside port</var>.</p></li>
+
+   <li><p><span data-x="add a document to the worker's Documents">Add to <var>worker global
+   scope</var>'s list of <span>the worker's <code>Document</code>s</span></span> the
+   <code>Document</code> objects in <var>docs</var>.</p></li>
+
+   <li><p>If <var>parent worker global scope</var> is not null, add <var>worker global scope</var>
+   to the list of <span>the worker's workers</span> of <var>parent worker global
+   scope</var>.</p></li>
+
+   <li><p>Set <var>worker global scope</var>'s <span
+   data-x="concept-WorkerGlobalScope-type">type</span> to the value of the <code
+   data-x="">type</code> member of <var>options</var>.</p></li>
+
+   <li><p>If <var>is shared</var> is true, and there are any <span data-x="relevant application
+   cache">relevant application caches</span> that are identified by a manifest URL with the
+   <span>same origin</span> as <var>url</var> and that have <var>url</var> as one of their
+   entries, <em>not</em> excluding entries marked as <span
+   data-x="concept-appcache-foreign">foreign</span>, then associate <var>worker global scope</var>
+   with the <span data-x="concept-appcache-selection">most appropriate application cache</span> of
+   those that match.</p></li>
+
+   <li><p>Create a new <code>WorkerLocation</code> object and associate it with <var>worker global
+   scope</var>.</p>
+
+   <li>
+
+    <p><strong>Closing orphan workers</strong>: Start monitoring the worker such that no sooner than
+    it stops being a <span>protected worker</span>, and no later than it stops being a
+    <span>permissible worker</span>, <var>worker global scope</var>'s <span
+    data-x="dom-WorkerGlobalScope-closing">closing</span> flag is set to true.</p>
+
+   </li>
+
+   <li>
+
+    <p><strong>Suspending workers</strong>: Start monitoring the worker, such that whenever
+    <var>worker global scope</var>'s <span data-x="dom-WorkerGlobalScope-closing">closing</span>
+    flag is false and the worker is a <span>suspendable worker</span>, the user agent suspends
+    execution of script in that worker until such time as either the <span
+    data-x="dom-WorkerGlobalScope-closing">closing</span> flag switches to true or the worker stops
+    being a <span>suspendable worker</span>.</p>
+
+   </li>
+
+   <li><p>Set <var>inside settings</var>'s <span
+   data-x="concept-environment-execution-ready-flag">execution ready flag</span>.</p></li>
+
+   <!-- SCRIPT EXEC -->
+
+   <li>
+    <p>If <var>script</var> is a <span>classic script</span>, then <span data-x="run a classic
+    script">run the classic script</span> <var>script</var>. Otherwise, it is a <span>module
+    script</span>; <span data-x="run a module script">run the module script</span>
+    <var>script</var>.</p>
+
+    <p class="note">In addition to the usual possibilities of returning a value or failing due to
+    an exception, this could be <span data-x="abort a running script">prematurely aborted</span> by
+    the "<span>kill a worker</span>" or "<span>terminate a worker</span>" algorithms defined
+    below.</p>
+   </li>
+
+   <li><p>Enable <var>outside port</var>'s <span>port message queue</span>.</p></li>
+
+   <li><p>If <var>is shared</var> is false, enable the <span>port message queue</span>
+   of the worker's implicit port.</p></li>
+
+   <li><p>If <var>is shared</var> is true, then <span>queue a task</span>, using the <span>DOM
+   manipulation task source</span>, to <span data-x="concept-event-fire">fire an event</span> named
+   <code data-x="event-WorkerGlobalScope-connect">connect</code> at <var>worker global scope</var>,
+   using <code>MessageEvent</code>, with the <code data-x="dom-MessageEvent-data">data</code>
+   attribute initialized to the empty string, the <code data-x="dom-MessageEvent-ports">ports</code>
+   attribute initialized to a new <span>frozen array</span> containing <var>inside port</var>, and
+   the <code data-x="dom-MessageEvent-source">source</code> attribute initialized to <var>inside
+   port</var>.</p></li>
+
+   <li><p>Enable the <span data-x="dfn-client-message-queue">client message queue</span> of the
+   <code>ServiceWorkerContainer</code> object whose associated <span
+   data-x="serviceworkercontainer-service-worker-client">service worker client</span> is
+   <var>worker global scope</var>'s <span>relevant settings object</span>.</p></li>
+
+   <li>
+
+    <p><strong>Event loop<!-- labeled for ease of discussion --></strong>: Run the <span>responsible
+    event loop</span> specified by <var>inside settings</var> until it is destroyed.</p>
+
+    <p class="note">The handling of events or the execution of callbacks by <span
+    data-x="concept-task">tasks</span> run by the <span>event loop</span> might get <span
+    data-x="abort a running script">prematurely aborted</span> by the "<span>kill a worker</span>"
+    or "<span>terminate a worker</span>" algorithms defined below.</p>
+
+    <p class="note">The worker processing model remains on this step until the event loop is
+    destroyed, which happens after the <span data-x="dom-WorkerGlobalScope-closing">closing</span>
+    flag is set to true, as described in the <span>event loop</span> processing model.</p>
+
+   </li>
+
+   <li>
+
+    <p>Empty the <var>worker global scope</var>'s <span>list of active timers</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Disentangle all the ports in the list of <span>the worker's ports</span>.</p>
+
+   </li>
+
+   <li>
+
+    <!-- this has no normative impact but makes it clearer that the worker is irrelevant now, and
+    doesn't have to survive until its Documents all die off too --> <p>Empty the worker's list of
+    <span>the worker's <code>Document</code>s</span>.</p>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>When a user agent is to <dfn data-export="">kill a worker</dfn> it must run the following steps
+  <span>in parallel</span> with the worker's main loop (the "<span>run a worker</span>" processing
+  model defined above):</p>
+
+  <ol>
+
+   <li><p>Set the worker's <code>WorkerGlobalScope</code> object's <span
+   data-x="dom-WorkerGlobalScope-closing">closing</span> flag to true.</p></li>
+
+   <li><p>If there are any <span data-x="concept-task">tasks</span> queued in the
+   <code>WorkerGlobalScope</code> object's <span>event loop</span>'s <span data-x="task queue">task
+   queues</span>, discard them without processing them.</p></li>
+
+   <li><p>Wait a user-agent-defined amount of time.</p></li>
+
+   <li><p><span data-x="abort a running script">Abort the script</span> currently running in the
+   worker.</p></li>
+
+  </ol>
+
+  <p>User agents may invoke the "<span>kill a worker</span>" processing model on a worker at any
+  time, e.g. in response to user requests, in response to CPU quota management, or when a worker
+  stops being an <span>active needed worker</span> if the worker continues executing even after its
+  <span data-x="dom-WorkerGlobalScope-closing">closing</span> flag was set to true.</p>
+
+  <hr>
+
+  <p>When a user agent is to <dfn data-export="">terminate a worker</dfn> it must run the following
+  steps <span>in parallel</span> with the worker's main loop (the "<span>run a worker</span>"
+  processing model defined above):</p>
+
+  <ol>
+
+   <li><p>Set the worker's <code>WorkerGlobalScope</code> object's <span
+   data-x="dom-WorkerGlobalScope-closing">closing</span> flag to true.</p></li>
+
+   <li><p>If there are any <span data-x="concept-task">tasks</span> queued in the
+   <code>WorkerGlobalScope</code> object's <span>event loop</span>'s <span data-x="task queue">task
+   queues</span>, discard them without processing them.</p></li>
+
+   <li><p><span data-x="abort a running script">Abort the script</span> currently running in the
+   worker.</p></li>
+
+   <li><p>If the worker's <code>WorkerGlobalScope</code> object is actually a
+   <code>DedicatedWorkerGlobalScope</code> object (i.e. the worker is a dedicated worker), then
+   empty the <span>port message queue</span> of the port that the worker's implicit port is
+   entangled with.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <span>task source</span> for the tasks mentioned above is the <span>DOM manipulation task
+  source</span>.</p>
+
+
+  

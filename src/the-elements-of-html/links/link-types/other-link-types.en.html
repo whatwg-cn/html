@@ -1,0 +1,175 @@
+<h5>Other link types</h5>
+
+  <p><dfn data-x="concept-rel-extensions">Extensions to the predefined set of link types</dfn> may be
+  registered in the <a
+  href="http://microformats.org/wiki/existing-rel-values#HTML5_link_type_extensions">microformats
+  wiki existing-rel-values page</a>. <ref spec=MFREL></p>
+
+  <p>Anyone is free to edit the <span data-x="">microformats wiki existing-rel-values page</span> at
+  any time to add a type. Extension types must be specified with the following information:</p>
+
+  <dl>
+
+   <dt>Keyword</dt>
+
+   <dd>
+
+    <p>The actual value being defined. The value should not be confusingly similar to any other
+    defined value (e.g. differing only in case).</p>
+
+    <p>If the value contains a U+003A COLON character (:), it must also be an <span>absolute
+    URL</span>.</p>
+
+   </dd>
+
+
+   <dt>Effect on... <code>link</code></dt>
+
+   <dd>
+
+    <p>One of the following:</p>
+
+    <dl>
+
+     <dt>Not allowed</dt>
+
+     <dd>The keyword must not be specified on <code>link</code> elements.</dd>
+
+     <dt>Hyperlink</dt>
+
+     <dd>The keyword may be specified on a <code>link</code> element; it creates a
+     <span>hyperlink</span>.</dd>
+
+     <dt>External Resource</dt>
+
+     <dd>The keyword may be specified on a <code>link</code> element; it creates an <span>external
+     resource link</span>.</dd>
+
+    </dl>
+
+   </dd>
+
+
+   <dt>Effect on... <code>a</code> and <code>area</code></dt>
+
+   <dd>
+
+    <p>One of the following:</p>
+
+    <dl>
+
+     <dt>Not allowed</dt>
+
+     <dd>The keyword must not be specified on <code>a</code> and <code>area</code> elements.</dd>
+
+     <dt>Hyperlink</dt>
+
+     <dd>The keyword may be specified on <code>a</code> and <code>area</code> elements; it creates a
+     <span>hyperlink</span>.</dd>
+
+     <dt>External Resource</dt>
+
+     <dd>The keyword may be specified on <code>a</code> and <code>area</code> elements; it creates
+     an <span>external resource link</span>.</dd>
+
+     <dt>Hyperlink Annotation</dt>
+
+     <dd>The keyword may be specified on <code>a</code> and <code>area</code> elements; it <span
+     data-x="hyperlink annotation">annotates</span> other <span data-x="hyperlink">hyperlinks</span>
+     created by the element.</dd>
+
+    </dl>
+
+   </dd>
+
+
+   <dt>Brief description</dt>
+
+   <dd><p>A short non-normative description of what the keyword's meaning is.</p></dd>
+
+
+   <dt>Specification</dt>
+
+   <dd><p>A link to a more detailed description of the keyword's semantics and requirements. It
+   could be another page on the Wiki, or a link to an external page.</p></dd>
+
+
+   <dt>Synonyms</dt>
+
+   <dd><p>A list of other keyword values that have exactly the same processing requirements. Authors
+   should not use the values defined to be synonyms, they are only intended to allow user agents to
+   support legacy content. Anyone may remove synonyms that are not used in practice; only names that
+   need to be processed as synonyms for compatibility with legacy content are to be registered in
+   this way.</p></dd>
+
+
+   <dt>Status</dt>
+
+   <dd>
+
+    <p>One of the following:</p>
+
+    <dl>
+
+     <dt>Proposed</dt>
+
+     <dd>The keyword has not received wide peer review and approval. Someone has proposed it and is,
+     or soon will be, using it.</dd>
+
+     <dt>Ratified</dt>
+
+     <dd>The keyword has received wide peer review and approval. It has a specification that
+     unambiguously defines how to handle pages that use the keyword, including when they use it in
+     incorrect ways.</dd>
+
+     <dt>Discontinued</dt>
+
+     <dd>The keyword has received wide peer review and it has been found wanting. Existing pages are
+     using this keyword, but new pages should avoid it. The "brief description" and "specification"
+     entries will give details of what authors should use instead, if anything.</dd>
+
+    </dl>
+
+    <p>If a keyword is found to be redundant with existing values, it should be removed and listed
+    as a synonym for the existing value.</p>
+
+    <p>If a keyword is registered in the "proposed" state for a period of a month or more without
+    being used or specified, then it may be removed from the registry.</p>
+
+    <p>If a keyword is added with the "proposed" status and found to be redundant with existing
+    values, it should be removed and listed as a synonym for the existing value. If a keyword is
+    added with the "proposed" status and found to be harmful, then it should be changed to
+    "discontinued" status.</p>
+
+    <p>Anyone can change the status at any time, but should only do so in accordance with the
+    definitions above.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Conformance checkers must use the information given on the <span data-x="">microformats wiki
+  existing-rel-values page</span> to establish if a value is allowed or not: values defined in this
+  specification or marked as "proposed" or "ratified" must be accepted when used on the elements for
+  which they apply as described in the "Effect on..." field, whereas values marked as "discontinued"
+  or not listed in either this specification or on the aforementioned page must be rejected as
+  invalid. Conformance checkers may cache this information (e.g. for performance reasons or to avoid
+  the use of unreliable network connectivity).</p>
+
+  <p>When an author uses a new type not defined by either this specification or the Wiki page,
+  conformance checkers should offer to add the value to the Wiki, with the details described above,
+  with the "proposed" status.</p>
+
+  </div>
+
+  <p>Types defined as extensions in the <a
+  href="http://microformats.org/wiki/existing-rel-values#HTML5_link_type_extensions">microformats
+  wiki existing-rel-values page</a> with the status "proposed" or "ratified" may be used with the
+  <code data-x="">rel</code> attribute on <code>link</code>, <code>a</code>, and <code>area</code>
+  elements in accordance to the "Effect on..." field. <ref spec=MFREL></p>
+
+
+
+  

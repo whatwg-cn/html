@@ -1,0 +1,27 @@
+<h5>Worker used for background I/O</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>In this example, the main document uses two workers, one for fetching stock updates at regular
+  intervals, and one for performing search queries that the user requests.</p>
+
+  <p>The main page is as follows:</p>
+
+  <pre>EXAMPLE workers/stocks/page.html</pre>
+
+  <p>The two workers use a common library for performing the actual network calls. This library is
+  as follows:</p>
+
+  <pre>EXAMPLE workers/stocks/io.js</pre>
+
+  <p>The stock updater worker is as follows:</p>
+
+  <pre>EXAMPLE workers/stocks/ticker.js</pre>
+
+  <p>The search query worker is as follows:</p>
+
+  <pre>EXAMPLE workers/stocks/searcher.js</pre>
+
+  <p><a href="/demos/workers/stocks/page.html">View this example online</a>.</p>
+
+  

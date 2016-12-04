@@ -1,0 +1,36 @@
+<h3 id="html-vs-xhtml">HTML vs XML syntax</h3>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>This specification defines an abstract language for describing documents and applications, and
+  some APIs for interacting with in-memory representations of resources that use this language.</p>
+
+  <p>The in-memory representation is known as "DOM HTML", or "the DOM" for short.</p>
+
+  <p>There are various concrete syntaxes that can be used to transmit resources that use this
+  abstract language, two of which are defined in this specification.</p>
+
+  <p>The first such concrete syntax is the HTML syntax. This is the format suggested for most
+  authors. It is compatible with most legacy Web browsers. If a document is transmitted with the
+  <code>text/html</code> <span>MIME type</span>, then it will be processed as an HTML document by
+  Web browsers. This specification defines the latest HTML syntax, known simply as "HTML".</p>
+
+  <p>The second concrete syntax is XML. When a document is transmitted with an <span>XML MIME
+  type</span>, such as <code>application/xhtml+xml</code>, then it is treated as an XML document by
+  Web browsers, to be parsed by an XML processor. Authors are reminded that the processing for XML
+  and HTML differs; in particular, even minor syntax errors will prevent a document labeled as XML
+  from being rendered fully, whereas they would be ignored in the HTML syntax.</p>
+
+  <p class="note">The XML syntax for HTML was formerly referred to as "XHTML", but this
+  specification does not use that term (among other reasons, because no such term is used for the
+  HTML syntaxes of MathML and SVG).</p>
+
+  <p>The DOM, the HTML syntax, and the XML syntax cannot all represent the same content. For
+  example, namespaces cannot be represented using the HTML syntax, but they are supported in the DOM
+  and in the XML syntax. Similarly, documents that use the <code>noscript</code> feature can be
+  represented using the HTML syntax, but cannot be represented with the DOM or in the XML syntax.
+  Comments that contain the string "<code data-x="">--&gt;</code>" can only be represented in the
+  DOM, not in the HTML and XML syntaxes.</p>
+
+
+  

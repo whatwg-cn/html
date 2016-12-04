@@ -1,0 +1,59 @@
+<h4>The <dfn><code>i</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>i</code> element <span>represents</span> a span of text in an alternate voice or
+  mood, or otherwise offset from the normal prose in a manner indicating a different quality of
+  text, such as a taxonomic designation, a technical term, an idiomatic phrase from another
+  language, transliteration, a thought, or a ship name in Western texts.</p>
+
+  <p>Terms in languages different from the main text should be annotated with <code
+  data-x="attr-lang">lang</code> attributes (or, in XML, <span data-x="attr-xml-lang"><code
+  data-x="">lang</code> attributes in the <span>XML namespace</span></span>).</p>
+
+  <div class="example">
+   <p>The examples below show uses of the <code>i</code> element:</p>
+   <pre>&lt;p>The &lt;i class="taxonomy">Felis silvestris catus&lt;/i> is cute.&lt;/p>
+&lt;p>The term &lt;i>prose content&lt;/i> is defined above.&lt;/p>
+&lt;p>There is a certain &lt;i lang="fr">je ne sais quoi&lt;/i> in the air.&lt;/p></pre>
+   <p>In the following example, a dream sequence is marked up using
+   <code>i</code> elements.</p>
+   <pre>&lt;p>Raymond tried to sleep.&lt;/p>
+&lt;p>&lt;i>The ship sailed away on Thursday&lt;/i>, he
+dreamt. &lt;i>The ship had many people aboard, including a beautiful
+princess called Carey. He watched her, day-in, day-out, hoping she
+would notice him, but she never did.&lt;/i>&lt;/p>
+&lt;p>&lt;i>Finally one night he picked up the courage to speak with
+her&mdash;&lt;/i>&lt;/p>
+&lt;p>Raymond woke with a start as the fire alarm rang out.&lt;/p></pre>
+  </div>
+
+  <p>Authors can use the <code data-x="attr-class">class</code> attribute on the <code>i</code>
+  element to identify why the element is being used, so that if the style of a particular use (e.g.
+  dream sequences as opposed to taxonomic terms) is to be changed at a later date, the author
+  doesn't have to go through the entire document (or series of related documents) annotating each
+  use.</p>
+
+  <p>Authors are encouraged to consider whether other elements might be more applicable than the
+  <code>i</code> element, for instance the <code>em</code> element for marking up stress emphasis,
+  or the <code>dfn</code> element to mark up the defining instance of a term.</p>
+
+  <p class="note">Style sheets can be used to format <code>i</code> elements, just like any other
+  element can be restyled. Thus, it is not the case that content in <code>i</code> elements will
+  necessarily be italicized.</p>
+
+
+  

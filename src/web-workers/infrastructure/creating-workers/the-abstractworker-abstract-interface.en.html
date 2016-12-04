@@ -1,0 +1,21 @@
+<h5>The <code>AbstractWorker</code> abstract interface</h5>
+
+  <pre class="idl">[NoInterfaceObject, Exposed=(Window,Worker)]
+interface <dfn>AbstractWorker</dfn> {
+  attribute <span>EventHandler</span> <span data-x="handler-AbstractWorker-onerror">onerror</span>;
+};</pre>
+
+  <p>The following are the <span>event handlers</span> (and their
+  corresponding <span data-x="event handler event type">event handler
+  event types</span>) that must be supported, as <span>event handler IDL attributes</span>, by
+  objects implementing the <code>AbstractWorker</code> interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-AbstractWorker-onerror">onerror</code></dfn> <td> <code data-x="event-error">error</code>
+  </table>
+
+
+  

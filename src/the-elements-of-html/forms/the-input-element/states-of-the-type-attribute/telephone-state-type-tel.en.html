@@ -1,0 +1,103 @@
+<h6><dfn data-x="attr-input-type-tel">Telephone</dfn> state (<code data-x="">type=tel</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-tel">Telephone</span> state, the rules in this section apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a control for editing a telephone number
+  given in the element's <span data-x="concept-fe-value">value</span>.</p>
+
+  <div w-nodev>
+
+  <p>If the element is <i data-x="concept-fe-mutable">mutable</i>, its <span
+  data-x="concept-fe-value">value</span> should be editable by the user. User agents may change the
+  spacing and, with care, the punctuation of <span data-x="concept-fe-value">values</span> that the
+  user enters. User agents must not allow users to insert U+000A LINE FEED (LF) or U+000D CARRIAGE
+  RETURN (CR) characters into the element's <span data-x="concept-fe-value">value</span>.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-input-value">value</code> attribute, if specified, must have a value that
+  contains no U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters.</p>
+
+  <div w-nodev>
+
+  <p><strong>The <span>value sanitization algorithm</span> is as follows</strong>: <span>Strip line
+  breaks</span> from the <span data-x="concept-fe-value">value</span>.</p>
+
+  </div>
+
+  <p class="note">Unlike the <span data-x="attr-input-type-url">URL</span> and <span
+  data-x="attr-input-type-email">E-mail</span> types, the <span
+  data-x="attr-input-type-tel">Telephone</span> type does not enforce a particular syntax. This is
+  intentional; in practice, telephone number fields tend to be free-form fields, because there are a
+  wide variety of valid phone numbers. Systems that need to enforce a particular format are
+  encouraged to use the <code data-x="attr-input-pattern">pattern</code> attribute or the <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> method to hook into the client-side
+  validation mechanism.</p>
+
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content
+   attributes, IDL attributes, and methods <span data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code data-x="attr-input-list">list</code>,
+   <code data-x="attr-input-maxlength">maxlength</code>,
+   <code data-x="attr-input-minlength">minlength</code>,
+   <code data-x="attr-input-pattern">pattern</code>,
+   <code data-x="attr-input-placeholder">placeholder</code>,
+   <code data-x="attr-input-readonly">readonly</code>,
+   <code data-x="attr-input-required">required</code>, and
+   <code data-x="attr-input-size">size</code> content attributes;
+   <code data-x="dom-input-list">list</code>,
+   <code data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code data-x="dom-textarea/input-selectionDirection">selectionDirection</code>, and
+   <code data-x="dom-input-value">value</code> IDL attributes;
+   <code data-x="dom-textarea/input-select">select()</code>,
+   <code data-x="dom-textarea/input-setRangeText">setRangeText()</code>, and
+   <code data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code> methods.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is
+   in mode <span data-x="dom-input-value-value">value</span>.</p>
+
+   <p>The <code data-x="event-input">input</code> and <code
+   data-x="event-change">change</code> events <span data-x="concept-input-apply">apply</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not
+   apply</span> to the element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-max">max</code>,
+   <code class="no-backref" data-x="attr-input-min">min</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>,
+   <code class="no-backref" data-x="attr-input-step">step</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code class="no-backref" data-x="dom-input-stepDown">stepDown()</code> and
+   <code class="no-backref" data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+  </div>
+
+
+  

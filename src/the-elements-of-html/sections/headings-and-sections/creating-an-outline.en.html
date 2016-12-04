@@ -1,0 +1,446 @@
+<h5 id="outlines">Creating an outline</h5>
+
+  <div w-nodev>
+
+  <!-- v2 idea: It would be nice if there was a way to use this to autogenerate a table of contents
+  or some such -->
+
+  <p>This section defines an algorithm for creating an outline for a <span>sectioning content</span>
+  element or a <span>sectioning root</span> element. It is defined in terms of a walk over the nodes
+  of a DOM tree, in <span>tree order</span>, with each node being visited when it is <i>entered</i> and when it
+  is <i>exited</i> during the walk.</p>
+
+  </div>
+
+  <p>The <dfn>outline</dfn> for a <span>sectioning content</span> element or a <span>sectioning
+  root</span> element consists of a list of one or more potentially nested <span
+  data-x="concept-section">sections</span>. The element for which an <span>outline</span> is created
+  is said to be <dfn>the outline's owner</dfn>.</p>
+
+  <p>A <dfn data-x="concept-section">section</dfn> is a container that corresponds to some nodes in
+  the original DOM tree. Each section can have one heading associated with it, and can contain any
+  number of further nested sections. <span w-nodev>The algorithm for the outline also
+  associates each node in the DOM tree with a particular section and potentially a heading.</span>
+  (The sections in the outline aren't <code>section</code> elements, though some may correspond to
+  such elements &mdash; they are merely conceptual sections.)</p>
+
+  <div class="example">
+
+   <p>The following markup fragment:</p>
+
+   <pre>&lt;body>
+  &lt;hgroup id="document-title">
+    &lt;h1>HTML&lt;/h1>
+    &lt;h2>Living Standard — Last Updated 12 August 2016&lt;/h2>
+  &lt;/hgroup>
+  &lt;p>Some intro to the document.&lt;/p>
+  &lt;h2>Table of contents&lt;/h2>
+  &lt;ol id=toc>...&lt;/ol>
+  &lt;h2>First section&lt;/h2>
+  &lt;p>Some intro to the first section.&lt;/p>
+&lt;/body></pre>
+
+   <p>...results in the following outline being created for the <code>body</code> node (and thus the
+   entire document):</p>
+
+   <ol class="brief">
+    <li>
+     <p><strong>Section created for <code>body</code> node</strong>.</p>
+     <p>Associated with heading <code data-x="">&lt;hgroup
+     id="document-title">...&lt;/hgroup></code> consisting of primary heading <code
+     data-x="">&lt;h1>HTML&lt;/h1></code> and secondary heading <code data-x="">&lt;h2>Living
+     Standard — Last Updated 12 August 2016&lt;/h2></code>.</p>
+     <p>Also associated with the paragraph <code data-x="">&lt;p>Some intro to the
+     document.&lt;/p></code> (though it likely would not be shown in a rendered view of the
+     outline).</p>
+     <p>Nested sections:</p>
+     <ol class="brief">
+      <li>
+       <p><strong>Section implied for first <code>h2</code> element.</strong></p>
+       <p>Associated with heading <code data-x="">&lt;h2>Table of contents&lt;/h2></code>.</p>
+       <p>Also associated with the ordered list <code data-x="">&lt;ol id=toc>...&lt;/ol></code>
+       (though it likely would not be shown in a rendered view of the outline).</p>
+       <p>No nested sections.</p>
+      </li>
+      <li>
+       <p><strong>Section implied for second <code>h2</code> element.</strong></p>
+       <p>Associated with heading <code data-x="">&lt;h2>First section&lt;/h2></code>.</p>
+       <p>Also associated with the paragraph <code data-x="">&lt;p>Some intro to the first
+       section.&lt;/p></code> (though it likely would not be shown in a rendered view of the
+       outline).</p>
+       <p>No nested sections.</p>
+      </li>
+     </ol>
+    </li>
+   </ol>
+
+   <p>The following image shows what a rendered view of the outline might look like.</p>
+
+   <p><img src="/images/outline.svg" width="465" height="120" alt="Top-level section with the
+   multi-level heading &quot;HTML: Living Standard — Last Updated 12 August 2016&quot; and two
+   subsections; &quot;Table of contents&quot; and &quot;First section&quot;."></p>
+  </div>
+
+  <div w-nodev>
+
+  <p>The algorithm that must be followed during a walk of a DOM subtree rooted at a <span>sectioning
+  content</span> element or a <span>sectioning root</span> element to determine that element's
+  <span>outline</span> is as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>current outline target</var> be null. (It holds the element whose
+   <span>outline</span> is being created.)</p></li>
+
+   <li><p>Let <var>current section</var> be null. (It holds a pointer to a <span
+   data-x="concept-section">section</span>, so that elements in the DOM can all be associated with a
+   section.)</p></li>
+
+   <li><p>Create a stack to hold elements, which is used to handle nesting. Initialize this stack to
+   empty.</p></li>
+
+   <li>
+
+    <p>Walk over the DOM in <span>tree order</span>, starting with the <span>sectioning
+    content</span> element or <span>sectioning root</span> element at the root of the subtree for
+    which an outline is to be created, and trigger the first relevant step below for each element as
+    the walk enters and exits it.</p>
+
+    <dl class="switch">
+
+     <dt>When exiting an element, if that element is the element at the top of the stack</dt>
+
+     <dd>
+
+      <p class="note">The element being exited is a <span>heading content</span> element or an
+      element with a <code data-x="attr-hidden">hidden</code> attribute.</p>
+
+      <p>Pop that element from the stack.</p>
+
+     </dd>
+
+
+     <dt>If the top of the stack is a <span>heading content</span> element or an element with a
+     <code data-x="attr-hidden">hidden</code> attribute</dt>
+
+     <dd><p>Do nothing.</p></dd>
+
+
+     <dt>When entering an element with a <code data-x="attr-hidden">hidden</code> attribute</dt>
+
+     <dd>
+
+      <p>Push the element being entered onto the stack. (This causes the algorithm to skip that
+      element and any descendants of the element.)</p>
+
+     </dd>
+
+
+     <dt>When entering a <span>sectioning content</span> element</dt>
+
+     <dd>
+
+      <p>Run these steps:</p>
+
+      <ol>
+
+       <li>
+
+        <p>If <var>current outline target</var> is not null, run these substeps:</p>
+
+        <ol>
+
+         <li><p>If the <var>current section</var> has no heading, create an implied
+         heading and let that be the heading for the <var>current section</var>.</p></li>
+
+         <li><p>Push <var>current outline target</var> onto the stack.</p></li>
+
+        </ol>
+
+       </li>
+
+       <li><p>Let <var>current outline target</var> be the element that is being
+       entered.</p></li>
+
+       <li><p>Let <var>current section</var> be a newly created <span
+       data-x="concept-section">section</span> for the <var>current outline target</var>
+       element.</p></li>
+
+       <li><p>Associate <var>current outline target</var> with <var>current
+       section</var>.</p></li>
+
+       <li><p>Let there be a new <span>outline</span> for the new <var>current outline
+       target</var>, initialized with just the new <var>current section</var> as the only
+       <span data-x="concept-section">section</span> in the outline.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt>When exiting a <span>sectioning content</span> element, if the stack is not empty</dt>
+
+     <dd>
+
+      <p>Run these steps:</p>
+
+      <ol>
+
+       <li><p>If the <var>current section</var> has no heading, create an implied heading
+       and let that be the heading for the <var>current section</var>.</p></li>
+
+       <li><p>Pop the top element from the stack, and let the <var>current outline
+       target</var> be that element.</p></li>
+
+       <li><p>Let <var>current section</var> be the last section in the
+       <span>outline</span> of the <var>current outline target</var> element.</p></li>
+
+       <li><p>Append the <span>outline</span> of the <span>sectioning content</span> element being
+       exited to the <var>current section</var>. (This does not change which section is
+       the last section in the <span>outline</span>.)</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt>When entering a <span>sectioning root</span> element</dt>
+
+     <dd>
+
+      <p>Run these steps:</p>
+
+      <ol>
+
+       <li><p>If <var>current outline target</var> is not null, push <var>current outline target</var> onto the stack.</p></li>
+
+       <li><p>Let <var>current outline target</var> be the element that is being
+       entered.</p></li>
+
+       <li><p>Let <var>current outline target</var>'s <i>parent section</i> be <var>current section</var>.</p></li>
+
+       <li><p>Let <var>current section</var> be a newly created <span
+       data-x="concept-section">section</span> for the <var>current outline target</var>
+       element.</p></li>
+
+       <li><p>Let there be a new <span>outline</span> for the new <var>current outline
+       target</var>, initialized with just the new <var>current section</var> as the only
+       <span data-x="concept-section">section</span> in the outline.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt>When exiting a <span>sectioning root</span> element, if the stack is not empty</dt>
+
+     <dd>
+
+      <p>Run these steps:</p>
+
+      <ol>
+
+       <li><p>If the <var>current section</var> has no heading, create an implied heading
+       and let that be the heading for the <var>current section</var>.</p></li>
+
+       <li><p>Let <var>current section</var> be <var>current outline
+       target</var>'s <i>parent section</i>.</p></li>
+
+       <li><p>Pop the top element from the stack, and let the <var>current outline
+       target</var> be that element.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt>When exiting a <span>sectioning content</span> element or a <span>sectioning root</span>
+     element (when the stack is empty)</dt>
+
+     <dd>
+
+      <p class="note">The <var>current outline target</var> is the element being exited,
+      and it is the <span>sectioning content</span> element or a <span>sectioning root</span>
+      element at the root of the subtree for which an outline is being generated.</p>
+
+      <p>If the <var>current section</var> has no heading, create an implied heading and
+      let that be the heading for the <var>current section</var>.</p>
+
+      <p>Skip to the next step in the overall set of steps. (The walk is over.)</p>
+
+     </dd>
+
+
+     <dt>When entering a <span>heading content</span> element</dt>
+
+     <dd>
+
+      <p>If the <var>current section</var> has no heading, let the element being entered be
+      the heading for the <var>current section</var>.</p>
+
+      <p class="note">If the element being entered is an <code>hgroup</code> element, that
+      <code>hgroup</code> as a whole is a <em>multi-level</em> heading for the <var>current
+      section</var>, with the highest-<span data-x="rank">ranked</span>
+      <code>h1</code>&ndash;<code>h6</code> descendant of the <code>hgroup</code> providing the
+      primary heading for the <var>current section</var>, and with other
+      <code>h1</code>&ndash;<code>h6</code> descendants of the <code>hgroup</code> providing
+      secondary headings for the <var>current section</var>.</p>
+
+      <p>Otherwise, if the element being entered has a <span>rank</span> equal to or higher than the
+      heading of the last section of the <span>outline</span> of the <var>current outline
+      target</var>, or if the heading of the last section of the <span>outline</span> of the <var>current outline target</var> is an implied heading, then create a new <span
+      data-x="concept-section">section</span> and append it to the <span>outline</span> of the <var>current outline target</var> element, so that this new section is the new last
+      section of that outline. Let <var>current section</var> be that new section. Let the
+      element being entered be the new heading for the <var>current section</var>.</p>
+
+      <p>Otherwise, run these substeps:</p>
+
+      <ol>
+
+       <li><p>Let <var>candidate section</var> be <var>current
+       section</var>.</p></li>
+
+       <li><p><i>Heading loop</i>: If the element being entered has a <span>rank</span> lower than
+       the <span>rank</span> of the heading of the <var>candidate section</var><!-- the
+       first time through, it won't be, but maybe on a subsequent pass it is -->, then create a new
+       <span data-x="concept-section">section</span>, and append it to <var>candidate
+       section</var>. (This does not change which section is the last section in the outline.) Let
+       <var>current section</var> be this new section. Let the element being entered be the
+       new heading for the <var>current section</var>. Abort these substeps.</p>
+
+       <li><p>Let <var>new candidate section</var> be the <span
+       data-x="concept-section">section</span> that contains <var>candidate section</var> in
+       the <span>outline</span> of <var>current outline target</var>.</p></li>
+
+       <li><p>Let <var>candidate section</var> be <var>new candidate
+       section</var>.</p></li>
+
+       <li><p>Return to the step labeled <i>heading loop</i>.</p></li>
+
+      </ol>
+
+      <p>Push the element being entered onto the stack. (This causes the algorithm to skip any
+      descendants of the element.)</p>
+
+      <p class="note">Recall that <code>h1</code> has the <em>highest</em> rank, and <code>h6</code>
+      has the lowest rank.</p>
+
+     </dd>
+
+
+     <dt>Otherwise</dt>
+
+     <dd><p>Do nothing.</p></dd>
+
+    </dl>
+
+    <p id="associatedSection">In addition, whenever the walk exits a node, after doing the steps
+    above, if the node is not associated with a <span data-x="concept-section">section</span> yet,
+    associate the node with the <span data-x="concept-section">section</span> <var>current
+    section</var>.</p>
+
+   </li>
+
+   <li><p>Associate all non-element nodes that are in the subtree for which an outline is being
+   created with the <span data-x="concept-section">section</span> with which their parent element is
+   associated.</p></li>
+
+   <li><p>Associate all nodes in the subtree with the heading of the <span
+   data-x="concept-section">section</span> with which they are associated, if any.</p></li>
+
+  </ol>
+
+  <p>The tree of sections created by the algorithm above, or a proper subset thereof, must be used
+  when generating document outlines, for example when generating tables of contents.</p>
+
+  <p>The outline created for <span>the body element</span> of a <code>Document</code> is the
+  <span>outline</span> of the entire document.</p>
+
+  <p>When creating an interactive table of contents, entries should jump the user to the relevant
+  <span>sectioning content</span> element, if the <span data-x="concept-section">section</span> was
+  created for a real element in the original document, or to the relevant <span>heading
+  content</span> element, if the <span data-x="concept-section">section</span> in the tree was
+  generated for a heading in the above process.</p>
+
+  <p class="note">Selecting the first <span data-x="concept-section">section</span> of the document
+  therefore always takes the user to the top of the document, regardless of where the first heading
+  in the <code>body</code> is to be found.</p>
+
+  <p>The <dfn>outline depth</dfn> of a <span>heading content</span> element associated with a <span
+  data-x="concept-section">section</span> <var>section</var> is the number of <span
+  data-x="concept-section">sections</span> that are ancestors of <var>section</var> in the
+  outermost <span>outline</span> that <var>section</var> finds itself in when the <span
+  data-x="outline">outlines</span> of its <code>Document</code>'s elements are created, plus 1. The
+  <span>outline depth</span> of a <span>heading content</span> element not associated with a <span
+  data-x="concept-section">section</span> is 1.</p>
+
+  <p>User agents should provide default headings for sections that do not have explicit section
+  headings.</p>
+
+  <div class="example">
+
+   <p>Consider the following snippet:</p>
+
+   <pre>&lt;body>
+ &lt;nav>
+  &lt;p>&lt;a href="/">Home&lt;/a>&lt;/p>
+ &lt;/nav>
+ &lt;p>Hello world.&lt;/p>
+ &lt;aside>
+  &lt;p>My cat is cute.&lt;/p>
+ &lt;/aside>
+&lt;/body></pre>
+
+   <p>Although it contains no headings, this snippet has three sections: a document (the
+   <code>body</code>) with two subsections (a <code>nav</code> and an <code>aside</code>). A user
+   agent could present the outline as follows:</p>
+
+   <ol class="brief">
+    <li>Untitled document
+     <ol>
+      <li>Navigation</li>
+      <li>Sidebar</li>
+     </ol>
+    </li>
+   </ol>
+
+   <p>These default headings ("Untitled document", "Navigation", "Sidebar") are not specified by
+   this specification, and might vary with the user's language, the page's language, the user's
+   preferences, the user agent implementor's preferences, etc.</p>
+
+  </div>
+
+  <div class="note">
+
+   <p>The following JavaScript function shows how the tree walk could be implemented. The <var>root</var> argument is the root of the tree to walk (either a <span>sectioning
+   content</span> element or a <span>sectioning root</span> element), and the <var>enter</var> and <var>exit</var> arguments are callbacks that are called with
+   the nodes as they are entered and exited. <ref spec=JAVASCRIPT></p>
+
+   <pre>function (root, enter, exit) {
+  var node = root;
+  start: while (node) {
+    enter(node);
+    if (node.firstChild) {
+      node = node.firstChild;
+      continue start;
+    }
+    while (node) {
+      exit(node);
+      if (node == root) {
+        node = null;
+      } else if (node.nextSibling) {
+        node = node.nextSibling;
+        continue start;
+      } else {
+        node = node.parentNode;
+      }
+    }
+  }
+}</pre>
+
+  </div>
+
+  </div>
+
+
+  

@@ -1,0 +1,105 @@
+<h6>The "<dfn data-x="insertion mode: before html">before html</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: before
+  html">before html</span>" <span>insertion mode</span>, the user agent must handle the token as
+  follows:</p>
+
+  <dl class="switch">
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+    <p><span>Insert a comment</span> as the last child of the <code>Document</code> object.</p>
+   </dd>
+
+   <dt>A character token that is one of U+0009 CHARACTER TABULATION, U+000A LINE FEED (LF), U+000C
+   FORM FEED (FF), U+000D CARRIAGE RETURN (CR), or U+0020 SPACE</dt>
+   <dd>
+    <p>Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "html"</dt>
+   <dd>
+
+    <p><span>Create an element for the token</span> in the <span>HTML namespace</span>, with the
+    <code>Document</code> as the intended parent. Append it to the <code>Document</code> object. Put
+    this element in the <span>stack of open elements</span>.</p>
+
+    <p id="parser-appcache">If the <code>Document</code> is being loaded as part of <span
+    data-x="navigate">navigation</span> of a <span>browsing context</span>, run these steps:</p>
+
+    <ol>
+
+     <li><p>If the result of running <span data-x="scope-match-algorithm">match service worker
+     registration</span> for the document's <span data-x="concept-document-url">URL</span> is
+     non-null, run the <span data-x="concept-appcache-init">application cache selection
+     algorithm</span> passing the <code>Document</code> object with no manifest.</p></li>
+
+     <li>
+
+      <p>Otherwise, run these substeps:</p>
+
+      <ol>
+
+       <li><p>If the newly created element has a <code data-x="attr-html-manifest">manifest</code>
+       attribute whose value is not the empty string, then <span data-x="parse a
+       url">parse</span> the value of that attribute, relative to the newly created element's
+       <span>node document</span>, and if that is successful, run the <span
+       data-x="concept-appcache-init">application cache selection algorithm</span> passing the
+       <code>Document</code> object with the result of applying the <span
+       data-x="concept-url-serializer">URL serializer</span> algorithm to the <span>resulting URL
+       record</span> with the <i>exclude fragment flag</i> set.</p></li>
+
+       <li><p>Otherwise, run the <span data-x="concept-appcache-init">application cache selection
+       algorithm</span> passing the <code>Document</code> object with no manifest.</p></li>
+
+      </ol>
+
+     </li>
+
+    </ol>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: before head">before
+    head</span>".</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "head", "body", "html", "br"</dt>
+   <dd>
+    <p>Act as described in the "anything else" entry below.</p>
+   </dd>
+
+   <dt>Any other end tag</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <p>Create an <code>html</code> element whose <span>node document</span> is the <code>Document</code> object. Append
+    it to the <code>Document</code> object. Put this element in the <span>stack of open
+    elements</span>.</p>
+
+    <p>If the <code>Document</code> is being loaded as part of <span
+    data-x="navigate">navigation</span> of a <span>browsing context</span>, then: run the <span
+    data-x="concept-appcache-init">application cache selection algorithm</span> with no manifest,
+    passing it the <code>Document</code> object.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: before head">before
+    head</span>", then reprocess the token.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>The <span>document element</span> can end up being removed from the <code>Document</code>
+  object, e.g. by scripts; nothing in particular happens in such cases, content continues being
+  appended to the nodes as described in the next section.</p>
+
+
+  

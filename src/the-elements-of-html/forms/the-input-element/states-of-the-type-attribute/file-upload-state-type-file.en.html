@@ -1,0 +1,264 @@
+<h6><dfn data-x="attr-input-type-file">File Upload</dfn> state (<code data-x="">type=file</code>)</h6>
+
+  <!-- v2 ideas:
+   * maximum height/width or required ratio for image uploads? - Leons Petrazickis
+   * maximum per-file upload size - Alfonso Mart&iacute;nez de Lizarrondo
+  -->
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-file">File Upload</span> state, the rules in this section
+  apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a list of <dfn
+  data-x="concept-input-type-file-selected">selected files</dfn>, each file consisting of a file
+  name, a file type, and a file body (the contents of the file).</p>
+
+  <div w-nodev>
+
+  <p>File names must not contain <span data-x="concept-input-file-path">path components</span>, even
+  in the case that a user has selected an entire directory hierarchy or multiple files with the same
+  name from different directories. <dfn data-x="concept-input-file-path">Path components</dfn>, for
+  the purposes of the <span data-x="attr-input-type-file">File Upload</span> state, are those parts
+  of file names that are separated by U+005C REVERSE SOLIDUS character (\) characters.</p>
+
+  <p>Unless the <code data-x="attr-input-multiple">multiple</code> attribute is set, there must be
+  no more than one file in the list of <span data-x="concept-input-type-file-selected">selected
+  files</span>.</p>
+
+  <p>The element's <span>input activation behavior</span> is to run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the algorithm is not <span>triggered by user activation</span>, then abort these steps
+   without doing anything else.</p></li>
+
+   <li><p>Return, but continue running these steps <span>in parallel</span>.</p></li>
+
+   <li><p>Optionally, wait until any prior execution of this algorithm has terminated.</p>
+
+   <li><p>Display a prompt to the user requesting that the user specify some files. If the <code
+   data-x="attr-input-multiple">multiple</code> attribute is not set, there must be no more than one
+   file selected; otherwise, any number may be selected. Files can be from the filesystem or created
+   on the fly, e.g. a picture taken from a camera connected to the user's device.</p>
+
+   <li><p>Wait for the user to have made their selection.</p></li>
+
+   <li><p><span>Queue a task</span> to first update the element's <span
+   data-x="concept-input-type-file-selected">selected files</span> so that it represents the user's
+   selection, then <span data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-input">input</code> at the <code>input</code> element, with the <code
+   data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true, and finally <span
+   data-x="concept-event-fire">fire an event</span> named <code data-x="event-change">change</code>
+   at the <code>input</code> element, with the <code data-x="dom-Event-bubbles">bubbles</code>
+   attribute initialized to true.</p></li>
+
+  </ol>
+
+  <p>If the element is <i data-x="concept-fe-mutable">mutable</i>, the user agent should allow the
+  user to change the files on the list in other ways also, e.g. adding or removing files by
+  drag-and-drop. When the user does so, the user agent must <span>queue a task</span> to first
+  update the element's <span data-x="concept-input-type-file-selected">selected files</span> so that
+  it represents the user's new selection, then <span data-x="concept-event-fire">fire an
+  event</span> named <code data-x="event-input">input</code> at the <code>input</code> element, with
+  the <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true, and finally
+  <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-change">change</code> at the <code>input</code> element, with the <code
+  data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true.</p>
+
+  <p>If the element is not <i data-x="concept-fe-mutable">mutable</i>, the user agent must not allow
+  the user to change the element's selection.</p>
+
+  <p><strong>Constraint validation</strong>: If the element is <i
+  data-x="concept-input-required">required</i> and the list of <span
+  data-x="concept-input-type-file-selected">selected files</span> is empty, then the element is
+  <span>suffering from being missing</span>.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-input-accept">accept</code></dfn> attribute may be specified to
+  provide user agents with a hint of what file types will be accepted.</p>
+
+  <p>If specified, the attribute must consist of a <span>set of comma-separated tokens</span>, each
+  of which must be an <span>ASCII case-insensitive</span> match for one of the following:</p>
+
+  <dl>
+
+   <dt>The string "<code data-x="">audio/*</code>"</dt>
+
+   <dd>Indicates that sound files are accepted.</dd>
+
+   <dt>The string "<code data-x="">video/*</code>"</dt>
+
+   <dd>Indicates that video files are accepted.</dd>
+
+   <dt>The string "<code data-x="">image/*</code>"</dt>
+
+   <dd>Indicates that image files are accepted.</dd>
+
+   <dt>A <span>valid MIME type with no parameters</span></dt>
+
+   <dd>Indicates that files of the specified type are accepted.</dd>
+
+   <dt>A string whose first character is a U+002E FULL STOP character (.)</dt>
+
+   <dd>Indicates that files with the specified file extension are accepted.</dd>
+
+  </dl>
+
+  <p>The tokens must not be <span>ASCII case-insensitive</span> matches for any of the other tokens
+  (i.e. duplicates are not allowed). <span w-nodev>To obtain the list of tokens from the
+  attribute, the user agent must <span data-x="split a string on commas">split the attribute value on
+  commas</span>.</span></p>
+
+  <p>User agents may use the value of this attribute to display a more appropriate user interface
+  than a generic file picker. For instance, given the value <code data-x="">image/*</code>, a user
+  agent could offer the user the option of using a local camera or selecting a photograph from their
+  photo collection; given the value <code data-x="">audio/*</code>, a user agent could offer the user
+  the option of recording a clip using a headset microphone.</p>
+
+  <div w-nodev>
+
+  <p>User agents should prevent the user from selecting files that are not accepted by one (or more)
+  of these tokens.</p>
+
+  </div>
+
+  <p class="note">Authors are encouraged to specify both any MIME types and any corresponding
+  extensions when looking for data in a specific format.</p>
+
+  <div class="example">
+
+   <p>For example, consider an application that converts Microsoft Word documents to Open Document
+   Format files. Since Microsoft Word documents are described with a wide variety of MIME types and
+   extensions, the site can list several, as follows:</p>
+
+   <pre>&lt;input type="file" accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></pre>
+
+   <p>On platforms that only use file extensions to describe file types, the extensions listed here
+   can be used to filter the allowed documents, while the MIME types can be used with the system's
+   type registration table (mapping MIME types to extensions used by the system), if any, to
+   determine any other extensions to allow. Similarly, on a system that does not have file names or
+   extensions but labels documents with MIME types internally, the MIME types can be used to pick
+   the allowed files, while the extensions can be used if the system has an extension registration
+   table that maps known extensions to MIME types used by the system.</p>
+
+  </div>
+
+  <p class="warning">Extensions tend to be ambiguous (e.g. there are an untold number of formats
+  that use the "<code data-x="">.dat</code>" extension, and users can typically quite easily rename
+  their files to have a "<code data-x="">.doc</code>" extension even if they are not Microsoft Word
+  documents), and MIME types tend to be unreliable (e.g. many formats have no formally registered
+  types, and many formats are in practice labeled using a number of different MIME types). Authors
+  are reminded that, as usual, data received from a client should be treated with caution, as it may
+  not be in an expected format even if the user is not hostile and the user agent fully obeyed the
+  <code data-x="attr-input-accept">accept</code> attribute's requirements.</p>
+
+  <div class="example" id="fakepath-srsly">
+
+   <p>For historical reasons, the <code data-x="dom-input-value">value</code> IDL attribute prefixes
+   the file name with the string "<code data-x="">C:\fakepath\</code>". Some legacy user agents
+   actually included the full path (which was a security vulnerability). As a result of this,
+   obtaining the file name from the <code data-x="dom-input-value">value</code> IDL attribute in a
+   backwards-compatible way is non-trivial. The following function extracts the file name in a
+   suitably compatible manner:</p>
+
+   <pre>function extractFilename(path) {
+  if (path.substr(0, 12) == "C:\\fakepath\\")
+    return path.substr(12); // modern browser
+  var x;
+  x = path.lastIndexOf('/');
+  if (x >= 0) // Unix-based path
+    return path.substr(x+1);
+  x = path.lastIndexOf('\\');
+  if (x >= 0) // Windows-based path
+    return path.substr(x+1);
+  return path; // just the file name
+}</pre>
+
+   <p>This can be used as follows:</p>
+
+   <pre>&lt;p>&lt;input type=file name=image onchange="updateFilename(this.value)">&lt;/p>
+&lt;p>The name of the file you picked is: &lt;span id="filename">(none)&lt;/span>&lt;/p>
+&lt;script>
+ function updateFilename(path) {
+   var name = extractFilename(path);
+   document.getElementById('filename').textContent = name;
+ }
+&lt;/script></pre>
+
+   <!-- How useful this actually is... is unclear. -->
+
+  </div>
+
+  <hr>
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content attributes and IDL attributes <span
+   data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-input-accept">accept</code>,
+   <code data-x="attr-input-multiple">multiple</code>, and
+   <code data-x="attr-input-required">required</code> content attributes;
+   <code data-x="dom-input-files">files</code> and
+   <code data-x="dom-input-value">value</code> IDL attributes;
+   <code data-x="dom-textarea/input-select">select()</code> method.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is in mode <span
+   data-x="dom-input-value-filename">filename</span>.</p>
+
+   <p>The <code data-x="event-input">input</code> and <code
+   data-x="event-change">change</code> events <span
+   data-x="concept-input-apply">apply</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-list">list</code>,
+   <code class="no-backref" data-x="attr-input-max">max</code>,
+   <code class="no-backref" data-x="attr-input-maxlength">maxlength</code>,
+   <code class="no-backref" data-x="attr-input-min">min</code>,
+   <code class="no-backref" data-x="attr-input-minlength">minlength</code>,
+   <code class="no-backref" data-x="attr-input-pattern">pattern</code>,
+   <code class="no-backref" data-x="attr-input-placeholder">placeholder</code>,
+   <code class="no-backref" data-x="attr-input-readonly">readonly</code>,
+   <code class="no-backref" data-x="attr-input-size">size</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>,
+   <code class="no-backref" data-x="attr-input-step">step</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The element's <code data-x="attr-input-value">value</code> attribute must be omitted.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-list">list</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionDirection">selectionDirection</code>,
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code class="no-backref" data-x="dom-textarea/input-setRangeText">setRangeText()</code>,
+   <code class="no-backref" data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code>,
+   <code class="no-backref" data-x="dom-input-stepDown">stepDown()</code>, and
+   <code class="no-backref" data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+  </div>
+
+
+
+  

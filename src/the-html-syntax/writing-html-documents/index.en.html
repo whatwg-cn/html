@@ -1,0 +1,61 @@
+<h3 id="writing">Writing HTML documents</h3>
+
+  <div w-nodev>
+
+  <p><i>This section only applies to documents, authoring tools, and markup generators. In
+  particular, it does not apply to conformance checkers; conformance checkers must use the
+  requirements given in the next section ("parsing HTML documents").</i></p>
+
+  </div>
+
+  <p>Documents must consist of the following parts, in the given
+  order:</p>
+
+  <ol>
+
+   <li>Optionally, a single U+FEFF BYTE ORDER MARK (BOM) character.</li>
+
+   <li>Any number of <span data-x="syntax-comments">comments</span> and <span data-x="space
+   character">space characters</span>.</li>
+
+   <li>A <span data-x="syntax-doctype">DOCTYPE</span>.
+
+   <li>Any number of <span data-x="syntax-comments">comments</span> and <span data-x="space
+   character">space characters</span>.</li>
+
+   <li>The <span>document element</span>, in the form of an <code>html</code> <span
+   data-x="syntax-elements">element</span>.</li>
+
+   <li>Any number of <span data-x="syntax-comments">comments</span> and <span data-x="space
+   character">space characters</span>.</li>
+
+  </ol>
+
+  <p>The various types of content mentioned above are described in the next few sections.</p>
+
+  <p>In addition, there are some restrictions on how <span data-x="character encoding
+  declaration">character encoding declarations</span> are to be serialized, as discussed in the
+  section on that topic.</p>
+
+  <div class="note">
+
+   <p>Space characters before the <code>html</code> element, and space characters at the start of
+   the <code>html</code> element and before the <code>head</code> element, will be dropped when the
+   document is parsed; space characters <em>after</em> the <code>html</code> element will be parsed
+   as if they were at the end of the <code>body</code> element. Thus, space characters around the
+   <span>document element</span> do not round-trip.</p>
+
+   <p>It is suggested that newlines be inserted after the DOCTYPE, after any comments that are
+   before the document element, after the <code>html</code> element's start tag (if it is not <span
+   data-x="syntax-tag-omission">omitted</span>), and after any comments that are inside the
+   <code>html</code> element but before the <code>head</code> element.</p>
+
+  </div>
+
+  <p>Many strings in the HTML syntax (e.g. the names of elements and their attributes) are
+  case-insensitive, but only for <span>uppercase ASCII letters</span> and <span>lowercase ASCII
+  letters</span>. For convenience, in this section this is just referred to as
+  "case-insensitive".</p>
+
+
+  

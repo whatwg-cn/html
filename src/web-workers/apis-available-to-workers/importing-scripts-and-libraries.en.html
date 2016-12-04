@@ -1,0 +1,67 @@
+<h4>Importing scripts and libraries</h4>
+
+  <p>When a script invokes the <dfn><code
+  data-x="dom-WorkerGlobalScope-importScripts">importScripts(<var>urls</var>)</code></dfn> method on
+  a <code>WorkerGlobalScope</code> object, the user agent must <span>import scripts into worker
+  global scope</span> given this <code>WorkerGlobalScope</code> object and <var>urls</var>.</p>
+
+  <p>To <dfn data-export="">import scripts into worker global scope</dfn>, given a
+  <code>WorkerGlobalScope</code> object <var>worker global scope</var> and a <code
+  data-x="">sequence&lt;DOMString></code> <var>urls</var>, run these steps. The algorithm may
+  optionally be customized by supplying custom <span data-x="fetching-scripts-perform-fetch">perform
+  the fetch</span> hooks, which if provided will be used when invoking <span>fetch a classic
+  worker-imported script</span>.</p>
+
+  <ol>
+   <li><p>If <var>worker global scope</var>'s <span
+   data-x="concept-WorkerGlobalScope-type">type</span> is "<code data-x="">module</code>", throw a
+   <code>TypeError</code> exception and abort these steps.</p></li>
+
+   <li><p>Let <var>settings object</var> be the <span>current settings object</span>.</p></li>
+
+   <li><p>If <var>urls</var> is empty, abort these steps.</p></li>
+
+   <li><p><span data-x="parse a url">Parse</span> each value in <var>urls</var> relative to
+   <var>settings object</var>. If any fail, throw a <span>"<code>SyntaxError</code>"</span>
+   <code>DOMException</code> and abort these steps.</p></li>
+
+   <li>
+    <p>For each <var>url</var> in the <span data-x="resulting URL record">resulting URL
+    records</span>, run these substeps:</p>
+
+    <ol>
+     <li><p><span>Fetch a classic worker-imported script</span> given <var>url</var> and
+     <var>settings object</var>, passing along any custom <span
+     data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps provided. If this
+     succeeds, let <var>script</var> be the result. Otherwise, rethrow the exception.</p></li>
+
+     <li>
+      <p><span data-x="run a classic script">Run the classic script</span> <var>script</var>,
+      passing the <var>rethrow errors</var> flag.</p>
+
+      <p class="note"><var>script</var> will run until it either returns, fails to parse, fails to
+      catch an exception, or gets <span data-x="abort a running script">prematurely aborted</span>
+      by the "<span>kill a worker</span>" or "<span>terminate a worker</span>" algorithms defined
+      above.</p>
+
+      <p>If an exception was thrown or if the script was <span data-x="abort a running
+      script">prematurely aborted</span>, then abort all these steps, letting the exception or
+      aborting continue to be processed by the calling <span
+      data-x="concept-script">script</span>.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p class="note"><cite>Service Workers</cite> is an example of a specification that runs this
+  algorithm with its own options for the <span data-x="fetching-scripts-perform-fetch">perform the
+  fetch</span> hook. <ref spec=SW></p>
+
+  </div>
+
+
+  

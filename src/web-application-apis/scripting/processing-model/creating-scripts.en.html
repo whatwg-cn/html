@@ -1,0 +1,76 @@
+<h5 id="creating-scripts">Creating scripts</h5>
+
+  <p>To <dfn data-x="creating a classic script">create a classic script</dfn>, given some script
+  source, an <span>environment settings object</span>, and an optional <var>muted errors</var>
+  flag:</p>
+
+  <ol>
+
+   <li><p>Let <var>script</var> be a new <span>classic script</span> that this algorithm will
+   subsequently initialize.</p></li>
+
+   <li><p>Set <var>script</var>'s <span>settings object</span> to the <span>environment
+   settings object</span> provided.</p></li>
+
+   <li><p>If <span data-x="concept-bc-noscript">scripting is disabled</span> for the given
+   <span>environment settings object</span>'s <span>responsible browsing context</span>, then set
+   <var>script</var>'s <span data-x="concept-classic-script-source-text">source text</span> to the
+   empty string. Otherwise, set <var>script</var>'s <span
+   data-x="concept-classic-script-source-text">source text</span> to the supplied script
+   source.</p></li>
+
+   <li><p>If the <var>muted errors</var> flag was set, then set <var>script</var>'s <span>muted
+   errors</span> flag.</p></li>
+
+   <li><p>Return <var>script</var>.</p></li>
+
+  </ol>
+
+  <p>To <dfn data-x="creating a module script">create a module script</dfn>, given some script
+  source, an <span>environment settings object</span>, a script base URL, a cryptographic nonce, a
+  parser state, and a credentials mode:</p>
+
+  <ol>
+
+   <li><p>Let <var>script</var> be a new <span>module script</span> that this algorithm will
+   subsequently initialize.</p></li>
+
+   <li><p>Set <var>script</var>'s <span>settings object</span> to the <span>environment
+   settings object</span> provided.</p></li>
+
+   <li><p>Let <var>realm</var> be the provided <span>environment settings object</span>'s <span
+   data-x="environment settings object's Realm">Realm</span>.</p></li>
+
+   <li><p>If <span data-x="concept-bc-noscript">scripting is disabled</span> for the given
+   <span>environment settings object</span>'s <span>responsible browsing context</span>, then let
+   <var>script source</var> be the empty string. Otherwise, let <var>script source</var> be the
+   provided script source.</p></li>
+
+   <li><p>Let <var>result</var> be <span
+   data-x="js-ParseModule">ParseModule</span>(<var>script source</var>, <var>realm</var>,
+   <var>script</var>).</p></li>
+
+   <li><p>If <var>result</var> is a <span>List</span> of errors, <span>report the exception</span>
+   given by the first element of <var>result</var> for <var>script</var>, return null, and abort
+   these steps.</p></li>
+
+   <li><p>Set <var>script</var>'s <span data-x="concept-module-script-module-record">module
+   record</span> to <var>result</var>.</p></li>
+
+   <li><p>Set <var>script</var>'s <span data-x="concept-module-script-base-url">base URL</span> to
+   the script base URL provided.</p></li>
+
+   <li><p>Set <var>script</var>'s <span data-x="concept-module-script-nonce">cryptographic
+   nonce</span> to the cryptographic nonce provided.</p></li>
+
+   <li><p>Set <var>script</var>'s <span data-x="concept-module-script-parser">parser state</span>
+   to the parser state.</p></li>
+
+   <li><p>Set <var>script</var>'s <span data-x="concept-module-script-credentials-mode">credentials
+   mode</span> to the credentials mode provided.</p></li>
+
+   <li><p>Return <var>script</var>.</p></li>
+
+  </ol>
+
+  

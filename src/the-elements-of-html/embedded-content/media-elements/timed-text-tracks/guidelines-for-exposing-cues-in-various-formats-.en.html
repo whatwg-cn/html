@@ -1,0 +1,33 @@
+<h6><dfn>Guidelines for exposing cues</dfn> in various formats as <span data-x="text track
+  cue">text track cues</span></h6>
+
+  <p>How a specific format's text track cues are to be interpreted for the purposes of processing by
+  an HTML user agent is defined by that format. In the absence of such a specification, this section
+  provides some constraints within which implementations can attempt to consistently expose such
+  formats.</p>
+
+  <p>To support the <span>text track</span> model of HTML, each unit of timed data is converted to a
+  <span>text track cue</span>. Where the mapping of the format's features to the aspects of a
+  <span>text track cue</span> as defined in this specification are not defined, implementations must
+  ensure that the mapping is consistent with the definitions of the aspects of a <span>text track
+  cue</span> as defined above, as well as with the following constraints:</p>
+
+  <dl>
+
+   <dt>The <span>text track cue identifier</span>
+   <dd>
+    <p>Should be set to the empty string if the format has no obvious analogue to a per-cue
+    identifier.</p>
+   </dd>
+
+   <dt>The <span>text track cue pause-on-exit flag</span>
+   <dd>
+    <p>Should be set to false.</p>
+   </dd>
+
+  </dl>
+
+  </div>
+
+
+  

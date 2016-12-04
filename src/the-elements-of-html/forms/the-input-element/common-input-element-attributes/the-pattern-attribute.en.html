@@ -1,0 +1,85 @@
+<h6>The <code data-x="attr-input-pattern">pattern</code> attribute</h6>
+
+  <!-- if more text control types start supporting multiple="", this will need to be refactored -->
+
+  <p>The <dfn><code data-x="attr-input-pattern">pattern</code></dfn> attribute specifies a regular
+  expression against which the control's <span data-x="concept-fe-value">value</span>, or, when the
+  <code data-x="attr-input-multiple">multiple</code> attribute <span
+  data-x="concept-input-apply">applies</span> and is set, the control's <span
+  data-x="concept-fe-values">values</span>, are to be checked.</p>
+
+  <p>If specified, the attribute's value must match the JavaScript <i
+  data-x="js-prod-Pattern">Pattern</i> production.</p>
+
+  <div w-nodev>
+
+  <p>If an <code>input</code> element has a <code data-x="attr-input-pattern">pattern</code>
+  attribute specified, and the attribute's value, when compiled as a JavaScript regular expression
+  with only the "<code data-x="">u</code>" flag specified, compiles successfully, then the resulting regular expression is the element's
+  <dfn>compiled pattern regular expression</dfn>. If the element has no such attribute, or if the
+  value doesn't compile successfully, then the element has no <span>compiled pattern regular
+  expression</span>. <ref spec=JAVASCRIPT></p>
+
+  <p class="note">If the value doesn't compile successfully, user agents are encouraged to log this
+  fact in a developer console, to aid debugging.</p>
+
+  <p><strong>Constraint validation</strong>: If the element's <span
+  data-x="concept-fe-value">value</span> is not the empty string, and either the element's <code
+  data-x="attr-input-multiple">multiple</code> attribute is not specified or it <span data-x="do not
+  apply">does not apply</span> to the <code>input</code> element given its <code
+  data-x="attr-input-type">type</code> attribute's current state, and the element has a
+  <span>compiled pattern regular expression</span> but that regular expression does not match the
+  entirety of the element's <span data-x="concept-fe-value">value</span>, then the element is
+  <span>suffering from a pattern mismatch</span>.</p>
+
+  <p><strong>Constraint validation</strong>: If the element's <span
+  data-x="concept-fe-value">value</span> is not the empty string, and the element's <code
+  data-x="attr-input-multiple">multiple</code> attribute is specified and <span
+  data-x="concept-input-apply">applies</span> to the <code>input</code> element, and the element has
+  a <span>compiled pattern regular expression</span> but that regular expression does not match the
+  entirety of each of the element's <span data-x="concept-fe-values">values</span>, then the
+  element is <span>suffering from a pattern mismatch</span>.</p>
+
+  <p>The <span>compiled pattern regular expression</span>, when matched against a string, must have
+  its start anchored to the start of the string and its end anchored to the end of the string.</p>
+
+  <p class="note">This implies that the regular expression language used for this attribute is the
+  same as that used in JavaScript, except that the <code data-x="attr-input-pattern">pattern</code>
+  attribute is matched against the entire value, not just any subset (somewhat as if it implied a
+  <code data-x="">^(?:</code> at the start of the pattern and a <code data-x="">)$</code> at the
+  end).</p>
+
+  </div>
+
+  <p>When an <code>input</code> element has a <code data-x="attr-input-pattern">pattern</code>
+  attribute specified, authors should include a <dfn><code data-x="attr-input-title">title</code></dfn> attribute to give a description of the pattern.
+  User agents may use the contents of this attribute, if it is present, when informing the user that
+  the pattern is not matched, or at any other suitable time, such as in a tooltip or read out by
+  assistive technology when the control <span>gains focus</span>.</p>
+
+  <div class="example">
+   <p>For example, the following snippet:</p>
+   <pre>&lt;label&gt; Part number:
+ &lt;input pattern="[0-9][A-Z]{3}" name="part"
+        title="A part number is a digit followed by three uppercase letters."/&gt;
+&lt;/label&gt;</pre>
+   <p>...could cause the UA to display an alert such as:</p>
+   <pre><samp>A part number is a digit followed by three uppercase letters.
+You cannot submit this form when the field is incorrect.</samp></pre>
+  </div>
+
+  <p>When a control has a <code data-x="attr-input-pattern">pattern</code> attribute, the <code
+  data-x="attr-input-title">title</code> attribute, if used, must describe the pattern. Additional
+  information could also be included, so long as it assists the user in filling in the control.
+  Otherwise, assistive technology would be impaired.</p>
+
+  <p class="example">For instance, if the title attribute contained the caption of the control,
+  assistive technology could end up saying something like <samp>The text you have entered does not
+  match the required pattern. Birthday</samp>, which is not useful.</p>
+
+  <p>UAs may still show the <code data-x="attr-title">title</code> in non-error situations (for
+  example, as a tooltip when hovering over the control), so authors should be careful not to word
+  <code data-x="attr-input-title">title</code>s as if an error has necessarily occurred.</p>
+
+
+  

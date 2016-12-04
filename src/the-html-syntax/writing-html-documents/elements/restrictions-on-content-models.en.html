@@ -1,0 +1,26 @@
+<h5 id="element-restrictions">Restrictions on content models</h5>
+
+  <p>For historical reasons, certain elements have extra restrictions beyond even the restrictions
+  given by their content model.</p>
+
+  <p>A <code>table</code> element must not contain <code>tr</code> elements, even though these
+  elements are technically allowed inside <code>table</code> elements according to the content
+  models described in this specification. (If a <code>tr</code> element is put inside a
+  <code>table</code> in the markup, it will in fact imply a <code>tbody</code> start tag before
+  it.)</p>
+
+  <p>A single <span data-x="syntax-newlines">newline</span> may be placed immediately after the <span
+  data-x="syntax-start-tag">start tag</span> of <code>pre</code> and <code>textarea</code> elements.
+  This does not affect the processing of the element. The otherwise optional <span
+  data-x="syntax-newlines">newline</span> <em>must</em> be included if the element's contents
+  themselves start with a <span data-x="syntax-newlines">newline</span> (because otherwise the
+  leading newline in the contents would be treated like the optional newline, and ignored).</p>
+
+  <div class="example">
+   <p>The following two <code>pre</code> blocks are equivalent:</p>
+   <pre>&lt;pre>Hello&lt;/pre></pre>
+   <pre>&lt;pre><br>Hello&lt;/pre></pre>
+  </div>
+
+
+  

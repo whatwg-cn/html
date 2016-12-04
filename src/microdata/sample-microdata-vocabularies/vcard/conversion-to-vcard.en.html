@@ -1,0 +1,486 @@
+<h5>Conversion to vCard</h5>
+
+  <p>Given a list of nodes <var>nodes</var> in a <code>Document</code>, a user agent must
+  run the following algorithm to <dfn data-x="extracting a vCard">extract any vCard data represented
+  by those nodes</dfn> (only the first vCard is returned):</p>
+
+  <ol>
+
+   <li><p>If none of the nodes in <var>nodes</var> are <span
+   data-x="concept-item">items</span> with the <span data-x="item types">item type</span> <code
+   data-x="md-vcard">http://microformats.org/profile/hcard</code>, then there is no vCard. Abort the
+   algorithm, returning nothing.</p></li>
+
+   <li><p>Let <var>node</var> be the first node in <var>nodes</var> that is an
+   <span data-x="concept-item">item</span> with the <span data-x="item types">item type</span> <code
+   data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p></li>
+
+   <li><p>Let <var>output</var> be an empty string.</p></li>
+
+   <li><p><span>Add a vCard line</span> with the type "<code data-x="">BEGIN</code>" and the value
+   "<code data-x="">VCARD</code>" to <var>output</var>.</p></li>
+
+   <li><p><span>Add a vCard line</span> with the type "<code data-x="">PROFILE</code>" and the value
+   "<code data-x="">VCARD</code>" to <var>output</var>.</p></li>
+
+   <li><p><span>Add a vCard line</span> with the type "<code data-x="">VERSION</code>" and the value
+   "<code data-x="">4.0</code>" to <var>output</var>.</p></li>
+
+   <li><p><span>Add a vCard line</span> with the type "<code data-x="">SOURCE</code>" and the result
+   of <span>escaping the vCard text string</span> that is the document's <span
+   data-x="concept-document-url">URL</span> as the value to <var>output</var>.</p></li>
+
+   <li><p>If <span>the <code>title</code> element</span> is not null, <span>add a vCard line</span>
+   with the type "<code data-x="">NAME</code>" and with the result of <span>escaping the vCard text
+   string</span> obtained from the <code>textContent</code> of <span>the <code>title</code>
+   element</span> as the value to <var>output</var>.</p></li>
+
+   <li><p>Let <var>sex</var> be the empty string.</p></li>
+
+   <li><p>Let <var>gender-identity</var> be the empty string.</p></li>
+
+   <li>
+
+    <p>For each element <var>element</var> that is <span data-x="the properties of an
+    item">a property of the item</span> <var>node</var>: for each name <var>name</var> in <var>element</var>'s <span>property names</span>, run the
+    following substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>parameters</var> be an empty set of name-value pairs.</p></li>
+
+     <li>
+
+      <p>Run the appropriate set of substeps from the following list. The steps will set a variable
+      <var>value</var>, which is used in the next step.</p>
+
+      <dl>
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is an <span
+       data-x="concept-item">item</span> <var>subitem</var> and <var>name</var> is
+       <code data-x="md-vcard-n">n</code></dt>
+
+       <dd>
+
+        <ol>
+
+         <li><p>Let <var>value</var> be the empty string.</p></li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-n-family-name">family-name</code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-n-given-name">given-name</code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-n-additional-name">additional-name</code> in
+         <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-n-honorific-prefix">honorific-prefix</code>
+         in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-n-honorific-suffix">honorific-suffix</code>
+         in <var>subitem</var>.</p>
+
+        </ol>
+
+       </dd>
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is an <span
+       data-x="concept-item">item</span> <var>subitem</var> and <var>name</var> is
+       <code data-x="md-vcard-adr">adr</code></dt>
+
+       <dd>
+
+        <ol>
+
+         <li><p>Let <var>value</var> be the empty string.</p></li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting vCard
+         subproperties</span> named <code
+         data-x="md-vcard-adr-post-office-box">post-office-box</code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting vCard
+         subproperties</span> named <code
+         data-x="md-vcard-adr-extended-address">extended-address</code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting vCard
+         subproperties</span> named <code data-x="md-vcard-adr-street-address">street-address</code>
+         in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-adr-locality">locality</code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-adr-region">region</code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-adr-postal-code">postal-code</code> in <var>subitem</var>.</p>
+
+         <li>Append a U+003B SEMICOLON character (;) to <var>value</var>.</li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="md-vcard-adr-country-name">country-name</code> in
+         <var>subitem</var>.</p>
+
+         <li><p>If there is a property named <code data-x="md-vcard-adr-type">type</code> in <var>subitem</var>, and the first such property has a <span
+         data-x="concept-property-value">value</span> that is not an <span
+         data-x="concept-item">item</span> and whose value consists only of <span>alphanumeric ASCII
+         characters</span>, then add a parameter named "<code data-x="">TYPE</code>" whose value is
+         the <span data-x="concept-property-value">value</span> of that property to <var>parameters</var>.</p></li>
+
+        </ol>
+
+       </dd>
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is an <span
+       data-x="concept-item">item</span> <var>subitem</var> and <var>name</var> is
+       <code data-x="md-vcard-org">org</code></dt>
+
+       <dd>
+
+        <ol>
+
+         <li><p>Let <var>value</var> be the empty string.</p></li>
+
+         <li><p>Append to <var>value</var> the result of <span>collecting the first vCard
+         subproperty</span> named <code
+         data-x="md-vcard-org-organization-name">organization-name</code> in <var>subitem</var>.</p>
+
+         <li>
+
+          <p>For each property named <code
+          data-x="md-vcard-org-organization-unit">organization-unit</code> in <var>subitem</var>, run the following steps:</p>
+
+          <ol>
+
+           <li><p>If the <span data-x="concept-property-value">value</span> of the property is an
+           <span data-x="concept-item">item</span>, then skip this property.</p></li>
+
+           <li><p>Append a U+003B SEMICOLON character (;) to <var>value</var>.</p></li>
+
+           <li><p>Append the result of <span>escaping the vCard text string</span> given by the
+           <span data-x="concept-property-value">value</span> of the property to <var>value</var>.</p></li>
+
+          </ol>
+
+         </li>
+
+        </ol>
+
+       </dd>
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is an <span
+       data-x="concept-item">item</span> <var>subitem</var> with the <span data-x="item
+       types">item type</span> <code data-x="md-vcard">http://microformats.org/profile/hcard</code>
+       and <var>name</var> is <code data-x="md-vcard-related">related</code></dt>
+
+       <dd>
+
+        <ol>
+
+         <li><p>Let <var>value</var> be the empty string.</p></li>
+
+         <li><p>If there is a property named <code data-x="md-vcard-related-url">url</code> in
+         <var>subitem</var>, and its element is a <span data-x="URL property elements">URL property
+         element</span>, then append the result of <span>escaping the vCard text string</span> given
+         by the <span data-x="concept-property-value">value</span> of the first such property to
+         <var>value</var>, and add a parameter with the name "<code data-x="">VALUE</code>" and the
+         value "<code data-x="">URI</code>" to <var>parameters</var>.</p></li>
+
+         <li><p>If there is a property named <code data-x="md-vcard-related-rel">rel</code> in
+         <var>subitem</var>, and the first such property has a <span
+         data-x="concept-property-value">value</span> that is not an <span
+         data-x="concept-item">item</span> and whose value consists only of <span>alphanumeric ASCII
+         characters</span>, then add a parameter named "<code data-x="">RELATION</code>" whose value
+         is the <span data-x="concept-property-value">value</span> of that property to
+         <var>parameters</var>.</p></li>
+
+        </ol>
+
+       </dd>
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is an <span
+       data-x="concept-item">item</span> and <var>name</var> is none of the above</dt>
+
+       <!-- tel, adr -->
+
+       <dd>
+
+        <ol>
+
+         <li><p>Let <var>value</var> be the result of <span>collecting the first vCard
+         subproperty</span> named <code data-x="">value</code> in <var>subitem</var>.</p>
+
+         <li><p>If there is a property named <code data-x="">type</code> in <var>subitem</var>, and the first such property has a <span
+         data-x="concept-property-value">value</span> that is not an <span
+         data-x="concept-item">item</span> and whose value consists only of <span>alphanumeric ASCII
+         characters</span>, then add a parameter named "<code data-x="">TYPE</code>" whose value is
+         the <span data-x="concept-property-value">value</span> of that property to <var>parameters</var>.</p></li>
+
+        </ol>
+
+       </dd>
+
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is not an <span
+       data-x="concept-item">item</span> and its <var>name</var> is <code
+       data-x="md-vcard-sex">sex</code></dt>
+
+       <dd>
+
+        <p>If this is the first such property to be found, set <var>sex</var> to the
+        property's <span data-x="concept-property-value">value</span>.</p>
+
+       </dd>
+
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is not an <span
+       data-x="concept-item">item</span> and its <var>name</var> is <code
+       data-x="md-vcard-gender-identity">gender-identity</code></dt>
+
+       <dd>
+
+        <p>If this is the first such property to be found, set <var>gender-identity</var>
+        to the property's <span data-x="concept-property-value">value</span>.</p>
+
+       </dd>
+
+
+       <dt>Otherwise (the property's <span data-x="concept-property-value">value</span> is not an
+       <span data-x="concept-item">item</span>)</dt>
+
+       <dd>
+
+        <ol>
+
+         <li><p>Let <var>value</var> be the property's <span
+         data-x="concept-property-value">value</span>.</p></li>
+
+         <li><p>If <var>element</var> is one of the <span>URL property elements</span>, add
+         a parameter with the name "<code data-x="">VALUE</code>" and the value "<code
+         data-x="">URI</code>" to <var>parameters</var>.</p></li>
+
+         <li><p>Otherwise, if <var>name</var> is <code data-x="md-vcard-bday">bday</code> or
+         <code data-x="md-vcard-anniversary">anniversary</code> and the <var>value</var> is
+         a <span>valid date string</span>, add a parameter with the name "<code
+         data-x="">VALUE</code>" and the value "<code data-x="">DATE</code>" to <var>parameters</var>.</p></li>
+
+         <li><p>Otherwise, if <var>name</var> is <code data-x="md-vcard-rev">rev</code> and
+         the <var>value</var> is a <span>valid global date and time string</span>, add a
+         parameter with the name "<code data-x="">VALUE</code>" and the value "<code
+         data-x="">DATE-TIME</code>" to <var>parameters</var>.</p></li>
+
+         <li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+         another U+005C REVERSE SOLIDUS character (\).</p></li>
+
+         <li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C
+         REVERSE SOLIDUS character (\).</p></li>
+
+         <li><p>Unless <var>name</var> is <code data-x="md-vcard-geo">geo</code>, prefix
+         every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C REVERSE
+         SOLIDUS character (\).</p></li>
+
+         <li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+         SMALL LETTER N character (n).</p></li>
+
+         <li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF)
+         character in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed
+         by a U+006E LATIN SMALL LETTER N character (n).</p></li>
+
+        </ol>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li>
+
+      <p><span>Add a vCard line</span> with the type <var>name</var>, the parameters <var>parameters</var>, and the value <var>value</var> to <var>output</var>.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If either <var>sex</var> or <var>gender-identity</var> has a value that
+   is not the empty string, <span>add a vCard line</span> with the type "<code
+   data-x="">GENDER</code>" and the value consisting of the concatenation of <var>sex</var>,
+   a U+003B SEMICOLON character (;), and <var>gender-identity</var> to <var>output</var>.</p></li>
+
+   <li><p><span>Add a vCard line</span> with the type "<code data-x="">END</code>" and the value
+   "<code data-x="">VCARD</code>" to <var>output</var>.</p></li>
+
+  </ol>
+
+  <p>When the above algorithm says that the user agent is to <dfn>add a vCard line</dfn> consisting
+  of a type <var>type</var>, optionally some parameters, and a value <var>value</var> to a string <var>output</var>, it must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>line</var> be an empty string.
+
+   <li><p>Append <var>type</var>, <span>converted to ASCII uppercase</span>, to <var>line</var>.</p></li>
+
+   <li>
+
+    <p>If there are any parameters, then for each parameter, in the order that they were added, run
+    these substeps:</p>
+
+    <ol>
+
+     <li><p>Append a U+003B SEMICOLON character (;) to <var>line</var>.</p></li>
+
+     <li><p>Append the parameter's name to <var>line</var>.</p></li>
+
+     <li><p>Append a U+003D EQUALS SIGN character (=) to <var>line</var>.</p></li>
+
+     <li><p>Append the parameter's value to <var>line</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Append a U+003A COLON character (:) to <var>line</var>.</p></li>
+
+   <li><p>Append <var>value</var> to <var>line</var>.</p></li>
+
+   <li><p>Let <var>maximum length</var> be 75.</p></li>
+
+   <li>
+
+    <p>If and while <var>line</var> is longer than <var>maximum length</var>
+    Unicode code points long, run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Append the first <var>maximum length</var> Unicode code points of <var>line</var> to <var>output</var>.</p></li>
+
+     <li><p>Remove the first <var>maximum length</var> Unicode code points from <var>line</var>.</p></li>
+
+     <li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.</p></li>
+
+     <li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</p></li>
+
+     <li><p>Append a U+0020 SPACE character to <var>output</var>.</p></li>
+
+     <li><p>Let <var>maximum length</var> be 74.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Append (what remains of) <var>line</var> to <var>output</var>.</p></li>
+
+   <li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.</p></li>
+
+   <li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</p></li>
+
+  </ol>
+
+  <p>When the steps above require the user agent to obtain the result of <dfn>collecting vCard
+  subproperties</dfn> named <var>subname</var> in <var>subitem</var>, the user
+  agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>value</var> be the empty string.</p></li>
+
+   <li>
+
+    <p>For each property named <var>subname</var> in the item <var>subitem</var>,
+    run the following substeps:</p>
+
+    <ol>
+
+     <li><p>If the <span data-x="concept-property-value">value</span> of the property is itself an
+     <span data-x="concept-item">item</span>, then skip this property.</p></li>
+
+     <li><p>If this is not the first property named <var>subname</var> in <var>subitem</var> (ignoring any that were skipped by the previous step), then append a
+     U+002C COMMA character (,) to <var>value</var>.</p></li>
+
+     <li><p>Append the result of <span>escaping the vCard text string</span> given by the <span
+     data-x="concept-property-value">value</span> of the property to <var>value</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return <var>value</var>.</p></li>
+
+  </ol>
+
+  <p>When the steps above require the user agent to obtain the result of <dfn>collecting the first
+  vCard subproperty</dfn> named <var>subname</var> in <var>subitem</var>, the user
+  agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If there are no properties named <var>subname</var> in <var>subitem</var>, then abort these substeps, returning the empty string.</p></li>
+
+   <li><p>If the <span data-x="concept-property-value">value</span> of the first property named <var>subname</var> in <var>subitem</var> is an <span
+   data-x="concept-item">item</span>, then abort these substeps, returning the empty string.</p></li>
+
+   <li><p>Return the result of <span>escaping the vCard text string</span> given by the <span
+   data-x="concept-property-value">value</span> of the first property named <var>subname</var> in <var>subitem</var>.</p></li>
+
+  </ol>
+
+  <p>When the above algorithms say the user agent is to <dfn data-x="escaping the vCard text
+  string">escape the vCard text string</dfn> <var>value</var>, the user agent must use the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+   another U+005C REVERSE SOLIDUS character (\).</p></li>
+
+   <li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C REVERSE
+   SOLIDUS character (\).</p></li>
+
+   <li><p>Prefix every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C
+   REVERSE SOLIDUS character (\).</p></li>
+
+   <li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN SMALL
+   LETTER N character (n).</p></li>
+
+   <li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF) character in
+   <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+   SMALL LETTER N character (n).</p></li>
+
+   <li><p>Return the mutated <var>value</var>.</p></li>
+
+  </ol>
+
+  <p class="note">This algorithm can generate invalid vCard output, if the input does not conform to
+  the rules described for the <code data-x="md-vcard">http://microformats.org/profile/hcard</code>
+  <span data-x="item types">item type</span> and <span data-x="defined property name">defined property
+  names</span>.</p> <!-- of course since vcard doesn't define error handling, this is somewhat
+  problematic. -->
+
+
+
+  

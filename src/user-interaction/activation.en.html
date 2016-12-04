@@ -1,0 +1,101 @@
+<h3>Activation</h3>
+
+  <p>Certain elements in HTML have an <span>activation behavior</span>, which means that the user
+  can activate them. This is always caused by a <code data-x="event-click">click</code> event.</p>
+
+  <div w-nodev>
+
+  <p>The user agent should allow the user to manually trigger elements that have an <span>activation
+  behavior</span>, for instance using keyboard or voice input, or through mouse clicks. When the
+  user triggers an element with a defined <span>activation behavior</span> in a manner other than
+  clicking it, the default action of the interaction event must be to <span>fire a <code
+  data-x="event-click">click</code> event</span> at the element.</p>
+  <!-- interaction event spec point -->
+
+  <p id="allowed-to-show-a-popup">An algorithm is <dfn data-export="">triggered by user
+  activation</dfn> if any of the following conditions is true:</p>
+
+  <ul>
+   <li><p>The <span data-x="concept-task">task</span> in which the algorithm is running is currently
+   processing an <span>activation behavior</span> whose <code data-x="event-click">click</code>
+   event's <code data-x="dom-Event-isTrusted">isTrusted</code> attribute is true.</li>
+
+   <li>
+    <p>The <span data-x="concept-task">task</span> in which the algorithm is running is currently
+    running the event listener for an event whose <code
+    data-x="dom-Event-isTrusted">isTrusted</code> attribute is true and whose <code
+    data-x="dom-Event-type">type</code> is one of:</p>
+
+    <ul class="brief">
+     <li><code data-x="event-change">change</code></li>
+     <li><code data-x="event-click">click</code></li>
+     <li><code data-x="event-dblclick">dblclick</code></li>
+     <li><code data-x="event-mouseup">mouseup</code></li>
+     <li><code data-x="event-pointerup">pointerup</code></li>
+     <li><code data-x="event-reset">reset</code></li>
+     <li><code data-x="event-submit">submit</code></li>
+     <li><code data-x="event-touchend">touchend</code></li>
+    </ul>
+
+   </li>
+
+   <li>
+    <p>The <span data-x="concept-task">task</span> in which the algorithm is running was <span
+    data-x="queue a task">queued</span> by an algorithm that was <span>triggered by user
+    activation</span>, and the chain of such algorithms started within a user-agent defined
+    timeframe.</p>
+
+    <p class="example">For example, if a user clicked a button, it might be acceptable for a popup
+    to result from that after 4 seconds, but it would likely not be acceptable for a popup to result
+    from that after 4 hours.</p>
+   </li>
+  </ul>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+
+  <!-- v2 idea: HTMLImageElement.click(x, y); or clickPoint(), if click() can't be done in IE; can
+       this be emulated in IE by posting a synthetic mouse click event with those X and Y coords?
+       (ack Csaba Gabor)
+  -->
+
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-click">click</code>()</dt>
+
+   <dd>
+
+    <p>Acts as if the element was clicked.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Each element has an associated <dfn>click in progress flag</dfn>, which is initially unset.</p>
+
+  <p>The <dfn><code data-x="dom-click">click()</code></dfn> method must run the following steps:</p>
+
+  <ol>
+   <li><p>If this element is a form control that is <span
+   data-x="concept-fe-disabled">disabled</span>, then abort these steps.</p></li>
+
+   <li><p>If this element's <span>click in progress flag</span> is set, then abort these
+   steps.</p></li>
+
+   <li><p>Set this element's <span>click in progress flag</span>.</p></li>
+
+   <li><p><span>Fire a synthetic mouse event</span> at this element, with the <var>not trusted
+   flag</var> set.</p></li>
+
+   <li><p>Unset this element's <span>click in progress flag</span>.</p></li>
+  </ol>
+
+  </div>
+
+
+<!--TOPIC:HTML-->
+
+  

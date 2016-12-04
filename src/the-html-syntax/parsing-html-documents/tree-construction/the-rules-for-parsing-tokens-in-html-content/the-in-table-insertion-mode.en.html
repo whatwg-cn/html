@@ -1,0 +1,220 @@
+<h6 id="parsing-main-intable">The "<dfn data-x="insertion mode: in table">in table</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in table">in
+  table</span>" <span>insertion mode</span>, the user agent must handle the token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token, if the <span>current node</span> is <code>table</code>, <code>tbody</code>, <code>tfoot</code>, <code>thead</code>, or <code>tr</code> element</dt> <!-- same list as foster parenting -->
+   <dd>
+
+     <p>Let the <dfn><var data-x="concept-pending-table-char-tokens">pending table character
+     tokens</var></dfn> be an empty list of tokens.</p>
+
+     <p>Let the <span>original insertion mode</span> be the current <span>insertion mode</span>.</p>
+
+     <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in table text">in
+     table text</span>" and reprocess the token.</p>
+
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+    <p><span>Insert a comment</span>.</p>
+   </dd>
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "caption"</dt>
+   <dd>
+
+    <p><span>Clear the stack back to a table context</span>. (See below.)</p>
+
+    <p>Insert a <span data-x="concept-parser-marker">marker</span> at the end of the <span>list of
+    active formatting elements</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token, then switch the <span>insertion
+    mode</span> to "<span data-x="insertion mode: in caption">in caption</span>".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "colgroup"</dt>
+   <dd>
+
+    <p><span>Clear the stack back to a table context</span>. (See below.)</p>
+
+    <p><span>Insert an HTML element</span> for the token, then switch the <span>insertion
+    mode</span> to "<span data-x="insertion mode: in column group">in column group</span>".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "col"</dt>
+   <dd>
+
+    <!-- fake <colgroup> -->
+    <p><span>Clear the stack back to a table context</span>. (See below.)</p>
+
+    <p><span>Insert an HTML element</span> for a "colgroup" start tag token with no attributes, then
+    switch the <span>insertion mode</span> to "<span data-x="insertion mode: in column group">in
+    column group</span>".</p>
+    <!-- end of fake <colgroup> -->
+
+    <p>Reprocess the current token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "tbody", "tfoot", "thead"</dt>
+   <dd>
+
+    <p><span>Clear the stack back to a table context</span>. (See below.)</p>
+
+    <p><span>Insert an HTML element</span> for the token, then switch the <span>insertion
+    mode</span> to "<span data-x="insertion mode: in table body">in table body</span>".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "td", "th", "tr"</dt>
+   <dd>
+
+    <!-- fake <colgroup> -->
+    <p><span>Clear the stack back to a table context</span>. (See below.)</p>
+
+    <p><span>Insert an HTML element</span> for a "tbody" start tag token with no attributes, then
+    switch the <span>insertion mode</span> to "<span data-x="insertion mode: in table body">in table
+    body</span>".</p>
+    <!-- end of fake <colgroup> -->
+
+    <p>Reprocess the current token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "table"</dt>
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <!-- fake </table> -->
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have a <code>table</code> element in table scope</span>, ignore the token.</p>
+
+    <p>Otherwise:</p>
+
+    <p>Pop elements from this stack until a <code>table</code> element has been popped from the
+    stack.</p>
+
+    <p><span>Reset the insertion mode appropriately</span>.</p>
+    <!-- end of fake </table> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "table"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have a <code>table</code> element in table scope</span>, this is a <span>parse
+    error</span>; ignore the token.</p>
+
+    <p>Otherwise:</p>
+
+    <p>Pop elements from this stack until a <code>table</code> element has been popped from the
+    stack.</p>
+
+    <p><span>Reset the insertion mode appropriately</span>.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "body", "caption", "col", "colgroup", "html", "tbody",
+   "td", "tfoot", "th", "thead", "tr"</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "style", "script", "template"</dt>
+   <dt>An end tag whose tag name is "template"</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span
+    data-x="insertion mode: in head">in head</span>" <span>insertion
+    mode</span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "input"</dt>
+   <dd>
+
+    <p>If the token does not have an attribute with the name "type", or if it does, but that
+    attribute's value is not an <span>ASCII case-insensitive</span> match for the string "<code
+    data-x="">hidden</code>", then: act as described in the "anything else" entry below.</p>
+
+    <p>Otherwise:</p>
+
+    <p><span>Parse error</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p>Pop that <code>input</code> element off the <span>stack of open elements</span>.</p>
+
+    <p><span data-x="acknowledge self-closing flag">Acknowledge the token's <i data-x="self-closing flag">self-closing
+    flag</i></span>, if it is set.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "form"</dt>
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <p>If there is a <code>template</code> element on the <span>stack of open elements</span>, or if
+    the <span><code data-x="form">form</code> element pointer</span> is not null, ignore the
+    token.</p> <!-- in a <template>, the <form> would have no effect and thus be a waste of time... -->
+
+    <p>Otherwise:</p>
+
+    <p><span>Insert an HTML element</span> for the token, and set the <span><code
+    data-x="form">form</code> element pointer</span> to point to the element created.</p>
+
+    <p>Pop that <code>form</code> element off the <span>stack of open elements</span>.</p>
+
+   </dd>
+
+   <!-- "form" end tag falls through to in-body, which does the right thing -->
+
+   <dt>An end-of-file token</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <p><span>Parse error</span>. Enable <span data-x="foster parent">foster parenting</span>, process
+    the token <span>using the rules for</span> the "<span data-x="insertion mode: in body">in
+    body</span>" <span>insertion mode</span>, and then disable <span data-x="foster parent">foster
+    parenting</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>When the steps above require the UA to <dfn>clear the stack back to a table context</dfn>, it
+  means that the UA must, while the <span>current node</span> is not a <code>table</code>,
+  <code>template</code>, or <code>html</code> element, pop elements from the <span>stack of open
+  elements</span>.</p>
+
+  <p class="note">This is the same list of elements as used in the <i data-x="has an element in
+  table scope">has an element in table scope</i> steps.</p>
+
+  <p class="note">The <span>current node</span> being an <code>html</code> element after this
+  process is a <span>fragment case</span>.</p>
+
+
+
+  

@@ -1,0 +1,20 @@
+<h5>Best practices for authors using media elements</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Playing audio and video resources on small devices such as set-top boxes or mobile phones is
+  often constrained by limited hardware resources in the device. For example, a device might only
+  support three simultaneous videos. For this reason, it is a good practice to release resources
+  held by <span data-x="media element">media elements</span> when they are done playing, either by
+  being very careful about removing all references to the element and allowing it to be garbage
+  collected, or, even better, by removing the element's <code data-x="attr-media-src">src</code>
+  attribute and any <code>source</code> element descendants, and invoking the element's <code
+  data-x="dom-media-load">load()</code> method.</p>
+
+  <p>Similarly, when the playback rate is not exactly 1.0, hardware, software, or format limitations
+  can cause video frames to be dropped and audio to be choppy or muted.</p>
+
+
+  <div w-nodev>
+
+  

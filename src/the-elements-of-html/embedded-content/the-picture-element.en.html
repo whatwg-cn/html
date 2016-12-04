@@ -1,0 +1,37 @@
+<h4>The <dfn><code>picture</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Embedded content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>embedded content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Zero or more <code>source</code> elements, followed by one <code>img</code> element,
+   optionally intermixed with <span>script-supporting elements</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLPictureElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl>
+
+  <p>The <code>picture</code> element is a container
+  which provides multiple sources to its contained <code>img</code> element
+  to allow authors to declaratively control or give hints to the user agent about which image resource to use,
+  based on the screen pixel density, <span>viewport</span> size, image format, and other factors.
+  It <span>represents</span> its children.</p>
+
+  <p class="note">The <code>picture</code> element is somewhat different from the similar-looking
+  <code>video</code> and <code>audio</code> elements. While all of them contain <code>source</code>
+  elements, the <code>source</code> element's <code data-x="attr-source-src">src</code> attribute
+  has no meaning when the element is nested within a <code>picture</code> element, and the resource
+  selection algorithm is different. Also, the <code>picture</code> element itself does not display
+  anything; it merely provides a context for its contained <code>img</code> element that enables it
+  to choose from multiple <span data-x="URL">URLs</span>.</p>
+
+
+  

@@ -1,0 +1,26 @@
+<h4>The <code>input</code> element as a range control</h4>
+
+  <p>An <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-range">Range</span> state is expected to render as an
+  <span>'inline-block'</span> box depicting a slider control.</p>
+
+  <p>When the control is wider than it is tall (or square), the control is expected to be a
+  horizontal slider, with the lowest value on the right if the <span>'direction'</span> property on
+  this element has a <span>computed value</span> of 'rtl', and on the left otherwise. When the
+  control is taller than it is wide, it is expected to be a vertical slider, with the lowest value
+  on the bottom.</p>
+
+  <p>Predefined suggested values (provided by the <code data-x="attr-input-list">list</code>
+  attribute) are expected to be shown as tick marks on the slider, which the slider can snap to.</p>
+
+  <p>User agents are expected to use the <span>used value</span> of the <span>'direction'</span>
+  property on the element to determine the direction in which the slider operates. Typically, a
+  left-to-right ('ltr') horizontal control would have the lowest value on the left and the highest
+  value on the right, and vice versa.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  <!--en-GB-->

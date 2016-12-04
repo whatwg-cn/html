@@ -1,0 +1,75 @@
+<h4>Message channels</h4>
+
+  <pre class="idl">[<span data-x="dom-MessageChannel">Constructor</span>, Exposed=(Window,Worker)]
+interface <dfn>MessageChannel</dfn> {
+  readonly attribute <span>MessagePort</span> <span data-x="dom-MessageChannel-port1">port1</span>;
+  readonly attribute <span>MessagePort</span> <span data-x="dom-MessageChannel-port2">port2</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>channel</var> = new <code data-x="dom-MessageChannel">MessageChannel</code>()</dt>
+
+   <dd>
+
+    <p>Returns a new <code>MessageChannel</code> object with two new <code>MessagePort</code> objects.</p>
+
+   </dd>
+
+   <dt><var>channel</var> . <code subdfn data-x="dom-MessageChannel-port1">port1</code></dt>
+
+   <dd>
+
+    <p>Returns the first <code>MessagePort</code> object.</p>
+
+   </dd>
+
+   <dt><var>channel</var> . <code subdfn data-x="dom-MessageChannel-port2">port2</code></dt>
+
+   <dd>
+
+    <p>Returns the second <code>MessagePort</code> object.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>When the <dfn><code data-x="dom-MessageChannel">MessageChannel()</code></dfn> constructor is
+  called, it must run the following algorithm:</p>
+
+  <ol>
+
+   <li><p><span>Create a new <code>MessagePort</code> object</span> whose <span
+   data-x="concept-port-owner">owner</span> is the <span>incumbent settings object</span>, and let
+   <var>port1</var> be that object.</p></li>
+
+   <li><p><span>Create a new <code>MessagePort</code> object</span> whose <span
+   data-x="concept-port-owner">owner</span> is the <span>incumbent settings object</span>, and let
+   <var>port2</var> be that object.</p></li>
+
+   <li><p><span>Entangle</span> the <var>port1</var> and <var>port2</var> objects.</p></li>
+
+   <li><p>Instantiate a new <code>MessageChannel</code> object, and let <var>channel</var> be that
+   object.</p></li>
+
+   <li><p>Let the <code data-x="dom-MessageChannel-port1">port1</code> attribute of the
+   <var>channel</var> object be <var>port1</var>.</p>
+
+   <li><p>Let the <code data-x="dom-MessageChannel-port2">port2</code> attribute of the
+   <var>channel</var> object be <var>port2</var>.</p>
+
+   <li><p>Return <var>channel</var>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-MessageChannel-port1">port1</code></dfn> and <dfn><code
+  data-x="dom-MessageChannel-port2">port2</code></dfn> attributes must return the values they were
+  assigned when the <code>MessageChannel</code> object was created.</p>
+
+  </div>
+
+
+
+  

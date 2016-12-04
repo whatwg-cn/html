@@ -1,0 +1,27 @@
+<h5><dfn>Data state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+0026 AMPERSAND (&amp;)</dt>
+   <dd>Set the <var data-x="return state">return state</var> to the <span>data state</span>.
+   Switch to the <span>character reference state</span>.</dd>
+
+   <dt>U+003C LESS-THAN SIGN (&lt;)</dt>
+   <dd>Switch to the <span>tag open state</span>.</dd>
+
+   <dt>U+0000 NULL</dt>
+   <dd><span>Parse error</span>. Emit the <span>current input character</span> as a character
+   token.</dd>
+
+   <dt>EOF</dt>
+   <dd>Emit an end-of-file token.</dd>
+
+   <dt>Anything else</dt>
+   <dd>Emit the <span>current input character</span> as a character token.</dd>
+
+  </dl>
+
+
+  

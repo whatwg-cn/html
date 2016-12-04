@@ -1,0 +1,236 @@
+<h4><dfn>Global attributes</dfn></h4>
+
+  <p>The following attributes are common to and may be specified on all <span>HTML
+  elements</span><span w-nodev> (even those not defined in this specification)</span>:</p>
+
+  <ul class="brief">
+   <li><code data-x="attr-accesskey">accesskey</code></li>
+   <li><code data-x="attr-contenteditable">contenteditable</code></li>
+   <li><code data-x="attr-contextmenu">contextmenu</code></li>
+   <li><code data-x="attr-dir">dir</code></li>
+   <li><code data-x="attr-draggable">draggable</code></li>
+   <li><code data-x="attr-dropzone">dropzone</code></li>
+   <li><code data-x="attr-hidden">hidden</code></li>
+   <li><code data-x="attr-is">is</code></li>
+   <li><code data-x="attr-itemid">itemid</code></li>
+   <li><code data-x="attr-itemprop">itemprop</code></li>
+   <li><code data-x="attr-itemref">itemref</code></li>
+   <li><code data-x="attr-itemscope">itemscope</code></li>
+   <li><code data-x="attr-itemtype">itemtype</code></li>
+   <li><code data-x="attr-lang">lang</code></li>
+   <li><code data-x="attr-spellcheck">spellcheck</code></li>
+   <li><code data-x="attr-style">style</code></li>
+   <li><code data-x="attr-tabindex">tabindex</code></li>
+   <li><code data-x="attr-title">title</code></li>
+   <li><code data-x="attr-translate">translate</code></li>
+  </ul>
+
+  <div w-nodev>
+
+  <p>These attributes are only defined by this specification as attributes for <span>HTML
+  elements</span>. When this specification refers to elements having these attributes, elements from
+  namespaces that are not defined as having these attributes must not be considered as being
+  elements with these attributes.</p>
+
+  <div class="example">
+
+   <p>For example, in the following XML fragment, the "<code data-x="">bogus</code>" element does not
+   have a <code data-x="attr-dir">dir</code> attribute as defined in this specification, despite
+   having an attribute with the literal name "<code data-x="">dir</code>". Thus, <span>the
+   directionality</span> of the inner-most <code>span</code> element is '<span
+   data-x="concept-rtl">rtl</span>', inherited from the <code>div</code> element indirectly through
+   the "<code data-x="">bogus</code>" element.</p>
+
+   <pre class="bad">&lt;div xmlns="http://www.w3.org/1999/xhtml" dir="rtl">
+ &lt;bogus xmlns="https://example.net/ns" dir="ltr">
+  &lt;span xmlns="http://www.w3.org/1999/xhtml">
+  &lt;/span>
+ &lt;/bogus>
+&lt;/div></pre>
+
+  </div>
+
+  </div>
+
+  <hr>
+
+  <p>The WHATWG DOM standard defines the user agent requirements for the <dfn data-x="attr-class"
+  id="classes"><code>class</code></dfn>, <dfn data-x="attr-id"
+  id="the-id-attribute"><code>id</code></dfn>, and <dfn data-x="attr-slot"><code>slot</code></dfn>
+  attributes for any element in any namespace. <ref spec=DOM></p>
+
+  <p>The <code data-x="attr-class">class</code>, <code data-x="attr-id">id</code>, and <code
+  data-x="attr-slot">slot</code> attributes may be specified on all <span>HTML elements</span>.</p>
+
+  <p>When specified on <span>HTML elements</span>, the <code data-x="attr-class">class</code>
+  attribute must have a value that is a <span>set of space-separated tokens</span> representing the
+  various classes that the element belongs to.</p>
+
+  <div class="note">
+
+  <p>Assigning classes to an element affects class matching in selectors in CSS, the <code
+  data-x="dom-document-getElementsByClassName">getElementsByClassName()</code> method in the DOM,
+  and other such features.</p>
+
+  <p>There are no additional restrictions on the tokens authors can use in the <code
+  data-x="attr-class">class</code> attribute, but authors are encouraged to use values that describe
+  the nature of the content, rather than values that describe the desired presentation of the
+  content.</p>
+
+  </div>
+
+  <p>When specified on <span>HTML elements</span>, the <code data-x="attr-id">id</code> attribute
+  value must be unique amongst all the <span data-x="concept-id">IDs</span> in the element's
+  <span>tree</span> and must contain at least one character. The value must not contain any <span
+  data-x="space character">space characters</span>.</p>
+
+  <!-- space characters are disallowed because space-separated lists of IDs otherwise would not be
+  able to reach all valid IDs -->
+
+  <div class="note">
+
+  <p>The <code data-x="attr-id">id</code> attribute specifies its element's <span
+  data-x="concept-id">unique identifier (ID)</span>.</p>
+
+  <p>There are no other restrictions on what form an ID can take; in particular, IDs can consist of
+  just digits, start with a digit, start with an underscore, consist of just punctuation, etc.</p>
+
+  <p>An element's <span data-x="concept-id">unique identifier</span> can be used for a variety of
+  purposes, most notably as a way to link to specific parts of a document using <span
+  data-x="concept-url-fragment">fragments</span>, as a way to target an element when scripting, and
+  as a way to style a specific element from CSS.</p>
+
+  </div>
+
+  <div w-nodev>
+
+  <p>Identifiers are opaque strings. Particular meanings should not be derived from the value of the
+  <code data-x="attr-id">id</code> attribute.</p>
+
+  </div>
+
+  <p>There are no conformance requirements for the <code data-x="attr-slot">slot</code> attribute
+  specific to <span>HTML elements</span>.</p>
+
+  <hr>
+
+  <p>To enable assistive technology products to expose a more fine-grained interface than is
+  otherwise possible with HTML elements and attributes, a set of <a href="#wai-aria">annotations
+  for assistive technology products</a> can be specified (the ARIA <code
+  data-x="attr-aria-role">role</code> and <code data-x="attr-aria-*">aria-*</code> attributes). <ref
+  spec=ARIA></p>
+
+  <hr>
+
+  <p>The following <span>event handler content attributes</span> may be specified on any <span
+  data-x="HTML elements">HTML element</span>:</p>
+
+  <ul class="brief">
+   <li><code data-x="handler-onabort">onabort</code></li>
+   <li><code data-x="handler-onauxclick">onauxclick</code></li>
+   <li><code data-x="handler-onblur">onblur</code>*</li>
+   <li><code data-x="handler-oncancel">oncancel</code></li>
+   <li><code data-x="handler-oncanplay">oncanplay</code></li>
+   <li><code data-x="handler-oncanplaythrough">oncanplaythrough</code></li>
+   <li><code data-x="handler-onchange">onchange</code></li>
+   <li><code data-x="handler-onclick">onclick</code></li>
+   <li><code data-x="handler-onclose">onclose</code></li>
+   <li><code data-x="handler-oncontextmenu">oncontextmenu</code></li>
+   <li><code data-x="handler-oncuechange">oncuechange</code></li>
+   <li><code data-x="handler-ondblclick">ondblclick</code></li>
+   <li><code data-x="handler-ondrag">ondrag</code></li>
+   <li><code data-x="handler-ondragend">ondragend</code></li>
+   <li><code data-x="handler-ondragenter">ondragenter</code></li>
+   <li><code data-x="handler-ondragexit">ondragexit</code></li>
+   <li><code data-x="handler-ondragleave">ondragleave</code></li>
+   <li><code data-x="handler-ondragover">ondragover</code></li>
+   <li><code data-x="handler-ondragstart">ondragstart</code></li>
+   <li><code data-x="handler-ondrop">ondrop</code></li>
+   <li><code data-x="handler-ondurationchange">ondurationchange</code></li>
+   <li><code data-x="handler-onemptied">onemptied</code></li>
+   <li><code data-x="handler-onended">onended</code></li>
+   <li><code data-x="handler-onerror">onerror</code>*</li>
+   <li><code data-x="handler-onfocus">onfocus</code>*</li>
+   <li><code data-x="handler-oninput">oninput</code></li>
+   <li><code data-x="handler-oninvalid">oninvalid</code></li>
+   <li><code data-x="handler-onkeydown">onkeydown</code></li>
+   <li><code data-x="handler-onkeypress">onkeypress</code></li>
+   <li><code data-x="handler-onkeyup">onkeyup</code></li>
+   <li><code data-x="handler-onload">onload</code>*</li>
+   <li><code data-x="handler-onloadeddata">onloadeddata</code></li>
+   <li><code data-x="handler-onloadedmetadata">onloadedmetadata</code></li>
+   <li><code data-x="handler-onloadend">onloadend</code></li>
+   <li><code data-x="handler-onloadstart">onloadstart</code></li>
+   <li><code data-x="handler-onmousedown">onmousedown</code></li>
+   <li><code data-x="handler-onmouseenter">onmouseenter</code></li>
+   <li><code data-x="handler-onmouseleave">onmouseleave</code></li>
+   <li><code data-x="handler-onmousemove">onmousemove</code></li>
+   <li><code data-x="handler-onmouseout">onmouseout</code></li>
+   <li><code data-x="handler-onmouseover">onmouseover</code></li>
+   <li><code data-x="handler-onmouseup">onmouseup</code></li>
+   <li><code data-x="handler-onwheel">onwheel</code></li>
+   <li><code data-x="handler-onpause">onpause</code></li>
+   <li><code data-x="handler-onplay">onplay</code></li>
+   <li><code data-x="handler-onplaying">onplaying</code></li>
+   <li><code data-x="handler-onprogress">onprogress</code></li>
+   <li><code data-x="handler-onratechange">onratechange</code></li>
+   <li><code data-x="handler-onreset">onreset</code></li>
+   <li><code data-x="handler-onresize">onresize</code>*</li>
+   <li><code data-x="handler-onscroll">onscroll</code>*</li>
+   <li><code data-x="handler-onseeked">onseeked</code></li>
+   <li><code data-x="handler-onseeking">onseeking</code></li>
+   <li><code data-x="handler-onselect">onselect</code></li>
+   <li><code data-x="handler-onshow">onshow</code></li>
+   <li><code data-x="handler-onstalled">onstalled</code></li>
+   <li><code data-x="handler-onsubmit">onsubmit</code></li>
+   <li><code data-x="handler-onsuspend">onsuspend</code></li>
+   <li><code data-x="handler-ontimeupdate">ontimeupdate</code></li>
+   <li><code data-x="handler-ontoggle">ontoggle</code></li>
+   <li><code data-x="handler-onvolumechange">onvolumechange</code></li>
+   <li><code data-x="handler-onwaiting">onwaiting</code></li>
+  </ul>
+
+  <p class="note">The attributes marked with an asterisk have a different meaning when specified on
+  <code>body</code> elements as those elements expose <span>event handlers</span> of the
+  <code>Window</code> object with the same names.</p>
+
+  <p class="note">While these attributes apply to all elements, they are not useful on all elements.
+  For example, only <span data-x="media element">media elements</span> will ever receive a <code
+  data-x="event-media-volumechange">volumechange</code> event fired by the user agent.</p>
+
+  <hr>
+
+  <p><span data-x="custom data attribute">Custom data attributes</span> (e.g. <code
+  data-x="">data-foldername</code> or <code data-x="">data-msgid</code>) can be specified on any <span
+  data-x="HTML elements">HTML element</span>, to store custom data specific to the page.</p>
+
+  <hr>
+
+  <p>In <span>HTML documents</span>, elements in the <span>HTML namespace</span> may have an <code
+  data-x="">xmlns</code> attribute specified, if, and only if, it has the exact value "<code
+  data-x="">http://www.w3.org/1999/xhtml</code>". This does not apply to <span>XML
+  documents</span>.</p>
+
+  <p class="note">In HTML, the <code data-x="">xmlns</code> attribute has absolutely no effect. It
+  is basically a talisman. It is allowed merely to make migration to and from XML mildly easier.
+  When parsed by an <span>HTML parser</span>, the attribute ends up in no namespace, not the "<code
+  data-x="">http://www.w3.org/2000/xmlns/</code>" namespace like namespace declaration attributes in
+  XML do.</p>
+
+  <p class="note">In XML, an <code data-x="">xmlns</code> attribute is part of the namespace
+  declaration mechanism, and an element cannot actually have an <code data-x="">xmlns</code>
+  attribute in no namespace specified.</p>
+
+  <hr>
+
+  <p>The XML specification also allows the use of the <code data-x="attr-xml-space">xml:space</code>
+  attribute in the <span>XML namespace</span> on any element in an <span data-x="XML documents">XML
+  document</span>. This attribute has no effect on <span>HTML elements</span>, as the default
+  behavior in HTML is to preserve whitespace. <ref spec=XML></p>
+
+  <p class="note">There is no way to serialize the <code data-x="attr-xml-space">xml:space</code>
+  attribute on <span>HTML elements</span> in the <code>text/html</code> syntax.</p>
+
+
+
+  

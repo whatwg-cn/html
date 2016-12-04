@@ -1,0 +1,35 @@
+<h5>Start tags</h5>
+
+  <p><dfn data-x="syntax-start-tag">Start tags</dfn> must have the following format:</p>
+
+  <ol>
+
+   <li>The first character of a start tag must be a U+003C LESS-THAN SIGN character (&lt;).</li>
+
+   <li>The next few characters of a start tag must be the element's <span
+   data-x="syntax-tag-name">tag name</span>.</li>
+
+   <li>If there are to be any attributes in the next step, there must first be one or more <span
+   data-x="space character">space characters</span>.</li>
+
+   <li>Then, the start tag may have a number of attributes, the <span
+   data-x="syntax-attributes">syntax for which</span> is described below. Attributes must be
+   separated from each other by one or more <span data-x="space character">space
+   characters</span>.</li>
+
+   <li>After the attributes, or after the <span data-x="syntax-tag-name">tag name</span> if there are
+   no attributes, there may be one or more <span data-x="space character">space characters</span>.
+   (Some attributes are required to be followed by a space. See the <span
+   data-x="syntax-attributes">attributes section</span> below.)</li>
+
+   <li>Then, if the element is one of the <span>void elements</span>, or if the element is a <span
+   data-x="foreign elements">foreign element</span>, then there may be a single U+002F SOLIDUS
+   character (/). This character has no effect on <span>void elements</span>, but on <span>foreign
+   elements</span> it marks the start tag as self-closing.</li>
+
+   <li>Finally, start tags must be closed by a U+003E GREATER-THAN SIGN character (&gt;).</li>
+
+  </ol>
+
+
+  

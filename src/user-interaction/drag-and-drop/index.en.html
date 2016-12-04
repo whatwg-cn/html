@@ -1,0 +1,92 @@
+<h3 id="dnd"><dfn>Drag and drop</dfn></h3>
+
+<!-- v2: ideas for drag and drop:
+
+     * being able to animate a drop target:
+
+       > To implement this with simple interface I've proposed, events should be handled either by
+       > existing elements (like list items that compare their size and position of dragged element
+       > to decide whether element should be dropped before or after) or handled by container that
+       > would probably need to calculate positions of it's children and create new element to show
+       > drop target. Smooth Mac-like drag'n'drop can be implemented by animating drop target's
+       > padding/margin. So that's quite a bit of code that's going to be reinvented each time
+       > someone implements reordering.
+
+       <hyatt> :droptarget
+       <hyatt> or something
+       <hyatt> we don't support a pseudo-class for the drop target but that's a great idea
+       <Hixie_> yeah, thinking about that too
+       <Hixie_> :drop-target, :drop-target(above), :drop-target(below) and having ondragover be able to say "not on me, but next to me maybe"
+
+       - some way to be able to match an element that is being dragged over.
+
+       - some way to be able to animate an element as it goes into and out of this state (CSS
+         transitions?), e.g. to be able to animate something "getting out of the way" to let you
+         drop an item between others.
+
+       - as an extension to the previous feature, a way to distinguish being dragged above or to the
+         left of the drag target vs below or to the right of the drag target.
+
+     * We should let drop targets communicate back to drag sources if they want to communicate.
+       (e.g. expose Window, and thus postMessage(), on the dataTransfer object on drop.) Or maybe
+       just use a MessagePort!
+
+       We should let drag sources provide a set of options via a context menu when the drop happens.
+       (So that, e.g., the source can know whether a capabilities URI that it is passing along is
+       supposed to be read-write access or read-only access to the object being dragged.)
+
+       We should let potential drop targets see the types (but not the contents!) of dragged data so
+       they can establish if they care or not. (dataTransfer.hasType())
+
+       Ack: Ben Laurie (@g)
+
+     * Interop with native apps. In particular, we probably want to safelist the list of types that
+       a Web page can see, since otherwise we'll end up exposing things like the username (if a user
+       drags a file from their desktop, the path is exposed on some OSes).
+
+     * Alex Velkov suggests that drags to and from the same origin should be able to read the data
+       even before the drop.
+
+     Other things listed below:
+      DND-v2: more native support: text/html from selections, etc
+      DND-v3: add Blob support
+      DND-v4: add structured clone support
+      DND-v5: add promises (should be able to say "if you accept this
+              drop, then I can provide the File object that
+              corresponds to it eventually")
+
+         DataTransferPromise.type = 'string' or 'file' or 'blob' or 'data'
+                            .onneeddata - can wait until this fires to provide data
+                            .setData() - call this once you have data, must be the right type
+
+-->
+
+  <p>This section defines an event-based drag-and-drop mechanism.</p>
+
+  <p>This specification does not define exactly what a <em>drag-and-drop operation</em> actually
+  is.</p>
+
+  <p>On a visual medium with a pointing device, a drag operation could be the default action of a
+  <code data-x="event-mousedown">mousedown</code> event that is followed by a series of <code
+  data-x="event-mousemove">mousemove</code> events, and the drop could be triggered by the mouse
+  being released.</p>
+
+  <p>When using an input modality other than a pointing device, users would probably have to
+  explicitly indicate their intention to perform a drag-and-drop operation, stating what they wish
+  to drag and where they wish to drop it, respectively.</p>
+
+  <div w-nodev>
+
+  <p>However it is implemented, drag-and-drop operations must have a starting point (e.g. where the
+  mouse was clicked, or the start of the selection or element that was selected for the drag), may
+  have any number of intermediate steps (elements that the mouse moves over during a drag, or
+  elements that the user picks as possible drop points as they cycle through possibilities), and must
+  either have an end point (the element above which the mouse button was released, or the element
+  that was finally selected), or be canceled. The end point must be the last element selected as a
+  possible drop point before the drop occurs (so if the operation is not canceled, there must be at
+  least one element in the middle step).</p>
+
+  </div>
+
+
+  

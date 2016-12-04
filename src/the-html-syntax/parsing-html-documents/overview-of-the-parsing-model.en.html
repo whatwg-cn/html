@@ -1,0 +1,45 @@
+<h4>Overview of the parsing model</h4>
+
+  <p class="overview"><object data="/images/parsing-model-overview.svg" width="345" height="535"><img src="/images/parsing-model-overview.png" width="345" height="450" alt=""></object></p>
+
+  <p>The input to the HTML parsing process consists of a stream of <span data-x="Unicode code
+  point">Unicode code points</span>, which is passed through a <span>tokenization</span> stage
+  followed by a <span>tree construction</span> stage. The output is a <code>Document</code>
+  object.</p>
+
+  <p class="note">Implementations that <a href="#non-scripted">do not support scripting</a> do not
+  have to actually create a DOM <code>Document</code> object, but the DOM tree in such cases is
+  still used as the model for the rest of the specification.</p>
+
+  <p>In the common case, the data handled by the tokenization stage comes from the network, but
+  <span data-x="dynamic markup insertion">it can also come from script</span> running in the user
+  agent, e.g. using the <code data-x="dom-document-write">document.write()</code> API.</p>
+
+  <p id="nestedParsing">There is only one set of states for the tokenizer stage and the tree
+  construction stage, but the tree construction stage is reentrant, meaning that while the tree
+  construction stage is handling one token, the tokenizer might be resumed, causing further tokens
+  to be emitted and processed before the first token's processing is complete.</p>
+
+  <div class="example">
+
+   <p>In the following example, the tree construction stage will be called upon to handle a "p"
+   start tag token while handling the "script" end tag token:</p>
+
+   <pre>...
+&lt;script>
+ document.write('&lt;p>');
+&lt;/script>
+...</pre>
+
+  </div>
+
+  <p>To handle these cases, parsers have a <dfn>script nesting level</dfn>, which must be initially
+  set to zero, and a <dfn>parser pause flag</dfn>, which must be initially set to false.</p>
+
+  </div>
+
+
+
+  <div w-nodev>
+
+  

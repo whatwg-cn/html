@@ -1,0 +1,408 @@
+<h6>Text track model</h6>
+
+  <p>A <span>media element</span> can have a group of associated <dfn data-x="text track">text
+  tracks</dfn>, known as the <span>media element</span>'s <dfn>list of text tracks</dfn>. The <span
+  data-x="text track">text tracks</span> are sorted as follows:</p>
+
+  <ol class="brief">
+
+   <li>The <span data-x="text track">text tracks</span> corresponding to <code>track</code> element
+   children of the <span>media element</span>, in <span>tree order</span>.</li>
+
+   <li>Any <span data-x="text track">text tracks</span> added using the <code
+   data-x="dom-media-addTextTrack">addTextTrack()</code> method, in the order they were added, oldest
+   first.</li>
+
+   <li>Any <span data-x="media-resource-specific text track">media-resource-specific text
+   tracks</span> (<span data-x="text track">text tracks</span> corresponding to data in the
+   <span>media resource</span>), in the order defined by the <span>media resource</span>'s format
+   specification.</li>
+
+  </ol>
+
+  <p>A <span>text track</span> consists of:</p>
+
+  <dl>
+
+   <dt><dfn data-x="text track kind">The kind of text track</dfn>
+
+   <dd>
+
+    <p>This decides how the track is handled by the user agent. The kind is represented by a string.
+    The possible strings are:</p>
+
+    <ul class="brief">
+     <li><dfn><code data-x="dom-TextTrack-kind-subtitles">subtitles</code></dfn>
+     <li><dfn><code data-x="dom-TextTrack-kind-captions">captions</code></dfn>
+     <li><dfn><code data-x="dom-TextTrack-kind-descriptions">descriptions</code></dfn>
+     <li><dfn><code data-x="dom-TextTrack-kind-chapters">chapters</code></dfn>
+     <li><dfn><code data-x="dom-TextTrack-kind-metadata">metadata</code></dfn>
+    </ul>
+
+    <p>The <span data-x="text track kind">kind of track</span> can change dynamically, in the case of
+    a <span>text track</span> corresponding to a <code>track</code> element.</p>
+
+   </dd>
+
+   <dt><dfn data-x="text track label">A label</dfn>
+
+   <dd>
+
+    <p>This is a human-readable string intended to identify the track for the user.</p>
+
+    <p>The <span data-x="text track label">label of a track</span> can change dynamically, in the
+    case of a <span>text track</span> corresponding to a <code>track</code> element.</p>
+
+    <p>When a <span>text track label</span> is the empty string, the user agent should automatically
+    generate an appropriate label from the text track's other properties (e.g. the kind of text
+    track and the text track's language) for use in its user interface. This automatically-generated
+    label is not exposed in the API.</p>
+
+   </dd>
+
+   <dt><dfn data-x="text track in-band metadata track dispatch type">An in-band metadata track dispatch type</dfn>
+
+   <dd>
+
+    <p>This is a string extracted from the <span>media resource</span> specifically for in-band
+    metadata tracks to enable such tracks to be dispatched to different scripts in the document.</p>
+
+    <p class="example">For example, a traditional TV station broadcast streamed on the Web and
+    augmented with Web-specific interactive features could include text tracks with metadata for ad
+    targeting, trivia game data during game shows, player states during sports games, recipe
+    information during food programs, and so forth. As each program starts and ends, new tracks
+    might be added or removed from the stream, and as each one is added, the user agent could bind
+    them to dedicated script modules using the value of this attribute.</p>
+
+    <p>Other than for in-band metadata text tracks, the <span data-x="text track in-band metadata
+    track dispatch type">in-band metadata track dispatch type</span> is the empty string. How this
+    value is populated for different media formats is described in <span>steps to expose a
+    media-resource-specific text track</span>.</p>
+
+   </dd>
+
+   <dt><dfn data-x="text track language">A language</dfn>
+
+   <dd>
+
+    <p>This is a string (a BCP 47 language tag) representing the language of the text track's cues.
+    <ref spec=BCP47></p>
+
+    <p>The <span data-x="text track language">language of a text track</span> can change dynamically,
+    in the case of a <span>text track</span> corresponding to a <code>track</code> element.</p>
+
+   </dd>
+
+   <dt><dfn data-x="text track readiness state">A readiness state</dfn>
+
+   <dd>
+
+    <p>One of the following:</p>
+
+    <dl>
+
+     <dt><dfn data-x="text track not loaded">Not loaded</dfn>
+
+     <dd>
+
+      <p>Indicates that the text track's cues have not been obtained.</p>
+
+     </dd>
+
+     <dt><dfn data-x="text track loading">Loading</dfn>
+
+     <dd>
+
+      <p>Indicates that the text track is loading and there have been no fatal errors encountered so
+      far. Further cues might still be added to the track by the parser.</p>
+
+     </dd>
+
+     <dt><dfn data-x="text track loaded">Loaded</dfn>
+
+     <dd>
+
+      <p>Indicates that the text track has been loaded with no fatal errors.</p>
+
+     </dd>
+
+     <dt><dfn data-x="text track failed to load">Failed to load</dfn>
+
+     <dd>
+
+      <p>Indicates that the text track was enabled, but when the user agent attempted to obtain it,
+      this failed in some way (e.g. <span>URL</span> could not be <span data-x="parse a
+      url">parsed</span>, network error, unknown text track format). Some or all of the cues are
+      likely missing and will not be obtained.</p>
+
+     </dd>
+
+    </dl>
+
+    <p>The <span data-x="text track readiness state">readiness state</span> of a <span>text
+    track</span> changes dynamically as the track is obtained.</p>
+
+   </dd>
+
+   <dt><dfn data-x="text track mode">A mode</dfn>
+
+   <dd>
+
+    <p>One of the following:</p>
+
+    <dl>
+
+     <dt><dfn data-x="text track disabled">Disabled</dfn>
+
+     <dd>
+
+      <p>Indicates that the text track is not active. Other than for the purposes of exposing the
+      track in the DOM, the user agent is ignoring the text track. No cues are active, no events are
+      fired, and the user agent will not attempt to obtain the track's cues.</p>
+
+     </dd>
+
+     <dt><dfn data-x="text track hidden">Hidden</dfn>
+
+     <dd>
+
+      <p>Indicates that the text track is active, but that the user agent is not actively displaying
+      the cues. If no attempt has yet been made to obtain the track's cues, the user agent will
+      perform such an attempt momentarily. The user agent is maintaining a list of which cues are
+      active, and events are being fired accordingly.</p>
+
+     </dd>
+
+     <dt><dfn data-x="text track showing">Showing</dfn>
+
+     <dd>
+
+      <p>Indicates that the text track is active. If no attempt has yet been made to obtain the
+      track's cues, the user agent will perform such an attempt momentarily. The user agent is
+      maintaining a list of which cues are active, and events are being fired accordingly. In
+      addition, for text tracks whose <span data-x="text track kind">kind</span> is <code
+      data-x="dom-TextTrack-kind-subtitles">subtitles</code> or <code
+      data-x="dom-TextTrack-kind-captions">captions</code>, the cues are being overlaid on the video
+      as appropriate; for text tracks whose <span data-x="text track kind">kind</span> is <code
+      data-x="dom-TextTrack-kind-descriptions">descriptions</code>, the user agent is making the
+      cues available to the user in a non-visual fashion; and for text tracks whose <span
+      data-x="text track kind">kind</span> is <code
+      data-x="dom-TextTrack-kind-chapters">chapters</code>, the user agent is making available to
+      the user a mechanism by which the user can navigate to any point in the <span>media
+      resource</span> by selecting a cue.</p>
+
+     </dd>
+
+    </dl>
+
+   </dd>
+
+   <dt><dfn data-x="text track list of cues">A list of zero or more cues</dfn>
+
+   <dd>
+
+    <p>A list of <span data-x="text track cue">text track cues</span>, along with <dfn>rules for
+    updating the text track rendering</dfn>. For example, for WebVTT, the <span>rules for updating
+    the display of WebVTT text tracks</span>. <ref spec=WEBVTT> </p>
+
+    <p>The <span data-x="text track list of cues">list of cues of a text track</span> can change
+    dynamically, either because the <span>text track</span> has <span data-x="text track not
+    loaded">not yet been loaded</span> or is still <span data-x="text track loading">loading</span>,
+    or due to DOM manipulation.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>Each <span>text track</span> has a corresponding <code>TextTrack</code> object.</p>
+
+  <hr>
+
+  <p>Each <span>media element</span> has a <dfn>list of pending text tracks</dfn>, which must
+  initially be empty, a <dfn>blocked-on-parser</dfn> flag, which must initially be false, and a
+  <dfn>did-perform-automatic-track-selection</dfn> flag, which must also initially be false.</p>
+
+  <p>When the user agent is required to <dfn>populate the list of pending text tracks</dfn> of a
+  <span>media element</span>, the user agent must add to the element's <span>list of pending text
+  tracks</span> each <span>text track</span> in the element's <span>list of text tracks</span> whose
+  <span>text track mode</span> is not <span data-x="text track disabled">disabled</span> and whose
+  <span>text track readiness state</span> is <!--either <span data-x="text track not loaded">not
+  loaded</span> or [there can't be any in the 'not loaded' state that are not 'disabled']--> <span
+  data-x="text track loading">loading</span>.</p>
+
+  <p>Whenever a <code>track</code> element's parent node changes, the user agent must remove the
+  corresponding <span>text track</span> from any <span>list of pending text tracks</span> that it is
+  in.</p>
+
+  <p>Whenever a <span>text track</span>'s <span>text track readiness state</span> changes to either
+  <span data-x="text track loaded">loaded</span> or <span data-x="text track failed to load">failed to
+  load</span>, the user agent must remove it from any <span>list of pending text tracks</span> that
+  it is in.</p>
+
+  <p>When a <span>media element</span> is created by an <span>HTML parser</span> or <span>XML
+  parser</span>, the user agent must set the element's <span>blocked-on-parser</span> flag to true.
+  When a <span>media element</span> is popped off the <span>stack of open elements</span> of an
+  <span>HTML parser</span> or <span>XML parser</span>, the user agent must <span>honor user
+  preferences for automatic text track selection</span>, <span>populate the list of pending text
+  tracks</span>, and set the element's <span>blocked-on-parser</span> flag to false.</p>
+
+  <p>The <span data-x="text track">text tracks</span> of a <span>media element</span> are <dfn
+  data-x="the text tracks are ready">ready</dfn> when both the element's <span>list of pending text
+  tracks</span> is empty and the element's <span>blocked-on-parser</span> flag is false.</p>
+
+  <p>Each <span>media element</span> has a <dfn>pending text track change notification flag</dfn>,
+  which must initially be unset.</p>
+
+  <p>Whenever a <span>text track</span> that is in a <span>media element</span>'s <span>list of text
+  tracks</span> has its <span>text track mode</span> change value, the user agent must run the
+  following steps for the <span>media element</span>:</p>
+
+  <ol>
+
+   <li><p>If the <span>media element</span>'s <span>pending text track change notification
+   flag</span> is set, abort these steps.</p></li>
+
+   <li><p>Set the <span>media element</span>'s <span>pending text track change notification
+   flag</span>.</p></li>
+
+   <li>
+
+    <p><span>Queue a task</span> that runs the following substeps:</p>
+
+    <ol>
+
+     <li><p>Unset the <span>media element</span>'s <span>pending text track change notification
+     flag</span>.</p></li>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-media-change">change</code> at the <span>media element</span>'s <code
+     data-x="dom-media-textTracks">textTracks</code> attribute's <code>TextTrackList</code>
+     object.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the <span>media element</span>'s <span>show poster flag</span> is not set, run the
+   <i data-x="time marches on">time marches on</i> steps.</p></li>
+
+  </ol>
+
+  <p>The <span>task source</span> for the <span data-x="concept-task">tasks</span> listed in this
+  section is the <span>DOM manipulation task source</span>.</p>
+
+  <hr>
+
+  <p>A <dfn>text track cue</dfn> is the unit of time-sensitive data in a <span>text track</span>,
+  corresponding for instance for subtitles and captions to the text that appears at a particular
+  time and disappears at another time.</p>
+
+  <p>Each <span>text track cue</span> consists of:</p>
+
+  <dl>
+
+   <dt><dfn data-x="text track cue identifier">An identifier</dfn>
+   <dd>
+    <p>An arbitrary string.</p>
+   </dd>
+
+   <dt><dfn data-x="text track cue start time">A start time</dfn>
+   <dd>
+    <p>The time, in seconds and fractions of a second, that describes the beginning of the range of
+    the <span>media data</span> to which the cue applies.</p>
+   </dd>
+
+   <dt><dfn data-x="text track cue end time">An end time</dfn>
+   <dd>
+    <p>The time, in seconds and fractions of a second, that describes the end of the range of the
+    <span>media data</span> to which the cue applies.</p>
+   </dd>
+
+   <dt><dfn data-x="text track cue pause-on-exit flag">A pause-on-exit flag</dfn>
+   <dd>
+    <p>A boolean indicating whether playback of the <span>media resource</span> is to pause when the
+    end of the range to which the cue applies is reached.</p>
+   </dd>
+
+   <dt>Some additional format-specific data</dt>
+   <dd>
+    <p>Additional fields, as needed for the format, including the actual data of the cue. For example, WebVTT has a <span>text track cue
+    writing direction</span> and so forth. <ref spec=WEBVTT></p>
+   </dd>
+
+   <dt><dfn data-x="text track rules for extracting the chapter title">Rules for extracting the chapter title</dfn>
+   <dd>
+    <p>An algorithm which, when applied to the cue, returns a string that can be used in user
+    interfaces that use the cue as a chapter title.</p>
+   </dd>
+
+  </dl>
+
+  <p class="note">The <span>text track cue start time</span> and <span>text track cue end
+  time</span> can be negative. (The <span>current playback position</span> can never be negative,
+  though, so cues entirely before time zero cannot be active.)</p>
+
+  <p>Each <span>text track cue</span> has a corresponding <code>TextTrackCue</code> object (or more
+  specifically, an object that inherits from <code>TextTrackCue</code> &mdash; for example, WebVTT
+  cues use the <code>VTTCue</code> interface). A <span>text track cue</span>'s in-memory
+  representation can be dynamically changed through this <code>TextTrackCue</code> API. <ref
+  spec=WEBVTT></p>
+
+  <p>A <span>text track cue</span> is associated with <span>rules for updating the text track
+  rendering</span>, as defined by the specification for the specific kind of <span>text track
+  cue</span>. These rules are used specifically when the object representing the cue is added to a
+  <code>TextTrack</code> object using the <code data-x="dom-TextTrack-addCue">addCue()</code>
+  method.</p>
+
+  <p>In addition, each <span>text track cue</span> has two pieces of dynamic information:</p>
+
+  <dl>
+
+   <dt>The <dfn data-x="text track cue active flag">active flag</dfn>
+   <dd>
+
+    <p>This flag must be initially unset. The flag is used to ensure events are fired appropriately
+    when the cue becomes active or inactive, and to make sure the right cues are rendered.</p>
+
+    <p>The user agent must synchronously unset this flag whenever the <span>text track cue</span> is
+    removed from its <span>text track</span>'s <span>text track list of cues</span>; whenever the
+    <span>text track</span> itself is removed from its <span>media element</span>'s <span>list of
+    text tracks</span> or has its <span>text track mode</span> changed to <span data-x="text track
+    disabled">disabled</span>; and whenever the <span>media element</span>'s <code
+    data-x="dom-media-readyState">readyState</code> is changed back to <code
+    data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>. When the flag is unset in this way for one
+    or more cues in <span data-x="text track">text tracks</span> that were <span data-x="text track
+    showing">showing</span> prior to the relevant incident, the user agent must, after having unset
+    the flag for all the affected cues, apply the <span>rules for updating the text track
+    rendering</span> of those <span data-x="text track">text tracks</span>. For example, for <span
+    data-x="text track">text tracks</span> based on WebVTT, the <span>rules for updating the display
+    of WebVTT text tracks</span>. <ref spec=WEBVTT></p> </dd>
+
+   <dt>The <dfn data-x="text track cue display state">display state</dfn>
+   <dd>
+
+    <p>This is used as part of the rendering model, to keep cues in a consistent position. It must
+    initially be empty. Whenever the <span>text track cue active flag</span> is unset, the user
+    agent must empty the <span>text track cue display state</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>The <span data-x="text track cue">text track cues</span> of a <span>media element</span>'s
+  <span data-x="text track">text tracks</span> are ordered relative to each other in the <dfn>text
+  track cue order</dfn>, which is determined as follows: first group the <span data-x="text track
+  cue">cues</span> by their <span>text track</span>, with the groups being sorted in the same order
+  as their <span data-x="text track">text tracks</span> appear in the <span>media element</span>'s
+  <span>list of text tracks</span>; then, within each group, <span data-x="text track
+  cue">cues</span> must be sorted by their <span data-x="text track cue start time">start
+  time</span>, earliest first; then, any <span data-x="text track cue">cues</span> with the same
+  <span data-x="text track cue start time">start time</span> must be sorted by their <span
+  data-x="text track cue end time">end time</span>, latest first; and finally, any <span
+  data-x="text track cue">cues</span> with identical <span data-x="text track cue end time">end
+  times</span> must be sorted in the order they were last added to their respective <span>text track
+  list of cues</span>, oldest first (so e.g. for cues from a WebVTT file, that would initially be
+  the order in which the cues were listed in the file). <ref spec=WEBVTT></p>
+
+
+  

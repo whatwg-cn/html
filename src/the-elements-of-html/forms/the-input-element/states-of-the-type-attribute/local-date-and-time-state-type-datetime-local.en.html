@@ -1,0 +1,170 @@
+<h6><dfn data-x="attr-input-type-datetime-local">Local Date and Time</dfn> state (<code data-x="">type=datetime-local</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-datetime-local">Local Date and Time</span> state, the rules in
+  this section apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a control for setting the element's
+  <span data-x="concept-fe-value">value</span> to a string representing a <span
+  data-x="concept-datetime-local">local date and time</span>, with no time-zone offset
+  information.</p>
+
+  <div w-nodev>
+
+  <p>If the element is <i data-x="concept-fe-mutable">mutable</i>, the user agent should allow the
+  user to change the <span data-x="concept-datetime-local">date and time</span> represented by its
+  <span data-x="concept-fe-value">value</span>, as obtained by <span data-x="parse a local date and
+  time string">parsing a date and time</span> from it. User agents must not allow the user to set
+  the <span data-x="concept-fe-value">value</span> to a non-empty string that is not a <span>valid
+  normalized local date and time string</span>. If the user agent provides a user interface for
+  selecting a <span data-x="concept-datetime-local">local date and time</span>, then the <span
+  data-x="concept-fe-value">value</span> must be set to a <span>valid normalized local date and time
+  string</span> representing the user's selection. User agents should allow the user to set the
+  <span data-x="concept-fe-value">value</span> to the empty string.</p>
+
+  <p><strong>Constraint validation</strong>: While the user interface describes input that the user
+  agent cannot convert to a <span>valid normalized local date and time string</span>, the control is
+  <span>suffering from bad input</span>.</p>
+
+  </div>
+
+  <p class="note">See the <a href="#input-author-notes">introduction section</a> for a discussion of
+  the difference between the input format and submission format for date, time, and number form
+  controls<span w-nodev>, and the <a href="#input-impl-notes">implementation notes</a>
+  regarding localization of form controls</span>.</p>
+
+  <p>The <code data-x="attr-input-value">value</code> attribute, if specified and not empty, must
+  have a value that is a <span>valid local date and time string</span>.</p> <!-- ok to set
+  out-of-range value, we never know when we might have to represent bogus input -->
+
+  <div w-nodev>
+
+  <p><strong>The <span>value sanitization algorithm</span> is as follows</strong>: If the <span
+  data-x="concept-fe-value">value</span> of the element is a <span>valid local date and time
+  string</span>, then set it to a <span>valid normalized local date and time string</span>
+  representing the same date and time; otherwise, set it to the empty string instead.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-input-min">min</code> attribute, if specified, must have a value that is
+  a <span>valid local date and time string</span>. The <code data-x="attr-input-max">max</code>
+  attribute, if specified, must have a value that is a <span>valid local date and time
+  string</span>.</p>
+
+  <p>The <code data-x="attr-input-step">step</code> attribute is expressed in seconds. <span
+  w-nodev>The <span data-x="concept-input-step-scale">step scale factor</span> is 1000 (which
+  converts the seconds to milliseconds, as used in the other algorithms).</span> The <span
+  data-x="concept-input-step-default">default step</span> is 60 seconds.</p>
+
+  <div w-nodev>
+
+  <p>When the element is <span>suffering from a step mismatch</span>, the user agent may round the
+  element's <span data-x="concept-fe-value">value</span> to the nearest <span
+  data-x="concept-datetime-local">local date and time</span> for which the element would not <span
+  data-x="suffering from a step mismatch">suffer from a step mismatch</span>.</p>
+
+  <p><strong>The <span data-x="concept-input-value-string-number">algorithm to convert a string to a
+  number</span>, given a string <var>input</var>, is as follows</strong>: If <span
+  data-x="parse a local date and time string">parsing a date and time</span> from <var>input</var> results in an error, then return an error; otherwise, return the number of
+  milliseconds elapsed from midnight on the morning of 1970-01-01 (the time represented by the value
+  "<code data-x="">1970-01-01T00:00:00.0</code>") to the parsed <span
+  data-x="concept-datetime-local">local date and time</span>, ignoring leap seconds.</p>
+
+  <p><strong>The <span data-x="concept-input-value-number-string">algorithm to convert a number to a
+  string</span>, given a number <var>input</var>, is as follows</strong>: Return a
+  <span>valid normalized local date and time string</span> that represents the date and time that is
+  <var>input</var> milliseconds after midnight on the morning of 1970-01-01 (the time
+  represented by the value "<code data-x="">1970-01-01T00:00:00.0</code>").</p>
+
+  </div>
+
+  <p class="note">See <a href="#only-contemporary-times">the note on historical dates</a> in the
+  <span data-x="attr-input-type-date">Date</span> state section.</p>
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content
+   attributes, IDL attributes, and methods <span data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code data-x="attr-input-list">list</code>,
+   <code data-x="attr-input-max">max</code>,
+   <code data-x="attr-input-min">min</code>,
+   <code data-x="attr-input-readonly">readonly</code>,
+   <code data-x="attr-input-required">required</code>, and
+   <code data-x="attr-input-step">step</code> content attributes;
+   <code data-x="dom-input-list">list</code>,
+   <code data-x="dom-input-value">value</code>, and
+   <code data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code data-x="dom-textarea/input-select">select()</code>,
+   <code data-x="dom-input-stepDown">stepDown()</code>, and
+   <code data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is
+   in mode <span data-x="dom-input-value-value">value</span>.</p>
+
+   <p>The <code data-x="event-input">input</code> and <code
+   data-x="event-change">change</code> events <span data-x="concept-input-apply">apply</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not
+   apply</span> to the element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-maxlength">maxlength</code>,
+   <code class="no-backref" data-x="attr-input-minlength">minlength</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-pattern">pattern</code>,
+   <code class="no-backref" data-x="attr-input-placeholder">placeholder</code>,
+   <code class="no-backref" data-x="attr-input-size">size</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionDirection">selectionDirection</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code> IDL attributes;
+   <code class="no-backref" data-x="dom-textarea/input-setRangeText">setRangeText()</code>, and
+   <code class="no-backref" data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code> methods.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows part of a flight booking application. The application uses an
+   <code>input</code> element with its <code data-x="attr-input-type">type</code> attribute set to
+   <code data-x="attr-input-type-datetime-local">datetime-local</code>, and it then interprets the
+   given date and time in the time zone of the selected airport.</p>
+
+   <pre>&lt;fieldset>
+ &lt;legend>Destination&lt;/legend>
+ &lt;p>&lt;label>Airport: &lt;input type=text name=to list=airports>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Departure time: &lt;input type=datetime-local name=totime step=3600>&lt;/label>&lt;/p>
+&lt;/fieldset>
+&lt;datalist id=airports>
+ &lt;option value=ATL label="Atlanta">
+ &lt;option value=MEM label="Memphis">
+ &lt;option value=LHR label="London Heathrow">
+ &lt;option value=LAX label="Los Angeles">
+ &lt;option value=FRA label="Frankfurt">
+&lt;/datalist></pre>
+
+  </div>
+
+
+  

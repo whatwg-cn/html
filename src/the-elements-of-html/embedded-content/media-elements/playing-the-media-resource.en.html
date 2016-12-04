@@ -1,0 +1,783 @@
+<h5>Playing the media resource</h5>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-paused">paused</code></dt>
+
+   <dd>
+
+    <p>Returns true if playback is paused; false otherwise.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-ended">ended</code></dt>
+
+   <dd>
+
+    <p>Returns true if playback has reached the end of the <span>media resource</span>.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-defaultPlaybackRate">defaultPlaybackRate</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the default rate of playback, for when the user is not fast-forwarding or reversing
+    through the <span>media resource</span>.</p>
+
+    <p>Can be set, to change the default rate of playback.</p>
+
+    <p>The default rate has no direct effect on playback, but if the user switches to a fast-forward
+    mode, when they return to the normal playback mode, it is expected that the rate of playback
+    will be returned to the default rate of playback.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-playbackRate">playbackRate</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current rate playback, where 1.0 is normal speed.</p>
+
+    <p>Can be set, to change the rate of playback.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-played">played</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>TimeRanges</code> object that represents the ranges of the <span>media
+    resource</span> that the user agent has played.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-play">play</code>()</dt>
+
+   <dd>
+
+    <p>Sets the <code data-x="dom-media-paused">paused</code> attribute to false, loading the
+    <span>media resource</span> and beginning playback if necessary. If the playback had ended, will
+    restart it from the start.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-pause">pause</code>()</dt>
+
+   <dd>
+
+    <p>Sets the <code data-x="dom-media-paused">paused</code> attribute to true, loading the
+    <span>media resource</span> if necessary.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-paused">paused</code></dfn> attribute represents whether the
+  <span>media element</span> is paused or not. The attribute must initially be true.</p>
+
+  <p>A <span>media element</span> is a <dfn>blocked media element</dfn> if its <code
+  data-x="dom-media-readyState">readyState</code> attribute is in the <code
+  data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code> state, the <code
+  data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> state, or the <code
+  data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> state, or if the element has
+  <span>paused for user interaction</span> or <span>paused for in-band content</span>.</p>
+
+  <p>A <span>media element</span> is said to be <dfn>potentially playing</dfn> when its <code
+  data-x="dom-media-paused">paused</code> attribute is false, the element has not <span>ended
+  playback</span>, playback has not <span>stopped due to errors</span>, and the element is not a
+  <span>blocked media element</span>.</p>
+
+  <p class="note">A <code data-x="event-media-waiting">waiting</code> DOM event <a
+  href="#fire-waiting-when-waiting">can be fired</a> as a result of an element that is
+  <span>potentially playing</span> stopping playback due to its <code
+  data-x="dom-media-readyState">readyState</code> attribute changing to a value lower than <code
+  data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code>.</p>
+
+  <p>A <span>media element</span> is said to be <dfn>eligible for autoplay</dfn> when its
+  <span>autoplaying flag</span> is true, its <code data-x="dom-media-paused">paused</code> attribute
+  is true, the element has an <code data-x="attr-media-autoplay">autoplay</code> attribute
+  specified, and the element's <span>node document</span>'s <span>active sandboxing flag set</span>
+  does not have the <span>sandboxed automatic features browsing context flag</span> set.</p>
+
+  <p>A <span>media element</span> is said to be <dfn>allowed to play</dfn> if the user agent and the
+  system allow media playback in the current context.</p>
+
+  <p class="note">For example, a user agent could require that playback is <span>triggered by user
+  activation</span>, but an exception could be made to allow playback while <span
+  data-x="concept-media-muted">muted</span>.</p>
+
+  <p>A <span>media element</span> is said to have <dfn>ended playback</dfn> when:</p>
+
+  <ul>
+
+   <li>The element's <code data-x="dom-media-readyState">readyState</code> attribute is <code
+   data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> or greater, and
+
+   <li>
+
+    <p>Either:
+
+    <ul>
+
+     <li>The <span>current playback position</span> is the end of the <span>media resource</span>,
+     and
+
+     <li>The <span>direction of playback</span> is forwards, and
+
+     <li>The <span>media element</span> does not have a <code data-x="attr-media-loop">loop</code>
+     attribute specified.
+
+    </ul>
+
+    <p>Or:
+
+    <ul>
+
+     <li>The <span>current playback position</span> is the <span>earliest possible position</span>,
+     and
+
+     <li>The <span>direction of playback</span> is backwards.
+
+    </ul>
+
+   </li>
+
+  </ul>
+
+  <p>The <dfn><code data-x="dom-media-ended">ended</code></dfn> attribute must return true if, the
+  last time the <span>event loop</span> reached <a href="#step1">step 1</a>, the <span>media element</span> had
+  <span>ended playback</span> and the <span>direction of playback</span> was forwards, and false
+  otherwise.</p>
+
+  <p>A <span>media element</span> is said to have <dfn>stopped due to errors</dfn> when the
+  element's <code data-x="dom-media-readyState">readyState</code> attribute is <code
+  data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> or greater, and the user agent <a
+  href="#non-fatal-media-error">encounters a non-fatal error</a> during the processing of the
+  <span>media data</span>, and due to that error, is not able to play the content at the
+  <span>current playback position</span>.</p>
+
+  <p>A <span>media element</span> is said to have <dfn>paused for user interaction</dfn> when its
+  <code data-x="dom-media-paused">paused</code> attribute is false, the <code
+  data-x="dom-media-readyState">readyState</code> attribute is either <code
+  data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> or <code
+  data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code> and the user agent has reached a point
+  in the <span>media resource</span> where the user has to make a selection for the resource to
+  continue.</p>
+
+  <p>It is possible for a <span>media element</span> to have both <span>ended playback</span> and
+  <span>paused for user interaction</span> at the same time.</p>
+
+  <p>When a <span>media element</span> that is <span>potentially playing</span> stops playing
+  because it has <span>paused for user interaction</span>, the user agent must <span>queue a
+  task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-media-timeupdate">timeupdate</code> at the element.</p>
+
+  <p>A <span>media element</span> is said to have <dfn>paused for in-band content</dfn> when its
+  <code data-x="dom-media-paused">paused</code> attribute is false, the <code
+  data-x="dom-media-readyState">readyState</code> attribute is either <code
+  data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> or <code
+  data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code> and the user agent has suspended
+  playback of the <span>media resource</span> in order to play content that is temporally anchored
+  to the <span>media resource</span> and has a non-zero length, or to play content that is
+  temporally anchored to a segment of the <span>media resource</span> but has a length longer than
+  that segment.</p>
+
+  <p class="example">One example of when a <span>media element</span> would be <span>paused for
+  in-band content</span> is when the user agent is playing <span
+  data-x="attr-track-kind-descriptions">audio descriptions</span> from an external WebVTT file, and
+  the synthesized speech generated for a cue is longer than the time between the <span>text track
+  cue start time</span> and the <span>text track cue end time</span>.</p>
+
+  <hr>
+
+  <p id="reaches-the-end">When the <span>current playback position</span> reaches the end of the
+  <span>media resource</span> when the <span>direction of playback</span> is forwards, then the user
+  agent must follow these steps:</p>
+
+  <ol>
+
+   <li><p>If the <span>media element</span> has a <code data-x="attr-media-loop">loop</code>
+   attribute specified, then <span data-x="dom-media-seek">seek</span> to the <span>earliest
+   possible position</span> of the <span>media resource</span> and abort these steps.</p></li>
+   <!-- v2/v3: We should fire a 'looping' event here to explain why this immediately fires a
+   'playing' event, otherwise the 'playing' event that fires from the readyState going from
+   HAVE_CURRENT_DATA back to HAVE_FUTURE_DATA will seem inexplicable (since the normally matching
+   'ended' given below event doesn't fire in the loop case). -->
+
+   <li><p>As defined above, the <code data-x="dom-media-ended">ended</code> IDL attribute starts
+   returning true once the <span>event loop</span> returns to <a href="#step1">step 1</a>.</p></li>
+
+   <li>
+
+    <p><span>Queue a task</span> to run the following substeps:</p>
+
+    <ol>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-media-timeupdate">timeupdate</code> at the <span>media element</span>.</p></li>
+
+     <li>
+
+      <p>If the <span>media element</span> has <span>ended playback</span>, and the <span>direction
+      of playback</span> is forwards, and <span data-x="dom-media-paused">paused</span> is false,
+      run the following subsubsteps:</p>
+
+      <ol>
+
+       <li><p>Set the <code data-x="dom-media-paused">paused</code> attribute to true.</p></li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-pause">pause</code> at the <span>media element</span>.</p></li>
+
+       <li><p><span>Take pending play promises</span> and <span>reject pending play promises</span>
+       with the result and an <span>"<code>AbortError</code>"</span>
+       <code>DOMException</code>.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-media-ended">ended</code> at the <span>media element</span>.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>When the <span>current playback position</span> reaches the <span>earliest possible
+  position</span> of the <span>media resource</span> when the <span>direction of playback</span> is
+  backwards, then the user agent must only <span>queue a task</span> to <span
+  data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-media-timeupdate">timeupdate</code> at the element.</p>
+
+  <p class="note">The word "reaches" here does not imply that the <span>current playback
+  position</span> needs to have changed during normal playback; it could be via <span
+  data-x="dom-media-seek">seeking</span>, for instance.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-media-defaultPlaybackRate">defaultPlaybackRate</code></dfn> attribute
+  gives the desired speed at which the <span>media resource</span> is to play, as a multiple of its
+  intrinsic speed. The attribute is mutable: on getting it must return the last value it was set to,
+  or 1.0 if it hasn't yet been set; on setting the attribute must be set to the new value.</p>
+
+  <p class="note">The <code data-x="dom-media-defaultPlaybackRate">defaultPlaybackRate</code> is used
+  by the user agent when it <span data-x="expose a user interface to the user">exposes a user
+  interface to the user</span>.</p>
+
+  <p>The <dfn><code data-x="dom-media-playbackRate">playbackRate</code></dfn> attribute gives the
+  effective playback rate, which is the speed at which the <span>media resource</span> plays, as a
+  multiple of its intrinsic speed. If it is not equal to the <code
+  data-x="dom-media-defaultPlaybackRate">defaultPlaybackRate</code>, then the implication is that
+  the user is using a feature such as fast forward or slow motion playback. The attribute is
+  mutable: on getting it must return the last value it was set to, or 1.0 if it hasn't yet been set;
+  on setting the attribute must be set to the new value, and the playback will change speed (if the
+  element is <span>potentially playing</span>).</p>
+
+  <p id="rateUpdate">When the <code data-x="dom-media-defaultPlaybackRate">defaultPlaybackRate</code>
+  or <code data-x="dom-media-playbackRate">playbackRate</code> attributes change value (either by
+  being set by script or by being changed directly by the user agent, e.g. in response to user
+  control) the user agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire
+  an event</span> named <code data-x="event-media-ratechange">ratechange</code> at the <span>media
+  element</span>.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-media-played">played</code></dfn> attribute must return a new static
+  <span>normalized <code>TimeRanges</code> object</span> that represents the ranges of points on the
+  <span>media timeline</span> of the <span>media resource</span> reached through the usual monotonic
+  increase of the <span>current playback position</span> during normal playback, if any, at the time
+  the attribute is evaluated.</p>
+
+  <hr>
+
+  <p>Each <span>media element</span> has a <dfn>list of pending play promises</dfn>, which must
+  initially be empty.</p>
+
+  <p>To <dfn>take pending play promises</dfn> for a <span>media element</span>, the user agent must
+  run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>promises</var> be an empty list of promises.</p></li>
+
+   <li><p>Copy the <span>media element</span>'s <span>list of pending play promises</span> to
+   <var>promises</var>.</p></li>
+
+   <li><p>Clear the <span>media element</span>'s <span>list of pending play
+   promises</span>.</p></li>
+
+   <li>Return <var>promises</var>.</li>
+
+  </ol>
+
+  <p>To <dfn>resolve pending play promises</dfn> for a <span>media element</span> with a list of
+  promises <var>promises</var>, the user agent must resolve each promise in <var>promises</var> with
+  undefined.</p>
+
+  <p>To <dfn>reject pending play promises</dfn> for a <span>media element</span> with a list of
+  promise <var>promises</var> and an exception name <var>error</var>, the user agent must reject
+  each promise in <var>promises</var> with <var>error</var>.</p>
+
+  <p>To <dfn>notify about playing</dfn> for a <span>media element</span>, the user agent must run
+  the following steps:</p>
+
+  <ol>
+
+   <li><p><span>Take pending play promises</span> and let <var>promises</var> be the
+   result.</p></li>
+
+   <li>
+
+    <p><span>Queue a task</span> to run the following substeps:</p>
+
+    <ol>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-media-playing">playing</code> at the element.</p></li>
+
+     <li><p><span>Resolve pending play promises</span> with <var>promises</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>When the <dfn><code data-x="dom-media-play">play()</code></dfn> method on a <span>media
+  element</span> is invoked, the user agent must run the following steps.</p>
+
+  <ol>
+
+   <li><p>If the <span>media element</span> is not <span>allowed to play</span>, return a promise
+   rejected with a <span>"<code>NotAllowedError</code>"</span> <code>DOMException</code> and abort
+   these steps.</p></li>
+
+   <li>
+
+    <p>If the <span>media element</span>'s <code data-x="dom-media-error">error</code> attribute is
+    not null and its <code data-x="dom-MediaError-code">code</code> attribute has the value <code
+    data-x="dom-MediaError-MEDIA_ERR_SRC_NOT_SUPPORTED">MEDIA_ERR_SRC_NOT_SUPPORTED</code>, return a
+    promise rejected with a <span>"<code>NotSupportedError</code>"</span> <code>DOMException</code>
+    and abort these steps.</p>
+
+    <p class="note">This means that the <span>dedicated media source failure steps</span> have run.
+    Playback is not possible until the <span>media element load algorithm</span> clears the <code
+    data-x="dom-media-error">error</code> attribute.</p>
+
+   </li>
+
+   <li><p>Let <var>promise</var> be a new promise and append <var>promise</var> to the <span>list of
+   pending play promises</span>.</p></li>
+
+   <li><p>If the <span>media element</span>'s <code
+   data-x="dom-media-networkState">networkState</code> attribute has the value <code
+   data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code>, invoke the <span>media element</span>'s
+   <span data-x="concept-media-load-algorithm">resource selection algorithm</span>.</p></li>
+
+   <li>
+
+    <p>If the <span data-x="ended playback">playback has ended</span> and the <span>direction of
+    playback</span> is forwards, <span data-x="dom-media-seek">seek</span> to the <span>earliest
+    possible position</span> of the <span>media resource</span>.</p>
+
+    <p class="note">This <a href="#seekUpdate">will cause</a> the user agent to <span>queue a
+    task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-media-timeupdate">timeupdate</code> at the <span>media element</span>.</p>
+    <!-- if we're already playing at this point, it might also fire 'waiting' -->
+
+   </li>
+
+   <li>
+
+    <p>If the <span>media element</span>'s <code data-x="dom-media-paused">paused</code> attribute is
+    true, run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Change the value of <code data-x="dom-media-paused">paused</code> to false.</p></li>
+
+     <li><p>If the <span>show poster flag</span> is true, set the element's <span>show poster
+     flag</span> to false and run the <i data-x="time marches on">time marches on</i> steps.</p></li>
+
+     <li><p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span>
+     named <code data-x="event-media-play">play</code> at the element.</p></li>
+
+     <li>
+
+      <p>If the <span>media element</span>'s <code data-x="dom-media-readyState">readyState</code>
+      attribute has the value <code data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, <code
+      data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code>, or <code
+      data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code>, <span>queue a task</span> to
+      <span data-x="concept-event-fire">fire an event</span> named <code
+      data-x="event-media-waiting">waiting</code> at the element.</p>
+
+      <p>Otherwise, the <span>media element</span>'s <code
+      data-x="dom-media-readyState">readyState</code> attribute has the value <code
+      data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> or <code
+      data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code>: <span>notify about playing</span>
+      for the element.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, if the <span>media element</span>'s <code
+    data-x="dom-media-readyState">readyState</code> attribute has the value <code
+    data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> or <code
+    data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code>, <span>take pending play
+    promises</span> and <span>queue a task</span> to <span>resolve pending play promises</span> with
+    the result.</p>
+
+    <p class="note">The media element is already playing. However, it's possible that
+    <var>promise</var> will be <span data-x="reject pending play promises">rejected</span> before
+    the queued task is run.</p>
+
+   </li>
+
+   <li><p>Set the <span>media element</span>'s <span>autoplaying flag</span> to false.</p></li>
+
+   <li><p>Return <var>promise</var>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>When the <dfn><code data-x="dom-media-pause">pause()</code></dfn> method is invoked, and when
+  the user agent is required to pause the <span>media element</span>, the user agent must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>If the <span>media element</span>'s <code
+   data-x="dom-media-networkState">networkState</code> attribute has the value <code
+   data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code>, invoke the <span>media element</span>'s
+   <span data-x="concept-media-load-algorithm">resource selection algorithm</span>.</p></li>
+
+   <li><p>Run the <span>internal pause steps</span> for the <span>media element</span>.</p></li>
+
+  </ol>
+
+  <p>The <dfn>internal pause steps</dfn> for a <span>media element</span> are as follows:</p>
+
+  <ol>
+
+   <li><p>Set the <span>media element</span>'s <span>autoplaying flag</span> to false.</p></li>
+
+   <li><p>If the <span>media element</span>'s <code data-x="dom-media-paused">paused</code> attribute
+   is false, run the following steps:</p>
+
+    <ol>
+
+     <li><p>Change the value of <code data-x="dom-media-paused">paused</code> to true.</p></li>
+
+     <li><p><span>Take pending play promises</span> and let <var>promises</var> be the
+     result.</p></li>
+
+     <li>
+
+      <p><span>Queue a task</span> to run the following substeps:</p>
+
+      <ol>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-timeupdate">timeupdate</code> at the element.</p></li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-media-pause">pause</code> at the element.</p></li>
+
+       <li><p><span>Reject pending play promises</span> with <var>promises</var> and an
+       <span>"<code>AbortError</code>"</span> <code>DOMException</code>.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>Set the <span>official playback position</span> to the <span>current playback
+     position</span>.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>If the element's <code data-x="dom-media-playbackRate">playbackRate</code> is positive or zero,
+  then the <dfn>direction of playback</dfn> is forwards. Otherwise, it is backwards.</p>
+
+  <p id="media-playback">When a <span>media element</span> is <span>potentially playing</span> and
+  its <code>Document</code> is a <span>fully active</span> <code>Document</code>, its <span>current
+  playback position</span> must increase monotonically at the element's <code
+  data-x="dom-media-playbackRate">playbackRate</code> units of media time per unit time of the
+  <span>media timeline</span>'s clock. (This specification always refers to this as an
+  <i>increase</i>, but that increase could actually be a <em>de</em>crease if the element's <code
+  data-x="dom-media-playbackRate">playbackRate</code> is negative.)</p>
+
+  <p class="note">The element's <code data-x="dom-media-playbackRate">playbackRate</code> can be
+  0.0, in which case the <span>current playback position</span> doesn't move, despite playback not
+  being paused (<code data-x="dom-media-paused">paused</code> doesn't become true, and the <code
+  data-x="event-media-pause">pause</code> event doesn't fire).</p>
+
+  <p class="note">This specification doesn't define how the user agent achieves the appropriate
+  playback rate &mdash; depending on the protocol and media available, it is plausible that the user
+  agent could negotiate with the server to have the server provide the media data at the appropriate
+  rate, so that (except for the period between when the rate is changed and when the server updates
+  the stream's playback rate) the client doesn't actually have to drop or interpolate any
+  frames.</p>
+
+  <p>Any time the user agent <span data-x="await a stable state">provides a stable state</span>,
+  the <span>official playback position</span> must be set to the <span>current playback
+  position</span>.</p> <!-- cross-ref is intentionally to the other term, to help find this -->
+
+  <p>While the <span>direction of playback</span> is backwards, any corresponding audio must be
+  <span data-x="concept-media-muted">muted</span>. While the element's <code
+  data-x="dom-media-playbackRate">playbackRate</code> is so low or so high that the user agent
+  cannot play audio usefully, the corresponding audio must also be <span
+  data-x="concept-media-muted">muted</span>. If the element's <code
+  data-x="dom-media-playbackRate">playbackRate</code> is not 1.0, the user agent may apply pitch
+  adjustments to the audio as necessary to render it faithfully.</p>
+
+  <p><span data-x="media element">Media elements</span> that are <span>potentially playing</span>
+  while not <span>in a document</span> must not play any video, but should play any audio component.
+  Media elements must not stop playing just because all references to them have been removed; only
+  once a media element is in a state where no further audio could ever be played by that element may
+  the element be garbage collected.</p>
+
+  <p class="note">It is possible for an element to which no explicit references exist to play audio,
+  even if such an element is not still actively playing: for instance, it could be unpaused but
+  stalled waiting for content to buffer, or it could be still buffering, but with a
+  <code data-x="event-media-suspend">suspend</code> event listener that begins playback. Even a
+  media element whose <span>media resource</span> has no audio tracks could eventually play audio
+  again if it had an event listener that changes the <span>media resource</span>.</p>
+
+  <hr>
+
+  <p>Each <span>media element</span> has a <dfn>list of newly introduced cues</dfn>, which must be
+  initially empty. Whenever a <span>text track cue</span> is added to the <span data-x="text track
+  list of cues">list of cues</span> of a <span>text track</span> that is in the <span>list of text
+  tracks</span> for a <span>media element</span>, that <span data-x="text track cue">cue</span> must
+  be added to the <span>media element</span>'s <span>list of newly introduced cues</span>. Whenever
+  a <span>text track</span> is added to the <span>list of text tracks</span> for a <span>media
+  element</span>, all of the <span data-x="text track cue">cues</span> in that <span>text
+  track</span>'s <span data-x="text track list of cues">list of cues</span> must be added to the
+  <span>media element</span>'s <span>list of newly introduced cues</span>. When a <span>media
+  element</span>'s <span>list of newly introduced cues</span> has new cues added while the
+  <span>media element</span>'s <span>show poster flag</span> is not set, then the user agent must
+  run the <i data-x="time marches on">time marches on</i> steps.</p>
+
+  <p>When a <span>text track cue</span> is removed from the <span data-x="text track list of
+  cues">list of cues</span> of a <span>text track</span> that is in the <span>list of text
+  tracks</span> for a <span>media element</span>, and whenever a <span>text track</span> is removed
+  from the <span>list of text tracks</span> of a <span>media element</span>, if the <span>media
+  element</span>'s <span>show poster flag</span> is not set, then the user agent must run the
+  <i data-x="time marches on">time marches on</i> steps.</p>
+
+  <p>When the <span>current playback position</span> of a <span>media element</span> changes (e.g.
+  due to playback or seeking), the user agent must run the <i data-x="time marches on">time marches on</i> steps. If the
+  <span>current playback position</span> changes while the steps are running, then the user agent
+  must wait for the steps to complete, and then must immediately rerun the steps. (These steps are
+  thus run as often as possible or needed &mdash; if one iteration takes a long time, this can cause
+  certain <span data-x="text track cue">cues</span> to be skipped over as the user agent rushes ahead
+  to "catch up".)</p>
+
+  <p>The <dfn><i>time marches on</i></dfn> steps are as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>current cues</var> be a list of <span data-x="text track
+   cue">cues</span>, initialized to contain all the <span data-x="text track cue">cues</span> of all
+   the <span data-x="text track hidden">hidden</span> or <span data-x="text track
+   showing">showing</span> <span data-x="text track">text tracks</span> of the <span>media
+   element</span> (not the <span data-x="text track disabled">disabled</span> ones) whose <span
+   data-x="text track cue start time">start times</span> are less than or equal to the <span>current
+   playback position</span> and whose <span data-x="text track cue end time">end times</span> are
+   greater than the <span>current playback position</span>.</p></li>
+
+   <li><p>Let <var>other cues</var> be a list of <span data-x="text track cue">cues</span>,
+   initialized to contain all the <span data-x="text track cue">cues</span> of <span data-x="text
+   track hidden">hidden</span> and <span data-x="text track showing">showing</span> <span data-x="text
+   track">text tracks</span> of the <span>media element</span> that are not present in <var>current cues</var>.</p></li>
+
+   <li><p>Let <var>last time</var> be the <span>current playback position</span> at the
+   time this algorithm was last run for this <span>media element</span>, if this is not the first
+   time it has run.</p></li>
+
+   <li><p>If the <span>current playback position</span> has, since the last time this algorithm was
+   run, only changed through its usual monotonic increase during normal playback, then let <var>missed cues</var> be the list of <span data-x="text track cue">cues</span> in <var>other cues</var> whose <span data-x="text track cue start time">start times</span> are
+   greater than or equal to <var>last time</var> and whose <span data-x="text track cue end
+   time">end times</span> are less than or equal to the <span>current playback position</span>.
+   Otherwise, let <var>missed cues</var> be an empty list.</p></li>
+
+   <li><p>Remove all the <span data-x="text track cue">cues</span> in <var>missed cues</var>
+   that are also in the <span>media element</span>'s <span>list of newly introduced cues</span>, and
+   then empty the element's <span>list of newly introduced cues</span>.</p></li>
+
+   <li><p>If the time was reached through the usual monotonic increase of the <span>current playback
+   position</span> during normal playback, and if the user agent has not fired a <code
+   data-x="event-media-timeupdate">timeupdate</code> event at the element in the past 15 to 250ms and
+   is not still running event handlers for such an event, then the user agent must <span>queue a
+   task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-media-timeupdate">timeupdate</code> at the element. (In the other cases, such as
+   explicit seeks, relevant events get fired as part of the overall process of changing the
+   <span>current playback position</span>.)</p>
+
+   <p class="note">The event thus is not to be fired faster than about 66Hz or slower than 4Hz
+   (assuming the event handlers don't take longer than 250ms to run). User agents are encouraged to
+   vary the frequency of the event based on the system load and the average cost of processing the
+   event each time, so that the UI updates are not any more frequent than the user agent can
+   comfortably handle while decoding the video.</p></li>
+
+   <li><p>If all of the <span data-x="text track cue">cues</span> in <var>current cues</var>
+   have their <span>text track cue active flag</span> set, none of the <span data-x="text track
+   cue">cues</span> in <var>other cues</var> have their <span>text track cue active
+   flag</span> set, and <var>missed cues</var> is empty, then abort these steps.</p></li>
+
+   <li>
+
+    <p>If the time was reached through the usual monotonic increase of the <span>current playback
+    position</span> during normal playback, and there are <span data-x="text track cue">cues</span>
+    in <var>other cues</var> that have their <span>text track cue pause-on-exit flag</span>
+    set and that either have their <span>text track cue active flag</span> set or are also in <var>missed cues</var>, then <span>immediately</span> <span data-x="dom-media-pause">pause</span> the
+    <span>media element</span>. <!-- "pause" can in theory call load(), but never can it do so as
+    part of this invocation, since we wouldn't be in this algorithm if the media element was empty.
+    So, no need to couch all this in a task. --></p>
+
+    <p class="note">In the other cases, such as explicit seeks, playback is not paused by going past
+    the end time of a <span data-x="text track cue">cue</span>, even if that <span data-x="text track
+    cue">cue</span> has its <span>text track cue pause-on-exit flag</span> set.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>events</var> be a list of <span data-x="concept-task">tasks</span>,
+    initially empty. Each <span data-x="concept-task">task</span> in this list will be associated
+    with a <span>text track</span>, a <span>text track cue</span>, and a time, which are used to
+    sort the list before the <span data-x="concept-task">tasks</span> are queued.</p>
+
+    <p>Let <var>affected tracks</var> be a list of <span data-x="text track">text
+    tracks</span>, initially empty.</p>
+
+    <p>When the steps below say to <dfn>prepare an event</dfn> named <var>event</var> for a
+    <span>text track cue</span> <var>target</var> with a time <var>time</var>, the
+    user agent must run these substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>track</var> be the <span>text track</span> with which the <span>text
+     track cue</span> <var>target</var> is associated.</p></li>
+
+     <li><p>Create a <span data-x="concept-task">task</span> to <span
+     data-x="concept-event-fire">fire an event</span> named <var>event</var> at
+     <var>target</var>.</p></li>
+
+     <li><p>Add the newly created <span data-x="concept-task">task</span> to <var>events</var>, associated with the time <var>time</var>, the <span>text
+     track</span> <var>track</var>, and the <span>text track cue</span> <var>target</var>.</p></li>
+
+     <li><p>Add <var>track</var> to <var>affected tracks</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>For each <span data-x="text track cue">text track cue</span> in <var>missed
+   cues</var>, <span>prepare an event</span> named <code data-x="event-media-enter">enter</code> for the
+   <code>TextTrackCue</code> object with the <span>text track cue start time</span>.</p></li>
+
+   <li><p>For each <span data-x="text track cue">text track cue</span> in <var>other
+   cues</var> that either has its <span>text track cue active flag</span> set or is in <var>missed cues</var>, <span>prepare an event</span> named <code
+   data-x="event-media-exit">exit</code> for the <code>TextTrackCue</code> object with the later of the
+   <span>text track cue end time</span> and the <span>text track cue start time</span>.</p></li>
+
+   <li><p>For each <span data-x="text track cue">text track cue</span> in <var>current
+   cues</var> that does not have its <span>text track cue active flag</span> set, <span>prepare an
+   event</span> named <code data-x="event-media-enter">enter</code> for the <code>TextTrackCue</code>
+   object with the <span>text track cue start time</span>.</p></li>
+
+   <li>
+
+    <p>Sort the <span data-x="concept-task">tasks</span> in <var>events</var> in ascending
+    time order (<span data-x="concept-task">tasks</span> with earlier times first).</p>
+
+    <p>Further sort <span data-x="concept-task">tasks</span> in <var>events</var> that have
+    the same time by the relative <span>text track cue order</span> of the <span data-x="text track
+    cue">text track cues</span> associated with these <span data-x="concept-task">tasks</span>.</p>
+
+    <p>Finally, sort <span data-x="concept-task">tasks</span> in <var>events</var> that have
+    the same time and same <span>text track cue order</span> by placing <span
+    data-x="concept-task">tasks</span> that fire <code data-x="event-media-enter">enter</code> events before
+    those that fire <code data-x="event-media-exit">exit</code> events.</p>
+
+   </li>
+
+   <li><p><span data-x="queue a task">Queue</span> each <span data-x="concept-task">task</span> in
+   <var>events</var>, in list order.</p></li>
+
+   <li><p>Sort <var>affected tracks</var> in the same order as the <span data-x="text
+   track">text tracks</span> appear in the <span>media element</span>'s <span>list of text
+   tracks</span>, and remove duplicates.</p>
+
+   <li><p>For each <span>text track</span> in <var>affected tracks</var>, in the list
+   order, <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+   <code data-x="event-media-cuechange">cuechange</code> at the <code>TextTrack</code> object, and,
+   if the <span>text track</span> has a corresponding <code>track</code> element, to then <span
+   data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-media-cuechange">cuechange</code> at the <code>track</code> element as
+   well.</p></li>
+
+   <li><p>Set the <span>text track cue active flag</span> of all the <span data-x="text track
+   cue">cues</span> in the <var>current cues</var>, and unset the <span>text track cue
+   active flag</span> of all the <span data-x="text track cue">cues</span> in the <var>other
+   cues</var>.</p></li>
+
+   <li><p>Run the <span>rules for updating the text track rendering</span> of each of the <span
+   data-x="text track">text tracks</span> in <var>affected tracks</var> that are <span data-x="text
+   track showing">showing</span>, providing the <span>text track</span>'s <span>text track
+   language</span> as the fallback language if it is not the empty string. For example, for <span
+   data-x="text track">text tracks</span> based on WebVTT, the <span>rules for updating the display
+   of WebVTT text tracks</span>. <ref spec=WEBVTT></p></li>
+
+  </ol>
+
+  <p>For the purposes of the algorithm above, a <span>text track cue</span> is considered to be part
+  of a <span>text track</span> only if it is listed in the <span>text track list of cues</span>, not
+  merely if it is associated with the <span>text track</span>.</p>
+
+  <p class="note">If the <span>media element</span>'s <span>node document</span> stops being a
+  <span>fully active</span> document, then the playback will <a href="#media-playback">stop</a>
+  until the document is active again.</p>
+
+  <p>When a <span>media element</span> is <span data-x="node is removed from a document">removed
+  from a <code>Document</code></span>, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p><span>Await a stable state</span>, allowing the <span
+   data-x="concept-task">task</span> that removed the <span>media element</span> from the
+   <code>Document</code> to continue. The <span>synchronous section</span> consists of all the
+   remaining steps of this algorithm. (Steps in the <span>synchronous section</span> are marked with
+   &#x231B;.)</p></li>
+
+   <li><p>&#x231B; If the <span>media element</span> is <span>in a document</span>, abort these
+   steps.</p></li>
+
+   <li><p>&#x231B; Run the <span>internal pause steps</span> for the <span>media element</span>.</p>
+
+  </ol>
+
+  </div>
+
+
+
+  

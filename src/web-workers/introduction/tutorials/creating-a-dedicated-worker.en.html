@@ -1,0 +1,17 @@
+<h5>Creating a dedicated worker</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Creating a worker requires a URL to a JavaScript file. The <code
+  data-x="dom-Worker">Worker()</code> constructor is invoked with the URL to that file as its only
+  argument; a worker is then created and returned:</p>
+
+  <pre>var worker = new Worker('helper.js');</pre>
+
+  <p>If you want your worker script to be interpreted as a <span>module script</span> instead of
+  the default <span>classic script</span>, you need to use a slightly different signature:</p>
+
+  <pre>var worker = new Worker('helper.js', { type: "module" });</pre>
+
+
+  

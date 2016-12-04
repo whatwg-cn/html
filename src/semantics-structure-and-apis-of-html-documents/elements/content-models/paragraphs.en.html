@@ -1,0 +1,176 @@
+<h5>Paragraphs</h5>
+
+  <p class="note">The term <span>paragraph</span> as defined in this section is used for more than
+  just the definition of the <code>p</code> element. The <span>paragraph</span> concept defined here
+  is used to describe how to interpret documents. The <code>p</code> element is merely one of
+  several ways of marking up a <span>paragraph</span>.</p>
+
+  <!-- note: the actual definition is below -->
+  <p>A <dfn>paragraph</dfn> is typically a run of <span>phrasing content</span> that forms a block
+  of text with one or more sentences that discuss a particular topic, as in typography, but can also
+  be used for more general thematic grouping. For instance, an address is also a paragraph, as is a
+  part of a form, a byline, or a stanza in a poem.</p>
+
+  <div class="example">
+
+   <p>In the following example, there are two paragraphs in a section. There is also a heading,
+   which contains phrasing content that is not a paragraph. Note how the comments and
+   <span>inter-element whitespace</span> do not form paragraphs.</p>
+
+   <pre>&lt;section>
+  &lt;h1>Example of paragraphs&lt;/h1>
+  This is the &lt;em>first&lt;/em> paragraph in this example.
+  &lt;p>This is the second.&lt;/p>
+  &lt;!-- This is not a paragraph. -->
+&lt;/section></pre>
+
+  </div>
+
+  <p>Paragraphs in <span>flow content</span> are defined relative to what the document looks like
+  without the <code>a</code>, <code>ins</code>, <code>del</code>, and <code>map</code> elements
+  complicating matters, since those elements, with their hybrid content models, can straddle
+  paragraph boundaries, as shown in the first two examples below.</p>
+
+  <p class="note">Generally, having elements straddle paragraph boundaries is best avoided.
+  Maintaining such markup can be difficult.</p>
+
+  <div class="example">
+
+   <p>The following example takes the markup from the earlier example and puts <code>ins</code> and
+   <code>del</code> elements around some of the markup to show that the text was changed (though in
+   this case, the changes admittedly don't make much sense). Notice how this example has exactly the
+   same paragraphs as the previous one, despite the <code>ins</code> and <code>del</code> elements
+   &mdash; the <code>ins</code> element straddles the heading and the first paragraph, and the
+   <code>del</code> element straddles the boundary between the two paragraphs.</p>
+
+   <pre>&lt;section>
+  &lt;ins>&lt;h1>Example of paragraphs&lt;/h1>
+  This is the &lt;em>first&lt;/em> paragraph in&lt;/ins> this example&lt;del>.
+  &lt;p>This is the second.&lt;/p>&lt;/del>
+  &lt;!-- This is not a paragraph. -->
+&lt;/section></pre>
+
+  </div>
+
+  <div w-nodev>
+
+  <p>Let <var>view</var> be a view of the DOM that replaces all <code>a</code>,
+  <code>ins</code>, <code>del</code>, and <code>map</code> elements in the document with their <span
+  data-x="concept-html-contents">contents</span>. Then, in <var>view</var>, for each run
+  of sibling <span>phrasing content</span> nodes uninterrupted by other types of content, in an
+  element that accepts content other than <span>phrasing content</span> as well as <span>phrasing
+  content</span>, let <var>first</var> be the first node of the run, and let <var>last</var> be the last node of the run. For each such run that consists of at least one
+  node that is neither <span>embedded content</span> nor <span>inter-element whitespace</span>, a
+  paragraph exists in the original DOM from immediately before <var>first</var> to
+  immediately after <var>last</var>. (Paragraphs can thus span across <code>a</code>,
+  <code>ins</code>, <code>del</code>, and <code>map</code> elements.)</p>
+
+  <p>Conformance checkers may warn authors of cases where they have paragraphs that overlap each
+  other (this can happen with <code>object</code>, <code>video</code>, <code>audio</code>, and
+  <code>canvas</code> elements, and indirectly through elements in other namespaces that allow HTML
+  to be further embedded therein, like <span>SVG <code>svg</code></span> or <span>MathML
+  <code>math</code></span>).</p>
+  <!-- example below -->
+
+  </div>
+
+  <p>A <span>paragraph</span> is also formed explicitly by <code>p</code> elements.</p>
+
+  <p class="note">The <code>p</code> element can be used to wrap individual paragraphs when there
+  would otherwise not be any content other than phrasing content to separate the paragraphs from
+  each other.</p>
+
+  <div class="example">
+
+   <p>In the following example, the link spans half of the first paragraph, all of the heading
+   separating the two paragraphs, and half of the second paragraph. It straddles the paragraphs and
+   the heading.</p>
+
+   <pre>&lt;header>
+ Welcome!
+ &lt;a href="about.html">
+  This is home of...
+  &lt;h1>The Falcons!&lt;/h1>
+  The Lockheed Martin multirole jet fighter aircraft!
+ &lt;/a>
+ This page discusses the F-16 Fighting Falcon's innermost secrets.
+&lt;/header></pre>
+
+   <p>Here is another way of marking this up, this time showing the paragraphs explicitly, and
+   splitting the one link element into three:</p>
+
+   <pre>&lt;header>
+ &lt;p>Welcome! &lt;a href="about.html">This is home of...&lt;/a>&lt;/p>
+ &lt;h1>&lt;a href="about.html">The Falcons!&lt;/a>&lt;/h1>
+ &lt;p>&lt;a href="about.html">The Lockheed Martin multirole jet
+ fighter aircraft!&lt;/a> This page discusses the F-16 Fighting
+ Falcon's innermost secrets.&lt;/p>
+&lt;/header></pre>
+
+  </div>
+
+  <div class="example">
+
+   <!-- I don't know if there's a better way to deal with this, but if there is, let me know... -->
+
+   <p>It is possible for paragraphs to overlap when using certain elements that define fallback
+   content. For example, in the following section:</p>
+
+   <pre>&lt;section>
+ &lt;h1>My Cats&lt;/h1>
+ You can play with my cat simulator.
+ &lt;object data="cats.sim">
+  To see the cat simulator, use one of the following links:
+  &lt;ul>
+   &lt;li>&lt;a href="cats.sim">Download simulator file&lt;/a>
+   &lt;li>&lt;a href="https://sims.example.com/watch?v=LYds5xY4INU">Use online simulator&lt;/a>
+  &lt;/ul>
+  Alternatively, upgrade to the Mellblom Browser.
+ &lt;/object>
+ I'm quite proud of it.
+&lt;/section></pre>
+
+   <p>There are five paragraphs:</p>
+
+   <ol class="brief">
+
+    <li>The paragraph that says "You can play with my cat simulator. <i>object</i> I'm
+    quite proud of it.", where <i>object</i> is the <code>object</code> element.</li>
+
+    <li>The paragraph that says "To see the cat simulator, use one of the following links:".</li>
+
+    <li>The paragraph that says "Download simulator file".</li>
+
+    <li>The paragraph that says "Use online simulator".</li>
+
+    <li>The paragraph that says "Alternatively, upgrade to the Mellblom Browser.".</li>
+
+   </ol>
+
+   <p>The first paragraph is overlapped by the other four. A user agent that supports the "cats.sim"
+   resource will only show the first one, but a user agent that shows the fallback will confusingly
+   show the first sentence of the first paragraph as if it was in the same paragraph as the second
+   one, and will show the last paragraph as if it was at the start of the second sentence of the
+   first paragraph.</p>
+
+   <p>To avoid this confusion, explicit <code>p</code> elements can be used. For example:</p>
+
+   <!-- My Fish -->
+   <pre>&lt;section>
+ &lt;h1>My Cats&lt;/h1>
+ &lt;p>You can play with my cat simulator.&lt;/p>
+ &lt;object data="cats.sim">
+  &lt;p>To see the cat simulator, use one of the following links:&lt;/p>
+  &lt;ul>
+   &lt;li>&lt;a href="cats.sim">Download simulator file&lt;/a>
+   &lt;li>&lt;a href="https://sims.example.com/watch?v=LYds5xY4INU">Use online simulator&lt;/a>
+  &lt;/ul>
+  &lt;p>Alternatively, upgrade to the Mellblom Browser.&lt;/p>
+ &lt;/object>
+ &lt;p>I'm quite proud of it.&lt;/p>
+&lt;/section></pre>
+
+  </div>
+
+
+  

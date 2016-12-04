@@ -1,0 +1,33 @@
+<h4>Best practices for in-page editors</h4>
+
+  <p>Authors are encouraged to set the <span>'white-space'</span> property on <span data-x="editing
+  host">editing hosts</span> and on markup that was originally created through these editing
+  mechanisms to the value 'pre-wrap'. Default HTML whitespace handling is not well suited to WYSIWYG
+  editing, and line wrapping will not work correctly in some corner cases if
+  <span>'white-space'</span> is left at its default value.</p>
+
+  <div class="example">
+
+   <p>As an example of problems that occur if the default 'normal' value is used instead, consider
+   the case of the user typing "<kbd>yellow&#x2423;&#x2423;ball</kbd>", with two spaces (here
+   represented by "&#x2423;") between the words. With the editing rules in place for the default
+   value of <span>'white-space'</span> ('normal'), the resulting markup will either consist of
+   "<samp>yellow&amp;nbsp;&nbsp;ball</samp>" or "<samp>yellow&nbsp;&amp;nbsp;ball</samp>"; i.e.,
+   there will be a non-breaking space between the two words in addition to the regular space. This
+   is necessary because the 'normal' value for <span>'white-space'</span> requires adjacent regular
+   spaces to be collapsed together.</p>
+
+   <p>In the former case, "<samp>yellow&#x237D;</samp>" might wrap to the next line ("&#x237D;"
+   being used here to represent a non-breaking space) even though "<samp>yellow</samp>" alone might
+   fit at the end of the line; in the latter case, "<samp>&#x237D;ball</samp>", if wrapped to the
+   start of the line, would have visible indentation from the non-breaking space.</p>
+
+   <p>When <span>'white-space'</span> is set to 'pre-wrap', however, the editing rules will instead
+   simply put two regular spaces between the words, and should the two words be split at the end of
+   a line, the spaces would be neatly removed from the rendering.</p>
+
+  </div>
+
+
+
+  

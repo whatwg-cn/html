@@ -1,0 +1,113 @@
+<h6>Adaptive images</h6>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>CSS and media queries can be used to construct graphical page layouts that adapt dynamically to
+  the user's environment, in particular to different <span>viewport</span> dimensions and pixel
+  densities. For content, however, CSS does not help; instead, we have the <code>img</code> element's
+  <code data-x="attr-img-srcset">srcset</code> attribute and the <code>picture</code> element.
+  This section walks through a sample case showing how to use these features.</p>
+
+  <p>Consider a situation where on wide screens (wider than 600 <span data-x="'px'">CSS
+  pixels</span>) a 300&times;150 image named <code data-x="">a-rectangle.png</code> is to be used,
+  but on smaller screens (600 <span data-x="'px'">CSS pixels</span> and less), a smaller
+  100&times;100 image called <code data-x="">a-square.png</code> is to be used. The markup for this
+  would look like this:</p>
+
+  <pre>&lt;figure>
+ &lt;picture>
+  &lt;source srcset="a-square.png" media="(max-width: 600px)">
+  &lt;img src="a-rectangle.png" alt="Barney Frank wears a suit and glasses.">
+ &lt;/picture>
+ &lt;figcaption>Barney Frank, 2011&lt;/figcaption>
+&lt;/figure></pre>
+
+  <p class="note">For details on what to put in the <code data-x="attr-img-alt">alt</code>
+  attribute, see the <a href="#alt">Requirements for providing text to act as an alternative for
+  images</a> section.</p>
+
+  <p>The problem with this is that the user agent does not necessarily know what dimensions to use
+  for the image when the image is loading. To avoid the layout having to be reflowed multiple times
+  as the page is loading, CSS and CSS media queries can be used to provide the dimensions:</p>
+
+  <pre>&lt;style>
+ #a { width: 300px; height: 150px; }
+ @media (max-width: 600px) { #a { width: 100px; height: 100px; } }
+&lt;/style>
+&lt;figure>
+ &lt;picture>
+  &lt;source srcset="a-square.png" media="(max-width: 600px)">
+  &lt;img src="a-rectangle.png" alt="Barney Frank wears a suit and glasses." id="a">
+ &lt;/picture>
+ &lt;figcaption>Barney Frank, 2011&lt;/figcaption>
+&lt;/figure></pre>
+
+  <p>Alternatively, the <code data-x="attr-dim-width">width</code> and <code
+  data-x="attr-dim-height">height</code> attributes can be used to provide the width for legacy user
+  agents, using CSS just for the user agents that support <code>picture</code>:</p>
+
+  <pre>&lt;style media="(max-width: 600px)">
+ #a { width: 100px; height: 100px; }
+&lt;/style>
+&lt;figure>
+ &lt;picture>
+  &lt;source srcset="a-square.png" media="(max-width: 600px)">
+  &lt;img src="a-rectangle.png" width="300" height="150"
+  alt="Barney Frank wears a suit and glasses." id="a">
+ &lt;/picture>
+ &lt;figcaption>Barney Frank, 2011&lt;/figcaption>
+&lt;/figure></pre>
+
+  <hr>
+
+  <p>The <code>img</code> element is used with the <code data-x="attr-img-src">src</code> attribute,
+  which gives the URL of the image to use for legacy user agents that do not support the
+  <code>picture</code> element. This leads to a question of which image to provide in the <code
+  data-x="attr-img-src">src</code> attribute.</p>
+
+  <p>If the author wants the biggest image in legacy user agents, the markup could be as
+  follows:</p>
+
+  <pre>&lt;picture>
+ &lt;source srcset="pear-mobile.jpeg" media="(max-width: 720px)">
+ &lt;source srcset="pear-tablet.jpeg" media="(max-width: 1280px)">
+ &lt;img src="pear-desktop.jpeg" alt="The pear is juicy.">
+&lt;/picture></pre>
+
+  <p>However, if legacy mobile user agents are more important, one can list all three images in the
+  <code>source</code> elements, overriding the <code data-x="attr-img-src">src</code> attribute
+  entirely.</p>
+
+  <pre>&lt;picture>
+ &lt;source srcset="pear-mobile.jpeg" media="(max-width: 720px)">
+ &lt;source srcset="pear-tablet.jpeg" media="(max-width: 1280px)">
+ &lt;source srcset="pear-desktop.jpeg">
+ &lt;img src="pear-mobile.jpeg" alt="The pear is juicy.">
+&lt;/picture></pre>
+
+  <p>Since at this point the <code data-x="attr-img-src">src</code> attribute is actually being
+  ignored entirely by <code>picture</code>-supporting user agents, the <code
+  data-x="attr-img-src">src</code> attribute can default to any image, including one that is neither
+  the smallest nor biggest:</p>
+
+  <pre>&lt;picture>
+ &lt;source srcset="pear-mobile.jpeg" media="(max-width: 720px)">
+ &lt;source srcset="pear-tablet.jpeg" media="(max-width: 1280px)">
+ &lt;source srcset="pear-desktop.jpeg">
+ &lt;img src="pear-tablet.jpeg" alt="The pear is juicy.">
+&lt;/picture></pre>
+
+  <hr>
+
+  <p>Above the <code data-x="">max-width</code> media feature is used, giving the maximum
+  (<span>viewport</span>) dimensions that an image is intended for. It is also possible to use <code
+  data-x="">min-width</code> instead.</p>
+
+  <pre>&lt;picture>
+ &lt;source srcset="pear-desktop.jpeg" media="(min-width: 1281px)">
+ &lt;source srcset="pear-tablet.jpeg" media="(min-width: 721px)">
+ &lt;img src="pear-mobile.jpeg" alt="The pear is juicy.">
+&lt;/picture></pre>
+
+
+  

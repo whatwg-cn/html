@@ -1,0 +1,19 @@
+<h5>Ports as the basis of abstracting out service implementations</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Continuing the example from the previous section, consider the contacts provider in particular.
+  While an initial implementation might have simply used <code>XMLHttpRequest</code> objects in the
+  service's <code>iframe</code>, an evolution of the service might instead want to use a <span
+  data-x="SharedWorker">shared worker</span> with a single <code>WebSocket</code> connection.</p>
+
+  <p>If the initial design used <code>MessagePort</code> objects to grant capabilities, or even just
+  to allow multiple simultaneous independent sessions, the service implementation can switch from
+  the <code>XMLHttpRequest</code>s-in-each-<code>iframe</code> model to the
+  shared-<code>WebSocket</code> model without changing the API at all: the ports on the service
+  provider side can all be forwarded to the shared worker without it affecting the users of the API
+  in the slightest.</p>
+
+
+
+  

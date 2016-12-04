@@ -1,0 +1,137 @@
+<h3>The <code>Window</code> object</h3>
+
+  <pre class="idl">[PrimaryGlobal, LegacyUnenumerableNamedProperties] <!-- Exposed=Window is implied because it's the primary global -->
+interface <dfn data-export="" data-dfn-type="interface">Window</dfn> : <span>EventTarget</span> {
+  // the current browsing context
+  [Unforgeable] readonly attribute <span>WindowProxy</span> <span data-x="dom-window">window</span>;
+  [Replaceable] readonly attribute <span>WindowProxy</span> <span data-x="dom-self">self</span>;
+  [Unforgeable] readonly attribute <span>Document</span> <span data-x="dom-document">document</span>;
+  attribute DOMString <span data-x="dom-name">name</span>; <!-- not [Replaceable] per WebKit and IE8 -->
+  [PutForwards=<span data-x="dom-location-href">href</span>, Unforgeable] readonly attribute <span>Location</span> <span data-x="dom-location">location</span>;
+  readonly attribute <span>History</span> <span data-x="dom-history">history</span>;
+  readonly attribute <span>CustomElementRegistry</span> <span data-x="dom-window-customElements">customElements</span>;
+  [Replaceable] readonly attribute <span>BarProp</span> <span data-x="dom-window-locationbar">locationbar</span>;
+  [Replaceable] readonly attribute <span>BarProp</span> <span data-x="dom-window-menubar">menubar</span>;
+  [Replaceable] readonly attribute <span>BarProp</span> <span data-x="dom-window-personalbar">personalbar</span>;
+  [Replaceable] readonly attribute <span>BarProp</span> <span data-x="dom-window-scrollbars">scrollbars</span>;
+  [Replaceable] readonly attribute <span>BarProp</span> <span data-x="dom-window-statusbar">statusbar</span>;
+  [Replaceable] readonly attribute <span>BarProp</span> <span data-x="dom-window-toolbar">toolbar</span>;<!--
+  [Replaceable] readonly attribute <span>BarProp</span> <span data-x="dom-window-directories">directories</span>; // legacy (Gecko-only) -->
+  attribute DOMString <span data-x="dom-window-status">status</span>;
+  void <span data-x="dom-window-close">close</span>();
+  readonly attribute boolean <span data-x="dom-window-closed">closed</span>;
+  void <span data-x="dom-window-stop">stop</span>();
+  void <span data-x="dom-window-focus">focus</span>();
+  void <span data-x="dom-window-blur">blur</span>();
+
+  // other browsing contexts
+  [Replaceable] readonly attribute <span>WindowProxy</span> <span data-x="dom-frames">frames</span>;
+  [Replaceable] readonly attribute unsigned long <span data-x="dom-length">length</span>;
+  [Unforgeable] readonly attribute <span>WindowProxy</span>? <span data-x="dom-top">top</span>;
+  attribute any <span data-x="dom-opener">opener</span>;
+  [Replaceable] readonly attribute <span>WindowProxy</span>? <span data-x="dom-parent">parent</span>;
+  readonly attribute <span>Element</span>? <span data-x="dom-frameElement">frameElement</span>;
+  <span>WindowProxy</span>? <span data-x="dom-open">open</span>(optional USVString url = "about:blank", optional DOMString target = "_blank", [TreatNullAs=EmptyString] optional DOMString features = "");
+  <a href="#dom-window-nameditem">getter</a> <span data-x="idl-object">object</span> (DOMString name);
+  // Since this is the global object, the IDL named getter adds a NamedPropertiesObject exotic
+  // object on the prototype chain. Indeed, this does not make the global object an exotic object.
+  // Indexed access is taken care of by the <span>WindowProxy</span> exotic object.
+
+  // the user agent
+  readonly attribute <span>Navigator</span> <span data-x="dom-navigator">navigator</span>; <!-- IE also has window.clientInformation === window.navigator -->
+  readonly attribute <span>ApplicationCache</span> <span data-x="dom-applicationCache">applicationCache</span>;
+
+  // user prompts
+  void <span data-x="dom-alert">alert</span>();
+  void <span data-x="dom-alert">alert</span>(DOMString message);
+  boolean <span data-x="dom-confirm">confirm</span>(optional DOMString message = "");
+  DOMString? <span data-x="dom-prompt">prompt</span>(optional DOMString message = "", optional DOMString default = "");
+  void <span data-x="dom-print">print</span>();
+
+  unsigned long <span data-x="dom-window-requestAnimationFrame">requestAnimationFrame</span>(<span>FrameRequestCallback</span> callback);
+  void <span data-x="dom-window-cancelAnimationFrame">cancelAnimationFrame</span>(unsigned long handle);
+
+  void <span data-x="dom-window-postMessage">postMessage</span>(any message, USVString targetOrigin, optional sequence&lt;<span data-x="idl-object">object</span>&gt; transfer = []);
+};
+<span>Window</span> implements <span>GlobalEventHandlers</span>;
+<span>Window</span> implements <span>WindowEventHandlers</span>;
+
+callback <dfn>FrameRequestCallback</dfn> = void (<span>DOMHighResTimeStamp</span> time);</pre>
+
+<!-- for more features to add here, look here:
+ http://msdn.microsoft.com/workshop/author/dhtml/reference/objects/obj_window.asp
+ http://www.mozilla.org/docs/dom/domref/dom_window_ref.html
+ http://lxr.mozilla.org/mozilla/source/dom/public/idl/base/nsIDOMWindow.idl - scrollBy, etc
+ http://lxr.mozilla.org/mozilla/source/dom/public/idl/base/nsIDOMWindowInternal.idl - DOM level 0
+-->
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window">window</code></dt>
+   <dt><var>window</var> . <code subdfn data-x="dom-frames">frames</code></dt>
+   <dt><var>window</var> . <code subdfn data-x="dom-self">self</code></dt>
+
+   <dd>
+
+    <p>These attributes all return <var>window</var>.</p>
+
+   </dd>
+
+
+   <dt><var>window</var> . <code subdfn data-x="dom-document">document</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>Document</code> associated with <var>window</var>.</p>
+
+   </dd>
+
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-defaultView">defaultView</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>Window</code> object of the <span>active document</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <code>Window</code> has an <dfn data-export="" data-x="concept-document-window">associated
+  <code>Document</code></dfn>, which is a <code>Document</code> object. It is set when the
+  <code>Window</code> object is created, and only ever changed during <span
+  data-x="navigate">navigation</span> from the initial <code>about:blank</code>
+  <code>Document</code>.</p>
+
+  <p>The <dfn><code data-x="dom-window">window</code></dfn>, <dfn><code
+  data-x="dom-frames">frames</code></dfn>, and <dfn><code data-x="dom-self">self</code></dfn> IDL
+  attributes, on getting, must all return this <code>Window</code> object's <span>browsing
+  context</span>'s <code>WindowProxy</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-document">document</code></dfn> IDL attribute, on getting, must
+  return this <code>Window</code> object's <span data-x="concept-document-window">associated
+  <code>Document</code></span>.</p>
+
+  <p class="note">The <code>Document</code> object associated with a <code>Window</code> object can
+  change in exactly one case: when the <span>navigate</span> algorithm <span data-x="initialize the
+  Document object">initializes a new <code>Document</code> object</span> for the first page loaded
+  in a <span>browsing context</span>. In that specific case, the <code>Window</code> object of the
+  original <code>about:blank</code> page is reused and gets a new <code>Document</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-document-defaultView">defaultView</code></dfn> IDL attribute of the
+  <code>Document</code> interface, on getting, must return this <code>Document</code>'s <span
+  data-x="concept-document-bc">browsing context</span>'s <code>WindowProxy</code> object, if this
+  <code>Document</code> has an associated browsing context, or null otherwise.</p>
+
+  <hr>
+
+  <p>For historical reasons, <code>Window</code> objects must also have a writable, configurable,
+  non-enumerable property named <dfn><code>HTMLDocument</code></dfn> whose value is the
+  <code>Document</code> <span>interface object</span>.</p>
+
+  </div>
+
+
+  

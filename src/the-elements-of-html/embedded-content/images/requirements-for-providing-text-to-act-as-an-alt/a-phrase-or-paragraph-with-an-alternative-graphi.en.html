@@ -1,0 +1,68 @@
+<h6>A phrase or paragraph with an alternative graphical representation: charts, diagrams, graphs, maps, illustrations</h6>
+
+  <p>Sometimes something can be more clearly stated in graphical form, for example as a flowchart, a
+  diagram, a graph, or a simple map showing directions. In such cases, an image can be given using
+  the <code>img</code> element, but the lesser textual version must still be given, so that users
+  who are unable to view the image (e.g. because they have a very slow connection, or because they
+  are using a text-only browser, or because they are listening to the page being read out by a
+  hands-free automobile voice Web browser, or simply because they are blind) are still able to
+  understand the message being conveyed.</p>
+
+  <p>The text must be given in the <code data-x="attr-img-alt">alt</code> attribute, and must convey
+  the same message as the image specified in the <code data-x="attr-img-src">src</code>
+  attribute.</p>
+
+  <p>It is important to realize that the alternative text is a <em>replacement</em> for the image,
+  not a description of the image.</p>
+
+  <div class="example">
+
+   <p>In the following example we have <a href="images/parsing-model-overview.png">a flowchart</a>
+   in image form, with text in the <code data-x="attr-img-alt">alt</code> attribute rephrasing the
+   flowchart in prose form:</p>
+
+   <pre>&lt;p>In the common case, the data handled by the tokenization stage
+comes from the network, but it can also come from script.&lt;/p>
+&lt;p><strong>&lt;img src="images/parsing-model-overview.png" alt="The Network
+passes data to the Input Stream Preprocessor, which passes it to the
+Tokenizer, which passes it to the Tree Construction stage. From there,
+data goes to both the DOM and to Script Execution. Script Execution is
+linked to the DOM, and, using document.write(), passes data to the
+Tokenizer."></strong>&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here's another example, showing a good solution and a bad solution to the problem of including
+   an image in a description.</p>
+
+   <p>First, here's the good solution. This sample shows how the alternative text should just be
+   what you would have put in the prose if the image had never existed.</p>
+
+   <pre>&lt;!-- This is the correct way to do things. -->
+&lt;p>
+ You are standing in an open field west of a house.
+ <strong>&lt;img src="house.jpeg" alt="The house is white, with a boarded front door."></strong>
+ There is a small mailbox here.
+&lt;/p></pre>
+
+   <p>Second, here's the bad solution. In this incorrect way of doing things, the alternative text
+   is simply a description of the image, instead of a textual replacement for the image. It's bad
+   because when the image isn't shown, the text doesn't flow as well as in the first example.</p>
+
+   <pre class="bad">&lt;!-- <em>This is the wrong way to do things.</em> -->
+&lt;p>
+ You are standing in an open field west of a house.
+ &lt;img src="house.jpeg" alt="A white house, with a boarded front door.">
+ There is a small mailbox here.
+&lt;/p></pre>
+
+   <p>Text such as "Photo of white house with boarded door" would be equally bad alternative text
+   (though it could be suitable for the <code data-x="attr-title">title</code> attribute or in the
+   <code>figcaption</code> element of a <code>figure</code> with this image).</p>
+
+  </div>
+
+
+  

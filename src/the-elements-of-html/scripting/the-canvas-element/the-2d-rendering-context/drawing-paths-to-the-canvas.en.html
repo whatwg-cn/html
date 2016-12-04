@@ -1,0 +1,256 @@
+<h6>Drawing paths to the canvas</h6>
+
+  <p>Objects that implement the <code>CanvasDrawPath</code> interface have a <dfn>current default
+  path</dfn>. There is only one <span>current default path</span>, it is not part of the
+  <span>drawing state</span>. The <span>current default path</span> is a <span
+  data-x="concept-path">path</span>, as described above.</p>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-beginPath">beginPath</code>()</dt>
+
+   <dd>
+
+    <p>Resets the <span>current default path</span>.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-fill">fill</code>( [ <var>fillRule</var> ] )</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-fill">fill</code>(<var>path</var> [, <var>fillRule</var> ] )</dt>
+
+   <dd>
+
+    <p>Fills the subpaths of the <span>current default path</span> or the given path with the
+    current fill style, obeying the given fill rule.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-stroke">stroke</code>()</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-stroke">stroke</code>(<var>path</var>)</dt>
+
+   <dd>
+
+    <p>Strokes the subpaths of the <span>current default path</span> or the given path with the
+    current stroke style.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-clip">clip</code>( [ <var>fillRule</var> ] )</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-clip">clip</code>(<var>path</var> [, <var>fillRule</var> ] )</dt>
+
+   <dd>
+
+    <p>Further constrains the clipping region to the <span>current default path</span> or the given
+    path, using the given fill rule to determine what points are in the path.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-resetClip">resetClip</code>()</dt>
+
+   <dd>
+
+    <p>Unconstrains the clipping region.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-isPointInPath">isPointInPath</code>(<var>x</var>, <var>y</var> [, <var>fillRule</var> ] )</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-isPointInPath">isPointInPath</code>(<var>path</var>, <var>x</var>, <var>y</var> [, <var>fillRule</var> ] )</dt>
+
+   <dd>
+
+    <p>Returns true if the given point is in the <span>current default path</span> or the given
+    path, using the given fill rule to determine what points are in the path.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-isPointInStroke">isPointInStroke</code>(<var>x</var>, <var>y</var>)</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-isPointInStroke">isPointInStroke</code>(<var>path</var>, <var>x</var>, <var>y</var>)</dt>
+
+   <dd>
+
+    <p>Returns true if the given point would be in the region covered by the stroke of the
+    <span>current default path</span> or the given path, given the current stroke style.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-context-2d-beginPath">beginPath()</code></dfn> method, when invoked,
+  must empty the list of subpaths in the context's <span>current default path</span> so that the it
+  once again has zero subpaths.</p>
+
+  <p>Where the following method definitions use the term <i>intended path</i>, it means the
+  <code>Path2D</code> argument, if one was provided, or the <span>current default path</span>
+  otherwise.</p>
+
+  <p>When the intended path is a <code>Path2D</code> object, the coordinates and lines of its
+  subpaths must be transformed according to the <span data-x="dom-context-2d-transformation">
+  current transformation matrix</span> on the object implementing the
+  <code>CanvasTransform</code> interface when used by these methods (without affecting the
+  <code>Path2D</code> object itself). When the intended path is the <span>current default
+  path</span>, it is not affected by the transform. (This is because transformations already affect
+  the <span>current default path</span> when it is constructed, so applying it when it is painted as
+  well would result in a double transformation.)</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-fill">fill()</code></dfn> method, when invoked, must fill
+  all the subpaths of the intended path, using <code
+  data-x="dom-context-2d-fillStyle">fillStyle</code>, and using the <span>fill rule</span> indicated
+  by the <var>fillRule</var> argument. Open subpaths must be implicitly closed when being filled
+  (without affecting the actual subpaths).</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-stroke">stroke()</code></dfn> method, when invoked, must
+  <span data-x="trace a path">trace</span> the intended path, using this
+  <code>CanvasPathDrawingStyles</code> object for the line styles, and then fill the resulting path
+  using the <code data-x="dom-context-2d-strokeStyle">strokeStyle</code> attribute, using the <span
+  data-x="dom-context-2d-fillRule-nonzero">non-zero winding rule</span>.</p>
+
+  <p class="note">As a result of how the algorithm to <span>trace a path</span> is defined,
+  overlapping parts of the paths in one stroke operation are treated as if their union was what was
+  painted.</p>
+
+  <p class="note">The stroke <em>style</em> is affected by the transformation during painting, even
+  if the intended path is the <span>current default path</span>.</p>
+
+  <p>Paths, when filled or stroked, must be painted without affecting the <span>current default
+  path</span> or any <code>Path2D</code> objects, and must be subject to <span
+  data-x="shadows">shadow effects</span>, <span data-x="dom-context-2d-globalAlpha">global
+  alpha</span>, the <span>clipping region</span>, and <span
+  data-x="dom-context-2d-globalCompositeOperation">global composition operators</span>. (The effect
+  of transformations is described above and varies based on which path is being used.)</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-clip">clip()</code></dfn> method, when invoked, must
+  create a new <dfn>clipping region</dfn> by calculating the intersection of the current clipping
+  region and the area described by the intended path, using the <span>fill rule</span> indicated by
+  the <var>fillRule</var> argument. Open subpaths must be implicitly closed when computing the
+  clipping region, without affecting the actual subpaths. The new clipping region replaces the
+  current clipping region.</p>
+
+  <p>When the context is initialized, the clipping region must be set to the largest infinite
+  surface (i.e. by default, no clipping occurs).</p>
+
+  <!-- v6
+   Jordan OSETE suggests:
+    * support ways of extending the clipping region (union instead of intersection)
+       - also "add", "subtract", "replace", "intersect" and "xor"
+       - maybe just support creating unions, intersections, and other -ions of paths
+  -->
+
+  <p>The <dfn><code data-x="dom-context-2d-resetClip">resetClip()</code></dfn> method, when invoked,
+  must create a new <span>clipping region</span> that is the largest infinite surface. The new
+  clipping region replaces the current clipping region.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-isPointInPath">isPointInPath()</code></dfn> method, when
+  invoked, must return true if the point given by the <var>x</var> and <var>y</var> coordinates
+  passed to the method, when treated as coordinates in the canvas coordinate space unaffected by the
+  current transformation, is inside the intended path as determined by the <span>fill rule</span>
+  indicated by the <var>fillRule</var> argument; and must return false otherwise. Open subpaths must
+  be implicitly closed when computing the area inside the path, without affecting the actual
+  subpaths. Points on the path itself must be considered to be inside the path. If either of the
+  arguments are infinite or NaN, then the method must return false.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-isPointInStroke">isPointInStroke()</code></dfn> method,
+  when invoked, must return true if the point given by the <var>x</var> and <var>y</var> coordinates
+  passed to the method, when treated as coordinates in the canvas coordinate space unaffected by the
+  current transformation, is inside the path that results from <span data-x="trace a
+  path">tracing</span> the intended path, using the <span
+  data-x="dom-context-2d-fillRule-nonzero">non-zero winding rule</span>, and using the
+  <code>CanvasPathDrawingStyles</code> interface for the line styles; and must return false
+  otherwise. Points on the resulting path must be considered to be inside the path. If either of the
+  arguments are infinite or NaN, then the method must return false.</p>
+
+  <hr>
+
+  </div>
+
+  <div class="example" id="drawCustomFocusRingExample">
+
+   <p>This <code>canvas</code> element has a couple of checkboxes. The path-related commands are
+   highlighted:</p>
+
+   <pre>&lt;canvas height=400 width=750>
+ &lt;label>&lt;input type=checkbox id=showA> Show As&lt;/label>
+ &lt;label>&lt;input type=checkbox id=showB> Show Bs&lt;/label>
+ &lt;!-- ... -->
+&lt;/canvas>
+&lt;script>
+ function drawCheckbox(context, element, x, y, paint) {
+   context.save();
+   context.font = '10px sans-serif';
+   context.textAlign = 'left';
+   context.textBaseline = 'middle';
+   var metrics = context.measureText(element.labels[0].textContent);
+   if (paint) {
+<strong>     context.beginPath();
+     context.strokeStyle = 'black';
+     context.rect(x-5, y-5, 10, 10);
+     context.stroke();
+</strong>     if (element.checked) {
+<strong>       context.fillStyle = 'black';
+       context.fill();
+</strong>     }
+     context.fillText(element.labels[0].textContent, x+5, y);
+   }
+<strong>   context.beginPath();
+   context.rect(x-7, y-7, 12 + metrics.width+2, 14);
+</strong>
+   context.drawFocusIfNeeded(element);
+   context.restore();
+ }
+ function drawBase() { /* ... */ }
+ function drawAs() { /* ... */ }
+ function drawBs() { /* ... */ }
+ function redraw() {
+   var canvas = document.getElementsByTagName('canvas')[0];
+   var context = canvas.getContext('2d');
+   context.clearRect(0, 0, canvas.width, canvas.height);
+   drawCheckbox(context, document.getElementById('showA'), 20, 40, true);
+   drawCheckbox(context, document.getElementById('showB'), 20, 60, true);
+   drawBase();
+   if (document.getElementById('showA').checked)
+     drawAs();
+   if (document.getElementById('showB').checked)
+     drawBs();
+ }
+ function processClick(event) {
+   var canvas = document.getElementsByTagName('canvas')[0];
+   var context = canvas.getContext('2d');
+   var x = event.clientX;
+   var y = event.clientY;
+   var node = event.target;
+   while (node) {
+     x -= node.offsetLeft - node.scrollLeft;
+     y -= node.offsetTop - node.scrollTop;
+     node = node.offsetParent;
+   }
+   drawCheckbox(context, document.getElementById('showA'), 20, 40, false);
+   if (<strong>context.isPointInPath(x, y)</strong>)
+     document.getElementById('showA').checked = !(document.getElementById('showA').checked);
+   drawCheckbox(context, document.getElementById('showB'), 20, 60, false);
+   if (<strong>context.isPointInPath(x, y)</strong>)
+     document.getElementById('showB').checked = !(document.getElementById('showB').checked);
+   redraw();
+ }
+ document.getElementsByTagName('canvas')[0].addEventListener('focus', redraw, true);
+ document.getElementsByTagName('canvas')[0].addEventListener('blur', redraw, true);
+ document.getElementsByTagName('canvas')[0].addEventListener('change', redraw, true);
+ document.getElementsByTagName('canvas')[0].addEventListener('click', processClick, false);
+ redraw();
+&lt;/script></pre>
+<!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=340 -->
+
+  </div>
+
+  

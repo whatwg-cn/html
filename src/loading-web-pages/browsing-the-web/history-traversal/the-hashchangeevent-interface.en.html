@@ -1,0 +1,50 @@
+<h5>The <code>HashChangeEvent</code> interface</h5>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>HashChangeEventInit</span> eventInitDict)]
+interface <dfn>HashChangeEvent</dfn> : <span>Event</span> {
+  readonly attribute USVString <span data-x="dom-HashChangeEvent-oldURL">oldURL</span>;
+  readonly attribute USVString <span data-x="dom-HashChangeEvent-newURL">newURL</span>;
+};
+
+dictionary <dfn>HashChangeEventInit</dfn> : <span>EventInit</span> {
+  USVString oldURL = "";
+  USVString newURL = "";
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>event</var> . <code subdfn data-x="dom-HashChangeEvent-oldURL">oldURL</code></dt>
+
+   <dd>
+
+    <p>Returns the <span>URL</span> of the <span>session history entry</span> that was previously
+    current.</p>
+
+   </dd>
+
+
+   <dt><var>event</var> . <code subdfn data-x="dom-HashChangeEvent-newURL">newURL</code></dt>
+
+   <dd>
+
+    <p>Returns the <span>URL</span> of the <span>session history entry</span> that is now
+    current.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-HashChangeEvent-oldURL">oldURL</code></dfn> attribute must return
+  the value it was initialized to. It represents context information for the event, specifically the
+  URL of the <span>session history entry</span> that was traversed from.</p>
+
+  <p>The <dfn><code data-x="dom-HashChangeEvent-newURL">newURL</code></dfn> attribute must return
+  the value it was initialized to. It represents context information for the event, specifically the
+  URL of the <span>session history entry</span> that was traversed to.</p>
+
+  </div>
+
+
+  

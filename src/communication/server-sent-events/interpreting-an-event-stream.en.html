@@ -1,0 +1,268 @@
+<h4 id="event-stream-interpretation">Interpreting an event stream</h4>
+
+  <p>Streams must be decoded using the <span>UTF-8 decode</span> algorithm.</p>
+
+  <p class="note">The <span>UTF-8 decode</span> algorithm strips one leading UTF-8 Byte Order Mark
+  (BOM), if any.</p>
+
+  <p>The stream must then be parsed by reading everything line by line, with a U+000D CARRIAGE
+  RETURN U+000A LINE FEED (CRLF) character pair, a single U+000A LINE FEED (LF) character not
+  preceded by a U+000D CARRIAGE RETURN (CR) character, and a single U+000D CARRIAGE RETURN (CR)
+  character not followed by a U+000A LINE FEED (LF) character being the ways in which a line can
+  end.</p>
+
+  <p>When a stream is parsed, a <var>data</var> buffer, an <var>event type</var>
+  buffer, and a <var>last event ID</var> buffer must be associated with it. They must be
+  initialized to the empty string</p>
+
+  <p>Lines must be processed, in the order they are received, as follows:</p>
+
+  <dl class="switch">
+
+   <dt>If the line is empty (a blank line)</dt>
+
+   <dd><p><span>Dispatch the event</span>, as defined below.</p></dd>
+
+
+   <dt>If the line starts with a U+003A COLON character (:)</dt>
+
+   <dd><p>Ignore the line.</p></dd>
+
+
+   <dt>If the line contains a U+003A COLON character (:)</dt>
+
+   <dd>
+
+    <p>Collect the characters on the line before the first U+003A COLON character (:), and let <var>field</var> be that string.</p>
+
+    <p>Collect the characters on the line after the first U+003A COLON character (:), and let <var>value</var> be that string. If <var>value</var> starts with a U+0020 SPACE
+    character, remove it from <var>value</var>.</p>
+
+    <p><a href="#processField">Process the field</a> using the steps described below, using <var>field</var> as the field name and <var>value</var> as the field value.</p>
+
+   </dd>
+
+
+   <dt>Otherwise, the string is not empty but does not contain a U+003A COLON character (:)</dt>
+
+   <dd>
+
+    <p><a href="#processField">Process the field</a> using the steps described below, using the
+    whole line as the field name, and the empty string as the field value.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>Once the end of the file is reached, any pending data must be discarded. (If the file ends in
+  the middle of an event, before the final empty line, the incomplete event is not dispatched.)</p>
+
+  <hr>
+
+  <p id="processField">The steps to <dfn data-x="">process the field</dfn> given a field name and a
+  field value depend on the field name, as given in the following list. Field names must be compared
+  literally, with no case folding performed.</p>
+
+  <dl class="switch">
+
+   <dt>If the field name is "event"</dt>
+
+   <dd><p>Set the <var>event type</var> buffer to field value.</p></dd>
+
+
+   <dt>If the field name is "data"</dt>
+
+   <dd><p>Append the field value to the <var>data</var> buffer, then append a single U+000A
+   LINE FEED (LF) character to the <var>data</var> buffer.</p></dd>
+
+
+   <dt>If the field name is "id"</dt>
+
+   <dd><p>Set the <var>last event ID</var> buffer to the field value.</p></dd>
+
+
+   <dt>If the field name is "retry"</dt>
+
+   <dd><p>If the field value consists of only <span>ASCII digits</span>, then interpret the field
+   value as an integer in base ten, and set the event stream's <span
+   data-x="concept-event-stream-reconnection-time">reconnection time</span> to that integer.
+   Otherwise, ignore the field.</p></dd>
+
+   <!-- v2 feature request from Per-Erik Brodin:
+      > > > Finally, it could be useful to be able to reset the reconnection
+      > > > time to the user agent default value by sending the retry field only
+      > > > and leave out the value similar to how you reset the last event id.
+      > >
+      > > What's the use case?
+      >
+      > Take the stock ticker as an example. When the stock market closes the
+      > server logic knows that there won't be any new events for a number of
+      > hours and so it can send the corresponding reconnection time and close
+      > the connection. If the client is still running by the time the market
+      > opens, it will reconnect, and the server can now reset the reconnection
+      > time to a time that is convenient for the user agent (which is the user
+      > agent default value, unknown to the server).
+    -->
+
+<!-- v2 feature request from John Fallows - https://lists.w3.org/Archives/Public/public-html-comments/2008Oct/0009.html
+
+   <dt>If the field name is "reconnect"</dt>
+
+   <dd><p>If the field value is the empty string, then: <span>dispatch the
+   event</span> as defined below, and then drop the connection and immediately reconnect as if the
+   <span data-x="concept-event-stream-reconnection-time">reconnection time</span> was zero for this
+   one time.</p></dd>
+
+  -->
+
+   <dt>Otherwise</dt>
+
+   <dd><p>The field is ignored.</p></dd>
+
+  </dl>
+
+
+  <p>When the user agent is required to <dfn id="dispatchMessage">dispatch the
+  event</dfn>, the user agent must process the <var>data</var> buffer, the <var>event type</var> buffer, and the <var>last event ID</var> buffer using steps
+  appropriate for the user agent.</p>
+
+  <p>For Web browsers, the appropriate steps to <span>dispatch the event</span> are as follows:</p>
+
+  <ol>
+
+   <li><p>Set the <span data-x="concept-event-stream-last-event-id">last event ID string</span> of
+   the event source to the value of the <var>last event ID</var> buffer. The buffer does
+   not get reset, so the <span data-x="concept-event-stream-last-event-id">last event ID
+   string</span> of the event source remains set to this value until the next time it is set by the
+   server.</p></li>
+
+   <li><p>If the <var>data</var> buffer is an empty string, set the <var>data</var> buffer and the <var>event type</var> buffer to the empty string and
+   abort these steps.</p></li>
+
+   <li><p>If the <var>data</var> buffer's last character is a U+000A LINE FEED (LF)
+   character, then remove the last character from the <var>data</var> buffer.</p></li>
+
+   <li><p>Let <var>event</var> be the result of <span>creating an event</span> using
+   <code>MessageEvent</code>, in the <span data-x="concept-relevant-realm">relevant Realm</span> of
+   the <code>EventSource</code> object.</p></li>
+
+   <li><p>Initialize <var>event</var>'s <code data-x="dom-Event-type">type</code> attribute to <code
+   data-x="event-message">message</code>, its <code data-x="dom-MessageEvent-data">data</code>
+   attribute to <var>data</var>, its <code data-x="dom-MessageEvent-origin">origin</code> attribute
+   to the <span data-x="Unicode serialization of an origin">Unicode serialization</span>
+   of the <span>origin</span> of the event stream's final URL (i.e. the URL after redirects), and
+   its <code data-x="dom-MessageEvent-lastEventId">lastEventId</code> attribute to the <span
+   data-x="concept-event-stream-last-event-id">last event ID string</span> of the event
+   source.</p></li>
+
+   <li><p>If the <var>event type</var> buffer has a value other than the empty string, change the
+   <span data-x="concept-event-type">type</span> of the newly created event to equal the value of
+   the <var>event type</var> buffer.</p></li>
+
+   <li><p>Set the <var>data</var> buffer and the <var>event type</var> buffer to
+   the empty string.</p></li>
+
+   <li><p><span>Queue a task</span> which, if the <code
+   data-x="dom-EventSource-readyState">readyState</code> attribute is set to a value other than <code
+   data-x="dom-EventSource-CLOSED">CLOSED</code>, <span
+   data-x="concept-event-dispatch">dispatches</span> the newly created event at the
+   <code>EventSource</code> object.</p></li> <!-- so calling close() drops the messages immediately.
+   The connection dying doesn't interfere with already-sent messages since it sets us to CLOSED via
+   a task, not immediately -->
+
+  </ol>
+
+  <p class="note">If an event doesn't have an "id" field, but an earlier event did set the event
+  source's <span data-x="concept-event-stream-last-event-id">last event ID string</span>, then the
+  event's <code data-x="dom-MessageEvent-lastEventId">lastEventId</code> field will be set to the
+  value of whatever the last seen "id" field was.</p>
+
+  <p>For other user agents, the appropriate steps to <span>dispatch the event</span> are
+  implementation dependent, but at a minimum they must set the <var>data</var> and <var>event type</var> buffers to the empty string before returning.</p>
+
+  <div class="example">
+
+   <p>The following event stream, once followed by a blank line:</p>
+   <pre>data: YHOO
+data: +2
+data: 10</pre>
+
+   <p>...would cause an event <code data-x="event-message">message</code> with the interface
+   <code>MessageEvent</code> to be dispatched on the <code>EventSource</code> object. The event's
+   <code data-x="dom-MessageEvent-data">data</code> attribute would contain the string "<code
+   data-x="">YHOO\n+2\n10</code>" (where "<code data-x="">\n</code>" represents a newline).</p>
+
+   <p>This could be used as follows:
+   <pre>var stocks = new EventSource("https://stocks.example.com/ticker.php");
+stocks.onmessage = function (event) {
+  var data = event.data.split('\n');
+  updateStocks(data[0], data[1], data[2]);
+};</pre>
+
+   <p>...where <code data-x="">updateStocks()</code> is a function defined as:</p>
+
+   <pre>function updateStocks(symbol, delta, value) { ... }</pre>
+
+   <p>...or some such.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following stream contains four blocks. The first block has just a comment, and will fire
+   nothing. The second block has two fields with names "data" and "id" respectively; an event will
+   be fired for this block, with the data "first event", and will then set the last event ID to "1"
+   so that if the connection died between this block and the next, the server would be sent a `<code
+   data-x="http-last-event-id">Last-Event-ID</code>` header with the value "1". The third block
+   fires an event with data "second event", and also has an "id" field, this time with no value,
+   which resets the last event ID to the empty string (meaning no `<code
+   data-x="http-last-event-id">Last-Event-ID</code>` header will now be sent in the event of a
+   reconnection being attempted). Finally, the last block just fires an event with the data
+   "&nbsp;third&nbsp;event" (with a single leading space character). Note that the last still has to
+   end with a blank line, the end of the stream is not enough to trigger the dispatch of the last
+   event.</p>
+
+   <pre>: test stream
+
+data: first event
+id: 1
+
+data:second event
+id
+
+data:&nbsp;&nbsp;third event
+</pre>
+  </div>
+
+  <div class="example">
+
+   <p>The following stream fires two events:</p>
+
+   <pre>data
+
+data
+data
+
+data:</pre>
+
+   <p>The first block fires events with the data set to the empty string, as would the last block if
+   it was followed by a blank line. The middle block fires an event with the data set to a single
+   newline character. The last block is discarded because it is not followed by a blank line.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following stream fires two identical events:</p>
+
+   <pre>data:test
+
+data:&nbsp;test
+</pre>
+
+   <p>This is because the space after the colon is ignored if present.</p>
+
+  </div>
+
+
+  

@@ -1,0 +1,38 @@
+<h4>Introduction</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>An HTML user interface typically consists of multiple interactive widgets, such as form
+  controls, scrollable regions, links, dialog boxes, browser tabs, and so forth. These widgets form
+  a hierarchy, with some (e.g. browser tabs, dialog boxes) containing others (e.g. links, form
+  controls).</p>
+
+  <p>When interacting with an interface using a keyboard, key input is channeled from the system,
+  through the hierarchy of interactive widgets, to an active widget, which is said to be
+  <span>focused</span>.</p>
+
+  <div class="example">
+
+   <p>Consider an HTML application running in a browser tab running in a graphical environment.
+   Suppose this application had a page with some text controls and links, and was currently showing
+   a modal dialog, which itself had a text control and a button.</p>
+
+   <p>The hierarchy of focusable widgets, in this scenario, would include the browser window, which
+   would have, amongst its children, the browser tab containing the HTML application. The tab itself
+   would have as its children the various links and text controls, as well as the dialog. The dialog
+   itself would have as its children the text control and the button.</p>
+
+   <p><img src="/images/focus-tree.png" alt="" width=800 height=450> <!-- purely decorative: it repeats the previous
+   paragraph, in graphical form -->
+
+   <p>If the widget with <span data-x="focused">focus</span> in this example was the text control in
+   the dialog box, then key input would be channeled from the graphical system to &#x2460; the Web
+   browser, then to &#x2461; the tab, then to &#x2462; the dialog, and finally to &#x2463; the text
+   control.</p>
+
+  </div>
+
+  <p>Keyboard <em>events</em> are always targeted at this <span>focused</span> element.</p>
+
+
+  

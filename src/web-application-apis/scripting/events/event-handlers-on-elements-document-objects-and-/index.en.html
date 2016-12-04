@@ -1,0 +1,173 @@
+<h5>Event handlers on elements, <code>Document</code> objects, and <code>Window</code> objects</h5>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) <span w-nodev>that must be</span>
+  supported by all <span>HTML elements</span>, as both <span>event handler content attributes</span>
+  and <span>event handler IDL attributes</span>; and <span w-nodev>that must be</span>
+  supported by all <code>Document</code> and <code>Window</code> objects, as <span>event handler IDL
+  attributes</span>:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-onabort">onabort</code></dfn> <td> <code data-x="event-abort">abort</code>
+    <tr><td><dfn><code data-x="handler-onauxclick">onauxclick</code></dfn> <td> <code data-x="event-auxclick">auxclick</code>
+    <tr><td><dfn><code data-x="handler-oncancel">oncancel</code></dfn> <td> <code data-x="event-cancel">cancel</code>
+    <tr><td><dfn><code data-x="handler-oncanplay">oncanplay</code></dfn> <td> <code data-x="event-media-canplay">canplay</code>
+    <tr><td><dfn><code data-x="handler-oncanplaythrough">oncanplaythrough</code></dfn> <td> <code data-x="event-media-canplaythrough">canplaythrough</code>
+    <tr><td><dfn><code data-x="handler-onchange">onchange</code></dfn> <td> <code data-x="event-change">change</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onclick">onclick</code></dfn> <td> <code data-x="event-click">click</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onclose">onclose</code></dfn> <td> <code data-x="event-close">close</code> <!-- new for <dialog> -->
+    <tr><td><dfn><code data-x="handler-oncontextmenu">oncontextmenu</code></dfn> <td> <code data-x="event-contextmenu">contextmenu</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-oncuechange">oncuechange</code></dfn> <td> <code data-x="event-media-cuechange">cuechange</code>
+    <tr><td><dfn><code data-x="handler-ondblclick">ondblclick</code></dfn> <td> <code data-x="event-dblclick">dblclick</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-ondrag">ondrag</code></dfn> <td> <code data-x="event-dnd-drag">drag</code>
+    <tr><td><dfn><code data-x="handler-ondragend">ondragend</code></dfn> <td> <code data-x="event-dnd-dragend">dragend</code>
+    <tr><td><dfn><code data-x="handler-ondragenter">ondragenter</code></dfn> <td> <code data-x="event-dnd-dragenter">dragenter</code>
+    <tr><td><dfn><code data-x="handler-ondragexit">ondragexit</code></dfn> <td> <code data-x="event-dnd-dragexit">dragexit</code>
+    <tr><td><dfn><code data-x="handler-ondragleave">ondragleave</code></dfn> <td> <code data-x="event-dnd-dragleave">dragleave</code>
+    <tr><td><dfn><code data-x="handler-ondragover">ondragover</code></dfn> <td> <code data-x="event-dnd-dragover">dragover</code>
+    <tr><td><dfn><code data-x="handler-ondragstart">ondragstart</code></dfn> <td> <code data-x="event-dnd-dragstart">dragstart</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-ondrop">ondrop</code></dfn> <td> <code data-x="event-dnd-drop">drop</code>
+    <tr><td><dfn><code data-x="handler-ondurationchange">ondurationchange</code></dfn> <td> <code data-x="event-media-durationchange">durationchange</code>
+    <tr><td><dfn><code data-x="handler-onemptied">onemptied</code></dfn> <td> <code data-x="event-media-emptied">emptied</code>
+    <tr><td><dfn><code data-x="handler-onended">onended</code></dfn> <td> <code data-x="event-media-ended">ended</code>
+    <tr><td><dfn><code data-x="handler-oninput">oninput</code></dfn> <td> <code data-x="event-input">input</code>
+    <tr><td><dfn><code data-x="handler-oninvalid">oninvalid</code></dfn> <td> <code data-x="event-invalid">invalid</code>
+    <tr><td><dfn><code data-x="handler-onkeydown">onkeydown</code></dfn> <td> <code data-x="event-keydown">keydown</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onkeypress">onkeypress</code></dfn> <td> <code data-x="event-keypress">keypress</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onkeyup">onkeyup</code></dfn> <td> <code data-x="event-keyup">keyup</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onloadeddata">onloadeddata</code></dfn> <td> <code data-x="event-media-loadeddata">loadeddata</code>
+    <tr><td><dfn><code data-x="handler-onloadedmetadata">onloadedmetadata</code></dfn> <td> <code data-x="event-media-loadedmetadata">loadedmetadata</code>
+    <tr><td><dfn><code data-x="handler-onloadend">onloadend</code></dfn> <td> <code data-x="event-loadend">loadend</code>
+    <tr><td><dfn><code data-x="handler-onloadstart">onloadstart</code></dfn> <td> <code data-x="event-media-loadstart">loadstart</code>
+    <tr><td><dfn><code data-x="handler-onmousedown">onmousedown</code></dfn> <td> <code data-x="event-mousedown">mousedown</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onmouseenter">onmouseenter</code></dfn> <td> <code data-x="event-mouseenter">mouseenter</code> <!-- compat -->
+    <tr><td><dfn><code data-x="handler-onmouseleave">onmouseleave</code></dfn> <td> <code data-x="event-mouseleave">mouseleave</code> <!-- compat -->
+    <tr><td><dfn><code data-x="handler-onmousemove">onmousemove</code></dfn> <td> <code data-x="event-mousemove">mousemove</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onmouseout">onmouseout</code></dfn> <td> <code data-x="event-mouseout">mouseout</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onmouseover">onmouseover</code></dfn> <td> <code data-x="event-mouseover">mouseover</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onmouseup">onmouseup</code></dfn> <td> <code data-x="event-mouseup">mouseup</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onwheel">onwheel</code></dfn> <td> <code data-x="event-wheel">wheel</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onpause">onpause</code></dfn> <td> <code data-x="event-media-pause">pause</code>
+    <tr><td><dfn><code data-x="handler-onplay">onplay</code></dfn> <td> <code data-x="event-media-play">play</code>
+    <tr><td><dfn><code data-x="handler-onplaying">onplaying</code></dfn> <td> <code data-x="event-media-playing">playing</code>
+    <tr><td><dfn><code data-x="handler-onprogress">onprogress</code></dfn> <td> <code data-x="event-media-progress">progress</code>
+    <tr><td><dfn><code data-x="handler-onratechange">onratechange</code></dfn> <td> <code data-x="event-media-ratechange">ratechange</code>
+    <tr><td><dfn><code data-x="handler-onreset">onreset</code></dfn> <td> <code data-x="event-reset">reset</code>
+    <tr><td><dfn><code data-x="handler-onseeked">onseeked</code></dfn> <td> <code data-x="event-media-seeked">seeked</code>
+    <tr><td><dfn><code data-x="handler-onseeking">onseeking</code></dfn> <td> <code data-x="event-media-seeking">seeking</code>
+    <tr><td><dfn><code data-x="handler-onselect">onselect</code></dfn> <td> <code data-x="event-select">select</code> <!-- widely used --> <!-- [CSSOM] -->
+    <tr><td><dfn><code data-x="handler-onshow">onshow</code></dfn> <td> <code data-x="event-show">show</code>
+    <tr><td><dfn><code data-x="handler-onstalled">onstalled</code></dfn> <td> <code data-x="event-media-stalled">stalled</code>
+    <tr><td><dfn><code data-x="handler-onsubmit">onsubmit</code></dfn> <td> <code data-x="event-submit">submit</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onsuspend">onsuspend</code></dfn> <td> <code data-x="event-media-suspend">suspend</code>
+    <tr><td><dfn><code data-x="handler-ontimeupdate">ontimeupdate</code></dfn> <td> <code data-x="event-media-timeupdate">timeupdate</code>
+    <tr><td><dfn><code data-x="handler-ontoggle">ontoggle</code></dfn> <td> <code data-x="event-toggle">toggle</code>
+    <tr><td><dfn><code data-x="handler-onvolumechange">onvolumechange</code></dfn> <td> <code data-x="event-media-volumechange">volumechange</code>
+    <tr><td><dfn><code data-x="handler-onwaiting">onwaiting</code></dfn> <td> <code data-x="event-media-waiting">waiting</code>
+
+<!-- not supported, use dnd: -->
+<!--<tr><td><dfn><code data-x="handler-onbeforecopy">onbeforecopy</code></dfn> <td> <code data-x="event-cp-beforecopy">beforecopy</code>--> <!-- widely used -->
+<!--<tr><td><dfn><code data-x="handler-oncopy">oncopy</code></dfn> <td> <code data-x="event-cp-copy">copy</code>--> <!-- widely used -->
+<!--<tr><td><dfn><code data-x="handler-onpaste">onpaste</code></dfn> <td> <code data-x="event-cp-paste">paste</code>--> <!-- widely used -->
+<!-- not supported yet (v2?): -->
+<!--<tr><td><dfn><code data-x="handler-onselectstart">onselectstart</code></dfn> <td> <code data-x="event-selectstart">selectstart</code>--> <!-- widely used -->
+  </table>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) <span w-nodev>that must be</span>
+  supported by all <span>HTML elements</span> other than <code>body</code> and <code>frameset</code>
+  elements, as both <span>event handler content attributes</span> and <span>event handler IDL
+  attributes</span>; <span w-nodev>that must be</span> supported by all <code>Document</code>
+  objects, as <span>event handler IDL attributes</span>; and <span w-nodev>that must be</span>
+  supported by all <code>Window</code> objects, as <span>event handler IDL attributes</span> on the
+  <code>Window</code> objects themselves, and with corresponding <span>event handler content
+  attributes</span> and <span>event handler IDL attributes</span> exposed on all <code>body</code>
+  and <code>frameset</code> elements that are owned by that <code>Window</code> object's <span
+  data-x="concept-document-window">associated <code>Document</code></span>:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-onblur">onblur</code></dfn> <td> <code data-x="event-blur">blur</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onerror">onerror</code></dfn> <td> <code data-x="event-error">error</code>
+    <tr><td><dfn><code data-x="handler-onfocus">onfocus</code></dfn> <td> <code data-x="event-focus">focus</code> <!-- widely used -->
+    <tr><td><dfn><code data-x="handler-onload">onload</code></dfn> <td> <code data-x="event-load">load</code>
+    <tr><td><dfn><code data-x="handler-onresize">onresize</code></dfn> <td> <code data-x="event-resize">resize</code>
+    <tr><td><dfn><code data-x="handler-onscroll">onscroll</code></dfn> <td> <code data-x="event-scroll">scroll</code>
+  </table>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) <span w-nodev>that must be</span>
+  supported by <code>Window</code> objects, as <span>event handler IDL attributes</span> on the
+  <code>Window</code> objects themselves, and with corresponding <span>event handler content
+  attributes</span> and <span>event handler IDL attributes</span> exposed on all <code>body</code>
+  and <code>frameset</code> elements that are owned by that <code>Window</code> object's <span
+  data-x="concept-document-window">associated <code>Document</code></span>:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-window-onafterprint">onafterprint</code></dfn> <td> <code data-x="event-afterprint">afterprint</code>
+    <tr><td><dfn><code data-x="handler-window-onbeforeprint">onbeforeprint</code></dfn> <td> <code data-x="event-beforeprint">beforeprint</code>
+    <tr><td><dfn><code data-x="handler-window-onbeforeunload">onbeforeunload</code></dfn> <td> <code data-x="event-beforeunload">beforeunload</code>
+    <tr><td><dfn><code data-x="handler-window-onhashchange">onhashchange</code></dfn> <td> <code data-x="event-hashchange">hashchange</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-onlanguagechange">onlanguagechange</code></dfn> <td> <code data-x="event-languagechange">languagechange</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-onmessage">onmessage</code></dfn> <td> <code data-x="event-message">message</code> <!-- new for postMessage -->
+    <tr><td><dfn><code data-x="handler-window-onoffline">onoffline</code></dfn> <td> <code data-x="event-offline">offline</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-ononline">ononline</code></dfn> <td> <code data-x="event-online">online</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-onpagehide">onpagehide</code></dfn> <td> <code data-x="event-pagehide">pagehide</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-onpageshow">onpageshow</code></dfn> <td> <code data-x="event-pageshow">pageshow</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-onpopstate">onpopstate</code></dfn> <td> <code data-x="event-popstate">popstate</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-onrejectionhandled">onrejectionhandled</code></dfn> <td> <code data-x="event-rejectionhandled">rejectionhandled</code>
+    <tr><td><dfn><code data-x="handler-window-onstorage">onstorage</code></dfn> <td> <code data-x="event-storage">storage</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-window-onunhandledrejection">onunhandledrejection</code></dfn> <td> <code data-x="event-unhandledrejection">unhandledrejection</code>
+    <tr><td><dfn><code data-x="handler-window-onunload">onunload</code></dfn> <td> <code data-x="event-unload">unload</code> <!-- widely used -->
+  </table>
+
+  <hr>
+
+  <!-- this guy is only on Document and not on HTMLElement because otherwise HTMLScriptElement would
+  have it and that causes compatibility issues since IE fires readystatechange events on <script>,
+  not load events, and we can't fire both, and some sites try to decide which to look for based on
+  the presence of script.onreadystatechange on HTMLScriptElement.
+     https://www.w3.org/Bugs/Public/show_bug.cgi?id=13965
+     https://lists.w3.org/Archives/Public/public-whatwg-archive/2011Sep/0074.html
+  -->
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span
+  data-x="event handler event type">event handler event types</span>) <span w-nodev>that must be</span>
+  supported by all <span>HTML elements</span>, as both <span>event handler content attributes</span>
+  and <span>event handler IDL attributes</span>; and <span w-nodev>that must be</span>
+  supported by all <code>Document</code> objects, as <span>event handler IDL attributes</span>:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-oncut">oncut</code></dfn> <td> <code data-x="event-cut">cut</code>
+    <tr><td><dfn><code data-x="handler-oncopy">oncopy</code></dfn> <td> <code data-x="event-copy">copy</code>
+    <tr><td><dfn><code data-x="handler-onpaste">onpaste</code></dfn> <td> <code data-x="event-paste">paste</code>
+  </table>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) <span w-nodev>that must be</span>
+  supported on <code>Document</code> objects as <span>event handler IDL attributes</span>:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-onreadystatechange">onreadystatechange</code></dfn> <td> <code data-x="event-readystatechange">readystatechange</code>
+  </table>
+
+
+  

@@ -1,0 +1,100 @@
+<h5><dfn>CrossOriginGetOwnPropertyHelper</dfn> ( <var>O</var>, <var>P</var> )</h5>
+
+  <p class="note">If this abstract operation returns undefined and there is no custom behavior, the
+  caller needs to throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p>
+
+  <ol>
+   <li><p>If <var>P</var> is <span>@@toStringTag</span>, <span>@@hasInstance</span>, or
+   <span>@@isConcatSpreadable</span>, then return <span>PropertyDescriptor</span>{
+   [[Value]]: undefined,
+   [[Writable]]: false,
+   [[Enumerable]]: false,
+   [[Configurable]]: true }.</p></li>
+
+   <li><p>Let <var>crossOriginKey</var> be a tuple consisting of the <span>current settings
+   object</span>, <var>O</var>'s <span>relevant settings object</span>, and <var>P</var>.</p></li>
+
+   <li>
+    <p>Repeat for each <var>e</var> that is an element of
+    <span>CrossOriginProperties</span>(<var>O</var>):</p>
+
+    <ol>
+     <li>
+      <p>If <span>SameValue</span>(<var>e</var>.[[Property]], <var>P</var>) is true, then:</p>
+
+      <ol>
+       <li><p>If the value of the [[<span>CrossOriginPropertyDescriptorMap</span>]] internal slot of
+       <var>O</var> contains an entry whose key is <var>crossOriginKey</var>, then return that
+       entry's value.</p></li>
+
+       <li><p>Let <var>originalDesc</var> be <span>OrdinaryGetOwnProperty</span>(<var>O</var>,
+       <var>P</var>).</p></li>
+
+       <li><p>Let <var>crossOriginDesc</var> be undefined.</p></li>
+
+       <li>
+        <p>If <var>e</var>.[[NeedsGet]] and <var>e</var>.[[NeedsSet]] are absent, then:</p>
+
+        <ol>
+         <li><p>Let <var>value</var> be <var>originalDesc</var>.[[Value]].</p></li>
+
+         <li><p>If <span>IsCallable</span>(<var>value</var>) is true, then set <var>value</var> to
+         an anonymous built-in function, created in the <span>current Realm Record</span>, that
+         performs the same steps as the IDL operation <var>P</var> on object <var>O</var>.</p></li>
+
+         <li><p>Set <var>crossOriginDesc</var> to <span>PropertyDescriptor</span>{
+         [[Value]]: <var>value</var>,
+         [[Enumerable]]: false,
+         [[Writable]]: false,
+         [[Configurable]]: true }.</p></li>
+        </ol>
+       </li>
+
+       <li>
+        <p>Otherwise:</p>
+
+        <ol>
+         <li><p>Let <var>crossOriginGet</var> be undefined.</p></li>
+
+         <li><p>If <var>e</var>.[[NeedsGet]] is true, then set <var>crossOriginGet</var> to an
+         anonymous built-in function, created in the <span>current Realm Record</span>, that
+         performs the same steps as the getter of the IDL attribute <var>P</var> on object
+         <var>O</var>.</p></li>
+
+         <li><p>Let <var>crossOriginSet</var> be undefined.</p></li>
+
+         <li><p>If <var>e</var>.[[NeedsSet]] is true, then set <var>crossOriginSet</var> to an
+         anonymous built-in function, created in the <span>current Realm Record</span>, that
+         performs the same steps as the setter of the IDL attribute <var>P</var> on object
+         <var>O</var>.</p></li>
+
+         <li><p>Set <var>crossOriginDesc</var> to <span>PropertyDescriptor</span>{
+         [[Get]]: <var>crossOriginGet</var>,
+         [[Set]]: <var>crossOriginSet</var>,
+         [[Enumerable]]: false,
+         [[Configurable]]: true }.</p></li>
+        </ol>
+       </li>
+
+       <li><p>Create an entry in the value of the [[<span>CrossOriginPropertyDescriptorMap</span>]]
+       internal slot of <var>O</var> with key <var>crossOriginKey</var> and value
+       <var>crossOriginDesc</var>.</p></li>
+
+       <li><p>Return <var>crossOriginDesc</var>.</p></li>
+      </ol>
+     </li>
+    </ol>
+   </li>
+
+   <li><p>Return undefined.</p></li>
+  </ol>
+
+  <p class="note">The reason that the property descriptors produced here are configurable is to
+  preserve the <span>invariants of the essential internal methods</span> required by the JavaScript
+  specification. In particular, since the value of the property can change as a consequence of
+  navigation, it is required that the property be configurable. (However, see <a
+  href="https://github.com/tc39/ecma262/issues/672">tc39/ecma262 issue #672</a> and references to it
+  elsewhere in this specification for cases where we are not able to preserve these invariants, for
+  compatibility with existing Web content.) <ref spec=JAVASCRIPT></p>
+
+  

@@ -1,0 +1,27 @@
+<h4><dfn>Cloneable objects</dfn></h4>
+
+  <p><span>Cloneable objects</span> support being cloned across <span data-x="event loop">event
+  loops</span>. That is, they support being cloned across document and worker boundaries, including
+  across documents of different <span data-x="origin">origins</span>. Not all objects are
+  <span>cloneable objects</span> and not all aspects of objects that are <span>cloneable
+  objects</span> are necessarily preserved when cloned.</p>
+
+  <p><span data-x="platform object">Platform objects</span> have the following internal method:</p>
+
+  <p>[[<dfn>Clone</dfn>]] ( <var>targetRealm</var>, <var>memory</var> )</p>
+  <!-- For /deepClone/ support /memory/ would need to be changed as per StructuredClone or we would
+       need to add a [[DeepClone]] abstract operation. -->
+
+  <p>Unless specified otherwise, invoking the [[<span>Clone</span>]] internal method must throw a
+  <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>. (By default, <span
+  data-x="platform object">platform objects</span> are not <span>cloneable objects</span>.)</p>
+
+  <p><span data-x="platform object">Platform objects</span> that are <span>cloneable objects</span>
+  have a [[<span>Clone</span>]] internal method which is specified to run a series of steps. The
+  result of running those steps must be a thrown exception or a clone of <b>this</b>, created in
+  <var>targetRealm</var>. It is up such objects to define what cloning means for them.</p>
+
+  <p>Objects defined in the JavaScript specification are handled by the <span>StructuredClone</span>
+  abstract operation directly.</p>
+
+  

@@ -1,0 +1,86 @@
+<h5>Yearless dates</h5>
+
+  <p>A <dfn data-x="concept-yearless-date">yearless date</dfn> consists of a Gregorian month and a
+  day within that month, but with no associated year. <ref spec=GREGORIAN></p>
+
+  <p>A string is a <dfn>valid yearless date string</dfn> representing a month <var>month</var> and a day <var>day</var> if it consists of the following components
+  in the given order:</p>
+
+  <ol>
+
+   <li>Optionally, two U+002D HYPHEN-MINUS characters (-)</li>
+
+   <li>Two <span>ASCII digits</span>, representing the month <var>month</var>, in the range
+   1&nbsp;&le;&nbsp;<var>month</var>&nbsp;&le;&nbsp;12</li>
+
+   <li>A U+002D HYPHEN-MINUS character (-)</li>
+
+   <li>Two <span>ASCII digits</span>, representing <var>day</var>, in the range
+   1&nbsp;&le;&nbsp;<var>day</var>&nbsp;&le;&nbsp;<var>maxday</var> where <var>maxday</var> is the <span data-x="number of days in month month of year year">number of
+   days</span> in the month <var>month</var> and any arbitrary leap year (e.g. 4 or
+   2000)</li>
+
+  </ol>
+
+  <p class="note">In other words, if the <var>month</var> is "<code data-x="">02</code>",
+  meaning February, then the day can be 29, as if the year was a leap year.</p>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a yearless date string</dfn> are as follows. This will return either a
+  month and a day, or nothing. If at any point the algorithm says that it "fails", this means that
+  it is aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Parse a yearless date component</span> to obtain <var>month</var> and <var>day</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Return <var>month</var> and <var>day</var>.</p></li>
+
+  </ol>
+
+  <p>The rules to <dfn>parse a yearless date component</dfn>, given an <var>input</var>
+  string and a <var>position</var>, are as follows. This will return either a month and a
+  day, or nothing. If at any point the algorithm says that it "fails", this means that it is aborted
+  at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p><span>Collect a sequence of characters</span> that are U+002D HYPHEN-MINUS characters (-).
+   If the collected sequence is not exactly zero or two characters long, then fail.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not exactly two characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>month</var>.</p></li>
+
+   <li><p>If <var>month</var> is not a number in the range 1&nbsp;&le;&nbsp;<var>month</var>&nbsp;&le;&nbsp;12, then fail.</p></li>
+
+   <li><p>Let <var>maxday</var> be the <span data-x="number of days in month month of year
+   year">number of days</span> in month <var>month</var> of any arbitrary leap year (e.g. 4
+   or 2000).</p></li>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is not a U+002D HYPHEN-MINUS character, then fail.
+   Otherwise, move <var>position</var> forwards one character.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not exactly two characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>day</var>.</p></li>
+
+   <li><p>If <var>day</var> is not a number in the range 1&nbsp;&le;&nbsp;<var>day</var>&nbsp;&le;&nbsp;<var>maxday</var>, then fail.</li>
+
+   <li><p>Return <var>month</var> and <var>day</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

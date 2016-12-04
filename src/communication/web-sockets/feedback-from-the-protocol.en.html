@@ -1,0 +1,193 @@
+<h4>Feedback from the protocol</h4>
+
+  <p>When <i data-x="concept-websocket-established">the WebSocket connection is established</i>, the
+  user agent must <span>queue a task</span> to run these steps:</p>
+
+  <ol>
+
+   <li><p>Change the <code data-x="dom-WebSocket-readyState">readyState</code> attribute's value to
+   <code data-x="dom-WebSocket-OPEN">OPEN</code> (1).</p></li>
+
+   <li><p>Change the <code data-x="dom-WebSocket-extensions">extensions</code> attribute's value to
+   the <i data-x="concept-websockets-active-extensions">extensions in use</i>, if is not the null
+   value. <ref spec=WSP></p></li>
+
+   <li><p>Change the <code data-x="dom-WebSocket-protocol">protocol</code> attribute's value to the
+   <i data-x="concept-websocket-subprotocol">subprotocol in use</i>, if is not the null value. <ref
+   spec=WSP></p></li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-open">open</code> at the <code>WebSocket</code> object.</p>
+
+  </ol>
+
+  <p class="note">Since the algorithm above is <span data-x="queue a task">queued as a task</span>,
+  there is no race condition between <i data-x="concept-websocket-established">the WebSocket
+  connection being established</i> and the script setting up an event listener for the <code
+  data-x="event-open">open</code> event.</p>
+
+  <hr>
+
+  <p>When <i data-x="concept-websocket-message-received">a WebSocket message has been received</i>
+  with type <var>type</var> and data <var>data</var>, the user agent must <span>queue a task</span>
+  to follow these steps: <ref spec=WSP></p>
+
+  <ol>
+
+   <li>
+
+    <p>If the <code data-x="dom-WebSocket-readyState">readyState</code> attribute's value is not
+    <code data-x="dom-WebSocket-OPEN">OPEN</code> (1), then abort these steps.</p>
+
+   </li>
+
+   <li>
+    <p>Let <var>dataForEvent</var> be determined by switching on <var>type</var> and <code
+    data-x="dom-WebSocket-binaryType">binaryType</code>:</p>
+
+    <dl class="switch">
+     <dt><var>type</var> indicates that the data is Text</dt>
+     <dd>a new <code data-x="idl-DOMSTring">DOMString</code> containing <var>data</var></dd>
+
+     <dt><var>type</var> indicates that the data is Binary and <code
+     data-x="dom-WebSocket-binaryType">binaryType</code> is "<code
+     data-x="dom-BinaryType-blob">blob</code>"</dt>
+     <dd>a new <code>Blob</code> object, created in the <span
+     data-x="concept-relevant-realm">relevant Realm</span> of the <code>WebSocket</code> object,
+     that represents <var>data</var> as its raw data <ref spec=FILEAPI></dd>
+
+     <dt><var>type</var> indicates that the data is Binary and <code
+     data-x="dom-WebSocket-binaryType">binaryType</code> is "<code
+     data-x="dom-BinaryType-arraybuffer">arraybuffer</code>"</dt>
+     <dd>a new <code data-x="idl-ArrayBuffer">ArrayBuffer</code> object, created in the <span
+     data-x="concept-relevant-realm">relevant Realm</span> of the <code>WebSocket</code> object,
+     whose contents are <var>data</var></dd>
+    </dl>
+   </li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-message">message</code> at the <code>WebSocket</code> object, using
+   <code>MessageEvent</code>, with the <code data-x="dom-MessageEvent-origin">origin</code>
+   attribute initialized to the <span data-x="Unicode serialization of an origin">Unicode
+   serialization</span> of the <code>WebSocket</code> object's <span
+   data-x="concept-websocket-url">url</span>'s <span data-x="concept-url-origin">origin</span>, and
+   the <code data-x="dom-MessageEvent-data">data</code> attribute initialized to
+   <var>dataForEvent</var>.</p></li>
+
+  </ol>
+
+  <p class="note">User agents are encouraged to check if they can perform the above steps
+  efficiently before they run the task, picking tasks from other <span data-x="task queue">task
+  queues</span> while they prepare the buffers if not. For example, if the <code
+  data-x="dom-WebSocket-binaryType">binaryType</code> attribute was set to "<code
+  data-x="dom-BinaryType-blob">blob</code>" when the data arrived, and the user agent spooled all
+  the data to disk, but just before running the above <span data-x="concept-task">task</span> for
+  this particular message the script switched <code
+  data-x="dom-WebSocket-binaryType">binaryType</code> to "<code
+  data-x="dom-BinaryType-arraybuffer">arraybuffer</code>", the user agent would want to page the
+  data back to RAM before running this <span data-x="concept-task">task</span> so as to avoid
+  stalling the main thread while it created the <code data-x="idl-ArrayBuffer">ArrayBuffer</code>
+  object.</p>
+
+  <div class="example">
+
+   <p>Here is an example of how to define a handler for the <code
+   data-x="event-message">message</code> event in the case of text frames:</p>
+
+   <pre>mysocket.onmessage = function (event) {
+  if (event.data == 'on') {
+    turnLampOn();
+  } else if (event.data == 'off') {
+    turnLampOff();
+  }
+};</pre>
+
+   <p>The protocol here is a trivial one, with the server just sending "on" or "off" messages.</p>
+
+  </div>
+
+  <hr>
+
+  <p>When <i data-x="concept-websocket-closing-handshake">the WebSocket closing handshake is
+  started</i>, the user agent must <span>queue a task</span> to change the <code
+  data-x="dom-WebSocket-readyState">readyState</code> attribute's value to <code
+  data-x="dom-WebSocket-CLOSING">CLOSING</code> (2). (If the <code
+  data-x="dom-WebSocket-close">close()</code> method was called, the <code
+  data-x="dom-WebSocket-readyState">readyState</code> attribute's value will already be set to <code
+  data-x="dom-WebSocket-CLOSING">CLOSING</code> (2) when this task runs.) <ref spec=WSP></p>
+
+  <hr>
+
+  <p id="closeWebSocket">When <i data-x="concept-websocket-closed">the WebSocket connection is
+  closed</i>, possibly <i>cleanly</i>, the user agent must <span>queue a task</span> to run the
+  following substeps:</p>
+
+  <ol>
+
+   <li><p>Change the <code data-x="dom-WebSocket-readyState">readyState</code> attribute's value to
+   <code data-x="dom-WebSocket-CLOSED">CLOSED</code> (3).</p></li>
+
+   <li><p>If the user agent was required to <i data-x="concept-websocket-fail">fail the WebSocket
+   connection</i>, or if the <i data-x="concept-websocket-closed">the WebSocket connection was
+   closed</i> after being <dfn data-x="concept-websocket-close-fail">flagged as full</dfn>, <span
+   data-x="concept-event-fire">fire an event</span> named <code data-x="">error</code> at the
+   <code>WebSocket</code> object. <ref spec=WSP></p></li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-close">close</code> at the <code>WebSocket</code> object, using
+   <code>CloseEvent</code>, with the <code data-x="dom-CloseEvent-wasClean">wasClean</code>
+   attribute initialized to true if the connection closed <i>cleanly</i> and false otherwise, the
+   <code data-x="dom-CloseEvent-code">code</code> attribute initialized to <i
+   data-x="concept-websocket-close-code">the WebSocket connection close code</i>, and the <code
+   data-x="dom-CloseEvent-reason">reason</code> attribute initialized to the result of applying
+   <span>UTF-8 decode without BOM</span> to <i data-x="concept-websocket-close-reason">the WebSocket
+   connection close reason</i>. <ref spec=WSP></p></li>
+
+  </ol>
+
+  <div class="warning">
+
+   <p>User agents must not convey any failure information to scripts in a way that would allow a
+   script to distinguish the following situations:</p>
+
+   <ul>
+
+    <li>A server whose host name could not be resolved.
+
+    <li>A server to which packets could not successfully be routed.
+
+    <li>A server that refused the connection on the specified port.
+
+    <li>A server that failed to correctly perform a TLS handshake (e.g., the server certificate
+    can't be verified).
+
+    <li>A server that did not complete the opening handshake (e.g. because it was not a WebSocket
+    server).
+
+    <li>A WebSocket server that sent a correct opening handshake, but that specified options that
+    caused the client to drop the connection (e.g. the server specified a subprotocol that the
+    client did not offer).
+
+    <li>A WebSocket server that abruptly closed the connection after successfully completing the
+    opening handshake.
+
+   </ul>
+
+   <p>In all of these cases, the <i data-x="concept-websocket-close-code">the WebSocket connection close code</i> would be 1006, as
+   required by the WebSocket Protocol specification. <ref spec=WSP></p>
+
+   <p>Allowing a script to distinguish these cases would allow a script to probe the user's local
+   network in preparation for an attack.</p>
+
+   <p class="note">In particular, this means the code 1015 is not used by the user agent (unless the
+   server erroneously uses it in its close frame, of course).</p>
+
+  </div>
+
+  <hr>
+
+  <p>The <span>task source</span> for all <span data-x="concept-task">tasks</span> <span data-x="queue
+  a task">queued</span> in this section is the <dfn>WebSocket task source</dfn>.</p>
+
+
+  

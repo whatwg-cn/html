@@ -1,0 +1,57 @@
+<h5>Supporting offline caching for legacy applications</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The application cache feature works best if the application logic is separate from the
+  application and user data, with the logic (markup, scripts, style sheets, images, etc) listed in
+  the manifest and stored in the application cache, with a finite number of static HTML pages for
+  the application, and with the application and user data stored in Web Storage or a client-side
+  Indexed Database, updated dynamically using Web Sockets, <code>XMLHttpRequest</code>, server-sent
+  events, or some other similar mechanism.</p>
+
+  <p>This model results in a fast experience for the user: the application immediately loads, and
+  fresh data is obtained as fast as the network will allow it (possibly while stale data shows).</p>
+
+  <p>Legacy applications, however, tend to be designed so that the user data and the logic are mixed
+  together in the HTML, with each operation resulting in a new HTML page from the server.</p>
+
+  <div class="example">
+
+   <p>For example, consider a news application. The typical architecture of such an application,
+   when not using the application cache feature, is that the user fetches the main page, and the
+   server returns a dynamically-generated page with the current headlines and the user interface
+   logic mixed together.</p>
+
+   <p>A news application designed for the application cache feature, however, would instead have the
+   main page just consist of the logic, and would then have the main page fetch the data separately
+   from the server, e.g. using <code>XMLHttpRequest</code>.</p>
+
+  </div>
+
+  <p>The mixed-content model does not work well with the application cache feature: since the
+  content is cached, it would result in the user always seeing the stale data from the previous time
+  the cache was updated.</p>
+
+  <p>While there is no way to make the legacy model work as fast as the separated model, it
+  <em>can</em> at least be retrofitted for offline use using the <span
+  data-x="concept-appcache-mode-prefer-online">prefer-online</span> <span
+  data-x="concept-appcache-mode">application cache mode</span>. To do so, list all the static
+  resources used by the HTML page you want to have work offline in an <span
+  data-x="concept-appcache-manifest">application cache manifest</span>, use the <code
+  data-x="attr-html-manifest">manifest</code> attribute to select that manifest from the HTML file,
+  and then add the following line at the bottom of the manifest:</p>
+
+  <pre>SETTINGS:
+prefer-online
+NETWORK:
+*</pre>
+
+  <p>This causes the <span>application cache</span> to only be used for <span
+  data-x="concept-appcache-master">master entries</span> when the user is offline, and causes the
+  application cache to be used as an atomic HTTP cache (essentially pinning resources listed in the
+  manifest), while allowing all resources not listed in the manifest to be accessed normally when
+  the user is online.</p>
+
+
+
+  

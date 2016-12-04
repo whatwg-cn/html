@@ -1,0 +1,89 @@
+<h5>Weeks</h5>
+
+  <p>A <dfn data-x="concept-week">week</dfn> consists of a week-year number and a week number
+  representing a seven-day period starting on a Monday. Each week-year in this calendaring system
+  has either 52 or 53 such seven-day periods, as defined below. The seven-day period starting on the
+  Gregorian date Monday December 29th 1969 (1969-12-29) is defined as week number 1 in week-year
+  1970. Consecutive weeks are numbered sequentially. The week before the number 1 week in a
+  week-year is the last week in the previous week-year, and vice versa. <ref spec=GREGORIAN></p>
+
+  <p>A week-year with a number <var>year</var> has 53 weeks if it corresponds to either a
+  year <var>year</var> in the <span>proleptic Gregorian calendar</span> that has a Thursday
+  as its first day (January 1st), or a year <var>year</var> in the <span>proleptic
+  Gregorian calendar</span> that has a Wednesday as its first day (January 1st) and where <var>year</var> is a number divisible by 400, or a number divisible by 4 but not by 100. All
+  other week-years have 52 weeks.</p>
+
+  <p>The <dfn>week number of the last day</dfn> of a week-year with 53 weeks is 53; the week number
+  of the last day of a week-year with 52 weeks is 52.</p>
+
+  <p class="note">The week-year number of a particular day can be different than the number of the
+  year that contains that day in the <span>proleptic Gregorian calendar</span>. The first week in a
+  week-year <var>y</var> is the week that contains the first Thursday of the Gregorian year
+  <var>y</var>.</p>
+
+  <p class="note">For modern purposes, a <span data-x="concept-week">week</span> as defined here is
+  equivalent to ISO weeks as defined in ISO 8601. <ref spec=ISO8601></p>
+
+  <p>A string is a <dfn>valid week string</dfn> representing a week-year <var>year</var>
+  and week <var>week</var> if it consists of the following components in the given
+  order:</p>
+
+  <ol>
+
+   <li>Four or more <span>ASCII digits</span>, representing <var>year</var>, where <var>year</var>&nbsp;&gt;&nbsp;0</li>
+
+   <li>A U+002D HYPHEN-MINUS character (-)</li>
+
+   <li>A U+0057 LATIN CAPITAL LETTER W character (W)</li>
+
+   <li>Two <span>ASCII digits</span>, representing the week <var>week</var>, in the range
+   1&nbsp;&le;&nbsp;<var>week</var>&nbsp;&le;&nbsp;<var>maxweek</var>, where <var>maxweek</var> is the <span>week number of the last day</span> of week-year <var>year</var></li>
+
+  </ol>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a week string</dfn> are as follows. This will return either a week-year
+  number and week number, or nothing. If at any point the algorithm says that it "fails", this means
+  that it is aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not at least four characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>year</var>.</p></li>
+
+   <li><p>If <var>year</var> is not a number greater than zero, then fail.</p></li>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is not a U+002D HYPHEN-MINUS character, then fail.
+   Otherwise, move <var>position</var> forwards one character.</p></li>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is not a U+0057 LATIN CAPITAL LETTER W character (W),
+   then fail. Otherwise, move <var>position</var> forwards one character.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not exactly two characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>week</var>.</p></li>
+
+   <li><p>Let <var>maxweek</var> be the <span>week number of the last day</span> of year
+   <var>year</var>.</p></li>
+
+   <li><p>If <var>week</var> is not a number in the range 1&nbsp;&le;&nbsp;<var>week</var>&nbsp;&le;&nbsp;<var>maxweek</var>, then fail.</p></li>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Return the week-year number <var>year</var> and the week number <var>week</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

@@ -1,0 +1,121 @@
+<h5><dfn data-x="script content restrictions">Restrictions for contents of <code>script</code> elements</dfn></h5>
+
+  <p class="note">The easiest and safest way to avoid the rather strange restrictions described in
+  this section is to always escape "<code data-x="">&lt;!--</code>" as "<code
+  data-x="">&lt;\!--</code>", "<code data-x="">&lt;script</code>" as "<code
+  data-x="">&lt;\script</code>", and "<code data-x="">&lt;/script</code>" as "<code
+  data-x="">&lt;\/script</code>" when these sequences appear in literals in scripts (e.g. in
+  strings, regular expressions, or comments), and to avoid writing code that uses such constructs in
+  expressions. Doing so avoids the pitfalls that the restrictions in this section are prone to
+  triggering: namely, that, for historical reasons, parsing of <code>script</code> blocks in HTML is
+  a strange and exotic practice that acts unintuitively in the face of these sequences.</p>
+
+  <p>The <code>textContent</code> of a <code>script</code> element must match the <code
+  data-x="">script</code> production in the following ABNF, the character set for which is Unicode.
+  <ref spec=ABNF></p>
+
+  <pre>script        = outer *( comment-open inner comment-close outer )
+
+outer         = &lt; any string that doesn't contain a substring that matches not-in-outer >
+not-in-outer  = comment-open
+inner         = &lt; any string that doesn't contain a substring that matches not-in-inner >
+not-in-inner  = comment-close / script-open
+
+comment-open  = "&lt;!--"
+comment-close = "-->"
+script-open   = "&lt;" s c r i p t tag-end
+
+s             =  %x0053 ; U+0053 LATIN CAPITAL LETTER S
+s             =/ %x0073 ; U+0073 LATIN SMALL LETTER S
+c             =  %x0043 ; U+0043 LATIN CAPITAL LETTER C
+c             =/ %x0063 ; U+0063 LATIN SMALL LETTER C
+r             =  %x0052 ; U+0052 LATIN CAPITAL LETTER R
+r             =/ %x0072 ; U+0072 LATIN SMALL LETTER R
+i             =  %x0049 ; U+0049 LATIN CAPITAL LETTER I
+i             =/ %x0069 ; U+0069 LATIN SMALL LETTER I
+p             =  %x0050 ; U+0050 LATIN CAPITAL LETTER P
+p             =/ %x0070 ; U+0070 LATIN SMALL LETTER P
+t             =  %x0054 ; U+0054 LATIN CAPITAL LETTER T
+t             =/ %x0074 ; U+0074 LATIN SMALL LETTER T
+
+tag-end       =  %x0009 ; U+0009 CHARACTER TABULATION (tab)
+tag-end       =/ %x000A ; U+000A LINE FEED (LF)
+tag-end       =/ %x000C ; U+000C FORM FEED (FF)
+tag-end       =/ %x0020 ; U+0020 SPACE
+tag-end       =/ %x002F ; U+002F SOLIDUS (/)
+tag-end       =/ %x003E ; U+003E GREATER-THAN SIGN (&gt;)</pre>
+
+  <p>When a <code>script</code> element contains <span>script documentation</span>, there are
+  further restrictions on the contents of the element, as described in the section below.</p>
+
+  <div class="example">
+
+   <p>The following script illustrates this issue. Suppose you have a script that contains a string,
+   as in:</p>
+
+   <pre>var example = 'Consider this string: &lt;!-- &lt;script>';
+console.log(example);</pre>
+
+   <p>If one were to put this string directly in a <code>script</code> block, it would violate the
+   restrictions above:</p>
+
+   <pre>&lt;script>
+  var example = 'Consider this string: &lt;!-- &lt;script>';
+  console.log(example);
+&lt;/script></pre>
+
+   <p>The bigger problem, though, and the reason why it would violate those restrictions, is that
+   actually the script would get parsed weirdly: <em>the script block above is not terminated</em>.
+   That is, what looks like a "<code data-x="">&lt;/script></code>" end tag in this snippet is
+   actually still part of the <code>script</code> block. The script doesn't execute (since it's not
+   terminated); if it somehow were to execute, as it might if the markup looked as follows, it would
+   fail because the script (highlighted here) is not valid JavaScript:</p>
+
+   <pre>&lt;script><mark>
+  var example = 'Consider this string: &lt;!-- &lt;script>';
+  console.log(example);
+&lt;/script>
+&lt;!-- despite appearances, this is actually part of the script still! -->
+&lt;script>
+ ... // this is the same script block still...
+</mark>&lt;/script></pre>
+
+   <p>What is going on here is that for legacy reasons, "<code data-x="">&lt;!--</code>" and "<code
+   data-x="">&lt;script</code>" strings in <code>script</code> elements in HTML need to be balanced
+   in order for the parser to consider closing the block.</p>
+
+   <p>By escaping the problematic strings as mentioned at the top of this section, the problem is
+   avoided entirely:</p>
+
+   <pre>&lt;script><mark>
+  var example = 'Consider this string: &lt;\!-- &lt;\script>';
+  console.log(example);
+</mark>&lt;/script>
+&lt;!-- this is just a comment between script blocks -->
+&lt;script><mark>
+ ... // this is a new script block
+</mark>&lt;/script></pre>
+
+   <p>It is possible for these sequences to naturally occur in script expressions, as in the
+   following examples:</p>
+
+   <pre>if (x&lt;!--y) { ... }
+if ( player&lt;script ) { ... }</pre>
+
+   <p>In such cases the characters cannot be escaped, but the expressions can be rewritten so that
+   the sequences don't occur, as in:</p>
+
+   <pre>if (x &lt; !--y) { ... }
+if (!--y > x) { ... }
+if (!(--y) > x) { ... }
+if (player &lt; script) { ... }
+if (script > player) { ... }</pre>
+
+   <p>Doing this also avoids a different pitfall as well: for related historical reasons, the string
+   "&lt;!--" in <span data-x="classic script">classic scripts</span> is actually treated as a line
+   comment start, just like "//".</p>
+
+  </div>
+
+
+  

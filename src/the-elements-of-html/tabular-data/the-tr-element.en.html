@@ -1,0 +1,171 @@
+<h4>The <dfn><code>tr</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>thead</code> element.</dd>
+   <dd>As a child of a <code>tbody</code> element.</dd>
+   <dd>As a child of a <code>tfoot</code> element.</dd>
+   <dd>As a child of a <code>table</code> element, after any
+   <code>caption</code>, <code>colgroup</code>, and <code>thead</code>
+   elements, but only if there are no <code>tbody</code> elements that
+   are children of the <code>table</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Zero or more <code>td</code>, <code>th</code>, and <span data-x="script-supporting elements">script-supporting</span> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLTableRowElement</dfn> : <span>HTMLElement</span> {
+  readonly attribute long <span data-x="dom-tr-rowIndex">rowIndex</span>;
+  readonly attribute long <span data-x="dom-tr-sectionRowIndex">sectionRowIndex</span>;
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-tr-cells">cells</span>;
+  <span>HTMLElement</span> <span data-x="dom-tr-insertCell">insertCell</span>(optional long index = -1);
+  [<span>CEReactions</span>] void <span data-x="dom-tr-deleteCell">deleteCell</span>(long index);
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>tr</code> element <span>represents</span> a <span data-x="concept-row">row</span> of
+  <span data-x="concept-cell">cells</span> in a <span data-x="concept-table">table</span>.</p>
+
+  <div w-nodev>
+
+  <p>The <code>tr</code> element takes part in the <span>table model</span>.</p>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>tr</var> . <code subdfn data-x="dom-tr-rowIndex">rowIndex</code></dt>
+
+   <dd>
+
+    <p>Returns the position of the row in the table's <code data-x="dom-table-rows">rows</code>
+    list.</p>
+
+    <p>Returns &#x2212;1 if the element isn't in a table.</p>
+
+   </dd>
+
+   <dt><var>tr</var> . <code subdfn data-x="dom-tr-sectionRowIndex">sectionRowIndex</code></dt>
+
+   <dd>
+
+    <p>Returns the position of the row in the table section's <code
+    data-x="dom-tbody-rows">rows</code> list.</p>
+
+    <p>Returns &#x2212;1 if the element isn't in a table section.</p>
+
+   </dd>
+
+   <dt><var>tr</var> . <code subdfn data-x="dom-tr-cells">cells</code></dt>
+   <dd>
+
+    <p>Returns an <code>HTMLCollection</code> of the <code>td</code> and <code>th</code> elements of
+    the row.</p>
+
+   </dd>
+
+   <dt><var>cell</var> = <var>tr</var> . <code subdfn data-x="dom-tr-insertCell">insertCell</code>( [ <var>index</var> ] )</dt>
+
+   <dd>
+
+    <p>Creates a <code>td</code> element, inserts it into the table row at the position given by the
+    argument, and returns the <code>td</code>.</p>
+
+    <p>The position is relative to the cells in the row. The index &#x2212;1, which is the default
+    if the argument is omitted, is equivalent to inserting at the end of the row.</p>
+
+    <p>If the given position is less than &#x2212;1 or greater than the number of cells, throws an
+    <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>.</p>
+
+   </dd>
+
+   <dt><var>tr</var> . <code subdfn data-x="dom-tr-deleteCell">deleteCell</code>(<var>index</var>)</dt>
+   <dd>
+
+    <p>Removes the <code>td</code> or <code>th</code> element with the given position in the
+    row.</p>
+
+    <p>The position is relative to the cells in the row. The index &#x2212;1 is equivalent to
+    deleting the last cell of the row.</p>
+
+    <p>If the given position is less than &#x2212;1 or greater than the index of the last cell, or
+    if there are no cells, throws an <span>"<code>IndexSizeError</code>"</span>
+    <code>DOMException</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-tr-rowIndex">rowIndex</code></dfn> attribute must, if this element has
+  a parent <code>table</code> element, or a parent <code>tbody</code>, <code>thead</code>, or
+  <code>tfoot</code> element and a <em>grandparent</em> <code>table</code> element, return the index
+  of this <code>tr</code> element in that <code>table</code> element's <code
+  data-x="dom-table-rows">rows</code> collection. If there is no such <code>table</code> element,
+  then the attribute must return &#x2212;1.</p>
+
+  <p>The <dfn><code data-x="dom-tr-sectionRowIndex">sectionRowIndex</code></dfn> attribute must, if
+  this element has a parent <code>table</code>, <code>tbody</code>, <code>thead</code>, or
+  <code>tfoot</code> element, return the index of the <code>tr</code> element in the parent
+  element's <code data-x="">rows</code> collection (for tables, that's
+  <code>HTMLTableElement</code>'s <code data-x="dom-table-rows">rows</code> collection; for table
+  sections, that's <code>HTMLTableSectionElement</code>'s <code data-x="dom-tbody-rows">rows</code>
+  collection). If there is no such parent element, then the attribute must return &#x2212;1.</p>
+
+  <p>The <dfn><code data-x="dom-tr-cells">cells</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at this <code>tr</code> element, whose filter matches only
+  <code>td</code> and <code>th</code> elements that are children of the <code>tr</code> element.</p>
+
+  <p>The <dfn><code data-x="dom-tr-insertCell">insertCell(<var>index</var>)</code></dfn>
+  method must act as follows:</p>
+
+  <ol>
+   <li><p>If <var>index</var> is less than &#x2212;1 or greater than the number of elements in
+   the <code data-x="dom-tr-cells">cells</code> collection, then throw an
+   <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>table cell</var> be the result of <span data-x="create an element">creating an
+   element</span> given this <code>tr</code> element's <span>node document</span>, <code>td</code>,
+   and the <span>HTML namespace</span>.</p></li>
+
+   <li><p>If <var>index</var> is equal to &#x2212;1 or equal to the number of items in <code
+   data-x="dom-tr-cells">cells</code> collection, then <span
+   data-x="concept-node-append">append</span> <var>table cell</var> to this <code>tr</code>
+   element.</p></li>
+
+   <li><p>Otherwise, <span data-x="concept-node-insert">insert</span> <var>table cell</var> as a
+   child of this <code>tr</code> element, immediately before the <var>index</var>th <code>td</code>
+   or <code>th</code> element in the <code data-x="dom-tr-cells">cells</code> collection.</p></li>
+
+   <li><p>Return <var>table cell</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-tr-deleteCell">deleteCell(<var>index</var>)</code></dfn>
+  method must act as follows:</p>
+
+  <ol>
+   <li><p>If <var>index</var> is less than &#x2212;1 or greater than or equal to the number of
+   elements in the <code data-x="dom-tr-cells">cells</code> collection, then throw an
+   <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If <var>index</var> is &#x2212;1, then <span data-x="concept-node-remove">remove</span>
+   the last element in the <code data-x="dom-tr-cells">cells</code> collection from its
+   parent, or do nothing if the <code data-x="dom-tr-cells">cells</code> collection is
+   empty.</p></li>
+
+   <li><p>Otherwise, <span data-x="concept-node-remove">remove</span> the <var>index</var>th element
+   in the <code data-x="dom-tr-cells">cells</code> collection from its parent.</p></li>
+  </ol>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+  

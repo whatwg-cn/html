@@ -1,0 +1,46 @@
+<h5>Implicit submission</h5>
+
+  <p>A <code>form</code> element's <dfn>default button</dfn> is the first <span
+  data-x="concept-submit-button">submit button</span> in <span>tree order</span> whose <span>form
+  owner</span> is that <code>form</code> element.</p>
+
+  <p>If the user agent supports letting the user submit a form implicitly (for example, on some
+  platforms hitting the "enter" key while a text control is <span>focused</span> implicitly submits
+  the form), then doing so for a form, whose <span>default button</span> has <span>activation
+  behavior</span> and is not <span data-x="concept-fe-disabled">disabled</span>, must cause the user
+  agent to <span>fire a <code data-x="event-click">click</code> event</span> at that <span>default
+  button</span>.</p>
+
+  <p class="note">There are pages on the Web that are only usable if there is a way to implicitly
+  submit forms, so user agents are strongly encouraged to support this.</p>
+
+  <p><!-- For Web compatibility reasons caused by obscure historical accidents, -->If the form has
+  no <span data-x="concept-submit-button">submit button</span>, then the implicit submission
+  mechanism must do nothing if the form has more than one <i>field that blocks implicit
+  submission</i>, and must <span data-x="concept-form-submit">submit</span> the <code>form</code>
+  element from the <code>form</code> element itself otherwise.</p>
+
+  <p>For the purpose of the previous paragraph, an element is a <i>field that blocks implicit
+  submission</i> of a <code>form</code> element if it is an <code>input</code> element whose
+  <span>form owner</span> is that <code>form</code> element and whose <code
+  data-x="attr-input-type">type</code> attribute is in one of the following states:
+  <span data-x="attr-input-type-text">Text</span>,
+  <span data-x="attr-input-type-search">Search</span>,
+  <span data-x="attr-input-type-url">URL</span>,
+  <span data-x="attr-input-type-tel">Telephone</span>,
+  <span data-x="attr-input-type-email">E-mail</span>,
+  <span data-x="attr-input-type-password">Password</span>,
+  <span data-x="attr-input-type-date">Date</span>,
+  <span data-x="attr-input-type-month">Month</span>,
+  <span data-x="attr-input-type-week">Week</span>,
+  <span data-x="attr-input-type-time">Time</span>,
+  <span data-x="attr-input-type-datetime-local">Local Date and Time</span>,
+  <span data-x="attr-input-type-number">Number</span>
+  </p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

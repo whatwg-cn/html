@@ -1,0 +1,17 @@
+<h5><dfn>Script data escape start dash state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+002D HYPHEN-MINUS (-)</dt>
+   <dd>Switch to the <span>script data escaped dash dash state</span>. Emit a U+002D HYPHEN-MINUS
+   character token.</dd>
+
+   <dt>Anything else</dt>
+   <dd><span>Reconsume</span> in the <span>script data state</span>.</dd>
+
+  </dl>
+
+
+  

@@ -1,0 +1,43 @@
+<h6><dfn>Drawing model</dfn></h6>
+
+  <p>When a shape or image is painted, user agents must follow these steps, in the order given (or
+  act as if they do):</p>
+
+  <ol>
+
+   <li><p>Render the shape or image onto an infinite transparent black bitmap, creating image <var>A</var>, as described in the previous sections. For shapes, the current fill, stroke,
+   and line styles must be honored, and the stroke must itself also be subjected to the current
+   transformation matrix.</p></li>
+
+   <li><p>When the filter attribute is set to a value other than 'none' and all the
+   externally-defined filters it references, if any, are in documents that are currently loaded,
+   then use image <var>A</var> as the input to the <code
+   data-x="dom-context-2d-filter">filter</code>, creating image <var>B</var>. Otherwise, let
+   <var>B</var> be an alias for <var>A</var>.</p></li>
+
+   <li><p><span>When shadows are drawn</span>, render the shadow from image <var>B</var>,
+   using the current shadow styles, creating image <var>C</var>.</p></li>
+
+   <li><p><span>When shadows are drawn</span>, multiply the alpha component of every pixel in <var>C</var> by <code data-x="dom-context-2d-globalAlpha">globalAlpha</code>.</p></li>
+
+   <li><p><span>When shadows are drawn</span>, composite <var>C</var> within the
+   <span>clipping region</span> over the current <span>output bitmap</span> using the <span>current
+   composition operator</span>.</p></li>
+
+   <li><p>Multiply the alpha component of every pixel in <var>B</var> by <code
+   data-x="dom-context-2d-globalAlpha">globalAlpha</code>.</p></li>
+
+   <li><p>Composite <var>B</var> within the <span>clipping region</span> over the current
+   <span>output bitmap</span> using the <span>current composition operator</span>.</p></li>
+
+  </ol>
+
+  <p>When compositing onto the <span>output bitmap</span>, pixels that would fall outside of the
+  <span>output bitmap</span> must be discarded.</p>
+
+  </div>
+
+
+
+
+  

@@ -1,0 +1,31 @@
+<h5>Naming form controls: the <code data-x="attr-fe-name">name</code> attribute</h5>
+
+  <p>The <dfn><code data-x="attr-fe-name">name</code></dfn> content attribute gives the name of the
+  form control, as used in <span>form submission</span> and in the <code>form</code> element's <code
+  data-x="dom-form-elements">elements</code> object. If the attribute is specified, its value must
+  not be the empty string or <code data-x="">isindex</code>.</p>
+
+  <p class="note">A number of user agents historically implemented special support for first-in-form
+  text controls with the name <code data-x="">isindex</code>, and this specification previously
+  defined related user agent requirements for it. However, some user agents subsequently dropped
+  that special support, and the related requirements were removed from this specification. So, to
+  avoid problematic reinterpretations in legacy user agents, the name <code data-x="">isindex</code>
+  is no longer allowed.</p>
+
+  <p>Other than <code data-x="">isindex</code>, any non-empty value for <code
+  data-x="attr-form-name">name</code> is allowed. The name <dfn><code
+  data-x="attr-fe-name-charset">_charset_</code></dfn> is special: If used as the name of a <span
+  data-x="attr-input-type-hidden">Hidden</span> control with no <code
+  data-x="attr-input-value">value</code> attribute, then during submission the <code
+  data-x="attr-input-value">value</code> attribute is automatically given a value consisting of the
+  submission character encoding.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-fe-name">name</code></dfn> IDL attribute must <span>reflect</span>
+  the <code data-x="attr-fe-name">name</code> content attribute.</p>
+
+  </div>
+
+
+  

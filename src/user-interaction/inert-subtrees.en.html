@@ -1,0 +1,46 @@
+<h3>Inert subtrees</h3>
+
+  <p class="note">This section <strong>does not</strong> define or create any content attribute
+  named "inert". This section merely defines an abstract <em>concept</em> of
+  <span data-x="inert">inertness</span>.</p>
+
+  <p>A node (in particular elements and text nodes) can be marked as <dfn>inert</dfn>. When a node
+  is <span>inert</span>, then the user agent must act as if the node was absent for the purposes of
+  targeting user interaction events, may ignore the node for the purposes of text search user
+  interfaces (commonly known as "find in page"), and may prevent the user from selecting text in
+  that node. User agents should allow the user to override the restrictions on search and text
+  selection, however.</p>
+
+  <p class="example">For example, consider a page that consists of just a single <span>inert</span>
+  paragraph positioned in the middle of a <code>body</code>. If a user moves their pointing device
+  from the <code>body</code> over to the <span>inert</span> paragraph and clicks on the paragraph,
+  no <code data-x="event-mouseover">mouseover</code> event would be fired, and the <code
+  data-x="event-mousemove">mousemove</code> and <code data-x="event-click">click</code> events would
+  be fired on the <code>body</code> element rather than the paragraph.</p>
+
+  <p class="note">When a node is inert, it generally cannot be focused. Inert nodes that are <span
+  data-x="concept-command">commands</span> will also get disabled.</p>
+
+  <p>While a <span>browsing context container</span> is marked as <span>inert</span>, its
+  <span>nested browsing context</span>'s <span>active document</span>, and all nodes in that
+  <code>Document</code>, must be marked as <span>inert</span>.</p>
+
+  <p>An entire <code>Document</code> can be marked as <dfn>blocked by a modal dialog</dfn>
+  <var>subject</var>. While a <code>Document</code> is so marked, every node that is <span
+  data-x="in a document">in the <code>Document</code></span>, with the exception of the
+  <var>subject</var> element and its descendants, must be marked <span>inert</span>. (The elements
+  excepted by this paragraph can additionally be marked <span>inert</span> through other means;
+  being part of a modal dialog does not "protect" a node from being marked <span>inert</span>.)</p>
+
+  <p>Only one element at a time can mark a <code>Document</code> as being <span>blocked by a modal
+  dialog</span>. When a new <code>dialog</code> is made to <span data-x="blocked by a modal
+  dialog">block</span> a <code>Document</code>, the previous element, if any, stops blocking the
+  <code>Document</code>.</p>
+
+  <p class="note">The <code>dialog</code> element's <code
+  data-x="dom-dialog-showModal">showModal()</code> method makes use of this mechanism.</p>
+
+
+
+
+  

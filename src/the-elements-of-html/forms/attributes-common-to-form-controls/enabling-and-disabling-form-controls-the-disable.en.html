@@ -1,0 +1,38 @@
+<h5>Enabling and disabling form controls: the <code data-x="attr-fe-disabled">disabled</code> attribute</h5>
+
+  <p>The <dfn><code data-x="attr-fe-disabled">disabled</code></dfn> content attribute is a
+  <span>boolean attribute</span>.</p>
+
+  <p>A form control is <dfn data-x="concept-fe-disabled">disabled</dfn> if any of the following
+  conditions are met:</p>
+
+  <ol>
+
+   <li>The element is a <code>button</code>, <code>input</code>, <code>select</code>, or
+   <code>textarea</code> element, and the <code data-x="attr-fe-disabled">disabled</code> attribute
+   is specified on this element (regardless of its value).</li>
+
+   <li>The element is a descendant of a <code>fieldset</code> element whose <code
+   data-x="attr-fieldset-disabled">disabled</code> attribute is specified, and is <em>not</em> a
+   descendant of that <code>fieldset</code> element's first <code>legend</code> element child, if
+   any.</li>
+
+  </ol>
+
+  <div w-nodev>
+
+  <p>A form control that is <span data-x="concept-fe-disabled">disabled</span> must prevent any <code
+  data-x="event-click">click</code> events that are <span data-x="queue a task">queued</span> on the
+  <span>user interaction task source</span> from being dispatched on the element.</p>
+
+  <p><strong>Constraint validation</strong>: If an element is <span
+  data-x="concept-fe-disabled">disabled</span>, it is <span>barred from constraint
+  validation</span>.</p>
+
+  <p>The <dfn><code data-x="dom-fe-disabled">disabled</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-fe-disabled">disabled</code> content attribute.</p>
+
+  </div>
+
+
+  

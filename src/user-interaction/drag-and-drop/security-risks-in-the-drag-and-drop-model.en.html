@@ -1,0 +1,41 @@
+<h4>Security risks in the drag-and-drop model</h4>
+
+  <p>User agents must not make the data added to the <code>DataTransfer</code> object during the
+  <code data-x="event-dnd-dragstart">dragstart</code> event available to scripts until the <code
+  data-x="event-dnd-drop">drop</code> event, because otherwise, if a user were to drag sensitive
+  information from one document to a second document, crossing a hostile third document in the
+  process, the hostile document could intercept the data.</p>
+
+  <p>For the same reason, user agents must consider a drop to be successful only if the user
+  specifically ended the drag operation &mdash; if any scripts end the drag operation, it must be
+  considered unsuccessful (canceled) and the <code data-x="event-dnd-drop">drop</code> event must not be
+  fired.</p>
+
+  <p>User agents should take care to not start drag-and-drop operations in response to script
+  actions. For example, in a mouse-and-window environment, if a script moves a window while the user
+  has their mouse button depressed, the UA would not consider that to start a drag. This is important
+  because otherwise UAs could cause data to be dragged from sensitive sources and dropped into
+  hostile documents without the user's consent.</p>
+
+  <p>User agents should filter potentially active (scripted) content (e.g. HTML) when it is dragged
+  and when it is dropped, using a safelist of known-safe features. Similarly, <span data-x="relative
+  URL">relative URLs</span> should be turned into absolute URLs to avoid references changing in
+  unexpected ways. This specification does not specify how this is performed.</p>
+
+  <div class="example">
+
+   <p>Consider a hostile page providing some content and getting the user to select and drag and
+   drop (or indeed, copy and paste) that content to a victim page's <code
+   data-x="attr-contenteditable">contenteditable</code> region. If the browser does not ensure that
+   only safe content is dragged, potentially unsafe content such as scripts and event handlers in
+   the selection, once dropped (or pasted) into the victim site, get the privileges of the victim
+   site. This would thus enable a cross-site scripting attack.</p>
+
+  </div>
+
+  </div>
+<!--REMOVE-TOPIC:Security-->
+
+
+
+  

@@ -1,0 +1,45 @@
+<h5>Shared state using a shared worker</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>In this example, multiple windows (viewers) can be opened that are all viewing the same map.
+  All the windows share the same map information, with a single worker coordinating all the viewers.
+  Each viewer can move around independently, but if they set any data on the map, all the viewers
+  are updated.</p>
+
+  <p>The main page isn't interesting, it merely provides a way to open the viewers:</p>
+
+  <pre>EXAMPLE workers/multiviewer/page.html</pre>
+
+  <p>The viewer is more involved:</p>
+
+  <pre>EXAMPLE workers/multiviewer/viewer.html</pre>
+
+  <p>There are several key things worth noting about the way the viewer is written.</p>
+
+  <p><strong>Multiple listeners</strong>. Instead of a single message processing function, the code
+  here attaches multiple event listeners, each one performing a quick check to see if it is relevant
+  for the message. In this example it doesn't make much difference, but if multiple authors wanted
+  to collaborate using a single port to communicate with a worker, it would allow for independent
+  code instead of changes having to all be made to a single event handling function.</p>
+
+  <p>Registering event listeners in this way also allows you to unregister specific listeners when
+  you are done with them, as is done with the <code data-x="">configure()</code> method in this
+  example.</p>
+
+  <p>Finally, the worker:</p>
+
+  <pre>EXAMPLE workers/multiviewer/worker.js</pre>
+
+  <p><strong>Connecting to multiple pages</strong>. The script uses the <code
+  data-x="handler-SharedWorkerGlobalScope-onconnect">onconnect</code> event listener to listen for
+  multiple connections.</p>
+
+  <p><strong>Direct channels</strong>. When the worker receives a "msg" message from one viewer
+  naming another viewer, it sets up a direct connection between the two, so that the two viewers can
+  communicate directly without the worker having to proxy all the messages.</p>
+
+  <p><a href="/demos/workers/multiviewer/page.html">View this example online</a>.</p>
+
+
+  

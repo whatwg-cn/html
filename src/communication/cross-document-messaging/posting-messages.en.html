@@ -1,0 +1,117 @@
+<h4>Posting messages</h4>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-postMessage">postMessage</code>(<var>message</var>, <var>targetOrigin</var> [, <var>transfer</var> ] )</dt>
+
+   <dd>
+
+    <p>Posts a message to the given window. Messages can be structured objects, e.g. nested objects
+    and arrays, can contain JavaScript values (strings, numbers, <code>Date</code>
+    objects, etc), and can contain certain data objects such as <code>File</code> <code>Blob</code>,
+    <code>FileList</code>, and <code data-x="idl-ArrayBuffer">ArrayBuffer</code> objects.</p>
+
+    <p>Objects listed in <var>transfer</var> are transferred, not just cloned, meaning that
+    they are no longer usable on the sending side.</p>
+
+    <p>If the origin of the target window doesn't match the given origin, the message is discarded,
+    to avoid information leakage. To send the message to the target regardless of origin, set the
+    target origin to "<code data-x="">*</code>". To restrict the message to same-origin targets only,
+    without needing to explicitly state the origin, set the target origin to "<code
+    data-x="">/</code>".</p>
+
+    <p>Throws a <span>"<code>DataCloneError</code>"</span> <code>DOMException</code> if
+    <var>transfer</var> array contains duplicate objects or if <var>message</var> could not be
+    cloned.</p>
+
+   </dd>
+
+  </dl>
+
+  <p class="note">When posting a message to a <code>Window</code> of a <span>browsing context</span>
+  that has just been navigated to a new <code>Document</code> is likely to result in the message not
+  receiving its intended recipient: the scripts in the target <span>browsing context</span> have to
+  have had time to set up listeners for the messages. Thus, for instance, in situations where a
+  message is to be sent to the <code>Window</code> of newly created child <code>iframe</code>,
+  authors are advised to have the child <code>Document</code> post a message to their parent
+  announcing their readiness to receive messages, and for the parent to wait for this message before
+  beginning posting messages.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-window-postMessage">postMessage(<var>message</var>,
+  <var>targetOrigin</var>, <var>transfer</var>)</code></dfn> method, when invoked on a
+  <code>Window</code> object must run the following steps:</p>
+
+  <ol> <!-- a lot of this is similar or identical to port.postMessage -->
+
+   <li><p>Let <var>targetWindow</var> be this <code>Window</code> object.</p>
+
+   <li><p>Let <var>targetRealm</var> be <var>targetWindow</var>'s <span
+   data-x="concept-global-object-realm">Realm</span>.</p></li>
+
+   <li><p>Let <var>incumbentSettings</var> be the <span>incumbent settings object</span>.</p></li>
+   <!-- This is one of the few cases where incumbent is probably the right choice. Current or
+   relevant would mean that the MessageEvent's source property always points to the "calling"
+   window, in same-origin cases. See discussion at
+   https://github.com/whatwg/html/issues/1542#issuecomment-233502636 -->
+
+   <li><p>If <var>targetOrigin</var> is a single U+002F SOLIDUS character (/), then set
+   <var>targetOrigin</var> to <var>incumbentSettings</var>'s <span
+   data-x="concept-settings-object-origin">origin</span>.</p>
+
+   <li>
+    <p>Otherwise, if <var>targetOrigin</var> is not a single U+002A ASTERISK character (*),
+    then:</p>
+
+    <ol>
+     <li><p>Let <var>parsedURL</var> be the result of running the <span>URL parser</span> on
+     <var>targetOrigin</var>.</p></li>
+
+     <li><p>If <var>parsedURL</var> is failure, then throw a <span>"<code>SyntaxError</code>"</span>
+     <code>DOMException</code>.</p></li>
+
+     <li><p>Set <var>targetOrigin</var> to <var>parsedURL</var>'s <span
+     data-x="concept-url-origin">origin</span>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Let <var>cloneRecord</var> be <span>StructuredCloneWithTransfer</span>(<var>message</var>,
+   <var>transfer</var>, <var>targetRealm</var>). Rethrow any exceptions.</p></li>
+
+   <li><p>Let <var>messageClone</var> be <var>cloneRecord</var>.[[Clone]].</p></li>
+
+   <li><p>Let <var>newPorts</var> be a new <span>frozen array</span> consisting of all
+   <code>MessagePort</code> objects in <var>cloneRecord</var>.[[TransferList]], if any, maintaining
+   their relative order.</p></li>
+
+   <li><p>Return, but continue running these steps in <span>in parallel</span>.</p></li>
+
+   <li><p>If the <var>targetOrigin</var> argument is not a single literal U+002A ASTERISK character
+   (*) and <var>targetWindow</var>'s <span data-x="concept-document-window">associated
+   <code>Document</code></span>'s <span>origin</span> is not <span>same origin</span> with
+   <var>targetOrigin</var>, then abort these steps.</p></li>
+
+   <li><p><span>Queue a task</span> on the <span>posted message task source</span> to <span
+   data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-message">message</code> at <var>targetWindow</var>, using
+   <code>MessageEvent</code>, with the <code data-x="dom-MessageEvent-data">data</code> attribute
+   initialized to <var>messageClone</var>, the <code data-x="dom-MessageEvent-origin">origin</code>
+   attribute initialized to the <span data-x="Unicode serialization of an origin">Unicode
+   serialization</span> of <var>incumbentSettings</var>'s <span
+   data-x="concept-settings-object-origin">origin</span>, the <code
+   data-x="dom-MessageEvent-source">source</code> attribute initialized to the
+   <code>WindowProxy</code> object's corresponding <var>incumbentSettings</var>'s <span
+   data-x="concept-settings-object-global">global object</span> (a <code>Window</code> object), and
+   the <code data-x="dom-MessageEvent-ports">ports</code> attribute initialized to
+   <var>newPorts</var>.</p></li> <!-- invariant: the global object is always a Window if the
+   script can see this method -->
+
+  </ol>
+
+  </div>
+
+
+
+
+  

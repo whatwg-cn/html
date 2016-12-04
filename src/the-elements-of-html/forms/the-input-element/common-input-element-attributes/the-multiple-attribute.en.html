@@ -1,0 +1,59 @@
+<h6>The <code data-x="attr-input-multiple">multiple</code> attribute</h6>
+
+  <p>The <dfn><code data-x="attr-input-multiple">multiple</code></dfn> attribute is a <span>boolean
+  attribute</span> that indicates whether the user is to be allowed to specify more than one
+  value.</p>
+
+  <div class="example">
+
+   <p>The following extract shows how an e-mail client's "To" field could accept multiple e-mail
+   addresses.</p>
+
+   <pre>&lt;label>To: &lt;input type=email multiple name=to>&lt;/label></pre>
+
+   <p>If the user had, amongst many friends in their user contacts database, two friends
+   "Spider-Man" (with address "spider@parker.example.net") and "Scarlet Witch" (with address
+   "scarlet@avengers.example.net"), then, after the user has typed "<kbd>s</kbd>", the user agent
+   might suggest these two e-mail addresses to the user.</p>
+
+   <!-- Having alternative text in the following image would be bogus and non-conforming use of
+   HTML, since the image is redundant with the previous paragraph. In particular, just describing
+   the image would be especially bad for accessibility as it would be disorienting, there having
+   been no mention that an image is present. -->
+   <p><img src="/images/sample-email-1.svg" width="330" height="100" alt=""></p>
+
+   <p>The page could also link in the user's contacts database from the site:</p>
+
+   <pre>&lt;label>To: &lt;input type=email multiple name=to list=contacts>&lt;/label>
+...
+&lt;datalist id="contacts">
+ &lt;option value="hedral@damowmow.com">
+ &lt;option value="pillar@example.com">
+ &lt;option value="astrophy@cute.example">
+ &lt;option value="astronomy@science.example.org">
+&lt;/datalist></pre>
+
+   <p>Suppose the user had entered "<kbd>bob@example.net</kbd>" into this text control, and then
+   started typing a second e-mail address starting with "<kbd>s</kbd>". The user agent might show
+   both the two friends mentioned earlier, as well as the "astrophy" and "astronomy" values given in
+   the <code>datalist</code> element.</p>
+
+   <!-- As above, having a non-empty alt="" attribute on the following image would be dumb, which is
+   why it's left blank. The pertinent parts of the image are already described in the prose, and the
+   non-pertinent parts aren't relevant to users who can't see the image, obviously. -->
+   <p><img src="/images/sample-email-2.svg" width="330" height="140" alt=""></p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following extract shows how an e-mail client's "Attachments" field could accept multiple
+   files for upload.</p>
+
+   <pre>&lt;label>Attachments: &lt;input type=file multiple name=att>&lt;/label></pre>
+
+  </div>
+
+
+
+  

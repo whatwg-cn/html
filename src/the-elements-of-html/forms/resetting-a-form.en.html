@@ -1,0 +1,27 @@
+<h4>Resetting a form</h4>
+
+  <p>When a <code>form</code> element <var>form</var> is <dfn
+  data-x="concept-form-reset">reset</dfn>, run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>reset</var> be the result of <span data-x="concept-event-fire">firing an
+   event</span> named <code data-x="event-reset">reset</code> at <var>form</var>, with the <code
+   data-x="dom-Event-bubbles">bubbles</code> and <code
+   data-x="dom-Event-cancelable">cancelable</code> attributes initialized to true.</p></li>
+
+   <li><p>If <var>reset</var> is true, then invoke the <span
+   data-x="concept-form-reset-control">reset algorithm</span> of each <span
+   data-x="category-reset">resettable element</span> whose <span>form owner</span> is
+   <var>form</var>.</p></li>
+  </ol>
+
+  <p>Each <span data-x="category-reset">resettable element</span> defines its own <dfn
+  data-x="concept-form-reset-control">reset algorithm</dfn>. Changes made to form controls as part of
+  these algorithms do not count as changes caused by the user (and thus, e.g., do not cause <code
+  data-x="event-input">input</code> events to fire).</p>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,212 @@
+<h5 id="realms-settings-objects-global-objects">Realms, settings objects, and global objects</h5>
+
+  <p>A <dfn data-export="">global object</dfn> is a JavaScript object that is the [[GlobalObject]]
+  field of a <span>JavaScript realm</span>.</p>
+
+  <p class="note">In this specification, all <span data-x="JavaScript realm">JavaScript
+  realms</span> are <span data-x="js-InitializeHostDefinedRealm">initialized</span> with <span
+  data-x="global object">global objects</span> that are either <code>Window</code> or
+  <code>WorkerGlobalScope</code> objects.</p>
+
+  <p>There is always a 1-to-1-to-1 mapping between <span data-x="JavaScript realm">JavaScript
+  realms</span>, <span data-x="global object">global objects</span>, and <span data-x="environment
+  settings object">environment settings objects</span>:</p>
+
+  <ul>
+   <li><p>A <span>JavaScript realm</span> has a [[HostDefined]] field, which contains <dfn
+   data-x="concept-realm-settings-object" data-export="" data-lt="settings object"
+   data-dfn-for="Realm">the Realm's settings object</dfn>.</p></li>
+
+   <li><p>A <span>JavaScript realm</span> has a [[GlobalObject]] field, which contains <dfn
+   data-x="concept-realm-global" data-export="" data-lt="global object" data-dfn-for="Realm">the
+   Realm's global object</dfn>.</p></li>
+
+   <li><p>Each <span>global object</span> in this specification is created during the <span
+   data-x="js-InitializeHostDefinedRealm">initialization</span> of a corresponding <span>JavaScript
+   realm</span>, known as <dfn data-x="concept-global-object-realm" data-export="" data-lt="Realm"
+   data-dfn-for="global object">the global object's Realm</dfn>.</p></li>
+
+   <li id="relevant-settings-object-for-a-global-object"><p>Each <span>global object</span> in this
+   specification is created alongside a corresponding <span>environment settings object</span>,
+   known as its <span>relevant settings object</span>.</p>
+
+   <li><p>An <span>environment settings object</span>'s <span>realm execution context</span>'s
+   Realm component is <dfn data-x="environment settings object's Realm" data-export=""
+   data-lt="Realm" data-dfn-for="environment settings object">the environment settings object's
+   Realm</dfn>.</p></li>
+
+   <li><p>An <span>environment settings object</span>'s <span data-x="environment settings object's
+   Realm">Realm</span> then has a [[GlobalObject]] field, which contains <dfn data-export=""
+   data-x="concept-settings-object-global" data-lt="global object" data-dfn-for="environment
+   settings object">the environment settings object's global object</dfn>.</p></li>
+  </ul>
+
+  <hr>
+
+  <p>When defining algorithm steps throughout this specification, it is often important to indicate
+  what <span>JavaScript realm</span> is to be used—or, equivalently, what <span>global object</span>
+  or <span>environment settings object</span> is to be used. In general, there are at least four
+  possibilities:</p>
+
+  <dl>
+    <dt><dfn data-x="concept-entry-everything">Entry</dfn></dt>
+    <dd>This corresponds to the script that initiated the currently running script action: i.e.,
+    the function or script that the user agent called into when it called into author code.</dd>
+
+    <dt><dfn data-x="concept-incumbent-everything">Incumbent</dfn></dt>
+    <dd>This corresponds to the most-recently-entered author function or script on the stack, or the
+    author function or script that originally scheduled the currently-running callback.</dd>
+
+    <dt><dfn data-x="concept-current-everything">Current</dfn></dt>
+    <dd>This corresponds to the currently-running function object, including built-in user-agent
+    functions which might not be implemented as JavaScript. (It is derived from the <span
+    data-x="current Realm Record">current JavaScript realm</span>.)</dd>
+
+    <dt><dfn data-x="concept-relevant-everything">Relevant</dfn></dt>
+    <dd>Every <span>platform object</span> has a <span data-x="concept-relevant-realm">relevant
+    Realm</span>, which is roughly the <span>JavaScript realm</span> in which it was created. When
+    writing algorithms, the most prominent <span>platform object</span> whose <span
+    data-x="concept-relevant-realm">relevant Realm</span> might be important is the <b>this</b>
+    value of the currently-running function object. In some cases, there can be other important
+    <span data-x="concept-relevant-realm">relevant Realms</span>, such as those of any
+    arguments.</dd>
+  </dl>
+
+  <p>Note how the <span data-x="concept-entry-everything">entry</span>, <span
+  data-x="concept-incumbent-everything">incumbent</span>, and <span
+  data-x="concept-current-everything">current</span> concepts are usable without qualification,
+  whereas the <span data-x="concept-relevant-everything">relevant</span> concept must be applied to
+  a particular <span>platform object</span>.</p>
+
+  <div class="example">
+
+   <p>Consider the following pages, with <code data-x="">a.html</code> being loaded in a browser
+   window, <code data-x="">b.html</code> being loaded in an <code>iframe</code> as shown, and <code
+   data-x="">c.html</code> and <code data-x="">d.html</code> omitted (they can simply be empty
+   documents):</p>
+
+   <pre>&lt;!-- a.html -->
+&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;title>Entry page&lt;/title>
+
+&lt;iframe src="b.html">&lt;/iframe>
+&lt;button onclick="frames[0].hello()">Hello&lt;/button>
+
+&lt;!--b.html -->
+&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;title>Incumbent page&lt;/title>
+
+&lt;iframe src="c.html" id="c">&lt;/iframe>
+&lt;iframe src="d.html" id="d">&lt;/iframe>
+
+&lt;script>
+  const c = document.querySelector("#c").contentWindow;
+  const d = document.querySelector("#d").contentWindow;
+
+  window.hello = () => {
+    c.print.call(d);
+  };
+&lt;/script></pre>
+
+   <p>Each page has its own <span>browsing context</span>, and thus its own <span>JavaScript
+   realm</span>, <span>global object</span>, and <span>environment settings object</span>.</p>
+
+   <p>When the <code data-x="dom-print">print()</code> method is called in response to pressing the
+   button in <code data-x="">a.html</code>, then:</p>
+
+   <ul>
+    <li><p>The <span data-x="concept-entry-realm">entry Realm</span> is that of <code
+    data-x="">a.html</code>.</p></li>
+    <li><p>The <span data-x="concept-incumbent-realm">incumbent Realm</span> is that of <code
+    data-x="">b.html</code>.</p></li>
+    <li><p>The <span data-x="current Realm Record">current Realm</span> is that of <code
+    data-x="">c.html</code> (since it is the <code data-x="dom-print">print()</code> method from
+    <code data-x="">c.html</code> whose code is running).</p></li>
+    <li><p>The <span data-x="concept-relevant-realm">relevant Realm</span> of the object on which
+    the <code data-x="dom-print">print()</code> method is being called is that of <code
+    data-x="">d.html</code>.</p></li>
+   </ul>
+  </div>
+
+  <p class="warning">The <span data-x="concept-incumbent-everything">incumbent</span> and <span
+  data-x="concept-entry-everything">entry</span> concepts should not be used by new specifications,
+  as they are excessively complicated and unintuitive to work with. We are working to remove almost
+  all existing uses from the platform: see <a
+  href="https://github.com/whatwg/html/issues/1430">issue #1430</a> for <span
+  data-x="concept-incumbent-everything">incumbent</span>, and <a
+  href="https://github.com/whatwg/html/issues/1431">issue #1431</a> for <span
+  data-x="concept-entry-everything">entry</span>.</p>
+
+  <p>In general, web platform specifications should use the <span
+  data-x="concept-relevant-everything">relevant</span> concept, applied to the object being operated
+  on (usually the <b>this</b> value of the current method). This mismatches the JavaScript
+  specification, where <span data-x="concept-current-everything">current</span> is generally used as
+  the default (e.g. in determining the <span>JavaScript realm</span> whose <code
+  data-x="">Array</code> constructor should be used to construct the result in <code
+  data-x="">Array.prototype.map</code>). But this inconsistency is so embedded in the platform that
+  we have to accept it going forward.</p>
+
+  <p>Note that in constructors, where there is no <b>this</b> value yet, the <span
+  data-x="concept-current-everything">current</span> concept is the appropriate default.</p>
+
+  <div class="example">
+   <p>One reason why the <span data-x="concept-relevant-everything">relevant</span> concept is
+   generally a better default choice than the <span
+   data-x="concept-current-everything">current</span> concept is that it is more suitable for
+   creating an object that is to be persisted and returned multiple times. For example, the <code
+   data-x="dom-navigator-getBattery">navigator.getBattery()</code> method creates promises in the
+   <span data-x="concept-relevant-realm">relevant Realm</span> for the <code>Navigator</code> object
+   on which it is invoked. This has the following impact: <ref spec=BATTERY>
+
+   <pre>&lt;!-- outer.html -->
+&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;title>Relevant Realm demo: outer page&lt;/title>
+&lt;script>
+  function doTest() {
+    const promise = navigator.getBattery.call(frames[0].navigator);
+
+    console.log(promise instanceof Promise);           // logs false
+    console.log(promise instanceof frames[0].Promise); // logs true
+
+    frames[0].hello();
+  }
+&lt;/script>
+&lt;iframe src="inner.html" onload="doTest()">&lt;/iframe>
+
+&lt;!-- inner.html -->
+&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;title>Relevant Realm demo: inner page&lt;/title>
+&lt;script>
+  function hello() {
+    const promise = navigator.getBattery();
+
+    console.log(promise instanceof Promise);        // logs true
+    console.log(promise instanceof parent.Promise); // logs false
+  }
+&lt;/script></pre>
+
+   <p>If the algorithm for the <code data-x="dom-navigator-getBattery">getBattery()</code> method
+   had instead used the <span data-x="current Realm Record">current Realm</span>, all the results
+   would be reversed. That is, after the first call to <code
+   data-x="dom-navigator-getBattery">getBattery()</code> in <code data-x="">outer.html</code>, the
+   <code>Navigator</code> object in <code data-x="">inner.html</code> would be permanently storing
+   a <code data-x="">Promise</code> object created in <code data-x="">outer.html</code>'s
+   <span>JavaScript realm</span>, and calls like that inside the <code data-x="">hello()</code>
+   function would thus return a promise from the "wrong" realm. Since this is undesirable, the
+   algorithm instead uses the <span data-x="concept-relevant-realm">relevant Realm</span>, giving
+   the sensible results indicated in the comments above.</p>
+  </div>
+
+  <hr>
+
+  <p>The rest of this section deals with formally defining the <span
+  data-x="concept-entry-everything">entry</span>, <span
+  data-x="concept-incumbent-everything">incumbent</span>, <span
+  data-x="concept-current-everything">current</span>, and <span
+  data-x="concept-relevant-everything">relevant</span> concepts.</p>
+
+  

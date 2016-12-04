@@ -1,0 +1,140 @@
+<h5>The <code>HTMLFormControlsCollection</code> interface</h5>
+
+  <p>The <code>HTMLFormControlsCollection</code> interface is used for
+  <span data-x="concept-collection">collections</span> of <span data-x="category-listed">listed
+  elements</span> in <code>form</code> elements.</p>
+
+  <pre class="idl">interface <dfn>HTMLFormControlsCollection</dfn> : <span>HTMLCollection</span> {
+  // inherits <span data-x="dom-HTMLCollection-length">length</span> and <span data-x="dom-HTMLCollection-item">item</span>()
+  getter (<span>RadioNodeList</span> or <span>Element</span>)? <span data-x="dom-HTMLFormControlsCollection-namedItem">namedItem</span>(DOMString name); // shadows inherited <span data-x="dom-HTMLCollection-namedItem">namedItem()</span>
+};
+
+interface <dfn>RadioNodeList</dfn> : <span>NodeList</span> {
+  attribute DOMString <span data-x="dom-RadioNodeList-value">value</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>collection</var> . <code data-x="dom-HTMLCollection-length">length</code></dt>
+   <dd>
+    <p>Returns the number of elements in the collection.</p>
+   </dd>
+
+   <dt><var>element</var> = <var>collection</var> . <code data-x="dom-HTMLCollection-item">item</code>(<var>index</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>[<var>index</var>]</dt>
+   <dd>
+    <p>Returns the item with index <var>index</var> from the collection. The items are sorted in <span>tree order</span>.</p>
+   </dd>
+
+   <dt><var>element</var> = <var>collection</var> . <code subdfn data-x="dom-HTMLFormControlsCollection-namedItem">namedItem</code>(<var>name</var>)</dt>
+   <dt><var>radioNodeList</var> = <var>collection</var> . <code data-x="dom-HTMLFormControlsCollection-namedItem">namedItem</code>(<var>name</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>[<var>name</var>]</dt>
+   <dt><var>radioNodeList</var> = <var>collection</var>[<var>name</var>]</dt>
+   <dd>
+    <p>Returns the item with <span data-x="concept-id">ID</span> or <code data-x="attr-fe-name">name</code> <var>name</var> from the collection.</p>
+    <p>If there are multiple matching items, then a <code>RadioNodeList</code> object containing all those elements is returned.</p>
+   </dd>
+
+   <dt><var>radioNodeList</var> . <var>value</var> [ = <var>value</var> ]</dt>
+   <dd>
+    <p>Returns the value of the first checked radio button represented by the object.</p>
+    <p>Can be set, to check the first radio button with the given value represented by the object.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The object's <span>supported property indices</span> are as defined for
+  <code>HTMLCollection</code> objects.</p>
+
+  <p>The <span>supported property names</span> consist of the non-empty values of all the <code
+  data-x="attr-id">id</code> and <code data-x="attr-fe-name">name</code> attributes of all the
+  elements <span>represented by the collection</span>, in <span>tree order</span>, ignoring later
+  duplicates, with the <code data-x="attr-id">id</code> of an element preceding its <code
+  data-x="attr-fe-name">name</code> if it contributes both, they differ from each other, and neither is the
+  duplicate of an earlier entry.</p>
+
+  <p>The <dfn><code data-x="dom-HTMLFormControlsCollection-namedItem">namedItem(<var>name</var>)</code></dfn> method must act according to the following algorithm:</p>
+
+  <ol>
+
+   <li>If <var>name</var> is the empty string, return null and stop the algorithm.</li>
+
+   <li>If, at the time the method is called, there is exactly one node in the collection that has
+   either an <code data-x="attr-id">id</code> attribute or a <code data-x="attr-fe-name">name</code>
+   attribute equal to <var>name</var>, then return that node and stop the algorithm.</li>
+
+   <li>Otherwise, if there are no nodes in the collection that have either an <code
+   data-x="attr-id">id</code> attribute or a <code data-x="attr-fe-name">name</code> attribute equal
+   to <var>name</var>, then return null and stop the algorithm.</li>
+
+   <li>Otherwise, create a new <code>RadioNodeList</code> object representing a <span>live</span>
+   view of the <code>HTMLFormControlsCollection</code> object, further filtered so that the only
+   nodes in the <code>RadioNodeList</code> object are those that have either an <code
+   data-x="attr-id">id</code> attribute or a <code data-x="attr-fe-name">name</code> attribute equal
+   to <var>name</var>. The nodes in the <code>RadioNodeList</code> object must be sorted in
+   <span>tree order</span>.</li>
+
+   <li>Return that <code>RadioNodeList</code> object.</li>
+
+  </ol>
+
+  <hr>
+
+  <p>Members of the <code>RadioNodeList</code> interface inherited from the <code>NodeList</code>
+  interface must behave as they would on a <code>NodeList</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-RadioNodeList-value">value</code></dfn> IDL attribute on the
+  <code>RadioNodeList</code> object, on getting, must return the value returned by running the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>element</var> be the first element in <span>tree order</span>
+   represented by the <code>RadioNodeList</code> object that is an <code>input</code> element whose
+   <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-radio">Radio Button</span> state and whose <span
+   data-x="concept-fe-checked">checkedness</span> is true. Otherwise, let it be null.</p></li>
+
+   <li><p>If <var>element</var> is null, return the empty string.</p></li>
+
+   <li><p>If <var>element</var> is an element with no <code
+   data-x="attr-input-value">value</code> attribute, return the string "<code data-x="">on</code>".</p></li>
+
+   <li><p>Otherwise, return the value of <var>element</var>'s <code
+   data-x="attr-input-value">value</code> attribute.</p></li>
+
+  </ol>
+
+  <p>On setting, the <code data-x="dom-RadioNodeList-value">value</code> IDL attribute must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>If the new value is the string "<code data-x="">on</code>": let <var>element</var> be the first element in <span>tree order</span>
+   represented by the <code>RadioNodeList</code> object that is an <code>input</code> element whose
+   <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-radio">Radio Button</span> state and whose <code
+   data-x="attr-input-value">value</code> content attribute is either absent, or present and equal to the new value, if any. If no such element exists, then instead let <var>element</var> be null.</p>
+
+   <p>Otherwise: let <var>element</var> be the first element in <span>tree order</span>
+   represented by the <code>RadioNodeList</code> object that is an <code>input</code> element whose
+   <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-radio">Radio Button</span> state and whose <code
+   data-x="attr-input-value">value</code> content attribute is present and equal to the new value, if
+   any. If no such element exists, then instead let <var>element</var> be null.</p></li>
+
+   <li><p>If <var>element</var> is not null, then set its <span
+   data-x="concept-fe-checked">checkedness</span> to true.</p>
+
+  </ol>
+
+<!--
+https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C%21DOCTYPE%20html%3E...%0A%3Cform%20name%3D%22a%22%3E%3Cinput%20id%3D%22x%22%20name%3D%22y%22%3E%3Cinput%20name%3D%22x%22%20id%3D%22y%22%3E%3C/form%3E%0A%3Cscript%3E%0A%20%20var%20x%3B%0A%20%20w%28x%20%3D%20document.forms%5B%27a%27%5D%5B%27x%27%5D%29%3B%0A%20%20w%28x.length%29%3B%0A%20%20x%5B0%5D.parentNode.removeChild%28x%5B0%5D%29%3B%0A%20%20w%28x.length%29%3B%0A%20%20w%28x%20%3D%3D%20document.forms%5B%27a%27%5D%5B%27x%27%5D%29%3B%0A%3C/script%3E%0A
+-->
+
+  </div>
+
+
+  

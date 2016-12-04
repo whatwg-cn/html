@@ -1,0 +1,185 @@
+<h4>Focus management APIs</h4>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-activeElement">activeElement</code></dt>
+
+   <dd>
+
+    <p>Returns the deepest element in the document through which or to which key events are being
+    routed. This is, roughly speaking, the focused element in the document.</p>
+
+    <p>For the purposes of this API, when a <span>child browsing context</span> is focused, its
+    <span>browsing context container</span> is <a href="#bc-focus-ergo-bcc-focus">focused</a> in the
+    <span>parent browsing context</span>. For example, if the user moves the focus to a text control
+    in an <code>iframe</code>, the <code>iframe</code> is the element returned by the <code
+    data-x="dom-document-activeElement">activeElement</code> API in the <code>iframe</code>'s
+    <span>node document</span>.</p>
+
+   </dd>
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-hasFocus">hasFocus</code>()</dt>
+
+   <dd>
+
+    <p>Returns true if key events are being routed through or to the document; otherwise, returns
+    false. Roughly speaking, this corresponds to the document, or a document nested inside this
+    one, being focused.</p>
+
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-focus">focus</code>()</dt>
+
+   <dd>
+
+    <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2823 -->
+
+    <p>Moves the focus to the window's <span>browsing context</span>, if any.</p>
+
+   </dd>
+
+<!--
+   <dt><var>window</var> . <code subdfn data-x="dom-window-blur">blur</code>()</dt>
+
+   <dd>
+
+    <p>No effect.</p>
+
+   </dd>
+-->
+
+   <dt><var>element</var> . <code subdfn data-x="dom-focus">focus</code>()</dt>
+
+   <dd>
+
+    <p>Moves the focus to the element.</p>
+
+    <p>If the element is a <span>browsing context container</span>, moves the focus to the <span>nested browsing context</span> instead.</p>
+
+   </dd>
+
+   <dt><var>element</var> . <code subdfn data-x="dom-blur">blur</code>()</dt>
+
+   <dd>
+
+    <p>Moves the focus to the <span>viewport</span>. Use of this method is discouraged; if you want
+    to focus the <span>viewport</span>, call the <code data-x="dom-focus">focus()</code> method on
+    the <code>Document</code>'s <span>document element</span>.</p>
+
+    <p>Do not use this method to hide the focus ring if you find the focus ring unsightly. Instead,
+    use a CSS rule to override the <span>'outline'</span> property, and provide a different way to
+    show what element is focused. Be aware that if an alternative focusing style isn't made
+    available, the page will be significantly less usable for people who primarily navigate pages
+    using a keyboard, or those with reduced vision who use focus outlines to help them navigate the
+    page.</p>
+
+    <!-- we suggest using CSS here because users can override CSS, so it's no the end of the world,
+    unlike using .blur(), which cannot be easily overridden by users and completely breaks tab
+    navigation. -->
+
+    <div class="example">
+
+     <p>For example, to hide the outline from links and instead use a yellow background to indicate
+     focus, you could use:</p>
+
+     <pre>:link:focus, :visited:focus { outline: none; background: yellow; color: black; }</pre>
+
+    </div>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-activeElement">activeElement</code></dfn> attribute on
+  <code>Document</code> objects must return the value returned by the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>candidate</var> be the <code>Document</code> on which the method was
+   invoked.</p></li>
+
+   <li><p>If <var>candidate</var> has a <span>dialog group</span> with a designated
+   <span>focused dialog of the dialog group</span>, then let <var>candidate</var> be the
+   designated <span>focused dialog of the dialog group</span>, and redo this step.</p></li>
+
+   <li><p>If <var>candidate</var> has a non-empty <span>control group</span>, let <var>candidate</var> be the designated <span>focused area of the control
+   group</span>.</p>
+
+   </li>
+
+   <li><p>If <var>candidate</var> is a <span>focusable area</span>, let <var>candidate</var> be <var>candidate</var>'s <span>DOM anchor</span>.</p></li>
+
+   <li>
+
+    <p>If <var>candidate</var> is a <code>Document</code> that has a <span data-x="the
+    body element">body element</span>, then let <var>candidate</var> be <span>the body
+    element</span> of that <code>Document</code>.</p>
+
+    <p>Otherwise, if <var>candidate</var> is a <code>Document</code> with a non-null <span>document
+    element</span>, then let <var>candidate</var> be that <span>document element</span>.</p>
+
+    <p>Otherwise, if <var>candidate</var> is a <code>Document</code>, then let <var>candidate</var> be null.</p>
+
+   </li>
+
+   <li><p>Return <var>candidate</var>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-document-hasFocus">hasFocus()</code></dfn> method on the
+  <code>Document</code> object, when invoked, must return the result of running the <span>has focus
+  steps</span> with the <code>Document</code> object as the argument.</p>
+
+  <p>The <dfn><code data-x="dom-window-focus">focus()</code></dfn> method on the <code>Window</code>
+  object, when invoked, must run the <span>focusing steps</span> with the <code>Window</code>
+  object's <span>browsing context</span>. Additionally, if this <span>browsing context</span> is a
+  <span>top-level browsing context</span>, user agents are encouraged to trigger some sort of
+  notification to indicate to the user that the page is attempting to gain focus.</p>
+
+  <p>The <dfn><code data-x="dom-window-blur">blur()</code></dfn> method on the <code>Window</code>
+  object, when invoked, provides a hint to the user agent that the script believes the user probably
+  is not currently interested in the contents of the <span>browsing context</span> of the
+  <code>Window</code> object on which the method was invoked, but that the contents might become
+  interesting again in the future.</p>
+
+  <p>User agents are encouraged to ignore calls to this <code data-x="dom-window-blur">blur()</code>
+  method entirely.</p>
+
+  <p class="note">Historically, the <code data-x="dom-window-blur">focus()</code> and <code
+  data-x="dom-window-blur">blur()</code> methods actually affected the system-level focus of the
+  system widget (e.g. tab or window) that contained the <span>browsing context</span>, but hostile
+  sites widely abuse this behavior to the user's detriment.</p>
+
+  <p>The <dfn><code data-x="dom-focus">focus()</code></dfn> method on elements, when invoked, must
+  run the following algorithm:</p>
+
+  <ol>
+
+   <li><p>If the element is marked as <i data-x="locked for focus">locked for focus</i>, then abort these steps.</p></li>
+
+   <li><p>Mark the element as <dfn>locked for focus</dfn>.</p></li>
+
+   <li><p>Run the <span>focusing steps</span> for the element.</p></li>
+
+   <li><p>Unmark the element as <i data-x="locked for focus">locked for focus</i>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-blur">blur()</code></dfn> method, when invoked, should run the
+  <span>unfocusing steps</span> for the element on which the method was called. User agents may
+  selectively or uniformly ignore calls to this method for usability reasons.</p>
+
+  <p class="example">For example, if the <code data-x="dom-blur">blur()</code> method is unwisely
+  being used to remove the focus ring for aesthetics reasons, the page would become unusable by
+  keyboard users. Ignoring calls to this method would thus allow keyboard users to interact with the
+  page.</p>
+
+  </div>
+
+
+<!--TOPIC:HTML-->
+
+
+  

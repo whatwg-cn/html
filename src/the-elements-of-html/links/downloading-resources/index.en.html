@@ -1,0 +1,228 @@
+<h4>Downloading resources</h4>
+
+  <p>In some cases, resources are intended for later use rather than immediate viewing. To indicate
+  that a resource is intended to be downloaded for use later, rather than immediately used, the
+  <code data-x="attr-hyperlink-download">download</code> attribute can be specified on the
+  <code>a</code> or <code>area</code> element that creates the <span>hyperlink</span> to that
+  resource.</p>
+
+  <p>The attribute can furthermore be given a value, to specify the file name that user agents are
+  to use when storing the resource in a file system. This value can be overridden by the `<code
+  data-x="http-content-disposition">Content-Disposition</code>` HTTP header's filename parameters.
+  <ref spec=RFC6266></p>
+
+  <p>In cross-origin situations, the <code data-x="attr-hyperlink-download">download</code>
+  attribute has to be combined with the `<code
+  data-x="http-content-disposition">Content-Disposition</code>` HTTP header, specifically with the
+  <code data-x="">attachment</code> disposition type, to avoid the user being warned of possibly
+  nefarious activity. (This is to protect users from being made to download sensitive personal or
+  confidential information without their full understanding.)</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>When a user <dfn data-x="downloading hyperlinks">downloads a hyperlink</dfn> created by an
+  element <var>subject</var>, optionally with a <var>hyperlink suffix</var>, the user agent must
+  run the following steps:</p>
+
+  <ol>
+
+   <li><p><span data-x="parse a url">Parse</span> the <span>URL</span> given by
+   <var>subject</var>'s <code data-x="attr-hyperlink-href">href</code> attribute, relative to
+   <var>subject</var>'s <span>node document</span>.</p></li>
+
+   <li><p>If <span data-x="parse a url">parsing</span> the <span>URL</span> fails, the user agent
+   may report the error to the user in a user-agent-specific manner, may
+   <span>navigate</span><!--DONAV download error--> to an error page to report the error, or may
+   ignore the error and do nothing. In either case, the user agent must abort these steps.</p>
+
+   <li><p>Otherwise, let <var>URL</var> be the <span>resulting URL string</span>.</p></li>
+
+   <li><p>If there is a <var>hyperlink suffix</var>, append it to <var>URL</var>.</p></li>
+
+   <li><p>Return to whatever algorithm invoked these steps and continue
+   these steps <span>in parallel</span>.</p></li>
+
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is <var>URL</var>,
+   <span data-x="concept-request-client">client</span> is <span>entry settings object</span>,
+   <span data-x="concept-request-initiator">initiator</span> is "<code data-x="">download</code>",
+   <span data-x="concept-request-destination">destination</span> is the empty string, and whose
+   <span>omit-<code>Origin</code>-header flag</span>, <span>synchronous flag</span>, and
+   <span>use-URL-credentials flag</span> are all set.
+
+   <!--FETCH--><li><p>Handle the result of <span data-x="concept-fetch">fetching</span>
+   <var>request</var> <span>as a download</span>.</p></li>
+
+  </ol>
+
+  <p>When a user agent is to handle a resource obtained from a fetch <dfn>as a download</dfn>, it
+  should provide the user with a way to save the resource for later use, if a resource is
+  successfully obtained; or otherwise should report any problems downloading the file to the
+  user.</p>
+
+  <p>If the user agent needs a file name for a resource being handled <span>as a download</span>, it
+  should select one using the following algorithm.</p>
+
+  <p class="warning">This algorithm is intended to mitigate security dangers involved in downloading
+  files from untrusted sites, and user agents are strongly urged to follow it.</p> <!-- but it's
+  optional, since it's not really an interoperability issue -->
+
+  <ol>
+
+   <li><p>Let <var>filename</var> be the void value.</p></li>
+
+   <!-- Content-Disposition: attachment; filename="" is always honoured, even cross-origin -->
+   <li><p>If the resource has a `<code data-x="http-content-disposition">Content-Disposition</code>`
+   header, that header specifies the <code data-x="">attachment</code> disposition type, and the
+   header includes file name information, then let <var>filename</var> have the value
+   specified by the header, and jump to the step labeled <i>sanitize</i> below. <ref spec=RFC6266></p></li>
+
+   <li><p>Let <var>interface origin</var> be the <span>origin</span> of the
+   <code>Document</code> in which the <span data-x="downloading hyperlinks">download</span> or
+   <span>navigate</span> action resulting in the download was initiated, if any.</p></li>
+
+   <li><p>Let <var>resource origin</var> be the <span>origin</span> of the URL of the
+   resource being downloaded, unless that URL's <span data-x="concept-url-scheme">scheme</span>
+   component is <code data-x="">data</code>, in which case let <var>resource origin</var> be
+   the same as the <var>interface origin</var>, if any.</p></li>
+
+   <li><p>If there is no <var>interface origin</var>, then let <var>trusted
+   operation</var> be true. Otherwise, let <var>trusted operation</var> be true if <var>resource origin</var> is the <span>same origin</span> as <var>interface
+   origin</var>, and false otherwise.</p></li>
+
+   <!-- Content-Disposition: *; filename="" overrides download="" for same-origin -->
+   <li><p>If <var>trusted operation</var> is true and the resource has a `<code
+   data-x="http-content-disposition">Content-Disposition</code>` header and that header includes file
+   name information, then let <var>filename</var> have the value specified by the header,
+   and jump to the step labeled <i>sanitize</i> below. <ref spec=RFC6266></p></li>
+
+   <li><p>If the download was not initiated from a <span>hyperlink</span> created by an
+   <code>a</code> or <code>area</code> element, or if the element of the <span>hyperlink</span> from
+   which it was initiated did not have a <code data-x="attr-hyperlink-download">download</code>
+   attribute when the download was initiated, or if there was such an attribute but its value when
+   the download was initiated was the empty string, then jump to the step labeled <i>no proposed
+   file name</i>.</p></li>
+
+   <li><p>Let <var>proposed filename</var> have the value of the <code
+   data-x="attr-hyperlink-download">download</code> attribute of the element of the
+   <span>hyperlink</span> that initiated the download at the time the download was
+   initiated.</p></li>
+
+   <!-- download="" works for all links when same-origin -->
+   <!-- it is not used cross-origin, though, even for explicit user gestures -->
+   <!-- (except... see next step) -->
+   <li><p>If <var>trusted operation</var> is true, let <var>filename</var> have
+   the value of <var>proposed filename</var>, and jump to the step labeled <i>sanitize</i>
+   below.</p></li>
+
+   <!-- Content-Disposition: attachment with no filename="" allows download="" cross-origin -->
+   <li><p>If the resource has a `<code data-x="http-content-disposition">Content-Disposition</code>`
+   header and that header specifies the <code data-x="">attachment</code> disposition type, let <var>filename</var> have the value of <var>proposed filename</var>, and jump to the
+   step labeled <i>sanitize</i> below. <ref spec=RFC6266></p></li>
+
+   <!-- fallback for same-origin resources or explicit downloads: use the resource's file name -->
+   <li><p><i>No proposed file name</i>: If <var>trusted operation</var> is true, or if the
+   user indicated a preference for having the resource in question downloaded, let <var>filename</var> have a value derived from the <span>URL</span> of the resource in a
+   user-agent-defined manner, and jump to the step labeled <i>sanitize</i> below.</p></li>
+
+   <!-- no C-D: a header on cross-origin raises red flags -->
+   <li>
+
+    <p>Act in a user-agent-defined manner to safeguard the user from a potentially hostile
+    cross-origin download. If the download is not to be aborted, then let <var>filename</var> be set to the user's preferred file name or to a file name selected by
+    the user agent, and jump to the step labeled <i>sanitize</i> below.</p>
+
+    <div class="warning">
+
+     <p>If the algorithm reaches this step, then a download was begun from a different origin than
+     the resource being downloaded, and the origin did not mark the file as suitable for
+     downloading, and the download was not initiated by the user. This could be because a <code
+     data-x="attr-hyperlink-download">download</code> attribute was used to trigger the download, or
+     because the resource in question is not of a type that the user agent supports.</p>
+
+     <p>This could be dangerous, because, for instance, a hostile server could be trying to get a
+     user to unknowingly download private information and then re-upload it to the hostile server,
+     by tricking the user into thinking the data is from the hostile server.</p>
+
+     <p>Thus, it is in the user's interests that the user be somehow notified that the resource in
+     question comes from quite a different source, and to prevent confusion, any suggested file name
+     from the potentially hostile <var>interface origin</var> should be ignored.</p>
+
+    </div>
+
+   </li>
+
+   <li><p><i>Sanitize</i>: Optionally, allow the user to influence <var>filename</var>. For
+   example, a user agent could prompt the user for a file name, potentially providing the value of
+   <var>filename</var> as determined above as a default value.</p></li>
+
+   <li>
+
+    <p>Adjust <var>filename</var> to be suitable for the local file system.</p>
+
+    <p class="example">For example, this could involve removing characters that are not legal in
+    file names, or trimming leading and trailing whitespace.</p>
+
+   </li>
+
+   <li><p>If the platform conventions do not in any way use <span
+   data-x="concept-extension">extensions</span> to determine the types of file on the file system,
+   then return <var>filename</var> as the file name and abort these steps.</p></li>
+
+   <li><p>Let <var>claimed type</var> be the type given by the resource's <span
+   data-x="Content-Type">Content-Type metadata</span>, if any is known. Let <var>named
+   type</var> be the type given by <var>filename</var>'s <span
+   data-x="concept-extension">extension</span>, if any is known. For the purposes of this step, a
+   <i>type</i> is a mapping of a <span>MIME type</span> to an <span
+   data-x="concept-extension">extension</span>.</p></li>
+
+   <li><p>If <var>named type</var> is consistent with the user's preferences (e.g. because
+   the value of <var>filename</var> was determined by prompting the user), then return <var>filename</var> as the file name and abort these steps.</p></li>
+
+   <li><p>If <var>claimed type</var> and <var>named type</var> are the same type
+   (i.e. the type given by the resource's <span data-x="Content-Type">Content-Type metadata</span> is
+   consistent with the type given by <var>filename</var>'s <span
+   data-x="concept-extension">extension</span>), then return <var>filename</var> as the file
+   name and abort these steps.</p></li>
+
+   <li>
+
+    <p>If the <var>claimed type</var> is known, then alter <var>filename</var> to
+    add an <span data-x="concept-extension">extension</span> corresponding to <var>claimed
+    type</var>.</p>
+
+    <p>Otherwise, if <var>named type</var> is known to be potentially dangerous (e.g. it
+    will be treated by the platform conventions as a native executable, shell script, HTML
+    application, or executable-macro-capable document) then optionally alter <var>filename</var> to add a known-safe <span data-x="concept-extension">extension</span>
+    (e.g. "<code data-x="">.txt</code>").</p>
+
+    <p class="note">This last step would make it impossible to download executables, which might not
+    be desirable. As always, implementors are forced to balance security and usability in this
+    matter.</p>
+
+   </li>
+
+   <li><p>Return <var>filename</var> as the file name.</p></li>
+
+  </ol>
+
+  <p>For the purposes of this algorithm, a file <dfn data-x="concept-extension">extension</dfn>
+  consists of any part of the file name that platform conventions dictate will be used for
+  identifying the type of the file. For example, many operating systems use the part of the file
+  name following the last dot ("<code data-x="">.</code>") in the file name to determine the type of
+  the file, and from that the manner in which the file is to be opened or executed.</p>
+
+  <p>User agents should ignore any directory or path information provided by the resource itself,
+  its <span>URL</span>, and any <code data-x="attr-hyperlink-download">download</code> attribute, in
+  deciding where to store the resulting file in the user's file system.</p>
+
+  </div>
+
+
+<!--PING-->
+
+  <div w-nodev>
+
+  

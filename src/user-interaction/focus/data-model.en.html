@@ -1,0 +1,321 @@
+<h4>Data model</h4>
+
+  <p>The term <dfn>focusable area</dfn> is used to refer to regions of the interface that can become
+  the target of keyboard input. Focusable areas can be elements, parts of elements, or other regions
+  managed by the user agent.</p>
+
+  <p>Each <span>focusable area</span> has a <dfn>DOM anchor</dfn>, which is a <code>Node</code> object
+  that represents the position of the <span>focusable area</span> in the DOM. (When the <span>focusable
+  area</span> is itself a <code>Node</code>, it is its own <span>DOM anchor</span>.) The <span>DOM anchor</span> is
+  used in some APIs as a substitute for the <span>focusable area</span> when there is no other DOM object
+  to represent the <span>focusable area</span>.</p>
+
+  <p>The following table describes what objects can be <span data-x="focusable area">focusable
+  areas</span>. The cells in the left column describe objects that can be <span data-x="focusable
+  area">focusable areas</span>; the cells in the right column describe the <span data-x="DOM anchor">DOM
+  anchors</span> for those elements. (The cells that span both columns are non-normative examples.)</p>
+
+  <table id="table-fa">
+   <thead>
+    <tr>
+     <th id="th-fa-area"><span>Focusable area</span>
+     <th id="th-fa-dom-rep"><span>DOM anchor</span>
+    <tr>
+     <th id="th-fa-examples" colspan=2>Examples
+
+   <tbody>
+    <tr>
+     <th class="data-header" headers="th-fa-area" id="td-fa-1">
+     Elements that have their <span>tabindex focus flag</span> set, that are not <span
+     data-x="concept-element-disabled">actually disabled</span>, that are not <span>expressly
+     inert</span>, and that are either <span>being rendered</span> or <span>being used as relevant
+     canvas fallback content</span>. <!-- CANVAS-FOCUS-FALLBACK -->
+     <td headers="td-fa-1 th-fa-dom-rep">
+     The element itself.
+    <tr>
+     <td headers="td-fa-1 th-fa-examples" colspan=2>
+     <p class="example"><code>iframe</code>, <code data-x="attr-input-type-text">&lt;input
+     type=text></code>, sometimes <code data-x="a">&lt;a href=""></code> (depending on platform
+     conventions).
+
+   <tbody>
+    <tr>
+     <th class="data-header" headers="th-fa-area" id="td-fa-2">
+     The shapes of <code>area</code> elements in an <span>image map</span> associated with an
+     <code>img</code> element that is <span>being rendered</span> and is not <span>expressly
+     inert</span>.
+     <td headers="td-fa-2 th-fa-dom-rep">
+     The <code>img</code> element.
+    <tr>
+     <td headers="td-fa-2 th-fa-examples" colspan=2>
+     <div class="example">
+      <p>In the following example, the <code>area</code> element creates two shapes, one on each
+      image. The <span>DOM anchor</span> of the first shape is the first <code>img</code> element, and the
+      <span>DOM anchor</span> of the second shape is the second <code>img</code> element.</p>
+      <pre>&lt;map id=wallmap>&lt;area alt="Enter Door" coords="10,10,100,200" href="door.html">&lt;/map>
+...
+&lt;img src="images/innerwall.jpeg" alt="There is a white wall here, with a door." usemap="#wallmap">
+...
+&lt;img src="images/outerwall.jpeg" alt="There is a red wall here, with a door." usemap="#wallmap"></pre>
+     </div>
+
+   <tbody>
+    <tr>
+     <th class="data-header" headers="th-fa-area" id="td-fa-3">
+     The user-agent provided subwidgets of elements that are <span>being rendered</span> and are not
+     <span data-x="concept-element-disabled">actually disabled</span> or <span>expressly
+     inert</span>.
+     <td headers="td-fa-3 th-fa-dom-rep">
+     The element for which the <span>focusable area</span> is a subwidget.
+    <tr>
+     <td headers="td-fa-3 th-fa-examples" colspan=2>
+     <p class="example">The <span data-x="expose a user interface to the user">controls in the user
+     interface that is exposed to the user</span> for a <code>video</code> element, the up and down
+     buttons in a spin-control version of <code data-x="attr-input-type-number">&lt;input
+     type=number></code>, the two range control widgets in a <code
+     data-x="attr-input-type-range">&lt;input type=range multiple></code>, the part of a
+     <code>details</code> element's rendering that enabled the element to be opened or closed using
+     keyboard input.</p>
+
+   <tbody>
+    <tr>
+     <th class="data-header" headers="th-fa-area" id="td-fa-4">
+     The scrollable regions of elements that are <span>being rendered</span> and are not
+     <span>expressly inert</span>. <!-- the being rendered part is kinda
+     redundant, a scrollable region is a box generated for the element so by definition if the
+     element has a scrollable region it is being rendered -->
+     <td headers="td-fa-4 th-fa-dom-rep">
+     The element for which the box that the scrollable region scrolls was created.
+    <tr>
+     <td headers="td-fa-4 th-fa-examples" colspan=2>
+     <p class="example">The CSS <span>'overflow'</span> property's 'scroll' value typically creates
+     a scrollable region.</p>
+
+   <tbody>
+    <tr>
+     <th class="data-header" headers="th-fa-area" id="td-fa-5">
+     The <span>viewport</span> of a <code>Document</code> that has a <span
+     data-x="concept-document-bc">browsing context</span> and is not <span>inert</span>.
+     <td headers="td-fa-5 th-fa-dom-rep">
+     The <code>Document</code> for which the <span>viewport</span> was created.
+    <tr>
+     <td headers="td-fa-5 th-fa-examples" colspan=2>
+     <p class="example">The contents of an <code>iframe</code>.</p>
+
+   <tbody>
+    <tr>
+     <th class="data-header" headers="th-fa-area" id="td-fa-6">
+     Any other element or part of an element, especially to aid with accessibility or to better
+     match platform conventions.
+     <td headers="td-fa-6 th-fa-dom-rep">
+     The element.
+    <tr>
+     <td headers="td-fa-6 th-fa-examples" colspan=2>
+     <p class="example">A user agent could make all list item bullets focusable, so that a user can
+     more easily navigate lists.</p>
+     <p class="example">Similarly, a user agent could make all elements with <code
+     data-x="attr-title">title</code> attributes focusable, so that their advisory information can
+     be accessed.</p>
+
+  </table>
+
+  <p id="bc-focus-ergo-bcc-focus" class="note">A <span>browsing context container</span> (e.g. an
+  <code>iframe</code>) is a <span>focusable area</span>, but key events routed to a <span>browsing context
+  container</span> get immediately routed to the <span>nested browsing context</span>'s <span>active
+  document</span>. Similarly, in sequential focus navigation a <span>browsing context
+  container</span> essentially acts merely as a placeholder for its <span>nested browsing
+  context</span>'s <span>active document</span>.</p>
+
+  <hr>
+
+  <p>The following create <dfn data-x="control group">control groups</dfn>:
+
+  <ul class="brief">
+
+   <li><code>Document</code> object that have <span data-x="concept-document-bc">browsing
+   contexts</span>.</li>
+
+   <li><code>dialog</code> elements that have an <code data-x="attr-dialog-open">open</code>
+   attribute specified and that are <span>being rendered</span>.</li>
+
+  </ul>
+
+  <p>The corresponding <code>Document</code> object or <code>dialog</code> element is the created
+  <span>control group</span>'s <dfn data-x="control group owner object">owner object</dfn>. (There
+  is always a 1-to-1 mapping of <span data-x="control group">control groups</span> to <span
+  data-x="control group owner object">control group owner objects</span>.)</p>
+
+  <p>Each <span>focusable area</span> belongs to a single <span>control group</span> as follows. If
+  the <span>DOM anchor</span> of a <span>focusable area</span> is a <span>control group
+  owner object</span>, then that <span>focusable area</span> belongs to that <span>control group
+  owner object</span>'s <span>control group</span>. Otherwise, the <span>focusable area</span>
+  belongs to its <span>DOM anchor</span>'s nearest ancestor <span>control group owner
+  object</span>'s <span>control group</span>.</p>
+
+  <div class="example">
+   <p>Thus:</p>
+
+   <ul>
+    <li><p>A <span>viewport</span> always belongs to the <span>control group</span> of the
+    <code>Document</code> for which the <span>viewport</span> was created.</p></li>
+
+    <li><p>An <code>input</code> control belongs to the <span>control group</span> of its nearest
+    ancestor <code>dialog</code> or <code>Document</code>.</p></li>
+
+    <li><p>An image map's shapes belong to the nearest ancestor <code>dialog</code> or
+    <code>Document</code> of the <code>img</code> elements (not the <code>area</code> elements
+    &mdash; this means one <code>area</code> element might create multiple shapes in different
+    <span data-x="control group">control groups</span>).</p></li>
+   </ul>
+  </div>
+
+  <p class="note">It is possible for a <span>control group</span> to be empty, i.e. for it to have
+  no <span data-x="focusable area">focusable areas</span>.</p>
+
+  <hr>
+
+  <p><span id="expressly-inert-control"></span><span id="expressly-inert-dialog"></span>An element
+  is <dfn>expressly inert</dfn> if it is <span>inert</span> and its nearest ancestor <span>control
+  group owner object</span> is not <span>inert</span>.</p>
+
+  <div class="example">
+   <p>In a page with no <code>dialog</code> elements, all elements that are <span>inert</span> are
+   <span>expressly inert</span>, and vice-versa.</p>
+
+   <p>Inside an <span>inert</span> <code>dialog</code> element, all descendant elements are not
+   <span>expressly inert</span>, even if they are <span>inert</span>.</p>
+
+   <p>A <code>dialog</code> element is <span>expressly inert</span> if it is <span>inert</span> and
+   not nested inside another <span>inert</span> dialog.</p>
+  </div>
+
+  <hr>
+
+  <p>Each <span>control group owner object</span> can also act as the <dfn data-x="dialog group
+  manager">manager</dfn> of a <dfn>dialog group</dfn>.</p>
+
+  <p>Each <code>dialog</code> element that has an <code data-x="attr-dialog-open">open</code>
+  attribute specified and that is <span>being rendered</span> (i.e. that is a <span>control group
+  owner object</span>) and is not <span>expressly inert</span>
+  belongs to the <span>dialog group</span> whose <span data-x="dialog group manager">manager</span> is
+  the <code>dialog</code> element's nearest ancestor <span>control group owner object</span>.</p>
+
+  <p>If no <code>dialog</code> element has a particular <span>control group owner object</span> as
+  its nearest ancestor <span>control group owner object</span>, then that <span>control group owner
+  object</span> has no <span>dialog group</span>.</p>
+
+  <p>Each <span>dialog group</span> can have a <code>dialog</code> designated as the <dfn>focused
+  dialog of the dialog group</dfn>. Which <code>dialog</code> is so designated changes over time,
+  based on algorithms in this specification.</p>
+
+  <p>Elements in <span data-x="dialog group">dialog groups</span> are ordered in <span>tree
+  order</span>.</p>
+
+  <hr>
+
+  <p>One <span>focusable area</span> in each non-empty <span>control group</span> is designated the
+  <dfn>focused area of the control group</dfn>. Which control is so designated changes over time,
+  based on algorithms in this specification. If a <span>control group</span> is empty, it has no <span
+  data-x="focused area of the control group">focused area</span>.</p>
+
+  <p><span data-x="focusable area">Focusable areas</span> in <span data-x="control group">control groups</span>
+  are ordered relative to the <span>tree order</span> of their <span data-x="DOM anchor">DOM
+  anchors</span>. <span data-x="focusable area">Focusable areas</span> with the same <span>DOM anchor</span> in a
+  <span>control group</span> are ordered relative to their CSS box's relative positions in a pre-order,
+  depth-first traversal of the box tree. <ref spec=CSS></p>
+
+  <hr>
+
+  <p>The <dfn>currently focused area of a top-level browsing context</dfn> at any particular time is
+  the <span>focusable area</span> or <code>dialog</code> returned by this algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>candidate</var> be the <code>Document</code> of the <span>top-level
+   browsing context</span>.</p></li>
+
+   <li>
+
+    <p>If <var>candidate</var> has a <span>dialog group</span> with a designated
+    <span>focused dialog of the dialog group</span>, then let <var>candidate</var> be the
+    designated <span>focused dialog of the dialog group</span>, and redo this step.</p>
+
+    <p>Otherwise, if <var>candidate</var> has a non-empty <span>control group</span>, and the
+    designated <span>focused area of the control group</span> is a <span>browsing context
+    container</span> with a non-null <span>nested browsing context</span>, then let
+    <var>candidate</var> be the <span>active document</span> of that <span>browsing context
+    container</span>'s <span>nested browsing context</span>, and redo this step.</p>
+
+    <p>Otherwise, if <var>candidate</var> has a non-empty <span>control group</span>, let
+    <var>candidate</var> be the designated <span>focused area of the control
+    group</span>.</p>
+
+   </li>
+
+   <li><p>Return <var>candidate</var>.</p></li>
+
+  </ol>
+
+  <p>An element that is the <span>DOM anchor</span> of a <span>focusable area</span> is said to <dfn
+  data-x="gains focus">gain focus</dfn> when that <span>focusable area</span> becomes the <span>currently
+  focused area of a top-level browsing context</span>. When an element is the <span>DOM anchor</span> of a
+  <span>focusable area</span> of the <span>currently focused area of a top-level browsing context</span>,
+  it is <dfn>focused</dfn>.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn>focus chain</dfn> of a <span>focusable area</span> or <span>control group owner
+  object</span> <var>subject</var> is the ordered list constructed as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>current object</var> be <var>subject</var>.</p></li>
+
+   <li><p>Let <var>output</var> be an empty list.</p></li>
+
+   <li><p><i>Loop</i>: Append <var>current object</var> to <var>output</var>.</p></li>
+
+   <li>
+
+    <p>If <var>current object</var> is an <code>area</code> element's shape, append
+    that <code>area</code> element to <var>output</var>.</p>
+
+    <p>Otherwise, if <var>current object</var> is a <span>focusable area</span> whose <span>DOM
+    anchor</span> is an element that is not <var>current object</var> itself, append that
+    <span>DOM anchor</span> element to <var>output</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>current object</var> is a <code>dialog</code> object in a <span>dialog group</span>,
+    let <var>current object</var> be that <span>dialog group</span>'s <span data-x="dialog group
+    manager">manager</span>, and return to the step labeled <i>loop</i>.</p>
+
+    <p>Otherwise, if <var>current object</var> is a <span>focusable area</span>, let <var>current
+    object</var> be that <span>focusable area</span>'s <span>control group</span>'s <span
+    data-x="control group owner object">owner object</span>, and return to the step labeled
+    <i>loop</i>.</p>
+
+    <p>Otherwise, if <var>current object</var> is a <code>Document</code> in a <span>nested browsing
+    context</span>, let <var>current object</var> be its <span>browsing context container</span>,
+    and return to the step labeled <i>loop</i>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Return <var>output</var>.</p>
+
+    <p class="note">The chain starts with <var>subject</var> and (if <var>subject</var> is or can be the <span>currently focused area of a top-level browsing
+    context</span>) continues up the focus hierarchy up to the <code>Document</code> of the
+    <span>top-level browsing context</span>.</p>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+  

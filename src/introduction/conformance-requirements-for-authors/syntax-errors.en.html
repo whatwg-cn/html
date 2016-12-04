@@ -1,0 +1,246 @@
+<h4>Syntax errors</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The syntax of HTML is constrained to avoid a wide variety of problems.</p>
+
+  <dl>
+
+   <dt>Unintuitive error-handling behavior</dt>
+
+   <dd>
+
+    <p>Certain invalid syntax constructs, when parsed, result in DOM trees that are highly
+    unintuitive.</p>
+
+    <div class="example">
+
+     <p>For example, the following markup fragment results in a DOM with an <code>hr</code> element
+     that is an <em>earlier</em> sibling of the corresponding <code>table</code> element:</p>
+
+     <pre class="bad">&lt;table>&lt;hr>...</pre>
+
+    </div>
+
+   </dd>
+
+
+   <dt>Errors with optional error recovery</dt>
+
+   <dd>
+
+    <p>To allow user agents to be used in controlled environments without having to implement the
+    more bizarre and convoluted error handling rules, user agents are permitted to fail whenever
+    encountering a <span>parse error</span>.</p>
+
+   </dd>
+
+
+   <dt>Errors where the error-handling behavior is not compatible with streaming user agents</dt>
+
+   <dd>
+
+    <p>Some error-handling behavior, such as the behavior for the <code
+    data-x="">&lt;table>&lt;hr>...</code> example mentioned above, are incompatible with streaming
+    user agents (user agents that process HTML files in one pass, without storing state). To avoid
+    interoperability problems with such user agents, any syntax resulting in such behavior is
+    considered invalid.</p>
+
+   </dd>
+
+
+   <dt>Errors that can result in infoset coercion</dt>
+
+   <dd>
+
+    <p>When a user agent based on XML is connected to an HTML parser, it is possible that certain
+    invariants that XML enforces, such as element or attribute names never contain multiple colons,
+    will be violated by an HTML file. Handling this can require that the parser coerce the HTML DOM
+    into an XML-compatible infoset. Most syntax constructs that require such handling are considered
+    invalid. (Comments containing two consecutive hyphens, or ending with a hyphen, are exceptions
+    that are allowed in the HTML syntax.)</p>
+
+   </dd>
+
+
+   <dt>Errors that result in disproportionately poor performance</dt>
+
+   <dd>
+
+    <p>Certain syntax constructs can result in disproportionately poor performance. To discourage the
+    use of such constructs, they are typically made non-conforming.</p>
+
+    <div class="example">
+
+     <p>For example, the following markup results in poor performance, since all the unclosed
+     <code>i</code> elements have to be reconstructed in each paragraph, resulting in progressively
+     more elements in each paragraph:</p>
+
+     <pre class="bad">&lt;p>&lt;i>She dreamt.
+&lt;p>&lt;i>She dreamt that she ate breakfast.
+&lt;p>&lt;i>Then lunch.
+&lt;p>&lt;i>And finally dinner.</pre>
+
+     <p>The resulting DOM for this fragment would be:</p>
+
+     <ul class="domTree"><li class="t1"><code>p</code><ul><li class="t1"><code>i</code><ul><li class="t3"><code>#text</code>: <span data-x="">She dreamt.</span></li></ul></li></ul></li><li class="t1"><code>p</code><ul><li class="t1"><code>i</code><ul><li class="t1"><code>i</code><ul><li class="t3"><code>#text</code>: <span data-x="">She dreamt that she ate breakfast.</span></li></ul></li></ul></li></ul></li><li class="t1"><code>p</code><ul><li class="t1"><code>i</code><ul><li class="t1"><code>i</code><ul><li class="t1"><code>i</code><ul><li class="t3"><code>#text</code>: <span data-x="">Then lunch.</span></li></ul></li></ul></li></ul></li></ul></li><li class="t1"><code>p</code><ul><li class="t1"><code>i</code><ul><li class="t1"><code>i</code><ul><li class="t1"><code>i</code><ul><li class="t1"><code>i</code><ul><li class="t3"><code>#text</code>: <span data-x="">And finally dinner.</span></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+    </div>
+
+   </dd>
+
+
+   <dt>Errors involving fragile syntax constructs</dt>
+
+   <dd>
+
+    <p>There are syntax constructs that, for historical reasons, are relatively fragile. To help
+    reduce the number of users who accidentally run into such problems, they are made
+    non-conforming.</p>
+
+    <div class="example">
+
+     <p>For example, the parsing of certain named character references in attributes happens even
+     with the closing semicolon being omitted. It is safe to include an ampersand followed by
+     letters that do not form a named character reference, but if the letters are changed to a
+     string that <em>does</em> form a named character reference, they will be interpreted as that
+     character instead.</p>
+
+     <p>In this fragment, the attribute's value is "<code data-x="">?bill&amp;ted</code>":</p>
+
+     <pre class="bad">&lt;a href="?bill&amp;ted">Bill and Ted&lt;/a></pre>
+
+     <p>In the following fragment, however, the attribute's value is actually "<code
+     data-x="">?art&copy;</code>", <em>not</em> the intended "<code data-x="">?art&amp;copy</code>",
+     because even without the final semicolon, "<code data-x="">&amp;copy</code>" is handled the same
+     as "<code data-x="">&amp;copy;</code>" and thus gets interpreted as "<code
+     data-x="">&copy;</code>":</p>
+
+     <pre class="bad">&lt;a href="?art&amp;copy">Art and Copy&lt;/a></pre>
+
+     <p>To avoid this problem, all named character references are required to end with a semicolon,
+     and uses of named character references without a semicolon are flagged as errors.</p>
+
+     <p>Thus, the correct way to express the above cases is as
+     follows:</p>
+
+     <pre>&lt;a href="?bill&amp;ted">Bill and Ted&lt;/a> &lt;!-- &amp;ted is ok, since it's not a named character reference --></pre>
+     <pre>&lt;a href="?art&amp;amp;copy">Art and Copy&lt;/a> &lt;!-- the &amp; has to be escaped, since &amp;copy <em>is</em> a named character reference --></pre>
+
+    </div>
+
+   </dd>
+
+
+   <dt>Errors involving known interoperability problems in legacy user agents</dt>
+
+   <dd>
+
+    <p>Certain syntax constructs are known to cause especially subtle or serious problems in legacy
+    user agents, and are therefore marked as non-conforming to help authors avoid them.</p>
+
+    <div class="example">
+
+     <p>For example, this is why the U+0060 GRAVE ACCENT character (`) is not allowed in unquoted
+     attributes. In certain legacy user agents, <!-- namely IE --> it is sometimes treated as a
+     quote character.</p>
+
+    </div>
+
+    <div class="example">
+
+     <p>Another example of this is the DOCTYPE, which is required to trigger <span>no-quirks
+     mode</span>, because the behavior of legacy user agents in <span>quirks mode</span> is often
+     largely undocumented.</p>
+
+    </div>
+
+   </dd>
+
+
+<!--ADD-TOPIC:Security-->
+   <dt>Errors that risk exposing authors to security attacks</dt>
+
+   <dd>
+
+    <p>Certain restrictions exist purely to avoid known security problems.</p>
+
+    <div class="example">
+
+     <p>For example, the restriction on using UTF-7 exists purely to avoid authors falling prey to a
+     known cross-site-scripting attack using UTF-7. <ref spec=UTF7></p>
+
+    </div>
+
+   </dd>
+<!--REMOVE-TOPIC:Security-->
+
+
+   <dt>Cases where the author's intent is unclear</dt>
+
+   <dd>
+
+    <p>Markup where the author's intent is very unclear is often made non-conforming. Correcting
+    these errors early makes later maintenance easier.</p>
+
+    <div class="example">
+
+     <p>For example, it is unclear whether the author intended the following to be an
+     <code>h1</code> heading or an <code>h2</code> heading:</p>
+
+     <pre class="bad">&lt;h1>Contact details&lt;/h2></pre>
+
+    </div>
+
+   </dd>
+
+
+   <dt>Cases that are likely to be typos</dt>
+
+   <dd>
+
+    <p>When a user makes a simple typo, it is helpful if the error can be caught early, as this can
+    save the author a lot of debugging time. This specification therefore usually considers it an
+    error to use element names, attribute names, and so forth, that do not match the names defined
+    in this specification.</p>
+
+    <div class="example">
+
+     <p>For example, if the author typed <code data-x="">&lt;capton></code> instead of <code
+     data-x="">&lt;caption></code>, this would be flagged as an error and the author could correct
+     the typo immediately.</p>
+
+    </div>
+
+   </dd>
+
+
+   <dt>Errors that could interfere with new syntax in the future</dt>
+
+   <dd>
+
+    <p>In order to allow the language syntax to be extended in the future, certain otherwise
+    harmless features are disallowed.</p>
+
+    <div class="example">
+
+     <p>For example, "attributes" in end tags are ignored currently, but they are invalid, in case a
+     future change to the language makes use of that syntax feature without conflicting with
+     already-deployed (and valid!) content.</p>
+
+    </div>
+
+   </dd>
+
+
+  </dl>
+
+  <p>Some authors find it helpful to be in the practice of always quoting all attributes and always
+  including all optional tags, preferring the consistency derived from such custom over the minor
+  benefits of terseness afforded by making use of the flexibility of the HTML syntax. To aid such
+  authors, conformance checkers can provide modes of operation wherein such conventions are
+  enforced.</p>
+
+
+
+  

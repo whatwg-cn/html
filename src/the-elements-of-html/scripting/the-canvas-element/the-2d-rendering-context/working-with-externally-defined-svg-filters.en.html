@@ -1,0 +1,15 @@
+<h6>Working with externally-defined SVG filters</h6>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Since drawing is performed using filter value 'none' until an externally-defined
+  filter has finished loading, authors might wish to determine whether such a filter
+  has finished loading before proceeding with a drawing operation. One way to accomplish
+  this is to load the externally-defined filter elsewhere within the same page in some
+  element that sends a <code data-x="">load</code> event (for example, an <span>SVG
+  <code>use</code></span> element), and wait for the <code data-x="">load</code> event to be
+  dispatched.</p>
+
+  <div w-nodev>
+
+  

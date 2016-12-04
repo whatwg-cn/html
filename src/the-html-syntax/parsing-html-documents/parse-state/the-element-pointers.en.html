@@ -1,0 +1,15 @@
+<h5>The element pointers</h5>
+
+  <p>Initially, the <dfn><code data-x="">head</code> element pointer</dfn> and the <dfn><code
+  data-x="">form</code> element pointer</dfn> are both null.</p>
+
+  <p>Once a <code>head</code> element has been parsed (whether implicitly or explicitly) the
+  <span><code data-x="">head</code> element pointer</span> gets set to point to this node.</p>
+
+  <p>The <span><code data-x="">form</code> element pointer</span> points to the last
+  <code>form</code> element that was opened and whose end tag has not yet been seen. It is used to
+  make form controls associate with forms in the face of dramatically bad markup, for historical
+  reasons. It is ignored inside <code>template</code> elements.</p>
+
+
+  

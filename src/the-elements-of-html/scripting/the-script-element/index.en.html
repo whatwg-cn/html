@@ -1,0 +1,381 @@
+<h4 data-dfn-type="element" data-lt="script" id="the-script-element">The <dfn id="script"><code>script</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Metadata content</span>.</dd>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span data-x="script-supporting elements">Script-supporting element</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>metadata content</span> is expected.</dd>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dd>Where <span>script-supporting elements</span> are expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>If there is no <code data-x="attr-script-src">src</code>
+   attribute, depends on the value of the <code
+   data-x="attr-script-type">type</code> attribute, but must match
+   <span>script content restrictions</span>.</dd>
+   <dd>If there <em>is</em> a <code data-x="attr-script-src">src</code>
+   attribute, the element must be either empty or contain only
+   <span>script documentation</span> that also matches <span>script
+   content restrictions</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-script-src">src</code></dd>
+   <dd><code data-x="attr-script-type">type</code></dd>
+   <dd><code data-x="attr-script-charset">charset</code></dd>
+   <dd><code data-x="attr-script-async">async</code></dd>
+   <dd><code data-x="attr-script-defer">defer</code></dd>
+   <dd><code data-x="attr-script-crossorigin">crossorigin</code></dd>
+   <dd><code data-x="attr-script-nonce">nonce</code></dd>
+   <dd><code data-x="attr-script-integrity">integrity</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLScriptElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-script-src">src</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-script-type">type</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-script-charset">charset</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-script-async">async</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-script-defer">defer</span>;
+  [<span>CEReactions</span>] attribute DOMString? <span data-x="dom-script-crossOrigin">crossOrigin</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-script-text">text</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-script-nonce">nonce</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-script-integrity">integrity</span>;
+
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>script</code> element allows authors to include dynamic script and data blocks in
+  their documents. The element does not <span data-x="represents">represent</span> content for the
+  user.</p>
+
+  <p>The <dfn><code data-x="attr-script-type">type</code></dfn> attribute allows customization of
+  the type of script represented:</p>
+
+  <ul>
+    <li><p>Omitting the attribute, or setting it to a <span>JavaScript MIME type</span>, means that
+    the script is a <span>classic script</span>, to be interpreted according to the JavaScript <i
+    data-x="js-prod-Script">Script</i> top-level production. Classic scripts are affected by the
+    <code data-x="attr-script-charset">charset</code>, <code
+    data-x="attr-script-async">async</code>, and <code data-x="attr-script-defer">defer</code>
+    attributes. Authors should omit the attribute, instead of redundantly giving a <span>JavaScript
+    MIME type</span>.</p></li>
+
+    <li><p>Setting the attribute to an <span>ASCII case-insensitive</span> match for the string
+    "<code data-x="">module</code>" means that the script is a <span>module script</span>, to be
+    interpreted according to the JavaScript <i data-x="js-prod-Module">Module</i> top-level
+    production. Module scripts are not affected by the <code
+    data-x="attr-script-charset">charset</code> and <code data-x="attr-script-defer">defer</code>
+    attributes.</p></li>
+
+    <li><p>Setting the attribute to any other value means that the script is a <dfn>data
+    block</dfn>, which is not processed. None of the <code>script</code> attributes (except <code
+    data-x="attr-script-type">type</code> itself) have any effect on data blocks. Authors must use
+    a <span>valid MIME type</span> that is not a <span>JavaScript MIME type</span> to denote data
+    blocks.</p></li>
+  </ul>
+
+  <p class="note">The requirement that <span data-x="data block">data blocks</span> must be denoted
+  using a <span>valid MIME type</span> is in place to avoid potential future collisions. If this
+  specification ever adds additional types of <span>script</span>, they will be triggered by
+  setting the <code data-x="attr-script-type">type</code> attribute to something which is not a
+  MIME type, like how the "<code data-x="">module</code>" value denotes <span data-x="module
+  script">module scripts</span>. By using a valid MIME type now, you ensure that your data block
+  will not ever be reinterpreted as a different script type, even in future user agents.</p>
+
+  <p><span data-x="classic script">Classic scripts</span> and <span data-x="module script">module
+  scripts</span> may either be embedded inline or may be imported from an external file using the
+  <dfn data-export="" data-dfn-for="script" data-dfn-type="element-attr"><code
+  data-x="attr-script-src">src</code></dfn> attribute, which if specified gives the <span>URL</span>
+  of the external script resource to use. If <code data-x="attr-script-src">src</code> is specified,
+  it must be a <span>valid non-empty URL potentially surrounded by spaces</span>. The contents of
+  inline <code>script</code> elements, or the external script resource, must conform with the
+  requirements of the JavaScript specification's <i data-x="js-prod-Script">Script</i> or <i
+  data-x="js-prod-Module">Module</i> productions, for <span data-x="classic script">classic
+  scripts</span> and <span data-x="module script">module scripts</span> respectively. <ref
+  spec="JAVASCRIPT"></p>
+
+  <p>When used to include <span data-x="data block">data blocks</span>, the data must be embedded
+  inline, the format of the data must be given using the <code
+  data-x="attr-script-type">type</code> attribute, and the contents of the <code>script</code>
+  element must conform to the requirements defined for the format used. The <code
+  data-x="attr-script-src">src</code>, <code data-x="attr-script-charset">charset</code>, <code
+  data-x="attr-script-async">async</code>, <code data-x="attr-script-defer">defer</code>, <code
+  data-x="attr-script-crossorigin">crossorigin</code>, <code data-x="attr-script-nonce">nonce</code>
+  and <code data-x="attr-script-integrity">integrity</code> attributes must not be specified.</p>
+
+  <p>The <dfn><code data-x="attr-script-charset">charset</code></dfn> attribute gives the character
+  encoding of the external script resource. The attribute must not be specified if the <code
+  data-x="attr-script-src">src</code> attribute is not present, or if the script is not a
+  <span>classic script</span>. (<span data-x="module script">Module scripts</span> are always
+  interpreted as UTF-8.) If the attribute is set, its value must be an <span>ASCII
+  case-insensitive</span> match for one of the <span data-x="encoding label">labels</span> of an
+  <span>encoding</span>, and must specify the same <span>encoding</span> as the <code
+  data-x="">charset</code> parameter of the <span data-x="Content-Type">Content-Type
+  metadata</span> of the external file, if any. <ref spec=ENCODING></p>
+
+  <p>The <dfn><code data-x="attr-script-async">async</code></dfn> and <dfn><code
+  data-x="attr-script-defer">defer</code></dfn> attributes are <span data-x="boolean
+  attribute">boolean attributes</span> that indicate how the script should be evaluated. <span
+  data-x="classic script">Classic scripts</span> may specify <code
+  data-x="attr-script-defer">defer</code> or <code data-x="attr-script-async">async</code>; <span
+  data-x="module script">module scripts</span> may specify <code
+  data-x="attr-script-async">async</code>.</p>
+
+  <p>There are several possible modes that can be selected using these attributes, and depending on
+  the script's type.</p>
+
+  <p>For <span data-x="classic script">classic scripts</span>, if the <code
+  data-x="attr-script-async">async</code> attribute is present, then the classic script will be
+  fetched <span>in parallel</span> to parsing and evaluated as soon as it is available (potentially
+  before parsing completes). If the <code data-x="attr-script-async">async</code> attribute is not
+  present but the <code data-x="attr-script-defer">defer</code> attribute is present, then the
+  classic script will be fetched <span>in parallel</span> and evaluated when the page has finished
+  parsing. If neither attribute is present, then the script is fetched and evaluated immediately,
+  blocking parsing until these are both complete.</p>
+
+  <p>For <span data-x="module script">module scripts</span>, if the <code
+  data-x="attr-script-async">async</code> attribute is present, then the module script and all its
+  dependencies will be fetched <span>in parallel</span> to parsing, and the module script will
+  be evaluated as soon as it is available (potentially before parsing completes). Otherwise, the
+  module script and its dependencies will be fetched <span>in parallel</span> to parsing and
+  evaluated when the page has finished parsing. (The <code data-x="attr-script-defer">defer</code>
+  attribute has no effect on module scripts.)</p>
+
+  <p>This is all summarized in the following schematic diagram:</p>
+
+  <p><img src="/images/asyncdefer.svg" style="width: 80%; min-width: 820px;" alt="With &lt;script&gt;, parsing is interrupted by fetching and execution. With &lt;script defer&gt;, fetching is parallel to parsing and execution takes place after all parsing has finished. And with &lt;script async&gt;, fetching is parallel to parsing but once it finishes parsing is interrupted to execute the script. The story for &lt;script type=&quot;module&quot;&gt; is similar to &lt;script defer&gt;, but the dependencies will be fetched as well, and the story for &lt;script type=&quot;module&quot; async&gt; is similar to &lt;script async&gt; with the extra dependency fetching."></p>
+
+  <p class="note">The exact processing details for these attributes are, for mostly historical
+  reasons, somewhat non-trivial, involving a number of aspects of HTML. The implementation
+  requirements are therefore by necessity scattered throughout the specification. The algorithms
+  below (in this section) describe the core of this processing, but these algorithms reference and
+  are referenced by the parsing rules for <code>script</code> <a href="#scriptTag">start</a> and <a
+  href="#scriptEndTag">end</a> tags in HTML, <a href="#scriptForeignEndTag">in foreign content</a>,
+  and <a href="#scriptTagXML">in XML</a>, the rules for the <code
+  data-x="dom-document-write">document.write()</code> method, the handling of <a
+  href="#scripting">scripting</a>, etc.</p>
+
+  <p>The <code data-x="attr-script-defer">defer</code> attribute may be specified even if the <code
+  data-x="attr-script-async">async</code> attribute is specified, to cause legacy Web browsers that
+  only support <code data-x="attr-script-defer">defer</code> (and not <code
+  data-x="attr-script-async">async</code>) to fall back to the <code
+  data-x="attr-script-defer">defer</code> behavior instead of the blocking behavior that
+  is the default.</p>
+
+  <p>The <dfn><code data-x="attr-script-crossorigin">crossorigin</code></dfn> attribute is a
+  <span>CORS settings attribute</span>. For <span data-x="classic script">classic scripts</span>,
+  it controls whether error information will be exposed, when the script is obtained from other <span
+  data-x="origin">origins</span>. For <span data-x="module script">module scripts</span>, it
+  controls the <span data-x="concept-request-credentials-mode">credentials mode</span> used for
+  cross-origin requests.</p>
+
+  <p class="note">Unlike <span data-x="classic script">classic scripts</span>, <span
+  data-x="module script">module scripts</span> require the use of the <span
+  data-x="CORS protocol">CORS protocol</span> for cross-origin fetching.</p>
+
+  <p>The <dfn data-export="" data-dfn-for="script" data-dfn-type="element-attr"><code
+  data-x="attr-script-nonce">nonce</code></dfn> attribute represents a cryptographic nonce ("number
+  used once") which can be used by <cite>Content Security Policy</cite> to determine whether or not
+  the script specified by an element will be executed. The value is text. <ref spec="CSP"></p>
+
+  <p>The <dfn data-export="" data-dfn-for="script" data-dfn-type="element-attr"><code
+  data-x="attr-script-integrity">integrity</code></dfn> attribute represents the <span
+  data-x="concept-request-integrity-metadata">integrity metadata</span> for requests which this
+  element is responsible for. The value is text. The <code
+  data-x="attr-script-integrity">integrity</code> attribute must not be specified when embedding a
+  <span>module script</span> or when the <code data-x="attr-script-src">src</code> attribute is not
+  specified. <ref spec="SRI"></p>
+
+
+  <p>Changing the <code data-x="attr-script-src">src</code>, <code
+  data-x="attr-script-type">type</code>, <code data-x="attr-script-charset">charset</code>, <code
+  data-x="attr-script-async">async</code>, <code data-x="attr-script-defer">defer</code>, <code
+  data-x="attr-script-crossorigin">crossorigin</code>, <code data-x="attr-script-nonce">nonce</code>
+  and <code data-x="attr-script-integrity">integrity</code> attributes dynamically has no direct
+  effect; these attributes are only used at specific times described below.</p> <!-- by implication,
+  changes to the base URL also have no effect -->
+
+  <div w-nodev>
+
+  <p>The IDL attributes <dfn><code data-x="dom-script-src">src</code></dfn>, <dfn><code
+  data-x="dom-script-type">type</code></dfn>, <dfn><code
+  data-x="dom-script-charset">charset</code></dfn>, <dfn><code
+  data-x="dom-script-defer">defer</code></dfn>, <dfn><code
+  data-x="dom-script-integrity">integrity</code></dfn>, and <dfn><code
+  data-x="dom-script-nonce">nonce</code></dfn>, must each <span>reflect</span> the respective
+  content attributes of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-script-crossOrigin">crossOrigin</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-script-crossorigin">crossorigin</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-script-async">async</code></dfn> IDL attribute controls whether the
+  element will execute asynchronously or not. If the element's <span>"non-blocking"</span> flag is
+  set, then, on getting, the <code data-x="dom-script-async">async</code> IDL attribute must return
+  true, and on setting, the <span>"non-blocking"</span> flag must first be unset, and then the
+  content attribute must be removed if the IDL attribute's new value is false, and must be set to
+  the empty string if the IDL attribute's new value is true. If the element's
+  <span>"non-blocking"</span> flag is <em>not</em> set, the IDL attribute must <span>reflect</span>
+  the <code data-x="attr-script-async">async</code> content attribute.</p>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>script</var> . <code subdfn data-x="dom-script-text">text</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the <span>child text content</span> of the element.</p>
+
+    <p>Can be set, to replace the element's children with the given value.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The IDL attribute <dfn><code data-x="dom-script-text">text</code></dfn> must return the
+  <span>child text content</span> of the <code>script</code> element. On setting, it must act the
+  same way as the <code>textContent</code> IDL attribute.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <p class="note">When inserted using the <code data-x="dom-document-write">document.write()</code>
+  method, <code>script</code> elements execute (typically blocking further script execution or HTML parsing), but when inserted using
+  <code data-x="dom-innerHTML">innerHTML</code> and <code data-x="dom-outerHTML">outerHTML</code>
+  attributes, they do not execute at all.</p>
+
+  <div class="example">
+
+   <p>In this example, two <code>script</code> elements are used. One embeds an external
+   <span>classic script</span>, and the other includes some data as a <span>data block</span>.</p>
+
+   <pre>&lt;script src="game-engine.js">&lt;/script>
+&lt;script type="text/x-game-map">
+........U.........e
+o............A....e
+.....A.....AAA....e
+.A..AAA...AAAAA...e
+&lt;/script></pre>
+
+   <p>The data in this case might be used by the script to generate the map of a video game. The
+   data doesn't have to be used that way, though; maybe the map data is actually embedded in other
+   parts of the page's markup, and the data block here is just used by the site's search engine to
+   help users who are looking for particular features in their game maps.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following sample shows how a <code>script</code> element can be used to define a function
+   that is then used by other parts of the document, as part of a <span>classic script</span>. It
+   also shows how a <code>script</code> element can be used to invoke script while the document is
+   being parsed, in this case to initialize the form's output.</p>
+
+   <pre>&lt;script>
+ function calculate(form) {
+   var price = 52000;
+   if (form.elements.brakes.checked)
+     price += 1000;
+   if (form.elements.radio.checked)
+     price += 2500;
+   if (form.elements.turbo.checked)
+     price += 5000;
+   if (form.elements.sticker.checked)
+     price += 250;
+   form.elements.result.value = price;
+ }
+&lt;/script>
+&lt;form name="pricecalc" onsubmit="return false" onchange="calculate(this)">
+ &lt;fieldset>
+  &lt;legend>Work out the price of your car&lt;/legend>
+  &lt;p>Base cost: &pound;52000.&lt;/p>
+  &lt;p>Select additional options:&lt;/p>
+  &lt;ul>
+   &lt;li>&lt;label>&lt;input type=checkbox name=brakes> Ceramic brakes (&pound;1000)&lt;/label>&lt;/li>
+   &lt;li>&lt;label>&lt;input type=checkbox name=radio> Satellite radio (&pound;2500)&lt;/label>&lt;/li>
+   &lt;li>&lt;label>&lt;input type=checkbox name=turbo> Turbo charger (&pound;5000)&lt;/label>&lt;/li>
+   &lt;li>&lt;label>&lt;input type=checkbox name=sticker> "XZ" sticker (&pound;250)&lt;/label>&lt;/li>
+  &lt;/ul>
+  &lt;p>Total: &pound;&lt;output name=result>&lt;/output>&lt;/p>
+ &lt;/fieldset>
+ &lt;script>
+  calculate(document.forms.pricecalc);
+ &lt;/script>
+&lt;/form></pre>
+
+  </div>
+
+  <div class="example" id="script-type-module-example-1">
+
+   <p>The following sample shows how a <code>script</code> element can be used to include an
+   external <span>module script</span>.
+
+   <pre>&lt;script type="module" src="app.js">&lt;/script></pre>
+
+   <p>This module, and all its dependencies (expressed through JavaScript <code
+   data-x="">import</code> statements in the source file), will be fetched. Once the entire
+   resulting module tree has been imported, and the document has finished parsing, the contents of
+   <code data-x="">app.js</code> will be evaluated.</p>
+
+   <p>Additionally, if code from another <code>script</code> element in the same <code>Window</code>
+   imports the module from <code data-x="">app.js</code> (e.g. via <code data-x="">import
+   "./app.js";</code>), then the same <span>module script</span> created by the
+   former <code>script</code> element will be imported.</p>
+
+  </div>
+
+  <div class="example" id="script-type-module-example-2">
+
+   <p>The following sample shows how a <code>script</code> element can be used to write an inline
+   <span>module script</span> that performs a number of substitutions on the document's text, in
+   order to make for a more interesting reading experience (e.g. on a news site): <ref
+   spec="XKCD1288"></p>
+
+   <pre>&lt;script type="module">
+ import { walkAllTextNodeDescendants } from "./dom-utils.js";
+
+ const substitutions = new Map([
+   ["witnesses", "these dudes I know"]
+   ["allegedly", "kinda probably"]
+   ["new study", "Tumblr post"]
+   ["rebuild", "avenge"]
+   ["space", "spaaace"]
+   ["Google glass", "Virtual Boy"]
+   ["smartphone", "Pokédex"]
+   ["electric", "atomic"]
+   ["Senator", "Elf-Lord"]
+   ["car", "cat"]
+   ["election", "eating contest"]
+   ["Congressional leaders", "river spirits"]
+   ["homeland security", "Homestar Runner"]
+   ["could not be reached for comment", "is guilty and everyone knows it"]
+ ]);
+
+ function substitute(textNode) {
+   for (const [before, after] of substitutions.entries()) {
+     textNode.data = textNode.data.replace(new RegExp(`\\b${before}\\b`, "ig"), after);
+   }
+ }
+
+ walkAllTextNodeDescendants(document.body, substitute);
+&lt;/script></pre>
+
+   <p>Some notable features gained by using a module script include the ability to import functions
+   from other JavaScript modules, strict mode by default, and how top-level declarations do not
+   introduce new properties onto the <span>global object</span>. Also note that no matter where
+   this <code>script</code> element appears in the document, it will not be evaluated until both
+   document parsing has complete and its dependency (<code data-x="">dom-utils.js</code>) has been
+   fetched and evaluated.</p>
+
+  </div>
+
+  <div w-nodev>
+
+  

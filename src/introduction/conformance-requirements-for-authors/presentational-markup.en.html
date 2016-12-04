@@ -1,0 +1,68 @@
+<h4>Presentational markup</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The majority of presentational features from previous versions of HTML are no longer allowed.
+  Presentational markup in general has been found to have a number of problems:</p>
+
+  <dl>
+
+   <dt>The use of presentational elements leads to poorer accessibility</dt>
+
+   <dd>
+
+    <p>While it is possible to use presentational markup in a way that provides users of assistive
+    technologies (ATs) with an acceptable experience (e.g. using ARIA), doing so is significantly
+    more difficult than doing so when using semantically-appropriate markup. Furthermore, even using
+    such techniques doesn't help make pages accessible for non-AT non-graphical users, such as users
+    of text-mode browsers.</p>
+
+    <p>Using media-independent markup, on the other hand, provides an easy way for documents to be
+    authored in such a way that they work for more users (e.g. text browsers).</p>
+
+   </dd>
+
+
+   <dt>Higher cost of maintenance</dt>
+
+   <dd>
+
+    <p>It is significantly easier to maintain a site written in such a way that the markup is
+    style-independent. For example, changing the color of a site that uses <code
+    data-x="">&lt;font&nbsp;color=""></code> throughout requires changes across the entire site,
+    whereas a similar change to a site based on CSS can be done by changing a single file.</p>
+
+   </dd>
+
+
+   <dt>Larger document sizes</dt>
+
+   <dd>
+
+    <p>Presentational markup tends to be much more redundant, and thus results in larger document
+    sizes.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>For those reasons, presentational markup has been removed from HTML in this version. This
+  change should not come as a surprise; HTML4 deprecated presentational markup many years ago and
+  provided a mode (HTML4 Transitional) to help authors move away from presentational markup; later,
+  XHTML 1.1 went further and obsoleted those features altogether.</p>
+
+  <p>The only remaining presentational markup features in HTML are the <code
+  data-x="attr-style">style</code> attribute and the <code>style</code> element. Use of the <code
+  data-x="attr-style">style</code> attribute is somewhat discouraged in production environments, but
+  it can be useful for rapid prototyping (where its rules can be directly moved into a separate
+  style sheet later) and for providing specific styles in unusual cases where a separate style sheet
+  would be inconvenient. Similarly, the <code>style</code> element can be useful in syndication or
+  for page-specific styles, but in general an external style sheet is likely to be more convenient
+  when the styles apply to multiple pages.</p>
+
+  <p>It is also worth noting that some elements that were previously presentational have been
+  redefined in this specification to be media-independent: <code>b</code>, <code>i</code>,
+  <code>hr</code>, <code>s</code>, <code>small</code>, and <code>u</code>.</p>
+
+
+  

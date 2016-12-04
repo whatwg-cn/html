@@ -1,0 +1,103 @@
+<h4>The <dfn><code>hr</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLHRElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>hr</code> element <span>represents</span> a <span>paragraph</span>-level thematic
+  break, e.g. a scene change in a story, or a transition to another topic within a section of a
+  reference book.</p>
+
+  <div class="example">
+
+   <p>The following fictional extract from a project manual shows two sections that use the
+   <code>hr</code> element to separate topics within the section.</p>
+
+   <pre>&lt;section>
+ &lt;h1>Communication&lt;/h1>
+ &lt;p>There are various methods of communication. This section
+ covers a few of the important ones used by the project.&lt;/p>
+ <strong>&lt;hr></strong>
+ &lt;p>Communication stones seem to come in pairs and have mysterious
+ properties:&lt;/p>
+ &lt;ul>
+  &lt;li>They can transfer thoughts in two directions once activated
+  if used alone.&lt;/li>
+  &lt;li>If used with another device, they can transfer one's
+  consciousness to another body.&lt;/li>
+  &lt;li>If both stones are used with another device, the
+  consciousnesses switch bodies.&lt;/li>
+ &lt;/ul>
+ <strong>&lt;hr></strong>
+ &lt;p>Radios use the electromagnetic spectrum in the meter range and
+ longer.&lt;/p>
+ <strong>&lt;hr></strong>
+ &lt;p>Signal flares use the electromagnetic spectrum in the
+ nanometer range.&lt;/p>
+&lt;/section>
+&lt;section>
+ &lt;h1>Food&lt;/h1>
+ &lt;p>All food at the project is rationed:&lt;/p>
+ &lt;dl>
+  &lt;dt>Potatoes&lt;/dt>
+  &lt;dd>Two per day&lt;/dd>
+  &lt;dt>Soup&lt;/dt>
+  &lt;dd>One bowl per day&lt;/dd>
+ &lt;/dl>
+ <strong>&lt;hr></strong>
+ &lt;p>Cooking is done by the chefs on a set rotation.&lt;/p>
+&lt;/section></pre>
+
+   <p>There is no need for an <code>hr</code> element between the sections themselves, since the
+   <code>section</code> elements and the <code>h1</code> elements imply thematic changes
+   themselves.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following extract from <cite>Pandora's Star</cite> by Peter F. Hamilton shows two
+   paragraphs that precede a scene change and the paragraph that follows it. The scene change,
+   represented in the printed book by a gap containing a solitary centered star between the second
+   and third paragraphs, is here represented using the <code>hr</code> element.</p>
+
+   <!-- ISBN 1-4050-0020-1; bottom of page 14 -->
+
+   <pre lang="en-GB">&lt;p>Dudley was ninety-two, in his second life, and fast approaching
+time for another rejuvenation. Despite his body having the physical
+age of a standard fifty-year-old, the prospect of a long degrading
+campaign within academia was one he regarded with dread. For a
+supposedly advanced civilization, the Intersolar Commonwealth could be
+appallingly backward at times, not to mention cruel.&lt;/p>
+&lt;p>&lt;i>Maybe it won't be that bad&lt;/i>, he told himself. The lie was
+comforting enough to get him through the rest of the night's
+shift.&lt;/p>
+<strong>&lt;hr></strong>
+&lt;p>The Carlton AllLander drove Dudley home just after dawn. Like the
+astronomer, the vehicle was old and worn, but perfectly capable of
+doing its job. It had a cheap diesel engine, common enough on a
+semi-frontier world like Gralmond, although its drive array was a
+thoroughly modern photoneural processor. With its high suspension and
+deep-tread tyres it could plough along the dirt track to the
+observatory in all weather and seasons, including the metre-deep snow
+of Gralmond's winters.&lt;/p></pre>
+
+  </div>
+
+  <p class="note">The <code>hr</code> element does not affect the document's
+  <span>outline</span>.</p>
+
+
+  

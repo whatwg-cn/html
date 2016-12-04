@@ -1,0 +1,78 @@
+<h4 id="navigator.online"><span id="browser-state">Browser state</span></h4>
+
+  <pre class="idl">[NoInterfaceObject, Exposed=(Window,Worker)]
+interface <dfn>NavigatorOnLine</dfn> {
+  readonly attribute boolean <span data-x="dom-navigator-onLine">onLine</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-onLine">onLine</code></dt>
+
+   <dd>
+
+    <p>Returns false if the user agent is definitely offline (disconnected from the network).
+    Returns true if the user agent might be online.</p>
+
+    <p>The events <code data-x="event-online">online</code> and <code
+    data-x="event-offline">offline</code> are fired when the value of this attribute changes.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-navigator-onLine">navigator.onLine</code></dfn> attribute must return
+  false if the user agent will not contact the network when the user follows links or when a script
+  requests a remote page (or knows that such an attempt would fail), and must return true
+  otherwise.</p>
+
+  <p>When the value that would be returned by the <code
+  data-x="dom-navigator-onLine">navigator.onLine</code> attribute of a <code>Window</code> or
+  <code>WorkerGlobalScope</code> changes from true to false, the user agent must <span>queue a
+  task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-offline">offline</code> at the <code>Window</code> or <code>WorkerGlobalScope</code>
+  object.</p>
+
+  <p>On the other hand, when the value that would be returned by the <code
+  data-x="dom-navigator-onLine">navigator.onLine</code> attribute of a <code>Window</code> or
+  <code>WorkerGlobalScope</code> changes from false to true, the user agent must <span>queue a
+  task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-online">online</code> at the <code>Window</code> or <code>WorkerGlobalScope</code>
+  object.</p>
+
+  <p>The <span>task source</span> for these <span data-x="concept-task">tasks</span> is the
+  <span>networking task source</span>.</p>
+
+  </div>
+
+  <p class="note">This attribute is inherently unreliable. A computer can be connected to a network
+  without having Internet access.</p>
+
+  <div class="example">
+
+   <p>In this example, an indicator is updated as the browser goes online and offline.</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Online status&lt;/title>
+  &lt;script>
+   function updateIndicator() {
+     document.getElementById('indicator').textContent = navigator.onLine ? 'online' : 'offline';
+   }
+  &lt;/script>
+ &lt;/head>
+ &lt;body onload="updateIndicator()" ononline="updateIndicator()" onoffline="updateIndicator()">
+  &lt;p>The network is: &lt;span id="indicator">(state unknown)&lt;/span>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+
+<!--TOPIC:DOM APIs-->
+
+  

@@ -1,0 +1,80 @@
+<h6 id="parsing-main-inheadnoscript">The "<dfn data-x="insertion mode: in head noscript">in head noscript</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in head
+  noscript">in head noscript</span>" <span>insertion mode</span>, the user agent must handle the
+  token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "html"</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "noscript"</dt>
+   <dd>
+
+    <p>Pop the <span>current node</span> (which will be a <code>noscript</code> element) from the
+    <span>stack of open elements</span>; the new <span>current node</span> will be a
+    <code>head</code> element.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in head">in
+    head</span>".</p>
+
+   </dd>
+
+   <dt>A character token that is one of U+0009 CHARACTER TABULATION, U+000A LINE FEED (LF), U+000C
+   FORM FEED (FF), U+000D CARRIAGE RETURN (CR), or U+0020 SPACE</dt>
+   <dt>A comment token</dt>
+   <dt>A start tag whose tag name is one of: "basefont", "bgsound", "link", "meta", "noframes",
+   "style"</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    head">in head</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "br"</dt>
+   <dd>
+    <p>Act as described in the "anything else" entry below.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "head", "noscript"</dt>
+   <dt>Any other end tag</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <!-- can't get here with an EOF and a fragment case -->
+
+    <p><span>Parse error</span>.</p>
+
+    <!-- fake </noscript> -->
+    <p>Pop the <span>current node</span> (which will be a <code>noscript</code> element) from the
+    <span>stack of open elements</span>; the new <span>current node</span> will be a
+    <code>head</code> element.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in head">in
+    head</span>".</p>
+    <!-- end fake </noscript> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

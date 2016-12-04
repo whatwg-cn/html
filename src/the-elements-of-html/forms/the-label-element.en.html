@@ -1,0 +1,175 @@
+<h4>The <dfn><code>label</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Interactive content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>, but with no descendant <span data-x="category-label">labelable elements</span> unless it is the element's <span>labeled control</span>, and no descendant <code>label</code> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-label-for">for</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLLabelElement</dfn> : <span>HTMLElement</span> {
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-label-form">form</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-label-htmlFor">htmlFor</span>;
+  readonly attribute <span>HTMLElement</span>? <span data-x="dom-label-control">control</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>label</code> element <span>represents</span> a caption in a user interface. The
+  caption can be associated with a specific form control<span w-nodev>, known as the
+  <code>label</code> element's <dfn>labeled control</dfn></span>, either using the <code
+  data-x="attr-label-for">for</code> attribute, or by putting the form control inside the
+  <code>label</code> element itself.</p>
+
+  <div w-nodev>
+
+  <p>Except where otherwise specified by the following rules, a <code>label</code> element has no
+  <span>labeled control</span>.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-label-for">for</code></dfn> attribute may be specified to indicate a
+  form control with which the caption is to be associated. If the attribute is specified, the
+  attribute's value must be the <span data-x="concept-id">ID</span> of a <span
+  data-x="category-label">labelable element</span> in the same <span>tree</span> as the
+  <code>label</code> element. <span w-nodev>If the attribute is specified and there is an
+  element in the <span>tree</span> whose <span data-x="concept-id">ID</span> is equal to the value
+  of the <code data-x="attr-label-for">for</code> attribute, and the first such element in
+  <span>tree order</span> is a <span data-x="category-label">labelable element</span>, then that
+  element is the <code>label</code> element's <span>labeled control</span>.</span></p>
+
+  <div w-nodev>
+
+  <p>If the <code data-x="attr-label-for">for</code> attribute is not specified, but the
+  <code>label</code> element has a <span data-x="category-label">labelable element</span> descendant,
+  then the first such descendant in <span>tree order</span> is the <code>label</code> element's
+  <span>labeled control</span>.</p>
+
+  <p>The <code>label</code> element's exact default presentation and behavior, in particular what
+  its <span>activation behavior</span> might be, if anything, should match the platform's label
+  behavior. The <span>activation behavior</span> of a <code>label</code> element for events targeted
+  at <span>interactive content</span> descendants of a <code>label</code> element, and any
+  descendants of those <span>interactive content</span> descendants, must be to do nothing.</p>
+
+  <!-- activation behavior need not be dependent on whether the
+  labeled control is being rendered:
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=371
+  -->
+
+  <div class="example">
+
+   <p>For example, on platforms where clicking a checkbox label checks the checkbox, clicking the
+   <code>label</code> in the following snippet could trigger the user agent to <span>fire a <code
+   data-x="event-click">click</code> event</span> at the <code>input</code> element, as if the
+   element itself had been triggered by the user:</p>
+
+   <pre>&lt;label>&lt;input type=checkbox name=lost> Lost&lt;/label></pre>
+
+   <p>On other platforms, the behavior might be just to focus the control, or do nothing.</p>
+
+  </div>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows three form controls each with a label, two of which have small
+   text showing the right format for users to use.</p>
+
+   <pre>&lt;p>&lt;label>Full name: &lt;input name=fn> &lt;small>Format: First Last&lt;/small>&lt;/label>&lt;/p>
+&lt;p>&lt;label>Age: &lt;input name=age type=number min=0>&lt;/label>&lt;/p>
+&lt;p>&lt;label>Post code: &lt;input name=pc> &lt;small>Format: AB12 3CD&lt;/small>&lt;/label>&lt;/p></pre>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>label</var> . <code subdfn data-x="dom-label-control">control</code></dt>
+
+   <dd>
+
+    <p>Returns the form control that is associated with this element.</p>
+
+   </dd>
+
+   <dt><var>label</var> . <code subdfn data-x="dom-label-form">form</code></dt>
+
+   <dd>
+
+    <p>Returns the <span>form owner</span> of the form control that is associated with this
+    element.</p>
+
+    <p>Returns null if there isn't one.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-label-htmlFor">htmlFor</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-label-for">for</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-label-control">control</code></dfn> IDL attribute must return the
+  <code>label</code> element's <span>labeled control</span>, if any, or null if there isn't one.</p>
+
+  <p>The <dfn><code data-x="dom-label-form">form</code></dfn> IDL attribute must run the following
+  steps:</p>
+
+  <ol>
+   <li><p>If the <code>label</code> element has no <span>labeled control</span>, then return
+   null.</p></li>
+
+   <li><p>If the <code>label</code> element's <span>labeled control</span> is not a
+   <span>form-associated element</span>, then return null.</p></li>
+
+   <li><p>Return the <code>label</code> element's <span>labeled control</span>'s <span>form
+   owner</span> (which can still be null).</p></li>
+  </ol>
+
+  </div>
+
+  <p class="note">The <code data-x="dom-label-form">form</code> IDL attribute on the
+  <code>label</code> element is different from the <code data-x="attr-fae-form">form</code> IDL
+  attribute on <span data-x="category-listed">listed</span> <span data-x="form-associated
+  element">form-associated elements</span>, and the <code>label</code> element does not have a <code
+  data-x="attr-fae-form">form</code> content attribute.</p>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>control</var> . <code subdfn data-x="dom-lfe-labels">labels</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>NodeList</code> of all the <code>label</code> elements that the form control
+    is associated with.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p><span data-x="category-label">Labelable elements</span> have a <code>NodeList</code> object
+  associated with them that represents the list of <code>label</code> elements, in <span>tree
+  order</span>, whose <span>labeled control</span> is the element in question. The <dfn><code data-x="dom-lfe-labels">labels</code></dfn> IDL attribute of <span
+  data-x="category-label">labelable elements</span>, on getting, must return that
+  <code>NodeList</code> object.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+  

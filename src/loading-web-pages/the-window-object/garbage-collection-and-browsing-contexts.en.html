@@ -1,0 +1,71 @@
+<h4>Garbage collection and browsing contexts</h4>
+
+  <p>A <span>browsing context</span> has a strong reference to each of its <code>Document</code>s
+  and its <code>WindowProxy</code> object, and the user agent itself has a strong reference to its
+  <span data-x="top-level browsing context">top-level browsing contexts</span>.</p>
+
+  <p>A <code>Document</code> has a strong reference to its <code>Window</code> object.</p>
+
+  <p class="note">A <code>Window</code> object <span data-x="implied strong reference">has a strong
+  reference</span> to its <code>Document</code> object through its <code
+  data-x="dom-document">document</code> attribute. Thus, references from other scripts to either of
+  those objects will keep both alive. Similarly, both <code>Document</code> and <code>Window</code>
+  objects have <span data-x="implied strong reference">implied strong references</span> to the
+  <code>WindowProxy</code> object.</p>
+
+  <p>Each <span data-x="concept-script">script</span> has a strong reference to its <span>settings
+  object</span>, and each <span>environment settings object</span> has strong references to its
+  <span data-x="concept-settings-object-global">global object</span>, <span>responsible browsing
+  context</span>, and <span>responsible document</span> (if any).</p>
+
+  <!-- discard a document -->
+  <p>When a <span>browsing context</span> is to <dfn data-export="">discard a
+  <code>Document</code></dfn>, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Set the <code>Document</code>'s <i
+   data-x="concept-document-salvageable">salvageable</i> state to false.</p></li>
+
+   <li><p>Run any <span>unloading document cleanup steps</span> for the <code>Document</code> that
+   are defined by this specification and <span>other applicable specifications</span>.</p></li>
+
+   <li><p><span data-x="abort a document">Abort the <code>Document</code></span>.</p></li>
+
+   <li><p>Remove any <span data-x="concept-task">tasks</span> associated with the
+   <code>Document</code> in any <span>task source</span>, without running those tasks.</p></li>
+
+   <li><p><span data-x="a browsing context is discarded">Discard</span> all the <span data-x="child
+   browsing context">child browsing contexts</span> of the <code>Document</code>.</p></li>
+
+   <li><p>Lose the strong reference from the <code>Document</code>'s <span
+   data-x="concept-document-bc">browsing context</span> to the <code>Document</code>.</p></li>
+
+  </ol>
+
+  <p class="note">Whenever a <code>Document</code> object is <span data-x="discard a
+  Document">discarded</span>, it is also removed from the list of <span>the worker's
+  <code>Document</code>s</span> of each worker whose list contains that <code>Document</code>.</p>
+
+  <p>When <dfn data-export="">a <em>browsing context</em> is discarded</dfn>, the strong reference
+  from the user agent itself to the <span>browsing context</span> must be severed, and all the
+  <code>Document</code> objects for all the entries in the <span>browsing context</span>'s session
+  history must be <span data-x="discard a document">discarded</span> as well.</p>
+
+  <p>User agents may <span data-x="a browsing context is discarded">discard</span> <span
+  data-x="top-level browsing context">top-level browsing contexts</span> at any time (typically, in
+  response to user requests, e.g. when a user force-closes a window containing one or more <span
+  data-x="top-level browsing context">top-level browsing contexts</span>). Other <span
+  data-x="browsing context">browsing contexts</span> must be discarded once their
+  <code>WindowProxy</code> object is eligible for garbage collection, in addition to the other
+  places where this specification requires them to be discarded.</p>
+
+  <p>A <code>WindowProxy</code> does <em>not</em> have a strong reference to the <span>browsing
+  context</span> it was created alongside. In particular, it is possible for a <span>nested
+  browsing context</span> to be <span data-x="a browsing context is discarded">discarded</span> even
+  if JavaScript code holds a reference to its <code>WindowProxy</code> object.</p>
+
+  </div>
+
+
+  

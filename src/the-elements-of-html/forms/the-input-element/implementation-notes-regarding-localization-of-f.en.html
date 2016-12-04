@@ -1,0 +1,26 @@
+<h5 id="input-impl-notes">Implementation notes regarding localization of form controls</h5>
+  <!-- ID referenced from other parts of the spec -->
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The formats shown to the user in date, time, and number controls is independent of the format
+  used for form submission.</p>
+
+  <p>Browsers are encouraged to use user interfaces that present dates, times, and numbers according
+  to the conventions of either the locale implied by the <code>input</code> element's
+  <span>language</span> or the user's preferred locale. Using the page's locale will ensure
+  consistency with page-provided data.
+
+  <p class="example">For example, it would be confusing to users if an American English page claimed
+  that a Cirque De Soleil show was going to be showing on 02/03<!-- Feb 3 (year) -->, but their
+  browser, configured to use the British English locale, only showed the date 03/02<!-- 3 Feb (year)
+  --> in the ticket purchase date picker. Using the page's locale would at least ensure that the
+  date was presented in the same format everywhere. (There's still a risk that the user would end up
+  arriving a month late, of course, but there's only so much that can be done about such cultural
+  differences...)</p>
+
+  </div>
+
+
+
+  

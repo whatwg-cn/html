@@ -1,0 +1,37 @@
+<h5 id="module-worker-example">Using a JavaScript module as a worker</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>All of our examples so far show workers that run <span data-x="classic script">classic
+  scripts</span>. Workers can instead be instantiated using <span data-x="module script">module
+  scripts</span>, which have the usual benefits: the ability to use the JavaScript
+  <code data-x="">import</code> statement to import other modules; strict mode by default; and
+  top-level declarations not polluting the worker's global scope.</p>
+
+  <p>Note that such module-based workers follow different restrictions regarding cross-origin
+  content, compared to classic workers. Unlike classic workers, module workers can be instantiated
+  using a cross-origin script, as long as that script is exposed using the <span>CORS
+  protocol</span>. Additionally, the <code
+  data-x="dom-WorkerGlobalScope-importScripts">importScripts()</code> method will automatically fail
+  inside module workers; the JavaScript <code data-x="">import</code> statement is generally a
+  better choice.</p>
+
+  <p>In this example, the main document uses a worker to do off-main-thread image manipulation.
+  It imports the filters used from another module.</p>
+
+  <p>The main page is as follows:</p>
+
+  <pre>EXAMPLE workers/modules/page.html</pre>
+
+  <p>The worker file is then:</p>
+
+  <pre>EXAMPLE workers/modules/worker.js</pre>
+
+  <p>Which imports the file <code data-x="">filters.js</code>:</p>
+
+  <pre>EXAMPLE workers/modules/filters.js</pre>
+
+  <p><a href="/demos/workers/modules/page.html">View this example online</a>.</p>
+
+
+  

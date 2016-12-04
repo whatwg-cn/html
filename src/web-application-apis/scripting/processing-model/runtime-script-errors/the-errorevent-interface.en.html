@@ -1,0 +1,40 @@
+<h6>The <code>ErrorEvent</code> interface</h6>
+
+  </div>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>ErrorEventInit</span> eventInitDict), Exposed=(Window,Worker)]
+interface <dfn>ErrorEvent</dfn> : <span>Event</span> {
+  readonly attribute DOMString <span data-x="dom-ErrorEvent-message">message</span>;
+  readonly attribute USVString <span data-x="dom-ErrorEvent-filename">filename</span>;
+  readonly attribute unsigned long <span data-x="dom-ErrorEvent-lineno">lineno</span>;
+  readonly attribute unsigned long <span data-x="dom-ErrorEvent-colno">colno</span>;
+  readonly attribute any <span data-x="dom-ErrorEvent-error">error</span>;
+};
+
+dictionary <dfn>ErrorEventInit</dfn> : <span>EventInit</span> {
+  DOMString message = "";
+  USVString filename = "";
+  unsigned long lineno = 0;
+  unsigned long colno = 0;
+  any error = null;
+};</pre>
+
+  <p>The <dfn><code data-x="dom-ErrorEvent-message">message</code></dfn> attribute must return the
+  value it was initialized to. It represents the error message.</p>
+
+  <p>The <dfn><code data-x="dom-ErrorEvent-filename">filename</code></dfn> attribute must return the
+  value it was initialized to. It represents the <span>URL</span> of the script in which the error
+  originally occurred.</p>
+
+  <p>The <dfn><code data-x="dom-ErrorEvent-lineno">lineno</code></dfn> attribute must return the
+  value it was initialized to. It represents the line number where the error occurred in the
+  script.</p>
+
+  <p>The <dfn><code data-x="dom-ErrorEvent-colno">colno</code></dfn> attribute must return the value
+  it was initialized to. It represents the column number where the error occurred in the script.</p>
+
+  <p>The <dfn><code data-x="dom-ErrorEvent-error">error</code></dfn> attribute must return the value
+  it was initialized to. Where appropriate, it is set to the object representing the error (e.g.,
+  the exception object in the case of an uncaught DOM exception).</p>
+
+  

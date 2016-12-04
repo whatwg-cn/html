@@ -1,0 +1,39 @@
+<h5 id="colour-spaces-and-colour-correction">Color spaces and color correction</h5>
+
+  <p>The <code>canvas</code> APIs must perform color correction at only two points: when rendering
+  images with their own gamma correction and color space information onto a bitmap, to convert the
+  image to the color space used by the bitmaps (e.g. using the 2D Context's <code
+  data-x="dom-context-2d-drawImage">drawImage()</code> method with an
+  <code>HTMLOrSVGImageElement</code> object), and when rendering the actual canvas bitmap to the
+  output device.</p>
+
+  <p class="note">Thus, in the 2D context, colors used to draw shapes onto the canvas will exactly
+  match colors obtained through the <code
+  data-x="dom-context-2d-getImageData">getImageData()</code> method.</p>
+
+  <p>The <code data-x="dom-canvas-toDataURL">toDataURL()</code> method, when invoked, must not
+  include color space information in the resources they return. Where the output format allows it,
+  the color of pixels in resources created by <code data-x="dom-canvas-toDataURL">toDataURL()</code>
+  must match those returned by the <code data-x="dom-context-2d-getImageData">getImageData()</code>
+  method.</p>
+
+  <p>In user agents that support CSS, the color space used by a <code>canvas</code> element must
+  match the color space used for processing any colors for that element in CSS.</p>
+
+  <p>The gamma correction and color space information of images must be handled in such a way that
+  an image rendered directly using an <code>img</code> element would use the same colors as one
+  painted on a <code>canvas</code> element that is then itself rendered. Furthermore, the rendering
+  of images that have no color correction information (such as those returned by the <code
+  data-x="dom-canvas-toDataURL">toDataURL()</code> method) must be rendered with no color
+  correction.</p>
+
+  <p class="note">Thus, in the 2D context, calling the <code
+  data-x="dom-context-2d-drawImage">drawImage()</code> method to render the output of the <code
+  data-x="dom-canvas-toDataURL">toDataURL()</code> method to the canvas, given the appropriate
+  dimensions, has no visible effect.</p>
+
+  </div>
+
+
+
+  <!--en-GB-->

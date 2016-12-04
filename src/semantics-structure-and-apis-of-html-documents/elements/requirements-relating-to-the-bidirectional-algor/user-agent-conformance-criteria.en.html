@@ -1,0 +1,35 @@
+<h5>User agent conformance criteria</h5>
+
+  <p>User agents must implement the Unicode bidirectional algorithm to determine the proper ordering
+  of characters when rendering documents and parts of documents. <ref spec=BIDI></p>
+
+  <p>The mapping of HTML to the Unicode bidirectional algorithm must be done in one of three ways.
+  Either the user agent must implement CSS, including in particular the CSS
+  <span>'unicode-bidi'</span>, <span>'direction'</span>, and <span>'content'</span> properties, and
+  must have, in its user agent style sheet, the rules using those properties given in this
+  specification's <a href="#rendering">rendering</a> section, or, alternatively, the user agent must
+  act as if it implemented just the aforementioned properties and had a user agent style sheet that
+  included all the aforementioned rules, but without letting style sheets specified in documents
+  override them, or, alternatively, the user agent must implement another styling language with
+  equivalent semantics. <ref spec=CSSGC></p>
+
+  <p id="bidireq">The following elements and attributes have requirements defined by the <a
+  href="#rendering">rendering</a> section that, due to the requirements in this section, are
+  requirements on all user agents (not just those that <a href="#renderingUA">support the suggested
+  default rendering</a>):</p>
+
+  <ul class="brief">
+   <li><code data-x="attr-dir">dir</code> attribute</li>
+   <li><code>bdi</code> element</li>
+   <li><code>bdo</code> element</li>
+   <li><code>br</code> element</li>
+   <li><code>pre</code> element</li>
+   <li><code>textarea</code> element</li>
+   <li><code>wbr</code> element</li>
+  </ul>
+
+  </div>
+
+  <div w-nodev>
+
+  

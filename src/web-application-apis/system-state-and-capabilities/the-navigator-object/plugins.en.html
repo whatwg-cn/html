@@ -1,0 +1,449 @@
+<h5>Plugins</h5>
+
+  <pre class="idl">[NoInterfaceObject]
+interface <dfn>NavigatorPlugins</dfn> {
+  [SameObject] readonly attribute <span>PluginArray</span> <span data-x="dom-navigator-plugins">plugins</span>;
+  [SameObject] readonly attribute <span>MimeTypeArray</span> <span data-x="dom-navigator-mimeTypes">mimeTypes</span>;
+  boolean <span data-x="dom-navigator-javaEnabled">javaEnabled()</span>;
+};
+
+[LegacyUnenumerableNamedProperties]
+interface <dfn>PluginArray</dfn> {
+  void <span data-x="dom-PluginArray-refresh">refresh</span>(optional boolean reload = false);
+  readonly attribute unsigned long <span data-x="dom-PluginArray-length">length</span>;
+  getter <span data-x="dom-Plugin">Plugin</span>? <span data-x="dom-PluginArray-item">item</span>(unsigned long index);
+  getter <span data-x="dom-Plugin">Plugin</span>? <span data-x="dom-PluginArray-namedItem">namedItem</span>(DOMString name);
+};
+
+[LegacyUnenumerableNamedProperties]
+interface <dfn>MimeTypeArray</dfn> {
+  readonly attribute unsigned long <span data-x="dom-MimeTypeArray-length">length</span>;
+  getter <span>MimeType</span>? <span data-x="dom-MimeTypeArray-item">item</span>(unsigned long index);
+  getter <span>MimeType</span>? <span data-x="dom-MimeTypeArray-namedItem">namedItem</span>(DOMString name);
+};
+
+[LegacyUnenumerableNamedProperties]
+interface <dfn data-x="dom-Plugin">Plugin</dfn> {
+  readonly attribute DOMString <span data-x="dom-Plugin-name">name</span>;
+  readonly attribute DOMString <span data-x="dom-Plugin-description">description</span>;
+  readonly attribute DOMString <span data-x="dom-Plugin-filename">filename</span>;
+  readonly attribute unsigned long <span data-x="dom-Plugin-length">length</span>;
+  getter <span>MimeType</span>? <span data-x="dom-Plugin-item">item</span>(unsigned long index);
+  getter <span>MimeType</span>? <span data-x="dom-Plugin-namedItem">namedItem</span>(DOMString name);
+};
+
+interface <dfn>MimeType</dfn> {
+  readonly attribute DOMString <span data-x="dom-MimeType-type">type</span>;
+  readonly attribute DOMString <span data-x="dom-MimeType-description">description</span>;
+  readonly attribute DOMString <span data-x="dom-MimeType-suffixes">suffixes</span>; // comma-separated
+  readonly attribute <span data-x="dom-Plugin">Plugin</span> <span data-x="dom-MimeType-enabledPlugin">enabledPlugin</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-plugins">plugins</code> . <code subdfn data-x="dom-PluginArray-refresh">refresh</code>( [ <var>refresh</var> ] )</dt>
+   <dd>
+    <p>Updates the lists of supported plugins and MIME types for this page, and reloads the page if the lists have changed.</p>
+    <!-- that's not quite what all browsers have always done -->
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-plugins">plugins</code> . <code subdfn data-x="dom-PluginArray-length">length</code></dt>
+   <dd>
+    <p>Returns the number of plugins, represented by <code data-x="dom-Plugin">Plugin</code> objects, that the user agent reports.</p>
+   </dd>
+
+   <dt><var>plugin</var> = <var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-plugins">plugins</code> . <code subdfn data-x="dom-PluginArray-item">item</code>(<var>index</var>)</dt>
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-plugins">plugins</code>[<var>index</var>]</dt>
+   <dd>
+    <p>Returns the specified <code data-x="dom-Plugin">Plugin</code> object.</p>
+   </dd>
+
+   <dt><var>plugin</var> = <var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-plugins">plugins</code> . <code data-x="dom-PluginArray-item">item</code>(<var>name</var>)</dt>
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-plugins">plugins</code>[<var>name</var>]</dt>
+   <dd>
+    <p>Returns the <code data-x="dom-Plugin">Plugin</code> object for the plugin with the given name.</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-mimeTypes">mimeTypes</code> . <code subdfn data-x="dom-MimeTypeArray-length">length</code></dt>
+   <dd>
+    <p>Returns the number of MIME types, represented by <code>MimeType</code> objects, supported by the plugins that the user agent reports.</p>
+   </dd>
+
+   <dt><var>mimeType</var> = <var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-mimeTypes">mimeTypes</code> . <code subdfn data-x="dom-MimeTypeArray-item">item</code>(<var>index</var>)</dt>
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-mimeTypes">mimeTypes</code>[<var>index</var>]</dt>
+   <dd>
+    <p>Returns the specified <code>MimeType</code> object.</p>
+   </dd>
+
+   <dt><var>mimeType</var> = <var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-mimeTypes">mimeTypes</code> . <code data-x="dom-MimeTypeArray-item">item</code>(<var>name</var>)</dt>
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code data-x="dom-navigator-mimeTypes">mimeTypes</code>[<var>name</var>]</dt>
+   <dd>
+    <p>Returns the <code>MimeType</code> object for the given MIME type.</p>
+   </dd>
+
+   <dt><var>plugin</var> . <code subdfn data-x="dom-Plugin-name">name</code>
+   <dd>
+    <p>Returns the plugin's name.</p>
+   </dd>
+
+   <dt><var>plugin</var> . <code subdfn data-x="dom-Plugin-description">description</code>
+   <dd>
+    <p>Returns the plugin's description.</p>
+   </dd>
+
+   <dt><var>plugin</var> . <code subdfn data-x="dom-Plugin-filename">filename</code>
+   <dd>
+    <p>Returns the plugin library's filename, if applicable on the current platform.</p>
+   </dd>
+
+   <dt><var>plugin</var> . <code subdfn data-x="dom-Plugin-length">length</code></dt>
+   <dd>
+    <p>Returns the number of MIME types, represented by <code>MimeType</code> objects, supported by the plugin.</p>
+   </dd>
+
+   <dt><var>mimeType</var> = <var>plugin</var> . <code subdfn data-x="dom-Plugin-item">item</code>(<var>index</var>)</dt>
+   <dt><var>plugin</var>[<var>index</var>]</dt>
+   <dd>
+    <p>Returns the specified <code>MimeType</code> object.</p>
+   </dd>
+
+   <dt><var>mimeType</var> = <var>plugin</var> . <code data-x="dom-Plugin-item">item</code>(<var>name</var>)</dt>
+   <dt><var>plugin</var>[<var>name</var>]</dt>
+   <dd>
+    <p>Returns the <code>MimeType</code> object for the given MIME type.</p>
+   </dd>
+
+   <dt><var>mimeType</var> . <code subdfn data-x="dom-MimeType-type">type</code>
+   <dd>
+    <p>Returns the MIME type.</p>
+   </dd>
+
+   <dt><var>mimeType</var> . <code subdfn data-x="dom-MimeType-description">description</code>
+   <dd>
+    <p>Returns the MIME type's description.</p>
+   </dd>
+
+   <dt><var>mimeType</var> . <code subdfn data-x="dom-MimeType-suffixes">suffixes</code>
+   <dd>
+    <p>Returns the MIME type's typical file extensions, in a comma-separated list.</p>
+   </dd>
+
+   <dt><var>mimeType</var> . <code subdfn data-x="dom-MimeType-enabledPlugin">enabledPlugin</code>
+   <dd>
+    <p>Returns the <code data-x="dom-Plugin">Plugin</code> object that implements this MIME type.</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-javaEnabled">javaEnabled()</code></dt>
+   <dd>
+    <p>Returns true if there's a plugin that supports the MIME type "<code data-x="">application/x-java-vm</code>".</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-navigator-plugins">navigator.plugins</code></dfn> attribute must
+  return a <code>PluginArray</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-navigator-mimeTypes">navigator.mimeTypes</code></dfn> attribute must
+  return a <code>MimeTypeArray</code> object.</p>
+
+  <hr>
+
+  <p>A <code>PluginArray</code> object represents none, some, or all of the <span
+  data-x="plugin">plugins</span> supported by the user agent, each of which is represented by a <code
+  data-x="dom-Plugin">Plugin</code> object. Each of these <code data-x="dom-Plugin">Plugin</code>
+  objects may be <dfn data-x="hidden plugin">hidden plugins</dfn>. A <span>hidden plugin</span> can't
+  be enumerated, but can still be inspected by using its name.</p>
+
+  <p class="note">The fewer <span data-x="plugin">plugins</span> are represented by the
+  <code>PluginArray</code> object, and of those, the more that are <span data-x="hidden
+  plugin">hidden</span>, the more the user's privacy will be protected. Each exposed plugin
+  increases the number of bits that can be derived for fingerprinting. Hiding a plugin helps, but
+  unless it is an extremely rare plugin, it is likely that a site attempting to derive the list of
+  plugins can still determine whether the plugin is supported or not by probing for it by name (the
+  names of popular plugins are widely known). Therefore not exposing a plugin at all is preferred.
+  Unfortunately, many legacy sites use this feature to determine, for example, which plugin to use
+  to play video. Not exposing any plugins at all might therefore not be entirely plausible.</p>
+
+  <p>The <code>PluginArray</code> objects created by a user agent must not be <span>live</span>. The
+  set of plugins represented by the objects must not change once an object is created, except when
+  it is updated by the <code data-x="dom-PluginArray-refresh">refresh()</code> method.</p>
+
+  <p>Each <span>plugin</span> represented by a <code>PluginArray</code> can support a number of
+  <span data-x="MIME type">MIME types</span>. For each such <span>plugin</span>, the user agent must
+  pick one or more of these <span data-x="MIME type">MIME types</span> to be those that are
+  <dfn>explicitly supported</dfn>.</p>
+
+  <p class="note">The <span>explicitly supported</span> <span data-x="MIME type">MIME types</span> of
+  a <span>plugin</span> are those that are exposed through the <code
+  data-x="dom-Plugin">Plugin</code> and <code>MimeTypeArray</code> interfaces. As with <span
+  data-x="plugin">plugins</span> themselves, any variation between users regarding what is exposed
+  allows sites to fingerprint users. User agents are therefore encouraged to expose the same <span
+  data-x="MIME type">MIME types</span> for all users of a <span>plugin</span>, regardless of the
+  actual types supported... at least, within the constraints imposed by compatibility with legacy
+  content.</p>
+
+  <p>The <span>supported property indices</span> of a <code>PluginArray</code> object are the
+  numbers from zero to the number of non-<span data-x="hidden plugin">hidden</span> <span
+  data-x="plugin">plugins</span> represented by the object, if any.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-PluginArray-length">length</code></dfn> attribute must return the
+  number of non-<span data-x="hidden plugin">hidden</span> <span data-x="plugin">plugins</span>
+  represented by the object.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-PluginArray-item">item()</code></dfn> method of a
+  <code>PluginArray</code> object must return null if the argument is not one of the object's
+  <span>supported property indices</span>, and otherwise must return the result of running the
+  following steps, using the method's argument as <var>index</var>:</p>
+
+  <ol>
+
+   <li><p>Let <var>list</var> be the <code data-x="dom-Plugin">Plugin</code> objects
+   representing the non-<span data-x="hidden plugin">hidden</span> <span
+   data-x="plugin">plugins</span> represented by the <code>PluginArray</code> object.</p></li>
+
+   <li><p>Sort <var>list</var> alphabetically by the <code
+   data-x="dom-Plugin-name">name</code> of each <code data-x="dom-Plugin">Plugin</code>.</p></li>
+
+   <li><p>Return the <var>index</var>th entry in <var>list</var>.</p></li>
+
+  </ol>
+
+  <p class="note">It is important <span class="no-backref" data-x="fingerprinting vector">for
+  privacy</span> that the order of plugins not leak additional information, e.g. the order in which
+  plugins were installed.</p>
+
+  <p>The <span>supported property names</span> of a <code>PluginArray</code> object are the values
+  of the <code data-x="dom-Plugin-name">name</code> attributes of all the <code
+  data-x="dom-Plugin">Plugin</code> objects represented by the <code>PluginArray</code> object.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-PluginArray-namedItem">namedItem()</code></dfn> method of a
+  <code>PluginArray</code> object must return null if the argument is not one of the object's
+  <span>supported property names</span>, and otherwise must return the <code
+  data-x="dom-Plugin">Plugin</code> object, of those represented by the <code>PluginArray</code>
+  object, that has a <code data-x="dom-Plugin-name">name</code> equal to the method's argument.</p>
+
+  <p>The <dfn><code data-x="dom-PluginArray-refresh">refresh()</code></dfn> method of the
+  <code>PluginArray</code> object of a <code>Navigator</code> object, when invoked, must check to
+  see if any <span data-x="plugin">plugins</span> have been installed or reconfigured since the user
+  agent created the <code>PluginArray</code> object. If so, and the method's argument is true, then
+  the user agent must act as if the <code data-x="dom-location-reload">location.reload()</code>
+  method was called instead. Otherwise, the user agent must update the <code>PluginArray</code>
+  object and <code>MimeTypeArray</code> object created for attributes of that <code>Navigator</code>
+  object, and the <code data-x="dom-Plugin">Plugin</code> and <code>MimeType</code> objects created
+  for those <code>PluginArray</code> and <code>MimeTypeArray</code> objects, using the same <code
+  data-x="dom-Plugin">Plugin</code> objects for cases where the <code
+  data-x="dom-Plugin-name">name</code> is the same, and the same <code>MimeType</code> objects for
+  cases where the <code data-x="dom-MimeType-type">type</code> is the same, and creating new objects
+  for cases where there were no matching objects immediately prior to the <code
+  data-x="dom-PluginArray-refresh">refresh()</code> call. Old <code data-x="dom-Plugin">Plugin</code>
+  and <code>MimeType</code> objects must continue to return the same values that they had prior to
+  the update, though naturally now the data is stale and may appear inconsistent (for example, an
+  old <code>MimeType</code> entry might list as its <code
+  data-x="dom-MimeType-enabledPlugin">enabledPlugin</code> a <code data-x="dom-Plugin">Plugin</code>
+  object that no longer lists that <code>MimeType</code> as a supported <code>MimeType</code>).</p>
+
+  <hr>
+
+  <p>A <code>MimeTypeArray</code> object represents the <span data-x="MIME type">MIME types</span>
+  <span>explicitly supported</span> by <span data-x="plugin">plugins</span> supported by the user
+  agent, each of which is represented by a <code>MimeType</code> object.</p>
+
+  <p>The <code>MimeTypeArray</code> objects created by a user agent must not be <span>live</span>.
+  The set of MIME types represented by the objects must not change once an object is created, except
+  when it is updated by the <code>PluginArray</code> object's <code
+  data-x="dom-PluginArray-refresh">refresh()</code> method.</p>
+
+  <p>The <span>supported property indices</span> of a <code>MimeTypeArray</code> object are the
+  numbers from zero to the number of <span data-x="MIME type">MIME types</span> <span>explicitly
+  supported</span> by non-<span data-x="hidden plugin">hidden</span> <span
+  data-x="plugin">plugins</span> represented by the corresponding <code>PluginArray</code> object, if
+  any.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-MimeTypeArray-length">length</code></dfn> attribute must return the
+  number of <span data-x="MIME type">MIME types</span> <span>explicitly supported</span> by non-<span
+  data-x="hidden plugin">hidden</span> <span data-x="plugin">plugins</span> represented by the
+  corresponding <code>PluginArray</code> object, if any.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-MimeTypeArray-item">item()</code></dfn> method of a
+  <code>MimeTypeArray</code> object must return null if the argument is not one of the object's
+  <span>supported property indices</span>, and otherwise must return the result of running the
+  following steps, using the method's argument as <var>index</var>:</p>
+
+  <ol>
+
+   <li><p>Let <var>list</var> be the <code>MimeType</code> objects representing the <span
+   data-x="MIME type">MIME types</span> <span>explicitly supported</span> by non-<span data-x="hidden
+   plugin">hidden</span> <span data-x="plugin">plugins</span> represented by the corresponding
+   <code>PluginArray</code> object, if any.</p></li>
+
+   <li><p>Sort <var>list</var> alphabetically by the <code
+   data-x="dom-MimeType-type">type</code> of each <code>MimeType</code>.</p></li>
+
+   <li><p>Return the <var>index</var>th entry in <var>list</var>.</p></li>
+
+  </ol>
+
+  <p class="note">It is important <span class="no-backref" data-x="fingerprinting vector">for
+  privacy</span> that the order of MIME types not leak additional information, e.g. the order in
+  which plugins were installed.</p>
+
+  <p>The <span>supported property names</span> of a <code>MimeTypeArray</code> object are the values
+  of the <code data-x="dom-MimeType-type">type</code> attributes of all the <code>MimeType</code>
+  objects represented by the <code>MimeTypeArray</code> object.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-MimeTypeArray-namedItem">namedItem()</code></dfn> method of a
+  <code>MimeTypeArray</code> object must return null if the argument is not one of the object's
+  <span>supported property names</span>, and otherwise must return the <code>MimeType</code> object
+  that has a <code data-x="dom-MimeType-type">type</code> equal to the method's argument.</p>
+
+  <hr>
+
+  <p>A <code data-x="dom-Plugin">Plugin</code> object represents a <span>plugin</span>. It has
+  several attributes to provide details about the plugin, and can be enumerated to obtain the list
+  of <span data-x="MIME type">MIME types</span> that it <span data-x="explicitly supported">explicitly
+  supports</span>.</p>
+
+  <p>The <code data-x="dom-Plugin">Plugin</code> objects created by a user agent must not be
+  <span>live</span>. The set of MIME types represented by the objects, and the values of the
+  objects' attributes, must not change once an object is created, except when updated by the
+  <code>PluginArray</code> object's <code data-x="dom-PluginArray-refresh">refresh()</code>
+  method.</p>
+
+  <p>The <dfn>reported MIME types</dfn> for a <code data-x="dom-Plugin">Plugin</code> object are the
+  <span data-x="MIME type">MIME types</span> <span>explicitly supported</span> by the corresponding
+  <span>plugin</span> when this object was last created or updated by <code
+  data-x="dom-PluginArray-refresh">PluginArray.refresh()</code>, whichever happened most
+  recently.</p>
+
+  <p>The <span>supported property indices</span> of a <code data-x="dom-Plugin">Plugin</code> object
+  are the numbers from zero to the number of <span>reported MIME types</span>.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-Plugin-length">length</code></dfn> attribute must return the number
+  of <span>reported MIME types</span>.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-Plugin-item">item()</code></dfn> method of a <code
+  data-x="dom-Plugin">Plugin</code> object must return null if the argument is not one of the
+  object's <span>supported property indices</span>, and otherwise must return the result of running
+  the following steps, using the method's argument as <var>index</var>:</p>
+
+  <ol>
+
+   <li><p>Let <var>list</var> be the <code>MimeType</code> objects representing the
+   <span>reported MIME types</span>.</p></li>
+
+   <li><p>Sort <var>list</var> alphabetically by the <code
+   data-x="dom-MimeType-type">type</code> of each <code>MimeType</code>.</p></li>
+
+   <li><p>Return the <var>index</var>th entry in <var>list</var>.</p></li>
+
+  </ol>
+
+  <p class="note">It is important <span class="no-backref" data-x="fingerprinting vector">for
+  privacy</span> that the order of MIME types not leak additional information, e.g. the order in
+  which plugins were installed.</p>
+
+  <p>The <span>supported property names</span> of a <code data-x="dom-Plugin">Plugin</code> object
+  are the values of the <code data-x="dom-MimeType-type">type</code> attributes of the
+  <code>MimeType</code> objects representing the <span>reported MIME types</span>.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>The <dfn><code data-x="dom-Plugin-namedItem">namedItem()</code></dfn> method of a <code
+  data-x="dom-Plugin">Plugin</code> object must return null if the argument is not one of the
+  object's <span>supported property names</span>, and otherwise must return the
+  <code>MimeType</code> object that has a <code data-x="dom-MimeType-type">type</code> equal to the
+  method's argument.</p>
+
+  <p>The <dfn><code data-x="dom-Plugin-name">name</code></dfn> attribute must return the
+  <span>plugin</span>'s name.</p>
+
+  <p>The <dfn><code data-x="dom-Plugin-description">description</code></dfn> and <dfn><code data-x="dom-Plugin-filename">filename</code></dfn> attributes must return user-agent-defined
+  (or, in all likelihood, <span>plugin</span>-defined) strings. In each case, the same string must
+  be returned each time, except that the strings returned may change when the <code
+  data-x="dom-PluginArray-refresh">PluginArray.refresh()</code> method updates the object.</p>
+
+  <p class="warning">If the values returned by the <code
+  data-x="dom-Plugin-description">description</code> or <code
+  data-x="dom-Plugin-filename">filename</code> attributes vary between versions of a
+  <span>plugin</span>, they can be used both as a fingerprinting vector and, even more importantly,
+  as a trivial way to determine what security vulnerabilities a <span>plugin</span> (and thus a
+  browser) may have. It is thus highly recommended that the <code
+  data-x="dom-Plugin-description">description</code> attribute just return the same value as the
+  <code data-x="dom-Plugin-name">name</code> attribute, and that the <code
+  data-x="dom-Plugin-filename">filename</code> attribute return the empty string.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <hr>
+
+  <p>A <code>MimeType</code> object represents a <span>MIME type</span> that is, or was,
+  <span>explicitly supported</span> by a <span>plugin</span>.</p>
+
+  <p>The <code>MimeType</code> objects created by a user agent must not be <span>live</span>. The
+  values of the objects' attributes must not change once an object is created, except when updated
+  by the <code>PluginArray</code> object's <code data-x="dom-PluginArray-refresh">refresh()</code>
+  method.</p>
+
+  <p>The <dfn><code data-x="dom-MimeType-type">type</code></dfn> attribute must return the
+  <span>valid MIME type with no parameters</span> describing the <span>MIME type</span>.</p>
+
+  <p>The <dfn><code data-x="dom-MimeType-description">description</code></dfn> and <dfn><code data-x="dom-MimeType-suffixes">suffixes</code></dfn> attributes must return
+  user-agent-defined (or, in all likelihood, <span>plugin</span>-defined) strings. In each case, the
+  same string must be returned each time, except that the strings returned may change when the <code
+  data-x="dom-PluginArray-refresh">PluginArray.refresh()</code> method updates the object.</p>
+
+  <p class="warning">If the values returned by the <code
+  data-x="dom-MimeType-description">description</code> or <code
+  data-x="dom-MimeType-suffixes">suffixes</code> attributes vary between versions of a
+  <span>plugin</span>, they can be used both as a fingerprinting vector and, even more importantly,
+  as a trivial way to determine what security vulnerabilities a <span>plugin</span> (and thus a
+  browser) may have. It is thus highly recommended that the <code
+  data-x="dom-MimeType-description">description</code> attribute just return the same value as the
+  <code data-x="dom-MimeType-type">type</code> attribute, and that the <code
+  data-x="dom-MimeType-suffixes">suffixes</code> attribute return the empty string.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p class="note">Commas in the <code data-x="dom-MimeType-suffixes">suffixes</code> attribute are
+  interpreted as separating subsequent filename extensions, as in "<code
+  data-x="">htm,html</code>".</p>
+
+  <p>The <dfn><code data-x="dom-MimeType-enabledPlugin">enabledPlugin</code></dfn> attribute must
+  return the <code data-x="dom-Plugin">Plugin</code> object that represents the <span>plugin</span>
+  that <span>explicitly supported</span> the <span>MIME type</span> that this <code>MimeType</code>
+  object represents when this object was last created or updated by <code
+  data-x="dom-PluginArray-refresh">PluginArray.refresh()</code>, whichever happened most
+  recently.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-navigator-javaEnabled">navigator.javaEnabled()</code></dfn> method
+  must return true if the user agent supports a <span>plugin</span> that supports the <span>MIME
+  type</span> "<code data-x="">application/x-java-vm</code>"; otherwise it must return false.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  </div>
+
+
+<!--TOPIC:Canvas-->
+
+  

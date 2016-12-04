@@ -1,0 +1,117 @@
+<h5 id="common-input-element-events">Common event behaviors</h5>
+
+  <p>When the <code data-x="event-input">input</code> and <code
+  data-x="event-change">change</code> events <span data-x="concept-input-apply">apply</span>
+  (which is the case for all <code>input</code> controls other than <span
+  data-x="concept-button">buttons</span> and those with the <code
+  data-x="attr-input-type">type</code> attribute in the <span
+  data-x="attr-input-type-hidden">Hidden</span> state), the events are fired to indicate that the
+  user has interacted with the control. The <code data-x="event-input">input</code> event fires
+  whenever the user has modified the data of the control. The <code
+  data-x="event-change">change</code> event fires when the value is committed, if that makes sense
+  for the control, or else when the control <a href="#unfocus-causes-change-event">loses focus</a>.
+  In all cases, the <code data-x="event-input">input</code> event comes before the corresponding
+  <code data-x="event-change">change</code> event (if any).</p>
+
+  <p>When an <code>input</code> element has a defined <span>input activation behavior</span>, the
+  rules for dispatching these events, if they <span data-x="concept-input-apply">apply</span>, are
+  given in the section above that defines the <code data-x="attr-input-type">type</code> attribute's
+  state. (This is the case for all <code>input</code> controls with the <code
+  data-x="attr-input-type">type</code> attribute in the <span
+  data-x="attr-input-type-checkbox">Checkbox</span> state, the <span
+  data-x="attr-input-type-radio">Radio Button</span> state, or the <span
+  data-x="attr-input-type-file">File Upload</span> state.)</p>
+
+  <p>For <code>input</code> elements without a defined <span>input activation behavior</span>, but
+  to which these events <span data-x="concept-input-apply">apply</span>, and for which the user
+  interface involves both interactive manipulation and an explicit commit action, then when the user
+  changes the element's <span data-x="concept-fe-value">value</span>, the user agent must
+  <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-input">input</code> at the <code>input</code> element, with the <code
+  data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true, and any time the user
+  commits the change, the user agent must <span>queue a task</span> to <span
+  data-x="concept-event-fire">fire an event</span> named <code data-x="event-change">change</code>
+  at the <code>input</code> element, with the <code data-x="dom-Event-bubbles">bubbles</code>
+  attribute initialized to true.</p>
+
+  <p class="example">An example of a user interface involving both interactive manipulation and a
+  commit action would be a <span data-x="attr-input-type-range">Range</span> controls that use a
+  slider, when manipulated using a pointing device. While the user is dragging the control's knob,
+  <code data-x="event-input">input</code> events would fire whenever the position changed,
+  whereas the <code data-x="event-change">change</code> event would only fire when the user
+  let go of the knob, committing to a specific value.</p>
+
+  <p>For <code>input</code> elements without a defined <span>input activation behavior</span>, but
+  to which these events <span data-x="concept-input-apply">apply</span>, and for which the user
+  interface involves an explicit commit action but no intermediate manipulation, then any time the
+  user commits a change to the element's <span data-x="concept-fe-value">value</span>, the user
+  agent must <span>queue a task</span> to first <span data-x="concept-event-fire">fire an
+  event</span> named <code data-x="event-input">input</code> at the <code>input</code> element, with
+  the <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true, and then <span
+  data-x="concept-event-fire">fire an event</span> named <code data-x="event-change">change</code>
+  at the <code>input</code> element, with the <code data-x="dom-Event-bubbles">bubbles</code>
+  attribute initialized to true.</p>
+
+  <p class="example">An example of a user interface with a commit action would be a <span
+  data-x="attr-input-type-color">Color</span> control that consists of a single button that brings
+  up a color wheel: if the <span data-x="concept-fe-value">value</span> only changes when the dialog
+  is closed, then that would be the explicit commit action. On the other hand, if manipulating the
+  control changes the color interactively, then there might be no commit action.</p>
+
+  <p class="example">Another example of a user interface with a commit action would be a <span
+  data-x="attr-input-type-date">Date</span> control that allows both text-based user input and user
+  selection from a drop-down calendar: while text input might not have an explicit commit step,
+  selecting a date from the drop down calendar and then dismissing the drop down would be a commit
+  action.</p>
+
+  <p>For <code>input</code> elements without a defined <span>input activation behavior</span>, but
+  to which these events <span data-x="concept-input-apply">apply</span>, any time the user causes
+  the element's <span data-x="concept-fe-value">value</span> to change without an explicit commit
+  action, the user agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+  event</span> named <code data-x="event-input">input</code> at the <code>input</code> element, with
+  the <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true. The
+  corresponding <code data-x="event-change">change</code> event, if any, will be fired when
+  the control <a href="#unfocus-causes-change-event">loses focus</a>.</p>
+
+  <p class="example">Examples of a user changing the element's <span
+  data-x="concept-fe-value">value</span> would include the user typing into a text control, pasting
+  a new value into the control, or undoing an edit in that control. Some user interactions do not
+  cause changes to the value, e.g., hitting the "delete" key in an empty text control, or replacing
+  some text in the control with text from the clipboard that happens to be exactly the same
+  text.</p>
+
+  <p class="example">A <span data-x="attr-input-type-range">Range</span> control in the form of a
+  slider that the user has <span>focused</span> and is interacting with using a keyboard would be
+  another example of the user changing the element's <span data-x="concept-fe-value">value</span>
+  without a commit step.</p>
+
+  <p>In the case of <span data-x="concept-task">tasks</span> that just fire an <code
+  data-x="event-input">input</code> event, user agents may wait for a suitable break in the
+  user's interaction before <span data-x="queue a task">queuing</span> the tasks; for example, a
+  user agent could wait for the user to have not hit a key for 100ms, so as to only fire the event
+  when the user pauses, instead of continuously for each keystroke. <!-- similar text is present in
+  the <textarea> section -->
+
+  <p>When the user agent is to change an <code>input</code> element's <span
+  data-x="concept-fe-value">value</span> on behalf of the user (e.g. as part of a form prefilling
+  feature), the user agent must <span>queue a task</span> to first update the <span
+  data-x="concept-fe-value">value</span> accordingly, then <span data-x="concept-event-fire">fire an
+  event</span> named <code data-x="event-input">input</code> at the <code>input</code> element, with
+  the <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true, then <span
+  data-x="concept-event-fire">fire an event</span> named <code data-x="event-change">change</code>
+  at the <code>input</code> element, with the <code data-x="dom-Event-bubbles">bubbles</code>
+  attribute initialized to true.</p>
+
+  <p class="note">These events are not fired in response to changes made to the values of form
+  controls by scripts. (This is to make it easier to update the values of form controls in response
+  to the user manipulating the controls, without having to then filter out the script's own changes
+  to avoid an infinite loop.)</p>
+
+  <p>The <span>task source</span> for these <span data-x="concept-task">tasks</span> is the
+  <span>user interaction task source</span>.</p>
+
+  </div>
+
+
+
+  

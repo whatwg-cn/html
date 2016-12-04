@@ -1,0 +1,113 @@
+<h6>Drawing rectangles to the bitmap</h6>
+
+  <p>Objects that implement the <code>CanvasRect</code> interface provide the following methods for
+  immediately drawing rectangles to the bitmap. The methods each take four arguments; the first two
+  give the <var>x</var> and <var>y</var> coordinates of the top left of the rectangle, and the
+  second two give the width <var>w</var> and height <var>h</var> of the rectangle, respectively.</p>
+
+  <div w-nodev>
+
+  <p>The <span data-x="dom-context-2d-transformation">current transformation matrix</span> must be
+  applied to the following four coordinates, which form the path that must then be closed to get the
+  specified rectangle: <span data-x="">(<var>x</var>, <var>y</var>)</span>, <span
+  data-x="">(<span data-x=""><var>x</var>+<var>w</var></span>, <var>y</var>)</span>, <span data-x="">(<span data-x=""><var>x</var>+<var>w</var></span>, <span data-x=""><var>y</var>+<var>h</var></span>)</span>, <span data-x="">(<var>x</var>, <span data-x=""><var>y</var>+<var>h</var></span>)</span>.</p>
+
+  <p>Shapes are painted without affecting the <span>current default path</span>, and are subject to
+  the <span>clipping region</span>, and, with the exception of <code
+  data-x="dom-context-2d-clearRect">clearRect()</code>, also <span data-x="shadows">shadow
+  effects</span>, <span data-x="dom-context-2d-globalAlpha">global alpha</span>, and <span
+  data-x="dom-context-2d-globalCompositeOperation">global composition operators</span>.</p>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-clearRect">clearRect</code>(<var>x</var>, <var>y</var>, <var>w</var>, <var>h</var>)</dt>
+
+   <dd>
+
+    <p>Clears all pixels on the bitmap in the given rectangle to transparent black.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-fillRect">fillRect</code>(<var>x</var>, <var>y</var>, <var>w</var>, <var>h</var>)</dt>
+
+   <dd>
+
+    <p>Paints the given rectangle onto the bitmap, using the current fill style.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-strokeRect">strokeRect</code>(<var>x</var>, <var>y</var>, <var>w</var>, <var>h</var>)</dt>
+
+   <dd>
+
+    <p>Paints the box that outlines the given rectangle onto the bitmap, using the current stroke
+    style.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-context-2d-clearRect">clearRect(<var>x</var>, <var>y</var>,
+  <var>w</var>, <var>h</var>)</code></dfn> method, when invoked, must run these steps:</p>
+
+  <ol>
+
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>Let <var>pixels</var> be the set of pixels in the specified rectangle that also
+   intersect the current <span>clipping region</span>.</p></li>
+
+   <li><p>Clear the pixels in <var>pixels</var> to a fully transparent black, erasing any
+   previous image.</p></li>
+
+  </ol>
+
+  <p class="note">If either height or width are zero, this method has no effect, since the set of
+  pixels would be empty.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-fillRect">fillRect(<var>x</var>, <var>y</var>,
+  <var>w</var>, <var>h</var>)</code></dfn> method, when invoked, must must run these steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>If either <var>w</var> or <var>h</var> are zero, then abort these steps.</p></li>
+
+   <li><p>Paint the specified rectangular area using the <code
+   data-x="dom-context-2d-fillStyle">fillStyle</code>.</p>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-context-2d-strokeRect">strokeRect(<var>x</var>, <var>y</var>,
+  <var>w</var>, <var>h</var>)</code></dfn> method, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If any of the arguments are infinite or NaN, then abort these steps.</p></li>
+
+   <li><p>Take the result of <span data-x="trace a path">tracing the path</span> described below,
+   using the <code>CanvasPathDrawingStyles</code> interface's line styles, and fill it with the
+   <code data-x="dom-context-2d-strokeStyle">strokeStyle</code>.</p></li>
+  </ol>
+
+  <p>If both <var>w</var> and <var>h</var> are zero, the path has a single subpath
+  with just one point (<var>x</var>, <var>y</var>), and no lines, and this method
+  thus has no effect (the <span>trace a path</span> algorithm returns an empty path in that
+  case).</p>
+
+  <p>If just one of either <var>w</var> or <var>h</var> is zero, then the path has
+  a single subpath consisting of two points, with coordinates (<span data-x=""><var>x</var></span>, <span data-x=""><var>y</var></span>) and (<span data-x=""><var>x</var>+<var>w</var></span>, <span data-x=""><var>y</var></span>+<var>h</var>), in that order, connected by a single straight line.</p>
+
+  <p>Otherwise, the path has a single subpath consisting of four points, with coordinates (<span
+  data-x=""><var>x</var></span>, <span data-x=""><var>y</var></span>), (<span
+  data-x=""><var>x</var>+<var>w</var></span>, <span data-x=""><var>y</var></span>), (<span data-x=""><var>x</var>+<var>w</var></span>,
+  <span data-x=""><var>y</var></span>+<var>h</var>), and (<span data-x=""><var>x</var></span>, <span data-x=""><var>y</var>+<var>h</var></span>),
+  connected to each other in that order by straight lines.</p>
+
+  </div>
+
+
+
+  

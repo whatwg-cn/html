@@ -1,0 +1,41 @@
+<h6><dfn>HostResolveImportedModule</dfn>(<var>referencingModule</var>, <var>specifier</var>)</h6>
+
+  <p>JavaScript contains an implementation-defined <span
+  data-x="js-HostResolveImportedModule">HostResolveImportedModule</span> abstract operation. User
+  agents must use the following implementation: <ref spec=JAVASCRIPT></p>
+
+  <ol>
+   <li><p>Let <var>referencing module script</var> be
+   <var>referencingModule</var>.[[HostDefined]].</p></li>
+
+   <li><p>Let <var>moduleMap</var> be <var>referencing module script</var>'s <span>settings
+   object</span>'s <span data-x="concept-settings-object-module-map">module map</span>.</p></li>
+
+   <li><p>Let <var>url</var> be the result of <span data-x="resolve a module specifier">resolving a
+   module specifier</span> given <var>referencing module script</var> and <var>specifier</var>. If
+   the result is failure, then throw a <code>TypeError</code> exception and abort these
+   steps.</p></li>
+
+   <li><p>Let <var>resolved module script</var> be <var>moduleMap</var>[<var>url</var>]. If no such
+   entry <span data-x="map exists">exists</span>, or if <var>resolved module script</var> is null or
+   "<code data-x="">fetching</code>", then throw a <code>TypeError</code> exception and abort these
+   steps.</p></li>
+
+   <li><p>If <var>resolved module script</var>'s <span
+   data-x="concept-module-script-instantiation-state">instantiation state</span> is "<code
+   data-x="">errored</code>", then throw <var>resolved module script</var>'s <span
+   data-x="concept-module-script-instantiation-error">instantiation error</span>.</p></li>
+
+   <li><p>Assert: <var>resolved module script</var>'s <span
+   data-x="concept-module-script-instantiation-state">instantiation state</span> is "<code
+   data-x="">instantiated</code>" (and thus its <span
+   data-x="concept-module-script-module-record">module record</span> is not null).</p></li>
+
+   <li><p>Return <var>resolved module script</var>'s <span
+   data-x="concept-module-script-module-record">module record</span>.</p></li>
+  </ol>
+
+  </div>
+
+
+  

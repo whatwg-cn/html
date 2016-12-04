@@ -1,0 +1,35 @@
+<h6>A purely decorative image that doesn't add any information</h6>
+
+  <p>If an image is decorative but isn't especially page-specific &mdash; for example an image that
+  forms part of a site-wide design scheme &mdash; the image should be specified in the site's CSS,
+  not in the markup of the document.</p>
+
+  <p>However, a decorative image that isn't discussed by the surrounding text but still has some
+  relevance can be included in a page using the <code>img</code> element. Such images are
+  decorative, but still form part of the content. In these cases, the <code
+  data-x="attr-img-alt">alt</code> attribute must be present but its value must be the empty
+  string.</p>
+
+  <div class="example">
+
+   <p>Examples where the image is purely decorative despite being relevant would include things like
+   a photo of the Black Rock City landscape in a blog post about an event at Burning Man, or an
+   image of a painting inspired by a poem, on a page reciting that poem. The following snippet shows
+   an example of the latter case (only the first verse is included in this snippet):</p>
+
+   <pre>&lt;h1>The Lady of Shalott&lt;/h1>
+<strong>&lt;p>&lt;img src="shalott.jpeg" alt="">&lt;/p></strong>
+&lt;p>On either side the river lie&lt;br>
+Long fields of barley and of rye,&lt;br>
+That clothe the wold and meet the sky;&lt;br>
+And through the field the road run by&lt;br>
+To many-tower'd Camelot;&lt;br>
+And up and down the people go,&lt;br>
+Gazing where the lilies blow&lt;br>
+Round an island there below,&lt;br>
+The island of Shalott.&lt;/p></pre>
+
+  </div>
+
+
+  

@@ -1,0 +1,24 @@
+<h4 id="worker-event-loop">The event loop</h4>
+
+  <p>Each <code>WorkerGlobalScope</code> object has a distinct <span>event loop</span>, separate
+  from those used by <span data-x="unit of related similar-origin browsing contexts">units of related
+  similar-origin browsing contexts</span>. This <span>event loop</span> has no associated
+  <span>browsing context</span>, and its <span data-x="task queue">task queues</span> only have
+  events, callbacks, and networking activity as <span data-x="concept-task">tasks</span>. These <span
+  data-x="event loop">event loops</span> are created by the <span>run a worker</span> algorithm.</p>
+
+  <p>Each <code>WorkerGlobalScope</code> object also has a <dfn
+  data-x="dom-WorkerGlobalScope-closing">closing</dfn> flag, which must initially be false, but which
+  can get set to true by the algorithms in the processing model section below.</p>
+
+  <p>Once the <code>WorkerGlobalScope</code>'s <span
+  data-x="dom-WorkerGlobalScope-closing">closing</span> flag is set to true, the <span>event
+  loop</span>'s <span data-x="task queue">task queues</span> must discard any further <span
+  data-x="concept-task">tasks</span> that would be added to them (tasks already on the queue are
+  unaffected except where otherwise specified). Effectively, once the <span
+  data-x="dom-WorkerGlobalScope-closing">closing</span> flag is true, timers stop firing,
+  notifications for all pending background operations are dropped, etc.</p>
+
+
+
+  

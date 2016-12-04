@@ -1,0 +1,692 @@
+<h3>Images</h3>
+
+  <pre class="idl">[Exposed=(Window,Worker)]
+interface <dfn>ImageBitmap</dfn> {
+  readonly attribute unsigned long <span data-x="dom-ImageBitmap-width">width</span>;
+  readonly attribute unsigned long <span data-x="dom-ImageBitmap-height">height</span>;
+  void <span data-x="dom-ImageBitmap-close">close</span>();
+};
+
+typedef (<span>CanvasImageSource</span> or
+         <span>Blob</span> or
+         <span>ImageData</span>) <dfn>ImageBitmapSource</dfn>;
+
+enum <dfn>ImageOrientation</dfn> { "<span data-x="dom-ImageOrientation-none">none</span>", "<span data-x="dom-ImageOrientation-flipY">flipY</span>" };
+enum <dfn>PremultiplyAlpha</dfn> { "<span data-x="dom-PremultiplyAlpha-none">none</span>", "<span data-x="dom-PremultiplyAlpha-premultiply">premultiply</span>", "<span data-x="dom-PremultiplyAlpha-default">default</span>" };
+enum <dfn>ColorSpaceConversion</dfn> { "<span data-x="dom-ColorSpaceConversion-none">none</span>", "<span data-x="dom-ColorSpaceConversion-default">default</span>" };
+enum <dfn>ResizeQuality</dfn> { "<span data-x="dom-ResizeQuality-pixelated">pixelated</span>", "<span data-x="dom-ResizeQuality-low">low</span>", "<span data-x="dom-ResizeQuality-medium">medium</span>", "<span data-x="dom-ResizeQuality-high">high</span>" };
+
+dictionary <dfn>ImageBitmapOptions</dfn> {
+  <span>ImageOrientation</span> <span data-x="dom-ImageBitmapOptions-imageOrientation">imageOrientation</span> = "<span data-x="dom-ImageOrientation-none">none</span>";
+  <span>PremultiplyAlpha</span> <span data-x="dom-ImageBitmapOptions-premultiplyAlpha">premultiplyAlpha</span> = "<span data-x="dom-PremultiplyAlpha-default">default</span>";
+  <span>ColorSpaceConversion</span> <span data-x="dom-ImageBitmapOptions-colorSpaceConversion">colorSpaceConversion</span> = "<span data-x="dom-ColorSpaceConversion-default">default</span>";
+  [EnforceRange] unsigned long <span data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</span>;
+  [EnforceRange] unsigned long <span data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</span>;
+  <span>ResizeQuality</span> <span data-x="dom-ImageBitmapOptions-resizeQuality">resizeQuality</span> = "<span data-x="dom-ResizeQuality-low">low</span>";
+};</pre>
+
+  <p>An <code>ImageBitmap</code> object represents a bitmap image that can be painted to a canvas
+  without undue latency.</p>
+
+  <p class="note">The exact judgement of what is undue latency of this is left up to the
+  implementer, but in general if making use of the bitmap requires network I/O, or even local disk
+  I/O, then the latency is probably undue; whereas if it only requires a blocking read from a GPU or
+  system RAM, the latency is probably acceptable.</p>
+
+  <dl class="domintro">
+
+   <dt><var>promise</var> = self . <code subdfn data-x="dom-createImageBitmap">createImageBitmap</code>(<var>image</var> [, <var>options</var> ])</dt>
+   <dt><var>promise</var> = self . <code data-x="dom-createImageBitmap">createImageBitmap</code>(<var>image</var>, <var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var> [, <var>options</var> ])</dt>
+
+   <dd>
+
+    <p>Takes <var>image</var>, which can be an <code>img</code> element, an <span>SVG
+    <code>image</code></span> element, a <code>video</code> element, a <code>canvas</code>
+    element, a <code>Blob</code> object, an <code>ImageData</code> object, or another
+    <code>ImageBitmap</code> object, and returns a promise that is resolved when a new
+    <code>ImageBitmap</code> is created.</p>
+
+    <p>If no <code>ImageBitmap</code> object can be constructed, for example because the provided
+    <var>image</var> data is not actually an image, then the promise is rejected instead.</p>
+
+    <p>If <var>sx</var>, <var>sy</var>, <var>sw</var>, and <var>sh</var> arguments are provided, the source image is cropped to the given pixels, with
+    any pixels missing in the original replaced by transparent black. These coordinates are in the
+    source image's pixel coordinate space, <em>not</em> in <span data-x="'px'">CSS
+    pixels</span>.</p>
+
+    <p>If <var>options</var> is provided, the <code>ImageBitmap</code> object's bitmap
+    data is modified according to <var>options</var>. For example,
+    if the <code data-x="dom-ImageBitmapOptions-premultiplyAlpha">premultiplyAlpha</code>
+    option is set to "<code data-x="dom-PremultiplyAlpha-premultiply">premultiply</code>",
+    the <span data-x="concept-ImageBitmap-bitmap-data">bitmap data</span>'s color channels are
+    premultiplied by its alpha channel.
+
+    <p>Rejects the promise with an <span>"<code>InvalidStateError</code>"</span>
+    <code>DOMException</code> if the source image is not in a valid state (e.g. an <code>img</code>
+    element that hasn't loaded successfully, an <code>ImageBitmap</code> object whose
+    [[<span>Detached</span>]] internal slot value is true, an <code>ImageData</code> object whose
+    <code data-x="dom-imagedata-data">data</code> attribute value's [[<span>Detached</span>]]
+    internal slot value is true, or a <code>Blob</code> whose data cannot be interpreted as a bitmap
+    image).</p>
+
+    <p>Rejects the promise with a <span>"<code>SecurityError</code>"</span>
+    <code>DOMException</code> if the script is not allowed to access the image data of the source
+    image (e.g. a <code>video</code> that is <span>CORS-cross-origin</span>, or a
+    <code>canvas</code> being drawn on by a script in a worker from another
+    <span>origin</span>).</p>
+
+   </dd>
+
+   <dt><var>imageBitmap</var> . <code subdfn data-x="dom-ImageBitmap-close">close</code>()</dt>
+
+   <dd>
+
+    <p>Releases <var>imageBitmap</var>'s underlying <span
+    data-x="concept-ImageBitmap-bitmap-data">bitmap data</span>.</p>
+
+   </dd>
+
+   <dt><var>imageBitmap</var> . <code subdfn data-x="dom-ImageBitmap-width">width</code></dt>
+
+   <dd>
+
+    <p>Returns the <span>intrinsic width</span> of the image, in <span data-x="'px'">CSS
+    pixels</span>.</p>
+
+   </dd>
+
+   <dt><var>imageBitmap</var> . <code subdfn data-x="dom-ImageBitmap-height">height</code></dt>
+
+   <dd>
+
+    <p>Returns the <span>intrinsic height</span> of the image, in <span data-x="'px'">CSS
+    pixels</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>An <code>ImageBitmap</code> object whose [[<span>Detached</span>]] internal slot value
+  is false always has associated <dfn data-x="concept-ImageBitmap-bitmap-data">bitmap data</dfn>,
+  with a width and a height. However, it is possible for this data to be corrupted. If an
+  <code>ImageBitmap</code> object's media data can be decoded without errors, it is said to be <dfn
+  data-x="concept-ImageBitmap-good">fully decodable</dfn>.</p>
+
+  <p>An <code>ImageBitmap</code> object's bitmap has an <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> flag, which indicates whether the
+  bitmap is tainted by content from a different <span>origin</span>. The flag is initially set to
+  true and may be changed to false by the steps of <code
+  data-x="dom-createImageBitmap">createImageBitmap()</code>.</p>
+
+  <p><code>ImageBitmap</code> objects are <span>cloneable objects</span> and <span>transferable
+  objects</span>.</p>
+
+  <p>Each <code>ImageBitmap</code> object's [[<span>Clone</span>]] internal method, given
+  <var>targetRealm</var> and ignoring <var>memory</var>, must run these steps:</p>
+
+  <ol>
+   <li><p>If <b>this</b>'s [[<span>Detached</span>]] internal slot is true, then throw a
+   <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Return a new <code>ImageBitmap</code> object in <var>targetRealm</var> whose <span
+   data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> is a copy of <b>this</b>'s <span
+   data-x="concept-ImageBitmap-bitmap-data">bitmap data</span>, and whose <span
+   data-x="concept-canvas-origin-clean">origin-clean</span> flag is set to the same value as
+   <b>this</b>'s <span data-x="concept-canvas-origin-clean">origin-clean</span> flag.</p></li>
+  </ol>
+
+  <p>Each <code>ImageBitmap</code> object's [[<span>Transfer</span>]] internal method, given
+  <var>targetRealm</var>, must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>new</var> be a new <code>ImageBitmap</code> object in <var>targetRealm</var>,
+   pointing at the same underlying <span data-x="concept-ImageBitmap-bitmap-data">bitmap data</span>
+   as <b>this</b>.</p></li>
+
+   <li><p>Set <var>new</var>'s bitmap's <span
+   data-x="concept-canvas-origin-clean">origin-clean</span> flag to the same values as
+   <b>this</b>'s bitmap's <span data-x="concept-canvas-origin-clean">origin-clean</span>
+   flag.</p></li>
+
+   <li><p>Set <b>this</b>'s [[<span>Detached</span>]] internal slot value to true.</p></li>
+
+   <li><p>Unset <b>this</b>'s <span data-x="concept-ImageBitmap-bitmap-data">bitmap
+   data</span>.</p></li>
+
+   <li><p>Return <var>new</var>.</p></li>
+  </ol>
+
+  <p>An <code>ImageBitmap</code> object can be obtained from a variety of different objects, using
+  the <dfn><code data-x="dom-createImageBitmap">createImageBitmap()</code></dfn> method. When
+  invoked, the method must act as follows:</p>
+  <!-- the canvas createPattern() and drawImage() methods have similar requirements -->
+
+  <dl>
+
+   <dt>If <var>image</var> is an <code>img</code> element
+   <dt>If <var>image</var> is an <span>SVG <code>image</code></span> element
+
+   <dd>
+
+    <ol>
+
+     <li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
+     but zero, return a promise rejected with an <span>"<code>IndexSizeError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If <var>image</var> is not <span data-x="img-all">completely available</span>, then
+     return a promise rejected with an <span>"<code>InvalidStateError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If <var>image</var>'s media data has no <span>intrinsic dimensions</span> (e.g. it's a
+     vector graphic with no specified content size), and both or either of the <dfn><code
+     data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code></dfn> and <dfn><code
+     data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code></dfn> options are not specified,
+     then return a promise rejected with an <span>"<code>InvalidStateError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If <var>image</var>'s media data has no <span>intrinsic dimensions</span> (e.g. it's a vector
+     graphics with no specified content size), it should be rendered to a bitmap of the size
+     specified by the <code data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code> and the
+     <code data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> options.</p></li>
+
+     <li><p>If the <var>sw</var> and <var>sh</var> arguments are not specified and
+     <var>image</var>'s media data has both or either of its <span>intrinsic width</span> and
+     <span>intrinsic height</span> values equal to 0, then return a promise rejected with an
+     <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+     steps.</p></li>
+
+     <li><p>If the <var>sh</var> argument is not specified and <var>image</var>'s media data has
+     an <span>intrinsic height</span> of 0, then return a promise rejected with an
+     <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+     steps.</p></li>
+
+     <li><p>Create a new <code>ImageBitmap</code> object.</p></li>
+
+     <li><p>Let the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> be a copy of <var>image</var>'s
+     media data, <span>cropped to the source rectangle with formatting</span>. If this is an
+     animated image, the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> must only be taken from the
+     default image of the animation (the one that the format defines is to be used when animation
+     is not supported or is disabled), or, if there is no such image, the first frame of the
+     animation.</p></li>
+
+     <li><p>If the <span>origin</span> of <var>image</var>'s image is not the <span>same
+     origin</span> as the <span data-x="concept-settings-object-origin">origin</span> specified by
+     the <span>entry settings object</span>, then set the <span
+     data-x="concept-canvas-origin-clean">origin-clean</span> flag of the <code>ImageBitmap</code>
+     object's bitmap to false.</p></li>
+
+     <li><p>Return a new promise, but continue running these steps
+     <span>in parallel</span>.</p></li>
+
+     <li><p>Resolve the promise with the new <code>ImageBitmap</code> object as the value.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <dt>If <var>image</var> is a <code>video</code> element
+
+   <dd>
+
+    <ol>
+
+     <li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
+     but zero, return a promise rejected with an <span>"<code>IndexSizeError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If the <code>video</code> element's <code
+     data-x="dom-media-networkState">networkState</code> attribute is <code
+     data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code>, then return a promise rejected with an
+     <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+     steps.</p></li>
+
+     <li><p>If the <code>video</code> element's <code
+     data-x="dom-media-readyState">readyState</code> attribute is either <code
+     data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code> or <code
+     data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code>, then return a promise rejected with an
+     <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+     steps.</p></li>
+
+     <li><p>Create a new <code>ImageBitmap</code> object.</p></li>
+
+     <li><p>Let the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> be a copy of the frame at the
+     <span>current playback position</span>, at the <span>media resource</span>'s <span
+     data-x="concept-video-intrinsic-width">intrinsic width</span> and <span
+     data-x="concept-video-intrinsic-height">intrinsic height</span> (i.e. after any aspect-ratio
+     correction has been applied), <span>cropped to the source rectangle with formatting</span>.</p>
+
+     <li><p>If the <span>origin</span> of the <code>video</code> element is not the <span>same
+     origin</span> as the <span data-x="concept-settings-object-origin">origin</span> specified by
+     the <span>entry settings object</span>, then set the <span
+     data-x="concept-canvas-origin-clean">origin-clean</span> flag of the <code>ImageBitmap</code>
+     object's bitmap to false.</p></li>
+
+     <li><p>Return a new promise, but continue running these steps
+     <span>in parallel</span>.</p></li>
+
+     <li><p>Resolve the promise with the new <code>ImageBitmap</code> object as the value.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <dt>If <var>image</var> is a <code>canvas</code> element
+
+   <dd>
+
+    <ol>
+
+     <li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
+     but zero, return a promise rejected with an <span>"<code>IndexSizeError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If the <code>canvas</code> element's bitmap has either a horizontal dimension or a
+     vertical dimension equal to zero, then return a promise rejected with an
+     <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+     steps.</p></li>
+
+     <li><p>Create a new <code>ImageBitmap</code> object.</p></li>
+
+     <li><p>Let the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> be a copy of the
+     <code>canvas</code> element's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span>, <span>cropped to the source
+     rectangle with formatting</span>.</p></li>
+
+     <li><p>Set the <span data-x="concept-canvas-origin-clean">origin-clean</span> flag of the
+     <code>ImageBitmap</code> object's bitmap to the same value as the <span
+     data-x="concept-canvas-origin-clean">origin-clean</span> flag of the <code>canvas</code>
+     element's bitmap.</p></li>
+
+     <li><p>Return a new promise, but continue running these steps
+     <span>in parallel</span>.</p></li>
+
+     <li><p>Resolve the promise with the new <code>ImageBitmap</code> object as the value.</p></li>
+
+    </ol>
+
+   </dd>
+
+
+   <dt>If <var>image</var> is a <code>Blob</code> object
+
+   <dd>
+
+    <ol>
+
+     <li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
+     but zero, return a promise rejected with an <span>"<code>IndexSizeError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If <var>image</var> is <span data-x="concept-blob-closed">closed</span>, then return a
+     promise rejected with an <span>"<code>InvalidStateError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>Return a new promise, but continue running these steps
+     <span>in parallel</span>.</p></li>
+
+     <li><p>Read the <code>Blob</code> object's data. If an <span data-x="file-error-read">error
+     occurs during reading of the object</span>, then reject the promise with an
+     <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>, and abort these
+     steps.</p></li>
+
+     <li><p>Apply the <span data-x="Content-Type sniffing: image">image sniffing rules</span> to
+     determine the file format of the image data, with MIME type of the <code>Blob</code> (as given
+     by the <code>Blob</code> object's <code data-x="dom-Blob-type">type</code> attribute) giving
+     the official type.</p></li>
+
+     <li><p>If the image data is not in a supported image file format (e.g. it's not an image at
+     all), or if the image data is corrupted in some fatal way such that the image dimensions
+     cannot be obtained (e.g. a vector graphic with no intrinsic size), then reject the promise
+     with an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>, and abort
+     these steps.</p></li>
+
+     <li><p>Create a new <code>ImageBitmap</code> object.</p></li>
+
+     <li><p>Let the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> be the image data read from the
+     <code>Blob</code> object, <span>cropped to the source rectangle with formatting</span>.
+     If this is an animated image, the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> must only be taken from the
+     default image of the animation (the one that the format defines is to be used when animation
+     is not supported or is disabled), or, if there is no such image, the first frame of the
+     animation.</p></li>
+
+     <li><p>Resolve the promise with the new <code>ImageBitmap</code> object as the value.</p></li>
+
+    </ol>
+
+   </dd>
+
+
+   <dt>If <var>image</var> is an <code>ImageData</code> object
+
+   <dd>
+
+    <ol>
+
+     <li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
+     but zero, return a promise rejected with an <span>"<code>IndexSizeError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If the <var>image</var> object's <code data-x="dom-imagedata-data">data</code> attribute
+     value's [[<span>Detached</span>]] internal slot value is true, return a promise rejected with
+     an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+     steps.</p></li>
+
+     <li><p>Create a new <code>ImageBitmap</code> object.</p></li>
+
+     <li><p>Let the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> be the image data given by the
+     <code>ImageData</code> object, <span>cropped to the source rectangle with formatting</span>.</p></li>
+
+     <li><p>Return a new promise, but continue running these steps
+     <span>in parallel</span>.</p></li>
+
+     <li><p>Resolve the promise with the new <code>ImageBitmap</code> object as the value.</p></li>
+
+    </ol>
+
+   </dd>
+
+
+   <dt>If <var>image</var> is an <code>ImageBitmap</code> object
+
+   <dd>
+
+    <ol>
+
+     <li><p>If either the <var>sw</var> or <var>sh</var> arguments are specified
+     but zero, return a promise rejected with an <span>"<code>IndexSizeError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>If <var>image</var>'s [[<span>Detached</span>]] internal slot value is true, return a
+     promise rejected with an <span>"<code>InvalidStateError</code>"</span>
+     <code>DOMException</code> and abort these steps.</p></li>
+
+     <li><p>Create a new <code>ImageBitmap</code> object.</p></li>
+
+     <li><p>Let the <code>ImageBitmap</code> object's <span
+     data-x="concept-ImageBitmap-bitmap-data">bitmap data</span> be a copy of the <var>image</var>
+     argument's <span data-x="concept-ImageBitmap-bitmap-data">bitmap data</span>, <span>cropped
+     to the source rectangle with formatting</span>.</p></li>
+
+     <li><p>Set the <span data-x="concept-canvas-origin-clean">origin-clean</span> flag of the
+     <code>ImageBitmap</code> object's bitmap to the same value as the <span
+     data-x="concept-canvas-origin-clean">origin-clean</span> flag of the bitmap of the
+     <var>image</var> argument.</p></li>
+
+     <li><p>Return a new promise, but continue running these steps
+     <span>in parallel</span>.</p></li>
+
+     <li><p>Resolve the promise with the new <code>ImageBitmap</code> object as the value.</p></li>
+
+    </ol>
+
+   </dd>
+
+
+  </dl>
+
+  <p>When the steps above require that the user agent <dfn data-x="cropped to the source
+  rectangle with formatting">crop bitmap data to the source rectangle with formatting</dfn>,
+  the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the <span data-x="concept-ImageBitmap-bitmap-data">bitmap
+   data</span> being transformed.</p></li>
+
+   <li><p>If either or both of <code data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code>
+   and <code data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> members of
+   <var>options</var> are less than or equal to 0, then return a promise rejected with
+   <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these steps.</p></li>
+
+   <li>
+
+    <p>If <var>sx</var>, <var>sy</var>, <var>sw</var> and <var>sh</var> are specified, let
+    <var>sourceRectangle</var> be a rectangle whose corners are the four points (<var>sx</var>,
+    <var>sy</var>), (<var>sx</var>+<var>sw</var>, <var>sy</var>),(<var>sx</var>+<var>sw</var>,
+    <var>sy</var>+<var>sh</var>), (<var>sx</var>,<var>sy</var>+<var>sh</var>). Otherwise let
+    <var>sourceRectangle</var> be a rectangle whose corners are the four points (0,0), (width of
+    <var>input</var>, 0), (width of <var>input</var>, height of <var>input</var>), (0, height of
+    <var>input</var>).</p>
+
+    <p class="note">If either <var>sw</var> or <var>sh</var> are negative, then
+    the top-left corner of this rectangle will be to the left or above the (<var>sx</var>,
+    <var>sy</var>) point.</p>
+
+   </li>
+
+   <li><p>Clip <var>sourceRectangle</var> to the dimensions of <var>input</var>.</p></li>
+
+   <li>
+    <p>Let <var>outputWidth</var> be determined as follows:</p>
+
+    <dl class="switch">
+     <dt>If the <code data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code> member of
+     <var>options</var> is specified</dt>
+     <dd>the value of the <code data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code>
+     member of <var>options</var></dd>
+
+     <dt>If the <code data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code> member of
+     <var>options</var> is not specified, but the <code
+     data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> member is specified</dt>
+     <dd>the width of <var>sourceRectangle</var>, times the value of the <code
+     data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> member of <var>options</var>,
+     divided by the height of <var>sourceRectangle</var>, rounded up to the nearest integer</dd>
+
+     <dt>If neither <code data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code> nor <code
+     data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> are specified</dt>
+     <dd>the width of <var>sourceRectangle</var></dd>
+    </dl>
+   </li>
+
+   <li>
+    <p>Let <var>outputHeight</var> be determined as follows:</p>
+
+    <dl class="switch">
+     <dt>If the <code data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> member of
+     <var>options</var> is specified</dt>
+     <dd>the value of the <code data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code>
+     member of <var>options</var></dd>
+
+     <dt>If the <code data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> member of
+     <var>options</var> is not specified, but the <code
+     data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code> member is specified</dt>
+     <dd>the height of <var>sourceRectangle</var>, times the value of the <code
+     data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code> member of <var>options</var>,
+     divided by the width of <var>sourceRectangle</var>, rounded up to the nearest integer</dd>
+
+     <dt>If neither <code data-x="dom-ImageBitmapOptions-resizeWidth">resizeWidth</code> nor <code
+     data-x="dom-ImageBitmapOptions-resizeHeight">resizeHeight</code> are specified</dt>
+     <dd>the height of <var>sourceRectangle</var></dd>
+    </dl>
+   </li>
+
+   <li><p>Place <var>input</var> on an infinite transparent black grid plane, positioned so that
+   its top left corner is at the origin of the plane, with the <var>x</var>-coordinate increasing
+   to the right, and the <var>y</var>-coordinate increasing down, and with each pixel in the
+   <var>input</var> image data occupying a cell on the plane's grid.</p></li>
+
+   <li><p>Let <var>output</var> be the rectangle on the plane denoted by
+   <var>sourceRectangle</var>.</p></li>
+
+   <li><p>Scale <var>output</var> to the size specified by <var>outputWidth</var> and
+   <var>outputHeight</var>. The user agent should use the value of the <dfn><code
+   data-x="dom-ImageBitmapOptions-resizeQuality">resizeQuality</code></dfn> option to guide the
+   choice of scaling algorithm.</p></li>
+
+   <li>
+
+    <p>If the value of the <dfn><code
+    data-x="dom-ImageBitmapOptions-imageOrientation">imageOrientation</code></dfn> member of
+    <var>options</var> is "<dfn><code data-x="dom-ImageOrientation-flipY">flipY</code></dfn>",
+    <var>output</var> must be flipped vertically, disregarding any image orientation metadata of
+    the source (such as EXIF metadata), if any. <ref spec=EXIF></p>
+
+    <p class="note">If the value is "<dfn><code
+    data-x="dom-ImageOrientation-none">none</code></dfn>", no extra step is required.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>image</var> is an <code>img</code> element or a <code>Blob</code> object, let
+    <var>val</var> be the value of the <dfn><code
+    data-x="dom-ImageBitmapOptions-colorSpaceConversion">colorSpaceConversion</code></dfn> member
+    of <var>options</var>, and then run these substeps:</p>
+
+    <ol>
+
+     <li><p>If <var>val</var> is "<dfn><code
+     data-x="dom-ColorSpaceConversion-default">default</code></dfn>",
+     the color space conversion behavior is implementation-specific, and should be chosen according
+     to the color space that the implementation uses for drawing images onto the canvas.</p></li>
+
+     <li><p>If <var>val</var> is "<dfn><code
+     data-x="dom-ColorSpaceConversion-none">none</code></dfn>", <var>output</var> must be decoded
+     without performing any color space conversions. This means that the image decoding algorithm
+     must ignore color profile metadata embedded in the source data as well as the display device
+     color profile.</p></li>
+
+    </ol>
+
+    <p class="note">The native color space of canvas is currently unspecified, but this is expected
+    to change in the future.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>val</var> be the value of <dfn><code
+    data-x="dom-ImageBitmapOptions-premultiplyAlpha">premultiplyAlpha</code></dfn> member of
+    <var>options</var>, and then run these substeps:</p>
+
+    <ol>
+
+     <li><p>If <var>val</var> is "<dfn><code
+     data-x="dom-PremultiplyAlpha-default">default</code></dfn>", the alpha premultiplication
+     behavior is implementation-specific, and should be chosen according to implementation deems
+     optimal for drawing images onto the canvas.</p></li>
+
+     <li><p>If <var>val</var> is "<dfn><code
+     data-x="dom-PremultiplyAlpha-premultiply">premultiply</code></dfn>", the <var>output</var>
+     that is not premultiplied by alpha must have its color components multiplied by alpha and
+     that is premultiplied by alpha must be left untouched.</p></li>
+
+     <li><p>If <var>val</var> is "<dfn><code
+     data-x="dom-PremultiplyAlpha-none">none</code></dfn>", the <var>output</var> that is not
+     premultiplied by alpha must be left untouched and that is premultiplied by alpha must have
+     its color components divided by alpha.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return <var>output</var>.</p></li>
+
+  </ol>
+
+  <p>When the <dfn><code data-x="dom-ImageBitmap-close">close()</code></dfn> method is called, the
+  user agent must run these steps:</p>
+
+  <ol>
+   <li><p>Set this <code>ImageBitmap</code> object's [[<span>Detached</span>]] internal slot value
+   to true.</p></li>
+
+   <li><p>Unset this <code>ImageBitmap</code> object's <span
+   data-x="concept-ImageBitmap-bitmap-data">bitmap data</span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-ImageBitmap-width">width</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>If this <code>ImageBitmap</code> object's [[<span>Detached</span>]] internal slot's
+   value is true, then return 0.</p></li>
+
+   <li><p>Return this <code>ImageBitmap</code> object's width, in <span data-x="'px'">CSS
+   pixels</span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-ImageBitmap-height">height</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>If this <code>ImageBitmap</code> object's [[<span>Detached</span>]] internal slot's
+   value is true, then return 0.</p></li>
+
+   <li><p>Return this <code>ImageBitmap</code> object's height, in <span data-x="'px'">CSS
+   pixels</span>.</p></li>
+  </ol>
+
+  <p>The <span>ResizeQuality</span> enumeration is used to express a preference for the
+  interpolation quality to use when scaling images.</p>
+
+  <p>The "<dfn><code data-x="dom-ResizeQuality-pixelated">pixelated</code></dfn>" value indicates
+  a preference to scale the image that maximizes the appearance. Scaling algorithms that "smooth"
+  colors are acceptable, such as bilinear interpolation.</p>
+
+  <p>The "<dfn><code data-x="dom-ResizeQuality-low">low</code></dfn>" value
+  indicates a preference for a low level of image interpolation quality. Low-quality image
+  interpolation may be more computationally efficient than higher settings.</p>
+
+  <p>The "<dfn><code data-x="dom-ResizeQuality-medium">medium</code></dfn>" value indicates
+  a preference for a medium level of image interpolation quality.</p>
+
+  <p>The "<dfn><code data-x="dom-ResizeQuality-high">high</code></dfn>" value indicates a
+  preference for a high level of image interpolation quality. High-quality image
+  interpolation may be more computationally expensive than lower settings.</p>
+
+  <p class="note">Bilinear scaling is an example of a relatively fast, lower-quality image-smoothing
+  algorithm. Bicubic or Lanczos scaling are examples of image-scaling algorithms that produce
+  higher-quality output. This specification does not mandate that specific interpolation algorithms
+  be used unless the value is "<span data-x="dom-ResizeQuality-pixelated">pixelated</span>".</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Using this API, a sprite sheet can be precut and prepared:</p>
+
+   <pre>var sprites = {};
+function loadMySprites() {
+  var image = new Image();
+  image.src = 'mysprites.png';
+  var resolver;
+  var promise = new Promise(function (arg) { resolver = arg });
+  image.onload = function () {
+    resolver(Promise.all(
+      createImageBitmap(image,  0,  0, 40, 40).then(function (image) { sprites.woman = image }),
+      createImageBitmap(image, 40,  0, 40, 40).then(function (image) { sprites.man   = image }),
+      createImageBitmap(image, 80,  0, 40, 40).then(function (image) { sprites.tree  = image }),
+      createImageBitmap(image,  0, 40, 40, 40).then(function (image) { sprites.hut   = image }),
+      createImageBitmap(image, 40, 40, 40, 40).then(function (image) { sprites.apple = image }),
+      createImageBitmap(image, 80, 40, 40, 40).then(function (image) { sprites.snake = image }),
+    ));
+  };
+  return promise;
+}
+
+function runDemo() {
+  var canvas = document.querySelector('canvas#demo');
+  var context = canvas.getContext('2d');
+  context.drawImage(sprites.tree, 30, 10);
+  context.drawImage(sprites.snake, 70, 10);
+}
+
+loadMySprites().then(runDemo);</pre>
+
+  </div>
+
+
+<!--TOPIC:DOM APIs-->
+
+  

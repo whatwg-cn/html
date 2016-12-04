@@ -1,0 +1,53 @@
+<h4>The <dfn><code>kbd</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>kbd</code> element <span>represents</span> user input (typically keyboard input,
+  although it may also be used to represent other input, such as voice commands).</p>
+
+  <p>When the <code>kbd</code> element is nested inside a <code>samp</code> element, it represents
+  the input as it was echoed by the system.</p>
+
+  <p>When the <code>kbd</code> element <em>contains</em> a <code>samp</code> element, it represents
+  input based on system output, for example invoking a menu item.</p>
+
+  <p>When the <code>kbd</code> element is nested inside another <code>kbd</code> element, it
+  represents an actual key or other single unit of input as appropriate for the input mechanism.</p>
+
+  <div class="example">
+
+   <p>Here the <code>kbd</code> element is used to indicate keys to press:</p>
+
+   <pre>&lt;p>To make George eat an apple, press &lt;kbd>&lt;kbd>Shift&lt;/kbd>+&lt;kbd>F3&lt;/kbd>&lt;/kbd>&lt;/p></pre>
+
+   <p>In this second example, the user is told to pick a particular menu item. The outer
+   <code>kbd</code> element marks up a block of input, with the inner <code>kbd</code> elements
+   representing each individual step of the input, and the <code>samp</code> elements inside them
+   indicating that the steps are input based on something being displayed by the system, in this
+   case menu labels:</p>
+
+   <pre>&lt;p>To make George eat an apple, select
+    &lt;kbd>&lt;kbd>&lt;samp>File&lt;/samp>&lt;/kbd>|&lt;kbd>&lt;samp>Eat Apple...&lt;/samp>&lt;/kbd>&lt;/kbd>
+&lt;/p></pre>
+
+   <p>Such precision isn't necessary; the following is equally fine:</p>
+
+   <pre>&lt;p>To make George eat an apple, select &lt;kbd>File | Eat Apple...&lt;/kbd>&lt;/p></pre>
+
+  </div>
+
+
+  

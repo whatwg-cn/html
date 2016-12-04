@@ -1,0 +1,74 @@
+<h4>The <dfn><code data-x="attr-accesskey">accesskey</code></dfn> attribute</h4>
+
+  <p>All <span>HTML elements</span> may have the <code data-x="attr-accesskey">accesskey</code>
+  content attribute set. The <code data-x="attr-accesskey">accesskey</code> attribute's value is used
+  by the user agent as a guide for creating a keyboard shortcut that activates or focuses the
+  element.</p>
+
+  <p>If specified, the value must be an <span>ordered set of unique space-separated tokens</span>
+  that are <span>case-sensitive</span>, each of which must be exactly one Unicode code point in
+  length.</p>
+
+  <div class="example">
+
+   <p>In the following example, a variety of links are given with access keys so that keyboard users
+   familiar with the site can more quickly navigate to the relevant pages:</p>
+
+   <pre>&lt;nav>
+ &lt;p>
+  &lt;a title="Consortium Activities" accesskey="A" href="/Consortium/activities">Activities&lt;/a> |
+  &lt;a title="Technical Reports and Recommendations" accesskey="T" href="/TR/">Technical Reports&lt;/a> |
+  &lt;a title="Alphabetical Site Index" accesskey="S" href="/Consortium/siteindex">Site Index&lt;/a> |
+  &lt;a title="About This Site" accesskey="B" href="/Consortium/">About Consortium&lt;/a> |
+  &lt;a title="Contact Consortium" accesskey="C" href="/Consortium/contact">Contact&lt;/a>
+ &lt;/p>
+&lt;/nav></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, the search field is given two possible access keys, "s" and "0" (in
+   that order). A user agent on a device with a full keyboard might pick <kbd data-x=""><kbd
+   data-x="">Ctrl</kbd>+<kbd data-x="">Alt</kbd>+<kbd data-x="">S</kbd></kbd> as the shortcut key,
+   while a user agent on a small device with just a numeric keypad might pick just the plain
+   unadorned key <kbd><kbd>0</kbd></kbd>:</p>
+
+   <pre>&lt;form action="/search">
+ &lt;label>Search: &lt;input type="search" name="q" accesskey="s 0">&lt;/label>
+ &lt;input type="submit">
+&lt;/form></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, a button has possible access keys described. A script then tries to
+   update the button's label to advertise the key combination the user agent selected.</p>
+
+   <pre>&lt;input type=submit accesskey="N @ 1" value="Compose">
+...
+&lt;script>
+ function labelButton(button) {
+   if (button.accessKeyLabel)
+     button.value += ' (' + button.accessKeyLabel + ')';
+ }
+ var inputs = document.getElementsByTagName('input');
+ for (var i = 0; i &lt; inputs.length; i += 1) {
+   if (inputs[i].type == "submit")
+     labelButton(inputs[i]);
+ }
+&lt;/script></pre>
+
+   <p>On one user agent, the button's label might become "<samp>Compose (&#x2318;N)</samp>". On
+   another, it might become "<samp>Compose (Alt+&#x21E7;+1)</samp>". If the user agent doesn't
+   assign a key, it will be just "<samp>Compose</samp>". The exact string depends on what the
+   <span>assigned access key</span> is, and on how the user agent represents that key
+   combination.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

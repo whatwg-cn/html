@@ -1,0 +1,34 @@
+<h4>Boolean attributes</h4>
+
+  <p>A number of attributes are <dfn data-x="boolean attribute">boolean attributes</dfn>. The
+  presence of a boolean attribute on an element represents the true value, and the absence of the
+  attribute represents the false value.</p>
+
+  <p>If the attribute is present, its value must either be the empty string or a value that is an
+  <span>ASCII case-insensitive</span> match for the attribute's canonical name, with no leading or
+  trailing whitespace.</p>
+
+  <p class="note">The values "true" and "false" are not allowed on boolean attributes. To represent
+  a false value, the attribute has to be omitted altogether.</p>
+
+  <div class="example">
+
+   <p>Here is an example of a checkbox that is checked and disabled. The <code
+   data-x="attr-input-checked">checked</code> and <code data-x="attr-fe-disabled">disabled</code>
+   attributes are the boolean attributes.</p>
+
+   <pre>&lt;label>&lt;input type=checkbox checked name=cheese disabled> Cheese&lt;/label></pre>
+
+   <p>This could be equivalently written as this:
+
+   <pre>&lt;label>&lt;input type=checkbox checked=checked name=cheese disabled=disabled> Cheese&lt;/label></pre>
+
+   <p>You can also mix styles; the following is still equivalent:</p>
+
+   <pre>&lt;label>&lt;input type='checkbox' checked name=cheese disabled=""> Cheese&lt;/label></pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,38 @@
+<h4 id="history-notes">Implementation notes for session history</h4>
+  <!-- don't change the ID without updating multiple internal links -->
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The <code>History</code> interface is not meant to place restrictions on how implementations
+  represent the session history to the user.</p>
+
+  <p>For example, session history could be implemented in a tree-like manner, with each page having
+  multiple "forward" pages. This specification doesn't define how the linear list of pages in the
+  <code data-x="dom-history">history</code> object are derived from the actual session history as
+  seen from the user's perspective.</p>
+
+  <p>Similarly, a page containing two <code>iframe</code>s has a <code
+  data-x="dom-history">history</code> object distinct from the <code>iframe</code>s' <code
+  data-x="dom-history">history</code> objects, despite the fact that typical Web browsers present the
+  user with just one "Back" button, with a session history that interleaves the navigation of the
+  two inner frames and the outer page.</p>
+
+<!--ADD-TOPIC:Security-->
+  <p><strong>Security</strong>: It is suggested that to avoid letting a page "hijack" the history
+  navigation facilities of a UA by abusing <code data-x="dom-history-pushState">pushState()</code>,
+  the UA provide the user with a way to jump back to the previous page (rather than just going back
+  to the previous state). For example, the back button could have a drop down showing just the pages
+  in the session history, and not showing any of the states. Similarly, an aural browser could have
+  two "back" commands, one that goes back to the previous state, and one that jumps straight back to
+  the previous page.</p>
+
+  <p>For both <code data-x="dom-history-pushState">pushState()</code> and <code
+  data-x="dom-history-replaceState">replaceState()</code>, user agents are encouraged to prevent
+  abuse of these APIs via too-frequent calls or over-large state objects. As detailed above, the
+  algorithm explicitly allows user agents to ignore any such calls when appropriate.</p>
+<!--REMOVE-TOPIC:Security-->
+
+  </div>
+
+
+  

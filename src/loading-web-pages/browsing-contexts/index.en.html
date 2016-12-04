@@ -1,0 +1,157 @@
+<h3 id="windows">Browsing contexts</h3>
+
+  <p>A <dfn data-export="">browsing context</dfn> is an environment in which <code>Document</code>
+  objects are presented to the user.</p>
+
+  <p class="note">A tab or window in a Web browser typically contains a <span>browsing
+  context</span>, as does an <code>iframe</code><span w-nodev> or <code>frame</code>s in a
+  <code>frameset</code></span>.</p>
+
+  <p>A <span>browsing context</span> has a corresponding <code>WindowProxy</code> object.</p>
+
+  <p>A <span>browsing context</span> has a <span>session history</span>, which lists the
+  <code>Document</code> objects that the <span>browsing context</span> has presented, is presenting,
+  or will present. At any time, one <code>Document</code> in each <span>browsing context</span> is
+  designated the <dfn data-export="">active document</dfn>.
+  A <dfn data-x="concept-document-bc" data-lt="browsing context" data-dfn-for="Document"
+  data-export=""><code>Document</code>'s browsing context</dfn> is the <span>browsing context</span>
+  whose <span>session history</span> contains the <code>Document</code>, if any such browsing
+  context exists and has not been <span data-x="a browsing context is
+  discarded">discarded</span>.</p>
+
+  <p class="note">In general, there is a 1-to-1 mapping from the <code>Window</code> object to the
+  <code>Document</code> object, as long as the <code>Document</code> object has a <span
+  data-x="concept-document-bc">browsing context</span>. There are two exceptions. First, a
+  <code>Window</code> can be reused for the presentation of a second <code>Document</code> in the
+  same <span>browsing context</span>, such that the mapping is then 1-to-2. This occurs when a
+  <span>browsing context</span> is <span data-x="navigate">navigated</span> from the initial
+  <code>about:blank</code> <code>Document</code> to another, with <span>replacement enabled</span>.
+  Second, a <code>Document</code> can end up being reused for several <code>Window</code> objects
+  when the <code data-x="dom-document-open">document.open()</code> method is used, such that the
+  mapping is then many-to-1.</p>
+
+  <p class="note">A <code>Document</code> does not necessarily have a <span
+  data-x="concept-document-bc">browsing context</span> associated with it. In particular, data
+  mining tools are likely to never instantiate browsing contexts. A <code>Document</code> created
+  using an API such as <code data-x="dom-DOMImplementation-createDocument">createDocument()</code>
+  never has a <span data-x="concept-document-bc">browsing context</span>. And the
+  <code>Document</code> originally created for an <code>iframe</code> element, which has since been
+  <span data-x="node is removed from a document">removed from the document</span>, has no associated
+  browsing context, since that browsing context was <span data-x="a browsing context is
+  discarded">discarded</span>.</p>
+
+  <hr>
+
+  <p>A <span>browsing context</span> can have a <dfn data-export="">creator browsing context</dfn>,
+  the <span>browsing context</span> that was responsible for its creation. If a <span>browsing
+  context</span> has a <span>parent browsing context</span>, then that is its <span>creator browsing
+  context</span>. Otherwise, if the <span>browsing context</span> has an <span>opener browsing
+  context</span>, then <em>that</em> is its <span>creator browsing context</span>. Otherwise, the
+  <span>browsing context</span> has no <span>creator browsing context</span>.</p>
+
+  <p>If a <span>browsing context</span> <var>context</var> has a <span>creator browsing
+  context</span> <var>creator</var>, it also has the following properties. In what follows, let
+  <var>creator document</var> be <var>creator</var>'s <span>active document</span> at the time
+  <var>context</var> is created:</p>
+
+  <dl>
+   <dt><dfn>creator origin</dfn></dt>
+   <dd><var>creator document</var>'s <span>origin</span></dd>
+
+   <dt><dfn>creator URL</dfn></dt>
+   <dd><var>creator document</var>'s <span data-x="concept-document-url">URL</span></dd>
+
+   <dt><dfn>creator base URL</dfn></dt>
+   <dd><var>creator document</var>'s <span data-x="document base URL">base URL</span></dd>
+
+   <dt><dfn>creator referrer policy</dfn></dt>
+   <dd><var>creator document</var>'s <span data-x="concept-document-referrer-policy">referrer
+   policy</span></dd>
+
+   <dt><dfn>creator context security</dfn></dt>
+   <dd>The result of executing <span>Is environment settings object a secure context?</span> on
+   <var>creator document</var>'s <span>relevant settings object</span></dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>To <dfn data-x="creating a new browsing context">create a new browsing context</dfn>:</p>
+
+  <ol>
+   <li><p>Let <var>browsingContext</var> be a new <span>browsing context</span>.</p></li>
+
+   <li>
+    <p>Call the JavaScript <span
+    data-x="js-InitializeHostDefinedRealm">InitializeHostDefinedRealm()</span> abstract operation
+    with the following customizations:</p>
+
+    <ul>
+     <li><p>For the global object, create a new <code>Window</code> object
+     <var>window</var>.</p></li>
+
+     <li><p>For the global <b>this</b> value, use <var>browsingContext</var>'s
+     <code>WindowProxy</code> object.</li>
+
+     <li><p>Let <var>realm execution context</var> be the created <span>JavaScript execution
+     context</span>.</p></li>
+    </ul>
+   </li>
+
+   <li><p><span>Set up a browsing context environment settings object</span> with <var>realm
+   execution context</var>, and let <var>settingsObject</var> be the result.</p></li>
+
+   <li><p>Let <var>document</var> be a new <code>Document</code>, marked as an <span data-x="HTML
+   documents">HTML document</span> in <span>quirks mode</span>, whose <span
+   data-x="concept-document-content-type">content type</span> is "<code data-x="">text/html</code>",
+   and which is both <span>ready for post-load tasks</span> and <span>completely loaded</span>
+   immediately.</p></li>
+
+   <li><p>Ensure that <var>document</var> has a single child <code>html</code> node, which itself
+   has two empty child nodes: a <code>head</code> element, and a <code>body</code> element.</p></li>
+
+   <li><p>Set <var>window</var>'s <span data-x="concept-document-window">associated
+   <code>Document</code></span> to <var>document</var>.</p></li>
+
+   <li>
+    <p>Set <var>browsingContext</var>'s <code>WindowProxy</code> object's [[<span
+    data-x="concept-windowproxy-window">Window</span>]] internal slot value to
+    <var>window</var>.</p>
+
+    <p class="note">The internal slot value is updated when navigations occur.</p>
+   </li>
+
+   <li>
+    <p id="about-blank-origin">Set the <span>origin</span> of <var>document</var>:</p>
+
+    <ul>
+     <li><p>If <var>browsingContext</var> has a <span>creator browsing context</span>, then the
+     <span>origin</span> of <var>document</var> is the <span>creator origin</span>.</p></li>
+
+     <li><p>Otherwise, the <span>origin</span> of <var>document</var> is a unique <span
+     data-x="concept-origin-opaque">opaque origin</span>.</p></li>
+    </ul>
+   </li>
+
+   <li><p>If <var>browsingContext</var> has a <span>creator browsing context</span>, then set
+   <var>document</var>'s <span data-x="the document's referrer">referrer</span> to the <span
+   data-x="concept-url-serializer">serialization</span> of <span>creator URL</span>.</p></li>
+
+   <li><p>If <var>browsingContext</var> has a <span>creator browsing context</span>, then set
+   <var>document</var>'s <span data-x="concept-document-referrer-policy">referrer policy</span> to
+   the <span>creator referrer policy</span>.</p></li>
+
+   <li><p><span>Implement the sandboxing</span> for <var>document</var>.</p></li>
+
+   <li><p>Set <var>settingsObject</var>'s <span
+   data-x="concept-environment-execution-ready-flag">execution ready flag</span>.</p></li>
+
+   <li><p>Add <var>document</var> to <var>browsingContext</var>'s <span>session
+   history</span>.</p></li>
+
+   <li><p>Return <var>browsingContext</var>.</p></li>
+  </ol>
+
+  </div>
+
+
+  

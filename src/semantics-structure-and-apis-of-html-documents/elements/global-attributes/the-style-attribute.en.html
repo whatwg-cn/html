@@ -1,0 +1,62 @@
+<h5>The <dfn><code data-x="attr-style">style</code></dfn> attribute</h5>
+
+  <p>All <span>HTML elements</span> may have the <code data-x="attr-style">style</code> content
+  attribute set. This is a <span data-x="css-styling-attribute">style attribute</span> as defined by
+  the <cite>CSS Style Attributes</cite> specification. <ref spec=CSSATTR></p>
+
+  <div w-nodev>
+
+  <p>In user agents that support CSS, the attribute's value must be parsed when the attribute is
+  added or has its value changed<!-- so dynamic changes to the base URL don't affect the CSS -->,
+  according to the rules given for <span data-x="css-styling-attribute">style attributes</span>.
+  <ref spec=CSSATTR></p>
+
+  <p>However, if the <span>Should element's inline behavior be blocked by Content Security
+  Policy?</span> algorithm returns "<code data-x="">Blocked</code>" when executed upon the
+  attribute's <span>element</span>, "<code data-x="">style attribute</code>", and the attribute's
+  value, then the style rules defined in the attribute's value must not be applied to the
+  <span>element</span>. <ref spec="CSP"></p>
+
+  </div>
+
+  <p>Documents that use <code data-x="attr-style">style</code> attributes on any of their elements
+  must still be comprehensible and usable if those attributes were removed.</p>
+
+  <p class="note">In particular, using the <code data-x="attr-style">style</code> attribute to hide
+  and show content, or to convey meaning that is otherwise not included in the document, is
+  non-conforming. (To hide and show content, use the <code data-x="attr-hidden">hidden</code>
+  attribute.)</p>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-style">style</code></dt>
+   <dd>
+    <p>Returns a <code>CSSStyleDeclaration</code> object for the element's <code data-x="attr-style">style</code> attribute.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-style">style</code></dfn> IDL attribute is defined in the CSS Object
+  Model (CSSOM) specification. <ref spec=CSSOM></p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, the words that refer to colors are marked up using the
+   <code>span</code> element and the <code data-x="attr-style">style</code> attribute to make those
+   words show up in the relevant colors in visual media.</p>
+
+   <pre>&lt;p>My sweat suit is &lt;span style="color: green; background:
+transparent">green&lt;/span> and my eyes are &lt;span style="color: blue;
+background: transparent">blue&lt;/span>.&lt;/p></pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,154 @@
+<h5>The <code>HTMLAllCollection</code> interface</h5>
+
+  <p>The <code>HTMLAllCollection</code> interface is used for the legacy <code
+  data-x="dom-document-all">document.all</code> attribute. It operates similarly to
+  <code>HTMLCollection</code>; the main differences are that it allows a staggering variety of
+  different (ab)uses of its methods to all end up returning something, and that it can be called as
+  a function as an alternative to property access.</p>
+
+  <p class="note">All <code>HTMLAllCollection</code> objects are rooted at a <code>Document</code>
+  and have a filter that matches all elements, so the elements <span>represented by the
+  collection</span> of an <code>HTMLAllCollection</code> object consist of all the descendant
+  elements of the root <code>Document</code>.</p>
+
+  <pre class="idl">[LegacyUnenumerableNamedProperties]
+interface <dfn>HTMLAllCollection</dfn> {
+  readonly attribute unsigned long <span data-x="dom-HTMLAllCollection-length">length</span>;
+  getter <span>Element</span>? (unsigned long index);
+  getter (<span>HTMLCollection</span> or <span>Element</span>)? <span data-x="dom-HTMLAllCollection-namedItem">namedItem</span>(DOMString name);
+  legacycaller (<span>HTMLCollection</span> or <span>Element</span>)? <span data-x="dom-HTMLAllCollection-item">item</span>(optional DOMString nameOrIndex);
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>collection</var> . <code subdfn data-x="dom-HTMLAllCollection-length">length</code></dt>
+   <dd>
+    <p>Returns the number of elements in the collection.</p>
+   </dd>
+
+   <dt><var>element</var> = <var>collection</var> . <code subdfn data-x="dom-HTMLAllCollection-item">item</code>(<var>index</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>(<var>index</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>[<var>index</var>]</dt>
+   <dd>
+    <p>Returns the item with index <var>index</var> from the collection (determined by <span>tree order</span>).</p>
+   </dd>
+
+   <dt><var>element</var> = <var>collection</var> . <code data-x="dom-HTMLAllCollection-item">item</code>(<var>name</var>)</dt>
+   <dt><var>collection</var> = <var>collection</var> . <code data-x="dom-HTMLAllCollection-item">item</code>(<var>name</var>)</dt>
+   <dt><var>element</var> = <var>collection</var> . <code subdfn data-x="dom-HTMLAllCollection-namedItem">namedItem</code>(<var>name</var>)</dt>
+   <dt><var>collection</var> = <var>collection</var> . <code data-x="dom-HTMLAllCollection-namedItem">namedItem</code>(<var>name</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>(<var>name</var>)</dt>
+   <dt><var>collection</var> = <var>collection</var>(<var>name</var>)</dt>
+   <dt><var>element</var> = <var>collection</var>[<var>name</var>]</dt>
+   <dt><var>collection</var> = <var>collection</var>[<var>name</var>]</dt>
+   <dd>
+    <p>Returns the item with <span data-x="concept-id">ID</span> or name <var>name</var> from the collection.</p>
+    <p>If there are multiple matching items, then an <code>HTMLCollection</code> object containing all those elements is returned.</p>
+    <!-- this list only includes conforming elements: -->
+    <p>Only <code>button</code>, <code>form</code>, <code>iframe</code>,
+    <code>input</code>, <code>map</code>, <code>meta</code>, <code>object</code>,
+    <code>select</code>, and <code>textarea</code> elements can have a name for the purpose of this
+    method; their name is given by the value of their <code data-x="">name</code> attribute.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The object's <span>supported property indices</span> are as defined for
+  <code>HTMLCollection</code> objects.</p>
+
+  <p>The <span>supported property names</span> consist of the non-empty values of all the <code
+  data-x="attr-id">id</code> attributes of all the elements <span>represented by the
+  collection</span>, and the non-empty values of all the <code data-x="">name</code> attributes of
+  all the <span>"all"-named elements</span> <span>represented by the collection</span>, in
+  <span>tree order</span>, ignoring later duplicates, with the <code data-x="attr-id">id</code> of
+  an element preceding its <code data-x="">name</code> if it contributes both, they differ from each
+  other, and neither is the duplicate of an earlier entry.</p>
+
+  <p>On getting, the <dfn><code data-x="dom-HTMLAllCollection-length">length</code></dfn>
+  attribute must return the number of nodes <span>represented by the collection</span>.</p>
+
+  <p>The indexed property getter must return the result of <span
+  data-x="concept-get-all-indexed">getting the "all"-indexed element</span> from this
+  <code>HTMLAllCollection</code> given the passed index.</p>
+
+  <p>The <dfn><code data-x="dom-HTMLAllCollection-namedItem">namedItem(<var>name</var>)</code></dfn>
+  method must return the result of <span data-x="concept-get-all-named">getting the "all"-named
+  element(s)</span> from this <code>HTMLAllCollection</code> given <var>name</var>.</p>
+
+  <p>The <dfn><code data-x="dom-HTMLAllCollection-item">item(<var>nameOrIndex</var>)</code></dfn>
+  method (and the <code data-x="">legacycaller</code> behavior) must run the following steps:</p>
+
+  <ol>
+   <li><p>If <var>nameOrIndex</var> was not provided, return null.</p></li>
+
+   <li><p>If <var>nameOrIndex</var>, <span data-x="concept-idl-convert">converted</span> to a
+   JavaScript string value, is an <span>array index property name</span>, return the result of <span
+   data-x="concept-get-all-indexed">getting the "all"-indexed element</span> from this
+   <code>HTMLAllCollection</code> given the number represented by <var>nameOrIndex</var>.</p></li>
+
+   <li><p>Return the result of <span data-x="concept-get-all-named">getting the "all"-named
+   element(s)</span> from this <code>HTMLAllCollection</code> given
+   <var>nameOrIndex</var>.</p></li>
+  </ol>
+
+  <hr>
+
+  <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2837 -->
+  <p>The following elements are <dfn>"all"-named elements</dfn>:
+   <code>a</code>, <!-- in some browsers -->
+   <code>applet</code>,
+   <code>button</code>, <!-- in some browsers -->
+   <code>embed</code>,
+   <code>form</code>,
+   <code>frame</code>,
+   <code>frameset</code>,
+   <code>iframe</code>, <!-- in some browsers -->
+   <code>img</code>,
+   <code>input</code>,
+   <!-- keygen? -->
+   <code>map</code>, <!-- in some browsers -->
+   <code>meta</code>, <!-- in some browsers -->
+   <code>object</code>,
+   <code>select</code>, and
+   <code>textarea</code> <!-- in some browsers -->
+  </p>
+
+  <p>To <dfn data-x="concept-get-all-indexed">get the "all"-indexed element</dfn> from an
+  <code>HTMLAllCollection</code> <var>collection</var> given an index <var>index</var>, return the
+  <var>index</var><sup>th</sup> element in <var>collection</var>, or null if there is no such
+  <var>index</var><sup>th</sup> element.</p>
+
+  <p>To <dfn data-x="concept-get-all-named">get the "all"-named element(s)</dfn> from an
+  <code>HTMLAllCollection</code> <var>collection</var> given a name <var>name</var>, perform the
+  following steps:</p>
+
+  <ol>
+   <li><p>If <var>name</var> is the empty string, return null.</p></li>
+
+   <li>
+    <p>Let <var>subCollection</var> be an <code>HTMLCollection</code> object rooted at the same
+    <code>Document</code> as <var>collection</var>, whose filter matches only elements that are
+    either:</p>
+
+    <ul>
+     <li><p><span>"all"-named elements</span> with a <code data-x="">name</code> attribute equal to
+     <var>name</var>, or,</p></li>
+
+     <li><p>elements with an <span data-x="concept-id">ID</span> equal to <var>name</var>.</p></li>
+    </ul>
+   </li>
+
+   <li><p>If there is exactly one element in <var>subCollection</var>, then return that
+   element.</p></li>
+
+   <li><p>Otherwise, if <var>subCollection</var> is empty, return null.</p></li>
+
+   <li><p>Otherwise, return <var>subCollection</var>.</p></li>
+  </ol>
+
+  </div>
+
+
+  

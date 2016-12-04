@@ -1,0 +1,66 @@
+<h6>Filters</h6>
+
+  <p>All drawing operations on an object which implements the <code>CanvasFilters</code>
+  interface are affected by the global <dfn><code data-x="dom-context-2d-filter">filter</code></dfn>
+  attribute.</p>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-filter">filter</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current filter.</p>
+
+    <p>Can be set, to change the filter. Values that cannot be parsed as a
+    <span>&lt;filter-function-list&gt;</span> value are ignored.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <code data-x="dom-context-2d-filter">filter</code> attribute, on getting, must
+  return the last value it was successfully set to. The value must not be re-serialized. On setting,
+  if the new value is 'none' (not the empty string, null, or undefined), filters must be disabled
+  for the context. Otherwise, the value must be parsed as a
+  <span>&lt;filter-function-list&gt;</span> value. If the value cannot be parsed as a
+  <span>&lt;filter-function-list&gt;</span> value, where using property-independent style sheet
+  syntax like 'inherit' or 'initial' is considered an invalid value, then it must be ignored, and
+  the attribute must retain its previous value. When creating the object implementing the
+  <code>CanvasFilters</code> interface, the attribute must be set to 'none'.</p>
+
+  <p>A <span>&lt;filter-function-list&gt;</span> value consists of a sequence of one or more
+  filter functions or references to SVG filters. The input to the filter is used as the input
+  to the first item in the list. Subsequent items take the output of the previous item as
+  their input. <ref spec="FILTERS"></p>
+
+  <p>Coordinates used in the value of the <code
+  data-x="dom-context-2d-filter">filter</code> attribute are interpreted such that one pixel is
+  equivalent to one SVG user space unit and to one canvas coordinate space unit. Filter coordinates
+  are not affected by the <span data-x="dom-context-2d-transformation">current transformation
+  matrix</span>. The current transformation matrix affects only the input to the filter. Filters
+  are applied in the <span>output bitmap</span>'s coordinate space.</p>
+
+  <p>When the value of the <code data-x="dom-context-2d-filter">filter</code> attribute defines
+  lengths using percentages or using <span>'em'</span> or <span>'ex'</span> units, these must be
+  interpreted relative to the <span>computed value</span> of the <span>'font-size'</span> property
+  of the <span>font style source object</span> at the time that the attribute is set, if it is an
+  element. If the <span data-x="computed value">computed values</span> are undefined for a
+  particular case (e.g. because the <span>font style source object</span> is not an element or is
+  not <span>being rendered</span>), then the relative keywords must be interpreted relative to the
+  default value of the <code data-x="dom-context-2d-font">font</code> attribute. The 'larger' and
+  'smaller' keywords are not supported.</p>
+
+  <p>If the value of the <code data-x="dom-context-2d-filter">filter</code> attribute refers to an
+  SVG filter in the same document, and this SVG filter changes, then the changed filter is used for
+  the next draw operation.</p>
+
+  <p>If the value of the <code data-x="dom-context-2d-filter">filter</code> attribute refers to an
+  SVG filter in an external resource document and that document is not loaded when a drawing
+  operation is invoked, then the drawing operation must proceed with no filtering.</p>
+
+  </div>
+
+  

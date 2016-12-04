@@ -1,0 +1,45 @@
+<h4>Aborting a document load</h4>
+
+  <p>If a <code>Document</code> is <dfn data-x="abort a document">aborted</dfn>, the user agent must
+  run the following steps:</p>
+
+  <ol>
+
+   <li><p><span data-x="abort a document">Abort</span> the <span data-x="active document">active
+   documents</span> of every <span>child browsing context</span>. If this results in any of those
+   <code>Document</code> objects having their <i
+   data-x="concept-document-salvageable">salvageable</i> state set to false, then set this
+   <code>Document</code>'s <i data-x="concept-document-salvageable">salvageable</i> state to false
+   also.</p></li>
+
+   <li><p>Cancel any instances of the <span data-x="concept-fetch">fetch</span> algorithm in the
+   context of this <code>Document</code>, discarding any <span data-x="concept-task">tasks</span>
+   <span data-x="queue a task">queued</span> for them, and discarding any further data received from
+   the network for them. If this resulted in any instances of the <span
+   data-x="concept-fetch">fetch</span> algorithm being canceled or any <span data-x="queue a
+   task">queued</span> <span data-x="concept-task">tasks</span> or any network data getting
+   discarded, then set the <code>Document</code>'s <i
+   data-x="concept-document-salvageable">salvageable</i> state to false.</p></li>
+
+   <li><p>If the <code>Document</code> has an <span>active parser</span>, then <span data-x="abort a
+   parser">abort that parser</span> and set the <code>Document</code>'s <i
+   data-x="concept-document-salvageable">salvageable</i> state to false.</p></li>
+
+   <!-- we could also stop all script, or stop animations -->
+
+  </ol>
+
+  <p>User agents may allow users to explicitly invoke the <span data-x="abort a document">abort a
+  document</span> algorithm for a <code>Document</code>. If the user does so, then, if that
+  <code>Document</code> is an <span>active document</span>, the user agent should <span>queue a
+  task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-abort">abort</code> at that <code>Document</code>'s <code>Window</code> object
+  before invoking the <span data-x="abort a document">abort</span> algorithm.</p>
+
+  <!-- I'd love to make this more precise, anyone have any suggestions on what it should say? -->
+
+  </div>
+
+
+<!--TOPIC:Offline Web Applications-->
+  

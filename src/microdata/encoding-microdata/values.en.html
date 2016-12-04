@@ -1,0 +1,130 @@
+<h4>Values</h4>
+
+  <p>The <dfn data-x="concept-property-value">property value</dfn> of a name-value pair added by an
+  element with an <code data-x="attr-itemprop">itemprop</code> attribute is as given for the first
+  matching case in the following list:</p>
+
+  <dl class="switch">
+
+   <dt>If the element also has an <code data-x="attr-itemscope">itemscope</code> attribute</dt>
+
+   <dd>
+
+    <p>The value is the <span data-x="concept-item">item</span> created by the element.</p>
+
+   </dd>
+
+
+   <dt>If the element is a <code>meta</code> element</dt>
+
+   <dd>
+
+    <p>The value is the value of the element's <code data-x="attr-meta-content">content</code>
+    attribute, if any, or the empty string if there is no such attribute.</p>
+
+   </dd>
+
+
+   <dt>If the element is an <code>audio</code>, <code>embed</code>, <code>iframe</code>,
+   <code>img</code>, <code>source</code>, <code>track</code>, or <code>video</code> element</dt>
+
+   <dd>
+
+    <p>The value is the <span>resulting URL string</span> that results from <span data-x="parse a
+    url">parsing</span> the value of the element's <code data-x="">src</code> attribute relative to
+    the <span>node document</span> of the element at the time the attribute is set, or the empty
+    string if there is no such attribute or if <span data-x="parse a url">parsing</span> it results
+    in an error.</p>
+
+   </dd>
+
+
+   <dt>If the element is an <code>a</code>, <code>area</code>, or <code>link</code> element</dt>
+
+   <dd>
+
+    <p>The value is the <span>resulting URL string</span> that results from <span data-x="parse a
+    url">parsing</span> the value of the element's <code data-x="">href</code> attribute relative to
+    the <span>node document</span> of the element at the time the attribute is set, or the empty
+    string if there is no such attribute or if <span data-x="parse a url">parsing</span> it results
+    in an error.</p>
+
+   </dd>
+
+
+   <dt>If the element is an <code>object</code> element</dt>
+
+   <dd>
+
+    <p>The value is the <span>resulting URL string</span> that results from <span data-x="parse a
+    url">parsing</span> the value of the element's <code data-x="">data</code> attribute relative to
+    the <span>node document</span> of the element at the time the attribute is set, or the empty
+    string if there is no such attribute or if <span data-x="parse a url">parsing</span> it results
+    in an error.</p>
+
+   </dd>
+
+
+   <dt>If the element is a <code>data</code> element</dt>
+
+   <dd>
+
+    <p>The value is the value of the element's <code data-x="attr-data-value">value</code> attribute,
+    if it has one, or the empty string otherwise.</p>
+
+   </dd>
+
+
+   <dt>If the element is a <code>meter</code> element</dt>
+
+   <dd>
+
+    <p>The value is the value of the element's <code data-x="attr-meter-value">value</code> attribute,
+    if it has one, or the empty string otherwise.</p>
+
+   </dd>
+
+
+   <dt>If the element is a <code>time</code> element</dt>
+
+   <dd>
+
+    <p>The value is the element's <span>datetime value</span>.</p>
+
+   </dd>
+
+
+   <dt>Otherwise</dt>
+
+   <dd>
+
+    <p>The value is the element's <code>textContent</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>The <dfn>URL property elements</dfn> are the <code>a</code>, <code>area</code>,
+  <code>audio</code>, <code>embed</code>, <code>iframe</code>, <code>img</code>, <code>link</code>,
+  <code>object</code>, <code>source</code>, <code>track</code>, and <code>video</code> elements.</p>
+
+  <p>If a property's <span data-x="concept-property-value">value</span>, as defined by the property's
+  definition, is an <span>absolute URL</span>, the property must be specified using a <span
+  data-x="URL property elements">URL property element</span>.</p>
+
+  <p class="note">These requirements do not apply just because a property value happens to match the
+  syntax for a URL. They only apply if the property is explicitly defined as taking such a
+  value.</p>
+
+  <p class="example">For example, a book about the first moon landing <!-- 1969-07-20 --> could be
+  called "mission:moon". A "title" property from a vocabulary that defines a title as being a string
+  would not expect the title to be given in an <code>a</code> element, even though it looks like a
+  <span>URL</span>. On the other hand, if there was a (rather narrowly scoped!) vocabulary for
+  "books whose titles look like URLs" which had a "title" property defined to take a URL, then the
+  property <em>would</em> expect the title to be given in an <code>a</code> element (or one of the
+  other <span>URL property elements</span>), because of the requirement above.</p>
+
+
+  <div w-nodev>
+
+  

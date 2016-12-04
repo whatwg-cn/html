@@ -1,0 +1,178 @@
+<h5 id="calling-scripts">Calling scripts</h5>
+
+  <p>To <dfn data-export="">run a classic script</dfn> given a <span>classic script</span>
+  <var>s</var> and an optional <var>rethrow errors</var> flag:</p>
+
+  <ol>
+
+   <li><p>Let <var>settings</var> be the <span>settings object</span> of <var>s</var>.</p></li>
+
+   <li><p><span>Check if we can run script</span> with <var>settings</var>. If this returns "do not
+   run", then return undefined and abort these steps.</p></li>
+
+   <li><p>Let <var>realm</var> be <var>settings</var>'s <span
+   data-x="environment settings object's Realm">Realm</span>.</p></li>
+
+   <li><p><span>Prepare to run script</span> with <var>settings</var>.</p></li>
+
+   <li><p>Let <var>result</var> be <span
+   data-x="js-ParseScript">ParseScript</span>(<var>s</var>'s <span
+   data-x="concept-classic-script-source-text">source text</span>, <var>realm</var>,
+   <var>s</var>).</p></li>
+
+   <li><p>If <var>result</var> is a <span>List</span> of errors, set <var>result</var> to the first
+   element of <var>result</var> and go to the step labeled <i>error</i>.</p></li>
+
+   <li><p>Let <var>evaluationStatus</var> be <span
+   data-x="js-ScriptEvaluation">ScriptEvaluation</span>(<var>result</var>).</p></li>
+
+   <li><p>If <var>evaluationStatus</var> is an abrupt completion, set <var>result</var> to
+   <var>evaluationStatus</var>.[[Value]] and go to the next step (labeled <i>error</i>). If
+   <var>evaluationStatus</var> is a normal completion, or if <span
+   data-x="js-ScriptEvaluation">ScriptEvaluation</span> does not complete because the user agent
+   has <span data-x="abort a running script">aborted the running script</span>, skip to the step
+   labeled <i>cleanup</i>.</p></li>
+
+   <li>
+    <p><i>Error</i>: At this point <var>result</var> must be an exception. Perform the following
+    steps:</p>
+
+    <ol>
+     <li><p>If the <var>rethrow errors</var> flag is set and <var>s</var>'s <span>muted
+     errors</span> flag is not set, rethrow <var>result</var>.</p></li>
+
+     <li><p>If the <var>rethrow errors</var> flag is set and <var>s</var>'s <span>muted
+     errors</span> flag is set, throw a <span>"<code>NetworkError</code>"</span>
+     <code>DOMException</code>.</p></li>
+
+     <li><p>If the <var>rethrow errors</var> flag is not set, <span>report the exception</span>
+     given by <var>result</var> for the script <var>s</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p><i>Cleanup</i>: <span>Clean up after running script</span> with
+   <var>settings</var>.</p></li>
+
+   <li><p>If <var>evaluationStatus</var> exists and is a normal completion, return
+   <var>evaluationStatus</var>.[[Value]]. Otherwise, script execution was unsuccessful, either
+   because an error occurred during parsing, or an exception occurred during evaluation, or because
+   it was <span data-x="abort a running script">aborted prematurely</span>.</p></li>
+
+  </ol>
+
+  <p>To <dfn data-export="">run a module script</dfn> given a <span>module script</span>
+  <var>s</var>:</p>
+
+  <ol>
+
+   <li><p>Let <var>settings</var> be the <span>settings object</span> of <var>s</var>.</p></li>
+
+   <li><p><span>Check if we can run script</span> with <var>settings</var>. If this returns "do
+   not run" then abort these steps.</p></li>
+
+   <li><p>If <var>s</var>'s <span data-x="concept-module-script-instantiation-state">instantiation
+   state</span> is "<code data-x="">errored</code>", then <span>report the
+   exception</span> given by <var>s</var>'s <span
+   data-x="concept-module-script-instantiation-error">instantiation error</span> for <var>s</var>
+   and abort these steps.</p></li>
+
+   <li><p>Assert: <var>s</var>'s <span
+   data-x="concept-module-script-instantiation-state">instantiation state</span> is "<code
+   data-x="">instantiated</code>" (and thus its <span
+   data-x="concept-module-script-module-record">module record</span> is not null).</p></li>
+
+   <li><p>Let <var>record</var> be <var>s</var>'s <span
+   data-x="concept-module-script-module-record">module record</span>.</p>
+
+   <li><p><span>Prepare to run script</span> given <var>settings</var>.</p></li>
+
+   <li>
+    <p>Let <var>evaluationStatus</var> be <var>record</var>.<span
+    data-x="js-ModuleEvaluation">ModuleEvaluation</span>().</p>
+
+    <p class="note">This step will recursively evaluate all of the module's dependencies.</p>
+   </li>
+
+   <li><p>If <var>evaluationStatus</var> is an abrupt completion, then <span>report the
+   exception</span> given by <var>evaluationStatus</var>.[[Value]] for <var>s</var>. (Do not perform
+   this step if <span data-x="js-ModuleEvaluation">ModuleEvaluation</span> fails to complete as a
+   result of the user agent <span data-x="abort a running script">aborting the running
+   script</span>.)</p></li>
+
+   <li><p><span>Clean up after running script</span> with <var>settings</var>.</p></li>
+  </ol>
+
+  <p>The steps to <dfn>check if we can run script</dfn> with an <span>environment settings
+  object</span> <var>settings</var> are as follows. They return either "run" or "do not run".</p>
+
+  <ol>
+
+   <li><p>If the <span data-x="concept-settings-object-global">global object</span> specified by
+   <var>settings</var> is a <code>Window</code> object whose <code>Document</code> object is not
+   <span>fully active</span>, then return "do not run" and abort these steps.</p>
+
+   <li><p>If <span data-x="concept-bc-noscript">scripting is disabled</span> for the
+   <span>responsible browsing context</span> specified by <var>settings</var>, then return "do
+   not run" and abort these steps.</p>
+
+   <li><p>Return "run".</p></li>
+
+  </ol>
+
+  <p>The steps to <dfn data-export="">prepare to run script</dfn> with an <span>environment settings
+  object</span> <var>settings</var> are as follows:</p>
+
+  <ol>
+
+   <li><p>Increment <var>settings</var>'s <span>realm execution context</span>'s <span>entrance
+   counter</span> by one.</p></li>
+
+   <li><p>Push <var>settings</var>'s <span>realm execution context</span> onto the <span>JavaScript
+   execution context stack</span>; it is now the <span>running JavaScript execution
+   context</span>.</p></li>
+
+  </ol>
+
+  <p>The steps to <dfn data-export="">clean up after running script</dfn> with an <span>environment
+  settings object</span> <var>settings</var> are as follows:</p>
+
+  <ol>
+
+   <li><p>Assert: <var>settings</var>'s <span>realm execution context</span> is the <span>running
+   JavaScript execution context</span>.</p></li>
+
+   <li><p>Remove <var>settings</var>'s <span>realm execution context</span> from the
+   <span>JavaScript execution context stack</span>.</p></li>
+
+   <li><p>Decrement <var>settings</var>'s <span>realm execution context</span>'s <span>entrance
+   counter</span> by one.</p></li>
+
+   <li><p>If the <span>JavaScript execution context stack</span> is now empty, <span>run the global
+   script clean-up jobs</span>. (These cannot run scripts.)</p></li>
+
+   <li><p>If the <span>JavaScript execution context stack</span> is now empty, <span>perform a
+   microtask checkpoint</span>. (If this runs scripts, these algorithms will be invoked
+   reentrantly.)</p></li>
+
+  </ol>
+
+  <p class="note">These algorithms are not invoked by one script directly calling another, but they
+  can be invoked reentrantly in an indirect manner, e.g. if a script dispatches an event which has
+  event listeners registered.</p>
+
+  <p>The <dfn>running script</dfn> is the <span>script</span> in the [[HostDefined]] field in the
+  ScriptOrModule component of the <span>running JavaScript execution context</span>.</p>
+
+  <hr>
+
+  <p>Each <span>unit of related similar-origin browsing contexts</span> has a <dfn
+  data-export="">global script clean-up jobs list</dfn>, which must initially be empty. A global
+  script clean-up job cannot run scripts, and cannot be sensitive to the order in which other
+  clean-up jobs are executed. The File API uses this to release <code data-x="blob
+  protocol">blob:</code> URLs. <ref spec=FILEAPI></p>
+
+  <p>When the user agent is to <dfn>run the global script clean-up jobs</dfn>, the user agent must
+  perform each of the jobs in the <span>global script clean-up jobs list</span> and then empty the
+  list.</p>
+
+  

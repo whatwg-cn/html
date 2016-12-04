@@ -1,0 +1,68 @@
+<h6>Examples</h6>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <div class="example">
+
+  <p>Here is an example of a script that uses canvas to draw <a href="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIEhUTUw%2BDQo8aHRtbCBsYW5nPSJlbiI%2BDQogPGhlYWQ%2BDQogIDx0aXRsZT5QcmV0dHkgR2xvd2luZyBMaW5lczwvdGl0bGU%2BDQogPC9oZWFkPg0KIDxib2R5Pg0KPGNhbnZhcyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCI%2BPC9jYW52YXM%2BDQo8c2NyaXB0Pg0KDQogdmFyIGNvbnRleHQgPSBkb2N1bWVudC5nZXRFbGVtZW50c0J5VGFnTmFtZSgnY2FudmFzJylbMF0uZ2V0Q29udGV4dCgnMmQnKTsNCg0KIHZhciBsYXN0WCA9IGNvbnRleHQuY2FudmFzLndpZHRoICogTWF0aC5yYW5kb20oKTsNCiB2YXIgbGFzdFkgPSBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpOw0KIHZhciBodWUgPSAwOw0KIGZ1bmN0aW9uIGxpbmUoKSB7DQogICBjb250ZXh0LnNhdmUoKTsNCiAgIGNvbnRleHQudHJhbnNsYXRlKGNvbnRleHQuY2FudmFzLndpZHRoLzIsIGNvbnRleHQuY2FudmFzLmhlaWdodC8yKTsNCiAgIGNvbnRleHQuc2NhbGUoMC45LCAwLjkpOw0KICAgY29udGV4dC50cmFuc2xhdGUoLWNvbnRleHQuY2FudmFzLndpZHRoLzIsIC1jb250ZXh0LmNhbnZhcy5oZWlnaHQvMik7DQogICBjb250ZXh0LmJlZ2luUGF0aCgpOw0KICAgY29udGV4dC5saW5lV2lkdGggPSA1ICsgTWF0aC5yYW5kb20oKSAqIDEwOw0KICAgY29udGV4dC5tb3ZlVG8obGFzdFgsIGxhc3RZKTsNCiAgIGxhc3RYID0gY29udGV4dC5jYW52YXMud2lkdGggKiBNYXRoLnJhbmRvbSgpOw0KICAgbGFzdFkgPSBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpOw0KICAgY29udGV4dC5iZXppZXJDdXJ2ZVRvKGNvbnRleHQuY2FudmFzLndpZHRoICogTWF0aC5yYW5kb20oKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpLA0KICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRleHQuY2FudmFzLndpZHRoICogTWF0aC5yYW5kb20oKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjb250ZXh0LmNhbnZhcy5oZWlnaHQgKiBNYXRoLnJhbmRvbSgpLA0KICAgICAgICAgICAgICAgICAgICAgICAgIGxhc3RYLCBsYXN0WSk7DQoNCiAgIGh1ZSA9IGh1ZSArIDEwICogTWF0aC5yYW5kb20oKTsNCiAgIGNvbnRleHQuc3Ryb2tlU3R5bGUgPSAnaHNsKCcgKyBodWUgKyAnLCA1MCUsIDUwJSknOw0KICAgY29udGV4dC5zaGFkb3dDb2xvciA9ICd3aGl0ZSc7DQogICBjb250ZXh0LnNoYWRvd0JsdXIgPSAxMDsNCiAgIGNvbnRleHQuc3Ryb2tlKCk7DQogICBjb250ZXh0LnJlc3RvcmUoKTsNCiB9DQogc2V0SW50ZXJ2YWwobGluZSwgNTApOw0KDQogZnVuY3Rpb24gYmxhbmsoKSB7DQogICBjb250ZXh0LmZpbGxTdHlsZSA9ICdyZ2JhKDAsMCwwLDAuMSknOw0KICAgY29udGV4dC5maWxsUmVjdCgwLCAwLCBjb250ZXh0LmNhbnZhcy53aWR0aCwgY29udGV4dC5jYW52YXMuaGVpZ2h0KTsNCiB9DQogc2V0SW50ZXJ2YWwoYmxhbmssIDQwKTsNCg0KPC9zY3JpcHQ%2BDQogPC9ib2R5Pg0KPC9odG1sPg0K">pretty glowing lines</a>.</p>
+
+  <pre>&lt;canvas width="800" height="450">&lt;/canvas>
+&lt;script>
+
+ var context = document.getElementsByTagName('canvas')[0].getContext('2d');
+
+ var lastX = context.canvas.width * Math.random();
+ var lastY = context.canvas.height * Math.random();
+ var hue = 0;
+ function line() {
+   context.save();
+   context.translate(context.canvas.width/2, context.canvas.height/2);
+   context.scale(0.9, 0.9);
+   context.translate(-context.canvas.width/2, -context.canvas.height/2);
+   context.beginPath();
+   context.lineWidth = 5 + Math.random() * 10;
+   context.moveTo(lastX, lastY);
+   lastX = context.canvas.width * Math.random();
+   lastY = context.canvas.height * Math.random();
+   context.bezierCurveTo(context.canvas.width * Math.random(),
+                         context.canvas.height * Math.random(),
+                         context.canvas.width * Math.random(),
+                         context.canvas.height * Math.random(),
+                         lastX, lastY);
+
+   hue = hue + 10 * Math.random();
+   context.strokeStyle = 'hsl(' + hue + ', 50%, 50%)';
+   context.shadowColor = 'white';
+   context.shadowBlur = 10;
+   context.stroke();
+   context.restore();
+ }
+ setInterval(line, 50);
+
+ function blank() {
+   context.fillStyle = 'rgba(0,0,0,0.1)';
+   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+ }
+ setInterval(blank, 40);
+
+&lt;/script></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The 2D rendering context for <code>canvas</code> is often used for sprite-based games. The
+   following example demonstrates this:</p>
+
+   <iframe src="/demos/canvas/blue-robot/index-idle.html" width="396" height="216"></iframe>
+
+   <p>Here is the source for this example:</p>
+
+   <pre>EXAMPLE canvas/blue-robot/index.html</pre>
+
+  </div>
+
+
+
+
+  

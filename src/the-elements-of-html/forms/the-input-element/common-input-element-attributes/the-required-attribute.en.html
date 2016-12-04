@@ -1,0 +1,68 @@
+<h6>The <code data-x="attr-input-required">required</code> attribute</h6>
+
+  <p>The <dfn><code data-x="attr-input-required">required</code></dfn> attribute is a <span>boolean
+  attribute</span>. When specified, the element is <dfn
+  data-x="concept-input-required"><i>required</i></dfn>.</p>
+
+  <div w-nodev>
+
+  <p><strong>Constraint validation</strong>: If the element is <i
+  data-x="concept-input-required">required</i>, and its <code data-x="dom-input-value">value</code>
+  IDL attribute <span data-x="concept-input-apply">applies</span> and is in the mode <span
+  data-x="dom-input-value-value">value</span>, and the element is <i
+  data-x="concept-fe-mutable">mutable</i>, and the element's <span
+  data-x="concept-fe-value">value</span> is the empty string, then the element is <span>suffering
+  from being missing</span>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following form has two required fields, one for an e-mail address and one for a password.
+   It also has a third field that is only considered valid if the user types the same password in
+   the password field and this third field.</p>
+
+   <pre>&lt;h1>Create new account&lt;/h1>
+&lt;form action="/newaccount" method=post
+      oninput="up2.setCustomValidity(up2.value != up.value ? 'Passwords do not match.' : '')">
+ &lt;p>
+  &lt;label for="username">E-mail address:&lt;/label>
+  &lt;input id="username" type=email required name=un>
+ &lt;p>
+  &lt;label for="password1">Password:&lt;/label>
+  &lt;input id="password1" type=password required name=up>
+ &lt;p>
+  &lt;label for="password2">Confirm password:&lt;/label>
+  &lt;input id="password2" type=password name=up2>
+ &lt;p>
+  &lt;input type=submit value="Create account">
+&lt;/form></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>For radio buttons, the <code data-x="attr-input-required">required</code> attribute is
+   satisfied if any of the radio buttons in the <span data-x="radio button group">group</span> is
+   selected. Thus, in the following example, any of the radio buttons can be checked, not just the
+   one marked as required:</p>
+
+   <pre>&lt;fieldset>
+ &lt;legend>Did the movie pass the Bechdel test?&lt;/legend>
+ &lt;p>&lt;label>&lt;input type="radio" name="bechdel" value="no-characters"> No, there are not even two female characters in the movie. &lt;/label>
+ &lt;p>&lt;label>&lt;input type="radio" name="bechdel" value="no-names"> No, the female characters never talk to each other. &lt;/label>
+ &lt;p>&lt;label>&lt;input type="radio" name="bechdel" value="no-topic"> No, when female characters talk to each other it's always about a male character. &lt;/label>
+ &lt;p>&lt;label>&lt;input type="radio" name="bechdel" value="yes" <strong>required</strong>> Yes. &lt;/label>
+ &lt;p>&lt;label>&lt;input type="radio" name="bechdel" value="unknown"> I don't know. &lt;/label>
+&lt;/fieldset></pre>
+
+   <p>To avoid confusion as to whether a <span>radio button group</span> is required or not, authors
+   are encouraged to specify the attribute on all the radio buttons in a group. Indeed, in general,
+   authors are encouraged to avoid having radio button groups that do not have any initially checked
+   controls in the first place, as this is a state that the user cannot return to, and is therefore
+   generally considered a poor user interface.</p>
+
+  </div>
+
+
+  

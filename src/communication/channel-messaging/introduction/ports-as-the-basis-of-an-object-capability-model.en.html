@@ -1,0 +1,64 @@
+<h5>Ports as the basis of an object-capability model on the Web</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Ports can be viewed as a way to expose limited capabilities (in the object-capability model
+  sense) to other actors in the system. This can either be a weak capability system, where the ports
+  are merely used as a convenient model within a particular origin, or as a strong capability model,
+  where they are provided by one origin <var>provider</var> as the only mechanism by which
+  another origin <var>consumer</var> can effect change in or obtain information from <var>provider</var>.</p>
+
+  <p>For example, consider a situation in which a social Web site embeds in one <code>iframe</code>
+  the user's e-mail contacts provider (an address book site, from a second origin), and in a second
+  <code>iframe</code> a game (from a third origin). The outer social site and the game in the second
+  <code>iframe</code> cannot access anything inside the first <code>iframe</code>; together they can
+  only:</p>
+
+  <ul class="brief">
+
+   <li><span>Navigate</span> the <code>iframe</code> to a new <span>URL</span>, such as the same
+   <span>URL</span> but with a different <span data-x="concept-url-fragment">fragment</span>,
+   causing the <code>Window</code> in the <code>iframe</code> to receive a <code
+   data-x="event-hashchange">hashchange</code> event.</li>
+
+   <li>Resize the <code>iframe</code>, causing the <code>Window</code> in the <code>iframe</code> to
+   receive a <code data-x="event-resize">resize</code> event.</li>
+
+   <!-- anything else? -->
+
+   <li>Send a <code data-x="event-message">message</code> event to the <code>Window</code> in the
+   <code>iframe</code> using the <code data-x="dom-window-postMessage">window.postMessage()</code>
+   API.</li>
+
+  </ul>
+
+  <p>The contacts provider can use these methods, most particularly the third one, to provide an API
+  that can be accessed by other origins to manipulate the user's address book. For example, it could
+  respond to a message "<code data-x="">add-contact Guillaume Tell
+  &lt;tell@pomme.example.net></code>" by adding the given person and e-mail address to the user's
+  address book.</p>
+
+  <p>To avoid any site on the Web being able to manipulate the user's contacts, the contacts
+  provider might only allow certain trusted sites, such as the social site, to do this.</p>
+
+  <p>Now suppose the game wanted to add a contact to the user's address book, and that the social
+  site was willing to allow it to do so on its behalf, essentially "sharing" the trust that the
+  contacts provider had with the social site. There are several ways it could do this; most simply,
+  it could just proxy messages between the game site and the contacts site. However, this solution
+  has a number of difficulties: it requires the social site to either completely trust the game site
+  not to abuse the privilege, or it requires that the social site verify each request to make sure
+  it's not a request that it doesn't want to allow (such as adding multiple contacts, reading the
+  contacts, or deleting them); it also requires some additional complexity if there's ever the
+  possibility of multiple games simultaneously trying to interact with the contacts provider.</p>
+
+  <p>Using message channels and <code>MessagePort</code> objects, however, all of these problems can
+  go away. When the game tells the social site that it wants to add a contact, the social site can
+  ask the contacts provider not for it to add a contact, but for the <em>capability</em> to add a
+  single contact. The contacts provider then creates a pair of <code>MessagePort</code> objects, and
+  sends one of them back to the social site, who forwards it on to the game. The game and the
+  contacts provider then have a direct connection, and the contacts provider knows to only honor a
+  single "add contact" request, nothing else. In other words, the game has been granted the
+  capability to add a single contact.</p>
+
+
+  

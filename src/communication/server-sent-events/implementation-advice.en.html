@@ -1,0 +1,20 @@
+<h4>Implementation advice</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>User agents are strongly urged to provide detailed diagnostic information about
+  <code>EventSource</code> objects and their related network connections in their development
+  consoles, to aid authors in debugging code using this API.</p>
+
+  <p>For example, a user agent could have a panel displaying all the <code>EventSource</code>
+  objects a page has created, each listing the constructor's arguments, whether there was a network
+  error, what the CORS status of the connection is and what headers were sent by the client and
+  received from the server to lead to that status, the messages that were received and how they were
+  parsed, and so forth.</p>
+
+  <p>Implementations are especially encouraged to report detailed information to their development
+  consoles whenever an <code data-x="event-error">error</code> event is fired, since little to no
+  information can be made available in the events themselves.</p>
+
+
+  

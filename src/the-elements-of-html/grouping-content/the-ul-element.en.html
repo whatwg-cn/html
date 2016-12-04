@@ -1,0 +1,58 @@
+<h4>The <dfn><code>ul</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd>If the element's children include at least one <code>li</code> element: <span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Zero or more <code>li</code> and <span data-x="script-supporting elements">script-supporting</span> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLUListElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>ul</code> element <span>represents</span> a list of items, where the order of the
+  items is not important &mdash; that is, where changing the order would not materially change the
+  meaning of the document.</p>
+
+  <p>The items of the list are the <code>li</code> element child nodes of the <code>ul</code>
+  element.</p>
+
+  <div class="example">
+
+   <p>The following markup shows a list where the order does not matter, and where the
+   <code>ul</code> element is therefore appropriate. Compare this list to the equivalent list in the
+   <code>ol</code> section to see an example of the same items using the <code>ol</code>
+   element.</p>
+
+   <pre>&lt;p>I have lived in the following countries:&lt;/p>
+&lt;ul>
+ &lt;li>Norway
+ &lt;li>Switzerland
+ &lt;li>United Kingdom
+ &lt;li>United States
+&lt;/ul></pre>
+
+   <p>Note that changing the order of the list does not change the meaning of the document. The
+   items in the snippet above are given in alphabetical order, but in the snippet below they are
+   given in order of the size of their current account balance in 2007, without changing the meaning
+   of the document whatsoever:</p>
+
+   <pre>&lt;p>I have lived in the following countries:&lt;/p>
+&lt;ul>
+ &lt;li>Switzerland
+ &lt;li>Norway
+ &lt;li>United Kingdom
+ &lt;li>United States
+&lt;/ul></pre>
+
+  </div>
+
+
+  

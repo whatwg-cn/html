@@ -1,0 +1,75 @@
+<h4>The <dfn><code>data</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-data-value">value</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLDataElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-data-value">value</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>data</code> element <span>represents</span> its contents, along with a
+  machine-readable form of those contents in the <code data-x="attr-data-value">value</code>
+  attribute.</p>
+
+  <p>The <dfn><code data-x="attr-data-value">value</code></dfn> attribute must be present. Its value
+  must be a representation of the element's contents in a machine-readable format.</p>
+
+  <p class="note">When the value is date- or time-related, the more specific <code>time</code>
+  element can be used instead.</p>
+
+  <p>The element can be used for several purposes.</p>
+
+  <p>When combined with microformats or the <a href="#microdata">microdata attributes</a> defined in
+  this specification, the element serves to provide both a machine-readable value for the purposes
+  of data processors, and a human-readable value for the purposes of rendering in a Web browser. In
+  this case, the format to be used in the <code data-x="attr-data-value">value</code> attribute is
+  determined by the microformats or microdata vocabulary in use.</p>
+
+  <p>The element can also, however, be used in conjunction with scripts in the page, for when a
+  script has a literal value to store alongside a human-readable value. In such cases, the format to
+  be used depends only on the needs of the script. (The <code data-x="attr-data-*">data-*</code>
+  attributes can also be useful in such situations.)</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-data-value">value</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here, a short table has its numeric values encoded using the <code>data</code> element so
+   that the table sorting JavaScript library can provide a sorting mechanism on each column
+   despite the numbers being presented in textual form in one column and in a decomposed form in
+   another.</p>
+
+   <pre>&lt;script src="sortable.js">&lt;/script>
+&lt;table class="sortable">
+ &lt;thead> &lt;tr> &lt;th> Game &lt;th> Corporations &lt;th> Map Size
+ &lt;tbody>
+  &lt;tr> &lt;td> 1830 &lt;td> &lt;data value="8">Eight&lt;/data> &lt;td> &lt;data value="93">19+74 hexes (93 total)&lt;/data>
+  &lt;tr> &lt;td> 1856 &lt;td> &lt;data value="11">Eleven&lt;/data> &lt;td> &lt;data value="99">12+87 hexes (99 total)&lt;/data>
+  &lt;tr> &lt;td> 1870 &lt;td> &lt;data value="10">Ten&lt;/data> &lt;td> &lt;data value="149">4+145 hexes (149 total)&lt;/data>
+&lt;/table></pre>
+
+  </div>
+
+
+
+
+  

@@ -1,0 +1,101 @@
+<h4 data-dfn-type="element" data-lt="applet">The <dfn><code>applet</code></dfn> element</h4>
+
+  <p class="critical">This feature is in the process of being removed from the Web platform. (This
+  is a long process that takes many years.) Using the <code>applet</code> element at this time is
+  highly discouraged. Follow progress toward complete removal in <a
+  href="https://github.com/whatwg/html/issues/454">issue #454</a>.</p>
+
+  <p>The <code>applet</code> element is a Java-specific variant of the <code>embed</code> element.
+  The <code>applet</code> element is now obsoleted so that all extension frameworks (Java, .NET,
+  Flash, etc) are handled in a consistent manner.</p>
+
+  <p>When the element matches any of the following conditions, it <span>represents</span> its
+  contents:</p>
+
+  <ul class="brief">
+
+   <li>The element is still in the <span>stack of open elements</span> of an <span>HTML
+   parser</span> or <span>XML parser</span>.</li>
+
+   <li>The element is not <span>in a document</span>.</li>
+
+   <li>The element's <span>node document</span> is not <span>fully active</span>.</li>
+
+   <li id="sandboxPluginApplet">The element's <span>node document</span>'s <span>active sandboxing flag
+   set</span> has its <span>sandboxed plugins browsing context flag</span> set.</li>
+
+   <li>The element has an ancestor <span>media element</span>.</li>
+
+   <li>The element has an ancestor <code>object</code> element that is <em>not</em> showing its
+   <span>fallback content</span>.</li>
+
+   <li>No Java Language runtime <span>plugin</span> is available.</li>
+
+   <li>A Java runtime <span>plugin</span> is available but it is disabled.</li>
+
+   <li>The <span>Should element be blocked <i lang="la">a priori</i> by Content Security
+   Policy?</span> algorithm returns "<code data-x="">Blocked</code>" when executed on the
+   element. <ref spec="CSP"></li>
+
+  </ul>
+
+  <!-- we assume here that the Java plugin can't be <span
+  data-x="concept-plugin-secure">secured</span>; if anyone does end up securing one we can always
+  change this -->
+
+  <p>Otherwise, the user agent should instantiate a Java Language runtime <span>plugin</span>, and
+  should pass the names and values of all the attributes on the element, in the order they were
+  added to the element, with the attributes added by the parser being ordered in source order, and
+  then a parameter named "PARAM" whose value is null, and then all the names and values of <span
+  data-x="concept-param-parameter">parameters</span> given by <code>param</code> elements that are
+  children of the <code>applet</code> element, in <span>tree order</span>, to the
+  <span>plugin</span> used. If the <span>plugin</span> supports a scriptable interface, the
+  <code>HTMLAppletElement</code> object representing the element should expose that interface. The
+  <code>applet</code> element <span>represents</span> the <span>plugin</span>.</p>
+
+  <!-- If we ever make this fetch anything manually, remember to delay the load event, and to
+  include ", from the element's <span>browsing context scope origin</span> if it has one" when
+  fetching -->
+
+  <p class="note">The <code>applet</code> element is unaffected by the CSS <span>'display'</span>
+  property. The Java Language runtime is instantiated even if the element is hidden with a
+  'display:none' CSS style.</p>
+
+  <p>The <code>applet</code> element must implement the <code>HTMLAppletElement</code>
+  interface.</p>
+
+  <pre class="idl">// Note: <a href="#customized-built-in-element-restrictions">intentionally</a> not [<span>HTMLConstructor</span>]
+interface <dfn>HTMLAppletElement</dfn> : <span>HTMLElement</span> {
+  attribute DOMString <span data-x="dom-applet-align">align</span>;
+  attribute DOMString <span data-x="dom-applet-alt">alt</span>;
+  attribute DOMString <span data-x="dom-applet-archive">archive</span>;
+  attribute DOMString <span data-x="dom-applet-code">code</span>;
+  attribute USVString <span data-x="dom-applet-codeBase">codeBase</span>;
+  attribute DOMString <span data-x="dom-applet-height">height</span>;
+  attribute unsigned long <span data-x="dom-applet-hspace">hspace</span>;
+  attribute DOMString <span data-x="dom-applet-name">name</span>;
+  attribute USVString _<span data-x="dom-applet-object">object</span>; // the underscore is not part of the identifier <!-- it's a Web IDL escaping mechanism -->
+  attribute unsigned long <span data-x="dom-applet-vspace">vspace</span>;
+  attribute DOMString <span data-x="dom-applet-width">width</span>;
+};</pre>
+
+  <p>The <dfn><code data-x="dom-applet-align">align</code></dfn>, <dfn><code
+  data-x="dom-applet-alt">alt</code></dfn>, <dfn><code
+  data-x="dom-applet-archive">archive</code></dfn>, <dfn><code
+  data-x="dom-applet-code">code</code></dfn>, <dfn><code
+  data-x="dom-applet-height">height</code></dfn>, <dfn><code
+  data-x="dom-applet-hspace">hspace</code></dfn>, <dfn><code
+  data-x="dom-applet-name">name</code></dfn>, <dfn><code
+  data-x="dom-applet-object">object</code></dfn>, <dfn><code
+  data-x="dom-applet-vspace">vspace</code></dfn>, and <dfn><code
+  data-x="dom-applet-width">width</code></dfn> IDL attributes must <span>reflect</span> the
+  respective content attributes of the same name. For the purposes of reflection, the
+  <code>applet</code> element's <code data-x="attr-applet-object" undefined>object</code> content
+  attribute is defined as containing a <span>URL</span>.</p>
+
+  <p>The <dfn><code data-x="dom-applet-codeBase">codeBase</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-applet-codebase" undefined>codebase</code> content
+  attribute, which for the purposes of reflection is defined as containing a <span>URL</span>.</p>
+
+
+  

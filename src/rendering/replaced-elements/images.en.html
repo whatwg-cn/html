@@ -1,0 +1,111 @@
+<h4>Images</h4>
+
+  <p>User agents are expected to render <code>img</code> elements and <code>input</code> elements
+  whose <code data-x="attr-input-type">type</code> attributes are in the <span
+  data-x="attr-input-type-image">Image Button</span> state, according to the first applicable rules
+  from the following list:</p>
+
+  <dl class="switch">
+
+
+   <dt>If the element <span>represents</span> an image</dt>
+
+   <dd>The user agent is expected to treat the element as a <span>replaced element</span> and
+   render the image according to the rules for doing so defined in CSS.</dd>
+
+
+   <dt>
+
+    If the element does not <span data-x="represents">represent</span> an image, but the element
+    already has <span>intrinsic dimensions</span> (e.g. from the <span>dimension attributes</span>
+    or CSS rules), and either:
+
+    <ul>
+
+     <li>the user agent has reason to believe that the image will become <i
+     data-x="img-available">available</i><!--input-img-available also--> and be rendered in due
+     course, or
+
+     <li>the element has no <code data-x="">alt</code> attribute<!-- attr-img-alt, attr-input-alt -->, or
+
+     <li>the <code>Document</code> is in <span>quirks mode</span>
+
+    </ul>
+
+   </dt>
+
+   <dd>The user agent is expected to treat the element as a <span>replaced element</span> whose
+   content is the text that the element represents, if any, optionally alongside an icon indicating
+   that the image is being obtained (if applicable). For <code>input</code> elements, the element
+   is expected to appear button-like to indicate that the element is a <span
+   data-x="concept-button">button</span>.</dd>
+
+
+   <!-- no-quirks and limited-quirks modes only-->
+   <dt>If the element is an <code>img</code> element that <span>represents</span> some text and the
+   user agent does not expect this to change</dt>
+
+   <dd>The user agent is expected to treat the element as a non-replaced phrasing element whose
+   content is the text, optionally with an icon indicating that an image is missing, so that the
+   user can request the image be displayed or investigate why it is not rendering. In non-graphical
+   contexts, such an icon should be omitted.</dd>
+
+
+   <!-- no-quirks and limited-quirks modes only-->
+   <dt>If the element is an <code>img</code> element that <span>represents</span> nothing and the
+   user agent does not expect this to change</dt>
+
+   <dd>The user agent is expected to treat the element as an empty inline element. (In the absence
+   of further styles, this will cause the element to essentially not be rendered.)</dd>
+
+
+   <!-- no-quirks and limited-quirks modes only-->
+   <dt>If the element is an <code>input</code> element that does not <span
+   data-x="represents">represent</span> an image and the user agent does not expect this to change</dt>
+
+   <dd>The user agent is expected to treat the element as a <span>replaced element</span>
+   consisting of a button whose content is the element's alternative text. The <span>intrinsic
+   dimensions</span> of the button are expected to be about one line in height and whatever width
+   is necessary to render the text on one line.</dd>
+
+  </dl>
+
+  <p>The icons mentioned above are expected to be relatively small so as not to disrupt most text
+  but be easily clickable. In a visual environment, for instance, icons could be 16 pixels by 16
+  pixels square, or 1em by 1em if the images are scalable. In an audio environment, the icon could
+  be a short bleep. The icons are intended to indicate to the user that they can be used to get to
+  whatever options the UA provides for images, and, where appropriate, are expected to provide
+  access to the context menu that would have come up if the user interacted with the actual
+  image.</p>
+
+  <hr>
+
+  <p>All animated images with the same <span>absolute URL</span> and the same image data are
+  expected to be rendered synchronized to the same timeline as a group, with the timeline starting
+  at the time of the least recent addition to the group.</p>
+
+  <p class="note">In other words, when a second image with the same <span>absolute URL</span> and
+  animated image data is inserted into a document, it jumps to the point in the animation cycle that
+  is currently being displayed by the first image.</p>
+
+  <p>When a user agent is to <dfn>restart the animation</dfn> for an <code>img</code> element
+  showing an animated image, all animated images with the same <span>absolute URL</span> and the
+  same image data in that <code>img</code> element's <span>node document</span> are expected to restart
+  their animation from the beginning.</p>
+
+  <hr>
+
+  <p>The following CSS rules are expected to apply when the <code>Document</code> is in <span>quirks
+  mode</span>:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+img[align=left i] { margin-right: 3px; }
+img[align=right i] { margin-left: 3px; }</pre>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

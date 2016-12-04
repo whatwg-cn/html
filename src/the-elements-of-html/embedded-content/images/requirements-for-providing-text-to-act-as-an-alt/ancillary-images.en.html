@@ -1,0 +1,69 @@
+<h6>Ancillary images</h6>
+
+  <p>Sometimes, an image is not critical to the content, but is nonetheless neither purely
+  decorative nor entirely redundant with the text. In these cases, the <code
+  data-x="attr-img-alt">alt</code> attribute must be present, and its value should either be the
+  empty string, or a textual representation of the information that the image conveys. If the image
+  has a caption giving the image's title, then the <code data-x="attr-img-alt">alt</code>
+  attribute's value must not be empty (as that would be quite confusing for non-visual readers).</p>
+
+  <div class="example">
+
+   <p>Consider a news article about a political figure, in which the individual's face was shown in
+   an image that, through a style sheet, is floated to the right. The image is not purely
+   decorative, as it is relevant to the story. The image is not entirely redundant with the story
+   either, as it shows what the politician looks like. Whether any alternative text need be provided
+   is an authoring decision, in part influenced by whether the image colors the interpretation of
+   the prose.</p>
+
+   <p>In this first variant, the image is shown without context, and no alternative text is
+   provided:</p>
+
+   <pre>&lt;p><strong>&lt;img src="alexsalmond.jpeg" alt=""></strong> Ahead of today's referendum,
+the First Minister of Scotland, Alex Salmond, wrote an open letter to all
+registered voters. In it, he admitted that all countries make mistakes.&lt;/p></pre>
+
+   <p>If the picture is just a face, there might be no value in describing it. It's of no interest
+   to the reader whether the individual has red hair or blond hair, whether the individual has white
+   skin or black skin, whether the individual has one eye or two eyes.</p>
+
+   <p>However, if the picture is more dynamic, for instance showing the politician as angry, or
+   particularly happy, or devastated, some alternative text would be useful in setting the tone of
+   the article, a tone that might otherwise be missed:</p>
+
+   <pre>&lt;p><strong>&lt;img src="alexsalmond.jpeg" alt="Alex Salmond is sad."></strong>
+Ahead of today's referendum, the First Minister of Scotland, Alex Salmond,
+wrote an open letter to all registered voters. In it, he admitted that all
+countries make mistakes.&lt;/p></pre>
+
+   <pre>&lt;p><strong>&lt;img src="alexsalmond.jpeg" alt="Alex Salmond is ecstatic!"></strong>
+Ahead of today's referendum, the First Minister of Scotland, Alex Salmond,
+wrote an open letter to all registered voters. In it, he admitted that all
+countries make mistakes.&lt;/p></pre>
+
+   <p>Whether the individual was "sad" or "ecstatic" makes a difference to how the rest of the
+   paragraph is to be interpreted: is he likely saying that he is resigned to the populace making a
+   bad choice in the upcoming referendum, or is he saying that the election was a mistake but the
+   likely turnout will make it irrelevant? The interpretation varies based on the image.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>If the image has a caption, then including alternative text avoids leaving the non-visual user
+   confused as to what the caption refers to.</p>
+
+   <pre>&lt;p>Ahead of today's referendum, the First Minister of Scotland, Alex Salmond,
+wrote an open letter to all registered voters. In it, he admitted that all
+countries make mistakes.&lt;/p>
+<strong>&lt;figure>
+ &lt;img src="alexsalmond.jpeg"
+      alt="A high forehead, cheerful disposition, and dark hair round out Alex Salmond's face.">
+ &lt;figcaption> Alex Salmond, SNP. Photo &copy; 2014 PolitiPhoto. &lt;/figcaption>
+&lt;/figure></strong></pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,140 @@
+<h6><dfn data-x="attr-input-type-url">URL</dfn> state (<code data-x="">type=url</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-url">URL</span> state, the rules in this section apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a control for editing a single
+  <span>absolute URL</span> given in the element's <span data-x="concept-fe-value">value</span>.</p>
+
+  <div w-nodev>
+
+  <p>If the element is <i data-x="concept-fe-mutable">mutable</i>, the user agent should allow the
+  user to change the URL represented by its <span data-x="concept-fe-value">value</span>. User agents
+  may allow the user to set the <span data-x="concept-fe-value">value</span> to a string that is not
+  a <span data-x="valid URL">valid</span> <span>absolute URL</span>, but may also or instead
+  automatically escape characters entered by the user so that the <span
+  data-x="concept-fe-value">value</span> is always a <span data-x="valid URL">valid</span>
+  <span>absolute URL</span> (even if that isn't the actual value seen and edited by the user in the
+  interface). User agents should allow the user to set the <span
+  data-x="concept-fe-value">value</span> to the empty string. User agents must not allow users to
+  insert U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters into the <span
+  data-x="concept-fe-value">value</span>.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-input-value">value</code> attribute, if specified and not empty, must
+  have a value that is a <span>valid URL potentially surrounded by spaces</span> that is also an
+  <span>absolute URL</span>.</p>
+
+  <div w-nodev>
+
+  <p><strong>The <span>value sanitization algorithm</span> is as follows</strong>: <span>Strip line
+  breaks</span> from the <span data-x="concept-fe-value">value</span>, then <span>strip leading and
+  trailing whitespace</span> from the <span data-x="concept-fe-value">value</span>.</p>
+
+  <p><strong>Constraint validation</strong>: While the <span data-x="concept-fe-value">value</span>
+  of the element is neither the empty string nor a <span data-x="valid URL">valid</span>
+  <span>absolute URL</span>, the element is <span>suffering from a type mismatch</span>.</p>
+
+  </div>
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content
+   attributes, IDL attributes, and methods <span data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code data-x="attr-input-list">list</code>,
+   <code data-x="attr-input-maxlength">maxlength</code>,
+   <code data-x="attr-input-minlength">minlength</code>,
+   <code data-x="attr-input-pattern">pattern</code>,
+   <code data-x="attr-input-placeholder">placeholder</code>,
+   <code data-x="attr-input-readonly">readonly</code>,
+   <code data-x="attr-input-required">required</code>, and
+   <code data-x="attr-input-size">size</code> content attributes;
+   <code data-x="dom-input-list">list</code>,
+   <code data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code data-x="dom-textarea/input-selectionDirection">selectionDirection</code>, and
+   <code data-x="dom-input-value">value</code> IDL attributes;
+   <code data-x="dom-textarea/input-select">select()</code>,
+   <code data-x="dom-textarea/input-setRangeText">setRangeText()</code>, and
+   <code data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code> methods.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is
+   in mode <span data-x="dom-input-value-value">value</span>.</p>
+
+   <p>The <code data-x="event-input">input</code> and <code
+   data-x="event-change">change</code> events <span data-x="concept-input-apply">apply</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not
+   apply</span> to the element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-max">max</code>,
+   <code class="no-backref" data-x="attr-input-min">min</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>,
+   <code class="no-backref" data-x="attr-input-step">step</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code class="no-backref" data-x="dom-input-stepDown">stepDown()</code> and
+   <code class="no-backref" data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>If a document contained the following markup:</p>
+
+   <pre>&lt;input type="url" name="location" list="urls"&gt;
+&lt;datalist id="urls"&gt;
+ &lt;option label="MIME: Format of Internet Message Bodies" value="https://tools.ietf.org/html/rfc2045"&gt;
+ &lt;option label="HTML" value="https://html.spec.whatwg.org/"&gt;
+ &lt;option label="DOM" value="https://dom.spec.whatwg.org/"&gt;
+ &lt;option label="Fullscreen" value="https://fullscreen.spec.whatwg.org/"&gt;
+ &lt;option label="Media Session" value="https://mediasession.spec.whatwg.org/"&gt;
+ &lt;option label="The Single UNIX Specification, Version 3" value="http://www.unix.org/version3/"&gt;
+&lt;/datalist&gt;
+</pre>
+
+   <p>...and the user had typed "<kbd>spec.w</kbd>", and the user agent had also found that the user
+   had visited <code data-x="">https://url.spec.whatwg.org/#url-parsing</code> and <code
+   data-x="">https://streams.spec.whatwg.org/</code> in the recent past, then the rendering might look
+   like this:</p>
+
+   <p><img src="/images/sample-url.svg" width="480" height="150" alt="A text box with an icon on the left followed by the text &quot;spec.w&quot; and a cursor, with a drop down button on the right hand side; with, below, a drop down box containing a list of six URLs on the left, with the first four having grayed out labels on the right; and a scroll bar to the right of the drop down box, indicating further values are available."></p>
+
+   <p>The first four URLs in this sample consist of the four URLs in the author-specified list that
+   match the text the user has entered, sorted in some UA-defined manner (maybe by how frequently
+   the user refers to those URLs). Note how the UA is using the knowledge that the values are URLs
+   to allow the user to omit the scheme part and perform intelligent matching on the domain
+   name.</p>
+
+   <p>The last two URLs (and probably many more, given the scrollbar's indications of more values
+   being available) are the matches from the user agent's session history data. This data is not
+   made available to the page DOM. In this particular case, the UA has no titles to provide for
+   those values.</p>
+
+  </div>
+
+
+  

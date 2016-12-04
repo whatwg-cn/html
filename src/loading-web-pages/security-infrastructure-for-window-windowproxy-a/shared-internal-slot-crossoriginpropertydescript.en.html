@@ -1,0 +1,33 @@
+<h4>Shared internal slot: [[CrossOriginPropertyDescriptorMap]]</h4>
+
+  <p><code>Window</code> and <code>Location</code> objects both have a
+  [[<dfn>CrossOriginPropertyDescriptorMap</dfn>]] internal slot, whose value is initially an empty
+  map.
+
+  <p class="note">The [[<span>CrossOriginPropertyDescriptorMap</span>]] internal slot contains a map
+  with entries whose keys are (<var>currentGlobal</var>, <var>objectGlobal</var>,
+  <var>propertyKey</var>)-tuples and values are property descriptors, as a memoization of what is
+  visible to scripts when <var>currentGlobal</var> inspects a <code>Window</code> or
+  <code>Location</code> object from <var>objectGlobal</var>. It is filled lazily by
+  <span>CrossOriginGetOwnPropertyHelper</span>, which consults it on future lookups.</p>
+
+  <p>User agents should allow a value held in the map to be garbage collected along with its
+  corresponding key when nothing holds a reference to any part of the value. That is, as long as
+  garbage collection is not observable.</p>
+
+  <p class="example">For example, with <code data-x="">const href =
+  Object.getOwnPropertyDescriptor(crossOriginLocation, "href").set</code> the value and its
+  corresponding key in the map cannot be garbage collected as that would be observable.</p>
+
+  <p>User agents may have an optimization whereby they remove key-value pairs from the map when
+  <code data-x="dom-document-domain">document.domain</code> is set. This is not observable as <code
+  data-x="dom-document-domain">document.domain</code> cannot revisit an earlier value.</p>
+
+  <p class="example">For example, setting <code data-x="dom-document-domain">document.domain</code>
+  to "<code data-x="">example.com</code>" on www.example.com means user agents can remove all
+  key-value pairs from the map where part of the key is www.example.com, as that can never be part
+  of the <span>origin</span> again and therefore the corresponding value could never be retrieved
+  from the map.</p>
+
+
+  

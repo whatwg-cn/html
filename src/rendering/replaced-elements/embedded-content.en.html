@@ -1,0 +1,65 @@
+<h4 id="embedded-content-rendering-rules">Embedded content</h4>
+
+  <p>The <code>embed</code>, <code>iframe</code>, and <code>video</code> elements are expected to be
+  treated as <span data-x="replaced element">replaced elements</span>.</p>
+
+  <p>A <code>canvas</code> element that <span>represents</span> <span>embedded content</span> is
+  expected to be treated as a <span>replaced element</span>; the contents of such elements are the
+  element's bitmap, if any, or else a transparent black bitmap with the same <span>intrinsic
+  dimensions</span> as the element. Other <code>canvas</code> elements are expected to be treated
+  as ordinary elements in the rendering model.</p>
+
+  <p>An <code>object</code> element that <span>represents</span> an image, plugin, or <span>nested
+  browsing context</span> is expected to be treated as a <span>replaced element</span>. Other
+  <code>object</code> elements are expected to be treated as ordinary elements in the rendering
+  model.</p>
+
+  <p>An <code>applet</code> element that <span>represents</span> a <span>plugin</span> is expected
+  to be treated as a <span>replaced element</span>. Other <code>applet</code> elements are expected
+  to be treated as ordinary elements in the rendering model.</p>
+
+  <p>The <code>audio</code> element, when it is <span data-x="expose a user interface to the
+  user">exposing a user interface</span>, is expected to be treated as a
+  <span>replaced element</span> about one line high, as wide as is necessary to expose the user
+  agent's user interface features. When an <code>audio</code> element is not <span data-x="expose a
+  user interface to the user">exposing a user interface</span>, the user agent is expected to force
+  its <span>'display'</span> property to compute to 'none', irrespective of CSS rules.</p>
+
+  <p>Whether a <code>video</code> element is <span data-x="expose a user interface to the
+  user">exposing a user interface</span> is not expected to affect the size of the rendering;
+  controls are expected to be overlaid above the page content without causing any layout changes,
+  and are expected to disappear when the user does not need them.</p>
+
+  <p>When a <code>video</code> element represents a poster frame or frame of video, the poster frame
+  or frame of video is expected to be rendered at the largest size that maintains the aspect ratio
+  of that poster frame or frame of video without being taller or wider than the <code>video</code>
+  element itself, and is expected to be centered in the <code>video</code> element.</p>
+
+  <p>Any subtitles or captions are expected to be overlayed directly on top of their
+  <code>video</code> element, as defined by the relevant rendering rules; for WebVTT, those are the
+  <span>rules for updating the display of WebVTT text tracks</span>. <ref spec=WEBVTT></p>
+
+  <p>When the user agent starts <span data-x="expose a user interface to the user">exposing a user
+  interface</span> for a <code>video</code> element, the user agent should run the <span>rules for
+  updating the text track rendering</span> of each of the <span data-x="text track">text
+  tracks</span> in the <code>video</code> element's <span>list of text tracks</span> that are <span
+  data-x="text track showing">showing</span> and whose <span>text track kind</span> is one of <code
+  data-x="dom-TextTrack-kind-subtitles">subtitles</code> or <code
+  data-x="dom-TextTrack-kind-captions">captions</code> (e.g., for <span data-x="text track">text
+  tracks</span> based on WebVTT, the <span>rules for updating the display of WebVTT text
+  tracks</span>). <ref spec=WEBVTT></p>
+
+  <p class="note">Resizing <code>video</code> and <code>canvas</code> elements does not interrupt
+  video playback or clear the canvas.</p>
+
+  <hr>
+
+  <p>The following CSS rules are expected to apply:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+iframe { border: 2px inset; }
+<span id="video-object-fit">video { object-fit: contain; }</span></pre>
+
+
+  

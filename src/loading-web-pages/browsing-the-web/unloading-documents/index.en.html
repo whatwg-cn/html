@@ -1,0 +1,226 @@
+<h4>Unloading documents</h4>
+
+  <div w-nodev>
+
+  <p>A <code>Document</code> has a <dfn
+  data-x="concept-document-salvageable"><i>salvageable</i></dfn> state, which must initially be
+  true, a <dfn>fired unload</dfn> flag, which must initially be false, and a <dfn>page showing</dfn>
+  flag, which must initially be false. The <span>page showing</span> flag is used to ensure that
+  scripts receive <code data-x="event-pageshow">pageshow</code> and <code
+  data-x="event-pagehide">pagehide</code> events in a consistent manner (e.g. that they never
+  receive two <code data-x="event-pagehide">pagehide</code> events in a row without an intervening
+  <code data-x="event-pageshow">pageshow</code>, or vice versa).</p>
+
+  <p><span data-x="event loop">Event loops</span> have a <dfn>termination nesting level</dfn>
+  counter, which must initially be zero.</p>
+
+  <p>When a user agent is to <dfn>prompt to unload a document</dfn>, it must run the following
+  steps.</p>
+
+  <ol>
+
+   <li><p>Increase the <span>event loop</span>'s <span>termination nesting level</span> by
+   one.</p></li>
+
+   <li><p>Increase the <code>Document</code>'s <span>ignore-opens-during-unload counter</span> by
+   one.</p></li>
+
+   <li><p>Let <var>event</var> be the result of <span>creating an event</span> using
+   <code>BeforeUnloadEvent</code>.</p></li>
+
+   <li><p>Initialize <var>event</var>'s <code data-x="dom-Event-type">type</code> attribute to <code
+   data-x="event-beforeunload">beforeunload</code> and its <code
+   data-x="dom-Event-cancelable">cancelable</code> attribute true.</p></li>
+
+   <li><p><i>Dispatch</i>: <span data-x="concept-event-dispatch">Dispatch</span> <var>event</var> at
+   the <code>Document</code>'s <code>Window</code> object.</p></li>
+
+   <li><p>Decrease the <span>event loop</span>'s <span>termination nesting level</span> by
+   one.</p></li>
+
+   <li><p>If any event listeners were triggered by the earlier <i>dispatch</i> step, then set the
+   <code>Document</code>'s <i data-x="concept-document-salvageable">salvageable</i> state to
+   false.</p></li>
+
+   <li>
+
+    <p>If the <code>Document</code>'s <span>active sandboxing flag set</span> does not have its
+    <span>sandboxed modals flag</span> set, and the <code
+    data-x="dom-BeforeUnloadEvent-returnValue">returnValue</code> attribute of the <var>event</var>
+    object is not the empty string, or if the event was canceled, then the user agent may ask the
+    user to confirm that they wish to unload the document.</p>
+
+    <p class="note">The message shown to the user is not customizable, but instead determined by
+    the user agent. In particular, the actual value of the <code
+    data-x="dom-BeforeUnloadEvent-returnValue">returnValue</code> attribute is ignored.</p>
+
+    <p>The user agent is encouraged to avoid asking the user for confirmation if it judges that
+    doing so would be annoying, deceptive, or pointless. A simple heuristic might be that if the
+    user has not interacted with the document, the user agent would not ask for confirmation before
+    unloading it.</p>
+
+    <p>If the user agent asks the user for confirmation, it must <span>pause</span> while waiting
+    for the user's response.</p>
+
+    <p>If the user did not confirm the page navigation, then the user agent <dfn>refused to allow
+    the document to be unloaded</dfn>.</p>
+
+   </li>
+
+   <li><p>If this algorithm was invoked by another instance of the "prompt to unload a document"
+   algorithm (i.e. through the steps below that invoke this algorithm for all descendant browsing
+   contexts), then jump to the step labeled <i>end</i>.</p></li>
+
+   <li><p>Let <var>descendants</var> be the <span>list of the descendant browsing
+   contexts</span> of the <code>Document</code>.</p></li>
+
+   <li>
+
+    <p>If <var>descendants</var> is not an empty list, then for each <span>browsing
+    context</span> <var>b</var> in <var>descendants</var> run the following
+    substeps:</p>
+
+    <ol>
+
+     <li><p><span data-x="prompt to unload a document">Prompt to unload</span> the <span>active
+     document</span> of the <span>browsing context</span> <var>b</var>. If the user
+     <span>refused to allow the document to be unloaded</span>, then the user implicitly also <span
+     data-x="refused to allow the document to be unloaded">refused to allow <em>this</em> document to
+     be unloaded</span>; jump to the step labeled <i>end</i>.</p>
+
+     <li><p>If the <i data-x="concept-document-salvageable">salvageable</i> state of the <span>active
+     document</span> of the <span>browsing context</span> <var>b</var> is false, then set
+     the <i data-x="concept-document-salvageable">salvageable</i> state of <em>this</em> document to
+     false also.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p><i>End</i>: Decrease the <code>Document</code>'s <span>ignore-opens-during-unload
+   counter</span> by one.</p></li>
+
+  </ol>
+
+  <p>When a user agent is to <dfn data-export="">unload a document</dfn>, it must run the following
+  steps. These steps are passed an argument, <var>recycle</var>, which is either true or false,
+  indicating whether the <code>Document</code> object is going to be re-used. (This is set by the
+  <code data-x="dom-document-open">document.open()</code> method.)</p>
+
+  <ol>
+
+   <li><p>Increase the <span>event loop</span>'s <span>termination nesting level</span> by
+   one.</p></li>
+
+   <li><p>Increase the <code>Document</code>'s <span>ignore-opens-during-unload counter</span> by
+   one.</p></li>
+
+   <li><p>If the <code>Document</code>'s <span>page showing</span> flag is false, then jump to the
+   step labeled <i>unload event</i> below (i.e. skip firing the <code
+   data-x="event-pagehide">pagehide</code> event and don't rerun the <span>unloading document
+   visibility change steps</span>).</p></li>
+
+   <li><p>Set the <code>Document</code>'s <span>page showing</span> flag to false.</p></li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-pagehide">pagehide</code> at the <code>Document</code> object's <code>Window</code>
+   object, using <code>PageTransitionEvent</code>, with the <code
+   data-x="dom-PageTransitionEvent-persisted">persisted</code> attribute initialized to true if the
+   <code>Document</code> object's <i data-x="concept-document-salvageable">salvageable</i> state is
+   true, and false otherwise, and <var>legacy target override flag</var> set.</p></li>
+
+   <li>
+
+    <p>Run any <dfn>unloading document visibility change steps</dfn> for <code>Document</code> that
+    are defined by <span>other applicable specifications</span>.</p>
+
+    <p class="note">This is specifically intended for use by the Page Visibility specification. <ref spec=PAGEVIS></p>
+
+   </li>
+
+   <li><p><i>Unload event</i>: If the <code>Document</code>'s <span>fired unload</span> flag is
+   false, then <span data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-unload">unload</code> at the <code>Document</code>'s object <code>Window</code>
+   object, with <var>legacy target override flag</var> set.</p></li>
+
+   <li><p>Decrease the <span>event loop</span>'s <span>termination nesting level</span> by
+   one.</p></li>
+
+   <li><p>If any event listeners were triggered by the earlier <i>unload event</i> step, then set
+   the <code>Document</code> object's <i data-x="concept-document-salvageable">salvageable</i> state
+   to false and set the <code>Document</code>'s <span>fired unload</span> flag to true.</p></li>
+
+   <li><p>Run any <span>unloading document cleanup steps</span> for <code>Document</code> that are
+   defined by this specification and <span>other applicable specifications</span>.</p></li>
+
+   <li><p>If this algorithm was invoked by another instance of the "unload a document" algorithm
+   (i.e. by the steps below that invoke this algorithm for all descendant browsing contexts), then
+   jump to the step labeled <i>end</i>.</p></li>
+
+   <li><p>Let <var>descendants</var> be the <span>list of the descendant browsing
+   contexts</span> of the <code>Document</code>.</p></li>
+
+   <li>
+
+    <p>If <var>descendants</var> is not an empty list, then for each <span>browsing
+    context</span> <var>b</var> in <var>descendants</var> run the following
+    substeps:</p>
+
+    <ol>
+
+     <li><p><span data-x="unload a document">Unload</span> the <span>active document</span> of the
+     <span>browsing context</span> <var>b</var> with the <var>recycle</var>
+     parameter set to false.</p></li>
+
+     <li><p>If the <i data-x="concept-document-salvageable">salvageable</i> state of the <span>active
+     document</span> of the <span>browsing context</span> <var>b</var> is false, then set
+     the <i data-x="concept-document-salvageable">salvageable</i> state of <em>this</em> document to
+     false also.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If both the <code>Document</code>'s <i
+   data-x="concept-document-salvageable">salvageable</i> state and <var>recycle</var> are
+   false, then the <code>Document</code>'s <span data-x="concept-document-bc">browsing
+   context</span> must <span data-x="discard a document">discard the
+   <code>Document</code></span>.</p></li>
+
+   <li><p><i>End</i>: Decrease the <code>Document</code>'s <span>ignore-opens-during-unload
+   counter</span> by one.</p></li>
+
+  </ol>
+
+  <p>This specification defines the following <dfn data-export="">unloading document cleanup
+  steps</dfn>. Other specifications can define more.</p>
+
+  <ol>
+
+   <li>
+
+    <p><span>Make disappear</span> any <code>WebSocket</code> objects that were created by the <code
+    data-x="dom-WebSocket">WebSocket()</code> constructor from the
+    <code>Document</code>'s <code>Window</code> object.</p>
+
+    <p>If this affected any <code>WebSocket</code> objects, then set <code>Document</code>'s <i
+    data-x="concept-document-salvageable">salvageable</i> state to false.</p>
+
+   </li>
+
+   <li><p>If the <code>Document</code>'s <i data-x="concept-document-salvageable">salvageable</i>
+   state is false, <span data-x="concept-EventSource-forcibly-close">forcibly close</span> any
+   <code>EventSource</code> objects that whose constructor was invoked from the
+   <code>Document</code>'s <code>Window</code> object.</p></li>
+
+   <li><p>If the <code>Document</code>'s <i data-x="concept-document-salvageable">salvageable</i>
+   state is false, empty the <code>Document</code>'s <code>Window</code>'s <span>list of active
+   timers</span>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,24 @@
+<h5>Integration with the JavaScript job queue</h5>
+
+  <p>The JavaScript specification defines the JavaScript job and job queue abstractions in order to
+  specify certain invariants about how promise operations execute with a clean <span>JavaScript
+  execution context stack</span> and in a certain order. However, as of the time of this writing
+  the definition of <span data-x="js-EnqueueJob">EnqueueJob</span> in that specification is not
+  sufficiently flexible to integrate with HTML as a host environment. <ref spec=JAVASCRIPT></p>
+
+  <p class="note">This is not strictly true. It is in fact possible, by taking liberal advantage of
+  the many "implementation defined" sections of the algorithm, to contort it to our purposes.
+  However, the end result is a mass of messy indirection and workarounds that essentially bypasses
+  the job queue infrastructure entirely, albeit in a way that is technically sanctioned within the
+  bounds of implementation-defined behavior. We do not take this path, and instead introduce the
+  following <span>willful violation</span>.</p>
+
+  <p>As such, user agents must instead use the following definition in place of that in the
+  JavaScript specification. These ensure that the promise jobs enqueued by the JavaScript
+  specification are properly integrated into the user agent's <span data-x="event loop">event
+  loops</span>.</p>
+
+  <p>The <span>RunJobs</span> abstract operation from the JavaScript specification must
+  not be used by user agents.</p>
+
+  

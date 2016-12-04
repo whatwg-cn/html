@@ -1,0 +1,387 @@
+<h4>The <code>DataTransfer</code> interface</h4>
+
+  <p><code>DataTransfer</code> objects are used to expose the <span>drag data store</span> that
+  underlies a drag-and-drop operation.</p>
+
+  <pre class="idl">interface <dfn>DataTransfer</dfn> {
+  attribute DOMString <span data-x="dom-DataTransfer-dropEffect">dropEffect</span>;
+  attribute DOMString <span data-x="dom-DataTransfer-effectAllowed">effectAllowed</span>;
+
+  [SameObject] readonly attribute <span>DataTransferItemList</span> <span data-x="dom-DataTransfer-items">items</span>;
+
+  void <span data-x="dom-DataTransfer-setDragImage">setDragImage</span>(Element image, long x, long y);
+
+  /* old interface */
+  readonly attribute FrozenArray&lt;DOMString> <span data-x="dom-DataTransfer-types">types</span>;
+  DOMString <span data-x="dom-DataTransfer-getData">getData</span>(DOMString format);
+  void <span data-x="dom-DataTransfer-setData">setData</span>(DOMString format, DOMString data);
+  void <span data-x="dom-DataTransfer-clearData">clearData</span>(optional DOMString format);
+  [SameObject] readonly attribute <span>FileList</span> <span data-x="dom-DataTransfer-files">files</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-dropEffect">dropEffect</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the kind of operation that is currently selected. If the kind of operation isn't one
+    of those that is allowed by the <code
+    data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> attribute, then the operation will
+    fail.</p>
+
+    <p>Can be set, to change the selected operation.</p>
+
+    <p>The possible values are "<code data-x="dom-DataTransfer-dropEffect-none">none</code>", "<code
+    data-x="dom-DataTransfer-dropEffect-copy">copy</code>", "<code
+    data-x="dom-DataTransfer-dropEffect-link">link</code>", and "<code
+    data-x="dom-DataTransfer-dropEffect-move">move</code>".</p>
+
+   </dd>
+
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the kinds of operations that are to be allowed.</p>
+
+    <p>Can be set (during the <code data-x="event-dnd-dragstart">dragstart</code> event), to change
+    the allowed operations.</p>
+
+    <p>The possible values are "<code data-x="dom-DataTransfer-effectAllowed-none">none</code>",
+    "<code data-x="dom-DataTransfer-effectAllowed-copy">copy</code>", "<code
+    data-x="dom-DataTransfer-effectAllowed-copyLink">copyLink</code>", "<code
+    data-x="dom-DataTransfer-effectAllowed-copyMove">copyMove</code>", "<code
+    data-x="dom-DataTransfer-effectAllowed-link">link</code>", "<code
+    data-x="dom-DataTransfer-effectAllowed-linkMove">linkMove</code>", "<code
+    data-x="dom-DataTransfer-effectAllowed-move">move</code>", "<code
+    data-x="dom-DataTransfer-effectAllowed-all">all</code>", and "<code
+    data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>",</p>
+
+   </dd>
+
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-items">items</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>DataTransferItemList</code> object, with the drag data.</p>
+
+   </dd>
+
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-setDragImage">setDragImage</code>(<var>element</var>, <var>x</var>, <var>y</var>)</dt>
+
+   <dd>
+
+    <p>Uses the given element to update the drag feedback, replacing any previously specified
+    feedback.</p>
+
+   </dd>
+
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-types">types</code></dt>
+
+   <dd>
+
+    <p>Returns a <span>frozen array</span> listing the formats that were set in the <code
+    data-x="event-dnd-dragstart">dragstart</code> event. In addition, if any files are being
+    dragged, then one of the types will be the string "<code data-x="">Files</code>".</p>
+
+   </dd>
+
+
+   <dt><var>data</var> = <var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-getData">getData</code>(<var>format</var>)</dt>
+
+   <dd>
+
+    <p>Returns the specified data. If there is no such data, returns the empty string.</p>
+
+   </dd>
+
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-setData">setData</code>(<var>format</var>, <var>data</var>)</dt>
+
+   <dd>
+
+    <p>Adds the specified data.</p>
+
+   </dd>
+
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-clearData">clearData</code>( [ <var>format</var> ] )</dt>
+
+   <dd>
+
+    <p>Removes the data of the specified formats. Removes all data if the argument is omitted.</p>
+
+   </dd>
+
+
+   <dt><var>dataTransfer</var> . <code subdfn data-x="dom-DataTransfer-files">files</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>FileList</code> of the files being dragged, if any.</p>
+
+   </dd>
+
+  </dl>
+
+  <p><code>DataTransfer</code> objects are used during the <a href="#dndevents">drag-and-drop
+  events</a>, and are only valid while those events are being fired.</p>
+
+  <div w-nodev>
+
+  <p>A <code>DataTransfer</code> object is associated with a <span>drag data store</span> while it
+  is valid.</p>
+
+  <p>A <code>DataTransfer</code> object has an associated <dfn
+  data-x="concept-DataTransfer-types">types array</dfn>, which is a
+  <code data-x="frozen array">FrozenArray&lt;DOMString></code>, initially empty. When the contents
+  of the <code>DataTransfer</code> object's <span>drag data store item list</span> change, or when
+  the <code>DataTransfer</code> object becomes no longer associated with a <span>drag data
+  store</span>, run the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>L</var> be an empty sequence.</p></li>
+
+   <li>
+    <p>If the <code>DataTransfer</code> object is still associated with a <span>drag data
+    store</span>, then:</p>
+
+    <ol>
+     <li><p>For each item in the <code>DataTransfer</code> object's <span>drag data store item
+     list</span> <!-- in some order...? --> whose <span data-x="the drag data item kind">kind</span>
+     is <i>Plain Unicode string</i>, add an entry to <var>L</var> consisting of the item's <span
+     data-x="the drag data item type string">type string</span>.</p></li>
+
+     <li><p>If there are any items in the <code>DataTransfer</code> object's <span>drag data store
+     item list</span> whose <span data-x="the drag data item kind">kind</span> is <i>File</i>, then
+     add an entry to <var>L</var> consisting of the string "<code data-x="">Files</code>". (This
+     value can be distinguished from the other values because it is not lowercase.)</p></li>
+
+     <!-- <li><p>Sort the list...?</p></li> -->
+    </ol>
+   </li>
+
+   <li><p>Set the <code>DataTransfer</code> object's <span data-x="concept-DataTransfer-types">types
+   array</span> to the result of <span>creating a frozen array</span> from <var>L</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-dropEffect">dropEffect</code></dfn> attribute controls
+  the drag-and-drop feedback that the user is given during a drag-and-drop operation. When the
+  <code>DataTransfer</code> object is created, the <code
+  data-x="dom-DataTransfer-dropEffect">dropEffect</code> attribute is set to a string value. On
+  getting, it must return its current value. On setting, if the new value is one of "<dfn><code
+  data-x="dom-DataTransfer-dropEffect-none">none</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-dropEffect-copy">copy</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-dropEffect-link">link</code></dfn>", or "<dfn><code
+  data-x="dom-DataTransfer-dropEffect-move">move</code></dfn>", then the attribute's current value must be
+  set to the new value. Other values must be ignored.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-effectAllowed">effectAllowed</code></dfn> attribute is
+  used in the drag-and-drop processing model to initialize the <code
+  data-x="dom-DataTransfer-dropEffect">dropEffect</code> attribute during the <code
+  data-x="event-dnd-dragenter">dragenter</code> and <code
+  data-x="event-dnd-dragover">dragover</code> events. When the <code>DataTransfer</code> object is
+  created, the <code data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> attribute is set
+  to a string value. On getting, it must return its current value. On setting, if <span>drag data
+  store</span>'s <span data-x="drag data store mode">mode</span> is the <span
+  data-x="concept-dnd-rw">read/write mode</span> and the new value is one of "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-none">none</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-copy">copy</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-copyLink">copyLink</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-copyMove">copyMove</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-link">link</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-linkMove">linkMove</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-move">move</code></dfn>", "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-all">all</code></dfn>", or "<dfn><code
+  data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code></dfn>", then the attribute's
+  current value must be set to the new value. Otherwise it must be left unchanged.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-items">items</code></dfn> attribute must return a
+  <code>DataTransferItemList</code> object associated with the <code>DataTransfer</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-setDragImage">setDragImage(<var>element</var>,
+  <var>x</var>, <var>y</var>)</code></dfn> method must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransfer</code> object is no longer associated with a <span>drag data
+   store</span>, abort these steps. Nothing happens.</p></li>
+
+   <li><p>If the <span>drag data store</span>'s <span data-x="drag data store mode">mode</span> is
+   not the <span data-x="concept-dnd-rw">read/write mode</span>, abort these steps. Nothing
+   happens.</p></li>
+
+   <li><p>If <var>element</var> is an <code>img</code> element, then set the <span>drag data store
+   bitmap</span> to the element's image (at its <span data-x="intrinsic dimensions">intrinsic
+   size</span>); otherwise, set the <span>drag data store bitmap</span> to an image generated from
+   the given element (the exact mechanism for doing so is not currently specified).</p></li>
+
+   <li><p>Set the <span>drag data store hot spot coordinate</span> to the given <var>x</var>,
+   <var>y</var> coordinate.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-types">types</code></dfn> attribute must return this
+  <code>DataTransfer</code> object's <span data-x="concept-DataTransfer-types">types
+  array</span>.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-getData">getData(<var>format</var>)</code></dfn> method
+  must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransfer</code> object is no longer associated with a <span>drag data
+   store</span>, return the empty string and abort these steps.</p></li>
+
+   <li><p>If the <span>drag data store</span>'s <span data-x="drag data store mode">mode</span> is
+   the <span data-x="concept-dnd-p">protected mode</span>, return the empty string and abort these
+   steps.</p></li>
+
+   <li><p>Let <var>format</var> be the first argument, <span>converted to ASCII
+   lowercase</span>.</p></li>
+
+   <li><p>Let <var>convert-to-URL</var> be false.</p></li>
+
+   <li><p>If <var>format</var> equals "<code data-x="">text</code>", change it to "<code
+   data-x="">text/plain</code>".</p></li>
+
+   <li><p>If <var>format</var> equals "<code data-x="">url</code>", change it to "<code
+   data-x="">text/uri-list</code>" and set <var>convert-to-URL</var> to true.</p></li>
+
+   <li><p>If there is no item in the <span>drag data store item list</span> whose <span data-x="the
+   drag data item kind">kind</span> is <i>Plain Unicode string</i> and whose <span data-x="the drag
+   data item type string">type string</span> is equal to <var>format</var>, return the empty string
+   and abort these steps.</p></li>
+
+   <li><p>Let <var>result</var> be the data of the item in the <span>drag data store item
+   list</span> whose <span data-x="the drag data item kind">kind</span> is <i>Plain Unicode
+   string</i> and whose <span data-x="the drag data item type string">type string</span> is equal to
+   <var>format</var>.</p></li>
+
+   <li><p>If <var>convert-to-URL</var> is true, then parse <var>result</var> as appropriate for
+   <code data-x="">text/uri-list</code> data, and then set <var>result</var> to the first URL from
+   the list, if any, or the empty string otherwise. <ref spec=RFC2483></p></li>
+
+   <li><p>Return <var>result</var>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-setData">setData(<var>format</var>,
+  <var>data</var>)</code></dfn> method must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransfer</code> object is no longer associated with a <span>drag data
+   store</span>, abort these steps. Nothing happens.</p></li>
+
+   <li><p>If the <span>drag data store</span>'s <span data-x="drag data store mode">mode</span> is
+   not the <span data-x="concept-dnd-rw">read/write mode</span>, abort these steps. Nothing
+   happens.</p></li>
+
+   <li><p>Let <var>format</var> be the first argument, <span>converted to ASCII
+   lowercase</span>.</p></li>
+
+   <li>
+
+    <p>If <var>format</var> equals "<code data-x="">text</code>", change it to "<code
+    data-x="">text/plain</code>".</p>
+
+    <p>If <var>format</var> equals "<code data-x="">url</code>", change it to "<code
+    data-x="">text/uri-list</code>".</p>
+
+   </li>
+
+   <li><p>Remove the item in the <span>drag data store item list</span> whose <span data-x="the drag
+   data item kind">kind</span> is <i>Plain Unicode string</i> and whose <span data-x="the drag data
+   item type string">type string</span> is equal to <var>format</var>, if there is
+   one.</p></li>
+
+   <li><p>Add an item to the <span>drag data store item list</span> whose <span data-x="the drag data
+   item kind">kind</span> is <i>Plain Unicode string</i>, whose <span data-x="the drag data item type
+   string">type string</span> is equal to <var>format</var>, and whose data is the string
+   given by the method's second argument.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-clearData">clearData()</code></dfn> method must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransfer</code> object is no longer associated with a <span>drag data
+   store</span>, abort these steps. Nothing happens.</p></li>
+
+   <li><p>If the <span>drag data store</span>'s <span data-x="drag data store mode">mode</span> is
+   not the <span data-x="concept-dnd-rw">read/write mode</span>, abort these steps. Nothing
+   happens.</p></li>
+
+   <li><p>If the method was called with no arguments, remove each item in the <span>drag data store
+   item list</span> whose <span data-x="the drag data item kind">kind</span> is <i>Plain Unicode
+   string</i>, and abort these steps.</p></li>
+
+   <li><p>Let <var>format</var> be the first argument, <span>converted to ASCII
+   lowercase</span>.</p></li>
+
+   <li>
+
+    <p>If <var>format</var> equals "<code data-x="">text</code>", change it to "<code
+    data-x="">text/plain</code>".</p>
+
+    <p>If <var>format</var> equals "<code data-x="">url</code>", change it to "<code
+    data-x="">text/uri-list</code>".</p>
+
+   </li>
+
+   <li><p>Remove the item in the <span>drag data store item list</span> whose <span data-x="the drag
+   data item kind">kind</span> is <i>Plain Unicode string</i> and whose <span data-x="the drag data
+   item type string">type string</span> is equal to <var>format</var>, if there is
+   one.</p></li>
+
+  </ol>
+
+  <p class="note">The <code data-x="dom-DataTransfer-clearData">clearData()</code> method does not
+  affect whether any files were included in the drag, so the <code
+  data-x="dom-DataTransfer-types">types</code> attribute's list might still not be empty after
+  calling <code data-x="dom-DataTransfer-clearData">clearData()</code> (it would still contain the
+  "<code data-x="">Files</code>" string if any files were included in the drag).</p>
+
+  <p>The <dfn><code data-x="dom-DataTransfer-files">files</code></dfn> attribute must return a
+  <span>live</span> <code>FileList</code> sequence consisting of <code>File</code> objects
+  representing the files found by the following steps.
+  Furthermore, for a given <code>FileList</code> object and a given underlying file, the same
+  <code>File</code> object must be used each time.</p>
+
+  <ol>
+
+   <li><p>Start with an empty list <var>L</var>.</p></li>
+
+   <li><p>If the <code>DataTransfer</code> object is no longer associated with a <span>drag data
+   store</span>, the <code>FileList</code> is empty. Abort these steps; return the empty list <var>L</var>.</p></li>
+
+   <li><p>If the <span>drag data store</span>'s <span data-x="drag data store mode">mode</span> is
+   the <span data-x="concept-dnd-p">protected mode</span>, abort these steps; return the empty list
+   <var>L</var>.</p></li>
+
+   <li><p>For each item in the <span>drag data store item list</span> <!-- in some order...? -->
+   whose <span data-x="the drag data item kind">kind</span> is <i>File</i> <!-- DND-v3: (not
+   <i>Blob</i>) -->, add the item's data (the file, in particular its name and contents, as well as
+   its <span data-x="the drag data item type string">type</span>) to the list <var>L</var>.</p></li>
+
+   <!-- <li><p>Sort the list...?</p></li> -->
+
+   <li><p>The files found by these steps are those in the list <var>L</var>.</p></li>
+
+  </ol>
+
+  <p class="note">This version of the API does not expose the types of the files during the
+  drag.</p>
+
+  </div>
+
+
+  

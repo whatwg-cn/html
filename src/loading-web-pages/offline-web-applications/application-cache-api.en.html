@@ -1,0 +1,250 @@
+<h4>Application cache API</h4>
+
+  <pre class="idl">[Exposed=(Window,SharedWorker)]
+interface <dfn>ApplicationCache</dfn> : <span>EventTarget</span> {
+
+  // <span data-x="concept-appcache-status">update status</span>
+  const unsigned short <span data-x="dom-appcache-UNCACHED">UNCACHED</span> = 0;
+  const unsigned short <span data-x="dom-appcache-IDLE">IDLE</span> = 1;
+  const unsigned short <span data-x="dom-appcache-CHECKING">CHECKING</span> = 2;
+  const unsigned short <span data-x="dom-appcache-DOWNLOADING">DOWNLOADING</span> = 3;
+  const unsigned short <span data-x="dom-appcache-UPDATEREADY">UPDATEREADY</span> = 4;
+  const unsigned short <span data-x="dom-appcache-OBSOLETE">OBSOLETE</span> = 5;
+  readonly attribute unsigned short <span data-x="dom-appcache-status">status</span>;
+
+  // updates
+  void <span data-x="dom-appcache-update">update</span>();
+  void <span data-x="dom-appcache-abort">abort</span>();
+  void <span data-x="dom-appcache-swapCache">swapCache</span>();
+
+  // events
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-onchecking">onchecking</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-onerror">onerror</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-onnoupdate">onnoupdate</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-ondownloading">ondownloading</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-onprogress">onprogress</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-onupdateready">onupdateready</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-oncached">oncached</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-appcache-onobsolete">onobsolete</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>cache</var> = <var>window</var> . <code subdfn data-x="dom-applicationCache">applicationCache</code></dt>
+   <dd>
+
+    <p>(In a window.) Returns the <code>ApplicationCache</code> object that applies to the
+    <span>active document</span> of that <code>Window</code>.</p>
+
+   </dd>
+
+   <dt><var>cache</var> = <var>self</var> . <code data-x="dom-applicationCache">applicationCache</code></dt> <dd>
+
+    <p>(In a shared worker.) Returns the <code>ApplicationCache</code> object that applies to the
+    current shared worker.</p>
+
+   </dd>
+
+   <dt><var>cache</var> . <code subdfn data-x="dom-appcache-status">status</code></dt>
+   <dd>
+
+    <p>Returns the current status of the application cache, as given by the constants defined
+    below.</p>
+
+   </dd>
+
+   <dt><var>cache</var> . <code subdfn data-x="dom-appcache-update">update</code>()</dt>
+   <dd>
+
+    <p>Invokes the <span>application cache download process</span>.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if there is
+    no application cache to update.</p>
+
+    <p>Calling this method is not usually necessary, as user agents will generally take care of
+    updating <span data-x="application cache">application caches</span> automatically.</p>
+
+    <p>The method can be useful in situations such as long-lived applications. For example, a Web
+    mail application might stay open in a browser tab for weeks at a time. Such an application could
+    want to test for updates each day.</p>
+
+   </dd>
+
+   <dt><var>cache</var> . <code subdfn data-x="dom-appcache-abort">abort</code>()</dt>
+   <dd>
+
+    <p>Cancels the <span>application cache download process</span>.</p>
+
+    <p>This method is intended to be used by Web application showing their own caching progress UI,
+    in case the user wants to stop the update (e.g. because bandwidth is limited).</p>
+
+   </dd>
+
+   <dt><var>cache</var> . <code subdfn data-x="dom-appcache-swapCache">swapCache</code>()</dt>
+   <dd>
+
+    <p>Switches to the most recent application cache, if there is a newer one. If there isn't,
+    throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>.</p>
+
+    <p>This does not cause previously-loaded resources to be reloaded; for example, images do not
+    suddenly get reloaded and style sheets and scripts do not get reparsed or reevaluated. The only
+    change is that subsequent requests for cached resources will obtain the newer copies.</p>
+
+    <p>The <code data-x="event-appcache-updateready">updateready</code> event will fire before this
+    method can be called. Once it fires, the Web application can, at its leisure, call this method
+    to switch the underlying cache to the one with the more recent updates. To make proper use of
+    this, applications have to be able to bring the new features into play; for example, reloading
+    scripts to enable new features.</p>
+
+    <p>An easier alternative to <code data-x="dom-appcache-swapCache">swapCache()</code> is just to
+    reload the entire page at a time suitable for the user, using <code
+    data-x="dom-location-reload">location.reload()</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>There is a one-to-one mapping from <span data-x="cache host">cache hosts</span> to
+  <code>ApplicationCache</code> objects. The <dfn><code data-x="dom-applicationCache">applicationCache</code></dfn> attribute on <code>Window</code>
+  objects must return the <code>ApplicationCache</code> object associated with the
+  <code>Window</code> object's <span>active document</span>. The <dfn><code data-x="dom-SharedWorkerGlobalScope-applicationCache">applicationCache</code></dfn> attribute
+  on <code>SharedWorkerGlobalScope</code> objects must return the <code>ApplicationCache</code>
+  object associated with the worker.</p>
+
+  <p class="note">A <code>Window</code> or <code>SharedWorkerGlobalScope</code> object has an
+  associated <code>ApplicationCache</code> object even if that <span>cache host</span> has no actual
+  <span>application cache</span>.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-appcache-status">status</code></dfn> attribute, on getting, must
+  return the current state of the <span>application cache</span> that the
+  <code>ApplicationCache</code> object's <span>cache host</span> is associated with, if any. This
+  must be the appropriate value from the following list:</p>
+
+  </div>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-appcache-UNCACHED">UNCACHED</code></dfn> (numeric value 0)</dt>
+
+   <dd><p>The <code>ApplicationCache</code> object's <span>cache host</span> is not associated with
+   an <span>application cache</span> at this time.</p></dd>
+
+   <dt><dfn><code data-x="dom-appcache-IDLE">IDLE</code></dfn> (numeric value 1)</dt>
+
+   <dd><p>The <code>ApplicationCache</code> object's <span>cache host</span> is associated with an
+   <span>application cache</span> whose <span>application cache group</span>'s <span
+   data-x="concept-appcache-status">update status</span> is <i>idle</i>, and that <span>application
+   cache</span> is the <span data-x="concept-appcache-newer">newest</span> cache in its
+   <span>application cache group</span>, and the <span>application cache group</span> is not marked
+   as <span data-x="concept-appcache-obsolete">obsolete</span>.</p></dd>
+
+   <dt><dfn><code data-x="dom-appcache-CHECKING">CHECKING</code></dfn> (numeric value 2)</dt>
+
+   <dd><p>The <code>ApplicationCache</code> object's <span>cache host</span> is associated with an
+   <span>application cache</span> whose <span>application cache group</span>'s <span
+   data-x="concept-appcache-status">update status</span> is <i>checking</i>.</p></dd>
+
+   <dt><dfn><code data-x="dom-appcache-DOWNLOADING">DOWNLOADING</code></dfn> (numeric value 3)</dt>
+
+   <dd><p>The <code>ApplicationCache</code> object's <span>cache host</span> is associated with an
+   <span>application cache</span> whose <span>application cache group</span>'s <span
+   data-x="concept-appcache-status">update status</span> is <i>downloading</i>.</p></dd>
+
+   <dt><dfn><code data-x="dom-appcache-UPDATEREADY">UPDATEREADY</code></dfn> (numeric value 4)</dt>
+
+   <dd><p>The <code>ApplicationCache</code> object's <span>cache host</span> is associated with an
+   <span>application cache</span> whose <span>application cache group</span>'s <span
+   data-x="concept-appcache-status">update status</span> is <i>idle</i>, and whose <span>application
+   cache group</span> is not marked as <span data-x="concept-appcache-obsolete">obsolete</span>, but
+   that <span>application cache</span> is <em>not</em> the <span
+   data-x="concept-appcache-newer">newest</span> cache in its group.</p></dd>
+
+   <dt><dfn><code data-x="dom-appcache-OBSOLETE">OBSOLETE</code></dfn> (numeric value 5)</dt>
+
+   <dd><p>The <code>ApplicationCache</code> object's <span>cache host</span> is associated with an
+   <span>application cache</span> whose <span>application cache group</span> is marked as <span
+   data-x="concept-appcache-obsolete">obsolete</span>.</p></dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>If the <dfn><code data-x="dom-appcache-update">update()</code></dfn> method is invoked, the user
+  agent must invoke the <span>application cache download process</span>, in the background, for the
+  <span>application cache group</span> of the <span>application cache</span> with which the
+  <code>ApplicationCache</code> object's <span>cache host</span> is associated, but without giving
+  that <span>cache host</span> to the algorithm. If there is no such <span>application cache</span>,
+  or if its <span>application cache group</span> is marked as <span
+  data-x="concept-appcache-obsolete">obsolete</span>, then the method must throw an
+  <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> instead.</p>
+
+  <p>If the <dfn><code data-x="dom-appcache-abort">abort()</code></dfn> method is invoked, the user
+  agent must <dfn>send a signal</dfn> to the current <span>application cache download process</span>
+  for the <span>application cache group</span> of the <span>application cache</span> with which the
+  <code>ApplicationCache</code> object's <span>cache host</span> is associated, if any. If there is
+  no such <span>application cache</span>, or it does not have a current <span>application cache
+  download process</span>, then do nothing.</p>
+
+  <p>If the <dfn><code data-x="dom-appcache-swapCache">swapCache()</code></dfn> method is invoked,
+  the user agent must run the following steps:
+
+  <ol>
+
+   <li><p>Check that <code>ApplicationCache</code> object's <span>cache host</span> is associated
+   with an <span>application cache</span>. If it is not, then throw an
+   <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>Let <var>cache</var> be the <span>application cache</span> with which the
+   <code>ApplicationCache</code> object's <span>cache host</span> is associated. (By definition,
+   this is the same as the one that was found in the previous step.)</p></li>
+
+   <li><p>If <var>cache</var>'s <span>application cache group</span> is marked as <span
+   data-x="concept-appcache-obsolete">obsolete</span>, then unassociate the
+   <code>ApplicationCache</code> object's <span>cache host</span> from <var>cache</var> and
+   abort these steps. (Resources will now load from the network instead of the cache.)</p></li>
+
+   <li><p>Check that there is an application cache in the same <span>application cache group</span>
+   as <var>cache</var> whose <span data-x="concept-appcache-completeness">completeness
+   flag</span> is <i>complete</i> and that is <span data-x="concept-appcache-newer">newer</span> than
+   <var>cache</var>. If there is not, then throw an <span>"<code>InvalidStateError</code>"</span>
+   <code>DOMException</code> exception and abort these steps.</p></li>
+
+   <li><p>Let <var>new cache</var> be the <span
+   data-x="concept-appcache-newer">newest</span> <span>application cache</span> in the same
+   <span>application cache group</span> as <var>cache</var> whose <span
+   data-x="concept-appcache-completeness">completeness flag</span> is <i>complete</i>.</p></li>
+
+   <li><p>Unassociate the <code>ApplicationCache</code> object's <span>cache host</span> from <var>cache</var> and instead associate it with <var>new cache</var>.</p></li>
+
+  </ol>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) <span w-nodev>that must be</span>
+  supported, as <span>event handler IDL attributes</span>, by all objects implementing the
+  <code>ApplicationCache</code> interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-appcache-onchecking">onchecking</code></dfn> <td> <code data-x="event-appcache-checking">checking</code>
+    <tr><td><dfn><code data-x="handler-appcache-onerror">onerror</code></dfn> <td> <code data-x="event-appcache-error">error</code>
+    <tr><td><dfn><code data-x="handler-appcache-onnoupdate">onnoupdate</code></dfn> <td> <code data-x="event-appcache-noupdate">noupdate</code>
+    <tr><td><dfn><code data-x="handler-appcache-ondownloading">ondownloading</code></dfn> <td> <code data-x="event-appcache-downloading">downloading</code>
+    <tr><td><dfn><code data-x="handler-appcache-onprogress">onprogress</code></dfn> <td> <code data-x="event-appcache-progress">progress</code>
+    <tr><td><dfn><code data-x="handler-appcache-onupdateready">onupdateready</code></dfn> <td> <code data-x="event-appcache-updateready">updateready</code>
+    <tr><td><dfn><code data-x="handler-appcache-oncached">oncached</code></dfn> <td> <code data-x="event-appcache-cached">cached</code>
+    <tr><td><dfn><code data-x="handler-appcache-onobsolete">onobsolete</code></dfn> <td> <code data-x="event-appcache-obsolete">obsolete</code>
+  </table>
+
+  </div>
+
+
+  

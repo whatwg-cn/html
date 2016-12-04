@@ -1,0 +1,54 @@
+<h4>Edits and paragraphs</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Since the <code>ins</code> and <code>del</code> elements do not affect <span
+  data-x="paragraph">paragraphing</span>, it is possible, in some cases where paragraphs are <span
+  data-x="paragraph">implied</span> (without explicit <code>p</code> elements), for an
+  <code>ins</code> or <code>del</code> element to span both an entire paragraph or other
+  non-<span>phrasing content</span> elements and part of another paragraph. For example:</p>
+
+  <pre>&lt;section>
+ &lt;ins>
+  &lt;p>
+   This is a paragraph that was inserted.
+  &lt;/p>
+  This is another paragraph whose first sentence was inserted
+  at the same time as the paragraph above.
+ &lt;/ins>
+ This is a second sentence, which was there all along.
+&lt;/section></pre>
+
+  <p>By only wrapping some paragraphs in <code>p</code> elements, one can even get the end of one
+  paragraph, a whole second paragraph, and the start of a third paragraph to be covered by the same
+  <code>ins</code> or <code>del</code> element (though this is very confusing, and not considered
+  good practice):</p>
+
+  <pre class="bad">&lt;section>
+ This is the first paragraph. &lt;ins>This sentence was
+ inserted.
+ &lt;p>This second paragraph was inserted.&lt;/p>
+ This sentence was inserted too.&lt;/ins> This is the
+ third paragraph in this example.
+ &lt;!-- (don't do this) -->
+&lt;/section></pre>
+
+  <p>However, due to the way <span data-x="paragraph">implied paragraphs</span> are defined, it is
+  not possible to mark up the end of one paragraph and the start of the very next one using the same
+  <code>ins</code> or <code>del</code> element. You instead have to use one (or two) <code>p</code>
+  element(s) and two <code>ins</code> or <code>del</code> elements, as for example:</p>
+
+  <pre>&lt;section>
+ &lt;p>This is the first paragraph. &lt;del>This sentence was
+ deleted.&lt;/del>&lt;/p>
+ &lt;p>&lt;del>This sentence was deleted too.&lt;/del> That
+ sentence needed a separate &amp;lt;del&amp;gt; element.&lt;/p>
+&lt;/section></pre>
+
+  <p>Partly because of the confusion described above, authors are strongly encouraged to always mark
+  up all paragraphs with the <code>p</code> element, instead of having <code>ins</code> or
+  <code>del</code> elements that cross <span data-x="paragraph">implied paragraphs</span>
+  boundaries.</p>
+
+
+  

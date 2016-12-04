@@ -1,0 +1,234 @@
+<h4>The basic syntax</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>At a high level, microdata consists of a group of name-value pairs. The groups are called <span
+  data-x="concept-item">items</span>, and each name-value pair is a property. Items and properties
+  are represented by regular elements.</p>
+
+  <p>To create an item, the <code data-x="attr-itemscope">itemscope</code> attribute is used.</p>
+
+  <p>To add a property to an item, the <code data-x="attr-itemprop">itemprop</code> attribute is used
+  on one of the <span data-x="concept-item">item's</span> descendants.</p>
+
+  <div class="example">
+
+   <p>Here there are two items, each of which has the property "name":</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>My name is &lt;span itemprop="name">Elizabeth&lt;/span>.&lt;/p>
+&lt;/div>
+
+&lt;div itemscope>
+ &lt;p>My name is &lt;span itemprop="name">Daniel&lt;/span>.&lt;/p>
+&lt;/div></pre>
+
+  </div>
+
+  <p>Markup without the microdata-related attributes does not have any effect on the microdata
+  model.</p>
+
+  <div class="example">
+
+   <p>These two examples are exactly equivalent, at a microdata level, as the previous two examples
+   respectively:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>My &lt;em>name&lt;/em> is &lt;span itemprop="name">E&lt;strong>liz&lt;/strong>abeth&lt;/span>.&lt;/p>
+&lt;/div>
+
+&lt;section>
+ &lt;div itemscope>
+  &lt;aside>
+   &lt;p>My name is &lt;span itemprop="name">&lt;a href="/?user=daniel">Daniel&lt;/a>&lt;/span>.&lt;/p>
+  &lt;/aside>
+ &lt;/div>
+&lt;/section></pre>
+
+  </div>
+
+  <p>Properties generally have values that are strings.</p>
+
+  <div class="example">
+
+   <p>Here the item has three properties:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>My name is &lt;span itemprop="name">Neil&lt;/span>.&lt;/p>
+ &lt;p>My band is called &lt;span itemprop="band">Four Parts Water&lt;/span>.&lt;/p>
+ &lt;p>I am &lt;span itemprop="nationality">British&lt;/span>.&lt;/p>
+&lt;/div></pre>
+
+  </div>
+
+  <p>When a string value is a <span>URL</span>, it is expressed using the <code>a</code> element and
+  its <code data-x="attr-hyperlink-href">href</code> attribute, the <code>img</code> element and its
+  <code data-x="attr-img-src">src</code> attribute, or other elements that link to or embed external
+  resources.</p>
+
+  <div class="example">
+
+   <p>In this example, the item has one property, "image", whose value is a URL:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;img itemprop="image" src="google-logo.png" alt="Google">
+&lt;/div></pre>
+
+  </div>
+
+  <p>When a string value is in some machine-readable format unsuitable for human consumption, it is
+  expressed using the <code data-x="attr-data-value">value</code> attribute of the <code>data</code>
+  element, with the human-readable version given in the element's contents.</p>
+
+  <div class="example">
+
+   <p>Here, there is an item with a property whose value is a product ID. The ID is not
+   human-friendly, so the product's name is used the human-visible text instead of the ID.</p>
+
+   <pre>&lt;h1 itemscope>
+ &lt;data itemprop="product-id" value="9678AOU879">The Instigator 2000&lt;/data>
+&lt;/h1></pre>
+
+  </div>
+
+  <p>For numeric data, the <code>meter</code> element and its <code
+  data-x="attr-meter-value">value</code> attribute can be used instead.</p>
+
+  <div class="example">
+
+   <p>Here a rating is given using a <code>meter</code> element.</p>
+
+   <pre>&lt;div itemscope itemtype="http://schema.org/Product">
+ &lt;span itemprop="name">Panasonic White 60L Refrigerator&lt;/span>
+ &lt;img src="panasonic-fridge-60l-white.jpg" alt="">
+  &lt;div itemprop="aggregateRating"
+       itemscope itemtype="http://schema.org/AggregateRating">
+   &lt;meter itemprop="ratingValue" min=0 value=3.5 max=5>Rated 3.5/5&lt;/meter>
+   (based on &lt;span itemprop="reviewCount">11&lt;/span> customer reviews)
+  &lt;/div>
+&lt;/div></pre>
+
+  </div>
+
+  <p>Similarly, for date- and time-related data, the <code>time</code> element and its <code
+  data-x="attr-time-datetime">datetime</code> attribute can be used instead.</p>
+
+  <div class="example">
+
+   <p>In this example, the item has one property, "birthday", whose value is a date:</p>
+
+   <pre>&lt;div itemscope>
+ I was born on &lt;time itemprop="birthday" datetime="2009-05-10">May 10th 2009&lt;/time>.
+&lt;/div></pre>
+
+  </div>
+
+  <p>Properties can also themselves be groups of name-value pairs, by putting the <code
+  data-x="attr-itemscope">itemscope</code> attribute on the element that declares the property.</p>
+
+  <p>Items that are not part of others are called <span>top-level microdata items</span>.</p>
+
+  <div class="example">
+
+   <p>In this example, the outer item represents a person, and the inner one represents a band:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>Name: &lt;span itemprop="name">Amanda&lt;/span>&lt;/p>
+ &lt;p>Band: &lt;span itemprop="band" itemscope> &lt;span itemprop="name">Jazz Band&lt;/span> (&lt;span itemprop="size">12&lt;/span> players)&lt;/span>&lt;/p>
+&lt;/div></pre>
+
+   <p>The outer item here has two properties, "name" and "band". The "name" is "Amanda", and the
+   "band" is an item in its own right, with two properties, "name" and "size". The "name" of the
+   band is "Jazz Band", and the "size" is "12".</p>
+
+   <p>The outer item in this example is a top-level microdata item.</p>
+
+  </div>
+
+  <p>Properties that are not descendants of the element with the <code
+  data-x="attr-itemscope">itemscope</code> attribute can be associated with the <span
+  data-x="concept-item">item</span> using the <code data-x="attr-itemref">itemref</code> attribute.
+  This attribute takes a list of IDs of elements to crawl in addition to crawling the children of
+  the element with the <code data-x="attr-itemscope">itemscope</code> attribute.</p>
+
+  <div class="example">
+
+   <p>This example is the same as the previous one, but all the properties are separated from their
+   <span data-x="concept-item">items</span>:</p>
+
+   <pre>&lt;div itemscope id="amanda" itemref="a b">&lt;/div>
+&lt;p id="a">Name: &lt;span itemprop="name">Amanda&lt;/span>&lt;/p>
+&lt;div id="b" itemprop="band" itemscope itemref="c">&lt;/div>
+&lt;div id="c">
+ &lt;p>Band: &lt;span itemprop="name">Jazz Band&lt;/span>&lt;/p>
+ &lt;p>Size: &lt;span itemprop="size">12&lt;/span> players&lt;/p>
+&lt;/div></pre>
+
+   <p>This gives the same result as the previous example. The first item has two properties, "name",
+   set to "Amanda", and "band", set to another item. That second item has two further properties,
+   "name", set to "Jazz Band", and "size", set to "12".</p>
+
+  </div>
+
+  <p>An <span data-x="concept-item">item</span> can have multiple properties with the same name and
+  different values.</p>
+
+  <div class="example">
+
+   <p>This example describes an ice cream, with two flavors:</p>
+
+   <pre>&lt;div itemscope>
+ &lt;p>Flavors in my favorite ice cream:&lt;/p>
+ &lt;ul>
+  &lt;li itemprop="flavor">Lemon sorbet&lt;/li>
+  &lt;li itemprop="flavor">Apricot sorbet&lt;/li>
+ &lt;/ul>
+&lt;/div></pre>
+
+   <p>This thus results in an item with two properties, both "flavor", having the values "Lemon
+   sorbet" and "Apricot sorbet".</p>
+
+  </div>
+
+  <p>An element introducing a property can also introduce multiple properties at once, to avoid
+  duplication when some of the properties have the same value.</p>
+
+  <div class="example">
+
+   <p>Here we see an item with two properties, "favorite-color" and "favorite-fruit", both set to
+   the value "orange":</p>
+
+   <pre>&lt;div itemscope>
+ &lt;span itemprop="favorite-color favorite-fruit">orange&lt;/span>
+&lt;/div></pre>
+
+  </div>
+
+  <p>It's important to note that there is no relationship between the microdata and the content of
+  the document where the microdata is marked up.</p>
+
+  <div class="example">
+
+   <p>There is no semantic difference, for instance, between the following two examples:</p>
+
+   <pre>&lt;figure>
+ &lt;img src="castle.jpeg">
+ &lt;figcaption>&lt;span itemscope>&lt;span itemprop="name">The Castle&lt;/span>&lt;/span> (1986)&lt;/figcaption>
+&lt;/figure></pre>
+
+   <pre>&lt;span itemscope>&lt;meta itemprop="name" content="The Castle">&lt;/span>
+&lt;figure>
+ &lt;img src="castle.jpeg">
+ &lt;figcaption>The Castle (1986)&lt;/figcaption>
+&lt;/figure></pre>
+
+   <p>Both have a figure with a caption, and both, completely unrelated to the figure, have an item
+   with a name-value pair with the name "name" and the value "The Castle". The only difference is
+   that if the user drags the caption out of the document, in the former case, the item will be
+   included in the drag-and-drop data. In neither case is the image in any way associated with the
+   item.</p>
+
+  </div>
+
+
+  

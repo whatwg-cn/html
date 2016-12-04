@@ -1,0 +1,249 @@
+<h4>The <dfn><code data-x="attr-dropzone">dropzone</code></dfn> attribute</h4>
+
+  <p>All <span>HTML elements</span> may have the <code data-x="attr-dropzone">dropzone</code> content
+  attribute set. When specified, its value must be an <span>unordered set of unique space-separated
+  tokens</span> that are <span>ASCII case-insensitive</span>. The allowed values are the
+  following:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="attr-dropzone-copy">copy</code></dfn></dt>
+
+   <dd><p>Indicates that dropping an accepted item on the element will result in a copy of the
+   dragged data.</p>
+
+
+   <dt><dfn><code data-x="attr-dropzone-move">move</code></dfn></dt>
+
+   <dd><p>Indicates that dropping an accepted item on the element will result in the dragged data
+   being moved to the new location.</p>
+
+
+   <dt><dfn><code data-x="attr-dropzone-link">link</code></dfn></dt>
+
+   <dd><p>Indicates that dropping an accepted item on the element will result in a link to the
+   original data.</p>
+
+
+   <dt>Any keyword with eight characters or more, beginning with an <span>ASCII
+   case-insensitive</span> match for the string "<code data-x="">string:</code>"</dt>
+
+   <dd><p>Indicates that items with <span>the drag data item kind</span> <i>Plain Unicode string</i>
+   and <span>the drag data item type string</span> set to a value that matches the remainder of the
+   keyword are accepted.</p></dd>
+
+<!--DND-v3:
+   <dt>Any keyword with six characters or more, beginning with an <span>ASCII
+   case-insensitive</span> match for the string "<code data-x="">blob:</code>"</dt>
+
+   <dd><p>Indicates that items with <span>the drag data item kind</span> <i>Blob</i>, <i>File</i>,
+   or <i>Plain Unicode string</i> and <span>the drag data item type string</span> set to a value
+   that matches the remainder of the keyword are accepted.</p></dd>
+-->
+
+   <dt>Any keyword with six characters or more, beginning with an <span>ASCII
+   case-insensitive</span> match for the string "<code data-x="">file:</code>"</dt>
+
+   <dd><p>Indicates that items with <span>the drag data item kind</span> <i>File</i> and <span>the
+   drag data item type string</span> set to a value that matches the remainder of the keyword are
+   accepted.</p></dd>
+
+<!--DND-v4:
+   <dt>Any keyword with eight characters or more, beginning with an <span>ASCII
+   case-insensitive</span> match for the string "<code data-x="">object:</code>"</dt>
+
+   <dd><p>Indicates that items with <span>the drag data item type string</span> set to a value that
+   matches the remainder of the keyword are accepted.</p></dd>
+-->
+
+  </dl>
+
+  <p>The <code data-x="attr-dropzone">dropzone</code> content attribute's values must not have more
+  than one of the three feedback values (<code data-x="attr-dropzone-copy">copy</code>, <code
+  data-x="attr-dropzone-move">move</code>, and <code data-x="attr-dropzone-link">link</code>)
+  specified. If none are specified, the <code data-x="attr-dropzone-copy">copy</code> value is
+  implied.</p>
+
+  <p>An element with a <code data-x="attr-dropzone">dropzone</code> attribute should also have a
+  <code data-x="attr-title">title</code> attribute that names the element for the purpose of
+  non-visual interactions. <!-- "should", not "must", only because this is a relatively new
+  attribute and its design implications are not entirely obvious yet. For example, what happens if
+  you use an element with text as a drop zone? Is that sufficiently clear for ATs? See also the
+  draggable attribute. --></p>
+
+  <div w-nodev>
+
+  <p>A <code data-x="attr-dropzone">dropzone</code> attribute <dfn
+  data-x="concept-dropzone-match">matches a drag data store</dfn> if the <span><code
+  data-x="attr-dropzone">dropzone</code> processing steps</span> result in a match.</p>
+
+  <p>A <code data-x="attr-dropzone">dropzone</code> attribute <dfn
+  data-x="concept-dropzone-operation">specifies an operation</dfn> if the <span><code
+  data-x="attr-dropzone">dropzone</code> processing steps</span> result in a specified operation. The
+  specified operation is as given by those steps.</p>
+
+  <p>The <dfn><code data-x="attr-dropzone">dropzone</code> processing steps</dfn> are as follows.
+  They either result in a match or not, and separate from this result either in a specified
+  operation or not, as defined below.</p>
+
+  <ol>
+
+   <li><p>Let <var>value</var> be the value of the <code
+   data-x="attr-dropzone">dropzone</code> attribute.</p></li>
+
+   <li><p>Let <var>keywords</var> be the result of <span data-x="split a string on
+   spaces">splitting <var>value</var> on spaces</span>.</p></li>
+
+   <li><p>Let <var>matched</var> be false.</p></li>
+
+   <li><p>Let <var>operation</var> be unspecified.</p></li>
+
+   <li>
+
+    <p>For each value in <var>keywords</var>, if any, in the order that they were found in
+    <var>value</var>, run the following steps.</p>
+
+    <ol>
+
+     <li><p>Let <var>keyword</var> be the keyword.</p></li>
+
+     <li>
+
+      <p>If <var>keyword</var> is one of "<code data-x="attr-dropzone-copy">copy</code>",
+      "<code data-x="attr-dropzone-move">move</code>", or "<code
+      data-x="attr-dropzone-link">link</code>", then: run the following substeps:</p>
+
+      <ol>
+
+       <li><p>If <var>operation</var> is still unspecified, then let <var>operation</var> be the string given by <var>keyword</var>.</p></li>
+
+       <li><p>Skip to the step labeled <i>end of keyword</i> below.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>If <var>keyword</var> does not contain a U+003A COLON character (:), or if the
+     first such character in <var>keyword</var> is either the first character or the last
+     character in the string, then skip to the step labeled <i>end of keyword</i> below.</p></li>
+
+     <li><p>Let <var>kind code</var> be the substring of <var>keyword</var> from
+     the first character in the string to the last character in the string that is before the first
+     U+003A COLON character (:) in the string, <span>converted to ASCII lowercase</span>.</p>
+
+     <li>
+
+      <p>Jump to the appropriate step from the list below, based on the value of <var>kind
+      code</var>:</p>
+
+      <dl class="switch">
+
+       <dt>If <var>kind code</var> is the string "<code data-x="">string</code>"</dt>
+       <dd>
+
+        <p>Let <var>kind<!--DND-v3:/DND-v4: s--></var> be <i>Plain Unicode string</i>.</p>
+
+       </dd>
+
+<!--DND-v3:
+       <dt>If <var>kind code</var> is the string "<code data-x="">blob</code>"</dt>
+       <dd>
+
+        <p>Let <var>kinds</var> be <i>Plain Unicode string</i>, <i>Blob</i>, and
+        <i>File</i>.</p>
+
+       </dd>
+-->
+
+       <dt>If <var>kind code</var> is the string "<code data-x="">file</code>"</dt>
+       <dd>
+
+        <p>Let <var>kind<!--DND-v3:/DND-v4: s--></var> be <i>File</i>.</p>
+
+       </dd>
+
+<!--DND-v4:
+       <dt>If <var>kind code</var> is the string "<code data-x="">object</code>"</dt>
+       <dd>
+
+        <p>Let <var>kinds</var> be <i>Plain Unicode string</i>, <i>Blob</i>, <i>File</i>,
+        and <i>Object</i>.</p>
+
+       </dd>
+-->
+
+       <dt>Otherwise</dt>
+       <dd>
+
+        <p>Skip to the step labeled <i>end of keyword</i> below.</p>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li><p>Let <var>type</var> be the substring of <var>keyword</var> from the
+     first character after the first U+003A COLON character (:) in the string, to the last character
+     in the string, <span>converted to ASCII lowercase</span>.</p></li>
+
+     <li><p>If there exist any items in the <span>drag data store item list</span> whose <span
+     data-x="the drag data item kind">drag data item kind</span> is <!--DND-v3:/DND-v4: one of--> the
+     kind<!--DND-v3:/DND-v4: s--> given in <var>kind<!--DND-v3:/DND-v4: s--></var> and
+     whose <span data-x="the drag data item type string">drag data item type string</span> is <var>type</var>, then let <var>matched</var> be true.</p></li>
+
+     <li><p><i>End of keyword</i>: Go on to the next keyword, if any, or the next step in the
+     overall algorithm, if there are no more.</li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>The algorithm results in a match if <var>matched</var> is true, and does not
+    otherwise.</p>
+
+    <p>The algorithm results in a specified operation if <var>operation</var> is not
+    unspecified. The specified operation, if one is specified, is the one given by <var>operation</var>.</p>
+
+   </li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-dropzone">dropzone</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  <p>The <span data-x="concept-supported-tokens">supported tokens</span> for
+  <code data-x="attr-dropzone">dropzone</code> are the allowed values defined for the
+  <code data-x="attr-dropzone">dropzone</code> attribute that are supported by the user agent.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, a <code>div</code> element is made into a drop target for image files using
+   the <code data-x="attr-dropzone">dropzone</code> attribute. Images dropped into the target are
+   then displayed.</p>
+
+   <pre>&lt;div dropzone="copy file:image/png file:image/gif file:image/jpeg" ondrop="receive(event, this)">
+ &lt;p>Drop an image here to have it displayed.&lt;/p>
+&lt;/div>
+&lt;script>
+ function receive(event, element) {
+   var data = event.dataTransfer.items;
+   for (var i = 0; i &lt; data.length; i += 1) {
+     if ((data[i].kind == 'file') && (data[i].type.match('^image/'))) {
+       var img = new Image();
+       img.src = window.createObjectURL(data[i].getAsFile());
+       element.appendChild(img);
+     }
+   }
+ }
+&lt;/script></pre>
+
+  </div>
+
+
+<!--
+  

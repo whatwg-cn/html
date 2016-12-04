@@ -1,0 +1,53 @@
+<h5>Plain text form data</h5>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="">text/plain</code> encoding algorithm</dfn>, given a <var>form data
+  set</var> and <var>encoding</var>, is as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>result</var> be the empty string.</p></li>
+
+   <li><p>Let <var>charset</var> be the <span data-x="encoding name">name</span> of
+   <var>encoding</var>.</p></li>
+
+   <li>
+
+    <p>For each entry in the <var>form data set</var>, perform these substeps:</p>
+
+    <ol>
+
+     <li><p>If the entry's name is "<code data-x="attr-fe-name-charset">_charset_</code>" and its
+     type is "<code data-x="">hidden</code>", replace its value with <var>charset</var>.</p></li>
+
+     <li><p>If the entry's type is "<code data-x="">file</code>", replace its value with the file's
+     name only.</p></li>
+
+     <li><p>Append the entry's name to <var>result</var>.</p></li>
+
+     <li><p>Append a single U+003D EQUALS SIGN character (=) to <var>result</var>.</p></li>
+
+     <li><p>Append the entry's value to <var>result</var>.</p></li>
+
+     <li><p>Append a U+000D CARRIAGE RETURN (CR) U+000A LINE FEED (LF) character pair to <var>result</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return <var>result</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+  <p>Payloads using the <code>text/plain</code> format are intended to be human readable. They are
+  not reliably interpretable by computer, as the format is ambiguous (for example, there is no way
+  to distinguish a literal newline in a value from the newline at the end of the value).</p>
+
+
+
+  <div w-nodev>
+
+  

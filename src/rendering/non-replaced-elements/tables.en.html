@@ -1,0 +1,368 @@
+<h4>Tables</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+table { display: table; }<!-- see also unicode-bidi:isolate rules -->
+caption { display: table-caption; }<!-- see also unicode-bidi:isolate rules -->
+colgroup, colgroup[hidden] { display: table-column-group; }<!-- see also unicode-bidi:isolate rules -->
+col, col[hidden] { display: table-column; }<!-- see also unicode-bidi:isolate rules -->
+thead, thead[hidden] { display: table-header-group; }<!-- see also unicode-bidi:isolate rules -->
+tbody, tbody[hidden] { display: table-row-group; }<!-- see also unicode-bidi:isolate rules -->
+tfoot, tfoot[hidden] { display: table-footer-group; }<!-- see also unicode-bidi:isolate rules -->
+tr, tr[hidden] { display: table-row; }<!-- see also unicode-bidi:isolate rules -->
+td, th, td[hidden], th[hidden] { display: table-cell; }<!-- see also unicode-bidi:isolate rules -->
+
+colgroup[hidden], col[hidden], thead[hidden], tbody[hidden],
+tfoot[hidden], tr[hidden], td[hidden], th[hidden] {
+  visibility: collapse;
+}
+
+table {
+  box-sizing: border-box;
+  border-spacing: 2px;
+  border-collapse: separate;
+  text-indent: initial;
+}
+td, th { padding: 1px; }
+th { font-weight: bold; }
+
+caption { text-align: center; }
+thead, tbody, tfoot, table > tr { vertical-align: middle; }
+tr, td, th { vertical-align: inherit; }
+
+table, td, th { border-color: gray; }
+thead, tbody, tfoot, tr { border-color: inherit; }
+table[rules=none i], table[rules=groups i], table[rules=rows i],
+table[rules=cols i], table[rules=all i], table[frame=void i],
+table[frame=above i], table[frame=below i], table[frame=hsides i],
+table[frame=lhs i], table[frame=rhs i], table[frame=vsides i],
+table[frame=box i], table[frame=border i],
+table[rules=none i] > tr > td, table[rules=none i] > tr > th,
+table[rules=groups i] > tr > td, table[rules=groups i] > tr > th,
+table[rules=rows i] > tr > td, table[rules=rows i] > tr > th,
+table[rules=cols i] > tr > td, table[rules=cols i] > tr > th,
+table[rules=all i] > tr > td, table[rules=all i] > tr > th,
+table[rules=none i] > thead > tr > td, table[rules=none i] > thead > tr > th,
+table[rules=groups i] > thead > tr > td, table[rules=groups i] > thead > tr > th,
+table[rules=rows i] > thead > tr > td, table[rules=rows i] > thead > tr > th,
+table[rules=cols i] > thead > tr > td, table[rules=cols i] > thead > tr > th,
+table[rules=all i] > thead > tr > td, table[rules=all i] > thead > tr > th,
+table[rules=none i] > tbody > tr > td, table[rules=none i] > tbody > tr > th,
+table[rules=groups i] > tbody > tr > td, table[rules=groups i] > tbody > tr > th,
+table[rules=rows i] > tbody > tr > td, table[rules=rows i] > tbody > tr > th,
+table[rules=cols i] > tbody > tr > td, table[rules=cols i] > tbody > tr > th,
+table[rules=all i] > tbody > tr > td, table[rules=all i] > tbody > tr > th,
+table[rules=none i] > tfoot > tr > td, table[rules=none i] > tfoot > tr > th,
+table[rules=groups i] > tfoot > tr > td, table[rules=groups i] > tfoot > tr > th,
+table[rules=rows i] > tfoot > tr > td, table[rules=rows i] > tfoot > tr > th,
+table[rules=cols i] > tfoot > tr > td, table[rules=cols i] > tfoot > tr > th,
+table[rules=all i] > tfoot > tr > td, table[rules=all i] > tfoot > tr > th {
+  border-color: black;
+}</pre>
+
+  <p>The following rules are also expected to apply, as <span>presentational hints</span>:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+table[align=left i] { float: left; }
+table[align=right i] { float: right; }
+table[align=center i] { margin-inline-start: auto; margin-inline-end: auto; }
+thead[align=absmiddle i], tbody[align=absmiddle i], tfoot[align=absmiddle i],
+tr[align=absmiddle i], td[align=absmiddle i], th[align=absmiddle i] {
+  text-align: center;
+}
+
+caption[align=bottom i] { caption-side: bottom; }
+p[align=left i], h1[align=left i], h2[align=left i], h3[align=left i],
+h4[align=left i], h5[align=left i], h6[align=left i] {
+  text-align: left;
+}
+p[align=right i], h1[align=right i], h2[align=right i], h3[align=right i],
+h4[align=right i], h5[align=right i], h6[align=right i] {
+  text-align: right;
+}
+p[align=center i], h1[align=center i], h2[align=center i], h3[align=center i],
+h4[align=center i], h5[align=center i], h6[align=center i] {
+  text-align: center;
+}
+p[align=justify i], h1[align=justify i], h2[align=justify i], h3[align=justify i],
+h4[align=justify i], h5[align=justify i], h6[align=justify i] {
+  text-align: justify;
+}
+thead[valign=top i], tbody[valign=top i], tfoot[valign=top i],
+tr[valign=top i], td[valign=top i], th[valign=top i] {
+  vertical-align: top;
+}
+thead[valign=middle i], tbody[valign=middle i], tfoot[valign=middle i],
+tr[valign=middle i], td[valign=middle i], th[valign=middle i] {
+  vertical-align: middle;
+}
+thead[valign=bottom i], tbody[valign=bottom i], tfoot[valign=bottom i],
+tr[valign=bottom i], td[valign=bottom i], th[valign=bottom i] {
+  vertical-align: bottom;
+}
+thead[valign=baseline i], tbody[valign=baseline i], tfoot[valign=baseline i],
+tr[valign=baseline i], td[valign=baseline i], th[valign=baseline i] {
+  vertical-align: baseline;
+}
+
+td[nowrap], th[nowrap] { white-space: nowrap; }
+
+table[rules=none i], table[rules=groups i], table[rules=rows i],
+table[rules=cols i], table[rules=all i] {
+  border-style: hidden;
+  border-collapse: collapse;
+}
+table[border] { border-style: outset; } /* <span>only if border is not equivalent to zero</span> */
+table[frame=void i] { border-style: hidden; }
+table[frame=above i] { border-style: outset hidden hidden hidden; }
+table[frame=below i] { border-style: hidden hidden outset hidden; }
+table[frame=hsides i] { border-style: outset hidden outset hidden; }
+table[frame=lhs i] { border-style: hidden hidden hidden outset; }
+table[frame=rhs i] { border-style: hidden outset hidden hidden; }
+table[frame=vsides i] { border-style: hidden outset; }
+table[frame=box i], table[frame=border i] { border-style: outset; }
+
+table[border] > tr > td, table[border] > tr > th,
+table[border] > thead > tr > td, table[border] > thead > tr > th,
+table[border] > tbody > tr > td, table[border] > tbody > tr > th,
+table[border] > tfoot > tr > td, table[border] > tfoot > tr > th {
+  /* <span>only if border is not equivalent to zero</span> */
+  border-width: 1px;
+  border-style: inset;
+}
+table[rules=none i] > tr > td, table[rules=none i] > tr > th,
+table[rules=none i] > thead > tr > td, table[rules=none i] > thead > tr > th,
+table[rules=none i] > tbody > tr > td, table[rules=none i] > tbody > tr > th,
+table[rules=none i] > tfoot > tr > td, table[rules=none i] > tfoot > tr > th,
+table[rules=groups i] > tr > td, table[rules=groups i] > tr > th,
+table[rules=groups i] > thead > tr > td, table[rules=groups i] > thead > tr > th,
+table[rules=groups i] > tbody > tr > td, table[rules=groups i] > tbody > tr > th,
+table[rules=groups i] > tfoot > tr > td, table[rules=groups i] > tfoot > tr > th,
+table[rules=rows i] > tr > td, table[rules=rows i] > tr > th,
+table[rules=rows i] > thead > tr > td, table[rules=rows i] > thead > tr > th,
+table[rules=rows i] > tbody > tr > td, table[rules=rows i] > tbody > tr > th,
+table[rules=rows i] > tfoot > tr > td, table[rules=rows i] > tfoot > tr > th {
+  border-width: 1px;
+  border-style: none;
+}
+table[rules=cols i] > tr > td, table[rules=cols i] > tr > th,
+table[rules=cols i] > thead > tr > td, table[rules=cols i] > thead > tr > th,
+table[rules=cols i] > tbody > tr > td, table[rules=cols i] > tbody > tr > th,
+table[rules=cols i] > tfoot > tr > td, table[rules=cols i] > tfoot > tr > th {
+  border-width: 1px;
+  border-block-start-style: none;
+  border-inline-end-style: solid;
+  border-block-end-style: none;
+  border-inline-start-style: solid;
+}
+table[rules=all i] > tr > td, table[rules=all i] > tr > th,
+table[rules=all i] > thead > tr > td, table[rules=all i] > thead > tr > th,
+table[rules=all i] > tbody > tr > td, table[rules=all i] > tbody > tr > th,
+table[rules=all i] > tfoot > tr > td, table[rules=all i] > tfoot > tr > th {
+  border-width: 1px;
+  border-style: solid;
+}
+
+table[rules=groups i] > colgroup {
+  border-inline-start-width: 1px;
+  border-inline-start-style: solid;
+  border-inline-end-width: 1px;
+  border-inline-end-style: solid;
+}
+table[rules=groups i] > thead,
+table[rules=groups i] > tbody,
+table[rules=groups i] > tfoot {
+  border-block-start-width: 1px;
+  border-block-start-style: solid;
+  border-block-end-width: 1px;
+  border-block-end-style: solid;
+}
+
+table[rules=rows i] > tr, table[rules=rows i] > thead > tr,
+table[rules=rows i] > tbody > tr, table[rules=rows i] > tfoot > tr {
+  border-block-start-width: 1px;
+  border-block-start-style: solid;
+  border-block-end-width: 1px;
+  border-block-end-style: solid;
+}</pre>
+
+<!--
+ Demos that the above (and prose below) must explain:
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1191
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1194
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1195
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1196
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1197
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1199
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1200
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1201
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1209
+-->
+
+
+  <p>In <span>quirks mode</span>, the following rules are also expected to apply:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+table {
+  font-weight: initial;
+  font-style: initial;
+  font-variant: initial;
+  font-size: initial;
+  line-height: initial;
+  white-space: initial;
+  text-align: initial;
+}</pre>
+
+  <hr>
+
+  <p>For the purposes of the CSS table model, the <code>col</code> element is expected to be treated
+  as if it was present as many times as its <code data-x="attr-col-span">span</code> attribute <span
+  data-x="rules for parsing non-negative integers">specifies</span>.</p>
+
+  <p>For the purposes of the CSS table model, the <code>colgroup</code> element, if it contains no
+  <code>col</code> element, is expected to be treated as if it had as many such children as its
+  <code data-x="attr-colgroup-span">span</code> attribute <span data-x="rules for parsing non-negative
+  integers">specifies</span>.</p>
+
+  <p>For the purposes of the CSS table model, the <code data-x="attr-tdth-colspan">colspan</code> and
+  <code data-x="attr-tdth-rowspan">rowspan</code> attributes on <code>td</code> and <code>th</code>
+  elements are expected to <span data-x="rules for parsing non-negative integers">provide</span> the
+  <i>special knowledge</i> regarding cells spanning rows and columns.</p>
+
+  <p>In <span>HTML documents</span>, the following rules are also expected to apply:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+:matches(table, thead, tbody, tfoot, tr) > form { display: none !important; }</pre>
+
+  <hr>
+
+  <p>The <code>table</code> element's <code data-x="attr-table-cellspacing">cellspacing</code>
+  attribute <span>maps to the pixel length property</span> <span>'border-spacing'</span> on the
+  element.</p>
+
+  <p>The <code>table</code> element's <code data-x="attr-table-cellpadding">cellpadding</code>
+  attribute <span data-x="maps to the pixel length property">maps to the pixel length
+  properties</span> <span>'padding-top'</span>, <span>'padding-right'</span>,
+  <span>'padding-bottom'</span>, and <span>'padding-left'</span> of any <code>td</code> and
+  <code>th</code> elements that have corresponding <span data-x="concept-cell">cells</span> in the
+  <span data-x="concept-table">table</span> corresponding to the <code>table</code> element.</p>
+
+  <p>The <code>table</code> element's <code data-x="attr-table-height">height</code> attribute
+  <span>maps to the dimension property (ignoring zero)</span> <span>'height'</span> on the
+  <code>table</code> element.</p>
+
+  <p>The <code>table</code> element's <code data-x="attr-table-width">width</code> attribute
+  <span>maps to the dimension property (ignoring zero)</span> <span>'width'</span> on the
+  <code>table</code> element.</p>
+
+  <p>The <code>col</code> element's <code data-x="attr-col-width">width</code> attribute <span>maps
+  to the dimension property (ignoring zero)</span> <span>'width'</span> on the <code>col</code>
+  element.</p>
+
+  <p>The <code>tr</code> element's <code data-x="attr-tr-height">height</code> attribute <span>maps
+  to the dimension property (ignoring zero)</span> <span>'height'</span> on the <code>tr</code>
+  element.</p>
+
+  <p>The <code>td</code> and <code>th</code> elements' <code data-x="attr-tdth-height">height</code>
+  attributes <span data-x="maps to the dimension property (ignoring zero)">map to the dimension
+  property (ignoring zero)</span> <span>'height'</span> on the element.</p>
+
+  <p>The <code>td</code> and <code>th</code> elements' <code data-x="attr-tdth-width">width</code>
+  attributes <span data-x="maps to the dimension property (ignoring zero)">map to the dimension
+  property (ignoring zero)</span> <span>'width'</span> on the element.</p>
+
+  <hr>
+
+  <p>The <code>thead</code>, <code>tbody</code>, <code>tfoot</code>, <code>tr</code>,
+  <code>td</code>, and <code>th</code> elements, when they have an <code data-x="">align</code>
+  attribute whose value is an <span>ASCII case-insensitive</span> match for either the string "<code
+  data-x="">center</code>" or the string "<code data-x="">middle</code>", are expected to center
+  text within themselves, as if they had their <span>'text-align'</span> property set to 'center' in
+  a <span data-x="presentational hints">presentational hint</span>, and to <span>align
+  descendants</span> to the center.</p>
+
+  <p>The <code>thead</code>, <code>tbody</code>, <code>tfoot</code>, <code>tr</code>,
+  <code>td</code>, and <code>th</code> elements, when they have an <code data-x="">align</code>
+  attribute whose value is an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">left</code>", are expected to left-align text within themselves, as if they had their
+  <span>'text-align'</span> property set to 'left' in a <span data-x="presentational
+  hints">presentational hint</span>, and to <span>align descendants</span> to the left.</p>
+
+  <p>The <code>thead</code>, <code>tbody</code>, <code>tfoot</code>, <code>tr</code>,
+  <code>td</code>, and <code>th</code> elements, when they have an <code data-x="">align</code>
+  attribute whose value is an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">right</code>", are expected to right-align text within themselves, as if they had their
+  <span>'text-align'</span> property set to 'right' in a <span data-x="presentational
+  hints">presentational hint</span>, and to <span>align descendants</span> to the right.</p>
+
+  <p>The <code>thead</code>, <code>tbody</code>, <code>tfoot</code>, <code>tr</code>,
+  <code>td</code>, and <code>th</code> elements, when they have an <code data-x="">align</code>
+  attribute whose value is an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">justify</code>", are expected to full-justify text within themselves, as if they had
+  their <span>'text-align'</span> property set to 'justify' in a <span data-x="presentational
+  hints">presentational hint</span>, and to <span>align descendants</span> to the left.</p>
+
+  <p>User agents are expected to have a rule in their user agent stylesheet that matches
+  <code>th</code> elements that have a parent node whose <span>computed value</span> for the
+  <span>'text-align'</span> property is its initial value, whose declaration block consists of just
+  a single declaration that sets the <span>'text-align'</span> property to the value 'center'.</p>
+  <!-- q.v. '-moz-center-or-inherit' -->
+
+  <hr>
+
+  <p>When a <code>table</code>, <code>thead</code>, <code>tbody</code>, <code>tfoot</code>,
+  <code>tr</code>, <code>td</code>, or <code>th</code> element has a <code
+  data-x="attr-background">background</code> attribute set to a non-empty value, the new value is
+  expected to be <span data-x="parse a url">parsed</span> relative to the element's <span>node
+  document</span>, and if this is successful, the user agent is expected to treat the attribute as a
+  <span data-x="presentational hints">presentational hint</span> setting the element's
+  <span>'background-image'</span> property to the <span>resulting URL string</span>.</p>
+
+  <p>When a <code>table</code>, <code>thead</code>, <code>tbody</code>, <code>tfoot</code>,
+  <code>tr</code>, <code>td</code>, or <code>th</code> element has a <code data-x="">bgcolor</code>
+  attribute set, the new value is expected to be parsed using the <span>rules for parsing a legacy
+  color value</span>, and if that does not return an error, the user agent is expected to treat the
+  attribute as a <span data-x="presentational hints">presentational hint</span> setting the element's
+  <span>'background-color'</span> property to the resulting color.</p>
+
+  <p>When a <code>table</code> element has a <code data-x="attr-table-bordercolor">bordercolor</code>
+  attribute, its value is expected to be parsed using the <span>rules for parsing a legacy color
+  value</span>, and if that does not return an error, the user agent is expected to treat the
+  attribute as a <span data-x="presentational hints">presentational hint</span> setting the
+  element's <span>'border-top-color'</span>, <span>'border-right-color'</span>,
+  <span>'border-bottom-color'</span>, and <span>'border-left-color'</span> properties to the
+  resulting color.</p>
+
+  <hr>
+
+  <p>The <code>table</code> element's <code data-x="attr-table-border">border</code> attribute <span
+  data-x="maps to the pixel length property">maps to the pixel length properties</span>
+  <span>'border-top-width'</span>, <span>'border-right-width'</span>,
+  <span>'border-bottom-width'</span>, <span>'border-left-width'</span> on the element. If the
+  attribute is present but parsing the attribute's value using the <span>rules for parsing
+  non-negative integers</span> generates an error, a default value of 1px is expected to be used for
+  that property instead.</p>
+
+  <p>Rules marked "<dfn id="magic-border-selector">only if border is not equivalent to zero</dfn>"
+  in the CSS block above is expected to only be applied if the <code
+  data-x="attr-table-border">border</code> attribute mentioned in the selectors for the rule is not
+  only present but, when parsed using the <span>rules for parsing non-negative integers</span>, is
+  also found to have a value other than zero or to generate an error.</p>
+
+  <hr>
+
+  <p>In <span>quirks mode</span>, a <code>td</code> element or a <code>th</code> element that has a
+  <code data-x="attr-tdth-nowrap">nowrap</code> attribute but also has a <code
+  data-x="attr-tdth-width">width</code> attribute whose value, when parsed using the <span>rules for
+  parsing non-zero dimension values</span>, is found to be a length (not an error or a number
+  classified as a percentage), is expected to have a <span data-x="presentational
+  hints">presentational hint</span> setting the element's <span>'white-space'</span> property to
+  'normal', overriding the rule in the CSS block above that sets it to 'nowrap'.</p> <!--
+  https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1793 --> <!-- note that the "rules for
+  parsing non-zero dimension values" can't return 0, if the value is "0" they treat it as an error
+  -->
+
+  

@@ -1,0 +1,137 @@
+<h4>Worker locations</h4>
+
+  <pre class="idl">[Exposed=Worker]
+interface <dfn>WorkerLocation</dfn> {
+  stringifier readonly attribute USVString <span data-x="dom-WorkerLocation-href">href</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-origin">origin</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-protocol">protocol</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-host">host</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-hostname">hostname</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-port">port</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-pathname">pathname</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-search">search</span>;
+  readonly attribute USVString <span data-x="dom-WorkerLocation-hash">hash</span>;
+};</pre>
+
+  <p>A <code>WorkerLocation</code> object has an associated <dfn
+  data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</dfn> (a
+  <code>WorkerGlobalScope</code> object).
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-href">href</code></dfn> attribute's getter must
+  return the associated <span
+  data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+  <span data-x="concept-WorkerGlobalScope-url">url</span>, <span
+  data-x="concept-url-serializer">serialized</span>.</p>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-origin">origin</code></dfn> attribute's getter must
+  return the <span data-x="Unicode serialization of an origin">Unicode serialization</span> of the
+  associated <span data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code>
+  object</span>'s <span data-x="concept-WorkerGlobalScope-url">url</span>'s <span
+  data-x="concept-url-origin">origin</span>.</p>
+
+  <p class="note no-backref">It returns the Unicode rather than the ASCII serialization for
+  compatibility with <code>MessageEvent</code>.</p>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-protocol">protocol</code></dfn> attribute's getter
+  must run return the associated <span
+  data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+  <span data-x="concept-WorkerGlobalScope-url">url</span>'s <span
+  data-x="concept-url-scheme">scheme</span>, followed by "<code data-x="">:</code>".</p>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-host">host</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>Let <var>url</var> be the associated <span
+   data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+   <span data-x="concept-WorkerGlobalScope-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var>'s <span data-x="concept-url-host">host</span> is null, return the empty
+   string.</p></li>
+
+   <li><p>If <var>url</var>'s <span data-x="concept-url-port">port</span> is null, return
+   <var>url</var>'s <span data-x="concept-url-host">host</span>, <span  data-x="host
+   serializer">serialized</span>.</p></li>
+
+   <li><p>Return <var>url</var>'s <span data-x="concept-url-host">host</span>, <span data-x="host
+   serializer">serialized</span>, followed by "<code data-x="">:</code>" and <var>url</var>'s <span
+   data-x="concept-url-port">port</span>, <span data-x="serialize an
+   integer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-hostname">hostname</code></dfn> attribute's getter
+  must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>host</var> be the associated <span
+   data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+   <span data-x="concept-WorkerGlobalScope-url">url</span>'s <span
+   data-x="concept-url-host">host</span>.</p></li>
+
+   <li><p>If <var>host</var> is null, return the empty string.</p></li>
+
+   <li><p>Return <var>host</var>, <span data-x="host serializer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-port">port</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>Let <var>port</var> be the associated <span
+   data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+   <span data-x="concept-WorkerGlobalScope-url">url</span>'s <span
+   data-x="concept-url-port">port</span>.</p></li>
+
+   <li><p>If <var>port</var> is null, return the empty string.</p></li>
+
+   <li><p>Return <var>port</var>, <span data-x="serialize an integer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-pathname">pathname</code></dfn> attribute's getter
+  must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>url</var> be the associated <span
+   data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+   <span data-x="concept-WorkerGlobalScope-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is set, return the first string
+   in <var>url</var>'s <span data-x="concept-url-path">path</span>.</p></li>
+
+   <li><p>Return "<code data-x="">/</code>", followed by the strings in <var>url</var>'s <span
+   data-x="concept-url-path">path</span> (including empty strings), separated from each other by
+   "<code data-x="">/</code>".</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-search">search</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>query</var> be the associated <span
+   data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+   <span data-x="concept-WorkerGlobalScope-url">url</span>'s <span
+   data-x="concept-url-query">query</span>.</p></li>
+
+   <li><p>If <var>query</var> is either null or the empty string, return the empty string.</p></li>
+
+   <li><p>Return "<code data-x="">?</code>", followed by <var>query</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-WorkerLocation-hash">hash</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>Let <var>fragment</var> be the associated <span
+   data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span>'s
+   <span data-x="concept-WorkerGlobalScope-url">url</span>'s <span
+   data-x="concept-url-fragment">fragment</span>.</p></li>
+
+   <li><p>If <var>fragment</var> is either null or the empty string, return the empty string.</p></li>
+
+   <li><p>Return "<code data-x="">#</code>", followed by <var>fragment</var>.</p></li>
+  </ol>
+
+
+<!--REMOVE-TOPIC:Workers-->
+
+  

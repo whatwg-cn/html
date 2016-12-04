@@ -1,0 +1,62 @@
+<h5>Configuring a form to communicate with a server</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Form submissions are exposed to servers in a variety of ways, most commonly as HTTP GET or POST
+  requests. To specify the exact method used, the <code data-x="attr-fs-method">method</code>
+  attribute is specified on the <code>form</code> element. This doesn't specify how the form data is
+  encoded, though; to specify that, you use the <code data-x="attr-fs-enctype">enctype</code>
+  attribute. You also have to specify the <span>URL</span> of the service that will handle the
+  submitted data, using the <code data-x="attr-fs-action">action</code> attribute.</p>
+
+  <p>For each form control you want submitted, you then have to give a name that will be used to
+  refer to the data in the submission. We already specified the name for the group of radio buttons;
+  the same attribute (<code data-x="attr-fe-name">name</code>) also specifies the submission name.
+  Radio buttons can be distinguished from each other in the submission by giving them different
+  values, using the <code data-x="attr-input-value">value</code> attribute.</p>
+
+  <p>Multiple controls can have the same name; for example, here we give all the checkboxes the same
+  name, and the server distinguishes which checkbox was checked by seeing which values are submitted
+  with that name &mdash; like the radio buttons, they are also given unique values with the <code
+  data-x="attr-input-value">value</code> attribute.</p>
+
+  <p>Given the settings in the previous section, this all becomes:</p>
+
+  <pre>&lt;form<strong> method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi"</strong>>
+ &lt;p>&lt;label>Customer name: &lt;input<strong> name="custname"</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Telephone: &lt;input type=tel<strong> name="custtel"</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>E-mail address: &lt;input type=email<strong> name="custemail"</strong>>&lt;/label>&lt;/p>
+ &lt;fieldset>
+  &lt;legend> Pizza Size &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=radio name=size<strong> value="small"</strong>> Small &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size<strong> value="medium"</strong>> Medium &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size<strong> value="large"</strong>> Large &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;fieldset>
+  &lt;legend> Pizza Toppings &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=checkbox<strong> name="topping" value="bacon"</strong>> Bacon &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox<strong> name="topping" value="cheese"</strong>> Extra Cheese &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox<strong> name="topping" value="onion"</strong>> Onion &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox<strong> name="topping" value="mushroom"</strong>> Mushroom &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;p>&lt;label>Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900"<strong> name="delivery"</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Delivery instructions: &lt;textarea<strong> name="comments"</strong>>&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;button>Submit order&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+  <p class="note">There is no particular significance to the way some of the attributes have their
+  values quoted and others don't. The HTML syntax allows a variety of equally valid ways to specify
+  attributes, as discussed <span data-x="syntax-attributes">in the syntax section</span>.</p>
+
+  <p>For example, if the customer entered "Denise Lawrence" as their name, "555-321-8642" as their
+  telephone number, did not specify an e-mail address, asked for a medium-sized pizza, selected the
+  Extra Cheese and Mushroom toppings, entered a delivery time of 7pm, and left the delivery
+  instructions text control blank, the user agent would submit the following to the online Web
+  service:</p>
+
+  <pre>custname=Denise+Lawrence&amp;custtel=555-321-8642&amp;custemail=&amp;size=medium&amp;topping=cheese&amp;topping=mushroom&amp;delivery=19%3A00&amp;comments=</pre>
+
+
+  

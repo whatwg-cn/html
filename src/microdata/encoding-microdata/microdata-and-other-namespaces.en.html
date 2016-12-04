@@ -1,0 +1,20 @@
+<h4>Microdata and other namespaces</h4>
+
+  <p>Currently, the <code data-x="attr-itemscope">itemscope</code>, <code
+  data-x="attr-itemprop">itemprop</code>, and other microdata attributes are only defined for
+  <span>HTML elements</span>. This means that attributes with the literal names "<code
+  data-x="">itemscope</code>", "<code data-x="">itemprop</code>", etc, do not cause microdata
+  processing to occur on elements in other namespaces, such as SVG.</p>
+
+  <div class="example">
+
+   <p>Thus, in the following example there is only one item, not
+   two.</p>
+
+   <pre class="bad">&lt;p itemscope>&lt;/p> &lt;!-- this is an item (with no properties and no type) -->
+&lt;svg itemscope>&lt;/svg> &lt;!-- this is not, it's just an <span>SVG <code>svg</code></span> element with an invalid unknown attribute --></pre>
+
+  </div>
+
+
+  

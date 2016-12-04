@@ -1,0 +1,76 @@
+<h5>Client-side form validation</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Forms can be annotated in such a way that the user agent will check the user's input before the
+  form is submitted. The server still has to verify the input is valid (since hostile users can
+  easily bypass the form validation), but it allows the user to avoid the wait incurred by having
+  the server be the sole checker of the user's input.</p>
+
+  <p>The simplest annotation is the <code data-x="attr-input-required">required</code> attribute,
+  which can be specified on <code>input</code> elements to indicate that the form is not to be
+  submitted until a value is given. By adding this attribute to the customer name, pizza size, and
+  delivery time fields, we allow the user agent to notify the user when the user submits the form
+  without filling in those fields:</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi">
+ &lt;p>&lt;label>Customer name: &lt;input name="custname"<strong> required</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Telephone: &lt;input type=tel name="custtel">&lt;/label>&lt;/p>
+ &lt;p>&lt;label>E-mail address: &lt;input type=email name="custemail">&lt;/label>&lt;/p>
+ &lt;fieldset>
+  &lt;legend> Pizza Size &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=radio name=size<strong> required</strong> value="small"> Small &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size<strong> required</strong> value="medium"> Medium &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size<strong> required</strong> value="large"> Large &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;fieldset>
+  &lt;legend> Pizza Toppings &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="bacon"> Bacon &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="cheese"> Extra Cheese &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="onion"> Onion &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="mushroom"> Mushroom &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;p>&lt;label>Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery"<strong> required</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Delivery instructions: &lt;textarea name="comments">&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;button>Submit order&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+  <p>It is also possible to limit the length of the input, using the <code
+  data-x="attr-fe-maxlength">maxlength</code> attribute. By adding this to the <code>textarea</code>
+  element, we can limit users to 1000 characters, preventing them from writing huge essays to the
+  busy delivery drivers instead of staying focused and to the point:</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi">
+ &lt;p>&lt;label>Customer name: &lt;input name="custname" required>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Telephone: &lt;input type=tel name="custtel">&lt;/label>&lt;/p>
+ &lt;p>&lt;label>E-mail address: &lt;input type=email name="custemail">&lt;/label>&lt;/p>
+ &lt;fieldset>
+  &lt;legend> Pizza Size &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="small"> Small &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="medium"> Medium &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="large"> Large &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;fieldset>
+  &lt;legend> Pizza Toppings &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="bacon"> Bacon &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="cheese"> Extra Cheese &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="onion"> Onion &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="mushroom"> Mushroom &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;p>&lt;label>Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery" required>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Delivery instructions: &lt;textarea name="comments"<strong> maxlength=1000</strong>>&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;button>Submit order&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+  <p class="note">When a form is submitted, <code data-x="event-invalid">invalid</code> events are
+  fired at each form control that is invalid, and then at the <code>form</code> element itself. This
+  can be useful for displaying a summary of the problems with the form, since typically the browser
+  itself will only report one problem at a time.</p>
+
+
+
+  

@@ -1,0 +1,51 @@
+<h4 id="encoding-terminology">Character encodings</h4>
+
+  <p>A <dfn data-x="encoding" data-x-href="https://encoding.spec.whatwg.org/#encoding">character
+  encoding</dfn>, or just <i>encoding</i> where that is not ambiguous, is a defined way to convert
+  between byte streams and Unicode strings, as defined in the WHATWG Encoding standard. An
+  <span>encoding</span> has an <dfn data-x-href="https://encoding.spec.whatwg.org/#name">encoding
+  name</dfn> and one or more <dfn data-x="encoding label"
+  data-x-href="https://encoding.spec.whatwg.org/#label">encoding labels</dfn>, referred to as the
+  encoding's <i>name</i> and <i>labels</i> in the Encoding standard. <ref spec=ENCODING></p>
+
+  <p>A <dfn>UTF-16 encoding</dfn> is <span>UTF-16BE</span> or <span>UTF-16LE</span>. <ref
+  spec=ENCODING></p>
+
+  <p>An <dfn>ASCII-compatible encoding</dfn> is any <span>encoding</span> that is not a
+  <span>UTF-16 encoding</span>. <ref spec=ENCODING></p>
+
+  <p class="note">Since support for encodings that are not defined in the WHATWG Encoding standard
+  is prohibited, <span data-x="UTF-16 encoding">UTF-16 encodings</span> are the only encodings that
+  this specification needs to treat as not being <span
+  data-x="ASCII-compatible encoding">ASCII-compatible encodings</span>.
+
+  <p>The term <dfn>code unit</dfn> is used as defined in the Web IDL specification: a 16 bit
+  unsigned integer, the smallest atomic component of a <code
+  data-x="idl-DOMString">DOMString</code>. (This is a narrower definition than the one used in
+  Unicode, and is not the same as a <i>code point</i>.) <ref spec=WEBIDL></p>
+
+  <p>The term <dfn>Unicode code point</dfn> means a <i>Unicode scalar value</i> where possible, and
+  an isolated surrogate code point when not. When a conformance requirement is defined in terms of
+  characters or Unicode code points, a pair of <span data-x="code unit">code units</span> consisting
+  of a high surrogate followed by a low surrogate must be treated as the single code point
+  represented by the surrogate pair, but isolated surrogates must each be treated as the single code
+  point with the value of the surrogate. <ref spec=UNICODE></p>
+
+  <p>In this specification, the term <dfn>character</dfn>, when not qualified as <em>Unicode</em>
+  character, is synonymous with the term <span>Unicode code point</span>.</p>
+
+  <p>The term <dfn>Unicode character</dfn> is used to mean a <i>Unicode scalar value</i> (i.e. any
+  Unicode code point that is not a surrogate code point). <ref spec=UNICODE></p>
+
+  <p>The <dfn>code-unit length</dfn> of a string is the number of <span data-x="code unit">code
+  units</span> in that string.</p>
+
+  <p class="note">This complexity results from the historical decision to define the DOM API in
+  terms of 16 bit (UTF-16) <span data-x="code unit">code units</span>, rather than in terms of <span
+  data-x="Unicode character">Unicode characters</span>.</p>
+
+
+
+  <div w-nodev>
+
+  

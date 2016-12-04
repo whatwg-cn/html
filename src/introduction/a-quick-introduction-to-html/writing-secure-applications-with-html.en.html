@@ -1,0 +1,131 @@
+<h4>Writing secure applications with HTML</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>When HTML is used to create interactive sites, care needs to be taken to avoid introducing
+  vulnerabilities through which attackers can compromise the integrity of the site itself or of the
+  site's users.</p>
+
+  <p>A comprehensive study of this matter is beyond the scope of this document, and authors are
+  strongly encouraged to study the matter in more detail. However, this section attempts to provide
+  a quick introduction to some common pitfalls in HTML application development.</p>
+
+  <p>The security model of the Web is based on the concept of "origins", and correspondingly many of
+  the potential attacks on the Web involve cross-origin actions. <ref spec=ORIGIN></p>
+
+  <dl>
+
+   <dt>Not validating user input</dt>
+   <dt>Cross-site scripting (XSS)</dt>
+   <dt>SQL injection</dt>
+
+   <dd>
+
+    <p>When accepting untrusted input, e.g. user-generated content such as text comments, values in
+    URL parameters, messages from third-party sites, etc, it is imperative that the data be
+    validated before use, and properly escaped when displayed. Failing to do this can allow a
+    hostile user to perform a variety of attacks, ranging from the potentially benign, such as
+    providing bogus user information like a negative age, to the serious, such as running scripts
+    every time a user looks at a page that includes the information, potentially propagating the
+    attack in the process, to the catastrophic, such as deleting all data in the server.</p>
+
+    <p>When writing filters to validate user input, it is imperative that filters always be
+    safelist-based, allowing known-safe constructs and disallowing all other input. Blocklist-based
+    filters that disallow known-bad inputs and allow everything else are not secure, as not
+    everything that is bad is yet known (for example, because it might be invented in the
+    future).</p>
+
+    <div class="example">
+
+     <p>For example, suppose a page looked at its URL's query string to determine what to display,
+     and the site then redirected the user to that page to display a message, as in:</p>
+
+     <pre>&lt;ul>
+ &lt;li>&lt;a href="message.cgi?say=Hello">Say Hello&lt;/a>
+ &lt;li>&lt;a href="message.cgi?say=Welcome">Say Welcome&lt;/a>
+ &lt;li>&lt;a href="message.cgi?say=Kittens">Say Kittens&lt;/a>
+&lt;/ul></pre>
+
+     <p>If the message was just displayed to the user without escaping, a hostile attacker could
+     then craft a URL that contained a script element:</p>
+
+     <pre>https://example.com/message.cgi?say=%3Cscript%3Ealert%28%27Oh%20no%21%27%29%3C/script%3E</pre>
+
+     <p>If the attacker then convinced a victim user to visit this page, a script of the attacker's
+     choosing would run on the page. Such a script could do any number of hostile actions, limited
+     only by what the site offers: if the site is an e-commerce shop, for instance, such a script
+     could cause the user to unknowingly make arbitrarily many unwanted purchases.</p>
+
+     <p>This is called a cross-site scripting attack.</p>
+
+    </div>
+
+    <p>There are many constructs that can be used to try to trick a site into executing code. Here
+    are some that authors are encouraged to consider when writing safelist filters:</p>
+
+    <ul>
+
+     <li>When allowing harmless-seeming elements like <code>img</code>, it is important to safelist
+     any provided attributes as well. If one allowed all attributes then an attacker could, for
+     instance, use the <code data-x="handler-onload">onload</code> attribute to run arbitrary
+     script.</li>
+
+     <li>When allowing URLs to be provided (e.g. for links), the scheme of each URL also needs to be
+     explicitly safelisted, as there are many schemes that can be abused. The most prominent
+     example is "<code data-x="javascript protocol">javascript:</code>", but user agents can
+     implement (and indeed, have historically implemented) others.</li> <!-- IE had vbscript:,
+     Netscape had livescript:, etc. -->
+
+     <li>Allowing a <code>base</code> element to be inserted means any <code>script</code> elements
+     in the page with relative links can be hijacked, and similarly that any form submissions can
+     get redirected to a hostile site.</li>
+
+    </ul>
+
+   </dd>
+
+
+   <dt>Cross-site request forgery (CSRF)</dt>
+
+   <dd>
+
+    <p>If a site allows a user to make form submissions with user-specific side-effects, for example
+    posting messages on a forum under the user's name, making purchases, or applying for a passport,
+    it is important to verify that the request was made by the user intentionally, rather than by
+    another site tricking the user into making the request unknowingly.</p>
+
+    <p>This problem exists because HTML forms can be submitted to other origins.</p>
+
+    <p>Sites can prevent such attacks by populating forms with user-specific hidden tokens, or by
+    checking `<code data-x="http-origin">Origin</code>` headers on all requests.</p>
+
+   </dd>
+
+
+
+   <dt>Clickjacking</dt>
+
+   <dd>
+
+    <p>A page that provides users with an interface to perform actions that the user might not wish
+    to perform needs to be designed so as to avoid the possibility that users can be tricked into
+    activating the interface.</p>
+
+    <p>One way that a user could be so tricked is if a hostile site places the victim site in a
+    small <code>iframe</code> and then convinces the user to click, for instance by having the user
+    play a reaction game. Once the user is playing the game, the hostile site can quickly position
+    the iframe under the mouse cursor just as the user is about to click, thus tricking the user
+    into clicking the victim site's interface.</p>
+
+    <p>To avoid this, sites that do not expect to be used in frames are encouraged to only enable
+    their interface if they detect that they are not in a frame (e.g. by comparing the <code
+    data-x="dom-window">window</code> object to the value of the <code data-x="dom-top">top</code>
+    attribute).</p>
+
+   </dd>
+
+  </dl>
+<!--REMOVE-TOPIC:Security-->
+
+
+  

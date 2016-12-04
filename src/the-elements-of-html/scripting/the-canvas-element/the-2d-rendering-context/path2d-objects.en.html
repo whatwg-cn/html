@@ -1,0 +1,180 @@
+<h6><code>Path2D</code> objects</h6>
+
+  <p><code>Path2D</code> objects can be used to declare paths that are then later used on
+  objects implementing the <code>CanvasDrawPath</code> interface. In addition to many of the APIs
+  described in earlier sections, <code>Path2D</code> objects have methods to combine paths, and to
+  add text to paths.</p>
+
+  <dl class="domintro">
+
+   <dt><var>path</var> = new <code data-x="dom-Path2D">Path2D</code>()</dt>
+
+   <dd>
+
+    <p>Creates a new empty <code>Path2D</code> object.</p>
+
+   </dd>
+
+   <dt><var>path</var> = new <code data-x="dom-Path2D-copy">Path2D</code>(<var>path</var>)</dt>
+
+   <dd>
+
+    <p>Creates a new <code>Path2D</code> object that is a copy of the argument.</p>
+
+   </dd>
+
+   <dt><var>path</var> = new <code data-x="dom-Path2D-merge">Path2D</code>(<var>paths</var> [, <var>fillRule</var> ] )</dt>
+
+   <dd>
+
+    <p>Creates a new <code>Path2D</code> object that describes a path that outlines the given <var>paths</var>, using the given fill rule.</p>
+
+   </dd>
+
+   <dt><var>path</var> = new <code data-x="dom-Path2D-withdata">Path2D</code>(<var>d</var>)</dt>
+
+   <dd>
+
+    <p>Creates a new path with the path described by the argument, interpreted as SVG path data. <ref spec=SVG></p>
+
+   </dd>
+
+   <dt><var>path</var> . <code subdfn data-x="dom-Path2D-addPath">addPath</code>(<var>path</var> [, <var>transform</var> ] )</dt>
+
+   <dd>
+
+    <p>Adds to the path the path given by the argument.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-Path2D">Path2D()</code></dfn> constructor, when invoked, must return a
+  newly created <code>Path2D</code> object.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-Path2D-copy">Path2D(<var>path</var>)</code></dfn>
+  constructor, when invoked, must return a newly created <code>Path2D</code> object, to which the
+  subpaths of the argument are added. (In other words, it returns a copy of the argument.)</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-Path2D-merge">Path2D(<var>paths</var>,
+  <var>fillRule</var>)</code></dfn> constructor, when invoked, must run these steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Run the appropriate step from the following list, based on the constructor's second
+    argument:</p>
+
+    <dl class="switch">
+
+     <dt>If it is "nonzero"</dt>
+
+     <dd>
+
+      <p>Let <var>merged path</var> be a <span data-x="concept-path">path</span> that
+      consists of a set of non-overlapping subpaths that exactly outline the points from which, in
+      any of the <span data-x="concept-path">paths</span> provided in the constructor's first
+      argument, the number of times a half-infinite straight line drawn from that point crosses a
+      subpath going in one direction is not equal to the number of times it crosses a subpath going
+      in the other direction.</p>
+
+     </dd>
+
+     <dt>If it is "evenodd"</dt>
+
+     <dd>
+
+      <p>Let <var>merged path</var> be a <span data-x="concept-path">path</span> that
+      consists of a set of non-overlapping subpaths that exactly outline the points from which, in
+      any of the <span data-x="concept-path">paths</span> provided in the constructor's first
+      argument, the number of times a half-infinite straight line drawn from that point crosses that
+      path is odd.</p>
+
+     </dd>
+
+    </dl>
+
+    <p>The subpaths in <var>merged path</var> must be oriented such that for any point,
+    the number of times a half-infinite straight line drawn from that point crosses a subpath is
+    even if and only if the number of times a half-infinite straight line drawn from that same point
+    crosses a subpath going in one direction is equal to the number of times it crosses a subpath
+    going in the other direction.</p>
+
+   </li>
+
+   <li><p>Add all the subpaths in <var>merged path</var> to the <code>Path2D</code>
+   object.</p></li>
+
+   <li><p>Set the <code>Path2D</code> object's <span>need new subpath</span> flag.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-Path2D-withdata">Path2D(<var>d</var>)</code></dfn>
+  constructor, when invoked, must run these steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Parse and interpret the <var>d</var> argument according to the SVG specification's
+    rules for path data, thus obtaining an SVG path. <ref spec=SVG></p>
+
+    <p class="note">The resulting path could be empty. SVG defines error handling rules for parsing
+    and applying path data.</p>
+
+   </li>
+
+   <li><p>Let (<var>x</var>, <var>y</var>) be the last point in the SVG
+   path.</p></li>
+
+   <li><p>Create a new <code>Path2D</code> object and add all the subpaths in the SVG path, if any,
+   to that <code>Path2D</code> object. </p>
+
+   <li><p>Create a new subpath in the <code>Path2D</code> object with (<var>x</var>, <var>y</var>) as the only point in the subpath.</p></li>
+
+   <li><p>Return the <code>Path2D</code> object as the constructed object.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-Path2D-addPath">addPath(<var>b</var>,
+  <var>transform</var>)</code></dfn> method, when invoked on a <code>Path2D</code> object
+  <var>a</var>, must run these steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>Path2D</code> object <var>b</var> has no subpaths, then abort these
+   steps.</p></li>
+
+   <li><p>Create a copy of all the subpaths in <var>b</var>. Let this copy be known as <var>c</var>.</p></li>
+
+   <li><p>Let <var>matrix</var> be the result of <span data-x="create a DOMMatrix from a
+   dictionary">creating a <code>DOMMatrix</code> from a dictionary</span>
+   <var>transform</var>.</p></li>
+
+   <li><p>Transform all the coordinates and lines in <var>c</var> by the transform matrix
+   <var>matrix</var>.</p></li>
+
+   <li><p>Let (<var>x</var>, <var>y</var>) be the last point in the last subpath
+   of <var>c</var>.</p></li>
+
+   <li><p>Add all the subpaths in <var>c</var> to <var>a</var>.</p></li>
+
+   <li><p>Create a new subpath in <var>a</var> with (<var>x</var>, <var>y</var>) as the only point in the subpath.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

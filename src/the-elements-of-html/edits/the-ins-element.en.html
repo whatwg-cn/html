@@ -1,0 +1,86 @@
+<h4>The <dfn><code>ins</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Transparent</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-mod-cite">cite</code></dd>
+   <dd><code data-x="attr-mod-datetime">datetime</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses the <code>HTMLModElement</code> interface.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>ins</code> element <span>represents</span> an addition to the document.</p>
+
+  <div class="example">
+
+   <p>The following represents the addition of a single paragraph:</p>
+
+   <pre>&lt;aside>
+ &lt;ins>
+  &lt;p> I like fruit. &lt;/p>
+ &lt;/ins>
+&lt;/aside></pre>
+
+   <p>As does the following, because everything in the <code>aside</code> element here counts as
+   <span>phrasing content</span> and therefore there is just one <span>paragraph</span>:</p>
+
+   <pre>&lt;aside>
+ &lt;ins>
+  Apples are &lt;em>tasty&lt;/em>.
+ &lt;/ins>
+ &lt;ins>
+  So are pears.
+ &lt;/ins>
+&lt;/aside></pre>
+
+  </div>
+
+  <p><code>ins</code> elements should not cross <span data-x="paragraph">implied paragraph</span>
+  boundaries.</p>
+
+  <div class="example">
+
+   <p>The following example represents the addition of two paragraphs, the second of which was
+   inserted in two parts. The first <code>ins</code> element in this example thus crosses a
+   paragraph boundary, which is considered poor form.</p>
+
+   <pre class="bad">&lt;aside>
+ &lt;!-- don't do this -->
+ &lt;ins datetime="2005-03-16 00:00Z">
+  &lt;p> I like fruit. &lt;/p>
+  Apples are &lt;em>tasty&lt;/em>.
+ &lt;/ins>
+ &lt;ins datetime="2007-12-19 00:00Z">
+  So are pears.
+ &lt;/ins>
+&lt;/aside></pre>
+
+   <p>Here is a better way of marking this up. It uses more elements, but none of the elements cross
+   implied paragraph boundaries.</p>
+
+   <pre>&lt;aside>
+ &lt;ins datetime="2005-03-16 00:00Z">
+  &lt;p> I like fruit. &lt;/p>
+ &lt;/ins>
+ &lt;ins datetime="2005-03-16 00:00Z">
+  Apples are &lt;em>tasty&lt;/em>.
+ &lt;/ins>
+ &lt;ins datetime="2007-12-19 00:00Z">
+  So are pears.
+ &lt;/ins>
+&lt;/aside></pre>
+
+   <!-- Those dates aren't random. They're the start and end of something. Can you guess what? -->
+
+  </div>
+
+
+  

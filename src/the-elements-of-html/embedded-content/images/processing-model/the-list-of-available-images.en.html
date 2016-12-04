@@ -1,0 +1,35 @@
+<h6>The list of available images</h6>
+
+  <p>Each <code>Document</code> object must have a <dfn>list of available images</dfn>. Each image
+  in this list is identified by a tuple consisting of an <span>absolute URL</span>, a <span>CORS
+  settings attribute</span> mode, and, if the mode is not <span data-x="attr-crossorigin-none">No
+  CORS</span>, an <span>origin</span>.
+  Each image furthermore has an <dfn>ignore higher-layer caching</dfn> flag.
+  User agents may copy entries from one <code>Document</code>
+  object's <span>list of available images</span> to another at any time (e.g. when the
+  <code>Document</code> is created, user agents can add to it all the images that are loaded in
+  other <code>Document</code>s), but must not change the keys of entries copied in this way when
+  doing so, and must unset the <span>ignore higher-layer caching</span> flag for the copied entry.
+  User agents may also remove images from such lists at any time (e.g. to save
+  memory).
+  User agents must remove entries in the <span>list of available images</span> as appropriate
+  given higher-layer caching semantics for the resource (e.g. the HTTP `<code
+  data-x="http-cache-control">Cache-Control</code>` response header) when the <span>ignore
+  higher-layer caching</span> flag is unset.</p>
+
+  <p class="note">The <span>list of available images</span> is intended to enable synchronous
+  switching when changing the <code data-x="attr-img-src">src</code> attribute to a URL that has
+  previously been loaded, and to avoid re-downloading images in the same document even when they
+  don't allow caching per HTTP. It is not used to avoid re-downloading the same image while the
+  previous image is still loading.</p>
+
+  <p class="note">The user agent can also store the image data separately from the <span>list of available images</span>.</p>
+
+  <p class="example">For example, if a resource has the HTTP response header
+  `<code data-x="">Cache-Control: must-revalidate</code>`, and its <span>ignore higher-layer
+  caching</span> flag is unset, the user agent would remove it from the <span>list of available
+  images</span> but could keep the image data separately, and use that if the server responds with a
+  <code data-x="">304 Not Modified</code> status.</p>
+
+
+  

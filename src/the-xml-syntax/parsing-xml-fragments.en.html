@@ -1,0 +1,78 @@
+<h3 id="parsing-xhtml-fragments">Parsing XML fragments</h3>
+
+  <p>The <dfn>XML fragment parsing algorithm</dfn> either returns a <code>Document</code> or throws
+  a <span>"<code>SyntaxError</code>"</span> <code>DOMException</code>. Given a string
+  <var>input</var> and a context element <var data-x="concept-frag-parse-context">context</var>, the
+  algorithm is as follows:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Create a new <span>XML parser</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p><span>Feed the
+    parser</span> just created the string corresponding to the start tag of the <var
+    data-x="concept-frag-parse-context">context</var> element, declaring
+    all the namespace prefixes that are in scope on that element in the DOM, as well as declaring
+    the default namespace (if any) that is in scope on that element in the DOM.</p>
+
+    <p>A namespace prefix is in scope if the DOM <code data-x="">lookupNamespaceURI()</code> method
+    on the element would return a non-null value for that prefix.</p>
+
+    <p>The default namespace is the namespace for which the DOM <code
+    data-x="">isDefaultNamespace()</code> method on the element would return true.</p>
+
+    <p class="note">No
+    <code data-x="">DOCTYPE</code> is passed to the parser, and therefore no external subset is
+    referenced, and therefore no entities will be recognized.</p>
+
+   </li>
+
+   <li>
+
+    <p><span>Feed the parser</span> just created the string <var>input</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p><span>Feed the parser</span> just created the string corresponding to the end tag of the <var
+    data-x="concept-frag-parse-context">context</var> element.</p>
+
+   </li>
+
+   <li>
+
+    <p>If there is an XML well-formedness or XML namespace well-formedness error, then throw a
+    <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> and abort these steps.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <span>document element</span> of the resulting <code>Document</code> has any sibling
+    nodes, then throw a <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> and abort
+    these steps.</p>
+
+    <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1443 -->
+
+   </li>
+
+   <li><p>Return the child nodes of the <span>document element</span> of the resulting
+   <code>Document</code>, in <span>tree order</span>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+<!--TOPIC:Rendering-->
+
+  <div w-nodev>
+
+  

@@ -1,0 +1,187 @@
+<h5>The stack of open elements</h5>
+
+  <p>Initially, the <dfn>stack of open elements</dfn> is empty. The stack grows downwards; the
+  topmost node on the stack is the first one added to the stack, and the bottommost node of the
+  stack is the most recently added node in the stack (notwithstanding when the stack is manipulated
+  in a random access fashion as part of <a href="#adoptionAgency">the handling for misnested
+  tags</a>).</p>
+
+  <p class="note">The "<span data-x="insertion mode: before html">before html</span>"
+  <span>insertion mode</span> creates the <code>html</code> <span>document element</span>, which is
+  then added to the stack.</p>
+
+  <p class="note">In the <span>fragment case</span>, the <span>stack of open elements</span> is
+  initialized to contain an <code>html</code> element that is created as part of <span data-x="html
+  fragment parsing algorithm">that algorithm</span>. (The <span>fragment case</span> skips the
+  "<span data-x="insertion mode: before html">before html</span>" <span>insertion mode</span>.)</p>
+
+  <p>The <code>html</code> node, however it is created, is the topmost node of the stack. It only
+  gets popped off the stack when the parser <span data-x="stop parsing">finishes</span>.</p>
+
+  <p>The <dfn>current node</dfn> is the bottommost node in this <span>stack of open
+  elements</span>.</p>
+
+  <p>The <dfn>adjusted current node</dfn> is the <i data-x="concept-frag-parse-context">context</i>
+  element if the parser was created by the <span>HTML fragment parsing algorithm</span> and the
+  <span>stack of open elements</span> has only one element in it (<span>fragment case</span>);
+  otherwise, the <span>adjusted current node</span> is the <span>current node</span>.</p>
+
+  <p>Elements in the <span>stack of open elements</span> fall into the following categories:</p>
+
+  <dl>
+
+   <dt><dfn>Special</dfn></dt>
+   <dd>
+    <p>The following elements have varying levels of special parsing rules: HTML's
+    <code>address</code>, <code>applet</code>, <code>area</code>, <code>article</code>,
+    <code>aside</code>, <code>base</code>, <code>basefont</code>, <code>bgsound</code>,
+    <code>blockquote</code>, <code>body</code>, <code>br</code>, <code>button</code>,
+    <code>caption</code>, <code>center</code>, <code>col</code>, <code>colgroup</code>,
+    <code>dd</code>, <code>details</code>, <code>dir</code>, <code>div</code>, <code>dl</code>,
+    <code>dt</code>, <code>embed</code>, <code>fieldset</code>, <code>figcaption</code>,
+    <code>figure</code>, <code>footer</code>, <code>form</code>, <code>frame</code>,
+    <code>frameset</code>, <code>h1</code>, <code>h2</code>, <code>h3</code>, <code>h4</code>,
+    <code>h5</code>, <code>h6</code>, <code>head</code>, <code>header</code>, <code>hgroup</code>,
+    <code>hr</code>, <code>html</code>, <code>iframe</code>, <!-- <code>image</code>, (commented out
+    because this isn't an element that can end up on the stack, so it doesn't matter) -->
+    <code>img</code>, <code>input</code>, <code>li</code>, <code>link</code>, <code>listing</code>,
+    <code>main</code>, <code>marquee</code>, <code>menu</code>, <code>meta</code>, <code>nav</code>,
+    <code>noembed</code>, <code>noframes</code>, <code>noscript</code>, <code>object</code>,
+    <code>ol</code>, <code>p</code>, <code>param</code>, <code>plaintext</code>, <code>pre</code>,
+    <code>script</code>, <code>section</code>, <code>select</code>, <code>source</code>,
+    <code>style</code>, <code>summary</code>, <code>table</code>, <code>tbody</code>,
+    <code>td</code>, <code>template</code>, <code>textarea</code>, <code>tfoot</code>,
+    <code>th</code>, <code>thead</code>, <code>title</code>, <code>tr</code>, <code>track</code>,
+    <code>ul</code>, <code>wbr</code>, <code>xmp</code>; <span>MathML <code>mi</code></span>,
+    <span>MathML <code>mo</code></span>, <span>MathML <code>mn</code></span>, <span>MathML
+    <code>ms</code></span>, <span>MathML <code>mtext</code></span>, and <span>MathML
+    <code>annotation-xml</code></span>; and <span>SVG <code>foreignObject</code></span>, <span>SVG
+    <code>desc</code></span>, and <span>SVG <code>title</code></span>.</p> <!-- we could actually
+    put all non-HTML elements in this list, I think -->
+
+    <p class="note">An <code data-x="">image</code> start tag token is handled by the tree builder,
+    but it is not in this list because it is not an element; it gets turned into an <code>img</code>
+    element.</p>
+   </dd>
+
+   <dt><dfn>Formatting</dfn></dt>
+   <dd><p>The following HTML elements are those that end up in the <span>list of active formatting
+   elements</span>: <code>a</code>, <code>b</code>, <code>big</code>, <code>code</code>,
+   <code>em</code>, <code>font</code>, <code>i</code>, <code>nobr</code>, <code>s</code>,
+   <code>small</code>, <code>strike</code>, <code>strong</code>, <code>tt</code>, and
+   <code>u</code>.</p></dd>
+
+   <dt><dfn>Ordinary</dfn></dt>
+   <dd><p>All other elements found while parsing an HTML document.</p></dd>
+
+  </dl>
+
+  <p class="note">Typically, the <span>special</span> elements have the start and end tag tokens
+  handled specifically, while <span>ordinary</span> elements' tokens fall into "any other start tag"
+  and "any other end tag" clauses, and some parts of the tree builder check if a particular element
+  in the <span>stack of open elements</span> is in the <span>special</span> category. However, some
+  elements (e.g., the <code>option</code> element) have their start or end tag tokens handled
+  specifically, but are still not in the <span>special</span> category, so that they get the
+  <span>ordinary</span> handling elsewhere.</p>
+
+  <p>The <span>stack of open elements</span> is said to <dfn data-x="has an element in the specific
+  scope">have an element <var>target node</var> in a specific scope</dfn> consisting of a
+  list of element types <var>list</var> when the following algorithm terminates in a match
+  state:</p>
+
+  <ol>
+
+   <li><p>Initialize <var>node</var> to be the <span>current node</span> (the bottommost
+   node of the stack).</p></li>
+
+   <li><p>If <var>node</var> is the target node, terminate in a match state.</p></li>
+
+   <li><p>Otherwise, if <var>node</var> is one of the element types in <var>list</var>, terminate in a failure state.</p></li>
+
+   <li><p>Otherwise, set <var>node</var> to the previous entry in the <span>stack of open
+   elements</span> and return to step 2. (This will never fail, since the loop will always terminate
+   in the previous step if the top of the stack &mdash; an <code>html</code> element &mdash; is
+   reached.)</p></li>
+
+  </ol>
+
+  <p>The <span>stack of open elements</span> is said to <dfn data-x="has an element in scope">have a
+  particular element in scope</dfn> when it <span data-x="has an element in the specific scope">has
+  that element in the specific scope</span> consisting of the following element types:</p>
+
+  <ul class="brief">
+   <li><code>applet</code></li>
+   <li><code>caption</code></li>
+   <li><code>html</code></li> <!-- (This can only happen if the <var>node</var> is the topmost node of the <span>stack of open elements</span>, and prevents the next step from being invoked if there are no more elements in the stack.) -->
+   <li><code>table</code></li>
+   <li><code>td</code></li>
+   <li><code>th</code></li>
+   <li><code>marquee</code></li>
+   <li><code>object</code></li>
+   <li><code>template</code></li>
+   <li><span>MathML <code>mi</code></span></li>
+   <li><span>MathML <code>mo</code></span></li>
+   <li><span>MathML <code>mn</code></span></li>
+   <li><span>MathML <code>ms</code></span></li>
+   <li><span>MathML <code>mtext</code></span></li>
+   <li><span>MathML <code>annotation-xml</code></span></li>
+   <li><span>SVG <code>foreignObject</code></span></li>
+   <li><span>SVG <code>desc</code></span></li>
+   <li><span>SVG <code>title</code></span></li>
+  </ul>
+
+  <p>The <span>stack of open elements</span> is said to <dfn data-x="has an element in list item
+  scope">have a particular element in list item scope</dfn> when it <span data-x="has an element in
+  the specific scope">has that element in the specific scope</span> consisting of the following
+  element types:</p>
+
+  <ul class="brief">
+   <li>All the element types listed above for the <i data-x="has an element in scope">has an element in scope</i> algorithm.</li>
+   <li><code>ol</code> in the <span>HTML namespace</span></li>
+   <li><code>ul</code> in the <span>HTML namespace</span></li>
+  </ul>
+
+  <p>The <span>stack of open elements</span> is said to <dfn data-x="has an element in button
+  scope">have a particular element in button scope</dfn> when it <span data-x="has an element in the
+  specific scope">has that element in the specific scope</span> consisting of the following element
+  types:</p>
+
+  <ul class="brief">
+   <li>All the element types listed above for the <i data-x="has an element in scope">has an element in scope</i> algorithm.</li>
+   <li><code>button</code> in the <span>HTML namespace</span></li>
+  </ul>
+
+  <p>The <span>stack of open elements</span> is said to <dfn data-x="has an element in table
+  scope">have a particular element in table scope</dfn> when it <span data-x="has an element in the
+  specific scope">has that element in the specific scope</span> consisting of the following element
+  types:</p>
+
+  <ul class="brief">
+   <li><code>html</code> in the <span>HTML namespace</span></li> <!-- (This can only happen if the
+   <var>node</var> is the topmost node of the <span>stack of open elements</span>, and
+   prevents the next step from being invoked if there are no more elements in the stack.) -->
+   <li><code>table</code> in the <span>HTML namespace</span></li>
+   <li><code>template</code> in the <span>HTML namespace</span></li>
+  </ul>
+
+  <p>The <span>stack of open elements</span> is said to <dfn data-x="has an element in select
+  scope">have a particular element in select scope</dfn> when it <span data-x="has an element in the
+  specific scope">has that element in the specific scope</span> consisting of all element types
+  <em>except</em> the following:</p>
+
+  <ul class="brief">
+   <!--<li><code>select</code> in the <span>HTML namespace</span></li>-->
+   <li><code>optgroup</code> in the <span>HTML namespace</span></li>
+   <li><code>option</code> in the <span>HTML namespace</span></li>
+  </ul>
+
+  <p>Nothing happens if at any time any of the elements in the <span>stack of open elements</span>
+  are moved to a new location in, or removed from, the <code>Document</code> tree. In particular,
+  the stack is not changed in this situation. This can cause, amongst other strange effects, content
+  to be appended to nodes that are no longer in the DOM.</p>
+
+  <p class="note">In some cases (namely, when <a href="#adoptionAgency">closing misnested formatting
+  elements</a>), the stack is manipulated in a random-access fashion.</p>
+
+
+  

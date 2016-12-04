@@ -1,0 +1,60 @@
+<h4 data-dfn-type="element" data-lt="head" id="the-head-element">The <dfn><code>head</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As the first element in an <code>html</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>If the document is <span>an <code>iframe</code> <code data-x="attr-iframe-srcdoc">srcdoc</code> document</span> or if title information is available from a higher-level protocol: Zero or more elements of <span>metadata content</span>, of which no more than one is a <code>title</code> element and no more than one is a <code>base</code> element.</dd>
+   <dd>Otherwise: One or more elements of <span>metadata content</span>, of which exactly one is a <code>title</code> element and no more than one is a <code>base</code> element.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLHeadElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>head</code> element <span>represents</span> a collection of metadata for the
+  <code>Document</code>.</p>
+
+  <div class="example">
+
+   <p>The collection of metadata in a <code>head</code> element can be large or small. Here is an
+   example of a very short one:</p>
+
+   <pre>&lt;!doctype html>
+&lt;html lang=en>
+ &lt;head>
+  &lt;title>A document with a short head&lt;/title>
+ &lt;/head>
+ &lt;body>
+ ...</pre>
+
+   <p>Here is an example of a longer one:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;HTML LANG="EN">
+ &lt;HEAD>
+  &lt;META CHARSET="UTF-8">
+  &lt;BASE HREF="https://www.example.com/">
+  &lt;TITLE>An application with a long head&lt;/TITLE>
+  &lt;LINK REL="STYLESHEET" HREF="default.css">
+  &lt;LINK REL="STYLESHEET ALTERNATE" HREF="big.css" TITLE="Big Text">
+  &lt;SCRIPT SRC="support.js">&lt;/SCRIPT>
+  &lt;META NAME="APPLICATION-NAME" CONTENT="Long headed application">
+ &lt;/HEAD>
+ &lt;BODY>
+ ...</pre>
+
+  </div>
+
+  <p class="note">The <code>title</code> element is a required child in most situations, but when a
+  higher-level protocol provides title information, e.g. in the Subject line of an e-mail when HTML
+  is used as an e-mail authoring format, the <code>title</code> element can be omitted.</p>
+
+
+
+  

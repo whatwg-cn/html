@@ -1,0 +1,54 @@
+<h5>Anchor points</h5>
+
+  <p class="critical">This section will eventually be moved to a CSS specification; it is specified
+  here only on an interim basis until an editor can be found to own this.</p>
+
+  <table class="css-property">
+   <caption><dfn>'anchor-point'</dfn></caption>
+   <tr>
+    <th>Value:
+    <td> none | <span>&lt;position></span>
+   <tr>
+    <th>Initial:
+    <td> none
+   <tr>
+    <th>Applies to:
+    <td> all elements
+   <tr>
+    <th>Inherited:
+    <td> no
+   <tr>
+    <th>Percentages:
+    <td> refer to width or height of box; see prose
+   <tr>
+    <th>Media:
+    <td> visual
+   <tr>
+    <th>Computed value:
+    <td> The <span>specified value</span>, but with any lengths replaced by their corresponding absolute length
+   <tr>
+    <th>Animatable:
+    <td> no
+   <tr>
+    <th>Canonical order:
+    <td> per grammar
+  </table>
+
+  <p>The <span>'anchor-point'</span> property specifies a point to which dialog boxes are to be
+  aligned.</p>
+
+  <p>If the value is a <span>&lt;position></span>, the anchor point is the point given by the value,
+  which must be interpreted relative to the element's first rendered box's <span>margin box</span>.
+  Percentages must be calculated relative to the element's first rendered box's <span>margin
+  box</span> (specifically, its width for the horizontal position and its height for the vertical
+  position). <ref spec=CSSVALUES> <ref spec=CSS></p>
+
+  <p>If the value is the keyword 'none', then no explicit anchor point is defined. The user agent
+  will pick an anchor point automatically if necessary (as described in the definition of the
+  <code data-x="dom-dialog-open">open()</code> method above).</p>
+
+<!--REMOVE-TOPIC:CSS-->
+
+
+
+  

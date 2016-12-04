@@ -1,0 +1,35 @@
+<h5>Misnested tags: &lt;b>&lt;i>&lt;/b>&lt;/i></h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The most-often discussed example of erroneous markup is as follows:</p>
+
+  <pre>&lt;p>1&lt;b>2&lt;i>3&lt;/b>4&lt;/i>5&lt;/p></pre>
+
+  <p>The parsing of this markup is straightforward up to the "3". At this point, the DOM looks like
+  this:</p>
+
+  <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>p</code><ul><li class="t3"><code>#text</code>: <span data-x="">1</span></li><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">2</span></li><li class="t1"><code>i</code><ul><li class="t3"><code>#text</code>: <span data-x="">3</span></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+  <p>Here, the <span>stack of open elements</span> has five elements on it: <code>html</code>,
+  <code>body</code>, <code>p</code>, <code>b</code>, and <code>i</code>. The <span>list of active
+  formatting elements</span> just has two: <code>b</code> and <code>i</code>. The <span>insertion
+  mode</span> is "<span data-x="insertion mode: in body">in body</span>".</p>
+
+  <p>Upon receiving the end tag token with the tag name "b", the "<a href="#adoptionAgency">adoption
+  agency algorithm</a>" is invoked. This is a simple case, in that the <var>formatting
+  element</var> is the <code>b</code> element, and there is no <var>furthest block</var>.
+  Thus, the <span>stack of open elements</span> ends up with just three elements: <code>html</code>,
+  <code>body</code>, and <code>p</code>, while the <span>list of active formatting elements</span>
+  has just one: <code>i</code>. The DOM tree is unmodified at this point.</p>
+
+  <p>The next token is a character ("4"), triggers the <span data-x="reconstruct the active
+  formatting elements">reconstruction of the active formatting elements</span>, in this case just
+  the <code>i</code> element. A new <code>i</code> element is thus created for the "4"
+  <code>Text</code> node. After the end tag token for the "i" is also received, and the "5"
+  <code>Text</code> node is inserted, the DOM looks as follows:</p>
+
+  <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>p</code><ul><li class="t3"><code>#text</code>: <span data-x="">1</span></li><li class="t1"><code>b</code><ul><li class="t3"><code>#text</code>: <span data-x="">2</span></li><li class="t1"><code>i</code><ul><li class="t3"><code>#text</code>: <span data-x="">3</span></li></ul></li></ul></li><li class="t1"><code>i</code><ul><li class="t3"><code>#text</code>: <span data-x="">4</span></li></ul></li><li class="t3"><code>#text</code>: <span data-x="">5</span></li></ul></li></ul></li></ul></li></ul>
+
+
+  

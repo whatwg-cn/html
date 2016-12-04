@@ -1,0 +1,34 @@
+<h4><code data-x="dom-document-writeln">document.writeln()</code></h4>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-writeln">writeln</code>(<var>text</var>...)</dt>
+
+   <dd>
+
+    <p>Adds the given string(s) to the <code>Document</code>'s input stream, followed by a newline
+    character. If necessary, calls the <code data-x="dom-document-open">open()</code> method
+    implicitly first.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> when
+    invoked on <span>XML documents</span>.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the
+    parser is currently executing a <span>custom element constructor</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-writeln">document.writeln(...)</code></dfn> method, when
+  invoked, must act as if the <code data-x="dom-document-write">document.write()</code> method had
+  been invoked with the same argument(s), plus an extra argument consisting of a string containing a
+  single line feed character (U+000A).</p>
+
+  </div>
+
+
+
+  

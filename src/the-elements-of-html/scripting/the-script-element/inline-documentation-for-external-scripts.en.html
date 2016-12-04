@@ -1,0 +1,52 @@
+<h5><dfn data-x="script documentation">Inline documentation for external scripts</dfn></h5>
+
+  <p>If a <code>script</code> element's <code data-x="attr-script-src">src</code> attribute is
+  specified, then the contents of the <code>script</code> element, if any, must be such that the
+  value of the <code data-x="dom-script-text">text</code> IDL attribute, which is derived from the
+  element's contents, matches the <code data-x="">documentation</code> production in the following
+  ABNF, the character set for which is Unicode. <ref spec=ABNF></p>
+
+  <pre>documentation = *( *( space / tab / comment ) [ line-comment ] newline )
+comment       = slash star *( not-star / star not-slash ) 1*star slash
+line-comment  = slash slash *not-newline
+
+; characters
+tab           = %x0009 ; U+0009 CHARACTER TABULATION (tab)
+newline       = %x000A ; U+000A LINE FEED (LF)
+space         = %x0020 ; U+0020 SPACE
+star          = %x002A ; U+002A ASTERISK (*)
+slash         = %x002F ; U+002F SOLIDUS (/)
+not-newline   = %x0000-0009 / %x000B-10FFFF
+                ; a <span>Unicode character</span> other than U+000A LINE FEED (LF)
+not-star      = %x0000-0029 / %x002B-10FFFF
+                ; a <span>Unicode character</span> other than U+002A ASTERISK (*)
+not-slash     = %x0000-002E / %x0030-10FFFF
+                ; a <span>Unicode character</span> other than U+002F SOLIDUS (/)</pre>
+
+  <p class="note">This corresponds to putting the contents of the element in JavaScript
+  comments.</p>
+
+  <p class="note">This requirement is in addition to the earlier restrictions on the syntax of
+  contents of <code>script</code> elements.</p>
+
+  <div class="example">
+
+   <p>This allows authors to include documentation, such as license information or API information,
+   inside their documents while still referring to external script files. The syntax is constrained
+   so that authors don't accidentally include what looks like valid script while also providing a
+   <code data-x="attr-script-src">src</code> attribute.</p>
+
+   <pre>&lt;script src="cool-effects.js">
+ // create new instances using:
+ //    var e = new Effect();
+ // start the effect using .play, stop using .stop:
+ //    e.play();
+ //    e.stop();
+&lt;/script></pre>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

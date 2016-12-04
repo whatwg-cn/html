@@ -1,0 +1,28 @@
+<h5>Non-zero percentages and lengths</h5>
+
+  <p>The <dfn>rules for parsing non-zero dimension values</dfn> are as given in the following
+  algorithm. When invoked, the steps must be followed in the order given, aborting at the first step
+  that returns a value. This algorithm will return either a number greater than 0.0, or an error; if
+  a number is returned, then it is further categorized as either a percentage or a length.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>value</var> be the result of parsing <var>input</var> using the <span>rules for
+   parsing dimension values</span>.</p></li>
+
+   <li><p>If <var>value</var> is an error, return an error.</p></li>
+
+   <li><p>If <var>value</var> is zero, return an error.</p></li>
+
+   <li><p>If <var>value</var> is a percentage, return <var>value</var> as a percentage.</p></li>
+
+   <li><p>Return <var>value</var> as a length.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

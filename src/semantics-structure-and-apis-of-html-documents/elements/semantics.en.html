@@ -1,0 +1,187 @@
+<h4>Semantics</h4>
+
+  <p>Elements, attributes, and attribute values in HTML are defined (by this specification) to have
+  certain meanings (semantics). For example, the <code>ol</code> element represents an ordered list,
+  and the <code data-x="attr-lang">lang</code> attribute represents the language of the content.</p>
+
+  <p>These definitions allow HTML processors, such as Web browsers or search engines, to present and
+  use documents and applications in a wide variety of contexts that the author might not have
+  considered.</p>
+
+  <div class="example">
+
+   <p>As a simple example, consider a Web page written by an author who only considered desktop
+   computer Web browsers:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>My Page&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>Welcome to my page&lt;/h1>
+  &lt;p>I like cars and lorries and have a big Jeep!&lt;/p>
+  &lt;h2>Where I live&lt;/h2>
+  &lt;p>I live in a small hut on a mountain!&lt;/p>
+ &lt;/body>
+&lt;/html></pre>
+
+   <p>Because HTML conveys <em>meaning</em>, rather than presentation, the same
+   page can also be used by a small browser on a mobile phone, without any change to the page.
+   Instead of headings being in large letters as on the desktop, for example, the browser on the
+   mobile phone might use the same size text for the whole the page, but with the headings in
+   bold.</p>
+
+   <p>But it goes further than just differences in screen size: the same page could equally be used
+   by a blind user using a browser based around speech synthesis, which instead of displaying the
+   page on a screen, reads the page to the user, e.g. using headphones. Instead of large text for
+   the headings, the speech browser might use a different volume or a slower voice.</p>
+
+   <p>That's not all, either. Since the browsers know which parts of the page are the headings, they
+   can create a document outline that the user can use to quickly navigate around the document,
+   using keys for "jump to next heading" or "jump to previous heading". Such features are especially
+   common with speech browsers, where users would otherwise find quickly navigating a page quite
+   difficult.</p>
+
+   <p>Even beyond browsers, software can make use of this information. Search engines can use the
+   headings to more effectively index a page, or to provide quick links to subsections of the page
+   from their results. Tools can use the headings to create a table of contents (that is in fact how
+   this very specification's table of contents is generated).</p>
+
+   <p>This example has focused on headings, but the same principle applies to all of the semantics
+   in HTML.</p>
+
+  </div>
+
+  <p>Authors must not use elements, attributes, or attribute values for purposes other than their
+  appropriate intended semantic purpose, as doing so prevents software from correctly processing the
+  page.</p>
+
+  <div class="example">
+
+   <p>For example, the following snippet, intended to represent the heading of a
+   corporate site, is non-conforming because the second line is not intended to
+   be a heading of a subsection, but merely a subheading or subtitle (a
+   subordinate heading for the same section).</p>
+
+   <pre class="bad">&lt;body&gt;
+ &lt;h1&gt;ACME Corporation&lt;/h1&gt;
+ &lt;h2&gt;The leaders in arbitrary fast delivery since 1920&lt;/h2&gt;
+ ...</pre>
+
+   <p>The <code>hgroup</code> element is intended for these kinds of situations:</p>
+
+   <pre>&lt;body&gt;
+ &lt;hgroup&gt;
+  &lt;h1&gt;ACME Corporation&lt;/h1&gt;
+  &lt;h2&gt;The leaders in arbitrary fast delivery since 1920&lt;/h2&gt;
+ &lt;/hgroup&gt;
+ ...</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The document in this next example is similarly non-conforming, despite
+   being syntactically correct, because the data placed in the cells is clearly
+   not tabular data, and the <code>cite</code> element mis-used:</p>
+
+   <pre class="bad" lang="en-GB">&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en-GB"&gt;
+ &lt;head&gt; &lt;title&gt; Demonstration &lt;/title&gt; &lt;/head&gt;
+ &lt;body&gt;
+  &lt;table&gt;
+   &lt;tr&gt; &lt;td&gt; <!--en-GB-->My favourite animal is the cat. &lt;/td&gt; &lt;/tr&gt;
+   &lt;tr&gt;
+    &lt;td&gt;
+     &mdash;&lt;a href="https://example.org/~ernest/"&gt;&lt;cite&gt;Ernest&lt;/cite&gt;&lt;/a&gt;,
+     in an essay from 1992
+    &lt;/td&gt;
+   &lt;/tr&gt;
+  &lt;/table&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+   <p>This would make software that relies on these semantics fail: for example,
+   a speech browser that allowed a blind user to navigate tables in the document
+   would report the quote above as a table, confusing the user; similarly, a
+   tool that extracted titles of works from pages would extract "Ernest" as the
+   title of a work, even though it's actually a person's name, not a title.</p>
+
+   <p>A corrected version of this document might be:</p>
+
+   <pre lang="en-GB">&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en-GB"&gt;
+ &lt;head&gt; &lt;title&gt; Demonstration &lt;/title&gt; &lt;/head&gt;
+ &lt;body&gt;
+  &lt;blockquote&gt;
+   &lt;p&gt; <!--en-GB-->My favourite animal is the cat. &lt;/p&gt;
+  &lt;/blockquote&gt;
+  &lt;p&gt;
+   &mdash;&lt;a href="https://example.org/~ernest/"&gt;Ernest&lt;/a&gt;,
+   in an essay from 1992
+  &lt;/p&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+  </div>
+
+  <p>Authors must not use elements, attributes, or attribute values that are not permitted by this
+  specification or <span>other applicable specifications</span>, as doing so makes it significantly
+  harder for the language to be extended in the future.</p>
+
+  <div class="example">
+
+   <p>In the next example, there is a non-conforming attribute value ("carpet") and a non-conforming
+   attribute ("texture"), which is not permitted by this specification:</p>
+
+   <pre class="bad">&lt;label&gt;Carpet: &lt;input type="carpet" name="c" texture="deep pile"&gt;&lt;/label&gt;</pre>
+
+   <p>Here would be an alternative and correct way to mark this up:</p>
+
+   <pre>&lt;label&gt;Carpet: &lt;input type="text" class="carpet" name="c" data-texture="deep pile"&gt;&lt;/label&gt;</pre>
+
+  </div>
+
+  <p id="no-browsing-context">DOM nodes whose <span>node document</span> does not have a
+  <span>browsing context</span> are exempt from all document conformance requirements other than the
+  <a href="#writing">HTML syntax</a> requirements and <a href="#writing-xhtml-documents">XML
+  syntax</a> requirements.</p>
+
+  <div class="example">
+
+   <p>In particular, the <code>template</code> element's <span>template contents</span>'s <span>node
+   document</span> does not have a <span>browsing context</span>. For example, the <span
+   data-x="concept-element-content-model">content model</span> requirements and attribute value
+   microsyntax requirements do not apply to a <code>template</code> element's <span>template
+   contents</span>. In this example an <code>img</code> element has attribute values that are
+   placeholders that would be invalid outside a <code>template</code> element.</p>
+
+   <pre>&lt;template>
+ &lt;article>
+  &lt;img <mark>src="{{src}}" alt="{{alt}}"</mark>>
+  &lt;h1>&lt;/h1>
+ &lt;/article>
+&lt;/template></pre>
+
+   <p>However, if the above markup were to omit the <code data-x="">&lt;/h1></code> end tag, that
+   would be a violation of the <a href="#writing">HTML syntax</a>, and would thus be flagged as an
+   error by conformance checkers.</p>
+
+  </div>
+
+  <p>Through scripting and using other mechanisms, the values of attributes, text, and indeed the
+  entire structure of the document may change dynamically while a user agent is processing it. The
+  semantics of a document at an instant in time are those represented by the state of the document
+  at that instant in time, and the semantics of a document can therefore change over time. User
+  agents <span w-nodev>must</span> update their presentation of the document as this
+  occurs.</p>
+
+  <p class="example">HTML has a <code>progress</code> element that describes a progress bar. If its
+  "value" attribute is dynamically updated by a script, the UA would update the rendering to show
+  the progress changing.</p>
+
+
+
+<!--TOPIC:DOM APIs-->
+  

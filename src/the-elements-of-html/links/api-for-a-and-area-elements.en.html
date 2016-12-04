@@ -1,0 +1,527 @@
+<h4>API for <code>a</code> and <code>area</code> elements</h4>
+
+  <pre class="idl">[NoInterfaceObject]
+interface <dfn>HTMLHyperlinkElementUtils</dfn> {
+  [<span>CEReactions</span>] stringifier attribute USVString <span data-x="dom-hyperlink-href">href</span>;
+  readonly attribute USVString <span data-x="dom-hyperlink-origin">origin</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-protocol">protocol</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-username">username</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-password">password</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-host">host</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-hostname">hostname</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-port">port</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-pathname">pathname</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-search">search</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-hyperlink-hash">hash</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>hyperlink</var> . <code data-x="">toString()</code></dt>
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-href">href</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL.</p>
+    <p>Can be set, to change the URL.</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-origin">origin</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's origin.</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-protocol">protocol</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's scheme.</p>
+    <p>Can be set, to change the URL's scheme.</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-username">username</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's username.</p>
+    <p>Can be set, to change the URL's username.</p>
+   </dd>
+   <!-- This feature is technically non-conforming -->
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-password">password</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's password.</p>
+    <p>Can be set, to change the URL's password.</p>
+   </dd>
+   <!-- This feature is technically non-conforming -->
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-host">host</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's host and port (if different from the default port for the
+    scheme).</p>
+    <p>Can be set, to change the URL's host and port.</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-hostname">hostname</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's host.</p>
+    <p>Can be set, to change the URL's host.</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-port">port</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's port.</p>
+    <p>Can be set, to change the URL's port.</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-pathname">pathname</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's path.</p>
+    <p>Can be set, to change the URL's path.</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-search">search</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's query (includes leading "<code data-x="">?</code>" if
+    non-empty).</p>
+    <p>Can be set, to change the URL's query (ignores leading "<code data-x="">?</code>").</p>
+   </dd>
+
+   <dt><var>hyperlink</var> . <code subdfn data-x="dom-hyperlink-hash">hash</code></dt>
+   <dd>
+    <p>Returns the hyperlink's URL's fragment (includes leading "<code data-x="">#</code>" if
+    non-empty).</p>
+    <p>Can be set, to change the URL's fragment (ignores leading "<code data-x="">#</code>").</p>
+   </dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>An element implementing the <code>HTMLHyperlinkElementUtils</code> mixin has an associated <dfn
+  data-x="concept-hyperlink-url">url</dfn> (null or a <span>URL</span>). It is initially null.
+
+  <p>An element implementing the <code>HTMLHyperlinkElementUtils</code> mixin has an associated <dfn
+  data-x="concept-hyperlink-url-set">set the url</dfn> algorithm, which runs these steps:</p>
+
+  <ol>
+    <li><p>If this element's <code data-x="attr-hyperlink-href">href</code> content attribute is
+    absent, set this element's <span data-x="concept-hyperlink-url">url</span> to null.</p></li>
+    <li><p>Otherwise, parse this element's <code data-x="attr-hyperlink-href">href</code> content
+    attribute value relative to this element's <span>node document</span>. If <span data-x="parse a
+    url">parsing</span> is successful, set this element's <span
+    data-x="concept-hyperlink-url">url</span> to the result; otherwise, set this element's
+    <span data-x="concept-hyperlink-url">url</span> to null.</li>
+  </ol>
+
+  <p>When elements implementing the <code>HTMLHyperlinkElementUtils</code> mixin are created, and
+  whenever those elements have their <code data-x="attr-hyperlink-href">href</code> content
+  attribute set, changed, or removed, the user agent must <span
+  data-x="concept-hyperlink-url-set">set the url</span>.</p>
+
+  <p class="note">This is only observable for <code data-x="blob protocol">blob:</code> URLs as
+  <span data-x="url parser">parsing</span> them involves the <span>StructuredClone</span> abstract
+  operation.</p>
+
+  <p>An element implementing the <code>HTMLHyperlinkElementUtils</code> mixin has an associated
+  <!--en-GB--><dfn id="reinitialise-url">reinitialize url</dfn> algorithm, which runs these
+  steps:</p>
+
+  <ol>
+   <li><p>If element's <span data-x="concept-hyperlink-url">url</span> is non-null, its <span
+   data-x="concept-url-scheme">scheme</span> is "<code data-x="">blob</code>", and its
+   <span>cannot-be-a-base-URL flag</span> is set, terminate these steps.</p></li>
+
+   <li><p><span data-x="concept-hyperlink-url-set">Set the url</span>.</p></li>
+  </ol>
+
+  <p>To <dfn>update <code>href</code></dfn>, set the element's <code
+  data-x="attr-hyperlink-href">href</code> content attribute's value to the element's <span
+  data-x="concept-hyperlink-url">url</span>, <span
+  data-x="concept-url-serializer">serialized</span>.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-hyperlink-href">href</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null and this element has no <code
+   data-x="attr-hyperlink-href">href</code> content attribute, return the empty string.
+
+   <li><p>Otherwise, if <var>url</var> is null, return this element's <code
+   data-x="attr-hyperlink-href">href</code> content attribute's value.</p></li>
+
+   <li><p>Return <var>url</var>, <span data-x="concept-url-serializer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-href">href</code> attribute's setter must set this element's
+  <code data-x="attr-hyperlink-href">href</code> content attribute's value to the given value.
+
+  <p>The <dfn><code data-x="dom-hyperlink-origin">origin</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>If this element's <span data-x="concept-hyperlink-url">url</span> is null, return the
+   empty string.</p></li>
+
+   <li><p>Return the <span data-x="Unicode serialization of an origin">Unicode serialization</span>
+   of this element's <span data-x="concept-hyperlink-url">url</span>'s <span
+   data-x="concept-url-origin">origin</span>.</p></li>
+  </ol>
+
+  <p class="note no-backref">It returns the Unicode rather than the ASCII serialization for
+  compatibility with <code>MessageEvent</code>.</p>
+
+  <p>The <dfn><code data-x="dom-hyperlink-protocol">protocol</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>If this element's <span data-x="concept-hyperlink-url">url</span> is null, return "<code
+   data-x="">:</code>".</p></li>
+
+   <li><p>Return this element's <span data-x="concept-hyperlink-url">url</span>'s <span
+   data-x="concept-url-scheme">scheme</span>, followed by "<code data-x="">:</code>".</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-protocol">protocol</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>If this element's <span data-x="concept-hyperlink-url">url</span> is null, terminate these
+   steps.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> the given value, followed by <code
+   data-x="">:</code>", with this element's <span data-x="concept-hyperlink-url">url</span> as
+   <var>url</var> and <span>scheme start state</span> as <var>state override</var>.</p></li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-username">username</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>If this element's <span data-x="concept-hyperlink-url">url</span> is null, return the
+   empty string.</p></li>
+
+   <li><p>Return this element's <span data-x="concept-hyperlink-url">url</span>'s <span
+   data-x="concept-url-username">username</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-username">username</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> or <var>url</var>'s <span data-x="concept-url-host">host</span> is null,
+   or <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is set, terminate these
+   steps.</p></li>
+
+   <li><p><span>Set the username</span>, given <var>url</var> and the given value.</p></li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-password">password</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> or <var>url</var>'s <span data-x="concept-url-password">password</span>
+   is null, return the empty string.</p></li>
+
+   <li><p>Return  <var>url</var>'s <span data-x="concept-url-password">password</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-password">password</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> or <var>url</var>'s <span data-x="concept-url-host">host</span> is null,
+   or <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is set, terminate these
+   steps.</p></li>
+
+   <li><p><span>Set the password</span>, given <var>url</var> and the given value.</p></li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-host">host</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> or <var>url</var>'s <span data-x="concept-url-host">host</span> is null,
+   return the empty string.</p></li>
+
+   <li><p>If <var>url</var>'s <span data-x="concept-url-port">port</span> is null, return
+   <var>url</var>'s <span data-x="concept-url-host">host</span>, <span  data-x="host
+   serializer">serialized</span>.</p></li>
+
+   <li><p>Return <var>url</var>'s <span data-x="concept-url-host">host</span>, <span data-x="host
+   serializer">serialized</span>, followed by "<code data-x="">:</code>" and <var>url</var>'s <span
+   data-x="concept-url-port">port</span>, <span data-x="serialize an
+   integer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-host">host</code> attribute's setter must run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null or <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is
+   set, terminate these steps.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> the given value, with
+   <var>url</var> as <var>url</var> and <span>host state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-hostname">hostname</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> or <var>url</var>'s <span data-x="concept-url-host">host</span> is null,
+   return the empty string.</p></li>
+
+   <li><p>Return <var>url</var>'s <span data-x="concept-url-host">host</span>, <span data-x="host
+   serializer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-hostname">hostname</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null or <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is
+   set, terminate these steps.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> the given value, with
+   <var>url</var> as <var>url</var> and <span>hostname state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-port">port</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> or <var>url</var>'s <span data-x="concept-url-port">port</span> is null,
+   return the empty string.</p></li>
+
+   <li><p>Return <var>url</var>'s <span data-x="concept-url-port">port</span>, <span
+   data-x="serialize an integer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-port">port</code> attribute's setter must run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> or <var>url</var>'s <span data-x="concept-url-host">host</span> is null,
+   <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is set, or <var>url</var>'s <span
+   data-x="concept-url-scheme">scheme</span> is "<code data-x="">file</code>", terminate these
+   steps.</p></li>
+
+   <li><p>If the given value is the empty string, then set <var>url</var>'s <span
+   data-x="concept-url-port">port</span> to null.</p></li>
+
+   <li><p>Otherwise, <span data-x="basic url parser">basic URL parse</span> the given value, with
+   <var>url</var> as <var>url</var> and <span>port state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-pathname">pathname</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null, return the empty string.</p></li>
+
+   <li><p>If <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is set, return the first string
+   in <var>url</var>'s <span data-x="concept-url-path">path</span>.</p></li>
+
+   <li><p>Return "<code data-x="">/</code>", followed by the strings in <var>url</var>'s <span
+   data-x="concept-url-path">path</span> (including empty strings), separated from each other by
+   "<code data-x="">/</code>".</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-pathname">pathname</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null or <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is
+   set, terminate these steps.</p></li>
+
+   <li><p>Set <var>url</var>'s <span data-x="concept-url-path">path</span> to the empty
+   list.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> the given value, with
+   <var>url</var> as <var>url</var> and <span>path start state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-search">search</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null, or <var>url</var>'s <span
+   data-x="concept-url-query">query</span> is either null or the empty string, return the empty
+   string.</p></li>
+
+   <li><p>Return "<code data-x="">?</code>", followed by <var>url</var>'s <span
+   data-x="concept-url-query">query</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-search">search</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null, terminate these steps.</p></li>
+
+   <li><p>If the given value is the empty string, set <var>url</var>'s <span
+   data-x="concept-url-query">query</span> to null.
+
+   <li>
+    <p>Otherwise, run these substeps:</p>
+
+    <ol>
+     <li><p>Let <var>input</var> be the given value with a single leading "<code data-x="">?</code>"
+     removed, if any.</p></li>
+
+     <li><p>Set <var>url</var>'s <span data-x="concept-url-query">query</span> to the empty
+     string.</p></li>
+
+     <li><p><span data-x="basic url parser">Basic URL parse</span> <var>input</var>, with
+     <var>url</var> as <var>url</var> and <span>query state</span> as <var>state override</var>, and
+     this element's <span>node document</span>'s <span>document's character encoding</span> as
+     <var>encoding override</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-hyperlink-hash">hash</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null, or <var>url</var>'s <span
+   data-x="concept-url-fragment">fragment</span> is either null or the empty string, return the
+   empty string.</p></li>
+
+   <li><p>Return "<code data-x="">#</code>", followed by <var>url</var>'s <span
+   data-x="concept-url-fragment">fragment</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-hyperlink-hash">hash</code> attribute's setter must run these steps:</p>
+
+  <ol>
+   <li><p><span>Reinitialize url</span>.</p></li>
+
+   <li><p>Let <var>url</var> be this element's <span
+   data-x="concept-hyperlink-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var> is null or <var>url</var>'s <span
+   data-x="concept-url-scheme">scheme</span> is "<code data-x="">javascript</code>", terminate these
+   steps.</p></li>
+
+   <li><p>If the given value is the empty string, set <var>url</var>'s <span
+   data-x="concept-url-fragment">fragment</span> to null.
+
+   <li>
+    <p>Otherwise, run these substeps:</p>
+
+    <ol>
+     <li><p>Let <var>input</var> be the given value with a single leading "<code data-x="">#</code>"
+     removed, if any.</p></li>
+
+     <li><p>Set <var>url</var>'s <span data-x="concept-url-fragment">fragment</span> to the empty
+     string.</p></li>
+
+     <li><p><span data-x="basic url parser">Basic URL parse</span> <var>input</var>, with
+     <var>url</var> as <var>url</var> and <span>fragment state</span> as <var>state
+     override</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p><span>Update <code>href</code></span>.</p></li>
+  </ol>
+
+
+  

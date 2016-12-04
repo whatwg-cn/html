@@ -1,0 +1,73 @@
+<h5 id="custom-elements-upgrades-examples">Upgrading elements after their creation</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Because <span>element definition</span> can occur at any time, a non-custom element could be
+  <span data-x="create an element">created</span>, and then later become a <span>custom
+  element</span> after an appropriate <span data-x="custom element definition">definition</span> is
+  registered. We call this process "upgrading" the element, from a normal element into a custom
+  element.</p>
+
+  <p><span data-x="custom-element-upgrades">Upgrades</span> enable scenarios where it may be
+  preferable for <span data-x="custom element definition">custom element definitions</span> to be
+  registered after relevant elements has been initially created, such as by the parser. They allow
+  progressive enhancement of the content in the custom element. For example, in the following HTML
+  document the element definition for <code data-x="">img-viewer</code> is loaded
+  asynchronously:</p>
+
+  <pre>&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;title>Image viewer example&lt;/title>
+
+&lt;img-viewer filter="Kelvin">
+  &lt;img src="images/tree.jpg" alt="A beautiful tree towering over an empty savannah">
+&lt;/img-viewer>
+
+&lt;script src="js/elements/img-viewer.js" async>&lt;/script></pre>
+
+  <p>The definition for the <code data-x="">img-viewer</code> element here is loaded using a
+  <code>script</code> element marked with the <code data-x="attr-script-async">async</code>
+  attribute, placed after the <code data-x="">&lt;img-viewer></code> tag in the markup. While the
+  script is loading, the <code data-x="">img-viewer</code> element will be treated as an undefined
+  element, similar to a <code>span</code>. Once the script loads, it will define the <code
+  data-x="">img-viewer</code> element, and the existing <code data-x="">img-viewer</code> element on
+  the page will be upgraded, applying the custom element's definition (which presumably includes
+  applying an image filter identified by the string "Kelvin", enhancing the image's visual
+  appearance).</p>
+
+  <hr>
+
+  <p>Note that <span data-x="custom-element-upgrades">upgrades</span> only apply to elements in the
+  document tree. (Formally, elements that are <span>connected</span>.) An element that is not
+  inserted into a document will stay un-upgraded. An example illustrates this point:</p>
+
+  <pre>&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;title>Upgrade edge-cases example&lt;/title>
+
+&lt;example-element>&lt;/example-element>
+
+&lt;script>
+  "use strict";
+
+  const inDocument = document.querySelector("example-element");
+  const outOfDocument = document.createElement("example-element");
+
+  // Before the element definition, both are HTMLElement:
+  console.assert(inDocument instanceof HTMLElement);
+  console.assert(outOfDocument instanceof HTMLElement);
+
+  class ExampleElement extends HTMLElement {}
+  customElements.define("example-element", ExampleElement);
+
+  // After element definition, the in-document element was upgraded:
+  console.assert(inDocument instanceof ExampleElement);
+  console.assert(!(outOfDocument instanceof ExampleElement));
+
+  document.body.appendChild(outOfDocument);
+
+  // Now that we've moved the element into the document, it too was upgraded:
+  console.assert(outOfDocument instanceof ExampleElement);
+&lt;/script></pre>
+
+  

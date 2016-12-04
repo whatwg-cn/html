@@ -1,0 +1,42 @@
+<h4 id="ports-and-garbage-collection">Ports and garbage collection</h4>
+
+  <div w-nodev>
+
+  <p>When a <code>MessagePort</code> object <var>o</var> is entangled, user agents must
+  either act as if <var>o</var>'s entangled <code>MessagePort</code> object has a strong
+  reference to <var>o</var>, or as if the <span data-x="concept-settings-object-global">global
+  object</span> specified by <var>o</var>'s <span data-x="concept-port-owner">owner</span> has a
+  strong reference to <var>o</var>.</p>
+
+  <div class="note">
+
+   <p>Thus, a message port can be received, given an event listener, and then forgotten, and so long
+   as that event listener could receive a message, the channel will be maintained.</p>
+
+   <p>Of course, if this was to occur on both sides of the channel, then both ports could be garbage
+   collected, since they would not be reachable from live code, despite having a strong reference to
+   each other.</p>
+
+  </div>
+
+  <p>Furthermore, a <code>MessagePort</code> object must not be garbage collected while there exists
+  an event referenced by a <span data-x="concept-task">task</span> in a <span>task queue</span> that is to be dispatched on that <code>MessagePort</code>
+  object, or while the <code>MessagePort</code> object's <span>port message queue</span> is enabled
+  and not empty.</p> <!-- we
+  might not need to explicitly say the first part if UI Events is fixed to say that events on a
+  task queue prevent GC -->
+
+  <!-- ports in the ports attribute of a MessageEvent that isn't dispatched yet are safe because the
+  MessageEvent is safe -->
+
+  </div>
+
+  <p class="note">Authors are strongly encouraged to explicitly close <code>MessagePort</code>
+  objects to disentangle them, so that their resources can be recollected. Creating many
+  <code>MessagePort</code> objects and discarding them without closing them can lead to high
+  transient memory usage since garbage collection is not necessarily performed promptly, especially
+  for <code>MessagePort</code>s where garbage collection can involve cross-process coordination.</p>
+
+
+
+  

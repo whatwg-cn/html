@@ -1,0 +1,43 @@
+<h4>Groupings of browsing contexts</h4>
+
+  <p>Each <span>browsing context</span> is defined as having a list of one or more <dfn>directly
+  reachable browsing contexts</dfn>. These are:</p>
+
+  <ul>
+
+   <li>The <span>browsing context</span> itself.</li>
+
+   <li>All the <span>browsing context</span>'s <span data-x="child browsing context">child browsing
+   contexts</span>.</li>
+
+   <li>The <span>browsing context</span>'s <span>parent browsing context</span>.</li>
+
+   <li>All the <span data-x="browsing context">browsing contexts</span> that have the <span>browsing
+   context</span> as their <span>opener browsing context</span>.</li>
+
+   <li>The <span>browsing context</span>'s <span>opener browsing context</span>.</li>
+
+  </ul>
+
+  <p>The transitive closure of all the <span data-x="browsing context">browsing contexts</span> that
+  are <span>directly reachable browsing contexts</span> forms a <dfn>unit of related browsing
+  contexts</dfn>.</p>
+
+  <p>Each <span>unit of related browsing contexts</span> is then further divided into the smallest
+  number of groups such that every member of each group has an <span>active document</span> with an
+  <span>origin</span> that, through appropriate manipulation of the <code
+  data-x="dom-document-domain">document.domain</code> attribute, could be made to be <span>same
+  origin-domain</span> with other members of the group, but could not be made the same as members of
+  any other group. Each such group is a <dfn data-export="">unit of related similar-origin browsing
+  contexts</dfn>.</p>
+
+  <p class="note">There is also at most one <span>event loop</span> per <span>unit of related
+  similar-origin browsing contexts</span> (though several <span data-x="unit of related
+  similar-origin browsing contexts">units of related similar-origin browsing contexts</span> can
+  have a shared <span>event loop</span>).</p>
+
+  </div>
+
+
+
+  

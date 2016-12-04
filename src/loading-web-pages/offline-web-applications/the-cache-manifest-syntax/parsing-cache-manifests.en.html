@@ -1,0 +1,303 @@
+<h5>Parsing cache manifests</h5>
+
+  <p>When a user agent is to <dfn>parse a manifest</dfn>, it means that the user agent must run the
+  following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p><span>UTF-8 decode</span> the byte stream corresponding with the manifest to be parsed.</p>
+
+    <p class="note">The <span>UTF-8 decode</span> algorithm strips a leading BOM, if any.</p>
+
+    <!--All U+0000 NULL characters must be replaced by U+FFFD REPLACEMENT CHARACTERs. (this isn't
+    black-box testable since neither U+0000 nor U+FFFD are valid anywhere in the syntax and thus
+    both will be treated the same anyway)-->
+
+   </li>
+
+   <li><p>Let <var>base URL</var> be the <span>absolute URL</span> representing the
+   manifest.</p></li>
+
+   <li><p>Apply the <span>URL parser</span> to <var>base URL</var>, and let <var>manifest path</var>
+   be the <span data-x="concept-url-path">path</span> component thus obtained.</p></li>
+
+   <li><p>Remove all the characters in <var>manifest path</var> after the last U+002F SOLIDUS
+   character (/), if any. (The first character and the last character in <var>manifest path</var>
+   after this step will both be slashes, the URL path separator character.)</p></li>
+
+   <li><p>Apply the <span>URL parser</span> steps to the <var>base URL</var>, so that the
+   components from its <span>URL record</span> can be used by the subsequent steps of this
+   algorithm.</p></li>
+
+   <li><p>Let <var>explicit URLs</var> be an initially empty list of <span data-x="absolute
+   URL">absolute URLs</span> for <span data-x="concept-appcache-explicit">explicit
+   entries</span>.</p></li>
+
+   <li><p>Let <var>fallback URLs</var> be an initially empty mapping of <span
+   data-x="concept-appcache-fallback-ns">fallback namespaces</span> to <span data-x="absolute
+   URL">absolute URLs</span> for <span data-x="concept-appcache-fallback">fallback
+   entries</span>.</p></li>
+
+   <li><p>Let <var>online safelist namespaces</var> be an initially empty list of <span
+   data-x="absolute URL">absolute URLs</span> for an <span
+   data-x="concept-appcache-onlinesafelist">online safelist</span>.</p></li>
+
+   <li><p>Let <var>online safelist wildcard flag</var> be <i>blocking</i>. <!--
+   concept-appcache-onlinesafelist-wildcard --></p></li>
+
+   <li><p>Let <var>cache mode flag</var> be <i>fast</i>. <!--
+   concept-appcache-mode-fast --></p></li>
+
+   <li><p>Let <var>input</var> be the decoded text of the manifest's byte stream.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the first character.</p></li>
+
+   <li><p>If the characters starting from <var>position</var> are "CACHE", followed by a
+   U+0020 SPACE character, followed by "MANIFEST", then advance <var>position</var> to the
+   next character after those. Otherwise, this isn't a cache manifest; abort this algorithm with a
+   failure while checking for the magic signature.</p></li>
+
+   <li><p>If the character at <var>position</var> is neither a U+0020 SPACE character, a
+   U+0009 CHARACTER TABULATION (tab) character, U+000A LINE FEED (LF) character, nor a U+000D
+   CARRIAGE RETURN (CR) character, then this isn't a cache manifest; abort this algorithm with a
+   failure while checking for the magic signature.</p></li>
+
+   <li><p>This is a cache manifest. The algorithm cannot fail beyond
+   this point (though bogus lines can get ignored).</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <em>not</em> U+000A LINE FEED (LF)
+   or U+000D CARRIAGE RETURN (CR) characters, and ignore those characters. (Extra text on the first
+   line, after the signature, is ignored.)</p></li>
+
+   <li><p>Let <var>mode</var> be "explicit".</p></li>
+
+   <li><p><i>Start of line</i>: If <var>position</var> is past the end of <var>input</var>, then jump to the last step. Otherwise, <span>collect a sequence of
+   characters</span> that are U+000A LINE FEED (LF), U+000D CARRIAGE RETURN (CR), U+0020 SPACE, or
+   U+0009 CHARACTER TABULATION (tab) characters.</p></li>
+   <!-- strips leading spaces, ignores space-only lines, ignores blank lines -->
+
+   <li><p>Now, <span>collect a sequence of characters</span> that are <em>not</em> U+000A LINE FEED
+   (LF) or U+000D CARRIAGE RETURN (CR) characters, and let the result be <var>line</var>.</p></li>
+
+   <li><p>Drop any trailing U+0020 SPACE and U+0009 CHARACTER TABULATION (tab) characters at the end
+   of <var>line</var>.</p></li>
+
+   <li><p>If <var>line</var> is the empty string, then jump back to the step labeled <i>start
+   of line</i>.</p></li>
+
+   <li><p>If the first character in <var>line</var> is a U+0023 NUMBER SIGN character (#),
+   then jump back to the step labeled <i>start of line</i>.</p></li>
+
+   <li><p>If <var>line</var> equals "CACHE:" (the word "CACHE" followed by a U+003A COLON
+   character (:)), then set <var>mode</var> to "explicit" and jump back to the step labeled
+   <i>start of line</i>.</p></li>
+
+   <li><p>If <var>line</var> equals "FALLBACK:" (the word "FALLBACK" followed by a U+003A
+   COLON character (:)), then set <var>mode</var> to "fallback" and jump back to the step
+   labeled <i>start of line</i>.</p></li>
+
+   <li><p>If <var>line</var> equals "NETWORK:" (the word "NETWORK" followed by a U+003A
+   COLON character (:)), then set <var>mode</var> to "online safelist" and jump back to
+   the step labeled <i>start of line</i>.</p></li>
+
+   <li><p>If <var>line</var> equals "SETTINGS:" (the word "SETTINGS" followed by a U+003A
+   COLON character (:)), then set <var>mode</var> to "settings" and jump back to the step
+   labeled <i>start of line</i>.</p></li>
+
+   <li><p>If <var>line</var> ends with a U+003A COLON character (:), then set <var>mode</var> to "unknown" and jump back to the step labeled <i>start of line</i>.</p></li>
+
+   <li><p>This is either a data line or it is syntactically incorrect.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>line</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p>Let <var>tokens</var> be a list of strings, initially empty.</p></li>
+
+   <li>
+
+    <p>While <var>position</var> doesn't point past the end of <var>line</var>:</p>
+
+    <ol>
+
+     <li><p>Let <var>current token</var> be an empty string.</p></li>
+
+     <li><p>While <var>position</var> doesn't point past the end of <var>line</var> and the character at <var>position</var> is neither a U+0020 SPACE
+     nor a U+0009 CHARACTER TABULATION (tab) character, add the character at <var>position</var> to <var>current token</var> and advance <var>position</var> to the next character in <var>input</var>.</p></li>
+
+     <li><p>Add <var>current token</var> to the <var>tokens</var> list.</p></li>
+
+     <li><p>While <var>position</var> doesn't point past the end of <var>line</var> and the character at <var>position</var> is either a U+0020 SPACE
+     or a U+0009 CHARACTER TABULATION (tab) character, advance <var>position</var> to the
+     next character in <var>input</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>Process <var>tokens</var> as follows:</p>
+
+    <dl class="switch">
+
+     <dt>If <var>mode</var> is "explicit"</dt>
+
+     <dd>
+
+      <p>Let <var>urlRecord</var> be the result of <span data-x="URL parser">parsing</span> the
+      first item in <var>tokens</var> with <var>base URL</var>; ignore the rest.</p>
+
+      <p>If <var>urlRecord</var> is failure, then jump back to the step labeled <i>start of
+      line</i>.</p>
+
+      <p>If <var>urlRecord</var> has a different <span data-x="concept-url-scheme">scheme</span>
+      component than <var>base URL</var> (the manifest's URL), then jump back to the step labeled
+      <i>start of line</i>.</p>
+
+      <p>Let <var>new URL</var> be the result of applying the <span
+      data-x="concept-url-serializer">URL serializer</span> algorithm to <var>urlRecord</var>, with
+      the <i>exclude fragment flag</i> set.</p>
+
+      <p>Add <var>new URL</var> to the <var>explicit URLs</var>.</p>
+
+     </dd>
+
+     <dt>If <var>mode</var> is "fallback"</dt>
+
+     <dd>
+
+      <p>Let <var>part one</var> be the first token in <var>tokens</var>, and let
+      <var>part two</var> be the second token in <var>tokens</var>.</p>
+
+      <p>Let <var>urlRecordOne</var> be the result of <span data-x="URL parser">parsing</span>
+      <var>part one</var> with <var>base URL</var>.</p>
+
+      <p>Let <var>urlRecordTwo</var> be the result of <span data-x="URL parser">parsing</span>
+      <var>part two</var> with <var>base URL</var>.</p>
+
+      <p>If either <var>urlRecordOne</var> or <var>urlRecordTwo</var> are failure, then jump back to
+      the step labeled <i>start of line</i>.</p>
+
+      <p>If the <span data-x="concept-url-origin">origin</span> of either <var>urlRecordOne</var> or
+      <var>urlRecordTwo</var> is not <span>same origin</span> with the manifest's URL <span
+      data-x="concept-url-origin">origin</span>, then jump back to the step labeled <i>start of
+      line</i>.</p>
+
+      <p>Let <var>part one path</var> be the <span data-x="concept-url-path">path</span> component
+      of <var>urlRecordOne</var>.</p>
+
+      <p>If <var>manifest path</var> is not a <span>prefix match</span> for <var>part one
+      path</var>, then jump back to the step labeled <i>start of line</i>.</p> <!-- SECURITY (in
+      depth) -->
+<!--REMOVE-TOPIC:Security-->
+
+      <p>Let <var>part one</var> be the result of applying the <span
+      data-x="concept-url-serializer">URL serializer</span> algorithm to <var>urlRecordOne</var>,
+      with the <i>exclude fragment flag</i> set.</p>
+
+      <p>Let <var>part two</var> be the result of applying the <span
+      data-x="concept-url-serializer">URL serializer</span> algorithm to <var>urlRecordTwo</var>,
+      with the <i>exclude fragment flag</i> set.</p>
+
+      <p>If <var>part one</var> is already in the <var>fallback URLs</var> mapping
+      as a <span data-x="concept-appcache-fallback-ns">fallback namespace</span>, then jump back to
+      the step labeled <i>start of line</i>.</p>
+
+      <p>Otherwise, add <var>part one</var> to the <var>fallback URLs</var>
+      mapping as a <span data-x="concept-appcache-fallback-ns">fallback namespace</span>, mapped to
+      <var>part two</var> as the <span data-x="concept-appcache-fallback">fallback
+      entry</span>.</p>
+
+     </dd>
+
+     <dt>If <var>mode</var> is "online safelist"</dt>
+
+     <dd>
+
+      <p>If the first item in <var>tokens</var> is a U+002A ASTERISK character (*), then
+      set <var>online safelist wildcard flag</var> to <i>open</i> and jump back
+      to the step labeled <i>start of line</i>.</p>
+
+      <p>Otherwise, let <var>urlRecord</var> be the result of <span data-x="URL
+      parser">parsing</span> the first item in <var>tokens</var> with <var>base URL</var>.</p>
+
+      <p>If <var>urlRecord</var> is failure, then jump back to the step labeled <i>start of
+      line</i>.</p>
+
+      <p>If <var>urlRecord</var> has a different <span data-x="concept-url-scheme">scheme</span>
+      component than <var>base URL</var> (the manifest's URL), then jump back to the step labeled
+      <i>start of line</i>.</p>
+
+      <p>Let <var>new URL</var> be the result of applying the <span
+      data-x="concept-url-serializer">URL serializer</span> algorithm to <var>urlRecord</var>, with
+      the <i>exclude fragment flag</i> set.</p>
+
+      <p>Add <var>new URL</var> to the <var>online safelist namespaces</var>.</p>
+
+     </dd>
+
+     <dt>If <var>mode</var> is "settings"</dt>
+
+     <dd>
+
+      <p>If <var>tokens</var> contains a single token, and that token is a
+      <span>case-sensitive</span> match for the string "<code data-x="">prefer-online</code>", then
+      set <var>cache mode flag</var> to <i>prefer-online</i> and jump back to the
+      step labeled <i>start of line</i>.</p>
+
+      <p>Otherwise, the line is an unsupported setting: do nothing; the line is ignored.</p>
+
+     </dd>
+
+     <dt>If <var>mode</var> is "unknown"</dt>
+
+     <dd>
+
+      <p>Do nothing. The line is ignored.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Jump back to the step labeled <i>start of line</i>. (That step jumps to the next, and last,
+   step when the end of the file is reached.)</p></li>
+
+   <li><p>Return the <var>explicit URLs</var> list, the <var>fallback URLs</var>
+   mapping, the <var>online safelist namespaces</var>, the <var>online safelist
+   wildcard flag</var>, and the <var>cache mode flag</var>.</p></li>
+
+  </ol>
+
+  <div class="note">
+
+   <p>The resource that declares the manifest (with the <code
+   data-x="attr-html-manifest">manifest</code> attribute) will always get taken from the cache,
+   whether it is listed in the cache or not, even if it is listed in an <span
+   data-x="concept-appcache-onlinesafelist">online safelist namespace</span>.</p>
+
+   <p>If a resource is listed in the <span data-x="concept-appcache-manifest-explicit">explicit
+   section</span> or as a <span data-x="concept-appcache-fallback">fallback entry</span> in the <span
+   data-x="concept-appcache-manifest-fallback">fallback section</span>, the resource will always be
+   taken from the cache, regardless of any other matching entries in the <span
+   data-x="concept-appcache-fallback-ns">fallback namespaces</span> or <span
+   data-x="concept-appcache-onlinesafelist">online safelist namespaces</span>.</p>
+
+   <p>When a <span data-x="concept-appcache-fallback-ns">fallback namespace</span> and an <span
+   data-x="concept-appcache-onlinesafelist">online safelist namespace</span> overlap, the <span
+   data-x="concept-appcache-onlinesafelist">online safelist namespace</span> has priority.</p>
+
+   <p>The <span data-x="concept-appcache-onlinesafelist-wildcard">online safelist wildcard
+   flag</span> is applied last, only for URLs that match neither the <span
+   data-x="concept-appcache-onlinesafelist">online safelist namespace</span> nor the <span
+   data-x="concept-appcache-fallback-ns">fallback namespace</span> and that are not listed in the
+   <span data-x="concept-appcache-manifest-explicit">explicit section</span>.</p>
+
+  </div>
+
+
+  

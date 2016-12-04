@@ -1,0 +1,104 @@
+<h4>User tracking</h4>
+
+  <p>A third-party advertiser (or any entity capable of getting content distributed to multiple
+  sites) could use a unique identifier stored in its local storage area to track a user across
+  multiple sessions, building a profile of the user's interests to allow for highly targeted
+  advertising. In conjunction with a site that is aware of the user's real identity (for example an
+  e-commerce site that requires authenticated credentials), this could allow oppressive groups to
+  target individuals with greater accuracy than in a world with purely anonymous Web usage.</p>
+
+  <p>There are a number of techniques that can be used to mitigate the risk of user tracking:</p>
+
+  <dl>
+
+   <dt>Blocking third-party storage</dt>
+   <dd>
+
+    <p>User agents may restrict access to the <code data-x="dom-localStorage">localStorage</code>
+    objects to scripts originating at the domain of the <span>active document</span> of the <span>top-level browsing
+    context</span>, for instance denying access to the API for pages from other domains running in
+    <code>iframe</code>s.</p>
+
+   </dd>
+
+   <dt>Expiring stored data</dt>
+   <dd>
+
+    <p>User agents may, possibly in a manner configured by the user, automatically delete stored
+    data after a period of time.</p>
+
+    <p>For example, a user agent could be configured to treat third-party local storage areas as
+    session-only storage, deleting the data once the user had closed all the <span data-x="browsing
+    context">browsing contexts</span> that could access it.</p>
+
+    <p>This can restrict the ability of a site to track a user, as the site would then only be able
+    to track the user across multiple sessions when they authenticate with the site itself (e.g. by
+    making a purchase or logging in to a service).</p>
+
+    <p>However, this also reduces the usefulness of the API as a long-term storage mechanism. It can
+    also put the user's data at risk, if the user does not fully understand the implications of data
+    expiration.</p>
+
+    <!--v2 consider adding an explicit way for sites to state when data should expire, as in
+    localStorage.expireData(365); -->
+
+   </dd>
+
+   <dt>Treating persistent storage as cookies</dt>
+   <dd>
+
+    <p>If users attempt to protect their privacy by clearing cookies without also clearing data
+    stored in the local storage area, sites can defeat those attempts by using the two features as
+    redundant backup for each other. User agents should present the interfaces for clearing these in
+    a way that helps users to understand this possibility and enables them to delete data in all
+    persistent storage features simultaneously. <ref spec=COOKIES></p>
+
+   </dd>
+
+   <dt>Site-specific safelisting of access to local storage areas</dt> <dd>
+
+    <p>User agents may allow sites to access session storage areas in
+    an unrestricted manner, but require the user to authorize access
+    to local storage areas.</p>
+
+   </dd>
+
+   <dt>Origin-tracking of stored data</dt>
+   <dd>
+
+    <p>User agents may record the <span data-x="origin">origins</span> of sites that contained
+    content from third-party origins that caused data to be stored.</p>
+
+    <p>If this information is then used to present the view of data currently in persistent storage,
+    it would allow the user to make informed decisions about which parts of the persistent storage
+    to prune. Combined with a blocklist ("delete this data and prevent this domain from ever storing
+    data again"), the user can restrict the use of persistent storage to sites that they trust.</p>
+
+   </dd>
+
+   <dt>Shared blocklists</dt>
+   <dd>
+
+    <p>User agents may allow users to share their persistent storage domain blocklists.</p>
+
+    <p>This would allow communities to act together to protect their privacy.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>While these suggestions prevent trivial use of this API for user tracking, they do not block it
+  altogether. Within a single domain, a site can continue to track the user during a session, and
+  can then pass all this information to the third party along with any identifying information
+  (names, credit card numbers, addresses) obtained by the site. If a third party cooperates with
+  multiple sites to obtain such information, a profile can still be created.</p>
+
+  <p>However, user tracking is to some extent possible even with no cooperation from the user agent
+  whatsoever, for instance by using session identifiers in URLs, a technique already commonly used
+  for innocuous purposes but easily repurposed for user tracking (even retroactively). This
+  information can then be shared with other sites, using visitors' IP addresses and other
+  user-specific data (e.g. user-agent headers and configuration settings) to combine separate
+  sessions into coherent user profiles.</p>
+
+
+  

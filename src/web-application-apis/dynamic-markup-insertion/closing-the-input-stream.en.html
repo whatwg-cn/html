@@ -1,0 +1,56 @@
+<h4>Closing the input stream</h4>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-close">close</code>()</dt>
+
+   <dd>
+
+    <p>Closes the input stream that was opened by the <code
+    data-x="dom-document-open">document.open()</code> method.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the
+    <code>Document</code> is an <span data-x="XML documents">XML document</span>.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the
+    parser is currently executing a <span>custom element constructor</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-close">close()</code></dfn> method must run the following
+  steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>Document</code> object is an <span data-x="XML documents">XML
+   document</span>, then throw an <span>"<code>InvalidStateError</code>"</span>
+   <code>DOMException</code> and abort these steps.</p></li>
+
+   <li><p>If the <code>Document</code> object's <span>throw-on-dynamic-markup-insertion
+   counter</span> is greater than zero, then throw an <span>"<code>InvalidStateError</code>"</span>
+   <code>DOMException</code> and abort these steps.</p></li>
+
+   <li><p>If there is no <span>script-created parser</span> associated with the document, then abort
+   these steps.</p></li>
+
+   <li><p>Insert an <span>explicit "EOF" character</span> at the end of the parser's <span>input
+   stream</span>.</p></li>
+
+   <li><p>If there is a <span>pending parsing-blocking script</span>, then abort these
+   steps.</p></li>
+
+   <li><p>Run the tokenizer, processing resulting tokens as they are emitted, and stopping when the
+   tokenizer reaches the <span>explicit "EOF" character</span> or <span data-x="spin the event
+   loop">spins the event loop</span>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+
+  

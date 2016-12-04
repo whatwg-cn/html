@@ -1,0 +1,104 @@
+<h6 id="palpable-content">Palpable content</h6>
+
+  <p>As a general rule, elements whose content model allows any <span>flow content</span> or
+  <span>phrasing content</span> should have at least one node in its <span
+  data-x="concept-html-contents">contents</span> that is <dfn>palpable content</dfn> and that does
+  not have the <code data-x="attr-hidden">hidden</code> attribute specified.</p>
+
+  <p class="note"><span>Palpable content</span> makes an element non-empty by providing either
+  some descendant non-empty <span data-x="text content">text</span>, or else something users can
+  hear (<code>audio</code> elements) or view (<code>video</code> or <code>img</code> or
+  <code>canvas</code> elements) or otherwise interact with (for example, interactive form
+  controls).</p>
+
+  <p>This requirement is not a hard requirement, however, as there are many cases where an element
+  can be empty legitimately, for example when it is used as a placeholder which will later be filled
+  in by a script, or when the element is part of a template and would on most pages be filled in but
+  on some pages is not relevant.</p>
+
+  <p>Conformance checkers are encouraged to provide a mechanism for authors to find elements that
+  fail to fulfill this requirement, as an authoring aid.</p>
+
+  <p>The following elements are palpable content:</p>
+
+  <!-- when updating this also update the category index -->
+  <ul class="brief category-list">
+   <li><code>a</code></li>
+   <li><code>abbr</code></li>
+   <li><code>address</code></li>
+   <li><code>article</code></li>
+   <li><code>aside</code></li>
+   <li><code>audio</code> (if the <code data-x="attr-media-controls">controls</code> attribute is present)</li>
+   <li><code>b</code></li>
+   <li><code>bdi</code></li>
+   <li><code>bdo</code></li>
+   <li><code>blockquote</code></li>
+   <li><code>button</code></li>
+   <li><code>canvas</code></li>
+   <li><code>cite</code></li>
+   <li><code>code</code></li>
+   <li><code>data</code></li>
+   <li><code>details</code></li>
+   <li><code>dfn</code></li>
+   <li><code>div</code></li>
+   <li><code>dl</code> (if the element's children include at least one name-value group)</li>
+   <li><code>em</code></li>
+   <li><code>embed</code></li>
+   <li><code>fieldset</code></li>
+   <li><code>figure</code></li>
+   <li><code>footer</code></li>
+   <li><code>form</code></li>
+   <li><code>h1</code></li>
+   <li><code>h2</code></li>
+   <li><code>h3</code></li>
+   <li><code>h4</code></li>
+   <li><code>h5</code></li>
+   <li><code>h6</code></li>
+   <li><code>header</code></li>
+   <li><code>hgroup</code></li>
+   <li><code>i</code></li>
+   <li><code>iframe</code></li>
+   <li><code>img</code></li>
+   <li><code>input</code> (if the <code data-x="attr-input-type">type</code> attribute is <em>not</em> in the <span data-x="attr-input-type-hidden">Hidden</span> state)</li>
+   <li><code>ins</code></li>
+   <li><code>kbd</code></li>
+   <li><code>keygen</code></li>
+   <li><code>label</code></li>
+   <li><code>main</code></li>
+   <li><code>map</code></li>
+   <li><code>mark</code></li>
+   <li><span>MathML <code>math</code></span></li>
+   <li><code>menu</code> (if the <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="toolbar state">toolbar</span> state)</li>
+   <li><code>meter</code></li>
+   <li><code>nav</code></li>
+   <li><code>object</code></li>
+   <li><code>ol</code> (if the element's children include at least one <code>li</code> element)</li>
+   <li><code>output</code></li>
+   <li><code>p</code></li>
+   <li><code>pre</code></li>
+   <li><code>progress</code></li>
+   <li><code>q</code></li>
+   <li><code>ruby</code></li>
+   <li><code>s</code></li>
+   <li><code>samp</code></li>
+   <li><code>section</code></li>
+   <li><code>select</code></li>
+   <li><code>small</code></li>
+   <li><code>span</code></li>
+   <li><code>strong</code></li>
+   <li><code>sub</code></li>
+   <li><code>sup</code></li>
+   <li><span>SVG <code>svg</code></span></li>
+   <li><code>table</code></li>
+   <li><code>textarea</code></li>
+   <li><code>time</code></li>
+   <li><code>u</code></li>
+   <li><code>ul</code> (if the element's children include at least one <code>li</code> element)</li>
+   <li><code>var</code></li>
+   <li><code>video</code></li>
+   <li><span data-x="autonomous custom element">autonomous custom elements</span></li>
+   <li><span data-x="text content">Text</span> that is not <span>inter-element whitespace</span></li>
+  </ul>
+
+
+  

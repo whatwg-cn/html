@@ -1,0 +1,162 @@
+<h6 id="parsing-main-incdata">The "<dfn data-x="insertion mode: text">text</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode:
+  text">text</span>" <span>insertion mode</span>, the user agent must handle the token as
+  follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token</dt>
+   <dd>
+
+    <p><span data-x="insert a character">Insert the token's character</span>.</p>
+
+    <p class="note">This can never be a U+0000 NULL character; the tokenizer converts those to
+    U+FFFD REPLACEMENT CHARACTER characters.</p>
+
+   </dd>
+
+   <dt>An end-of-file token</dt>
+   <dd>
+
+    <!-- can't be the fragment case -->
+    <p><span>Parse error</span>.</p>
+
+    <p>If the <span>current node</span> is a <code>script</code> element, mark the
+    <code>script</code> element as <span>"already started"</span>.</p>
+
+    <p>Pop the <span>current node</span> off the <span>stack of open elements</span>.</p>
+
+    <p>Switch the <span>insertion mode</span> to the <span>original insertion mode</span> and
+    reprocess the token.</p>
+
+   </dd>
+
+   <dt id="scriptEndTag">An end tag whose tag name is "script"</dt>
+   <dd>
+
+    <p>If the <span>JavaScript execution context stack</span> is empty, <span>perform a microtask
+    checkpoint</span>.</p>
+
+    <p>Let <var>script</var> be the <span>current node</span> (which will be a
+    <code>script</code> element).</p>
+
+    <p>Pop the <span>current node</span> off the <span>stack of open elements</span>.</p>
+
+    <p>Switch the <span>insertion mode</span> to the <span>original insertion mode</span>.</p>
+
+    <p>Let the <var>old insertion point</var> have the same value as the current
+    <span>insertion point</span>. Let the <span>insertion point</span> be just before the <span>next
+    input character</span>.</p>
+
+    <p>Increment the parser's <span>script nesting level</span> by one.</p>
+
+    <p><span data-x="prepare a script">Prepare</span> the <var>script</var>. This might
+    cause some script to execute, which might cause <span data-x="dom-document-write">new characters
+    to be inserted into the tokenizer</span>, and might cause the tokenizer to output more tokens,
+    resulting in a <a href="#nestedParsing">reentrant invocation of the parser</a>.</p>
+
+    <p>Decrement the parser's <span>script nesting level</span> by one. If the parser's <span>script
+    nesting level</span> is zero, then set the <span>parser pause flag</span> to false.</p>
+
+    <p>Let the <span>insertion point</span> have the value of the <var>old insertion
+    point</var>. (In other words, restore the <span>insertion point</span> to its previous value.
+    This value might be the "undefined" value.)</p>
+
+    <p id="scriptTagParserResumes">At this stage, if there is a <span>pending parsing-blocking
+    script</span>, then:</p>
+
+    <dl class="switch">
+
+     <dt>If the <span>script nesting level</span> is not zero:</dt>
+
+     <dd>
+
+      <p>Set the <span>parser pause flag</span> to true, and abort the processing of any nested
+      invocations of the tokenizer, yielding control back to the caller. (Tokenization will resume
+      when the caller returns to the "outer" tree construction stage.)</p>
+
+      <p class="note">The tree construction stage of this particular parser is <a
+      href="#nestedParsing">being called reentrantly</a>, say from a call to <code
+      data-x="dom-document-write">document.write()</code>.</p>
+
+     </dd>
+
+
+     <dt>Otherwise:</dt>
+
+     <dd>
+
+      <p>Run these steps:</p>
+
+      <ol>
+
+       <li><p>Let <var>the script</var> be the <span>pending parsing-blocking
+       script</span>. There is no longer a <span>pending parsing-blocking script</span>.</p></li>
+
+       <li><p>Block the <span data-x="tokenization">tokenizer</span> for this instance of the
+       <span>HTML parser</span>, such that the <span>event loop</span> will not run <span
+       data-x="concept-task">tasks</span> that invoke the <span
+       data-x="tokenization">tokenizer</span>.</p></li>
+
+       <li><p>If the parser's <code>Document</code> <span>has a style sheet that is blocking
+       scripts</span> or <var>the script</var>'s <span>"ready to be parser-executed"</span>
+       flag is not set: <span>spin the event loop</span> until the parser's <code>Document</code>
+       <span>has no style sheet that is blocking scripts</span> and <var>the script</var>'s
+       <span>"ready to be parser-executed"</span> flag is set.</p></li>
+
+       <li>
+
+        <p>If this <span data-x="abort a parser">parser has been aborted</span> in the meantime,
+        abort these steps.</p>
+
+        <p class="note">This could happen if, e.g., while the <span>spin the event loop</span>
+        algorithm is running, the <span>browsing context</span> gets closed, or the <code
+        data-x="dom-document-open">document.open()</code> method gets invoked on the
+        <code>Document</code>.</p>
+
+       </li>
+
+       <li><p>Unblock the <span data-x="tokenization">tokenizer</span> for this instance of the
+       <span>HTML parser</span>, such that <span data-x="concept-task">tasks</span> that invoke the
+       <span data-x="tokenization">tokenizer</span> can again be run.</p></li>
+
+       <li><p>Let the <span>insertion point</span> be just before the <span>next input
+       character</span>.</p></li>
+
+       <li><p>Increment the parser's <span>script nesting level</span> by one (it should be zero
+       before this step, so this sets it to one).</p></li>
+
+       <li><p><span data-x="execute the script block">Execute</span> <var>the
+       script</var>.</p></li>
+
+       <li><p>Decrement the parser's <span>script nesting level</span> by one. If the parser's
+       <span>script nesting level</span> is zero (which it always should be at this point), then set
+       the <span>parser pause flag</span> to false.</p>
+
+       <li><p>Let the <span>insertion point</span> be undefined again.</p></li>
+
+       <li><p>If there is once again a <span>pending parsing-blocking script</span>, then repeat
+       these steps from step 1.</p></li>
+
+      </ol>
+
+     </dd>
+
+    </dl>
+
+   </dd>
+
+   <dt>Any other end tag</dt>
+   <dd>
+
+    <p>Pop the <span>current node</span> off the <span>stack of open elements</span>.</p>
+
+    <p>Switch the <span>insertion mode</span> to the <span>original insertion mode</span>.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

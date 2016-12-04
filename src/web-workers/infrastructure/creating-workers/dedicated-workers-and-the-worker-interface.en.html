@@ -1,0 +1,130 @@
+<h5>Dedicated workers and the <code>Worker</code> interface</h5>
+
+  <pre class="idl">[<span data-x="dom-Worker">Constructor</span>(USVString scriptURL, optional <span>WorkerOptions</span> options), Exposed=(Window,Worker)]
+interface <dfn>Worker</dfn> : <span>EventTarget</span> {
+  void <span data-x="dom-Worker-terminate">terminate</span>();
+
+  void <span data-x="dom-Worker-postMessage">postMessage</span>(any message, optional sequence&lt;<span data-x="idl-object">object</span>&gt; transfer = []);
+  attribute <span>EventHandler</span> <span data-x="handler-Worker-onmessage">onmessage</span>;
+};
+
+dictionary <dfn>WorkerOptions</dfn> {
+  <span>WorkerType</span> type = "classic";
+  <span>RequestCredentials</span> credentials = "omit"; // credentials is only used if type is "module"
+};
+
+enum <dfn>WorkerType</dfn> { "classic", "module" };
+
+<span>Worker</span> implements <span>AbstractWorker</span>;</pre>
+
+  <dl class="domintro">
+   <dt><var>worker</var> = new <code subdfn data-x="dom-Worker">Worker</code>(<var>scriptURL</var> [, <var>options</var> ])</dt>
+   <dd>Returns a new <code>Worker</code> object. <var>scriptURL</var> will be fetched and executed
+   in the background, creating a new global environment for which <var>worker</var> represents the
+   communication channel. <var>options</var> can be used to ensure this new global environment
+   supports JavaScript modules (specify <code data-x="">type: "module"</code>) and if that is
+   specified, can also be used to specify how <var>scriptURL</var> is fetched through the <code
+   data-x="">credentials</code> option.</dd>
+
+   <dt><var>worker</var> . <code subdfn data-x="dom-Worker-terminate">terminate</code>()</dt>
+   <dd>Aborts <var>worker</var>'s associated global environment.</dd>
+
+   <dt><var>worker</var> . <code subdfn data-x="dom-Worker-postMessage">postMessage</code>(<var>message</var> [, <var>transfer</var> ])
+   <dd>Clones <var>message</var> and transmits it to <var>worker</var>'s global environment.
+   <var>transfer</var> can be passed as a list of objects that are to be transferred rather than
+   cloned.</dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-Worker-terminate">terminate()</code></dfn> method, when invoked, must
+  cause the "<span>terminate a worker</span>" algorithm to be run on the worker with which the object
+  is associated.</p>
+
+  <p><code>Worker</code> objects act as if they had an implicit <code>MessagePort</code> associated
+  with them. This port is part of a channel that is set up when the worker is created, but it is not
+  exposed. This object must never be garbage collected before the <code>Worker</code> object.</p>
+
+  <p>All messages received by that port must immediately be retargeted at the <code>Worker</code>
+  object.</p>
+
+  <p>The <dfn><code data-x="dom-Worker-postMessage">postMessage()</code></dfn> method on
+  <code>Worker</code> objects must act as if, when invoked, it immediately invoked <span
+  data-x="dom-MessagePort-postMessage">the method of the same name</span> on the port, with the same
+  arguments, and returned the same return value.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The <code data-x="dom-Worker-postMessage">postMessage()</code>
+   method's first argument can be structured data:</p>
+
+   <pre>worker.postMessage({opcode: 'activate', device: 1938, parameters: [23, 102]});</pre>
+
+  </div>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event handler IDL attributes</span>,
+  by objects implementing the <code>Worker</code> interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-Worker-onmessage">onmessage</code></dfn> <td> <code data-x="event-message">message</code>
+  </table>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>When the <dfn><code data-x="dom-Worker">Worker(<var>scriptURL</var>,
+  <var>options</var>)</code></dfn> constructor is invoked, the user agent must run the following
+  steps:</p>
+
+  <ol>
+
+   <li><p>The user agent may throw a <span>"<code>SecurityError</code>"</span>
+   <code>DOMException</code> and abort these steps if the request violates a policy decision (e.g.
+   if the user agent is configured to not allow the page to start dedicated workers).</p></li>
+
+   <li><p>Let <var>outside settings</var> be the <span>current settings object</span>.</p>
+
+   <li><p><span data-x="parse a url">Parse</span> the <var>scriptURL</var> argument relative to
+   <var>outside settings</var>.</p></li>
+
+   <li><p>If this fails, throw a <span>"<code>SyntaxError</code>"</span> <code>DOMException</code>
+   and abort these steps.</p></li>
+
+   <li>
+    <p>Let <var>worker URL</var> be the <span>resulting URL record</span>.</p>
+
+    <p class="note">Any <span data-x="same origin">same-origin</span> URL (including <code
+    data-x="blob protocol">blob:</code> URLs) can be used. <code data-x="data protocol">data:</code>
+    URLs can also be used, but they create a worker with an <span
+    data-x="concept-origin-opaque">opaque origin</span>.</p>
+   </li>
+
+   <li><p>Let <var>worker</var> be a new <code>Worker</code> object.</p></li>
+
+   <li><p><span>Create a new <code>MessagePort</code> object</span> whose <span
+   data-x="concept-port-owner">owner</span> is <var>outside settings</var>. Let this be the
+   <var>outside port</var>.</p></li>
+
+   <li><p>Associate the <var>outside port</var> with <var>worker</var>.</p></li>
+
+   <li><p>Let <var>docs</var> be the <span>list of relevant <code>Document</code> objects to
+   add</span> given <var>outside settings</var>.</p></li>
+
+   <li><p>Return <var>worker</var>, and run the following step <span>in parallel</span>.</p></li>
+
+   <li><p><span>Run a worker</span> given <var>worker</var>, <var>worker URL</var>, <var>outside
+   settings</var>, <var>outside port</var>, and <var>options</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

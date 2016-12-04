@@ -1,0 +1,236 @@
+<h3><dfn data-x="broadcast channels">Broadcasting to other browsing contexts</dfn></h3>
+
+  <p>Pages on a single <span>origin</span> opened by the same user in the same user agent but in
+  different unrelated <span data-x="browsing context">browsing contexts</span> sometimes need to
+  send notifications to each other, for example "hey, the user logged in over here, check your
+  credentials again".</p>
+
+  <p>For elaborate cases, e.g. to manage locking of shared state, to manage synchronization of
+  resources between a server and multiple local clients, to share a <code>WebSocket</code>
+  connection with a remote host, and so forth, <span data-x="SharedWorker">shared workers</span> are
+  the most appropriate solution.</p>
+
+  <p>For simple cases, though, where a shared worker would be an unreasonable overhead, authors can
+  use the simple channel-based broadcast mechanism described in this section.</p>
+
+  <pre class="idl">[<span data-x="dom-BroadcastChannel">Constructor</span>(DOMString name), Exposed=(Window,Worker)]
+interface <dfn>BroadcastChannel</dfn> : <span>EventTarget</span> {
+  readonly attribute DOMString <span data-x="dom-BroadcastChannel-name">name</span>;
+  void <span data-x="dom-BroadcastChannel-postMessage">postMessage</span>(any message);
+  void <span data-x="dom-BroadcastChannel-close">close</span>();
+  attribute <span>EventHandler</span> <span data-x="handler-BroadcastChannel-onmessage">onmessage</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>broadcastChannel</var> = new <code data-x="dom-BroadcastChannel">BroadcastChannel</code>(<var>name</var>)</dt>
+
+   <dd>
+
+    <p>Returns a new <code>BroadcastChannel</code> object via which messages for the given channel
+    name can be sent and received.</p>
+
+   </dd>
+
+   <dt><var>broadcastChannel</var> . <code subdfn data-x="dom-BroadcastChannel-name">name</code></dt>
+
+   <dd>
+
+    <p>Returns the channel name (as passed to the constructor).</p>
+
+   </dd>
+
+   <dt><var>broadcastChannel</var> . <code subdfn data-x="dom-BroadcastChannel-postMessage">postMessage</code>(<var>message</var>)</dt>
+
+   <dd>
+
+    <p>Sends the given message to other <code>BroadcastChannel</code> objects set up for this channel. Messages can be structured objects, e.g. nested objects and arrays.</p>
+
+   </dd>
+
+   <dt><var>broadcastChannel</var> . <code subdfn data-x="dom-BroadcastChannel-close">close</code>()</dt>
+
+   <dd>
+
+    <p>Closes the <code>BroadcastChannel</code> object, opening it up to garbage collection.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>A <code>BroadcastChannel</code> object has a <dfn>channel name</dfn>, a
+  <dfn><code>BroadcastChannel</code> settings object</dfn>, and a <dfn
+  data-x="concept-BroadcastChannel-closed">closed flag</dfn>.</p>
+
+  <p>The <dfn><code data-x="dom-BroadcastChannel">BroadcastChannel()</code></dfn> constructor, when
+  invoked, must create and return a <code>BroadcastChannel</code> object whose <span>channel
+  name</span> is the constructor's first argument, whose <span><code>BroadcastChannel</code>
+  settings object</span> is the <span>incumbent settings object</span>, and whose <span
+  data-x="concept-BroadcastChannel-closed">closed flag</span> is false.</p>
+
+  <p>The <dfn><code data-x="dom-BroadcastChannel-name">name</code></dfn> attribute must return the
+  <span>channel name</span>.</p>
+
+  <p>The <dfn><code
+  data-x="dom-BroadcastChannel-postMessage">postMessage(<var>message</var>)</code></dfn> method,
+  when invoked on a <code>BroadcastChannel</code> object, must run the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>source</var> be this <code>BroadcastChannel</code>.</p></li>
+
+   <li><p>Let <var>sourceSettings</var> be <var>source</var>'s <span><code>BroadcastChannel</code>
+   settings object</span>.</p></li>
+
+   <li><p>If <var>source</var>'s <span data-x="concept-BroadcastChannel-closed">closed flag</span>
+   is true, then throw an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>
+   and abort these steps.</p></li>
+
+   <li><p>Let <var>sourceChannel</var> be <var>source</var>'s <span>channel name</span>.</p></li>
+
+   <li><p>Let <var>targetRealm</var> be a user-agent defined Realm.</p></li>
+
+   <li><p>Let <var>clonedMessage</var> be <span>StructuredClone</span>(<var>message</var>,
+   <var>targetRealm</var>). Rethrow any exceptions.</p></li>
+
+   <li>
+    <p>Let <var>destinations</var> be a list of <code>BroadcastChannel</code> objects that
+    match the following criteria:</p>
+
+    <ul>
+     <li>
+      <p>Their <span><code>BroadcastChannel</code> settings object</span> specifies either:</p>
+
+      <ul>
+       <li><p>a <span data-x="concept-settings-object-global">global object</span> that is a
+       <code>Window</code> object and a <span>responsible document</span> that is <span>fully
+       active</span>, or</p></li>
+
+       <li><p>a <span data-x="concept-settings-object-global">global object</span> that is a
+       <code>WorkerGlobalScope</code> object whose <span
+       data-x="dom-WorkerGlobalScope-closing">closing</span> flag is false and whose
+       <span>worker</span> is a <span>suspendable worker</span>.</p></li>
+      </ul>
+     </li>
+
+     <li><p>Their <span><code>BroadcastChannel</code> settings object</span>'s <span
+     data-x="concept-settings-object-origin">origin</span> is <span>same origin</span> with
+     <var>sourceSettings</var>'s <span
+     data-x="concept-settings-object-origin">origin</span>.</p></li>
+
+     <li><p>Their <span>channel name</span> is a <span>case-sensitive</span> match for
+     <var>sourceChannel</var>.</p></li>
+
+     <li><p>Their <span data-x="concept-BroadcastChannel-closed">closed flag</span> is
+     false.</p></li>
+    </ul>
+   </li>
+
+   <li><p>Remove <var>source</var> from <var>destinations</var>.</p></li>
+
+   <li><p>Sort <var>destinations</var> such that all <code>BroadcastChannel</code> objects whose
+   <span data-x="BroadcastChannel settings object"><code>BroadcastChannel</code> settings
+   objects</span> specify the same <span>responsible event loop</span> are sorted in creation
+   order, oldest first. (This does not define a complete ordering. Within this constraint, user
+   agents may sort the list in any user-agent defined manner.)</p></li>
+
+   <li>
+    <p>For each <code>BroadcastChannel</code> object <var>destination</var> in
+    <var>destinations</var>, <span>queue a task</span> that runs the following steps:</p>
+
+    <ol>
+     <li><p>Let <var>targetRealm</var> be <var>destination</var>'s <span>relevant settings
+     object</span>'s <span data-x="environment settings object's realm">Realm</span>.</p></li>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-message">message</code> at <var>destination</var>, using
+     <code>MessageEvent</code>, with the <code data-x="dom-MessageEvent-data">data</code> attribute
+     initialized to <span>StructuredClone</span>(<var>clonedMessage</var>, <var>targetRealm</var>)
+     <!-- it's a clone of /clonedMessage/, not /message/, so that there's no risk of running scripts
+          again -->
+     and the <code data-x="dom-MessageEvent-origin">origin</code> attribute initialized to the <span
+     data-x="Unicode serialization of an origin">Unicode serialization</span> of
+     <var>sourceSettings</var>'s <span
+     data-x="concept-settings-object-origin">origin</span>.</p></li>
+    </ol>
+
+    <p>The <span data-x="concept-task">tasks</span> must use the <span>DOM manipulation task
+    source</span>, and, for those where the <span>event loop</span> specified by the target
+    <code>BroadcastChannel</code> object's <span><code>BroadcastChannel</code> settings
+    object</span> is a <span>browsing context</span> <span>event loop</span>, must be associated
+    with the <span>responsible document</span> specified by that target
+    <code>BroadcastChannel</code> object's <span><code>BroadcastChannel</code> settings
+    object</span>.</p>
+   </li>
+  </ol>
+
+  <p>While a <code>BroadcastChannel</code> object whose <span
+  data-x="concept-BroadcastChannel-closed">closed flag</span> is false has an event listener
+  registered for <code data-x="event-message">message</code> events, there must be a strong
+  reference from <span data-x="concept-settings-object-global">global object</span> specified by
+  the <code>BroadcastChannel</code> object's <span><code>BroadcastChannel</code> settings
+  object</span> to the <code>BroadcastChannel</code> object itself.</p>
+
+  <p>The <dfn><code data-x="dom-BroadcastChannel-close">close()</code></dfn> method must set the
+  <span data-x="concept-BroadcastChannel-closed">closed flag</span> of the
+  <code>BroadcastChannel</code> object on which it was invoked to true.</p>
+
+  <p class="note">Authors are strongly encouraged to explicitly close <code>BroadcastChannel</code>
+  objects when they are no longer needed, so that they can be garbage collected. Creating many
+  <code>BroadcastChannel</code> objects and discarding them while leaving them with an event
+  listener and without closing them can lead to an apparent memory leak, since the objects will
+  continue to live for as long as they have an event listener (or until their page or worker is
+  closed).</p>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event
+  handler IDL attributes</span>, by all objects implementing the <code>BroadcastChannel</code>
+  interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-BroadcastChannel-onmessage">onmessage</code></dfn> <td> <code data-x="event-message">message</code>
+  </table>
+
+  </div>
+
+  <div class="example">
+
+   <p>Suppose a page wants to know when the user logs out, even when the user does so from another
+   tab at the same site:</p>
+
+   <pre>var authChannel = new BroadcastChannel('auth');
+authChannel.onmessage = function (event) {
+  if (event.data == 'logout')
+    showLogout();
+}
+
+function logoutRequested() {
+  // called when the user asks us to log them out
+  doLogout();
+  showLogout();
+  authChannel.postMessage('logout');
+}
+
+function doLogout() {
+  // actually log the user out (e.g. clearing cookies)
+  // ...
+}
+
+function showLogout() {
+  // update the UI to indicate we're logged out
+  // ...
+}</pre>
+
+  </div>
+
+
+
+<!--ADD-TOPIC:Workers-->
+
+  

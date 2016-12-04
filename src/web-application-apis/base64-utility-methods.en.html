@@ -1,0 +1,225 @@
+<h3 id="atob">Base64 utility methods</h3>
+
+  <p>The <code data-x="dom-atob">atob()</code> and <code data-x="dom-btoa">btoa()</code> methods
+  allow developers to transform content to and from the base64 encoding.</p>
+
+  <p class="note">In these APIs, for mnemonic purposes, the "b" can be considered to stand for
+  "binary", and the "a" for "ASCII". In practice, though, for primarily historical reasons, both the
+  input and output of these functions are Unicode strings.</p>
+
+  <dl class="domintro">
+
+   <dt><var>result</var> = self . <code subdfn data-x="dom-btoa">btoa</code>( <var>data</var> )</dt>
+
+   <dd>
+
+    <p>Takes the input data, in the form of a Unicode string containing only characters in the range
+    U+0000 to U+00FF, each representing a binary byte with values 0x00 to 0xFF respectively, and
+    converts it to its base64 representation, which it returns.</p>
+
+    <p>Throws an <span>"<code>InvalidCharacterError</code>"</span> <code>DOMException</code>
+    exception if the input string contains any out-of-range characters.</p>
+
+   </dd>
+
+   <dt><var>result</var> = self . <code subdfn data-x="dom-atob">atob</code>( <var>data</var> )</dt>
+
+   <dd>
+
+    <p>Takes the input data, in the form of a Unicode string containing base64-encoded binary data,
+    decodes it, and returns a string consisting of characters in the range U+0000 to U+00FF, each
+    representing a binary byte with values 0x00 to 0xFF respectively, corresponding to that binary
+    data.</p>
+
+    <p>Throws an <span>"<code>InvalidCharacterError</code>"</span> <code>DOMException</code> if the
+    input string is not valid base64 data.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn data-x="dom-btoa"><code id="dom-windowbase64-btoa">btoa(<var>data</var>)</code></dfn>
+  method must throw an <span>"<code>InvalidCharacterError</code>"</span> <code>DOMException</code>
+  if <var>data</var> contains any character whose code point is greater than U+00FF. Otherwise, the
+  user agent must convert <var>data</var> to a sequence of octets whose <var>n</var>th octet is the
+  eight-bit representation of the code point of the <var>n</var>th character of <var>data</var>, and
+  then must apply the base64 algorithm to that sequence of octets, and return the result. <ref
+  spec=RFC4648><!--base64--></p>
+  <!-- Aryeh says: This seems to be what all browsers do as of January 2011 (except IE, which
+  doesn't support these functions at all). -->
+
+
+  <p>The <dfn data-x="dom-atob"><code id="dom-windowbase64-atob">atob(<var>data</var>)</code></dfn>
+  method, when invoked, must run the following steps:</p>
+
+  <ol>
+
+   <!-- Aryeh says: Copies Firefox behavior as of January 2011 (4.0b8). WebKit is somewhat laxer,
+   and Opera throws no exceptions at all. gsnedders reports Opera's behavior causes site-compat
+   problems, and I figure most sites depend on Firefox if on anything, so go with that. -->
+
+   <!-- Since updated to drop whitespace, based on the arguments here:
+      https://lists.w3.org/Archives/Public/public-whatwg-archive/2011May/0207.html
+   -->
+
+   <li><p>Let <var>position</var> be a pointer into <var>data</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p>Remove all <span data-x="space character">space characters</span> from
+   <var>data</var>.</p></li>
+
+   <li><p>If the length of <var>data</var> divides by 4 leaving no remainder, then: if
+   <var>data</var> ends with one or two U+003D EQUALS SIGN (=) characters, remove them from
+   <var>data</var>.</p></li>
+
+   <li><p>If the length of <var>data</var> divides by 4 leaving a remainder of 1, throw an
+   <span>"<code>InvalidCharacterError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p>
+
+   <li>
+
+    <p>If <var>data</var> contains a character that is not in the following list of
+    characters and character ranges, throw an <span>"<code>InvalidCharacterError</code>"</span>
+    <code>DOMException</code> and abort these steps:</p>
+
+    <ul class="brief">
+     <li>U+002B PLUS SIGN (+)
+     <li>U+002F SOLIDUS (/)
+     <li><span>Alphanumeric ASCII characters</span>
+    </ul>
+
+   </li>
+
+   <li><p>Let <var>output</var> be a string, initially empty.</p></li>
+
+   <li><p>Let <var>buffer</var> be a buffer that can have bits appended to it, initially
+   empty.</p></li>
+
+   <li>
+
+    <p>While <var>position</var> does not point past the end of <var>data</var>, run these
+    substeps:</p>
+
+    <ol>
+
+     <li>
+
+      <p>Find the character pointed to by <var>position</var> in the first column of the
+      following table. Let <var>n</var> be the number given in the second cell of the same
+      row.</p>
+
+      <div id="base64-table">
+       <table>
+        <thead>
+         <tr>
+          <th>Character
+          <th>Number
+        <tbody>
+         <tr><td>A<td>0
+         <tr><td>B<td>1
+         <tr><td>C<td>2
+         <tr><td>D<td>3
+         <tr><td>E<td>4
+         <tr><td>F<td>5
+         <tr><td>G<td>6
+         <tr><td>H<td>7
+         <tr><td>I<td>8
+         <tr><td>J<td>9
+         <tr><td>K<td>10
+         <tr><td>L<td>11
+         <tr><td>M<td>12
+         <tr><td>N<td>13
+         <tr><td>O<td>14
+         <tr><td>P<td>15
+         <tr><td>Q<td>16
+         <tr><td>R<td>17
+         <tr><td>S<td>18
+         <tr><td>T<td>19
+         <tr><td>U<td>20
+         <tr><td>V<td>21
+         <tr><td>W<td>22
+         <tr><td>X<td>23
+         <tr><td>Y<td>24
+         <tr><td>Z<td>25
+         <tr><td>a<td>26
+         <tr><td>b<td>27
+         <tr><td>c<td>28
+         <tr><td>d<td>29
+         <tr><td>e<td>30
+         <tr><td>f<td>31
+         <tr><td>g<td>32
+         <tr><td>h<td>33
+         <tr><td>i<td>34
+         <tr><td>j<td>35
+         <tr><td>k<td>36
+         <tr><td>l<td>37
+         <tr><td>m<td>38
+         <tr><td>n<td>39
+         <tr><td>o<td>40
+         <tr><td>p<td>41
+         <tr><td>q<td>42
+         <tr><td>r<td>43
+         <tr><td>s<td>44
+         <tr><td>t<td>45
+         <tr><td>u<td>46
+         <tr><td>v<td>47
+         <tr><td>w<td>48
+         <tr><td>x<td>49
+         <tr><td>y<td>50
+         <tr><td>z<td>51
+         <tr><td>0<td>52
+         <tr><td>1<td>53
+         <tr><td>2<td>54
+         <tr><td>3<td>55
+         <tr><td>4<td>56
+         <tr><td>5<td>57
+         <tr><td>6<td>58
+         <tr><td>7<td>59
+         <tr><td>8<td>60
+         <tr><td>9<td>61
+         <tr><td>+<td>62
+         <tr><td>/<td>63
+       </table>
+      </div>
+
+     </li>
+
+     <li><p>Append to <var>buffer</var> the six bits corresponding to <var>number</var>, most significant bit first.</p></li>
+
+     <li><p>If <var>buffer</var> has accumulated 24 bits, interpret them as three 8-bit
+     big-endian numbers. Append the three characters with code points equal to those numbers to <var>output</var>, in the same order, and then empty <var>buffer</var>.</p></li>
+
+     <li><p>Advance <var>position</var> by one character.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>If <var>buffer</var> is not empty, it contains either 12 or 18 bits. If it contains
+    12 bits, discard the last four and interpret the remaining eight as an 8-bit big-endian number.
+    If it contains 18 bits, discard the last two and interpret the remaining 16 as two 8-bit
+    big-endian numbers. Append the one or two characters with code points equal to those one or two
+    numbers to <var>output</var>, in the same order.</p>
+
+    <p class="note">The discarded bits mean that, for instance, <code data-x="">atob("YQ")</code> and
+    <code data-x="">atob("YR")</code> both return "<code data-x="">a</code>".</p>
+
+   </li>
+
+   <li><p>Return <var>output</var>.</p></li>
+
+  </ol>
+
+  <!-- Note: this function is defined explicitly here because RFC4648 does not specify how to handle
+  erroneous input, and no preexisting browser implementation simply throws an exception on all
+  erroneous input. -->
+
+  </div>
+
+
+<!--TOPIC:HTML Syntax and Parsing-->
+  

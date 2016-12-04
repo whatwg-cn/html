@@ -1,0 +1,43 @@
+<h3>Unstyled XML documents</h3>
+
+  <!-- https://hixie.ch/tests/evil/xml/ -->
+
+  <p>HTML user agents may, in certain circumstances, find themselves rendering non-HTML documents
+  that use vocabularies for which they lack any built-in knowledge. This section provides for a way
+  for user agents to handle such documents in a somewhat useful manner.</p>
+
+  <p>While a <code>Document</code> is an <span>unstyled document</span>, the user agent is expected
+  to render <span>an unstyled document view</span>.</p>
+
+  <p>A <code>Document</code> is an <dfn>unstyled document</dfn> while it matches the following
+  conditions:</p>
+
+  <ul>
+   <li>The <code>Document</code> has no author style sheets (whether referenced by HTTP headers, processing instructions, elements like <code>link</code>, inline elements like <code>style</code>, or any other mechanism).
+   <li>None of the elements in the <code>Document</code> have any <span>presentational hints</span>.
+   <li>None of the elements in the <code>Document</code> have any <span data-x="css-styling-attribute">style attributes</span>.
+   <li>None of the elements in the <code>Document</code> are in any of the following namespaces: <span>HTML namespace</span>, <span>SVG namespace</span>, <span>MathML namespace</span>
+   <li>The <code>Document</code> has no <i>focusable area</i> (e.g. from XLink) other than the <span>viewport</span>.
+   <li>The <code>Document</code> has no <span data-x="hyperlink">hyperlinks</span> (e.g. from XLink).
+   <li>There exists no <span data-x="concept-script">script</span> whose <span>settings object</span> specifies this <code>Document</code> as the <span>responsible document</span>.
+   <li>None of the elements in the <code>Document</code> have any registered event listeners.
+  </ul>
+
+  <p><dfn>An unstyled document view</dfn> is one where the DOM is not rendered according to CSS
+  (which would, since there are no applicable styles in this context, just result in a wall of
+  text), but is instead rendered in a manner that is useful for a developer. This could consist of
+  just showing the <code>Document</code> object's source, maybe with syntax highlighting, or it
+  could consist of displaying just the DOM tree, or simply a message saying that the page is not a
+  styled document.</p>
+
+  <p class="note">If a <code>Document</code> stops being an <span>unstyled document</span>, then the
+  conditions above stop applying, and thus a user agent following these requirements will switch to
+  using the regular CSS rendering.</p>
+
+  </div>
+
+
+
+<!--TOPIC:HTML-->
+
+  

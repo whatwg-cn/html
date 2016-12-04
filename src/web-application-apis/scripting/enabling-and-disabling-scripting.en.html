@@ -1,0 +1,43 @@
+<h4>Enabling and disabling scripting</h4>
+
+  <p><dfn data-x="concept-bc-script">Scripting is enabled</dfn> in a <em><span>browsing
+  context</span></em> when all of the following conditions are true:</p>
+
+  <ul>
+
+   <li>The user agent supports scripting.</li>
+
+   <li>The user has not disabled scripting for this <span>browsing context</span> at this time.
+   (User agents may provide users with the option to disable scripting globally, or in a
+   finer-grained manner, e.g. on a per-origin basis.)
+   <!--INSERT FINGERPRINT-->
+   </li>
+
+   <li id="sandboxScriptBlocked">The <span>browsing context</span>'s <span>active document</span>'s
+   <span>active sandboxing flag set</span> does not have its <span>sandboxed scripts browsing
+   context flag</span> set.</li>
+
+  </ul>
+
+  <p><dfn data-x="concept-bc-noscript">Scripting is disabled</dfn> in a <span>browsing context</span>
+  when any of the above conditions are false (i.e. when scripting is not <span
+  data-x="concept-bc-script">enabled</span>).</p>
+
+  <hr>
+
+  <p><dfn data-x="concept-n-script">Scripting is enabled</dfn> for a <em>node</em> if the node's
+  <span>node document</span> has a <span data-x="concept-document-bc">browsing context</span>, and
+  <span data-x="concept-bc-script">scripting is enabled</span> in that <span>browsing
+  context</span>.</p>
+
+  <p><dfn data-x="concept-n-noscript">Scripting is disabled</dfn> for a node if there is no such
+  <span>browsing context</span>, or if <span data-x="concept-bc-noscript">scripting is
+  disabled</span> in that <span>browsing context</span>.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  <!-- SCRIPT EXEC (marks areas related to creation of scripts) -->
+  

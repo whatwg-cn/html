@@ -1,0 +1,89 @@
+<h4>The <dfn><code>small</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>small</code> element <span>represents</span> side comments such as small print.</p>
+
+  <p class="note">Small print typically features disclaimers, caveats, legal restrictions, or
+  copyrights. Small print is also sometimes used for attribution, or for satisfying licensing
+  requirements.</p>
+
+  <p class="note">The <code>small</code> element does not "de-emphasize" or lower the importance of
+  text emphasized by the <code>em</code> element or marked as important with the <code>strong</code>
+  element. To mark text as not emphasized or important, simply do not mark it up with the
+  <code>em</code> or <code>strong</code> elements respectively.</p>
+
+  <p>The <code>small</code> element should not be used for extended spans of text, such as multiple
+  paragraphs, lists, or sections of text. It is only intended for short runs of text. The text of a
+  page listing terms of use, for instance, would not be a suitable candidate for the
+  <code>small</code> element: in such a case, the text is not a side comment, it is the main content
+  of the page.</p>
+
+  <p>The <code>small</code> element must not be used for subheadings; for that purpose, use the
+  <code>hgroup</code> element.</p>
+
+  <div class="example">
+
+   <p>In this example, the <code>small</code> element is used to indicate that value-added tax is
+   not included in a price of a hotel room:</p>
+
+   <pre class="example">&lt;dl>
+ &lt;dt>Single room
+ &lt;dd>199 &euro; &lt;small>breakfast included, VAT not included&lt;/small>
+ &lt;dt>Double room
+ &lt;dd>239 &euro; &lt;small>breakfast included, VAT not included&lt;/small>
+&lt;/dl></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this second example, the <code>small</code> element is used for a side comment in an
+   article.</p>
+
+   <pre>&lt;p>Example Corp today announced record profits for the
+second quarter &lt;small>(Full Disclosure: Foo News is a subsidiary of
+Example Corp)&lt;/small>, leading to speculation about a third quarter
+merger with Demo Group.&lt;/p></pre>
+
+   <p>This is distinct from a sidebar, which might be multiple paragraphs long and is removed from
+   the main flow of text. In the following example, we see a sidebar from the same article. This
+   sidebar also has small print, indicating the source of the information in the sidebar.</p>
+
+   <pre>&lt;aside>
+ &lt;h1>Example Corp&lt;/h1>
+ &lt;p>This company mostly creates small software and Web
+ sites.&lt;/p>
+ &lt;p>The Example Corp company mission is "To provide entertainment
+ and news on a sample basis".&lt;/p>
+ &lt;p>&lt;small>Information obtained from &lt;a
+ href="https://example.com/about.html">example.com&lt;/a> home
+ page.&lt;/small>&lt;/p>
+&lt;/aside></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this last example, the <code>small</code> element is marked as being <em>important</em>
+   small print.</p>
+
+   <pre>&lt;p>&lt;strong>&lt;small>Continued use of this service will result in a kiss.&lt;/small>&lt;/strong>&lt;/p></pre>
+
+  </div>
+
+
+  

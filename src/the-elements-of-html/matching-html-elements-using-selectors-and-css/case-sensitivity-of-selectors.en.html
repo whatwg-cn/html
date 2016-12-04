@@ -1,0 +1,93 @@
+<h4>Case-sensitivity of selectors</h4>
+
+  <p>The Selectors specification leaves the case-sensitivity of element names, attribute names, and
+  attribute values to be defined by the host language. <ref spec=SELECTORS></p>
+
+  <p class="note"><cite>Selectors</cite> defines that ID and class selectors, when matched against
+  elements in documents that are in <span>quirks mode</span>, will be matched in an <span>ASCII
+  case-insensitive</span> manner.</p>
+
+  <p>When comparing a CSS element <span>type selector</span> to the names of <span>HTML elements</span> in
+  <span>HTML documents</span>, the CSS element <span>type selector</span> must first be <span>converted to ASCII
+  lowercase</span>. The same selector when compared to other elements must be compared according to
+  its original case. In both cases, the comparison is <span>case-sensitive</span>.</p>
+  <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2623 -->
+
+  <p>When comparing the name part of a CSS <span>attribute selector</span> to the names of
+  namespace-less attributes on <span>HTML elements</span> in <span>HTML documents</span>, the name
+  part of the CSS <span>attribute selector</span> must first be <span>converted to ASCII
+  lowercase</span>. The same selector when compared to other attributes must be compared according
+  to its original case. In both cases, the comparison is <span>case-sensitive</span>.</p>
+  <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2624 -->
+
+  <p><span data-x="attribute selector">Attribute selectors</span> on an <span
+  data-x="HTML elements">HTML element</span> in an <span data-x="HTML documents">HTML
+  document</span> must treat the <em>values</em> of attributes with the following names as
+  <span>ASCII case-insensitive</span>, with one exception as noted
+  <a href="#attribute-selector-case-sensitive">in the rendering section</a>:</p>
+
+  <!-- based on Mozilla's list, which was itself based on HTML4 -->
+  <!-- WebKit's was identical at the time of writing except as noted below -->
+  <ul class="brief">
+   <li><code data-x="">accept</code>
+   <li><code data-x="">accept-charset</code>
+   <li><code data-x="">align</code>
+   <li><code data-x="">alink</code>
+   <li><code data-x="">axis</code>
+   <li><code data-x="">bgcolor</code>
+   <li><code data-x="">charset</code>
+   <li><code data-x="">checked</code>
+   <li><code data-x="">clear</code>
+   <li><code data-x="">codetype</code>
+   <li><code data-x="">color</code>
+   <li><code data-x="">compact</code>
+   <li><code data-x="">declare</code>
+   <li><code data-x="">defer</code>
+   <li><code data-x="">dir</code>
+   <li><code data-x="">direction</code> <!-- not in WebKit -->
+   <li><code data-x="">disabled</code>
+   <li><code data-x="">enctype</code>
+   <li><code data-x="">face</code>
+   <li><code data-x="">frame</code>
+   <li><code data-x="">hreflang</code>
+   <li><code data-x="">http-equiv</code>
+   <li><code data-x="">lang</code>
+   <li><code data-x="">language</code>
+   <li><code data-x="">link</code>
+   <li><code data-x="">media</code>
+   <li><code data-x="">method</code>
+   <li><code data-x="">multiple</code>
+   <li><code data-x="">nohref</code>
+   <li><code data-x="">noresize</code>
+   <li><code data-x="">noshade</code>
+   <li><code data-x="">nowrap</code>
+   <li><code data-x="">readonly</code>
+   <li><code data-x="">rel</code>
+   <li><code data-x="">rev</code>
+   <li><code data-x="">rules</code>
+   <li><code data-x="">scope</code>
+   <li><code data-x="">scrolling</code>
+   <li><code data-x="">selected</code>
+   <li><code data-x="">shape</code>
+   <li><code data-x="">target</code>
+   <li><code data-x="">text</code>
+   <li><code data-x="">type</code> (except as specified in the rendering section)
+   <li><code data-x="">valign</code>
+   <li><code data-x="">valuetype</code>
+   <li><code data-x="">vlink</code>
+  </ul>
+
+  <p>All other attribute values and everything else must be treated as entirely
+  <span>case-sensitive</span> for the purposes of selector matching. This includes:</p>
+
+  <ul class=brief>
+   <li> IDs and classes in <span>no-quirks mode</span> and <span>limited-quirks mode</span>
+   <li> the names of elements not in the <span>HTML namespace</span>
+   <li> the names of <span>HTML elements</span> in <span>XML documents</span>
+   <li> the names of attributes of elements not in the <span>HTML namespace</span>
+   <li> the names of attributes of <span>HTML elements</span> in <span>XML documents</span>
+   <li> the names of attributes that themselves have namespaces
+  </ul>
+
+
+  

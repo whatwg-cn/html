@@ -1,0 +1,79 @@
+<h4>Licensing works</h4>
+
+  <p>An item with the <span data-x="item types">item type</span> <dfn><code data-x="md-work">http://n.whatwg.org/work</code></dfn> represents a work (e.g. an article, an
+  image, a video, a song, etc). This type is primarily intended to allow authors to include
+  licensing information for works.</p>
+
+  <p>The following are the type's <span data-x="defined property name">defined property
+  names</span>.</p>
+
+  <dl>
+
+
+   <dt><dfn><code data-x="md-work-work">work</code></dfn></dt>
+
+   <dd>
+
+    <p>Identifies the work being described.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Exactly one property with the name <code data-x="md-work-work">work</code> must be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-work">http://n.whatwg.org/work</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-work-title">title</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the name of the work.</p>
+
+    <p>A single property with the name <code data-x="md-work-title">title</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-work">http://n.whatwg.org/work</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-work-author">author</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the name or contact information of one of the authors or creators of the work.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be either an <span
+    data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>, or text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-work-author">author</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-work">http://n.whatwg.org/work</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-work-license">license</code></dfn></dt>
+
+   <dd>
+
+    <p>Identifies one of the licenses under which the work is available.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-work-license">license</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-work">http://n.whatwg.org/work</code>.</p>
+
+   </dd>
+
+  </dl>
+
+
+
+
+  

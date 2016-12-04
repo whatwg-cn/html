@@ -1,0 +1,801 @@
+<h6 id="autofill-processing-model"><span id="processing-model-3"></span>Processing model</h6>
+
+  <p>Each <code>input</code> element to which the <code data-x="attr-fe-autocomplete">autocomplete</code> attribute <span data-x="concept-input-apply">applies</span>, each <code>select</code> element, and each <code>textarea</code> element, has an
+  <dfn>autofill hint set</dfn>, an <dfn>autofill scope</dfn>, an <dfn>autofill field name</dfn>, and
+  an <dfn>IDL-exposed autofill value</dfn>.</p>
+
+  <p>The <span>autofill field name</span> specifies the specific kind of data expected in the field,
+  e.g. "<code data-x="attr-fe-autocomplete-street-address">street-address</code>" or "<code
+  data-x="attr-fe-autocomplete-cc-exp">cc-exp</code>".</p>
+
+  <p>The <span>autofill hint set</span> identifies what address or contact information type the user
+  agent is to look at, e.g. "<code data-x="attr-fe-autocomplete-shipping">shipping</code> <code
+  data-x="attr-fe-autocomplete-fax">fax</code>" or "<code
+  data-x="attr-fe-autocomplete-billing">billing</code>".</p>
+
+  <p>The <span>autofill scope</span> identifies the group of fields whose information concerns the
+  same subject, and consists of the <span>autofill hint set</span> with, if
+  applicable, the "<code data-x="">section-*</code>" prefix, e.g. "<code data-x="">billing</code>",
+  "<code data-x="">section-parent shipping</code>", or "<code data-x="">section-child shipping
+  home</code>".</p>
+
+  <p>These values are defined as the result of running the following algorithm:</p>
+
+  <ol>
+
+   <li><p>If the element has no <code data-x="attr-fe-autocomplete">autocomplete</code> attribute,
+   then jump to the step labeled <i>default</i>.</p></li>
+
+   <li><p>Let <var>tokens</var> be the result of <span data-x="split a string on
+   spaces">splitting the attribute's value on spaces</span>.</p></li>
+
+   <li><p>If <var>tokens</var> is empty, then jump to the step labeled
+   <i>default</i>.</p></li>
+
+   <li><p>Let <var>index</var> be the index of the last token in <var>tokens</var>.</p></li>
+
+   <li>
+
+    <p>If the <var>index</var>th token in <var>tokens</var> is not an <span>ASCII
+    case-insensitive</span> match for one of the tokens given in the first column of the following
+    table, or if the number of tokens in <var>tokens</var> is greater than the maximum
+    number given in the cell in the second column of that token's row, then jump to the step labeled
+    <i>default</i>. Otherwise, let <var>field</var> be the string given in the cell of the
+    first column of the matching row, and let <var>category</var> be the value of the cell
+    in the third column of that same row.</p>
+
+    <table>
+     <thead>
+      <tr>
+       <th>Token
+       <th>Maximum number of tokens
+       <th>Category
+     <tbody>
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-off">off</code>"
+       <td>1
+       <td>Off
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-on">on</code>"
+       <td>1
+       <td>Automatic
+     <tbody>
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-name">name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-honorific-prefix">honorific-prefix</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-given-name">given-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-additional-name">additional-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-family-name">family-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-honorific-suffix">honorific-suffix</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-nickname">nickname</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-organization-title">organization-title</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-username">username</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-new-password">new-password</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-current-password">current-password</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-organization">organization</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-street-address">street-address</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-address-line1">address-line1</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-address-line2">address-line2</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-address-line3">address-line3</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-address-level4">address-level4</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-address-level3">address-level3</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-address-level2">address-level2</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-address-level1">address-level1</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-country">country</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-country-name">country-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-postal-code">postal-code</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-name">cc-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-given-name">cc-given-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-additional-name">cc-additional-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-family-name">cc-family-name</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-number">cc-number</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-exp">cc-exp</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-exp-month">cc-exp-month</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-exp-year">cc-exp-year</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-csc">cc-csc</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-cc-type">cc-type</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-transaction-currency">transaction-currency</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-transaction-amount">transaction-amount</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-language">language</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-bday">bday</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-bday-day">bday-day</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-bday-month">bday-month</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-bday-year">bday-year</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-sex">sex</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-url">url</code>"
+       <td>3
+       <td>Normal
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-photo">photo</code>"
+       <td>3
+       <td>Normal
+     <tbody>
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel">tel</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel-country-code">tel-country-code</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel-national">tel-national</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel-area-code">tel-area-code</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel-local">tel-local</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel-local-prefix">tel-local-prefix</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel-local-suffix">tel-local-suffix</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-tel-extension">tel-extension</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-email">email</code>"
+       <td>4
+       <td>Contact
+      <tr>
+       <td>"<code data-x="attr-fe-autocomplete-impp">impp</code>"
+       <td>4
+       <td>Contact
+    </table>
+
+   </li>
+
+   <li><p>If <var>category</var> is Off or Automatic but the element's <code
+   data-x="attr-fe-autocomplete">autocomplete</code> attribute is wearing the <span>autofill anchor
+   mantle</span>, then jump to the step labeled <i>default</i>.</p></li>
+
+   <li><p>If <var>category</var> is Off, let the element's <span>autofill field name</span>
+   be the string "<code data-x="">off</code>", let its <span>autofill hint set</span> be empty, and
+   let its <span>IDL-exposed autofill value</span> be the string "<code data-x="">off</code>". Then,
+   abort these steps.</p>
+
+   <li><p>If <var>category</var> is Automatic, let the element's <span>autofill field
+   name</span> be the string "<code data-x="">on</code>", let its <span>autofill hint set</span> be
+   empty, and let its <span>IDL-exposed autofill value</span> be the string "<code
+   data-x="">on</code>". Then, abort these steps.</p>
+
+   <li><p>Let <var>scope tokens</var> be an empty list.</p></li>
+
+   <li><p>Let <var>hint tokens</var> be an empty set.</p></li>
+
+   <li><p>Let <var>IDL value</var> have the same value as <var>field</var>.</p></li>
+
+   <li><p>If the <var>index</var>th token in <var>tokens</var> is the first entry,
+   then skip to the step labeled <i>done</i>.</p></li>
+
+   <li><p>Decrement <var>index</var> by one.</p></li>
+
+   <li>
+
+    <p>If <var>category</var> is Contact and the <var>index</var>th token in <var>tokens</var> is an <span>ASCII case-insensitive</span> match for one of the strings in
+    the following list, then run the substeps that follow:</p>
+
+    <ul class="brief">
+     <li>"<code data-x="attr-fe-autocomplete-home">home</code>"
+     <li>"<code data-x="attr-fe-autocomplete-work">work</code>"
+     <li>"<code data-x="attr-fe-autocomplete-mobile">mobile</code>"
+     <li>"<code data-x="attr-fe-autocomplete-fax">fax</code>"
+     <li>"<code data-x="attr-fe-autocomplete-pager">pager</code>"
+    </ul>
+
+    <p>The substeps are:</p>
+
+    <ol>
+
+     <li><p>Let <var>contact</var> be the matching string from the list above.</p></li>
+
+     <li><p>Insert <var>contact</var> at the start of <var>scope
+     tokens</var>.</p></li>
+
+     <li><p>Add <var>contact</var> to <var>hint tokens</var>.</p></li>
+
+     <li><p>Let <var>IDL value</var> be the concatenation of <var>contact</var>, a
+     U+0020 SPACE character, and the previous value of <var>IDL value</var> (which at this
+     point will always be <var>field</var>).</p></li>
+
+     <li><p>If the <var>index</var>th entry in <var>tokens</var> is the first
+     entry, then skip to the step labeled <i>done</i>.</p></li>
+
+     <li><p>Decrement <var>index</var> by one.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>If the <var>index</var>th token in <var>tokens</var> is an <span>ASCII
+    case-insensitive</span> match for one of the strings in the following list, then run the
+    substeps that follow:</p>
+
+    <ul class="brief">
+     <li>"<code data-x="attr-fe-autocomplete-shipping">shipping</code>"
+     <li>"<code data-x="attr-fe-autocomplete-billing">billing</code>"
+    </ul>
+
+    <p>The substeps are:</p>
+
+    <ol>
+
+     <li><p>Let <var>mode</var> be the matching string from the list above.</p></li>
+
+     <li><p>Insert <var>mode</var> at the start of <var>scope
+     tokens</var>.</p></li>
+
+     <li><p>Add <var>mode</var> to <var>hint tokens</var>.</p></li>
+
+     <li><p>Let <var>IDL value</var> be the concatenation of <var>mode</var>, a
+     U+0020 SPACE character, and the previous value of <var>IDL value</var> (which at this
+     point will either be <var>field</var> or the concatenation of <var>contact</var>, a space, and <var>field</var>).</p></li>
+
+     <li><p>If the <var>index</var>th entry in <var>tokens</var> is the first
+     entry, then skip to the step labeled <i>done</i>.</p></li>
+
+     <li><p>Decrement <var>index</var> by one.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the <var>index</var>th entry in <var>tokens</var> is not the first entry, then jump to
+   the step labeled <i>default</i>.</p></li>
+
+   <li><p>If the first eight characters of the <var>index</var>th token in <var>tokens</var> are not
+   an <span>ASCII case-insensitive</span> match for the string "<code
+   data-x="attr-fe-autocomplete-section">section-</code>", then jump to the step labeled
+   <i>default</i>.</p></li>
+
+   <li><p>Let <var>section</var> be the <var>index</var>th token in <var>tokens</var>,
+   <span>converted to ASCII lowercase</span>.</p></li>
+
+   <li><p>Insert <var>section</var> at the start of <var>scope tokens</var>.</p></li>
+
+   <li><p>Let <var>IDL value</var> be the concatenation of <var>section</var>, a U+0020 SPACE
+   character, and the previous value of <var>IDL value</var>.</p></li>
+
+   <li><p><i>Done</i>: Let the element's <span>autofill hint set</span> be <var>hint
+   tokens</var>.</p>
+
+   <li><p>Let the element's <span>autofill scope</span> be <var>scope tokens</var>.</p>
+
+   <li><p>Let the element's <span>autofill field name</span> be <var>field</var>.</p>
+
+   <li><p>Let the element's <span>IDL-exposed autofill value</span> be <var>IDL value</var>.</p>
+
+   <li><p>Abort these steps.</p></li>
+
+   <li><p><i>Default</i>: Let the element's <span>IDL-exposed autofill value</span> be the empty
+   string, and its <span>autofill hint set</span> and <span>autofill scope</span> be empty.</p></li>
+
+   <li><p>If the element's <code data-x="attr-fe-autocomplete">autocomplete</code> attribute is
+   wearing the <span>autofill anchor mantle</span>, then let the element's <span>autofill field
+   name</span> be the empty string and abort these steps.</p></li>
+
+   <li><p>Let <var>form</var> be the element's <span>form owner</span>, if any, or null
+   otherwise.</p></li>
+
+   <li>
+
+    <p>If <var>form</var> is not null and <var>form</var>'s <code
+    data-x="attr-form-autocomplete">autocomplete</code> attribute is in the <span
+    data-x="attr-form-autocomplete-off-state">off</span> state, then let the element's
+    <span>autofill field name</span> be "<code data-x="attr-fe-autocomplete-off">off</code>".</p>
+
+    <p>Otherwise, let the element's <span>autofill field name</span> be "<code
+    data-x="attr-fe-autocomplete-on">on</code>".</p>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>For the purposes of autofill, a <dfn>control's data</dfn> depends on the kind of control:</p>
+
+  <dl>
+
+   <dt>An <code>input</code> element with its <code data-x="attr-input-type">type</code> attribute
+   in the <span data-x="attr-input-type-email">E-mail</span> state and with the <code
+   data-x="attr-input-multiple">multiple</code> attribute specified</dt>
+
+   <dd>The element's <span data-x="concept-fe-values">value<em>s</em></span>.</dd>
+
+<!--
+   <dt>An <code>input</code> element with its <code data-x="attr-input-type">type</code> attribute
+   in the <span data-x="attr-input-type-range">Range</span> state and with the <code
+   data-x="attr-input-multiple">multiple</code> attribute specified</dt>
+-->
+   <dt>Any other <code>input</code> element</dt>
+   <dt>A <code>textarea</code> element</dt>
+
+   <dd>The element's <span data-x="concept-fe-value">value</span>.</dd>
+
+   <dt>A <code>select</code> element with its <code data-x="attr-select-multiple">multiple</code>
+   attribute specified</dt>
+
+   <dd>The <code>option</code> elements in the <code>select</code> element's <span
+   data-x="concept-select-option-list">list of options</span> that have their <span
+   data-x="concept-option-selectedness">selectedness</span> set to true.</dd>
+
+   <dt>Any other <code>select</code> element</dt>
+
+   <dd>The <code>option</code> element in the <code>select</code> element's <span
+   data-x="concept-select-option-list">list of options</span> that has its <span
+   data-x="concept-option-selectedness">selectedness</span> set to true.</dd>
+
+  </dl>
+
+  <hr>
+
+  <p>How to process the <span>autofill hint set</span>, <span>autofill scope</span>, and
+  <span>autofill field name</span> depends on the mantle that the <code
+  data-x="attr-fe-autocomplete">autocomplete</code> attribute is wearing.</p>
+
+  <dl class="switch">
+
+   <dt>When wearing the <span>autofill expectation mantle</span>...
+
+   <dd>
+
+    <p>When an element's <span>autofill field name</span> is "<code
+    data-x="attr-fe-autocomplete-off">off</code>", the user agent should not remember the <span>control's
+    data</span>, and should not offer past values to the user.</p>
+
+    <p class="note">In addition, when an element's <span>autofill field name</span> is "<code
+    data-x="attr-fe-autocomplete-off">off</code>", <a href="#history-autocomplete">values are reset</a>
+    when <span data-x="traverse the history">traversing the history</span>.</p>
+
+    <div class="example">
+
+     <p>Banks frequently do not want UAs to prefill login information:</p>
+
+     <pre>&lt;p>&lt;label>Account: &lt;input type="text" name="ac" autocomplete="off">&lt;/label>&lt;/p>
+&lt;p>&lt;label>PIN: &lt;input type="password" name="pin" autocomplete="off">&lt;/label>&lt;/p></pre>
+
+    </div>
+
+    <p>When an element's <span>autofill field name</span> is <em>not</em> "<code
+    data-x="attr-fe-autocomplete-off">off</code>", the user agent may store the <span>control's
+    data</span>, and may offer previously stored values to the user.</p>
+
+    <div class="example">
+
+     <p>For example, suppose a user visits a page with this control:</p>
+
+     <pre>&lt;select name="country">
+ &lt;option>Afghanistan
+ &lt;option>Albania
+ &lt;option>Algeria
+ &lt;option>Andorra
+ &lt;option>Angola
+ &lt;option>Antigua and Barbuda
+ &lt;option>Argentina
+ &lt;option>Armenia
+ &lt;!-- <em>...</em> -->
+ &lt;option>Yemen
+ &lt;option>Zambia
+ &lt;option>Zimbabwe
+&lt;/select></pre>
+
+     <p>This might render as follows:</p>
+
+     <p><img src="/images/select-country-1.png" alt="A drop-down control with a long alphabetical list of countries."></p>
+
+     <p>Suppose that on the first visit to this page, the user selects "Zambia". On the second visit,
+     the user agent could duplicate the entry for Zambia at the top of the list, so that the interface
+     instead looks like this:</p>
+
+     <p><img src="/images/select-country-2.png" alt="The same drop-down control with the alphabetical list of countries, but with Zambia as an entry at the top."></p>
+
+    </div>
+
+    <p>When the <span>autofill field name</span> is "<code
+    data-x="attr-fe-autocomplete-on">on</code>", the user agent should attempt to use heuristics to
+    determine the most appropriate values to offer the user, e.g. based on the element's <code
+    data-x="attr-fe-name">name</code> value, the position of the element in its <span>tree</span>,
+    what other fields exist in the form, and so forth.</p>
+
+    <p>When the <span>autofill field name</span> is one of the names of the <span data-x="autofill
+    field">autofill fields</span> described above, the user agent should provide suggestions that
+    match the meaning of the field name as given in the table earlier in this section. The
+    <span>autofill hint set</span> should be used to select amongst multiple possible suggestions.</p>
+
+    <p class="example">For example, if a user once entered one address into fields that used the
+    "<code data-x="attr-fe-autocomplete-shipping">shipping</code>" keyword, and another address into
+    fields that used the "<code data-x="attr-fe-autocomplete-billing">billing</code>" keyword, then in
+    subsequent forms only the first address would be suggested for form controls whose <span>autofill
+    hint set</span> contains the keyword "<code
+    data-x="attr-fe-autocomplete-shipping">shipping</code>". Both addresses might be suggested,
+    however, for address-related form controls whose <span>autofill hint set</span> does not contain
+    either keyword.</p>
+
+   </dd>
+
+   <dt>When wearing the <span>autofill anchor mantle</span>...
+
+   <dd>
+
+    <p>When the <span>autofill field name</span> is not the empty string, then the user agent must
+    act as if the user had specified the <span>control's data</span> for the given <span>autofill
+    hint set</span>, <span>autofill scope</span>, and <span>autofill field name</span>
+    combination.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>When the user agent <dfn data-x="concept-fe-autofill">autofills form controls</dfn>, elements
+  with the same <span>form owner</span> and the same <span>autofill scope</span> must use data
+  relating to the same person, address, payment instrument, and contact details. <span
+  id="autofill-country" data-x="">When a user agent autofills "<code
+  data-x="attr-fe-autocomplete-country">country</code>" and "<code
+  data-x="attr-fe-autocomplete-country-name">country-name</code>" fields with the same <span>form
+  owner</span> and <span>autofill scope</span>, and the user agent has a value for the <code
+  data-x="attr-fe-autocomplete-country">country</code>" field(s), then the "<code
+  data-x="attr-fe-autocomplete-country-name">country-name</code>" field(s) must be filled using a
+  human-readable name for the same country.</span> When a user agent fills in multiple fields at
+  once, all fields with the same <span>autofill field name</span>, <span>form owner</span> and
+  <span>autofill scope</span> must be filled with the same value.</p>
+
+  <p class="example">Suppose a user agent knows of two phone numbers, +1 555 123 1234 and +1 555 666
+  7777. It would not be conforming for the user agent to fill a field with <code
+  data-x="">autocomplete="shipping tel-local-prefix"</code> with the value "123" and another field
+  in the same form with <code data-x="">autocomplete="shipping tel-local-suffix"</code> with the
+  value "7777". The only valid prefilled values given the aforementioned information would be "123"
+  and "1234", or "666" and "7777", respectively.</p>
+
+  <p class="example">Similarly, if a form for some reason contained both a "<code
+  data-x="attr-fe-autocomplete-cc-exp">cc-exp</code>" field and a "<code
+  data-x="attr-fe-autocomplete-cc-exp-month">cc-exp-month</code>" field, and the user agent
+  prefilled the form, then the month component of the former would have to match the latter.</p>
+
+  <div class="example">
+
+   <p>This requirement interacts with the <span>autofill anchor mantle</span> also. Consider the
+   following markup snippet:</p>
+
+   <pre>&lt;form>
+ &lt;input type=hidden autocomplete="nickname" value="TreePlate">
+ &lt;input type=text autocomplete="nickname">
+&lt;/form></pre>
+
+   <p>The only value that a conforming user agent could suggest in the text control is "TreePlate",
+   the value given by the hidden <code>input</code> element.</p>
+
+  </div>
+
+  <p>The "<code data-x="">section-*</code>" tokens in the <span>autofill scope</span> are opaque;
+  user agents must not attempt to derive meaning from the precise values of these tokens.</p>
+
+  <p class="example">For example, it would not be conforming if the user agent decided that it
+  should offer the address it knows to be the user's daughter's address for "<code
+  data-x="">section-child</code>" and the addresses it knows to be the user's spouses' addresses for
+  "<code data-x="">section-spouse</code>".</p>
+
+  <p>The autocompletion mechanism must be implemented by the user agent acting as if the user had
+  modified the <span>control's data</span>, and must be done at a time where the element is <i
+  data-x="concept-fe-mutable">mutable</i> (e.g. just after the element has been inserted into the
+  document, or when the user agent <span data-x="stop parsing">stops parsing</span>). User agents
+  must only prefill controls using values that the user could have entered.</p>
+
+  <p class="example">For example, if a <code>select</code> element only has <code>option</code>
+  elements with values "Steve" and "Rebecca", "Jay", and "Bob", and has an <span>autofill field
+  name</span> "<code data-x="attr-fe-autocomplete-given-name">given-name</code>", but the user
+  agent's only idea for what to prefill the field with is "Evan", then the user agent cannot prefill
+  the field. It would not be conforming to somehow set the <code>select</code> element to the value
+  "Evan", since the user could not have done so themselves.</p>
+
+  <p>A user agent prefilling a form control's <span data-x="concept-fe-value">value</span> must not
+  cause that control to <span data-x="suffering from a type mismatch">suffer from a type
+  mismatch</span>, <span data-x="suffering from being too long">suffer from being too long</span>,
+  <span data-x="suffering from being too short">suffer from being too short</span>, <span
+  data-x="suffering from an underflow">suffer from an underflow</span>, <span data-x="suffering from
+  an overflow">suffer from an overflow</span>, or <span data-x="suffering from a step
+  mismatch">suffer from a step mismatch</span>. A user agent prefilling a form control's <span
+  data-x="concept-fe-value">value</span> must not cause that control to <span data-x="suffering from
+  a pattern mismatch">suffer from a pattern mismatch</span> either. Where possible given the
+  control's constraints, user agents must use the format given as canonical in the aforementioned
+  table. Where it's not possible for the canonical format to be used, user agents should use
+  heuristics to attempt to convert values so that they can be used.</p>
+
+  <div class="example">
+
+   <p>For example, if the user agent knows that the user's middle name is "Ines", and attempts to
+   prefill a form control that looks like this:</p>
+
+   <pre>&lt;input name=middle-initial maxlength=1 autocomplete="additional-name"></pre>
+
+   <p>...then the user agent could convert "Ines" to "I" and prefill it that way.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>A more elaborate example would be with month values. If the user agent knows that the user's
+   birthday is the 27th of July 2012, then it might try to prefill all of the following controls
+   with slightly different values, all driven from this information:</p>
+
+   <table>
+    <tr>
+     <td>
+      <pre>&lt;input name=b type=month autocomplete="bday"></pre>
+     <td>
+      2012-07
+     <td>
+      The day is dropped since the <span
+      data-x="attr-input-type-month">Month</span> state only accepts a
+      month/year combination. (Note that this example is non-conforming, because the <span>autofill
+      field name</span> <code data-x="attr-fe-autocomplete-bday">bday</code> is not allowed with the
+      <span data-x="attr-input-type-month">Month</span> state.)
+    <tr>
+     <td>
+      <pre>&lt;select name=c autocomplete="bday">
+ &lt;option>Jan
+ &lt;option>Feb
+ <em>...</em>
+ &lt;option>Jul
+ &lt;option>Aug
+ <em>...</em>
+&lt;/select></pre>
+     <td>
+      July
+     <td>
+      The user agent picks the month from the listed options, either by noticing there are twelve
+      options and picking the 7th, or by recognizing that one of the strings (three characters "Jul"
+      followed by a newline and a space) is a close match for the name of the month (July) in one of
+      the user agent's supported languages, or through some other similar mechanism.
+    <tr>
+     <td>
+      <pre>&lt;input name=a type=number min=1 max=12 autocomplete="bday-month"></pre>
+     <td>
+      7
+     <td>
+      User agent converts "July" to a month number in the range 1..12, like the field.
+    <tr>
+     <td>
+      <pre>&lt;input name=a type=number min=0 max=11 autocomplete="bday-month"></pre>
+     <td>
+      6
+     <td>
+      User agent converts "July" to a month number in the range 0..11, like the field.
+    <tr>
+     <td>
+      <pre>&lt;input name=a type=number min=1 max=11 autocomplete="bday-month"></pre>
+     <td>
+     <td>
+      User agent doesn't fill in the field, since it can't make a good guess as to what the form expects.
+   </table>
+
+  </div>
+
+  <p>A user agent may allow the user to override an element's <span>autofill field name</span>, e.g.
+  to change it from "<code data-x="attr-fe-autocomplete-off">off</code>" to "<code
+  data-x="attr-fe-autocomplete-on">on</code>" to allow values to be remembered and prefilled despite
+  the page author's objections, or to always "<code data-x="attr-fe-autocomplete-off">off</code>",
+  never remembering values.</p>
+
+  <p>More specifically, user agents may in particular consider replacing the <span>autofill field
+  name</span> of form controls that match the description given in the first column of the following
+  table, when their <span>autofill field name</span> is either "<code
+  data-x="attr-fe-autocomplete-on">on</code>" or "<code
+  data-x="attr-fe-autocomplete-off">off</code>", with the value given in the second cell of that
+  row. If this table is used, the replacements must be done in <span>tree order</span>, since all
+  but the first row references the <span>autofill field name</span> of earlier elements. When the
+  descriptions below refer to form controls being preceded or followed by others, they mean in the
+  list of <span data-x="category-listed">listed elements</span> that share the same <span>form
+  owner</span>.</p>
+
+  <table>
+
+   <thead>
+    <tr>
+     <th>Form control
+     <th>New <span>autofill field name</span>
+
+   <tbody>
+
+
+    <tr>
+
+     <td>
+
+      an <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+      the <span data-x="attr-input-type-text">Text</span> state that is followed by an
+      <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+      the <span data-x="attr-input-type-password">Password</span> state
+
+     <td>
+
+      "<code data-x="attr-fe-autocomplete-username">username</code>"
+
+
+    <tr>
+
+     <td>
+
+      an <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+      the <span data-x="attr-input-type-password">Password</span> state that is preceded by an
+      <code>input</code> element whose <span>autofill field name</span> is "<code
+      data-x="attr-fe-autocomplete-username">username</code>"
+
+     <td>
+
+      "<code data-x="attr-fe-autocomplete-current-password">current-password</code>"
+
+
+    <tr>
+
+     <td>
+
+      an <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+      the <span data-x="attr-input-type-password">Password</span> state that is preceded by an
+      <code>input</code> element whose <span>autofill field name</span> is "<code
+      data-x="attr-fe-autocomplete-current-password">current-password</code>"
+
+     <td>
+
+      "<code data-x="attr-fe-autocomplete-new-password">new-password</code>"
+
+
+    <tr>
+
+     <td>
+
+      an <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+      the <span data-x="attr-input-type-password">Password</span> state that is preceded by an
+      <code>input</code> element whose <span>autofill field name</span> is "<code
+      data-x="attr-fe-autocomplete-new-password">new-password</code>"
+
+     <td>
+
+      "<code data-x="attr-fe-autocomplete-new-password">new-password</code>"
+
+
+  </table>
+
+  <p>The <dfn><code data-x="dom-fe-autocomplete">autocomplete</code></dfn> IDL attribute, on getting,
+  must return the element's <span>IDL-exposed autofill value</span>, and on setting, must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  </div>
+
+
+<!--TOPIC:DOM APIs-->
+  

@@ -1,0 +1,150 @@
+<h4>Named access on the <code>Window</code> object</h4>
+
+  <dl class="domintro">
+
+   <dt><var>window</var>[<var>name</var>]</dt>
+
+   <dd>
+
+    <p>Returns the indicated element or collection of elements.</p>
+
+    <p>As a general rule, relying on this will lead to brittle code. Which IDs end up mapping to
+    this API can vary over time, as new features are added to the Web platform, for example. Instead
+    of this, use <code data-x="">document.getElementById()</code> or <code
+    data-x="">document.querySelector()</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p id="child-browsing-context-name-property-set">The <dfn>document-tree child browsing context
+  name property set</dfn> of a <code>Window</code> object <var>window</var> is the return value of
+  running these steps:</p>
+
+  <ol>
+   <li><p>Let <var>activeDocument</var> be <var>window</var>'s <span>browsing context</span>'s
+   <span>active document</span>.</p></li>
+
+   <li><p>Let <var>childBrowsingContexts</var> be all <span data-x="document-tree child browsing
+   context">document-tree child browsing contexts</span> of <var>activeDocument</var>'s <span
+   data-x="concept-document-bc">browsing context</span> whose <span>browsing context name</span> is
+   not the empty string, in order, and including only the first <span>document-tree child browsing
+   context</span> with a given <span data-x="browsing context name">name</span> if multiple <span
+   data-x="document-tree child browsing context">document-tree child browsing contexts</span> have
+   the same one.</p></li>
+
+   <li><p>Remove each <span>browsing context</span> from <var>childBrowsingContexts</var> whose
+   <span>active document</span>'s <span>origin</span> is not <span>same origin</span> with
+   <var>activeDocument</var>'s <span>origin</span> and whose <span>browsing context name</span> does
+   not match the name of its <span>browsing context container</span>'s <code data-x="">name</code>
+   content attribute value.</p></li>
+
+   <li><p>Return the <span data-x="browsing context name">browsing context names</span> of
+   <var>childBrowsingContexts</var>, in the same order.</p></li>
+  </ol>
+
+  <div class="example">
+   <p>This means that in the following example, hosted on <code
+   data-x="">https://example.org/</code>, assuming <code data-x="">https://elsewhere.example/</code>
+   sets <code data-x="dom-name">window.name</code> to "<code data-x="">spices</code>", evaluating
+   <code data-x="">window.spices</code> after everything has loaded will yield undefined:</p>
+
+   <pre>&lt;iframe src=https://elsewhere.example.com/>&lt;/iframe>
+&lt;iframe name=spices>&lt;/iframe></pre>
+  </div>
+
+  <p>The <code>Window</code> object <span data-x="support named properties">supports named
+  properties</span>. The <span>supported property names</span> of a <code>Window</code> object
+  <var>window</var> at any moment consist of the following, in <span>tree order</span> according to
+  the element that contributed them, ignoring later duplicates:</p>
+
+  <ul>
+   <li><p><var>window</var>'s <span>document-tree child browsing context name property
+   set</span>;</p></li>
+
+   <li><p>the value of the <code data-x="">name</code> content attribute for all
+   <code>applet</code>, <code>embed</code>, <code>form</code>, <code>frameset</code>,
+   <code>img</code>, and <code>object</code> elements that have a non-empty <code
+   data-x="">name</code> content attribute and are <span>in a document tree</span> with
+   <var>window</var>'s <span>browsing context</span>'s <span>active document</span> as their
+   <span>root</span>; and</p></li>
+
+   <li><p>the value of the <code data-x="attr-id">id</code> content attribute for all <span>HTML
+   elements</span> that have a non-empty <code data-x="attr-id">id</code> content attribute and are
+   <span>in a document tree</span> with <var>window</var>'s <span>browsing context</span>'s
+   <span>active document</span> as their <span>root</span>.</p></li>
+  </ul>
+
+  <p id="dom-window-nameditem">To <span>determine the value of a named property</span>
+  <var>name</var> in a <code>Window</code>, the user agent must return the value obtained using the
+  following steps:</p>
+
+  <ol>
+
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1716 -->
+
+   <li>
+
+    <p>Let <var>objects</var> be the list of <span data-x="dom-window-namedItem-filter">named
+    objects</span> with the name <var>name</var>.</p>
+
+    <p class="note">There will be at least one such object, by definition.<!-- (If there wasn't,
+    then this algorithm wouldn't have been invoked by Web IDL.) --></p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>objects</var> contains a <span>nested browsing context</span>, then return
+    the <code>WindowProxy</code> object of the <span>nested browsing context</span> corresponding to
+    the first <span>browsing context container</span> in <span>tree order</span> whose
+    <span>nested browsing context</span> is in <var>objects</var>, and abort these steps.</p>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, if <var>objects</var> has only one element, return that element and
+    abort these steps.</p>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise return an <code>HTMLCollection</code> rooted at the <code>Document</code> node,
+    whose filter matches only <span data-x="dom-window-namedItem-filter">named objects</span> with
+    the name <var>name</var>. (By definition, these will all be elements.)</p> <!-- the
+    same one each time is returned, because of the rule under collections -->
+
+   </li>
+
+  </ol>
+
+  <p><dfn data-x="dom-window-nameditem-filter">Named objects</dfn> with the name <var>name</var>,
+  for the purposes of the above algorithm, consist of the following:</p>
+
+  <ul>
+
+   <li><p><span data-x="document-tree child browsing context">document-tree child browsing
+   contexts</span> of the <span>active document</span> whose name is <var>name</var>;</p></li>
+
+   <li><p><code>a</code>, <code>applet</code>, <code>area</code>, <code>embed</code>,
+   <code>form</code>, <code>frameset</code>, <code>img</code>, or <code>object</code> elements that
+   have a <code data-x="">name</code> content attribute whose value is <var>name</var> and are
+   <span>in a document tree</span> with the <span>active document</span> as their
+   <span>root</span>; and</p></li>
+
+   <li><p><span>HTML elements</span> that have an <code data-x="attr-id">id</code> content attribute
+   whose value is <var>name</var> and are <span>in a document tree</span> with the <span>active
+   document</span> as their <span>root</span>.</p></li>
+
+  </ul>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

@@ -1,0 +1,47 @@
+<h4>The <dfn><code>colgroup</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>table</code> element, after any
+   <code>caption</code> elements and before any <code>thead</code>,
+   <code>tbody</code>, <code>tfoot</code>, and <code>tr</code>
+   elements.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>If the <code data-x="attr-colgroup-span">span</code> attribute is present: <span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dd>If the <code data-x="attr-colgroup-span">span</code> attribute is absent: Zero or more <code>col</code> and <code>template</code> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-colgroup-span">span</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLTableColElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-colgroup-span">span</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>colgroup</code> element <span>represents</span> a <span
+  data-x="concept-column-group">group</span> of one or more <span
+  data-x="concept-column">columns</span> in the <code>table</code> that is its parent, if it has a
+  parent and that is a <code>table</code> element.</p>
+
+  <p>If the <code>colgroup</code> element contains no <code>col</code> elements, then the element
+  may have a <dfn><code data-x="attr-colgroup-span">span</code></dfn> content attribute specified,
+  whose value must be a <span>valid non-negative integer</span> greater than zero.</p>
+
+  <div w-nodev>
+
+  <p>The <code>colgroup</code> element and its <code data-x="attr-colgroup-span">span</code>
+  attribute take part in the <span>table model</span>.</p>
+
+  <p>The <dfn><code data-x="dom-colgroup-span">span</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name. The value must be <span>limited to
+  only non-negative numbers greater than zero with fallback</span>, with a default value of 1.</p>
+
+  </div>
+
+
+  

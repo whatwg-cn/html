@@ -1,0 +1,32 @@
+<h5>Submitting element directionality: the <code data-x="attr-fe-dirname">dirname</code> attribute</h5>
+
+  <p>The <dfn><code data-x="attr-fe-dirname">dirname</code></dfn> attribute on a form control
+  element enables the submission of <span>the directionality</span> of the element, and gives the
+  name of the control that contains this value during <span>form submission</span>. If such an
+  attribute is specified, its value must not be the empty string.</p>
+
+  <div class="example">
+
+   <p>In this example, a form contains a text control and a submission button:</p>
+
+   <pre>&lt;form action="addcomment.cgi" method=post>
+ &lt;p>&lt;label>Comment: &lt;input type=text name="comment" dirname="comment.dir" required>&lt;/label>&lt;/p>
+ &lt;p>&lt;button name="mode" type=submit value="add">Post Comment&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+   <p>When the user submits the form, the user agent includes three fields, one called "comment",
+   one called "comment.dir", and one called "mode"; so if the user types "Hello", the submission
+   body might be something like:</p>
+
+   <pre>comment=Hello&amp;<strong>comment.dir=ltr</strong>&amp;mode=add</pre>
+
+   <p>If the user manually switches to a right-to-left writing direction and enters "<span data-x=""
+   dir=rtl lang=ar>&#x645;&#x631;&#x62d;&#x628;&#x627;</span>", the submission body might be
+   something like:</p>
+
+   <pre>comment=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7&amp;<strong>comment.dir=rtl</strong>&amp;mode=add</pre>
+
+  </div>
+
+
+  

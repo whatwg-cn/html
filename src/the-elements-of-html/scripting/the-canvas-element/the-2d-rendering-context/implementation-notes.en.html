@@ -1,0 +1,21 @@
+<h6>Implementation notes</h6>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The <span>output bitmap</span>, when it is not directly displayed by the user agent,
+  implementations can, instead of updating this bitmap, merely remember the sequence of drawing
+  operations that have been applied to it until such time as the bitmap's actual data is needed
+  (for example because of a call to <code data-x="dom-context-2d-drawImage">drawImage()</code>, or
+  the <code data-x="dom-createImageBitmap">createImageBitmap()</code> factory method). In many
+  cases, this will be more memory efficient.</p>
+
+  <p>The bitmap of a <code>canvas</code> element is the one bitmap that's pretty much always going
+  to be needed in practice. The <span>output bitmap</span> of a rendering context, when it has one,
+  is always just an alias to a <code>canvas</code> element's bitmap.</p>
+
+  <p>Additional bitmaps are sometimes needed, e.g. to enable fast drawing when the canvas is being
+  painted at a different size than its <span data-x="intrinsic dimensions">intrinsic size</span>,
+  or to enable double buffering so that graphics updates, like page scrolling for example, can be
+  processed concurrently while canvas draw commands are being executed.</p>
+
+  

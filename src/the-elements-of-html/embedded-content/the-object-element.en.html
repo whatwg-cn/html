@@ -1,0 +1,805 @@
+<h4 data-dfn-type="element" data-lt="object">The <dfn><code>object</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Embedded content</span>.</dd>
+   <dd>If the element has a <code data-x="attr-hyperlink-usemap">usemap</code> attribute: <span>Interactive content</span>.</dd> <!-- also when showing a plugin or a nested browsing context, but checking that statically is hard...) -->
+   <dd><span data-x="category-listed">Listed</span> and <span data-x="category-submit">submittable</span> <span>form-associated element</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>embedded content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Zero or more <code>param</code> elements, then, <span>transparent</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-object-data">data</code></dd>
+   <dd><code data-x="attr-object-type">type</code></dd>
+   <dd><code data-x="attr-object-typemustmatch">typemustmatch</code></dd>
+   <dd><code data-x="attr-object-name">name</code></dd>
+   <dd><code data-x="attr-hyperlink-usemap">usemap</code></dd>
+   <dd><code data-x="attr-fae-form">form</code></dd>
+   <dd><code data-x="attr-dim-width">width</code></dd>
+   <dd><code data-x="attr-dim-height">height</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLObjectElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-object-data">data</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-object-type">type</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-object-typeMustMatch">typeMustMatch</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-object-name">name</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-object-useMap">useMap</span>;
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-fae-form">form</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-dim-width">width</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-dim-height">height</span>;
+  readonly attribute <span>Document</span>? <span data-x="dom-object-contentDocument">contentDocument</span>;
+  readonly attribute <span>WindowProxy</span>? <span data-x="dom-object-contentWindow">contentWindow</span>;
+  <span>Document</span>? <span data-x="dom-media-getSVGDocument">getSVGDocument</span>();
+
+  readonly attribute boolean <span data-x="dom-cva-willValidate">willValidate</span>;
+  readonly attribute <span>ValidityState</span> <span data-x="dom-cva-validity">validity</span>;
+  readonly attribute DOMString <span data-x="dom-cva-validationMessage">validationMessage</span>;
+  boolean <span data-x="dom-cva-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-cva-reportValidity">reportValidity</span>();
+  void <span data-x="dom-cva-setCustomValidity">setCustomValidity</span>(DOMString error);
+};</pre>
+    <div w-nodev>
+    <p>Depending on the type of content instantiated by the
+    <code>object</code> element, the node also supports other
+    interfaces.</p>
+    </div>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>object</code> element can represent an external resource, which, depending on the
+  type of the resource, will either be treated as an image, as a <span>nested browsing
+  context</span>, or as an external resource to be processed by a <span>plugin</span>.</p>
+
+  <p>The <dfn><code data-x="attr-object-data">data</code></dfn> attribute, if present, specifies the
+  <span>URL</span> of the resource. If present, the attribute must be a <span>valid non-empty URL
+  potentially surrounded by spaces</span>.</p>
+
+  <p class="warning">Authors who reference resources from other <span data-x="origin">origins</span>
+  that they do not trust are urged to use the <code
+  data-x="attr-object-typemustmatch">typemustmatch</code> attribute defined below. Without that
+  attribute, it is possible in certain cases for an attacker on the remote host to use the plugin
+  mechanism to run arbitrary scripts, even if the author has used features such as the Flash
+  "allowScriptAccess" parameter.</p> <!-- for example, if the user doesn't have flash installed but
+  does have java installed, and the remote site unexpectedly returns java instead of flash, then
+  java will run, and it will ignore the allowScriptAccess thing -->
+
+  <p>The <dfn><code data-x="attr-object-type">type</code></dfn> attribute, if present, specifies the
+  type of the resource. If present, the attribute must be a <span>valid MIME type</span>.</p>
+
+  <p>At least one of either the <code data-x="attr-object-data">data</code> attribute or the <code
+  data-x="attr-object-type">type</code> attribute must be present.</p>
+
+  <p>If the <code data-x="attr-itemprop">itemprop</code> attribute is specified on an <code>object</code>
+  element, then the <code data-x="attr-object-data">data</code> attribute must also be specified.</p>
+
+  <p>The <dfn><code data-x="attr-object-typemustmatch">typemustmatch</code></dfn> attribute is a
+  <span>boolean attribute</span> whose presence indicates that the resource specified by the <code
+  data-x="attr-object-data">data</code> attribute is only to be used if the value of the <code
+  data-x="attr-object-type">type</code> attribute and the <span>Content-Type</span> of the
+  aforementioned resource match.</p>
+
+  <p>The <code data-x="attr-object-typemustmatch">typemustmatch</code> attribute must not be
+  specified unless both the <code data-x="attr-object-data">data</code> attribute and the <code
+  data-x="attr-object-type">type</code> attribute are present.</p>
+
+  <p>The <dfn><code data-x="attr-object-name">name</code></dfn> attribute, if present, must be a
+  <span>valid browsing context name</span>. The given value is used to name the <span>nested
+  browsing context</span>, if applicable.</p>
+
+  <div w-nodev>
+
+  <p>Whenever one of the following conditions occur:</p>
+
+  <ul>
+
+   <li>the element is created,
+
+   <li>the element is popped off the <span>stack of open elements</span> of an <span>HTML
+   parser</span> or <span>XML parser</span>,
+
+   <li>the element is not on the <span>stack of open elements</span> of an <span>HTML parser</span>
+   or <span>XML parser</span>, and it is either <span data-x="node is inserted into a
+   document">inserted into a document</span> or <span data-x="node is removed from a
+   document">removed from a document</span>,
+
+   <li>the element's <span>node document</span> changes whether it is <span>fully active</span>,
+
+   <li>one of the element's ancestor <code>object</code> elements changes to or from showing its
+   <span>fallback content</span>,
+
+   <li>the element's <code data-x="attr-object-classid">classid</code> attribute is set, changed, or
+   removed,
+
+   <li>the element's <code data-x="attr-object-classid">classid</code> attribute is not present, and
+   its <code data-x="attr-object-data">data</code> attribute is set, changed, or removed,
+
+   <li>neither the element's <code data-x="attr-object-classid">classid</code> attribute nor its
+   <code data-x="attr-object-data">data</code> attribute are present, and its <code
+   data-x="attr-object-type">type</code> attribute is set, changed, or removed,
+
+   <li>the element changes from <span>being rendered</span> to not being rendered, or vice versa,
+
+  </ul> <!-- Changing the base URL doesn't trigger this. -->
+
+  <p>...the user agent must <span>queue a task</span> to run the following steps to (re)determine
+  what the <code>object</code> element represents. This <span data-x="concept-task">task</span>
+  being <span data-x="queue a task">queued</span> or actively running must <span>delay the load
+  event</span> of the element's <span>node document</span>. <!--As described in the algorithm, once the algorithm
+  starts fetching a resource, the fetch is what starts delaying the load event. But to tide us over
+  from when the parser finds the <object> element and the fetching begins, we have to block the load
+  event like this, lest the parse end before this task gets run.--></p>
+
+  <ol>
+
+   <li>
+
+    <p>If the user has indicated a preference that this <code>object</code> element's <span>fallback
+    content</span> be shown instead of the element's usual behavior, then jump to the step below
+    labeled <i>fallback</i>.</p>
+
+    <p class="note">For example, a user could ask for the element's <span>fallback content</span> to
+    be shown because that content uses a format that the user finds more accessible.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the element has an ancestor <span>media element</span>, or has an ancestor
+    <code>object</code> element that is <em>not</em> showing its <span>fallback content</span>, or
+    if the element is not <span>in a document</span> that has a <span
+    data-x="concept-document-bc">browsing context</span>, or if the element's <span>node
+    document</span> is not <span>fully active</span>, or if the element is still in the <span>stack
+    of open elements</span> of an <span>HTML parser</span> or <span>XML parser</span>, or if the
+    element is not <span>being rendered</span>, or if the <span>Should element be blocked
+    <i lang="la">a priori</i> by Content Security Policy?</span> algorithm returns "<code
+    data-x="">Blocked</code>" when executed on the element, then jump to the step below labeled
+    <i>fallback</i>. <ref spec="CSP"></p>
+
+   </li>
+
+   <li>
+
+    <!-- what if it's not in the document? if that should prevent plugin instantiation, then here
+    just skip to the last step -->
+
+    <p>If the <code data-x="attr-object-classid">classid</code> attribute is present, and has a
+    value that isn't the empty string, then: if the user agent can find a <span>plugin</span>
+    suitable according to the value of the <code data-x="attr-object-classid">classid</code>
+    attribute, and either <a href="#sandboxPluginObject">plugins aren't being sandboxed</a> or that
+    <span>plugin</span> can be <span data-x="concept-plugin-secure">secured</span>, then that
+    <span>plugin</span> <a href="#object-plugin">should be used</a>, and the value of the <code
+    data-x="attr-object-data">data</code> attribute, if any, should be passed to the
+    <span>plugin</span>. If no suitable <span>plugin</span> can be found, or if the
+    <span>plugin</span> reports an error, jump to the step below labeled <i>fallback</i>.</p>
+
+    <!--
+     case insensitive:
+      is "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" -> application/x-shockwave-flash
+      is "clsid:cfcdaa03-8be4-11cf-b84b-0020afbbccfa" -> audio/x-pn-realaudio-plugin
+      is "clsid:02bf25d5-8c17-4b23-bc80-d3488abddc6b" -> video/quicktime
+      is "clsid:166b1bca-3f9c-11cf-8075-444553540000" -> application/x-director
+      is "clsid:6bf52a52-394a-11d3-b153-00c04f79faa6" -> application/x-mplayer2
+      starts with "java:"                             -> application/x-java-vm
+      starts with "clsid:"                            -> application/x-oleobject
+    -->
+
+   </li>
+
+   <!-- (v2?)
+   we may have to define magic fallback to <param> if it turns out to
+   be needed in testing:
+   <hyatt> apparently your url can come from <param>
+   <hyatt> not just the data attribute
+   <hyatt> our code looks for params with "src", "movie", "code" and "url"
+   <hyatt> and also tries to find the type on a param
+   <Hixie> oh that's you trying to have hacky activex support
+   <Hixie> opera does that too
+   <hyatt> yeah we support activex versions of plugins that are common
+   <hyatt> like flash and quicktime and realaudio
+   <Hixie> that would be a step 1b. if no data attribute, then look for a <param> to get you a URL instead.
+   <Hixie> and if you find one, carry on as if that was your data="".
+   -->
+
+   <li><p>If the <code data-x="attr-object-data">data</code> attribute is present and its value is
+   not the empty string, then:</p>
+
+    <ol>
+
+     <li><p>If the <code data-x="attr-object-type">type</code> attribute is present and its value is
+     not a type that the user agent supports, and is not a type that the user agent can find a
+     <span>plugin</span> for, then the user agent may jump to the step below labeled <i>fallback</i>
+     without fetching the content to examine its real type.</p></li>
+
+     <li><p><span data-x="parse a url">Parse</span> the <span>URL</span> specified by the <code
+     data-x="attr-object-data">data</code> attribute, relative to the element's <span>node
+     document</span>.</p></li>
+
+     <li><p>If that failed, <span data-x="concept-event-fire">fire an event</span> named <code
+     data-x="event-error">error</code> at the element, then jump to the step below labeled
+     <i>fallback</i>.</p></li>
+
+     <!-- identical for <embed>/<object> -->
+     <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+     <span data-x="concept-request-url">url</span> is the <span>resulting URL record</span>,
+     <span data-x="concept-request-client">client</span> is the element's <span>node
+     document</span>'s <code>Window</code> object's <span>environment settings object</span>,
+     <span data-x="concept-request-destination">destination</span> is "<code
+     data-x="">object</code>", <span>omit-<code>Origin</code>-header flag</span> is set if the
+     element doesn't have a <span>browsing context scope origin</span>, <span
+     data-x="concept-request-credentials-mode">credentials mode</span> is "<code
+     data-x="">include</code>", and whose <span>use-URL-credentials flag</span> is set.</p></li>
+
+     <li>
+
+      <!--FETCH--><p><span data-x="concept-fetch">Fetch</span> <var>request</var>.</p>
+
+      <!-- similar text in various places -->
+      <p>Fetching the resource must <span>delay the load event</span> of the element's <span>node
+      document</span> until the <span data-x="concept-task">task</span> that is <span data-x="queue
+      a task">queued</span> by the <span>networking task source</span> once the resource has been
+      fetched (defined next) has been run.</p>
+
+      <p>For the purposes of the <span>application cache</span> networking model, this fetch
+      operation is not for a <span>child browsing context</span> (though it might end up being used
+      for one after all, as defined below).</p>
+
+     </li>
+
+     <li><p>If the resource is not yet available (e.g. because the resource was not available in the
+     cache, so that loading the resource required making a request over the network), then jump to
+     the step below labeled <i>fallback</i>. The <span data-x="concept-task">task</span> that is
+     <span data-x="queue a task">queued</span> by the <span>networking task source</span> once the
+     resource is available must restart this algorithm from this step. Resources can load
+     incrementally; user agents may opt to consider a resource "available" whenever enough data has
+     been obtained to begin processing the resource.</p></li>
+
+     <li><p>If the load failed (e.g. there was an HTTP 404 error, there was a DNS error), <span
+     data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+     at the element, then jump to the step below labeled <i>fallback</i>.</p></li>
+
+     <li id="object-type-detection">
+
+      <p>Determine the <var>resource type</var>, as follows:</p>
+
+<!-- Hopefully this step is exactly equivalent to the following:
+
+ START
+   |
+   V
+ Is there a Content-Type and is the UA going to obey it blindly?
+   |                   |
+   | YES               | NO
+   |                   V                                                          YES
+   |                 Is there a type="" attribute whose value is a plugin type? ============================================-.
+   |                   |                                                                                                     |
+   |                   | NO                                                                                                  |
+   |                   V                        NO                                       YES                                 |
+   |                 Is there a Content type? ========-> Is there a type="" attribute? ==========> Let TYPE be type=""       |
+   |                   |                                                           |      attribute value           |
+   |                   | YES                                                       | NO                    |                 |
+   V            NO     V                                                           |                       V                 |
+   +-<============== Is it text/plain or application/octet-stream?                 `==> Let TYPE be  =====>+                 |
+   |                   |                                     |                          Sniffed type       |                 |
+   |                   | text/plain                          | octet-stream                                V                 |
+   |                   V                              YES    V                                          Is TYPE              |
+   |                 Does the page sniff as binary? ======> Is there a type="" attribute?       application/octet-stream?    |
+   |                   |                                     |              |                      |                |        |
+   |                   | NO                                  | YES          | NO                   | YES            | NO     |
+   |                   |                                     |       YES    V                      V                |        |
+   |                   |                  application/octet-stream? =====> Extension that is plugin type?           |        |
+   |                   |                                     |                          |          |                |        |
+   |                   |                                     | NO                       | NO       | YES            |        |
+   |                   |                                     V                          |          |                |        |
+   |                   |                           Type attribute is XML or     YES     V          |                |        |
+   |                   |                           doesn't start with image/* ======> FALLBACK     |                |        |
+   |                   |                           and is not a plugin type?                       |                |        |
+   |                   |                                          |                                |                |        |
+   |                   |                                          | NO                             |                |        V
+   V                   V                                          V                                V                V       Use
+  Use                 Use                                        Use it (will be                  Use              Use      type=""
+  Content-Type        text/plain                                 bitmap or plugin)                extension        TYPE     attribute
+   |                   |                                          |                                |                |        |
+   |                   V                                          V                                V                V        |
+   `================->-+========================================>-+==============>-+-<============-+-<==============+-<======'
+                                                                                   |
+                                                                                   V
+                                                                  Continue following rules in the spec, which might
+                                                                  result in a plugin, a browsing context, an image,
+                                                                  or using fallback, depending on the UA and the type.
+
+
+   "Extension that is plugin type?" means "Is there an extension that matches one that a plugin supports?".
+   Plugins are not allowed to register text/plain or application/octet-stream.
+
+-->
+
+      <ol>
+
+       <li>
+
+        <p>Let the <var>resource type</var> be unknown.</p>
+
+       </li>
+
+       <li>
+
+        <p>If the <code>object</code> element has a <code data-x="attr-object-type">type</code>
+        attribute and a <code data-x="attr-object-typemustmatch">typemustmatch</code> attribute, and
+        the resource has <span data-x="Content-Type">associated Content-Type metadata</span>, and the
+        type specified in <span data-x="Content-Type">the resource's Content-Type metadata</span> is
+        an <span>ASCII case-insensitive</span> match for the value of the element's <code
+        data-x="attr-object-type">type</code> attribute, then let <var>resource type</var>
+        be that type and jump to the step below labeled <i>handler</i>.</p>
+
+        <!-- do we need to <span>strip leading and trailing whitespace</span> from anything here?
+        collapse sequences of spaces? drop parameters? -->
+
+       </li>
+
+       <li>
+
+        <p>If the <code>object</code> element has a <code
+        data-x="attr-object-typemustmatch">typemustmatch</code> attribute, jump to the step below
+        labeled <i>handler</i>.</p>
+
+       </li>
+
+       <li>
+
+        <!-- by request: https://www.w3.org/Bugs/Public/show_bug.cgi?id=8479 -->
+
+        <p>If the user agent is configured to strictly obey Content-Type headers for this resource,
+        and the resource has <span data-x="Content-Type">associated Content-Type metadata</span>,
+        then let the <var>resource type</var> be the type specified in <span
+        data-x="Content-Type">the resource's Content-Type metadata</span>, and jump to the step below
+        labeled <i>handler</i>.</p>
+
+        <p class="warning">This can introduce a vulnerability, wherein a site is trying to embed a
+        resource that uses a particular plugin, but the remote site overrides that and instead
+        furnishes the user agent with a resource that triggers a different plugin with different
+        security characteristics. <!-- e.g. the example given above, where the site is expecting
+        Flash with allowScriptAccess=never, and instead gets back Java with its unrestricted DOM
+        access --></p>
+
+       </li>
+
+       <li>
+
+        <p>If there is a <code data-x="attr-object-type">type</code> attribute present on the
+        <code>object</code> element, and that attribute's value is not a type that the user agent
+        supports, but it <em>is</em> a type that a <span>plugin</span> supports, then let the <var>resource type</var> be the type specified in that <code
+        data-x="attr-object-type">type</code> attribute, and jump to the step below labeled
+        <i>handler</i>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Run the appropriate set of steps from the following
+        list:</p>
+
+        <dl class="switch">
+
+         <dt>If the resource has <span data-x="Content-Type">associated Content-Type
+         metadata</span></dt>
+
+         <dd>
+
+          <ol>
+
+           <li>
+
+            <p>Let <var>binary</var> be false.</p>
+
+           </li>
+
+           <li>
+
+            <p>If the type specified in <span data-x="Content-Type">the resource's Content-Type
+            metadata</span> is "<code>text/plain</code>", and the result of applying the <span
+            data-x="Content-Type sniffing: text or binary">rules for distinguishing if a resource is
+            text or binary</span> to the resource is that the resource is not
+            <code>text/plain</code>, then set <var>binary</var> to true.</p>
+
+           </li>
+
+           <li>
+
+            <p>If the type specified in <span data-x="Content-Type">the resource's Content-Type
+            metadata</span> is "<code>application/octet-stream</code>", then set <var>binary</var> to true.</p>
+
+           </li>
+
+           <li>
+
+            <p>If <var>binary</var> is false, then let the <var>resource
+            type</var> be the type specified in <span data-x="Content-Type">the resource's
+            Content-Type metadata</span>, and jump to the step below labeled <i>handler</i>.</p>
+
+           </li>
+
+           <li>
+
+            <p>If there is a <code data-x="attr-object-type">type</code> attribute present on the
+            <code>object</code> element, and its value is not <code>application/octet-stream</code>,
+            then run the following steps:</p>
+
+            <ol>
+
+             <li>
+
+              <p>If the attribute's value is a type that a <span>plugin</span> supports, or the
+     attribute's value is a type that starts with "<code data-x="">image/</code>" that is
+              not also an <span>XML MIME type</span>, then let the <var>resource type</var> be the
+              type specified in that <code data-x="attr-object-type">type</code> attribute.</p>
+
+             </li>
+
+             <li>
+
+              <p>Jump to the step below labeled <i>handler</i>.</p>
+
+             </li>
+
+            </ol>
+
+           </li>
+
+          </ol>
+
+         </dd>
+
+         <dt>Otherwise, if the resource does not have <span data-x="Content-Type">associated
+         Content-Type metadata</span></dt>
+
+         <dd>
+
+          <ol>
+
+           <li>
+
+            <p>If there is a <code data-x="attr-object-type">type</code> attribute present on the
+            <code>object</code> element, then let the <var>tentative type</var> be the type
+            specified in that <code data-x="attr-object-type">type</code> attribute.</p>
+
+            <p>Otherwise, let <var>tentative type</var> be the <span data-x="content-type
+            sniffing">computed type of the resource</span>.</p>
+
+           </li>
+
+           <li>
+
+            <p>If <var>tentative type</var> is <em>not</em>
+            <code>application/octet-stream</code>, then let <var>resource type</var> be
+            <var>tentative type</var> and jump to the step below labeled
+            <i>handler</i>.</p>
+
+           </li>
+
+          </ol>
+
+         </dd>
+
+        </dl>
+
+       </li>
+
+       <li>
+
+        <!-- if we get to this point we know we can successfully parsed the URL, since this
+        algorithm is only used after fetching the resource in the steps above -->
+
+        <p>If applying the <span>URL parser</span> algorithm to the <span>URL</span> of the
+        specified resource (after any redirects) results in a <span>URL record</span> whose <span
+        data-x="concept-url-path">path</span> component matches a pattern that a <span>plugin</span>
+        supports, then let <var>resource type</var> be the type that that plugin can
+        handle.</p>
+
+        <p class="example">For example, a plugin might say that it can handle resources with <span
+        data-x="concept-url-path">path</span> components that end with the four character string
+        "<code data-x="">.swf</code>".</p>
+
+        <!-- it's sad that we have to do extension sniffing. sigh. -->
+        <!-- see also <embed> which has a similar step -->
+
+       </li>
+
+      </ol>
+
+      <p class="note">It is possible for this step to finish, or for one of the substeps above to
+      jump straight to the next step, with <var>resource type</var> still being unknown. In
+      both cases, the next step will trigger fallback.</p>
+
+     </li>
+
+     <li><p><i>Handler</i>: Handle the content as given by the first of the following cases that
+     matches:</p>
+
+      <dl class="switch">
+
+       <dt>If the <var>resource type</var> is not a type that the user agent supports, but
+       it <em>is</em> a type that a <span>plugin</span> supports</dt>
+
+       <dd>
+
+        <p>If the <code>object</code> element's <span>nested browsing context</span> is non-null,
+        then it must be <span data-x="a browsing context is discarded">discarded</span> and then set
+        to null.</p>
+
+        <p>If <a href="#sandboxPluginObject">plugins are being sandboxed</a> and the plugin that
+        supports <var>resource type</var> cannot be <span
+        data-x="concept-plugin-secure">secured</span>, jump to the step below labeled <i>fallback</i>.</p>
+
+        <p>Otherwise, the user agent should <a href="#object-plugin">use the plugin that supports
+        <var>resource type</var></a> and pass the content of the resource to that
+        <span>plugin</span>. If the <span>plugin</span> reports an error, then jump to the step
+        below labeled <i>fallback</i>.</p>
+
+       </dd>
+
+
+       <dt>If the <var>resource type</var> is an <span>XML MIME type</span>, or <!-- (redundant with
+       the next one) if the <var>resource type</var> is HTML, or --> if the <var>resource type</var>
+       does not start with "<code data-x="">image/</code>"</dt>
+
+       <dd>
+
+        <p>If the <code>object</code> element's <span>nested browsing context</span> is null, set
+        the element's <span>nested browsing context</span> to a <span data-x="creating a new
+        browsing context">newly-created browsing context</span>.</p>
+
+        <p>The <code>object</code> element must be associated with a newly created <span>nested
+        browsing context</span>, if it does not already have one.</p>
+
+        <p>If the <span>URL</span> of the given resource is not <code>about:blank</code>, the
+        element's <span>nested browsing context</span> must then be <span
+        data-x="navigate">navigated</span><!--DONAV object--> to that resource, with
+        <span>replacement enabled</span>, and with the <code>object</code> element's <span>node
+        document</span>'s <span data-x="concept-document-bc">browsing context</span> as the
+        <span>source browsing context</span>. (The <code data-x="attr-object-data">data</code>
+        attribute of the <code>object</code> element doesn't get updated if the browsing context
+        gets further navigated to other locations.)</p>
+
+        <p>If the <span>URL</span> of the given resource <em>is</em> <code>about:blank</code>, then,
+        instead, the user agent must <span>queue a task</span> to <span
+        data-x="concept-event-fire">fire an event</span> named <code data-x="event-load">load</code>
+        at the <code>object</code> element. <span class="note">No <code
+        data-x="event-load">load</code> event is fired at the <code>about:blank</code> document
+        itself.</span></p>
+
+        <p>The <code>object</code> element <span>represents</span> the <span>nested browsing
+        context</span>.</p>
+
+        <p>If the <code data-x="attr-object-name">name</code> attribute is present, the
+        <code>object</code> element's <span>nested browsing context</span>'s <span>browsing context
+        name</span> must be set to the value of this attribute; otherwise, the <span>browsing
+        context name</span> must be set to the empty string.</p>
+
+        <p class="note">In certain situations, e.g., if the resource was fetched from an
+        <span>application cache</span> but it is an HTML file with a <code
+        data-x="attr-html-manifest">manifest</code> attribute that points to a different <span
+        data-x="concept-appcache-manifest">application cache manifest</span>, the <span
+        data-x="navigate">navigation</span> of the <span>browsing context</span> will be restarted
+        so as to load the resource afresh from the network or a different <span>application
+        cache</span>. Even if the resource is then found to have a different type, it is still used
+        as part of a <span>nested browsing context</span>: only the <span>navigate</span> algorithm
+        is restarted, not this <code>object</code> algorithm.</p>
+
+        <!-- note that malformed XML files don't cause fallback -->
+
+       </dd>
+
+
+       <dt>If the <var>resource type</var> starts with "<code data-x="">image/</code>", and support
+       for images has not been disabled</dt>
+
+       <dd>
+
+        <p>If the <code>object</code> element's <span>nested browsing context</span> is non-null,
+        then it must be <span data-x="a browsing context is discarded">discarded</span> and then set
+        to null.</p>
+
+        <p>Apply the <span data-x="content-type sniffing: image">image sniffing</span> rules to
+        determine the type of the image.</p>
+
+        <p>The <code>object</code> element <span>represents</span> the specified image.</p>
+
+        <p>If the image cannot be rendered, e.g. because it is malformed or in an unsupported
+        format, jump to the step below labeled <i>fallback</i>.</p>
+
+       </dd>
+
+
+       <dt>Otherwise</dt>
+
+       <dd>
+
+        <p>The given <var>resource type</var> is not supported. Jump to the step below
+        labeled <i>fallback</i>.</p>
+
+        <p class="note">If the previous step ended with the <var>resource type</var> being
+        unknown, this is the case that is triggered.</p>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li><p>The element's contents are not part of what the <code>object</code> element
+     represents.</p>
+
+     <li>
+
+      <p>Abort these steps. Once the resource is completely loaded, <span>queue a task</span> to
+      <span data-x="concept-event-fire">fire an event</span> named <code
+      data-x="event-load">load</code> at the element.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the <code data-x="attr-object-data">data</code> attribute is absent but the <code
+   data-x="attr-object-type">type</code> attribute is present, and the user agent can find a
+   <span>plugin</span> suitable according to the value of the <code
+   data-x="attr-object-type">type</code> attribute, and either <a
+   href="#sandboxPluginObject">plugins aren't being sandboxed</a> or the <span>plugin</span> can be
+   <span data-x="concept-plugin-secure">secured</span>, then that <span>plugin</span> <a
+   href="#object-plugin">should be used</a>. If these conditions cannot be met, or if the
+   <span>plugin</span> reports an error, jump to the step below labeled <i>fallback</i>. Otherwise
+   abort these steps; once the plugin is completely loaded, <span>queue a task</span> to <span
+   data-x="concept-event-fire">fire an event</span> named <code data-x="event-load">load</code> at
+   the element.</p></li>
+
+   <li><p><i>Fallback</i>: The <code>object</code> element <span>represents</span> the element's
+   children, ignoring any leading <code>param</code> element children. This is the element's
+   <span>fallback content</span>. If the element has an instantiated <span>plugin</span>, then
+   unload it. If the element's <span>nested browsing context</span> is non-null, then it must be
+   <span data-x="a browsing context is discarded">discarded</span> and then set to null.</p></li>
+
+  </ol>
+
+  <p id="object-plugin">When the algorithm above instantiates a <span>plugin</span>, the user agent
+  should pass to the <span>plugin</span> used the names and values of all the attributes on the
+  element, in the order they were added to the element, with the attributes added by the parser
+  being ordered in source order, followed by a parameter named "PARAM" whose value is null, followed
+  by all the names and values of <span data-x="concept-param-parameter">parameters</span> given by
+  <code>param</code> elements that are children of the <code>object</code> element, in <span>tree
+  order</span>. If the <span>plugin</span> supports a scriptable interface, the
+  <code>HTMLObjectElement</code> object representing the element should expose that interface. The
+  <code>object</code> element <span>represents</span> the <span>plugin</span>. The
+  <span>plugin</span> is not a nested <span>browsing context</span>.</p>
+
+  <p id="sandboxPluginObject">Plugins are considered sandboxed for the purpose of an
+  <code>object</code> element if the <span>sandboxed plugins browsing context flag</span> is set on
+  the <code>object</code> element's <span>node document</span>'s <span>active sandboxing flag
+  set</span>.</p>
+
+  <p>Due to the algorithm above, the contents of <code>object</code> elements act as <span>fallback
+  content</span>, used only when referenced resources can't be shown (e.g. because it returned a 404
+  error). This allows multiple <code>object</code> elements to be nested inside each other,
+  targeting multiple user agents with different capabilities, with the user agent picking the first
+  one it supports.</p>
+
+  <p>When an <code>object</code> element's <span>nested browsing context</span> is non-null: if the
+  <code>object</code> element's <span>nested browsing context</span>'s <span>active document</span>
+  is not <span>ready for post-load tasks</span>, and when anything is <span data-x="delay the load
+  event">delaying the load event</span> of the <code>object</code> element's <span>browsing
+  context</span>'s <span>active document</span>, and when the <code>object</code> element's
+  <span>browsing context</span> is in the <span>delaying <code data-x="event-load">load</code>
+  events mode</span>, the <code>object</code> must <span>delay the load event</span> of its
+  document.</p>
+
+  <p>The <span>task source</span> for the <span data-x="concept-task">tasks</span> mentioned in this
+  section is the <span>DOM manipulation task source</span>.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-hyperlink-usemap">usemap</code> attribute, if present while the
+  <code>object</code> element represents an image, can indicate that the object has an associated
+  <span>image map</span>. <span w-nodev>The attribute must be ignored if the
+  <code>object</code> element doesn't represent an image.</span></p>
+
+  <p>The <code data-x="attr-fae-form">form</code> attribute is used to explicitly associate the
+  <code>object</code> element with its <span>form owner</span>.</p>
+
+  <div w-nodev>
+
+  <p><strong>Constraint validation</strong>: <code>object</code> elements are always <span>barred
+  from constraint validation</span>.</p>
+
+  </div>
+
+  <p>The <code>object</code> element supports <span>dimension attributes</span>.</p>
+
+  <div w-nodev>
+
+  <p>The IDL attributes <dfn><code data-x="dom-object-data">data</code></dfn>, <dfn><code data-x="dom-object-type">type</code></dfn> and <dfn><code data-x="dom-object-name">name</code></dfn> each must <span>reflect</span> the respective
+  content attributes of the same name. The <dfn><code data-x="dom-object-typeMustMatch">typeMustMatch</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-object-typemustmatch">typemustmatch</code> content
+  attribute. The <dfn><code data-x="dom-object-useMap">useMap</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-hyperlink-usemap">usemap</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-object-contentDocument">contentDocument</code></dfn> IDL attribute,
+  on getting, must return the <code>object</code> element's <span
+  data-x="concept-bcc-content-document">content document</span>.</p>
+
+  <p>The <dfn><code data-x="dom-object-contentWindow">contentWindow</code></dfn> IDL attribute must
+  return the <code>WindowProxy</code> object of the <code>object</code> element's <span>nested
+  browsing context</span>, if its <span>nested browsing context</span> is non-null; otherwise, it
+  must return null.</p>
+
+  <p>The <code data-x="dom-cva-willValidate">willValidate</code>, <code
+  data-x="dom-cva-validity">validity</code>, and <code
+  data-x="dom-cva-validationMessage">validationMessage</code> attributes, and the <code
+  data-x="dom-cva-checkValidity">checkValidity()</code>, <code
+  data-x="dom-cva-reportValidity">reportValidity()</code>, and <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> methods, are part of the
+  <span>constraint validation API</span>. The <code data-x="dom-fae-form">form</code> IDL attribute
+  is part of the element's forms API.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, a Java applet is embedded in a page using the <code>object</code>
+   element. (Generally speaking, it is better to avoid using applets like these and instead use
+   native JavaScript and HTML to provide the functionality, since that way the application will work
+   on all Web browsers without requiring a third-party plugin. Many devices, especially embedded
+   devices, do not support third-party technologies like Java.)</p>
+
+   <pre>&lt;figure>
+ &lt;object type="application/x-java-applet">
+  &lt;param name="code" value="MyJavaClass">
+  &lt;p>You do not have Java available, or it is disabled.&lt;/p>
+ &lt;/object>
+ &lt;figcaption>My Java Clock&lt;/figcaption>
+&lt;/figure></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, an HTML page is embedded in another using the <code>object</code>
+   element.</p>
+
+   <pre>&lt;figure>
+ &lt;object data="clock.html">&lt;/object>
+ &lt;figcaption>My HTML Clock&lt;/figcaption>
+&lt;/figure></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows how a plugin can be used in HTML (in this case the Flash plugin,
+   to show a video file). Fallback is provided for users who do not have Flash enabled, in this case
+   using the <code>video</code> element to show the video for those using user agents that support
+   <code>video</code>, and finally providing a link to the video for those who have neither Flash
+   nor a <code>video</code>-capable browser.</p>
+
+   <pre>&lt;p>Look at my video:
+ &lt;object type="application/x-shockwave-flash">
+  &lt;param name=movie value="https://video.example.com/library/watch.swf">
+  &lt;param name=allowfullscreen value=true>
+  &lt;param name=flashvars value="https://video.example.com/vids/315981">
+  &lt;video controls src="https://video.example.com/vids/315981">
+   &lt;a href="https://video.example.com/vids/315981">View video&lt;/a>.
+  &lt;/video>
+ &lt;/object>
+&lt;/p></pre>
+
+  </div>
+
+
+
+  

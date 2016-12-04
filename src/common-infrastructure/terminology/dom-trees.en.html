@@ -1,0 +1,56 @@
+<h4>DOM trees</h4>
+
+  <p>When it is stated that some element or attribute is <dfn data-x="ignore">ignored</dfn>, or
+  treated as some other value, or handled as if it was something else, this refers only to the
+  processing of the node after it is in the DOM. <span w-nodev>A user agent must not mutate the
+  DOM in such situations.</span></p>
+
+  <p>A content attribute is said to <dfn data-x="">change</dfn> value only if its new value is
+  different than its previous value; setting an attribute to a value it already has does not change
+  it.</p>
+
+  <p>The term <dfn data-x="">empty</dfn>, when used of an attribute value, <code>Text</code> node, or
+  string, means that the length of the text is zero (i.e. not even containing spaces or <span>control
+  characters</span>).</p>
+
+  <p>An element's <dfn data-export="">child text content</dfn> is the concatenation of the <span
+  data-x="concept-cd-data">data</span> of all the <code>Text</code> nodes that are children of the
+  element (ignoring any other nodes such as comments or elements), in <span>tree order</span>.</p>
+
+  <p>A <dfn data-x="nodes are inserted">node <var>A</var> is inserted</dfn> into a node <var>B</var>
+  when the <span data-x="concept-node-insert-ext">insertion steps</span> are invoked with
+  <var>A</var> as the argument and <var>A</var>'s new parent is <var>B</var>. Similarly, a <dfn
+  data-x="nodes are removed">node <var>A</var> is removed</dfn> from a node <var>B</var> when the
+  <span data-x="concept-node-remove-ext">removing steps</span> are invoked with <var>A</var> as the
+  <var>removedNode</var> argument and <var>B</var> as the <var>oldParent</var> argument.</p>
+
+  <p>A <dfn id="insert-an-element-into-a-document" data-x="node is inserted into a document"
+  data-lt="inserted into a document|node is inserted into a document" data-export="">node is
+  inserted into a document</dfn> when the <span data-x="concept-node-insert-ext">insertion
+  steps</span> are invoked with it as the argument and it is now <span>in a document tree</span>.
+  Analogously, a <dfn id="remove-an-element-from-a-document" data-x="node is removed from a
+  document" data-lt="removed from a document|node is removed from a document" data-export="">node is
+  removed from a document</dfn> when the <span data-x="concept-node-remove-ext">removing
+  steps</span> are invoked with it as the argument and it is now no longer <span>in a document
+  tree</span>.</p>
+
+  <p>A node <dfn data-export="">becomes connected</dfn> when the <span
+  data-x="concept-node-insert-ext">insertion steps</span> are invoked with it as the argument and it
+  is now <span>connected</span>. Analogously, a node <dfn data-lt="become disconnected"
+  data-export="">becomes disconnected</dfn> when the <span data-x="concept-node-remove-ext">removing
+  steps</span> are invoked with it as the argument and it is now no longer
+  <span>connected</span>.</p>
+
+  <p>A node is <dfn data-export="">browsing-context connected</dfn> when it is
+  <span>connected</span> and its <span data-x="shadow-including root">shadow-including root</span>
+  has a <span data-x="concept-document-bc">browsing context</span>. A node <dfn data-lt="become
+  browsing-context connected" data-export="">becomes browsing-context connected</dfn> when the <span
+  data-x="concept-node-insert-ext">insertion steps</span> are invoked with it as the argument and it
+  is now <span>browsing-context connected</span>. A node <dfn data-lt="become browsing-context
+  disconnected" data-export="">becomes browsing-context disconnected</dfn> either when the <span
+  data-x="concept-node-remove-ext">removing steps</span> are invoked with it as the argument and it
+  is now no longer <span>browsing-context connected</span>, or when its <span>shadow-including
+  root</span> no longer has a <span data-x="concept-document-bc">browsing context</span>.
+
+
+  

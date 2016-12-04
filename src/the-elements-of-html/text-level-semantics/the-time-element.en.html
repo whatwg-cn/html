@@ -1,0 +1,357 @@
+<h4>The <dfn><code>time</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>If the element has a <code data-x="attr-time-datetime">datetime</code> attribute: <span>Phrasing content</span>.</dd>
+   <dd>Otherwise: <span data-x="text content">Text</span>, but must match requirements described in prose below.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-time-datetime">datetime</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLTimeElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-time-dateTime">dateTime</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>time</code> element <span>represents</span> its contents, along with a
+  machine-readable form of those contents in the <code data-x="attr-time-datetime">datetime</code>
+  attribute. The kind of content is limited to various kinds of dates, times, time-zone offsets, and
+  durations, as described below.</p>
+
+  <p>The <dfn><code data-x="attr-time-datetime">datetime</code></dfn> attribute may be present. If
+  present, its value must be a representation of the element's contents in a machine-readable
+  format.</p>
+
+  <p>A <code>time</code> element that does not have a <code
+  data-x="attr-time-datetime">datetime</code> content attribute must not have any element
+  descendants.</p>
+
+  <p>The <dfn>datetime value</dfn> of a <code>time</code> element is the value of the element's
+  <code data-x="attr-time-datetime">datetime</code> content attribute, if it has one, otherwise the
+  <span>child text content</span> of the <code>time</code> element.</p>
+
+  <p>The <span>datetime value</span> of a <code>time</code> element must match one of the following
+  syntaxes.</p>
+
+  <dl>
+
+   <dt>A <span>valid month string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>2011-11&lt;/time></pre>
+
+   </dd>
+
+
+   <dt>A <span>valid date string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>2011-11-18&lt;/time></pre>
+
+   </dd>
+
+
+   <dt>A <span>valid yearless date string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>11-18&lt;/time></pre>
+
+   </dd>
+
+
+   <dt>A <span>valid time string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>14:54&lt;/time></pre>
+    <pre class="example">&lt;time>14:54:39&lt;/time></pre>
+    <pre class="example">&lt;time>14:54:39.929&lt;/time></pre>
+
+   </dd>
+
+
+   <dt>A <span>valid local date and time string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>2011-11-18T14:54&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39.929&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39.929&lt;/time></pre>
+
+    <p class="note">Times with dates but without a time zone offset are useful for specifying events
+    that are observed at the same specific time in each time zone, throughout a day. For example,
+    the 2020 new year is celebrated at 2020-01-01 00:00 in each time zone, not at the same precise
+    moment across all time zones. For events that occur at the same time across all time zones, for
+    example a videoconference meeting, a <span>valid global date and time string</span> is likely
+    more useful.</p>
+
+   </dd>
+
+
+   <dt>A <span>valid time-zone offset string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>Z&lt;/time></pre>
+    <pre class="example">&lt;time>+0000&lt;/time></pre>
+    <pre class="example">&lt;time>+00:00&lt;/time></pre>
+    <pre class="example">&lt;time>-0800&lt;/time></pre>
+    <pre class="example">&lt;time>-08:00&lt;/time></pre>
+
+    <p class="note">For times without dates (or times referring to events that recur on multiple
+    dates), specifying the geographic location that controls the time is usually more useful than
+    specifying a time zone offset, because geographic locations change time zone offsets with
+    daylight savings time. In some cases, geographic locations even change time zone, e.g. when the
+    boundaries of those time zones are redrawn, as happened with Samoa at the end of 2011. There
+    exists a time zone database that describes the boundaries of time zones and what rules apply
+    within each such zone, known as the <i>time zone database</i>. <ref spec=TZDATABASE></p>
+
+   </dd>
+
+
+   <dt>A <span>valid global date and time string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>2011-11-18T14:54Z&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39Z&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39.929Z&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18T14:54+0000&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39+0000&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39.929+0000&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18T14:54+00:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39+00:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T14:54:39.929+00:00&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18T06:54-0800&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T06:54:39-0800&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T06:54:39.929-0800&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18T06:54-08:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T06:54:39-08:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18T06:54:39.929-08:00&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18 14:54Z&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39Z&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39.929Z&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18 14:54+0000&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39+0000&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39.929+0000&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18 14:54+00:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39+00:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 14:54:39.929+00:00&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18 06:54-0800&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 06:54:39-0800&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 06:54:39.929-0800&lt;/time></pre>
+
+    <pre class="example">&lt;time>2011-11-18 06:54-08:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 06:54:39-08:00&lt;/time></pre>
+    <pre class="example">&lt;time>2011-11-18 06:54:39.929-08:00&lt;/time></pre>
+
+    <p class="note">Times with dates and a time zone offset are useful for specifying specific
+    events, or recurring virtual events where the time is not anchored to a specific geographic
+    location. For example, the precise time of an asteroid impact, or a particular meeting in a
+    series of meetings held at 1400 UTC every day, regardless of whether any particular part of the
+    world is observing daylight savings time or not. For events where the precise time varies by the
+    local time zone offset of a specific geographic location, a <span>valid local date and time
+    string</span> combined with that geographic location is likely more useful.</p>
+
+   </dd>
+
+
+   <dt>A <span>valid week string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>2011-W47&lt;/time></pre>
+
+   </dd>
+
+
+   <dt>Four or more <span>ASCII digits</span>, at least one of which is not U+0030 DIGIT ZERO (0)</dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>2011&lt;/time></pre>
+
+    <pre class="example">&lt;time>0001&lt;/time></pre>
+
+   </dd>
+
+
+   <dt>A <span>valid duration string</span></dt>
+
+   <dd>
+
+    <pre class="example">&lt;time>PT4H18M3S&lt;/time></pre>
+
+    <pre class="example">&lt;time>4h 18m 3s&lt;/time></pre>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn>machine-readable equivalent of the element's contents</dfn> must be obtained from the
+  element's <span>datetime value</span> by using the following algorithm:</p>
+
+  <ol>
+
+   <li><p>If <span data-x="parse a month string">parsing a month string</span> from the element's
+   <span>datetime value</span> returns a <span data-x="concept-month">month</span>, that is the
+   machine-readable equivalent; abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a date string">parsing a date string</span> from the element's
+   <span>datetime value</span> returns a <span data-x="concept-date">date</span>, that is the
+   machine-readable equivalent; abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a yearless date string">parsing a yearless date string</span> from
+   the element's <span>datetime value</span> returns a <span data-x="concept-yearless-date">yearless
+   date</span>, that is the machine-readable equivalent; abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a time string">parsing a time string</span> from the element's
+   <span>datetime value</span> returns a <span data-x="concept-time">time</span>, that is the
+   machine-readable equivalent; abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a local date and time string">parsing a local date and time
+   string</span> from the element's <span>datetime value</span> returns a <span
+   data-x="concept-datetime-local">local date and time</span>, that is the machine-readable
+   equivalent; abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a time-zone offset string">parsing a time-zone offset string</span>
+   from the element's <span>datetime value</span> returns a <span data-x="concept-timezone">time-zone
+   offset</span>, that is the machine-readable equivalent; abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a global date and time string">parsing a global date and time
+   string</span> from the element's <span>datetime value</span> returns a <span
+   data-x="concept-datetime">global date and time</span>, that is the machine-readable equivalent;
+   abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a week string">parsing a week string</span> from the element's
+   <span>datetime value</span> returns a <span data-x="concept-week">week</span>, that is the
+   machine-readable equivalent; abort these steps.</p></li>
+
+   <li><p>If the element's <span>datetime value</span> consists of only <span>ASCII digits</span>,
+   at least one of which is not U+0030 DIGIT ZERO (0), then the machine-readable equivalent is the
+   base-ten interpretation of those digits, representing a year; abort these steps.</p></li>
+
+   <li><p>If <span data-x="parse a duration string">parsing a duration string</span> from the
+   element's <span>datetime value</span> returns a <span data-x="concept-duration">duration</span>,
+   that is the machine-readable equivalent; abort these steps.</p></li>
+
+   <li><p>There is no machine-readable equivalent.</p></li>
+
+  </ol>
+
+  <p class="note">The algorithms referenced above are intended to be designed such that for any
+  arbitrary string <var>s</var>, only one of the algorithms returns a value. A more
+  efficient approach might be to create a single algorithm that parses all these data types in one
+  pass; developing such an algorithm is left as an exercise to the reader.</p>
+
+  <p>The <dfn><code data-x="dom-time-dateTime">dateTime</code></dfn> IDL attribute must
+  <span>reflect</span> the element's <code data-x="attr-time-datetime">datetime</code> content
+  attribute.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The <code>time</code> element can be used to encode dates, for example in microformats. The
+   following shows a hypothetical way of encoding an event using a variant on hCalendar that uses
+   the <code>time</code> element:</p>
+
+   <pre>&lt;div class="vevent">
+ &lt;a class="url" href="http://www.web2con.com/">http://www.web2con.com/&lt;/a>
+ &lt;span class="summary">Web 2.0 Conference&lt;/span>:
+ &lt;time class="dtstart" datetime="2005-10-05">October 5&lt;/time> -
+ &lt;time class="dtend" datetime="2005-10-07">7&lt;/time>,
+ at the &lt;span class="location">Argent Hotel, San Francisco, CA&lt;/span>
+&lt;/div></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here, a fictional microdata vocabulary based on the Atom vocabulary is used with the
+   <code>time</code> element to mark up a blog post's publication date.</p>
+
+   <pre>&lt;article itemscope itemtype="https://n.example.org/rfc4287">
+ &lt;h1 itemprop="title">Big tasks&lt;/h1>
+ &lt;footer>Published &lt;time itemprop="published" datetime="2009-08-29">two days ago&lt;/time>.&lt;/footer>
+ &lt;p itemprop="content">Today, I went out and bought a bike for my kid.&lt;/p>
+&lt;/article></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, another article's publication date is marked up using <code>time</code>, this
+   time using the schema.org microdata vocabulary:</p>
+
+   <pre>&lt;article itemscope itemtype="http://schema.org/BlogPosting">
+ &lt;h1 itemprop="headline">Small tasks&lt;/h1>
+ &lt;footer>Published &lt;time itemprop="datePublished" datetime="2009-08-30">yesterday&lt;/time>.&lt;/footer>
+ &lt;p itemprop="articleBody">I put a bike bell on her bike.&lt;/p>
+&lt;/article></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following snippet, the <code>time</code> element is used to encode a date in the
+   ISO8601 format, for later processing by a script:</p>
+
+   <pre>&lt;p>Our first date was &lt;time datetime="2006-09-23">a Saturday&lt;/time>.&lt;/p></pre>
+
+   <p>In this second snippet, the value includes a time:</p>
+
+   <pre>&lt;p>We stopped talking at &lt;time datetime="2006-09-24T05:00-07:00">5am the next morning&lt;/time>.&lt;/p></pre>
+
+   <p>A script loaded by the page (and thus privy to the page's internal convention of marking up
+   dates and times using the <code>time</code> element) could scan through the page and look at all
+   the <code>time</code> elements therein to create an index of dates and times.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>For example, this element conveys the string "Friday" with the additional semantic that the
+   18th of November 2011 is the meaning that corresponds to "Friday":</p>
+
+   <pre>Today is &lt;time datetime="2011-11-18">Friday&lt;/time>.</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, a specific time in the Pacific Standard Time timezone is specified:</p>
+
+   <pre>Your next meeting is at &lt;time datetime="2011-11-18T15:00-08:00">3pm&lt;/time>.</pre>
+
+  </div>
+
+
+
+
+  

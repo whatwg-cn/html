@@ -1,0 +1,224 @@
+<h5>Form submission</h5>
+
+  <p><dfn>Attributes for form submission</dfn> can be specified both on <code>form</code> elements
+  and on <span data-x="concept-submit-button">submit buttons</span> (elements that represent buttons
+  that submit forms, e.g. an <code>input</code> element whose <code
+  data-x="attr-input-type">type</code> attribute is in the <span
+  data-x="attr-input-type-submit">Submit Button</span> state).
+
+  <p>The <span>attributes for form submission</span> that may be specified on <code>form</code>
+  elements are <code data-x="attr-fs-action">action</code>, <code
+  data-x="attr-fs-enctype">enctype</code>, <code data-x="attr-fs-method">method</code>, <code
+  data-x="attr-fs-novalidate">novalidate</code>, and <code data-x="attr-fs-target">target</code>.</p>
+
+  <p>The corresponding <span>attributes for form submission</span> that may be specified on <span
+  data-x="concept-submit-button">submit buttons</span> are <code
+  data-x="attr-fs-formaction">formaction</code>, <code
+  data-x="attr-fs-formenctype">formenctype</code>, <code
+  data-x="attr-fs-formmethod">formmethod</code>, <code
+  data-x="attr-fs-formnovalidate">formnovalidate</code>, and <code
+  data-x="attr-fs-formtarget">formtarget</code>. When omitted, they default to the values given on
+  the corresponding attributes on the <code>form</code> element.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-fs-action">action</code></dfn> and <dfn><code data-x="attr-fs-formaction">formaction</code></dfn> content attributes, if specified, must
+  have a value that is a <span>valid non-empty URL potentially surrounded by spaces</span>.</p>
+
+  <p>The <dfn data-x="concept-fs-action">action</dfn> of an element is the value of the element's
+  <code data-x="attr-fs-formaction">formaction</code> attribute, if the element is a <span
+  data-x="concept-submit-button">submit button</span> and has such an attribute, or the value of its
+  <span>form owner</span>'s <code data-x="attr-fs-action">action</code> attribute, if <em>it</em> has
+  one, or else the empty string.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-fs-method">method</code></dfn> and <dfn><code data-x="attr-fs-formmethod">formmethod</code></dfn> content attributes are <span
+  data-x="enumerated attribute">enumerated attributes</span> with the following keywords and
+  states:</p>
+
+  <ul>
+
+   <li>The keyword <dfn><code data-x="attr-fs-method-GET-keyword">get</code></dfn>, mapping to the
+   state <dfn data-x="attr-fs-method-GET">GET</dfn>, indicating the HTTP GET method.</li>
+
+   <li>The keyword <dfn><code data-x="attr-fs-method-POST-keyword">post</code></dfn>, mapping to the
+   state <dfn data-x="attr-fs-method-POST">POST</dfn>, indicating the HTTP POST method.</li>
+
+   <li>The keyword <dfn><code data-x="attr-fs-method-dialog-keyword">dialog</code></dfn>, mapping to
+   the state <dfn data-x="attr-fs-method-dialog">dialog</dfn>, indicating that submitting the
+   <code>form</code> is intended to close the <code>dialog</code> box in which the form finds
+   itself, if any, and otherwise not submit.</li>
+
+  </ul>
+
+  <p>The <i data-x="invalid value default">invalid value default</i> for these attributes is the <span
+  data-x="attr-fs-method-GET">GET</span> state. The <i data-x="missing value default">missing value default</i> for the <code
+  data-x="attr-fs-method">method</code> attribute is also the <span
+  data-x="attr-fs-method-GET">GET</span> state. (There is no <i data-x="missing value default">missing value default</i> for the
+  <code data-x="attr-fs-formmethod">formmethod</code> attribute.)</p>
+
+  <p>The <dfn data-x="concept-fs-method">method</dfn> of an element is one of those states. If the
+  element is a <span data-x="concept-submit-button">submit button</span> and has a <code
+  data-x="attr-fs-formmethod">formmethod</code> attribute, then the element's <span
+  data-x="concept-fs-method">method</span> is that attribute's state; otherwise, it is the <span>form
+  owner</span>'s <code data-x="attr-fs-method">method</code> attribute's state.</p>
+
+  <div class="example">
+
+   <p>Here the <code data-x="attr-fs-method">method</code> attribute is used to explicitly specify
+   the default value, "<code data-x="attr-fs-method-GET-keyword">get</code>", so that the search
+   query is submitted in the URL:</p>
+
+   <pre>&lt;form method="get" action="/search.cgi">
+ &lt;p>&lt;label>Search terms: &lt;input type=search name=q>&lt;/label>&lt;/p>
+ &lt;p>&lt;input type=submit>&lt;/p>
+&lt;/form></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>On the other hand, here the <code data-x="attr-fs-method">method</code> attribute is used to
+   specify the value "<code data-x="attr-fs-method-POST-keyword">post</code>", so that the user's
+   message is submitted in the HTTP request's body:</p>
+
+   <pre>&lt;form method="post" action="/post-message.cgi">
+ &lt;p>&lt;label>Message: &lt;input type=text name=m>&lt;/label>&lt;/p>
+ &lt;p>&lt;input type=submit value="Submit message">&lt;/p>
+&lt;/form></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, a <code>form</code> is used with a <code>dialog</code>. The <code
+   data-x="attr-fs-method">method</code> attribute's "<code
+   data-x="attr-fs-method-dialog-keyword">dialog</code>" keyword is used to have the dialog
+   automatically close when the form is submitted.</p>
+
+   <pre lang="en-GB">&lt;dialog id="ship">
+ &lt;form method=dialog>
+  &lt;p>A ship has arrived in the harbour.&lt;/p>
+  &lt;button type=submit value="board">Board the ship&lt;/button>
+  &lt;button type=submit value="call">Call to the captain&lt;/button>
+ &lt;/form>
+&lt;/dialog>
+&lt;script>
+ var ship = document.getElementById('ship');
+ ship.showModal();
+ ship.onclose = function (event) {
+   if (ship.returnValue == 'board') {
+     // ...
+   } else {
+     // ...
+   }
+ };
+&lt;/script></pre>
+
+  </div>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-fs-enctype">enctype</code></dfn> and <dfn><code data-x="attr-fs-formenctype">formenctype</code></dfn> content attributes are <span
+  data-x="enumerated attribute">enumerated attributes</span> with the following keywords and
+  states:</p>
+
+  <ul>
+   <li>The "<dfn><code data-x="attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</code></dfn>" keyword and corresponding state.</li>
+   <li>The "<dfn><code data-x="attr-fs-enctype-formdata">multipart/form-data</code></dfn>" keyword and corresponding state.</li>
+   <li>The "<dfn><code data-x="attr-fs-enctype-text">text/plain</code></dfn>" keyword and corresponding state.</li>
+  </ul>
+
+  <p>The <i data-x="invalid value default">invalid value default</i> for these attributes is the <code
+  data-x="attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</code> state. The <i data-x="missing value default">missing value default</i> for the <code data-x="attr-fs-enctype">enctype</code> attribute is also the <code
+  data-x="attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</code> state. (There is no
+  <i data-x="missing value default">missing value default</i> for the <code data-x="attr-fs-formenctype">formenctype</code>
+  attribute.)</p>
+
+  <p>The <dfn data-x="concept-fs-enctype">enctype</dfn> of an element is one of those three states.
+  If the element is a <span data-x="concept-submit-button">submit button</span> and has a <code
+  data-x="attr-fs-formenctype">formenctype</code> attribute, then the element's <span
+  data-x="concept-fs-enctype">enctype</span> is that attribute's state; otherwise, it is the
+  <span>form owner</span>'s <code data-x="attr-fs-enctype">enctype</code> attribute's state.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-fs-target">target</code></dfn> and <dfn><code data-x="attr-fs-formtarget">formtarget</code></dfn> content attributes, if specified, must
+  have values that are <span data-x="valid browsing context name or keyword">valid browsing context
+  names or keywords</span>.</p>
+
+  <p>The <dfn data-x="concept-fs-target">target</dfn> of an element is the value of the element's
+  <code data-x="attr-fs-formtarget">formtarget</code> attribute, if the element is a <span
+  data-x="concept-submit-button">submit button</span> and has such an attribute; or the value of its
+  <span>form owner</span>'s <code data-x="attr-fs-target">target</code> attribute, if <em>it</em> has
+  such an attribute; or, if the <code>Document</code> contains a <code>base</code> element with a
+  <code data-x="attr-base-target">target</code> attribute, then the value of the <code
+  data-x="attr-base-target">target</code> attribute of the first such <code>base</code> element; or,
+  if there is no such element, the empty string.</p> <!-- c.f. hyperlink following -->
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-fs-novalidate">novalidate</code></dfn> and <dfn><code data-x="attr-fs-formnovalidate">formnovalidate</code></dfn> content attributes are <span
+  data-x="boolean attribute">boolean attributes</span>. If present, they indicate that the form is
+  not to be validated during submission.</p>
+
+  <p>The <dfn data-x="concept-fs-novalidate">no-validate state</dfn> of an element is true if the
+  element is a <span data-x="concept-submit-button">submit button</span> and the element's <code
+  data-x="attr-fs-formnovalidate">formnovalidate</code> attribute is present, or if the element's
+  <span>form owner</span>'s <code data-x="attr-fs-novalidate">novalidate</code> attribute is present,
+  and false otherwise.</p>
+
+  <div class="example">
+
+   <p>This attribute is useful to include "save" buttons on forms that have validation constraints,
+   to allow users to save their progress even though they haven't fully entered the data in the
+   form. The following example shows a simple form that has two required fields. There are three
+   buttons: one to submit the form, which requires both fields to be filled in; one to save the form
+   so that the user can come back and fill it in later; and one to cancel the form altogether.</p>
+
+   <pre>&lt;form action="editor.cgi" method="post">
+ &lt;p>&lt;label>Name: &lt;input required name=fn>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Essay: &lt;textarea required name=essay>&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;input type=submit name=submit value="Submit essay">&lt;/p>
+ &lt;p>&lt;input type=submit formnovalidate name=save value="Save essay">&lt;/p>
+ &lt;p>&lt;input type=submit formnovalidate name=cancel value="Cancel">&lt;/p>
+&lt;/form></pre>
+
+  </div>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-fs-action">action</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name, except that on getting, when the
+  content attribute is missing or its value is the empty string, the element's <span>node
+  document</span>'s <span data-x="concept-document-url">URL</span> must be returned instead. The
+  <dfn><code data-x="dom-fs-target">target</code></dfn> IDL attribute must <span>reflect</span> the
+  content attribute of the same name. The <dfn><code data-x="dom-fs-method">method</code></dfn> and
+  <dfn><code data-x="dom-fs-enctype">enctype</code></dfn> IDL attributes must <span>reflect</span>
+  the respective content attributes of the same name, <span>limited to only known values</span>. The
+  <dfn><code data-x="dom-fs-encoding">encoding</code></dfn> IDL attribute must <span>reflect</span>
+  the <code data-x="attr-fs-enctype">enctype</code> content attribute, <span>limited to only known
+  values</span>. The <dfn><code data-x="dom-fs-noValidate">noValidate</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-fs-novalidate">novalidate</code> content attribute. The
+  <dfn><code data-x="dom-fs-formAction">formAction</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-fs-formaction">formaction</code> content attribute,
+  except that on getting, when the content attribute is missing or its value is the empty string,
+  the element's <span>node document</span>'s <span data-x="concept-document-url">URL</span> must be
+  returned instead. The <dfn><code data-x="dom-fs-formEnctype">formEnctype</code></dfn> IDL
+  attribute must <span>reflect</span> the <code data-x="attr-fs-formenctype">formenctype</code>
+  content attribute, <span>limited to only known values</span>. The <dfn><code
+  data-x="dom-fs-formMethod">formMethod</code></dfn> IDL attribute must <span>reflect</span> the
+  <code data-x="attr-fs-formmethod">formmethod</code> content attribute, <span>limited to only known
+  values</span>. The <dfn><code data-x="dom-fs-formNoValidate">formNoValidate</code></dfn> IDL
+  attribute must <span>reflect</span> the <code
+  data-x="attr-fs-formnovalidate">formnovalidate</code> content attribute. The <dfn><code
+  data-x="dom-fs-formTarget">formTarget</code></dfn> IDL attribute must <span>reflect</span> the
+  <code data-x="attr-fs-formtarget">formtarget</code> content attribute.
+
+  </div>
+
+
+  

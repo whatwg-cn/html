@@ -1,0 +1,83 @@
+<h4 id="keyboard-shortcuts-processing-model"><span id="processing-model-6"></span>Processing
+  model</h4>
+
+  <p>An element's <dfn>assigned access key</dfn> is a key combination derived from the element's
+  <code data-x="attr-accesskey">accesskey</code> content attribute. Initially, an element must not
+  have an <span>assigned access key</span>.</p>
+
+  <p>Whenever an element's <code data-x="attr-accesskey">accesskey</code> attribute is set, changed,
+  or removed, the user agent must update the element's <span>assigned access key</span> by running
+  the following steps:</p>
+
+  <ol>
+
+   <li><p>If the element has no <code data-x="attr-accesskey">accesskey</code> attribute, then skip
+   to the <i>fallback</i> step below.</p></li>
+
+   <li><p>Otherwise, <span data-x="split a string on spaces">split the attribute's value on
+   spaces</span>, and let <var>keys</var> be the resulting tokens.</p></li>
+
+   <li>
+
+    <p>For each value in <var>keys</var> in turn, in the order the tokens appeared in the
+    attribute's value, run the following substeps:</p>
+
+    <ol>
+
+     <li><p>If the value is not a string exactly one Unicode code point in length, then skip the
+     remainder of these steps for this value.</p></li>
+
+     <li><p>If the value does not correspond to a key on the system's keyboard, then skip the
+     remainder of these steps for this value.</p></li>
+
+     <li><p>If the user agent can find a mix of zero or more modifier keys that, combined with the
+     key that corresponds to the value given in the attribute, can be used as the access key, then
+     the user agent may assign that combination of keys as the element's <span>assigned access
+     key</span> and abort these steps.
+     <!--INSERT FINGERPRINT-->
+     </p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p><i>Fallback</i>: Optionally, the user agent may assign a key combination of its choosing
+   as the element's <span>assigned access key</span> and then abort these steps.</p></li>
+
+   <li><p>If this step is reached, the element has no <span>assigned access key</span>.</p></li>
+
+  </ol>
+
+  <p>Once a user agent has selected and assigned an access key for an element, the user agent should
+  not change the element's <span>assigned access key</span> unless the <code
+  data-x="attr-accesskey">accesskey</code> content attribute is changed or the element is moved to
+  another <code>Document</code>.</p>
+
+  <p>When the user presses the key combination corresponding to the <span>assigned access key</span>
+  for an element, if the element <span data-x="concept-command">defines a command</span>, the
+  command's <span data-x="command-facet-HiddenState">Hidden State</span> facet is false (visible),
+  the command's <span data-x="command-facet-DisabledState">Disabled State</span> facet is also false
+  (enabled), the element is <span>in a document</span> that has a <span
+  data-x="concept-document-bc">browsing context</span>, and neither the element nor any of its
+  ancestors has a <code data-x="attr-hidden">hidden</code> attribute specified, then the user agent
+  must trigger the <span data-x="command-facet-Action">Action</span> of the command.</p>
+
+  <p class="note">User agents <a href="#expose-commands-in-ui">might expose</a> elements that have
+  an <code data-x="attr-accesskey">accesskey</code> attribute in other ways as well, e.g. in a menu
+  displayed in response to a specific key combination.</p> <!-- the actual conformance criteria for
+  this is in the section that defines commands -->
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-accessKey">accessKey</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-accesskey">accesskey</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-accessKeyLabel">accessKeyLabel</code></dfn> IDL attribute must return
+  a string that represents the element's <span>assigned access key</span>, if any. If the element
+  does not have one, then the IDL attribute must return the empty string.</p>
+
+  </div>
+
+
+
+  

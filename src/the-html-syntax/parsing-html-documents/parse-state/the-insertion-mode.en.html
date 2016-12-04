@@ -1,0 +1,184 @@
+<h5>The insertion mode</h5>
+
+  <p>The <dfn>insertion mode</dfn> is a state variable that controls the primary operation of the
+  tree construction stage.</p>
+
+  <p>Initially, the <span>insertion mode</span> is "<span data-x="insertion mode:
+  initial">initial</span>". It can change to "<span data-x="insertion mode: before html">before
+  html</span>", "<span data-x="insertion mode: before head">before head</span>", "<span
+  data-x="insertion mode: in head">in head</span>", "<span data-x="insertion mode: in head
+  noscript">in head noscript</span>", "<span data-x="insertion mode: after head">after head</span>",
+  "<span data-x="insertion mode: in body">in body</span>", "<span data-x="insertion mode:
+  text">text</span>", "<span data-x="insertion mode: in table">in table</span>", "<span
+  data-x="insertion mode: in table text">in table text</span>", "<span data-x="insertion mode: in
+  caption">in caption</span>", "<span data-x="insertion mode: in column group">in column
+  group</span>", "<span data-x="insertion mode: in table body">in table body</span>", "<span
+  data-x="insertion mode: in row">in row</span>", "<span data-x="insertion mode: in cell">in
+  cell</span>", "<span data-x="insertion mode: in select">in select</span>", "<span data-x="insertion
+  mode: in select in table">in select in table</span>", "<span data-x="insertion mode: in
+  template">in template</span>", "<span data-x="insertion mode: after body">after body</span>",
+  "<span data-x="insertion mode: in frameset">in frameset</span>", "<span data-x="insertion mode:
+  after frameset">after frameset</span>", "<span data-x="insertion mode: after after body">after
+  after body</span>", and "<span data-x="insertion mode: after after frameset">after after
+  frameset</span>" during the course of the parsing, as described in the <span>tree
+  construction</span> stage. The insertion mode affects how tokens are processed and whether CDATA
+  sections are supported.</p>
+
+  <p>Several of these modes, namely "<span data-x="insertion mode: in head">in head</span>", "<span
+  data-x="insertion mode: in body">in body</span>", "<span data-x="insertion mode: in table">in
+  table</span>", and "<span data-x="insertion mode: in select">in select</span>", are special, in
+  that the other modes defer to them at various times. When the algorithm below says that the user
+  agent is to do something "<dfn>using the rules for</dfn> the <var>m</var> insertion
+  mode", where <var>m</var> is one of these modes, the user agent must use the rules
+  described under the <var>m</var> <span>insertion mode</span>'s section, but must leave
+  the <span>insertion mode</span> unchanged unless the rules in <var>m</var> themselves
+  switch the <span>insertion mode</span> to a new value.</p>
+
+  <p>When the insertion mode is switched to "<span data-x="insertion mode: text">text</span>" or
+  "<span data-x="insertion mode: in table text">in table text</span>", the <dfn>original insertion
+  mode</dfn> is also set. This is the insertion mode to which the tree construction stage will
+  return.</p>
+
+  <p>Similarly, to parse nested <code>template</code> elements, a <dfn>stack of template insertion
+  modes</dfn> is used. It is initially empty. The <dfn>current template insertion mode</dfn> is the
+  insertion mode that was most recently added to the <span>stack of template insertion modes</span>.
+  The algorithms in the sections below will <i>push</i> insertion modes onto this stack, meaning
+  that the specified insertion mode is to be added to the stack, and <i>pop</i> insertion modes from
+  the stack, which means that the most recently added insertion mode must be removed from the
+  stack.</p>
+
+  <hr>
+
+  <p>When the steps below require the UA to <dfn>reset the insertion mode appropriately</dfn>, it
+  means the UA must follow these steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>last</var> be false.</p></li>
+
+   <li><p>Let <var>node</var> be the last node in the <span>stack of open
+   elements</span>.</p></li>
+
+   <li><p><i>Loop</i>: If <var>node</var> is the first node in the stack of open elements,
+   then set <var>last</var> to true, and, if the parser was originally created as part of
+   the <span>HTML fragment parsing algorithm</span> (<span>fragment case</span>), set <var>node</var> to the <var data-x="concept-frag-parse-context">context</var>
+   element passed to that algorithm.</p></li>
+
+   <li>
+
+    <p>If <var>node</var> is a <code>select</code> element, run these substeps:</p>
+
+    <ol>
+
+     <li><p>If <var>last</var> is true, jump to the step below labeled
+     <i>done</i>.</p></li>
+
+     <li><p>Let <var>ancestor</var> be <var>node</var>.</p></li>
+
+     <li><p><i>Loop</i>: If <var>ancestor</var> is the first node in the <span>stack of
+     open elements</span>, jump to the step below labeled <i>done</i>.</p></li>
+
+     <li><p>Let <var>ancestor</var> be the node before <var>ancestor</var> in the
+     <span>stack of open elements</span>.</p></li>
+
+     <li><p>If <var>ancestor</var> is a <code>template</code> node, jump to the step below
+     labeled <i>done</i>.</p></li>
+
+     <li><p>If <var>ancestor</var> is a <code>table</code> node, switch the <span>insertion
+     mode</span> to "<span data-x="insertion mode: in select in table">in select in table</span>" and
+     abort these steps.</p></li> <!-- consider
+     <table><tr><td><select><template></template><caption></table>
+     https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2374 -->
+
+     <li><p>Jump back to the step labeled <i>loop</i>.</p></li>
+
+     <li><p><i>Done</i>: Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in
+     select">in select</span>" and abort these steps.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If <var>node</var> is a <code>td</code> or <code>th</code> element and <var>last</var> is false, then switch the <span>insertion mode</span> to "<span
+   data-x="insertion mode: in cell">in cell</span>" and abort these steps.</p></li>
+
+   <li><p>If <var>node</var> is a <code>tr</code> element, then switch the <span>insertion
+   mode</span> to "<span data-x="insertion mode: in row">in row</span>" and abort these
+   steps.</p></li>
+
+   <li><p>If <var>node</var> is a <code>tbody</code>, <code>thead</code>, or
+   <code>tfoot</code> element, then switch the <span>insertion mode</span> to "<span
+   data-x="insertion mode: in table body">in table body</span>" and abort these steps.</p></li>
+
+   <li><p>If <var>node</var> is a <code>caption</code> element, then switch the
+   <span>insertion mode</span> to "<span data-x="insertion mode: in caption">in caption</span>" and
+   abort these steps.</p></li>
+
+   <li><p>If <var>node</var> is a <code>colgroup</code> element, then switch the
+   <span>insertion mode</span> to "<span data-x="insertion mode: in column group">in column
+   group</span>" and abort these steps.</p></li>
+
+   <li><p>If <var>node</var> is a <code>table</code> element, then switch the
+   <span>insertion mode</span> to "<span data-x="insertion mode: in table">in table</span>" and abort
+   these steps.</p></li>
+
+   <li><p>If <var>node</var> is a <code>template</code> element, then switch the
+   <span>insertion mode</span> to the <span>current template insertion mode</span> and abort these
+   steps.</p></li>
+
+   <!-- <li><p>If <var>node</var> is a <code>head</code> element and <var>last</var> is true, then switch the <span>insertion mode</span> to "<span
+   data-x="insertion mode: in body">in body</span>" ("<span data-x="insertion mode: in body">in
+   body</span>"! <em> not "<span data-x="insertion mode: in head">in head</span>"</em>!) and abort
+   these steps. (<span>fragment case</span>)</p></li> --><!-- The above is only here in case people
+   think that the spec accidentally omitted it and try to "fix" it. Note that noscript-in-head is
+   also handled this way. This is all intentional. The only thing it doesn't handle is the
+   scripting-disabled fragment parsing case for a <head> element containing a <noscript> which
+   itself contains something other than a <link> or a <style> element; you'd expect that to break
+   out of the <noscript> but it doesn't. This is an edge case that doesn't affect the spec, since
+   the algorithm for fragment parsing is only used for innerHTML/outerHTML/insertAdjacentHTML(),
+   where we know scripting is enabled. -->
+
+   <li><p>If <var>node</var> is a <code>head</code> element and <var>last</var> is
+   false, then switch the <span>insertion mode</span> to "<span data-x="insertion mode: in head">in
+   head</span>" and abort these steps.</p></li> <!-- for the case of <head><template></template>...
+   -->
+
+   <li><p>If <var>node</var> is a <code>body</code> element, then switch the
+   <span>insertion mode</span> to "<span data-x="insertion mode: in body">in body</span>" and abort
+   these steps.</p></li>
+
+   <li><p>If <var>node</var> is a <code>frameset</code> element, then switch the
+   <span>insertion mode</span> to "<span data-x="insertion mode: in frameset">in frameset</span>" and
+   abort these steps. (<span>fragment case</span>)</p></li>
+
+   <li>
+
+    <p>If <var>node</var> is an <code>html</code> element, run these substeps:</p>
+
+    <ol>
+
+     <li><p>If the <span><code>head</code> element pointer</span> is null, switch the
+     <span>insertion mode</span> to "<span data-x="insertion mode: before head">before head</span>"
+     and abort these steps. (<span>fragment case</span>)</p></li>
+
+     <li><p>Otherwise, the <span><code>head</code> element pointer</span> is not null, switch the
+     <span>insertion mode</span> to "<span data-x="insertion mode: after head">after head</span>" and
+     abort these steps.</p></li> <!-- consider <html><head></head><template></template> -->
+
+    </ol>
+
+   </li>
+
+   <li><p>If <var>last</var> is true, then switch the <span>insertion mode</span> to "<span
+   data-x="insertion mode: in body">in body</span>" and abort these steps. (<span>fragment
+   case</span>)</p></li>
+
+   <li><p>Let <var>node</var> now be the node before <var>node</var> in the
+   <span>stack of open elements</span>.</p></li>
+
+   <li><p>Return to the step labeled <i>loop</i>.</p></li>
+
+  </ol>
+
+
+  

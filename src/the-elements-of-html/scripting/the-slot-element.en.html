@@ -1,0 +1,64 @@
+<h4 id="the-slot-element">The <dfn><code>slot</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Transparent</span></dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-slot-name">name</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt>
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLSlotElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-slot-name">name</span>;
+  sequence&lt;Node> <span data-x="dom-slot-assignedNodes">assignedNodes</span>(optional <span>AssignedNodesOptions</span> options);
+};
+
+dictionary <dfn>AssignedNodesOptions</dfn> {
+  boolean flatten = false;
+};</pre>
+   </dd>
+  </dl>
+
+  <p>The <code>slot</code> element defines a <span data-x="concept-slot">slot</span>. It is
+  typically used in a <span>shadow tree</span>. A <code>slot</code> element <span>represents</span>
+  its <span>assigned nodes</span>, if any, and its contents otherwise.</p>
+
+  <p>The <dfn data-x="attr-slot-name"><code>name</code></dfn> content attribute may contain any
+  string value. It represents a <span data-x="concept-slot">slot</span>'s <span
+  data-x="slot-name">name</span>.</p>
+
+  <dl class="domintro">
+   <dt><var>slot</var> . <code subdfn data-x="dom-slot-name">name</code></dt>
+   <dd>Can be used to get and set <var>slot</var>'s <span data-x="slot-name">name</span>.</dd>
+
+   <dt><var>slot</var> . <code subdfn data-x="dom-slot-assignedNodes">assignedNodes</code>()</dt>
+   <dd>Returns <var>slot</var>'s <span>assigned nodes</span>.</dd>
+
+   <dt><var>slot</var> . <code data-x="dom-slot-assignedNodes">assignedNodes</code>({ flatten: true })</dt>
+   <dd>Returns <var>slot</var>'s <span>assigned nodes</span>, if any, and <var>slot</var>'s children
+   otherwise, and does the same for any <code>slot</code> elements encountered therein, recursively,
+   until there are no <code>slot</code> elements left.</dd>
+  </dl>
+
+  <p>The <dfn data-x="dom-slot-name"><code>name</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name.</p>
+
+  <p>The <dfn data-x="dom-slot-assignedNodes"><code>assignedNodes(<var>options</var>)</code></dfn>
+  method, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>If the value of <var>options</var>'s <code data-x="">flatten</code> member is false, then
+   return this element's <span>assigned nodes</span>.</p></li>
+
+   <li><p>Return the result of <span>finding flattened slotables</span> with this element.</p></li>
+  </ol>
+
+
+
+  

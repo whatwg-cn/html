@@ -1,0 +1,29 @@
+<h4 id="navigator.hardwareconcurrency">Concurrent hardware capabilities</h4>
+
+  <pre class="idl">[NoInterfaceObject, Exposed=(Window,Worker)]
+interface <dfn>NavigatorConcurrentHardware</dfn> {
+  readonly attribute unsigned long long <span data-x="dom-navigator-hardwareConcurrency">hardwareConcurrency</span>;
+};</pre>
+
+  <dl class="domintro">
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-hardwareConcurrency">hardwareConcurrency</code></dt>
+
+   <dd>Returns the number of logical processors potentially available to the user agent.</dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code
+  data-x="dom-navigator-hardwareConcurrency">navigator.hardwareConcurrency</code></dfn> attribute's
+  getter must return a number between 1 and the number of logical processors potentially available
+  to the user agent. If this cannot be determined, the getter must return 1.
+  <!--INSERT FINGERPRINT--></p>
+
+  <p>User agents should err toward exposing the number of logical processors available, using lower
+  values only in cases where there are user-agent specific limits in place (such as a limitation
+  on the number of <span data-x="Worker">workers</span> that can be created) or when the user agent
+  desires to limit fingerprinting possibilities.</p>
+
+  </div>
+
+  

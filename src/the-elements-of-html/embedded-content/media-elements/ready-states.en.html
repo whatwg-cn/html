@@ -1,0 +1,285 @@
+<h5>Ready states</h5>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-readyState">readyState</code></dt>
+
+   <dd>
+
+    <p>Returns a value that expresses the current state of the element with respect to rendering the
+    <span>current playback position</span>, from the codes in the list below.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p><span data-x="media element">Media elements</span> have a <i>ready state</i>, which describes to
+  what degree they are ready to be rendered at the <span>current playback position</span>. The
+  possible values are as follows; the ready state of a media element at any particular time is the
+  greatest value describing the state of the element:</p>
+
+  </div>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code></dfn> (numeric value 0)</dt>
+
+   <dd><p>No information regarding the <span>media resource</span> is available. No data for the
+   <span>current playback position</span> is available. <span data-x="media element">Media
+   elements</span> whose <code data-x="dom-media-networkState">networkState</code> attribute are set
+   to <code data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code> are always in the <code
+   data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code> state.</p></dd>
+
+   <dt><dfn><code data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code></dfn> (numeric value 1)</dt>
+
+   <dd><p>Enough of the resource has been obtained that the duration of the resource is available.
+   In the case of a <code>video</code> element, the dimensions of the video are also available. No
+   <span>media data</span> is available for the immediate <span>current playback
+   position</span>.</p></dd>
+
+   <dt><dfn><code data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code></dfn> (numeric value 2)</dt>
+
+   <dd><p>Data for the immediate <span>current playback position</span> is available, but either not
+   enough data is available that the user agent could successfully advance the <span>current
+   playback position</span> in the <span>direction of playback</span> at all without immediately
+   reverting to the <code data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> state, or there is no
+   more data to obtain in the <span>direction of playback</span>. For example, in video this
+   corresponds to the user agent having data from the current frame, but not the next frame, when
+   the <span>current playback position</span> is at the end of the current frame; and to when <span
+   data-x="ended playback">playback has ended</span>.</p></dd>
+
+   <dt><dfn><code data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code></dfn> (numeric value 3)</dt>
+
+   <dd><p>Data for the immediate <span>current playback position</span> is available, as well as
+   enough data for the user agent to advance the <span>current playback position</span> in the
+   <span>direction of playback</span> at least a little without immediately reverting to the <code
+   data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> state, and <span>the text tracks are
+   ready</span>. For example, in video this corresponds to the user agent having data for at least
+   the current frame and the next frame when the <span>current playback position</span> is at the
+   instant in time between the two frames, or to the user agent having the video data for the
+   current frame and audio data to keep playing at least a little when the <span>current playback
+   position</span> is in the middle of a frame. The user agent cannot be in this state if <span
+   data-x="ended playback">playback has ended</span>, as the <span>current playback position</span>
+   can never advance in this case.</p></dd>
+
+   <dt><dfn><code data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code></dfn> (numeric value 4)</dt>
+
+   <dd>
+
+   <p>All the conditions described for the <code
+    data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> state are met, and, in addition,
+    either of the following conditions is also true:</p>
+
+    <ul>
+
+     <li>The user agent estimates that data is being fetched at a rate where the <span>current
+     playback position</span>, if it were to advance at the element's <code
+     data-x="dom-media-playbackRate">playbackRate</code>, would not overtake the available data
+     before playback reaches the end of the <span>media resource</span>.</li>
+
+     <li>The user agent has entered a state where waiting longer will not result in further data
+     being obtained, and therefore nothing would be gained by delaying playback any further. (For
+     example, the buffer might be full.)</li>
+
+    </ul>
+
+   </dd>
+
+  </dl>
+
+  <p class="note">In practice, the difference between <code
+  data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> and <code
+  data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> is negligible. Really the only time
+  the difference is relevant is when painting a <code>video</code> element onto a
+  <code>canvas</code>, where it distinguishes the case where something will be drawn (<code
+  data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> or greater) from the case where
+  nothing is drawn (<code data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> or less). Similarly,
+  the difference between <code data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> (only
+  the current frame) and <code data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> (at least
+  this frame and the next) can be negligible (in the extreme, only one frame). The only time that
+  distinction really matters is when a page provides an interface for "frame-by-frame"
+  navigation.</p>
+
+  <div w-nodev>
+
+  <p>When the ready state of a <span>media element</span> whose <code
+  data-x="dom-media-networkState">networkState</code> is not <code
+  data-x="dom-media-NETWORK_EMPTY">NETWORK_EMPTY</code> changes, the user agent must follow the steps
+  given below:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Apply the first applicable set of substeps from the following list:</p>
+
+
+    <dl class="switch">
+
+     <!-- going up to metadata -->
+     <dt>If the previous ready state was <code data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>,
+     and the new ready state is <code data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code></dt>
+
+     <dd id="fire-loadedmetadata">
+
+      <p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+      <code data-x="event-media-loadedmetadata">loadedmetadata</code> at the element.</p>
+
+      <p class="note">Before this task is run, as part of the <span>event loop</span> mechanism, the
+      rendering will have been updated to resize the <code>video</code> element if appropriate.</p>
+
+     </dd>
+
+     <!-- going up to current for the first time -->
+
+     <dt id="handling-first-frame-available">If the previous ready state was <code
+     data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> and the new ready state is <code
+     data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> or greater</dt>
+
+     <dd>
+
+      <p id="fire-loadeddata">If this is the first time this occurs for this <span>media
+      element</span> since the <code data-x="dom-media-load">load()</code> algorithm was last
+      invoked, the user agent must <span>queue a task</span> to <span
+      data-x="concept-event-fire">fire an event</span> named <code
+      data-x="event-media-loadeddata">loadeddata</code> at the element.</p>
+
+      <p>If the new ready state is <code data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code>
+      or <code data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code>, then the relevant steps
+      below must then be run also.</p>
+
+     </dd>
+
+     <!-- going down -->
+     <dt>If the previous ready state was <code
+     data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> or more, and the new ready state is
+     <code data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> or less</dt>
+
+     <dd>
+
+      <p id="fire-waiting-when-waiting">If the <span>media element</span> was <span>potentially
+      playing</span> before its <code data-x="dom-media-readyState">readyState</code> attribute
+      changed to a value lower than <code
+      data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code>, and the element has not
+      <span>ended playback</span>, and playback has not <span>stopped due to errors</span>,
+      <span>paused for user interaction</span>, or <span>paused for in-band content</span>, the user
+      agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span>
+      named <code data-x="event-media-timeupdate">timeupdate</code> at the element, and <span>queue
+      a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+      data-x="event-media-waiting">waiting</code> at the element.</p>
+
+     </dd>
+
+     <!-- going up to future -->
+     <dt>If the previous ready state was <code
+     data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> or less, and the new ready state
+     is <code data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code></dt>
+
+     <dd>
+
+      <p>The user agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+      event</span> named <code data-x="event-media-canplay">canplay</code> at the element.</p>
+
+      <p>If the element's <code data-x="dom-media-paused">paused</code> attribute is false, the user
+      agent must <span>notify about playing</span> for the element.</p>
+
+     </dd>
+
+     <!-- going up to enough -->
+     <dt>If the new ready state is <code
+     data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code></dt>
+
+     <dd>
+
+      <p>If the previous ready state was <code
+      data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> or less, the user agent must
+      <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+      <code data-x="event-media-canplay">canplay</code> at the element, and, if the element's <code
+      data-x="dom-media-paused">paused</code> attribute is false, <span>notify about playing</span>
+      for the element.</p>
+
+      <p>The user agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+      event</span> named <code data-x="event-media-canplaythrough">canplaythrough</code> at the
+      element.</p>
+
+      <p>If the element is not <span>eligible for autoplay</span>, then the user agent must abort
+      these substeps.</p>
+
+      <p>The user agent may run the following substeps immediately. Alternatively, if the element is
+      a <code>video</code> element, the user agent may wait until the element <span
+      data-x="intersect the viewport">intersects the viewport</span> and, if the element is still
+      <span>eligible for autoplay</span>, run the following substeps:</p>
+
+      <p class="note">This specification doesn't define the precise timing for when the intersection
+      is tested, but it is recommended that the timing match that of the Intersection Observer
+      API. <ref spec=INTERSECTIONOBSERVER></p>
+
+      <ol>
+
+       <li>Set the <code data-x="dom-media-paused">paused</code> attribute to false.</li>
+
+       <li>If the element's <span>show poster flag</span> is true, set it to false and run the
+       <i data-x="time marches on">time marches on</i> steps.</li>
+
+       <li><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+       <code data-x="event-media-play">play</code> at the element.</li>
+
+       <li><span>Notify about playing</span> for the element.</li>
+
+       <li>Set the <span>autoplaying flag</span> to false.</li>
+
+      </ol>
+
+      <p class="note">User agents do not need to support autoplay, and it is suggested that user
+      agents honor user preferences on the matter. Authors are urged to use the <code
+      data-x="attr-media-autoplay">autoplay</code> attribute rather than using script to force the
+      video to play, so as to allow the user to override the behavior if so desired.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+  <p class="note">It is possible for the ready state of a media element to jump between these states
+  discontinuously. For example, the state of a media element can jump straight from <code
+  data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> to <code
+  data-x="dom-media-HAVE_ENOUGH_DATA">HAVE_ENOUGH_DATA</code> without passing through the <code
+  data-x="dom-media-HAVE_CURRENT_DATA">HAVE_CURRENT_DATA</code> and <code
+  data-x="dom-media-HAVE_FUTURE_DATA">HAVE_FUTURE_DATA</code> states.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-readyState">readyState</code></dfn> IDL attribute must, on
+  getting, return the value described above that describes the current ready state of the
+  <span>media element</span>.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-media-autoplay">autoplay</code></dfn> attribute is a <span>boolean
+  attribute</span>. When present, the user agent <span w-nodev>(as described in the algorithm
+  described herein)</span> will automatically begin playback of the <span>media resource</span> as
+  soon as it can do so without stopping.</p>
+
+  <p class="note">Authors are urged to use the <code data-x="attr-media-autoplay">autoplay</code>
+  attribute rather than using script to trigger automatic playback, as this allows the user to
+  override the automatic playback when it is not desired, e.g. when using a screen reader. Authors
+  are also encouraged to consider not using the automatic playback behavior at all, and instead to
+  let the user agent wait for the user to start playback explicitly.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-autoplay">autoplay</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  </div>
+
+
+
+  

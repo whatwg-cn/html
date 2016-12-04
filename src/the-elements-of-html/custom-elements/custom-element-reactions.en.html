@@ -1,0 +1,266 @@
+<h4 id="custom-element-reactions">Custom element reactions</h4>
+
+  <p>A <span>custom element</span> possesses the ability to respond to certain occurrences by
+  running author code:</p>
+
+  <ul>
+   <li><p>When <span data-x="custom-element-upgrades">upgraded</span>, its <span data-x="custom
+   element constructor">constructor</span> is run.</p></li>
+
+   <li><p>When it <span>becomes connected</span>, its <code data-x="">connectedCallback</code> is
+   run.</p></li>
+
+   <li><p>When it <span>becomes disconnected</span>, its <code data-x="">disconnectedCallback</code>
+   is run.</p></li>
+
+   <li><p>When it is <span data-x="concept-node-adopt">adopted</span> into a new document, its <code
+   data-x="">adoptedCallback</code> is run.</p></li>
+
+   <li><p>When any of its attributes are <span
+   data-x="concept-element-attributes-change">changed</span>, <span
+   data-x="concept-element-attributes-append">appended</span>, <span
+   data-x="concept-element-attributes-remove">removed</span>, or <span
+   data-x="concept-element-attributes-replace">replaced</span>, its <code
+   data-x="">attributeChangedCallback</code> is run.</p></li>
+  </ul>
+
+  <p>We call these reactions collectively <dfn data-x="concept-custom-element-reaction">custom
+  element reactions</dfn>.</p>
+
+  <p>The way in which <span data-x="concept-custom-element-reaction">custom element reactions</span>
+  are invoked is done with special care, to avoid running author code during the middle of delicate
+  operations. Effectively, they are delayed until "just before returning to user script". This means
+  that for most purposes they appear to execute synchronously, but in the case of complicated
+  composite operations (like <span data-x="concept-node-clone">cloning</span>, or <span
+  data-x="concept-range">range</span> manipulation), they will instead be delayed until after all
+  the relevant user agent processing steps have completed, and then run together as a batch.</p>
+
+  <p>Additionally, the precise ordering of these reactions is managed via a somewhat-complicated
+  stack-of-queues system, described below. The intention behind this system is to guarantee that
+  <span data-x="concept-custom-element-reaction">custom element reactions</span> always are invoked
+  in the same order as their triggering actions, at least within the local context of a single
+  <span>custom element</span>. (Because <span data-x="concept-custom-element-reaction">custom
+  element reaction</span> code can perform its own mutations, it is not possible to give a global
+  ordering guarantee across multiple elements.)</p>
+
+  <hr>
+
+  <p>Each <span>unit of related similar-origin browsing contexts</span> has a <dfn>custom element
+  reactions stack</dfn>, which is initially empty. The <dfn>current element queue</dfn> is the
+  <span>element queue</span> at the top of the <span>custom element reactions stack</span>. Each
+  item in the stack is an <dfn>element queue</dfn>, which is initially empty as well. Each item in
+  an <span>element queue</span> is an element. (The elements are not necessarily <span
+  data-x="concept-element-custom">custom</span> yet, since this queue is used for <span
+  data-x="custom-element-upgrades">upgrades</span> as well.)</p>
+
+  <p>Each <span>custom element reactions stack</span> has an associated <dfn>backup element
+  queue</dfn>, which an initially-empty <span>element queue</span>. Elements are pushed onto the
+  <span>backup element queue</span> during operations that affect the DOM without going through an
+  API decorated with <code data-x="CEReactions">[CEReactions]</code>, or through the parser's
+  <span>create an element for the token</span> algorithm. An example of this is a user-initiated
+  editing operation which modifies the descendants or attributes of an <span>editable</span>
+  element. To prevent reentrancy when processing the <span>backup element queue</span>, each
+  <span>custom element reactions stack</span> also has a <dfn>processing the backup element
+  queue</dfn> flag, initially unset.</p>
+
+  <p>All elements have an associated <dfn>custom element reaction queue</dfn>, initially empty. Each
+  item in the <span>custom element reaction queue</span> is of one of two types:</p>
+
+  <ul>
+   <li><p>An <dfn>upgrade reaction</dfn>, which will <span
+   data-x="custom-element-upgrades">upgrade</span> the custom element and contains a <span>custom
+   element definition</span>; or</p></li>
+
+   <li><p>A <dfn>callback reaction</dfn>, which will call a lifecycle callback, and contains a
+   callback function as well as a list of arguments.</p></li>
+  </ul>
+
+  <p>This is all summarized in the following schematic diagram:</p>
+
+  <p><img src="/images/custom-element-reactions.svg" style="width: 80%; max-width: 580px;" alt="A custom element reactions stack consists of a stack of element queues. Zooming in on a particular queue, we see that it contains a number of elements (in our example, &lt;x-a&gt;, then &lt;x-b&gt;, then &lt;x-c&gt;). Any particular element in the queue then has a custom element reaction queue. Zooming in on the custom element reaction queue, we see that it contains a variety of queued-up reactions (in our example, upgrade, then attribute changed, then another attribute changed, then connected)."></p>
+
+  <p>To <dfn>enqueue an element on the appropriate element queue</dfn>, given an element
+  <var>element</var>, run the following steps:</p>
+
+  <ol>
+   <li>
+    <p>If the <span>custom element reactions stack</span> is empty, then:</p>
+
+    <ol>
+     <li><p>Add <var>element</var> to the <span>backup element queue</span>.</p></li>
+
+     <li><p>If the <span>processing the backup element queue</span> flag is set, abort this
+     algorithm.</p></li>
+
+     <li><p>Set the <span>processing the backup element queue</span> flag.</p></li>
+
+     <li>
+      <p><span>Queue a microtask</span> to perform the following steps:</p>
+
+      <ol>
+       <li><p><span>Invoke custom element reactions</span> in the <span>backup element
+       queue</span>.</p></li>
+
+       <li><p>Unset the <span>processing the backup element queue</span> flag.</p></li>
+      </ol>
+     </li>
+    </ol>
+   </li>
+
+   <li><p>Otherwise, add <var>element</var> to the <span>current element queue</span>.</p></li>
+  </ol>
+
+  <p>To <dfn data-export="">enqueue a custom element callback reaction</dfn>, given a <span>custom
+  element</span> <var>element</var>, a callback name <var>callbackName</var>, and a list of
+  arguments <var>args</var>, run the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>definition</var> be <var>element</var>'s <span
+   data-x="concept-element-custom-element-definition">custom element definition</span>.</p>
+
+   <li><p>Let <var>callback</var> be the value of the entry in <var>definition</var>'s <span
+   data-x="concept-custom-element-definition-lifecycle-callbacks">lifecycle callbacks</span> with
+   key <var>callbackName</var>.</p></li>
+
+   <li><p>If <var>callback</var> is null, then abort these steps.</p></li>
+
+   <li>
+    <p>If <var>callbackName</var> is "<code data-x="">attributeChangedCallback</code>", then:</p>
+
+    <ol>
+     <li><p>Let <var>attributeName</var> be the first element of <var>args</var>.</p></li>
+
+     <li><p>If <var>definition</var>'s <span
+     data-x="concept-custom-element-definition-observed-attributes">observed attributes</span> does
+     not contain <var>attributeName</var>, then abort these steps.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Add a new <span>callback reaction</span> to <var>element</var>'s <span>custom element
+   reaction queue</span>, with callback function <var>callback</var> and arguments
+   <var>args</var>.</p></li>
+
+   <li><p><span>Enqueue an element on the appropriate element queue</span> given
+   <var>element</var>.</p></li>
+  </ol>
+
+  <p>To <dfn data-export="">enqueue a custom element upgrade reaction</dfn>, given an element
+  <var>element</var> and <span>custom element definition</span> <var>definition</var>, run the
+  following steps:</p>
+
+  <ol>
+   <li><p>Add a new <span>upgrade reaction</span> to <var>element</var>'s <span>custom element
+   reaction queue</span>, with <span>custom element definition</span>
+   <var>definition</var>.</p></li>
+
+   <li><p><span>Enqueue an element on the appropriate element queue</span> given
+   <var>element</var>.</p></li>
+  </ol>
+
+  <p>To <dfn>invoke custom element reactions</dfn> in an <span>element queue</span>
+  <var>queue</var>, run the following steps:</p>
+
+  <ol>
+   <li>
+    <p>For each <span>custom element</span> <var>element</var> in <var>queue</var>:</p>
+
+    <ol>
+     <li><p>Let <var>reactions</var> be <var>element</var>'s <span>custom element reaction
+     queue</span>.</p></li>
+
+     <li>
+      <p>Repeat until <var>reactions</var> is empty:</p>
+
+      <ol>
+       <li>
+        <p>Remove the first element of <var>reactions</var>, and let <var>reaction</var> be that
+        element. Switch on <var>reaction</var>'s type:</p>
+
+        <dl class="switch">
+         <dt><span>upgrade reaction</span></dt>
+         <dd><span data-x="concept-upgrade-an-element">Upgrade</span> <var>element</var> using
+         <var>reaction</var>'s <span>custom element definition</span>.</dd>
+
+         <dt><span>callback reaction</span></dt>
+         <dd><span data-x="es-invoking-callback-functions">Invoke</span> <var>reaction</var>'s
+         callback function with <var>reaction</var>'s arguments, and with <var>element</var> as the
+         <span data-x="dfn-callback-this-value">callback this value</span>.</dd>
+        </dl>
+
+        <p>If this throws any exception, then <span>report the exception</span>.</p>
+       </li>
+      </ol>
+     </li>
+    </ol>
+   </li>
+  </ol>
+
+  <hr>
+
+  <p>To ensure <span data-x="concept-custom-element-reaction">custom element reactions</span> are
+  triggered appropriately, we introduce the <dfn data-export="" data-dfn-type="extended-attribute"
+  data-lt="CEReactions" data-x="CEReactions"><code>[CEReactions]</code></dfn> IDL <span>extended
+  attribute</span>. It indicates that the relevant algorithm is to be supplemented with additional
+  steps in order to appropriately track and invoke <span
+  data-x="concept-custom-element-reaction">custom element reactions</span>.</p>
+
+  <p>The <code data-x="CEReactions">[CEReactions]</code> extended attribute must take no
+  arguments, and must not appear on anything other than an operation, attribute, setter, or deleter.
+  Additionally, it must not appear on readonly attributes, unless the readonly attribute is also
+  annotated with <code data-x="">[PutForwards]</code>.</p>
+
+  <p>Operations, attributes, setters, or deleters annotated with the <code
+  data-x="CEReactions">[CEReactions]</code> extended attribute must run the following steps
+  surrounding the main algorithm specified for the operation, setter, deleter, or for the
+  attribute's setter:</p>
+
+  <dl>
+   <dt>Before executing the algorithm's steps</dt>
+   <dd>Push a new <span>element queue</span> onto the <span>custom element reactions
+   stack</span>.</dd>
+
+   <dt>After executing the algorithm's steps</dt>
+   <dd>Pop the <span>element queue</span> from the <span>custom element reactions stack</span>, and
+   <span>invoke custom element reactions</span> in that queue.</dd>
+  </dl>
+
+  <div class="note">
+   <p>The intent behind this extended attribute is somewhat subtle. One way of accomplishing its
+   goals would be to say that every operation, attribute, setter, and deleter on the platform should
+   have these steps inserted, and to allow implementers to optimize away unnecessary cases (where no
+   DOM mutation is possible that could cause <span data-x="concept-custom-element-reaction">custom
+   element reactions</span> to occur).</p>
+
+   <p>However, in practice this imprecision could lead to non-interoperable implementations of <span
+   data-x="concept-custom-element-reaction">custom element reactions</span>, as some implementations
+   might forget to invoke these steps in some cases. Instead, we settled on the approach of
+   explicitly annotating all relevant IDL constructs, as a way of ensuring interoperable behavior
+   and helping implementations easily pinpoint all cases where these steps are necessary.</p>
+  </div>
+
+  <p>Any nonstandard APIs introduced by the user agent that could modify the DOM in such a way as to
+  cause <span data-x="enqueue a custom element callback reaction">enqueuing a custom element
+  callback reaction</span> or <span data-x="enqueue a custom element upgrade reaction">enqueuing a
+  custom element upgrade reaction</span>, for example by modifying any attributes or child elements,
+  must also be decorated with the <code data-x="CEReactions">[CEReactions]</code> attribute.</p>
+
+  <div class="note">
+   <p>As of the time of this writing, the following nonstandard or not-yet-standardized APIs are
+   known to fall into this category:</p>
+
+   <ul>
+    <li><p><code>HTMLElement</code>'s <code data-x="">outerText</code> IDL attribute</p></li>
+
+    <li><p><code>HTMLInputElement</code>'s <code data-x="">webkitdirectory</code> and <code
+    data-x="">incremental</code> IDL attributes</p></li>
+
+    <li><p><code>HTMLLinkElement</code>'s <code data-x="">disabled</code> and <code
+    data-x="">scope</code> IDL attributes</p></li>
+
+    <li><p><code>ShadowRoot</code>'s <code data-x="">innerHTML</code> IDL attribute</p></li>
+   </ul>
+  </div>
+
+
+<!--TOPIC:HTML-->
+  

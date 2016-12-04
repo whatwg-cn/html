@@ -1,0 +1,39 @@
+<h5>Exposing outlines to users</h5>
+
+  <p>User agents are encouraged to expose page outlines to users to aid in navigation. This is
+  especially true for non-visual media, e.g. screen readers.</p>
+
+  <p>However, to mitigate the difficulties that arise from authors misusing <span>sectioning
+  content</span>, user agents are also encouraged to offer a mode that navigates the page using
+  <span>heading content</span> alone.</p>
+
+  <div class="example">
+
+   <p>For instance, a user agent could map the arrow keys as follows:</p>
+
+   <dl>
+
+    <dt><kbd><kbd>Shift</kbd>+<kbd>&larr; Left</kbd></kbd>
+    <dd>Go to previous section, including subsections of previous sections
+
+    <dt><kbd><kbd>Shift</kbd>+<kbd>&rarr; Right</kbd></kbd>
+    <dd>Go to next section, including subsections of the current section
+
+    <dt><kbd><kbd>Shift</kbd>+<kbd>&uarr; Up</kbd></kbd>
+    <dd>Go to parent section of the current section
+
+    <dt><kbd><kbd>Shift</kbd>+<kbd>&darr; Down</kbd></kbd>
+    <dd>Go to next section, skipping subsections of the current section
+
+   </dl>
+
+   <p>Plus in addition, the user agent could map the <kbd><kbd>j</kbd></kbd> and
+   <kbd><kbd>k</kbd></kbd> keys to navigating to the previous or next element of <span>heading
+   content</span>, regardless of the section's outline depth and ignoring sections with no
+   headings.</p>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,98 @@
+<h6>Phrasing content</h6>
+
+  <p><dfn>Phrasing content</dfn> is the text of the document, as well as elements that mark up that
+  text at the intra-paragraph level. Runs of <span>phrasing content</span> form <span
+  data-x="paragraph">paragraphs</span>.</p>
+
+  <!-- when updating this also update the category index -->
+  <ul class="brief category-list">
+   <li><code>a</code></li>
+   <li><code>abbr</code></li>
+   <li><code>area</code> (if it is a descendant of a <code>map</code> element)</li>
+   <li><code>audio</code></li>
+   <li><code>b</code></li>
+   <li><code>bdi</code></li>
+   <li><code>bdo</code></li>
+   <li><code>br</code></li>
+   <li><code>button</code></li>
+   <li><code>canvas</code></li>
+   <li><code>cite</code></li>
+   <li><code>code</code></li>
+   <li><code>data</code></li>
+   <li><code>datalist</code></li>
+   <li><code>del</code></li>
+   <li><code>dfn</code></li>
+   <li><code>em</code></li>
+   <li><code>embed</code></li>
+   <li><code>i</code></li>
+   <li><code>iframe</code></li>
+   <li><code>img</code></li>
+   <li><code>input</code></li>
+   <li><code>ins</code></li>
+   <li><code>kbd</code></li>
+   <li><code>keygen</code></li>
+   <li><code>label</code></li>
+   <li><code>link</code> (if it is <span>allowed in the body</span>)</li>
+   <li><code>map</code></li>
+   <li><code>mark</code></li>
+   <li><span>MathML <code>math</code></span></li>
+   <li><code>meta</code> (if the <code data-x="attr-itemprop">itemprop</code> attribute is present)</li>
+   <li><code>meter</code></li>
+   <li><code>noscript</code></li>
+   <li><code>object</code></li>
+   <li><code>output</code></li>
+   <li><code>picture</code></li>
+   <li><code>progress</code></li>
+   <li><code>q</code></li>
+   <li><code>ruby</code></li>
+   <li><code>s</code></li>
+   <li><code>samp</code></li>
+   <li><code>script</code></li>
+   <li><code>select</code></li>
+   <li><code>slot</code></li>
+   <li><code>small</code></li>
+   <li><code>span</code></li>
+   <li><code>strong</code></li>
+   <li><code>sub</code></li>
+   <li><code>sup</code></li>
+   <li><span>SVG <code>svg</code></span></li>
+   <li><code>template</code></li>
+   <li><code>textarea</code></li>
+   <li><code>time</code></li>
+   <li><code>u</code></li>
+   <li><code>var</code></li>
+   <li><code>video</code></li>
+   <li><code>wbr</code></li>
+   <li><span data-x="autonomous custom element">autonomous custom elements</span></li>
+   <li><span data-x="text content">Text</span></li>
+  </ul>
+
+  <p class="note">Most elements that are categorized as phrasing content can only contain elements
+  that are themselves categorized as phrasing content, not any flow content.</p>
+
+  <p><dfn data-x="text content">Text</dfn>, in the context of content models, means either nothing,
+  or <code>Text</code> nodes. <span data-x="text content">Text</span> is sometimes used as a content
+  model on its own, but is also <span>phrasing content</span>, and can be <span>inter-element
+  whitespace</span> (if the <code>Text</code> nodes are empty or contain just <span data-x="space
+  character">space characters</span>).</p>
+
+  <p><code>Text</code> nodes and attribute values must consist of <span data-x="Unicode
+  character">Unicode characters</span>, must not contain U+0000 characters, must not contain
+  permanently undefined Unicode characters (noncharacters), and must not contain <span>control characters</span>
+  other than <span data-x="space character">space characters</span>.
+
+  <!--<code>Text</code> nodes and attribute values may begin with an <i>isolated combining
+  character</i>.--> <!-- commented out since nothing disallows it currently, so it's implicit;
+  however, if we ever make charmod a normative reference, this will be needed to override it -->
+  <!-- see also https://www.w3.org/Bugs/Public/show_bug.cgi?id=13502#c22 -->
+
+  This specification includes extra constraints on the exact value of <code>Text</code> nodes and
+  attribute values depending on their precise context.
+
+  <!-- <ref spec=UNICODE>-->
+
+  </p>
+
+
+
+  

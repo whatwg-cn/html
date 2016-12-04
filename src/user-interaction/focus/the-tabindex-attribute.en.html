@@ -1,0 +1,167 @@
+<h4>The <code data-x="attr-tabindex">tabindex</code> attribute</h4>
+
+  <p>The <dfn><code data-x="attr-tabindex">tabindex</code></dfn> content attribute allows authors to
+  indicate that an element is supposed to be <span data-x="focusable area">focusable</span>, and
+  whether it is supposed to be reachable using <span>sequential focus navigation</span> and, if so,
+  what is to be the relative order of the element for the purposes of sequential focus navigation.
+  The name "tab index" comes from the common use of the "tab" key to navigate through the focusable
+  elements. The term "tabbing" refers to moving forward through the focusable elements that can be
+  reached using sequential focus navigation.</p>
+
+  <p>When the attribute is omitted, the user agent applies defaults. (There is no way to make an
+  element that is <span>being rendered</span> be not focusable at all without <span
+  data-x="concept-element-disabled">disabling</span> it or making it <span>inert</span>.)</p>
+
+  <p>The <code data-x="attr-tabindex">tabindex</code> attribute, if specified, must have a value
+  that is a <span>valid integer</span>. Positive numbers specify the relative position of the
+  element's <span data-x="focusable area">focusable areas</span> in the <span>sequential focus
+  navigation order</span>, and negative numbers indicate that the control is to be unreachable by
+  <span>sequential focus navigation</span>.</p>
+
+  <p>Developers should use caution when using values other than 0 or &#x2212;1 for their <code
+  data-x="attr-tabindex">tabindex</code> attributes as this is complicated to do correctly.</p>
+
+  <div w-nodev>
+
+  <p>Each element can have a <dfn id="specially-focusable">tabindex focus flag</dfn> set, as defined
+  below. This flag is a factor that contributes towards determining whether an element is a
+  <span>focusable area</span>, as described in the previous section.</p>
+
+  <p>If the <code data-x="attr-tabindex">tabindex</code> attribute is specified on an element, it
+  must be parsed using the <span>rules for parsing integers</span>. The attribute's values, or lack
+  thereof, must be interpreted as follows:</p>
+
+  <dl>
+
+   <dt>If the attribute is omitted or parsing the value returns an error</dt>
+
+   <dd>
+
+    <p>The user agent should follow platform conventions to determine if the element's
+    <span>tabindex focus flag</span> is set and, if so, whether the element and any <span
+    data-x="focusable area">focusable areas</span> that have the element as their <span>DOM anchor</span> can
+    be reached using <span>sequential focus navigation</span>, and if so, what their relative
+    position in the <span>sequential focus navigation order</span> is to be.</p>
+
+    <p>Modulo platform conventions, it is suggested that for the following elements, the
+    <span>tabindex focus flag</span> be set:</p>
+
+    <ul>
+
+     <li><code>a</code> elements that have an <code data-x="attr-hyperlink-href">href</code>
+     attribute</li>
+
+     <li><code>link</code> elements that have an <code
+     data-x="attr-link-href">href</code> attribute</li>
+
+     <li><code>button</code> elements</li>
+
+     <li><code>input</code> elements whose <code data-x="attr-input-type">type</code> attribute are
+     not in the <span data-x="attr-input-type-hidden">Hidden</span> state</li>
+
+     <li><code>select</code> elements</li>
+
+     <li><code>textarea</code> elements</li>
+
+     <li><code>menuitem</code> elements</li>
+
+     <li>Elements with a <code data-x="attr-draggable">draggable</code> attribute set, if that would
+     enable the user agent to allow the user to begin a drag operations for those elements without
+     the use of a pointing device</li>
+
+     <li><span data-x="editing host">Editing hosts</span></li>
+
+     <li><span data-x="browsing context container">Browsing context containers</span></li> <!-- like
+     <iframe>s -->
+
+    </ul>
+
+   </dd>
+
+   <dt id="negative-tabindex">If the value is a negative integer</dt>
+
+   <dd>
+
+    <p>The user agent must set the element's <span>tabindex focus flag</span>, but should omit the
+    element from the <span>sequential focus navigation order</span>.</p>
+
+    <p class="note">One valid reason to ignore the requirement that sequential focus navigation not
+    allow the author to lead to the element would be if the user's only mechanism for moving the
+    focus is sequential focus navigation. For instance, a keyboard-only user would be unable to
+    click on a text control with a negative <code data-x="attr-tabindex">tabindex</code>, so that
+    user's user agent would be well justified in allowing the user to tab to the control
+    regardless.</p>
+
+   </dd>
+
+   <dt>If the value is a zero</dt>
+
+   <dd>
+
+    <p>The user agent must set the element's <span>tabindex focus flag</span>, should allow the
+    element and any <span data-x="focusable area">focusable areas</span> that have the element as their
+    <span>DOM anchor</span> to be reached using <span>sequential focus navigation</span>, following
+    platform conventions to determine the element's relative position in the <span>sequential focus
+    navigation order</span>.</p>
+
+   </dd>
+
+   <dt>If the value is greater than zero</dt>
+
+   <dd>
+
+    <p>The user agent must set the element's <span>tabindex focus flag</span>, should allow the
+    element and any <span data-x="focusable area">focusable areas</span> that have the element as their
+    <span>DOM anchor</span> to be reached using sequential focus navigation, and should place the element
+    &mdash; referenced as <var>candidate</var> below &mdash; and the aforementioned <span
+    data-x="focusable area">focusable areas</span> in the <span>sequential focus navigation</span>
+    order so that, relative to other <span data-x="focusable area">focusable areas</span> in the
+    <span>sequential focus navigation order</span>, they are:</p>
+
+    <ul>
+
+     <li>before any <span>focusable area</span> whose <span>DOM anchor</span> is an element whose <code
+     data-x="attr-tabindex">tabindex</code> attribute has been omitted or whose value, when parsed,
+     returns an error,</li>
+
+     <li>before any <span>focusable area</span> whose <span>DOM anchor</span> is an element whose <code
+     data-x="attr-tabindex">tabindex</code> attribute has a value equal to or less than zero,</li>
+
+     <li>after any <span>focusable area</span> whose <span>DOM anchor</span> is an element whose <code
+     data-x="attr-tabindex">tabindex</code> attribute has a value greater than zero but less than
+     the value of the <code data-x="attr-tabindex">tabindex</code> attribute on <var>candidate</var>,</li>
+
+     <li>after any <span>focusable area</span> whose <span>DOM anchor</span> is an element whose <code
+     data-x="attr-tabindex">tabindex</code> attribute has a value equal to the value of the <code
+     data-x="attr-tabindex">tabindex</code> attribute on <var>candidate</var> but that is
+     earlier in the document in <span>tree order</span> than <var>candidate</var>,</li>
+
+     <li>before any <span>focusable area</span> whose <span>DOM anchor</span> is an element whose <code
+     data-x="attr-tabindex">tabindex</code> attribute has a value equal to the value of the <code
+     data-x="attr-tabindex">tabindex</code> attribute on <var>candidate</var> but that is
+     later in the document in <span>tree order</span> than <var>candidate</var>, and</li>
+
+     <li>before any <span>focusable area</span> whose <span>DOM anchor</span> is an element whose <code
+     data-x="attr-tabindex">tabindex</code> attribute has a value greater than the value of the
+     <code data-x="attr-tabindex">tabindex</code> attribute on <var>candidate</var>.</li>
+
+    </ul>
+
+   </dd>
+
+  </dl>
+
+  <p>An element with the <code data-x="attr-tabindex">tabindex</code> attribute specified is
+  <span>interactive content</span>.</p>
+
+  <p>The <dfn><code data-x="dom-tabIndex">tabIndex</code></dfn> IDL attribute must
+  <span>reflect</span> the value of the <code data-x="attr-tabindex">tabindex</code> content
+  attribute. Its default value is 0 for elements that are focusable and &#x2212;1 for elements that
+  are not focusable.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

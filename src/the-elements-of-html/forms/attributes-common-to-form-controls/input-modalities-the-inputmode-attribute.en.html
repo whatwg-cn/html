@@ -1,0 +1,176 @@
+<h5>Input modalities: the <code data-x="attr-fe-inputmode">inputmode</code> attribute</h5>
+
+  <!-- v2: Apply this to contentEditable elements -->
+
+  <p>The <dfn><code data-x="attr-fe-inputmode">inputmode</code></dfn> content attribute is an
+  <span>enumerated attribute</span> that specifies what kind of input mechanism would be most
+  helpful for users entering content into the form control.</p>
+
+  <div w-nodev>
+
+  <p>User agents must recognize all the keywords and corresponding states given below, but need not
+  support all of the corresponding states. If a keyword's state is not supported, the user agent
+  must act as if the keyword instead mapped to the given state's fallback state, as defined below.
+  This fallback behavior is transitive.</p>
+
+  <p class="note">For example, if a user agent with a QWERTY keyboard layout does not support text
+  prediction and automatic capitalization, then it could treat the <code
+  data-x="attr-fe-inputmode-keyword-latin-prose">latin-prose</code> keyword in the same way as the
+  <code data-x="attr-fe-inputmode-keyword-verbatim">verbatim</code> keyword, following the chain
+  <span data-x="attr-fe-inputmode-state-latin-prose">Latin Prose</span> &#x2192; <span
+  data-x="attr-fe-inputmode-state-latin">Latin Text</span> &#x2192; <span
+  data-x="attr-fe-inputmode-state-verbatim">Latin Verbatim</span>.</p>
+
+  </div>
+
+  <p>The possible keywords and states for the attributes are listed in the following table. The
+  keywords are listed in the first column. Each maps to the state given in the cell in the second
+  column of that keyword's row, and that state has the fallback state given in the cell in the third
+  column of that row.</p>
+
+  <table class="three-column-nowrap">
+
+   <thead>
+    <tr>
+     <th> Keyword
+     <th> State
+     <th> Fallback state
+     <th> Description
+
+   <tbody>
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-verbatim">verbatim</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-verbatim">Latin Verbatim</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-default">Default</span>
+     <td> Alphanumeric Latin-script input of non-prose content, e.g. usernames, passwords, product codes.
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-latin">latin</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-latin">Latin Text</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-verbatim">Latin Verbatim</span>
+     <td> Latin-script input in the user's preferred language(s), with some typing aids enabled
+     (e.g. text prediction). Intended for human-to-computer communications, e.g. free-form text
+     search fields.
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-latin-name">latin-name</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-latin-name">Latin Name</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-latin">Latin Text</span>
+     <td> Latin-script input in the user's preferred language(s), with typing aids intended for
+     entering human names enabled (e.g. text prediction from the user's contact list and automatic
+     capitalisation at every word). Intended for situations such as customer name fields.
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-latin-prose">latin-prose</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-latin-prose">Latin Prose</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-latin">Latin Text</span>
+     <td> Latin-script input in the user's preferred language(s), with aggressive typing aids
+     intended for human-to-human communications enabled (e.g. text prediction and automatic
+     capitalisation at the start of sentences). Intended for situations such as e-mails and instant
+     messaging.
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-full-width-latin">full-width-latin</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-full-width-latin">Full-width Latin</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-latin">Latin Prose</span>
+     <td> Latin-script input in the user's secondary language(s), using full-width characters, with
+     aggressive typing aids intended for human-to-human communications enabled (e.g. text prediction
+     and automatic capitalisation at the start of sentences). Intended for latin text embedded
+     inside CJK text.
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-kana">kana</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-kana">Kana</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-default">Default</span>
+     <td> Kana or romaji input, typically hiragana input, using full-width characters, with support
+     for converting to kanji. Intended for Japanese text input.
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-kana-name">kana-name</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-kana-name">Kana Name</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-kana">Kana</span>
+     <td> Kana or romaji input, typically hiragana input, using full-width characters, with support
+     for converting to kanji, and with typing aids intended for entering human names enabled (e.g.
+     text prediction from the user's contact list). Intended for situations such as customer name
+     fields.
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-katakana">katakana</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-katakana">Katakana</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-kana">Kana</span>
+     <td> Katakana input, using full-width characters, with support for converting to kanji.
+     Intended for Japanese text input.
+
+<!-- See comment on https://plus.google.com/u/0/107429617152575897589/posts/WwVmKNjcZ4p
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-half-width-katakana">half-width-katakana</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-half-width-katakana">Half-width Katakana</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-katakana">Katakana</span>
+     <td> Katakana input, using half-width characters, with support for converting to kanji.
+     Intended for Japanese text input.
+-->
+
+    <tr>
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-numeric">numeric</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-numeric">Numeric</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-default">Default</span>
+     <td> Numeric input, including keys for the digits 0 to 9, the user's preferred thousands
+     separator character, and the character for indicating negative numbers. Intended for numeric
+     codes, e.g. credit card numbers. (For numbers, prefer "<code
+     data-x="attr-input-type-number">&lt;input type=number></code>".)
+
+    <tr class="rare">
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-tel">tel</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-telephone">Telephone</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-numeric">Numeric</span>
+     <td> Telephone number input, including keys for the digits 0 to 9, the "#" character, and the
+     "*" character. In some locales, this can also include alphabetic mnemonic labels (e.g. in the
+     US, the key labeled "2" is historically also labeled with the letters A, B, and C). <a
+     href="#avoid-inputmode">Rarely necessary</a>; use "<code data-x="attr-input-type-tel">&lt;input
+     type=tel></code>" instead.
+
+    <tr class="rare">
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-email">email</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-email">E-mail</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-default">Default</span>
+     <td> Text input in the user's locale, with keys for aiding in the input of e-mail addresses,
+     such as that for the "@" character and the "." character. <a href="#avoid-inputmode">Rarely
+     necessary</a>; use "<code data-x="attr-input-type-email">&lt;input type=email></code>" instead.
+
+    <tr class="rare">
+     <td> <dfn><code data-x="attr-fe-inputmode-keyword-url">url</code></dfn>
+     <td> <dfn data-x="attr-fe-inputmode-state-url">URL</dfn>
+     <td> <span data-x="attr-fe-inputmode-state-default">Default</span>
+     <td> Text input in the user's locale, with keys for aiding in the input of <span
+     data-x="URL">URLs</span>, such as that for the "/" and "." characters and for quick input of
+     strings commonly found in domain names such as "www." or ".co.uk". <a
+     href="#avoid-inputmode">Rarely necessary</a>; use "<code
+     data-x="attr-input-type-url">&lt;input type=url></code>" instead.
+
+  </table>
+
+  <p id="avoid-inputmode">The last three keywords listed above are only provided for completeness,
+  and are rarely necessary, as dedicated input controls exist for their usual use cases (as
+  described in the table above).</p>
+
+  <p>User agents <span w-nodev>must</span> all support the <dfn
+  data-x="attr-fe-inputmode-state-default">Default</dfn> input mode state, which corresponds to the
+  user agent's default input modality. <span w-nodev>This specification does not define how the
+  user agent's default modality is to operate.</span> The <i data-x="missing value default">missing value default</i> is the <span
+  data-x="attr-fe-inputmode-state-default">default input mode</span> state.</p>
+
+  <div w-nodev>
+
+  <p>User agents should use the input modality corresponding to the state of the <code
+  data-x="attr-fe-inputmode">inputmode</code> attribute when exposing a user interface for editing
+  the value of a form control to which the attribute <span
+  data-x="concept-input-apply">applies</span>. An input modality corresponding to a state is one
+  designed to fit the description of the state in the table above. This value can change
+  dynamically; user agents should update their interface as the attribute changes state, unless that
+  would go against the user's wishes.</p>
+
+  </div>
+
+
+  

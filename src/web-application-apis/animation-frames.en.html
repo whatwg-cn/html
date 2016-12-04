@@ -1,0 +1,65 @@
+<h3>Animation Frames</h3>
+
+  <p>Each <code>Document</code> has a <dfn>list of animation frame callbacks</dfn>, which must be
+  initially empty, and an <dfn>animation frame callback identifier</dfn>, which is a number which
+  must initially be zero.</p>
+
+  <p>When the <dfn><code
+  data-x="dom-window-requestAnimationFrame">requestAnimationFrame()</code></dfn> method is called,
+  the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>document</var> be this <code>Window</code> object's <span
+   data-x="concept-document-window">associated <code>Document</code></span>.</p></li>
+
+   <li><p>Increment <var>document</var>'s <span>animation frame callback identifier</span> by
+   one.</p></li>
+
+   <li><p>Append the method's argument to <var>document</var>'s <span>list of animation frame
+   callbacks</span>, associated with <var>document</var>'s <span>animation frame callback
+   identifier</span>'s current value.</p></li>
+
+   <li><p>Return <var>document</var>'s <span>animation frame callback identifier</span>'s current
+   value.</p></li>
+
+  </ol>
+
+  <p>When the <dfn><code
+  data-x="dom-window-cancelAnimationFrame">cancelAnimationFrame()</code></dfn> method is called,
+  the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>document</var> be this <code>Window</code> object's <span
+   data-x="concept-document-window">associated <code>Document</code></span>.</p></li>
+
+   <li><p>Find the entry in <var>document</var>'s <span>list of animation frame callbacks</span>
+   that is associated with the value given by the method's argument.</p></li>
+
+   <li><p>If there is such an entry, remove it from <var>document</var>'s <span>list of animation
+   frame callbacks</span>.</p></li>
+
+  </ol>
+
+  <p>When the user agent is to <dfn>run the animation frame callbacks</dfn> for a
+  <code>Document</code> <var>doc</var> with a timestamp <var>now</var>, it must run the following
+  steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>callbacks</var> be a list of the entries in <var>doc</var>'s <span>list of
+   animation frame callbacks</span>, in the order in which they were added to the list.</p></li>
+
+   <li><p>Set <var>doc</var>'s <span>list of animation frame callbacks</span> to the empty
+   list.</p></li>
+
+   <li><p>For each entry in <var>callbacks</var>, in order: <span data-x="es-invoking-callback-functions">invoke the callback</span>, passing
+   <var>now</var> as the only argument, and if an exception is thrown, <span>report the
+   exception</span>. <ref spec=WEBIDL></p></li>
+
+  </ol>
+
+
+
+  

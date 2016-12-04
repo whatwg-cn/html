@@ -1,0 +1,310 @@
+<h4 id="structuredclone" data-export="" data-lt="StructuredClone"
+  data-dfn-type="abstract-op"><dfn>StructuredClone</dfn> ( <var>input</var>, <var>targetRealm</var>
+  [ , <var>memory</var> ] )</h4>
+
+  <ol>
+   <li><p>If <var>memory</var> was not supplied, let <var>memory</var> be an empty map.</p></li>
+
+   <li><p>If <var>memory</var> contains an entry with key <var>input</var>, then return that entry's
+   value.</p></li>
+
+   <li><p>If <span data-x="js-Type">Type</span>(<var>input</var>) is Undefined, Null, Boolean,
+   String, or Number, then return <var>input</var>.</p></li>
+
+   <li><p>If <span data-x="js-Type">Type</span>(<var>input</var>) is Symbol, then throw a
+   <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>deepClone</var> be false.</p></li>
+
+   <li><p>If <var>input</var> has a [[BooleanData]] internal slot, then let <var>output</var> be a
+   new  Boolean object in <var>targetRealm</var> whose [[BooleanData]] internal slot value is the
+   [[BooleanData]] internal slot value of <var>input</var>.</p></li>
+
+   <li><p>Otherwise, if <var>input</var> has a [[NumberData]] internal slot, then let
+   <var>output</var> be a new Number object in <var>targetRealm</var> whose [[NumberData]] internal
+   slot value is the [[NumberData]] internal slot value of <var>input</var>.</p></li>
+
+   <li><p>Otherwise, if <var>input</var> has a [[StringData]] internal slot, then let
+   <var>output</var> be a new String object in <var>targetRealm</var> whose [[StringData]] internal
+   slot value is the [[StringData]] internal slot value of <var>input</var>.</p></li>
+
+   <li><p>Otherwise, if <var>input</var> has a [[DateValue]] internal slot, then let
+   <var>output</var> be a new Date object in <var>targetRealm</var> whose [[DateValue]] internal
+   slot value is the [[DateValue]] internal slot value of <var>input</var>.</p></li>
+
+   <li><p>Otherwise, if <var>input</var> has a [[RegExpMatcher]] internal slot, then let
+   <var>output</var> be a new RegExp object in <var>targetRealm</var> whose [[RegExpMatcher]]
+   internal slot value is the [[RegExpMatcher]] internal slot value of <var>input</var>, whose
+   [[OriginalSource]] internal slot value is the [[OriginalSource]] internal slot value of
+   <var>input</var>, and whose whose [[OriginalFlags]] internal slot value is the [[OriginalFlags]]
+   internal slot value of <var>input</var>.</p></li>
+
+   <li>
+    <p>Otherwise, if <var>input</var> has an [[ArrayBufferData]] internal slot, then:</p>
+
+    <ol>
+     <li><p>If <span>IsDetachedBuffer</span>(<var>input</var>) is true, then throw a
+     <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>.</p></li>
+
+     <li><p>Let <var>outputArrayBuffer</var> be the <span>%ArrayBuffer%</span> intrinsic object in
+     <var>targetRealm</var>.
+
+     <li><p>Let <var>output</var> be ? <span>CloneArrayBuffer</span>(<var>input</var>, 0,
+     <var>outputArrayBuffer</var>).</p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Otherwise, if <var>input</var> has a [[ViewedArrayBuffer]] internal slot, then:</p>
+
+    <ol>
+     <li><p>Let <var>buffer</var> be the value of <var>input</var>'s [[ViewedArrayBuffer]] internal
+     slot.</p></li>
+
+     <li><p>Let <var>bufferClone</var> be ? <span>StructuredClone</span>(<var>buffer</var>,
+     <var>targetRealm</var>, <var>memory</var>).</p></li>
+
+     <li><p>If <var>input</var> has a [[DataView]] internal slot, then let <var>output</var> be a
+     new DataView object in <var>targetRealm</var> whose [[DataView]] internal slot value is true,
+     whose [[ViewedArrayBuffer]] internal slot value is <var>bufferClone</var>, whose [[ByteLength]]
+     internal slot value is the [[ByteLength]] internal slot value of <var>input</var>, and whose
+     [[ByteOffset]] internal slot value is the [[ByteOffset]] internal slot value of
+     <var>input</var>.</p></li>
+
+     <li>
+      <p>Otherwise:</p>
+
+      <ol>
+       <li><p>Assert: <var>input</var> has a [[TypedArrayName]] internal slot.</p></li>
+
+       <li><p>Let <var>constructor</var> be the intrinsic object listed in column one of <span>The
+       <var>TypedArray</var> Constructors</span> table for the value of <var>input</var>'s
+       [[TypedArrayName]] internal slot in <var>targetRealm</var>.</p></li>
+
+       <li><p>Let <var>byteOffset</var> be <var>input</var>'s [[ByteOffset]] internal slot
+       value.</p></li>
+
+       <li><p>Let <var>length</var> be <var>input</var>'s [[ArrayLength]] internal slot
+       value.</p></li>
+
+       <li><p>Let <var>output</var> be ? <span>TypedArrayCreate</span>(<var>constructor</var>,
+       « <var>bufferClone</var>, <var>byteOffset</var>, <var>length</var> »).
+      </ol>
+     </li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Otherwise, if <var>input</var> has [[MapData]] internal slot, then:</p>
+
+    <ol>
+     <li><p>Let <var>output</var> be a new Map object in <var>targetRealm</var> whose [[MapData]]
+     internal slot value is a new empty <span data-x="js-List">List</span>.</p></li>
+
+     <li><p>Set <var>deepClone</var> to true.</p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Otherwise, if <var>input</var> has [[SetData]] internal slot, then:</p>
+
+    <ol>
+     <li><p>Let <var>output</var> be a new Set object in <var>targetRealm</var> whose [[SetData]]
+     internal slot value is a new empty <span data-x="js-List">List</span>.</p></li>
+
+     <li><p>Set <var>deepClone</var> to true.</p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Otherwise, if <var>input</var> is an Array exotic object, then:</p>
+    <!-- IsArray supports proxies too, which we cannot -->
+
+    <ol>
+     <li><p>Let <var>inputLen</var> be <span>OrdinaryGetOwnProperty</span>(<var>input</var>,
+     "<code data-x="">length</code>").[[Value]].</p></li>
+
+     <li><p>Let <var>outputProto</var> be the <span>%ArrayPrototype%</span> intrinsic object in
+     <var>targetRealm</var>.</p></li>
+
+     <li><p>Let <var>output</var> be ! <span>ArrayCreate</span>(<var>inputLen</var>,
+     <var>outputProto</var>).</p></li>
+
+     <li><p>Set <var>deepClone</var> to true.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Otherwise, if <var>input</var> has a [[<span>Clone</span>]] internal method, then let
+   <var>output</var> be ? <var>input</var>.[[<span>Clone</span>]](<var>targetRealm</var>,
+   <var>memory</var>).</p></li>
+
+   <li><p>Otherwise, if <span>IsCallable</span>(<var>input</var>) is true, then throw a
+   <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li>
+    <p>Otherwise, if <var>input</var> has any internal slot other than [[Prototype]] or
+    [[Extensible]], then throw a <span>"<code>DataCloneError</code>"</span>
+    <code>DOMException</code>.</p>
+
+    <p class="example">For instance, a [[PromiseState]] or [[WeakMapData]] internal slot.</p>
+   </li>
+
+   <li>
+    <p>Otherwise, if <var>input</var> is an exotic object, then throw a
+    <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>.</p>
+
+    <p class="example">For instance, a proxy object.</p>
+  </li>
+
+   <li>
+    <p>Otherwise:</p>
+
+    <ol>
+     <li><p>Let <var>output</var> be a new Object in <var>targetRealm</var>.</p></li>
+
+     <li><p>Set <var>deepClone</var> to true.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Create an entry in <var>memory</var> whose key is <var>input</var> and value is
+   <var>output</var>.</p></li>
+
+   <li>
+    <p>If <var>deepClone</var> is true, then:</p>
+
+    <ol>
+     <li>
+      <p>If <var>input</var> has a [[MapData]] internal slot, then:
+
+      <ol>
+       <li><p>Let <var>inputList</var> the value of <var>input</var>'s [[MapData]] internal
+       slot.</p></li>
+
+       <li><p>Let <var>copiedList</var> be a new empty <span data-x="js-List">List</span>.
+
+       <li>
+        <p>Repeat for each <span>Record</span> { [[Key]], [[Value]] } <var>entry</var> that is an
+        element of <var>inputList</var>,</p>
+
+        <ol>
+         <li><p>Let <var>copiedEntry</var> be a new <span>Record</span> {
+         [[Key]]: <var>entry</var>.[[Key]],
+         [[Value]]: <var>entry</var>.[[Value]] }.</p></li>
+
+         <li><p>If <var>copiedEntry</var>.[[Key]] is not empty, append <var>copiedEntry</var> as the
+         last element of <var>copiedList</var>.</p></li>
+        </ol>
+
+       <li><p>Let <var>outputList</var> be the value of <var>output</var>'s [[MapData]] internal
+       slot.</p></li>
+
+       <li>
+        <p>For each <span>Record</span> { [[Key]], [[Value]] } <var>entry</var> that is an element
+        of <var>copiedList</var>,</p>
+
+        <ol>
+         <li><p>Let <var>outputKey</var> be ? <span>StructuredClone</span>(<var>entry</var>.[[Key]],
+         <var>targetRealm</var>, <var>memory</var>).</p></li>
+
+         <li><p>Let <var>outputValue</var> be ?
+         <span>StructuredClone</span>(<var>entry</var>.[[Value]], <var>targetRealm</var>,
+         <var>memory</var>).</p></li>
+
+         <li><p>Add { [[Key]]: <var>outputKey</var>, [[Value]]: <var>outputValue</var> } as the last
+         element of <var>outputList</var>.</p></li>
+        </ol>
+       </li>
+      </ol>
+     </li>
+
+     <li>
+      <p>Otherwise, if <var>input</var> has a [[SetData]] internal slot, then:</p>
+
+      <ol>
+       <li><p>Let <var>copiedList</var> be a copy of the value of <var>input</var>'s [[SetData]]
+       internal slot.</p></li>
+
+       <li><p>Let <var>outputList</var> be the value of <var>output</var>'s [[SetData]] internal
+       slot.</p></li>
+
+       <li>
+        <p>For each <var>entry</var> that is an element of <var>copiedList</var> that is not
+        empty,</p>
+
+        <ol>
+         <li><p>Let <var>outputEntry</var> be ? <span>StructuredClone</span>(<var>entry</var>,
+         <var>targetResult</var>, <var>memory</var>).</p></li>
+
+         <li><p>Add <var>outputEntry</var> as the last element of <var>outputList</var>.</p></li>
+        </ol>
+       </li>
+      </ol>
+     </li>
+
+     <li>
+      <p>Otherwise:
+
+      <ol>
+       <li><p>Let <var>enumerableKeys</var> be a new empty <span
+       data-x="js-List">List</span>.</p></li>
+
+       <li>
+        <p>For each <var>key</var> in ! <var>input</var>.[[OwnPropertyKeys]]():</p>
+
+        <ol>
+         <li>
+          <p>If <span data-x="js-Type">Type</span>(<var>key</var>) is String, then:</p>
+
+          <ol>
+           <li><p>Let <var>inputDesc</var> be !
+           <var>input</var>.[[GetOwnProperty]](<var>key</var>).</p></li>
+
+           <li><p>If <var>inputDesc</var>.[[Enumerable]] is true, then add <var>key</var> as the
+           last element of <var>enumerableKeys</var>.</p></li>
+          </ol>
+         </li>
+        </ol>
+       </li>
+
+       <li>
+        <p>For each <var>key</var> in <var>enumerableKeys</var>:</p>
+
+        <ol>
+         <li>
+          <p>If ! <span>HasOwnProperty</span>(<var>input</var>, <var>key</var>) is true, then:</p>
+
+          <ol>
+           <li><p>Let <var>inputValue</var> be ? <var>input</var>.[[Get]](<var>key</var>,
+           <var>input</var>).</p></li>
+
+           <li><p>Let <var>outputValue</var> be ?
+           <span>StructuredClone</span>(<var>inputValue</var>, <var>targetRealm</var>,
+           <var>memory</var>).</p></li>
+
+           <li><p>Perform ? <span>CreateDataProperty</span>(<var>output</var>, <var>key</var>,
+           <var>outputValue</var>).</p></li>
+          </ol>
+         </li>
+        </ol>
+       </li>
+      </ol>
+
+      <p class="note">The key collection performed above is very similar to the JavaScript
+      specification's <span>EnumerableOwnProperties</span> operation, but crucially it uses the
+      deterministic ordering provided by the [[OwnPropertyKeys]] internal method, instead of
+      reordering the keys in an unspecified manner as <span>EnumerableOwnProperties</span> does.
+      <ref spec=JAVASCRIPT></p>
+     </li>
+    </ol>
+   </li>
+
+   <li><p>Return <var>output</var>.</p></li>
+  </ol>
+
+  <p class="note">In general implementations will need to use some kind of serialization and
+  marshalling to implement the creation of objects in <var>targetRealm</var>, as
+  <var>targetRealm</var> could be in a different <span>event loop</span> and not easily accessible
+  to the code that invokes <span>StructuredCloneWithTransfer</span> or
+  <span>StructuredClone</span>.</p>
+
+  

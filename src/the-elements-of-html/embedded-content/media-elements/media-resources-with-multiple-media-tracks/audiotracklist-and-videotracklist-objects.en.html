@@ -1,0 +1,383 @@
+<h6><code>AudioTrackList</code> and <code>VideoTrackList</code> objects</h6>
+
+  <p>The <code>AudioTrackList</code> and <code>VideoTrackList</code> interfaces are used by
+  attributes defined in the previous section.</p>
+
+  <pre class="idl">interface <dfn>AudioTrackList</dfn> : <span>EventTarget</span> {
+  readonly attribute unsigned long <span data-x="dom-AudioTrackList-length">length</span>;
+  <a href="#dom-tracklist-item">getter</a> <span>AudioTrack</span> (unsigned long index);
+  <span>AudioTrack</span>? <span data-x="dom-AudioTrackList-getTrackById">getTrackById</span>(DOMString id);
+
+  attribute <span>EventHandler</span> <span data-x="handler-TrackList-onchange">onchange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-TrackList-onaddtrack">onaddtrack</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-TrackList-onremovetrack">onremovetrack</span>;
+};
+
+interface <dfn>AudioTrack</dfn> {
+  readonly attribute DOMString <span data-x="dom-AudioTrack-id">id</span>;
+  readonly attribute DOMString <span data-x="dom-AudioTrack-kind">kind</span>;
+  readonly attribute DOMString <span data-x="dom-AudioTrack-label">label</span>;
+  readonly attribute DOMString <span data-x="dom-AudioTrack-language">language</span>;
+  attribute boolean <span data-x="dom-AudioTrack-enabled">enabled</span>;
+};
+
+interface <dfn>VideoTrackList</dfn> : <span>EventTarget</span> {
+  readonly attribute unsigned long <span data-x="dom-VideoTrackList-length">length</span>;
+  <a href="#dom-tracklist-item">getter</a> <span>VideoTrack</span> (unsigned long index);
+  <span>VideoTrack</span>? <span data-x="dom-VideoTrackList-getTrackById">getTrackById</span>(DOMString id);
+  readonly attribute long <span data-x="dom-VideoTrackList-selectedIndex">selectedIndex</span>;
+
+  attribute <span>EventHandler</span> <span data-x="handler-TrackList-onchange">onchange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-TrackList-onaddtrack">onaddtrack</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-TrackList-onremovetrack">onremovetrack</span>;
+};
+
+interface <dfn>VideoTrack</dfn> {
+  readonly attribute DOMString <span data-x="dom-VideoTrack-id">id</span>;
+  readonly attribute DOMString <span data-x="dom-VideoTrack-kind">kind</span>;
+  readonly attribute DOMString <span data-x="dom-VideoTrack-label">label</span>;
+  readonly attribute DOMString <span data-x="dom-VideoTrack-language">language</span>;
+  attribute boolean <span data-x="dom-VideoTrack-selected">selected</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code data-x="dom-media-audioTracks">audioTracks</code> . <code subdfn data-x="dom-AudioTrackList-length">length</code></dt>
+   <dt><var>media</var> . <code data-x="dom-media-videoTracks">videoTracks</code> . <code subdfn data-x="dom-VideoTrackList-length">length</code></dt>
+
+   <dd>
+
+    <p>Returns the number of tracks in the list.</p>
+
+   </dd>
+
+   <dt><var>audioTrack</var> = <var>media</var> . <code data-x="dom-media-audioTracks">audioTracks</code>[<var>index</var>]</dt>
+   <dt><var>videoTrack</var> = <var>media</var> . <code data-x="dom-media-videoTracks">videoTracks</code>[<var>index</var>]</dt>
+
+   <dd>
+
+    <p>Returns the specified <code>AudioTrack</code> or <code>VideoTrack</code> object.</p>
+
+   </dd>
+
+   <dt><var>audioTrack</var> = <var>media</var> . <code data-x="dom-media-audioTracks">audioTracks</code> . <code subdfn data-x="dom-AudioTrackList-getTrackById">getTrackById</code>( <var>id</var> )</dt>
+   <dt><var>videoTrack</var> = <var>media</var> . <code data-x="dom-media-videoTracks">videoTracks</code> . <code subdfn data-x="dom-VideoTrackList-getTrackById">getTrackById</code>( <var>id</var> )</dt>
+
+   <dd>
+
+    <p>Returns the <code>AudioTrack</code> or <code>VideoTrack</code> object with the given identifier, or null if no track has that identifier.</p>
+
+   </dd>
+
+   <dt><var>audioTrack</var> . <code subdfn data-x="dom-AudioTrack-id">id</code></dt>
+   <dt><var>videoTrack</var> . <code subdfn data-x="dom-VideoTrack-id">id</code></dt>
+
+   <dd>
+
+    <p>Returns the ID of the given track. This is the ID that can be used with a <span
+    data-x="concept-url-fragment">fragment</span> if the format supports <span>media fragment
+    syntax</span>, and that can be used with the <code data-x="">getTrackById()</code> method.</p>
+
+   </dd>
+
+   <dt><var>audioTrack</var> . <code subdfn data-x="dom-AudioTrack-kind">kind</code></dt>
+   <dt><var>videoTrack</var> . <code subdfn data-x="dom-VideoTrack-kind">kind</code></dt>
+
+   <dd>
+
+    <p>Returns the category the given track falls into. The <a href="#dom-TrackList-getKind-categories">possible track categories</a> are given below.</p>
+
+   </dd>
+
+   <dt><var>audioTrack</var> . <code subdfn data-x="dom-AudioTrack-label">label</code></dt>
+   <dt><var>videoTrack</var> . <code subdfn data-x="dom-VideoTrack-label">label</code></dt>
+
+   <dd>
+
+    <p>Returns the label of the given track, if known, or the empty string otherwise.</p>
+
+   </dd>
+
+   <dt><var>audioTrack</var> . <code subdfn data-x="dom-AudioTrack-language">language</code></dt>
+   <dt><var>videoTrack</var> . <code subdfn data-x="dom-VideoTrack-language">language</code></dt>
+
+   <dd>
+
+    <p>Returns the language of the given track, if known, or the empty string otherwise.</p>
+
+   </dd>
+
+   <dt><var>audioTrack</var> . <code subdfn data-x="dom-AudioTrack-enabled">enabled</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns true if the given track is active, and false otherwise.</p>
+
+    <p>Can be set, to change whether the track is enabled or not. If multiple audio tracks are
+    enabled simultaneously, they are mixed.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code data-x="dom-media-videoTracks">videoTracks</code> . <code subdfn data-x="dom-VideoTrackList-selectedIndex">selectedIndex</code></dt>
+
+   <dd>
+
+    <p>Returns the index of the currently selected track, if any, or &#x2212;1 otherwise.</p>
+
+   </dd>
+
+   <dt><var>videoTrack</var> . <code subdfn data-x="dom-VideoTrack-selected">selected</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns true if the given track is active, and false otherwise.</p>
+
+    <p>Can be set, to change whether the track is selected or not. Either zero or one video track is
+    selected; selecting a new track while a previous one is selected will unselect the previous
+    one.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>An <code>AudioTrackList</code> object represents a dynamic list of zero or more audio tracks,
+  of which zero or more can be enabled at a time. Each audio track is represented by an
+  <code>AudioTrack</code> object.</p>
+
+  <p>A <code>VideoTrackList</code> object represents a dynamic list of zero or more video tracks, of
+  which zero or one can be selected at a time. Each video track is represented by a
+  <code>VideoTrack</code> object.</p>
+
+  <p>Tracks in <code>AudioTrackList</code> and <code>VideoTrackList</code> objects must be
+  consistently ordered. If the <span>media resource</span> is in a format that defines an order,
+  then that order must be used; otherwise, the order must be the relative order in which the tracks
+  are declared in the <span>media resource</span>. The order used is called the <i>natural order</i>
+  of the list.</p>
+
+  <p class="note">Each track in one of these objects thus has an index; the first has the index
+  0, and each subsequent track is numbered one higher than the previous one. If a <span>media
+  resource</span> dynamically adds or removes audio or video tracks, then the indices of the tracks
+  will change dynamically. If the <span>media resource</span> changes entirely, then all the
+  previous tracks will be removed and replaced with new tracks.</p>
+
+  <p>The <dfn><code data-x="dom-AudioTrackList-length">AudioTrackList.length</code></dfn> and <dfn><code data-x="dom-VideoTrackList-length">VideoTrackList.length</code></dfn> attributes must return
+  the number of tracks represented by their objects at the time of getting.</p>
+
+  <p>The <span>supported property indices</span> of <code>AudioTrackList</code> and
+  <code>VideoTrackList</code> objects at any instant are the numbers from zero to the number of
+  tracks represented by the respective object minus one, if any tracks are represented. If an
+  <code>AudioTrackList</code> or <code>VideoTrackList</code> object represents no tracks, it has no
+  <span>supported property indices</span>.</p>
+
+  <p id="dom-tracklist-item">To <span>determine the value of an indexed property</span> for a
+  given index <var>index</var> in an <code>AudioTrackList</code> or <code>VideoTrackList</code>
+  object <var>list</var>, the user agent must return the <code>AudioTrack</code> or
+  <code>VideoTrack</code> object that represents the <var>index</var>th track in <var>list</var>.</p>
+
+  <p>The <dfn><code data-x="dom-AudioTrackList-getTrackById">AudioTrackList.getTrackById(<var>id</var>)</code></dfn> and <dfn><code data-x="dom-VideoTrackList-getTrackById">VideoTrackList.getTrackById(<var>id</var>)</code></dfn> methods must return the first <code>AudioTrack</code> or
+  <code>VideoTrack</code> object (respectively) in the <code>AudioTrackList</code> or
+  <code>VideoTrackList</code> object (respectively) whose identifier is equal to the value of the
+  <var>id</var> argument (in the natural order of the list, as defined above). When no
+  tracks match the given argument, the methods must return null.</p>
+
+  <p>The <code>AudioTrack</code> and <code>VideoTrack</code> objects represent specific tracks of a
+  <span>media resource</span>. Each track can have an identifier, category, label, and language.
+  These aspects of a track are permanent for the lifetime of the track; even if a track is removed
+  from a <span>media resource</span>'s <code>AudioTrackList</code> or <code>VideoTrackList</code>
+  objects, those aspects do not change.</p>
+
+  <p>In addition, <code>AudioTrack</code> objects can each be enabled or disabled; this is the audio
+  track's <i>enabled state</i>. When an <code>AudioTrack</code> is created, its <i>enabled state</i>
+  must be set to false (disabled). The <span data-x="concept-media-load-resource">resource fetch
+  algorithm</span> can override this.</p>
+
+  <p>Similarly, a single <code>VideoTrack</code> object per <code>VideoTrackList</code> object can
+  be selected, this is the video track's <i>selection state</i>. When a <code>VideoTrack</code> is
+  created, its <i>selection state</i> must be set to false (not selected). The <span
+  data-x="concept-media-load-resource">resource fetch algorithm</span> can override this.</p>
+
+  <p>The <dfn><code data-x="dom-AudioTrack-id">AudioTrack.id</code></dfn> and <dfn><code data-x="dom-VideoTrack-id">VideoTrack.id</code></dfn> attributes must return the identifier
+  of the track, if it has one, or the empty string otherwise. If the <span>media resource</span> is
+  in a format that supports <span>media fragment syntax</span>, the identifier returned for a particular
+  track must be the same identifier that would enable the track if used as the name of a track in
+  the track dimension of such a <span data-x="concept-url-fragment">fragment</span>.
+  <ref spec=INBAND></p>
+
+  <p class="example">For example, in Ogg files, this would be the Name header field of the track. <ref spec=OGGSKELETONHEADERS></p>
+
+  <p>The <dfn><code data-x="dom-AudioTrack-kind">AudioTrack.kind</code></dfn> and <dfn><code data-x="dom-VideoTrack-kind">VideoTrack.kind</code></dfn> attributes must return the category
+  of the track, if it has one, or the empty string otherwise.</p>
+
+  <p>The category of a track is the string given in the first column of the table below that is the
+  most appropriate for the track based on the definitions in the table's second and third columns,
+  as determined by the metadata included in the track in the <span>media resource</span>. The cell
+  in the third column of a row says what the category given in the cell in the first column of that
+  row applies to; a category is only appropriate for an audio track if it applies to audio tracks,
+  and a category is only appropriate for video tracks if it applies to video tracks. Categories must
+  only be returned for <code>AudioTrack</code> objects if they are appropriate for audio, and must
+  only be returned for <code>VideoTrack</code> objects if they are appropriate for video.</p>
+
+  <p>For Ogg files, the Role header field of the track gives the relevant metadata. For DASH media
+  resources, the <code data-x="">Role</code> element conveys the information. For WebM, only the
+  <code data-x="">FlagDefault</code> element currently maps to a value. The <cite>Sourcing In-band
+  Media Resource Tracks from Media Containers into HTML</cite> specification has further details.
+  <ref spec=OGGSKELETONHEADERS> <ref spec=DASH> <ref spec=WEBMCG> <ref spec=INBAND></p>
+
+  </div>
+
+  <table id="dom-TrackList-getKind-categories">
+   <caption>Return values for <code data-x="dom-AudioTrack-kind">AudioTrack.kind</code> and <code data-x="dom-VideoTrack-kind">VideoTrack.kind</code></caption>
+   <thead>
+    <tr>
+     <th>Category
+     <th>Definition
+     <th>Applies to...</th>
+     <th>Examples
+   <tbody>
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-alternate">alternative</code></dfn>"
+     <td>A possible alternative to the main track, e.g. a different take of a song (audio), or a different angle (video).
+     <td>Audio and video.
+     <td>Ogg: "audio/alternate" or "video/alternate"; DASH: "alternate" without "main" and "commentary" roles, and, for audio, without the "dub" role (other roles ignored).
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-caption">captions</code></dfn>"
+     <td>A version of the main video track with captions burnt in. (For legacy content; new content would use text tracks.)
+     <td>Video only.
+     <td>DASH: "caption" and "main" roles together (other roles ignored).
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-descriptions">descriptions</code></dfn>"
+     <td>An audio description of a video track.
+     <td>Audio only.
+     <td>Ogg: "audio/audiodesc".
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-main">main</code></dfn>"
+     <td>The primary audio or video track.
+     <td>Audio and video.
+     <td>Ogg: "audio/main" or "video/main"; WebM: the "FlagDefault" element is set; DASH: "main" role without "caption", "subtitle", and "dub" roles (other roles ignored).
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-main-desc">main-desc</code></dfn>"
+     <td>The primary audio track, mixed with audio descriptions.
+     <td>Audio only.
+     <td>AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1. <!-- see https://www.w3.org/Bugs/Public/show_bug.cgi?id=17797#c1 -->
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-sign">sign</code></dfn>"
+     <td>A sign-language interpretation of an audio track.
+     <td>Video only.
+     <td>Ogg: "video/sign".
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-subtitle">subtitles</code></dfn>"
+     <td>A version of the main video track with subtitles burnt in. (For legacy content; new content would use text tracks.)
+     <td>Video only.
+     <td>DASH: "subtitle" and "main" roles together (other roles ignored).
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-translation">translation</code></dfn>"
+     <td>A translated version of the main audio track.
+     <td>Audio only.
+     <td>Ogg: "audio/dub". DASH: "dub" and "main" roles together (other roles ignored).
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-commentary">commentary</code></dfn>"
+     <td>Commentary on the primary audio or video track, e.g. a director's commentary.
+     <td>Audio and video.
+     <td>DASH: "commentary" role without "main" role (other roles ignored).
+
+    <tr>
+     <td>"<dfn><code data-x="value-track-kind-none"></code></dfn>" (empty string)
+     <td>No explicit kind, or the kind given by the track's metadata is not recognized by the user agent.
+     <td>Audio and video.
+     <td>
+
+  </table>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-AudioTrack-label">AudioTrack.label</code></dfn> and <dfn><code data-x="dom-VideoTrack-label">VideoTrack.label</code></dfn> attributes must return the label
+  of the track, if it has one, or the empty string otherwise. <ref spec=INBAND></p>
+
+  <p>The <dfn><code data-x="dom-AudioTrack-language">AudioTrack.language</code></dfn> and <dfn><code data-x="dom-VideoTrack-language">VideoTrack.language</code></dfn> attributes must return the
+  BCP 47 language tag of the language of the track, if it has one, or the empty string otherwise. If
+  the user agent is not able to express that language as a BCP 47 language tag (for example because
+  the language information in the <span>media resource</span>'s format is a free-form string without
+  a defined interpretation), then the method must return the empty string, as if the track had no
+  language. <ref spec=INBAND></p>
+
+  <p>The <dfn><code data-x="dom-AudioTrack-enabled">AudioTrack.enabled</code></dfn> attribute, on
+  getting, must return true if the track is currently enabled, and false otherwise. On setting, it
+  must enable the track if the new value is true, and disable it otherwise. (If the track is no
+  longer in an <code>AudioTrackList</code> object, then the track being enabled or disabled has no
+  effect beyond changing the value of the attribute on the <code>AudioTrack</code> object.)</p>
+
+  <p id="toggle-audio-track">Whenever an audio track in an <code>AudioTrackList</code> that was
+  disabled is enabled, and whenever one that was enabled is disabled, the user agent must
+  <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-media-change">change</code> at the <code>AudioTrackList</code> object.</p>
+
+  <p>An audio track that has no data for a particular position on the <span>media timeline</span>,
+  or that does not exist at that position, must be interpreted as being silent at that point on the
+  timeline.</p>
+
+  <p>The <dfn><code data-x="dom-VideoTrackList-selectedIndex">VideoTrackList.selectedIndex</code></dfn> attribute
+  must return the index of the currently selected track, if any. If the <code>VideoTrackList</code>
+  object does not currently represent any tracks, or if none of the tracks are selected, it must
+  instead return &#x2212;1.</p>
+
+  <p>The <dfn><code data-x="dom-VideoTrack-selected">VideoTrack.selected</code></dfn> attribute, on
+  getting, must return true if the track is currently selected, and false otherwise. On setting, it
+  must select the track if the new value is true, and unselect it otherwise. If the track is in a
+  <code>VideoTrackList</code>, then all the other <code>VideoTrack</code> objects in that list must
+  be unselected. (If the track is no longer in a <code>VideoTrackList</code> object, then the track
+  being selected or unselected has no effect beyond changing the value of the attribute on the
+  <code>VideoTrack</code> object.)</p>
+
+  <p id="toggle-video-track">Whenever a track in a <code>VideoTrackList</code> that was previously
+  not selected is selected, and whenever the selected track in a <code>VideoTrackList</code> is
+  unselected without a new track being selected in its stead, the user agent must <span>queue a
+  task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-media-change">change</code> at the <code>VideoTrackList</code> object. This <span
+  data-x="concept-task">task</span> must be <span data-x="queue a task">queued</span> before the
+  <span data-x="concept-task">task</span> that fires the <code
+  data-x="event-media-resize">resize</code> event, if any.</p>
+
+  <p>A video track that has no data for a particular position on the <span>media timeline</span>
+  must be interpreted as being fully transparent black at that point on the timeline, with the same
+  dimensions as the last frame before that position, or, if the position is before all the data for
+  that track, the same dimensions as the first frame for that track. A track that does not exist at
+  all at the current position must be treated as if it existed but had no data.</p>
+
+  <p class="example">For instance, if a video has a track that is only introduced after one hour of
+  playback, and the user selects that track then goes back to the start, then the user agent will
+  act as if that track started at the start of the <span>media resource</span> but was simply
+  transparent until one hour in.</p>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) <span w-nodev>that must be</span> supported, as <span>event handler IDL attributes</span>,
+  by all objects implementing the <code>AudioTrackList</code> and <code>VideoTrackList</code>
+  interfaces:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-TrackList-onchange">onchange</code></dfn> <td> <code data-x="event-media-change">change</code>
+    <tr><td><dfn><code data-x="handler-TrackList-onaddtrack">onaddtrack</code></dfn> <td> <code data-x="event-media-addtrack">addtrack</code>
+    <tr><td><dfn><code data-x="handler-TrackList-onremovetrack">onremovetrack</code></dfn> <td> <code data-x="event-media-removetrack">removetrack</code>
+  </table>
+
+  <!-- v2 should also fire an event when the list changes (but note that that should be on the media element event task source) -->
+
+  </div>
+
+
+  

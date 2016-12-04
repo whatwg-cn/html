@@ -1,0 +1,289 @@
+<h3>Frames and framesets</h3>
+
+  <p>User agent are expected to render <code>frameset</code> elements as a box with the height and
+  width of the <span>viewport</span>, with a surface rendered according to the following layout
+  algorithm:</p>
+
+  <ol>
+
+   <li>
+
+    <p>The <var>cols</var> and <var>rows</var> variables are lists of zero or more pairs consisting
+    of a number and a unit, the unit being one of <i>percentage</i>, <i>relative</i>, and
+    <i>absolute</i>.</p>
+
+    <p>Use the <span>rules for parsing a list of dimensions</span> to parse the value of the
+    element's <code undefined data-x="attr-frameset-cols">cols</code> attribute, if there is one.
+    Let <var>cols</var> be the result, or an empty list if there is no such attribute.</p>
+
+    <p>Use the <span>rules for parsing a list of dimensions</span> to parse the value of the
+    element's <code undefined data-x="attr-frameset-rows">rows</code> attribute, if there is one.
+    Let <var>rows</var> be the result, or an empty list if there is no such attribute.</p>
+
+   </li>
+
+   <li>
+
+    <p>For any of the entries in <var>cols</var> or <var>rows</var> that have the number zero and
+    the unit <i>relative</i>, change the entry's number to one.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>cols</var> has no entries, then add a single entry consisting of the value 1 and the
+    unit <i>relative</i> to <var>cols</var>.</p>
+
+    <p>If <var>rows</var> has no entries, then add a single entry consisting of the value 1 and the
+    unit <i>relative</i> to <var>rows</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Invoke the algorithm defined below to <span>convert a list of dimensions to a list of pixel
+    values</span> using <var>cols</var> as the input list, and the width of the surface that the
+    <code>frameset</code> is being rendered into, in <span data-x="'px'">CSS pixels</span>, as the
+    input dimension. Let <var>sized cols</var> be the resulting list.</p>
+
+    <p>Invoke the algorithm defined below to <span>convert a list of dimensions to a list of pixel
+    values</span> using <var>rows</var> as the input list, and the height of the surface that the
+    <code>frameset</code> is being rendered into, in <span data-x="'px'">CSS pixels</span>, as the
+    input dimension. Let <var>sized rows</var> be the resulting list.</p>
+
+   </li>
+
+   <li>
+
+    <p>Split the surface into a grid of <span data-x=""><var>w</var>&times;<var>h</var></span>
+    rectangles, where <var>w</var> is the number of entries in <var>sized cols</var> and
+    <var>h</var> is the number of entries in <var>sized rows</var>.</p>
+
+    <p>Size the columns so that each column in the grid is as many <span data-x="'px'">CSS
+    pixels</span> wide as the corresponding entry in the <var>sized cols</var> list.</p>
+
+    <p>Size the rows so that each row in the grid is as many <span data-x="'px'">CSS pixels</span>
+    high as the corresponding entry in the <var>sized rows</var> list.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>children</var> be the list of <code>frame</code> and <code>frameset</code> elements
+    that are <span data-x="concept-tree-child">children</span> of the <code>frameset</code> element
+    for which the algorithm was invoked.</p>
+
+   </li>
+
+   <li>
+
+    <p>For each row of the grid of rectangles created in the previous step, from top to bottom, run
+    these substeps:</p>
+
+    <ol>
+
+     <li>
+
+      <p>For each rectangle in the row, from left to right, run these substeps:</p>
+
+      <ol>
+
+       <li>
+
+        <p>If there are any elements left in <var>children</var>, take the first element in the
+        list, and assign it to the rectangle.</p>
+
+        <p>If this is a <code>frameset</code> element, then recurse the entire <code>frameset</code>
+        layout algorithm for that <code>frameset</code> element, with the rectangle as the
+        surface.</p>
+
+        <p>Otherwise, it is a <code>frame</code> element; render its <span>nested browsing
+        context</span>, positioned and sized to fit the rectangle.</p>
+
+       </li>
+
+       <li>
+
+        <p>If there are any elements left in <var>children</var>, remove the first element from
+        <var>children</var>.</p>
+
+       </li>
+
+      </ol>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>If the <code>frameset</code> element <span>has a border</span>, draw an outer set of borders
+    around the rectangles, using the element's <span>frame border color</span>.</p>
+
+    <p>For each rectangle, if there is an element assigned to that rectangle, and that element
+    <span>has a border</span>, draw an inner set of borders around that rectangle, using the
+    element's <span>frame border color</span>.</p>
+
+    <p>For each (visible) border that does not abut a rectangle that is assigned a
+    <code>frame</code> element with a <code undefined data-x="attr-frame-noresize">noresize</code>
+    attribute (including rectangles in further nested <code>frameset</code> elements), the user
+    agent is expected to allow the user to move the border, resizing the rectangles within, keeping
+    the proportions of any nested <code>frameset</code> grids.</p>
+
+    <p>A <code>frameset</code> or <code>frame</code> element <dfn>has a border</dfn> if the
+    following algorithm returns true:</p>
+
+    <ol>
+
+     <li><p>If the element has a <code data-x="">frameborder</code> attribute whose value is not the
+     empty string and whose first character is either a U+0031 DIGIT ONE (1) character, a U+0079
+     LATIN SMALL LETTER Y character (y), or a U+0059 LATIN CAPITAL LETTER Y character (Y), then
+     return true.</p></li>
+
+     <li><p>Otherwise, if the element has a <code data-x="">frameborder</code> attribute, return
+     false.</p></li>
+
+     <li><p>Otherwise, if the element has a parent element that is a <code>frameset</code> element,
+     then return true if <em>that</em> element <span>has a border</span>, and false if it does
+     not.</p></li>
+
+     <li><p>Otherwise, return true.</p></li>
+
+    </ol>
+
+    <p>The <!--en-GB--><dfn id="frame-border-colour">frame border color</dfn> of a
+    <code>frameset</code> or <code>frame</code> element is the color obtained from the following
+    algorithm:</p>
+
+    <ol>
+
+     <li><p>If the element has a <code data-x="">bordercolor</code> attribute, and applying the
+     <span>rules for parsing a legacy color value</span> to that attribute's value does not result
+     in an error, then return the color so obtained.</p></li>
+
+     <li><p>Otherwise, if the element has a parent element that is a <code>frameset</code> element,
+     then return the <span>frame border color</span> of that element.</p>
+
+     <li><p>Otherwise, return gray.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>The algorithm to <dfn>convert a list of dimensions to a list of pixel values</dfn> consists of
+  the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Let <var>input list</var> be the list of numbers and units passed to the algorithm.</p>
+
+    <p>Let <var>output list</var> be a list of numbers the same length as <var>input list</var>, all
+    zero.</p>
+
+    <p>Entries in <var>output list</var> correspond to the entries in <var>input list</var> that
+    have the same position.</p>
+
+   </li>
+
+   <li><p>Let <var>input dimension</var> be the size passed to the algorithm.</p>
+
+   <li>
+
+    <p>Let <var>count percentage</var> be the number of entries in <var>input list</var> whose unit
+    is <i>percentage</i>.</p>
+
+    <p>Let <var>total percentage</var> be the sum of all the numbers in <var>input list</var> whose
+    unit is <i>percentage</i>.</p>
+
+    <p>Let <var>count relative</var> be the number of entries in <var>input list</var> whose unit is
+    <i>relative</i>.</p>
+
+    <p>Let <var>total relative</var> be the sum of all the numbers in <var>input list</var> whose
+    unit is <i>relative</i>.</p>
+
+    <p>Let <var>count absolute</var> be the number of entries in <var>input list</var> whose unit is
+    <i>absolute</i>.</p>
+
+    <p>Let <var>total absolute</var> be the sum of all the numbers in <var>input list</var> whose
+    unit is <i>absolute</i>.</p>
+
+    <p>Let <var>remaining space</var> be the value of <var>input dimension</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>total absolute</var> is greater than <var>remaining space</var>, then for each entry
+    in <var>input list</var> whose unit is <i>absolute</i>, set the corresponding value in
+    <var>output list</var> to the number of the entry in <var>input list</var> multiplied by
+    <var>remaining space</var> and divided by <var>total absolute</var>. Then, set <var>remaining
+    space</var> to zero.</p>
+
+    <p>Otherwise, for each entry in <var>input list</var> whose unit is <i>absolute</i>, set the
+    corresponding value in <var>output list</var> to the number of the entry in <var>input
+    list</var>. Then, decrement <var>remaining space</var> by <var>total absolute</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>total percentage</var> multiplied by the <var>input dimension</var> and divided by
+    100 is greater than <var>remaining space</var>, then for each entry in <var>input list</var>
+    whose unit is <i>percentage</i>, set the corresponding value in <var>output list</var> to the
+    number of the entry in <var>input list</var> multiplied by <var>remaining space</var> and
+    divided by <var>total percentage</var>. Then, set <var>remaining space</var> to zero.</p>
+
+    <p>Otherwise, for each entry in <var>input list</var> whose unit is <i>percentage</i>, set the
+    corresponding value in <var>output list</var> to the number of the entry in <var>input
+    list</var> multiplied by the <var>input dimension</var> and divided by 100. Then, decrement
+    <var>remaining space</var> by <var>total percentage</var> multiplied by the <var>input
+    dimension</var> and divided by 100.</p>
+
+   </li>
+
+   <li>
+
+    <p>For each entry in <var>input list</var> whose unit is <i>relative</i>, set the corresponding
+    value in <var>output list</var> to the number of the entry in <var>input list</var> multiplied
+    by <var>remaining space</var> and divided by <var>total relative</var>.</p>
+
+   </li>
+
+   <li><p>Return <var>output list</var>.</p></li>
+
+  </ol>
+
+  <p>User agents working with integer values for frame widths (as opposed to user agents that can
+  lay frames out with subpixel accuracy) are expected to distribute the remainder first to the last
+  entry whose unit is <i>relative</i>, then equally (not proportionally) to each entry whose unit is
+  <i>percentage</i>, then equally (not proportionally) to each entry whose unit is <i>absolute</i>,
+  and finally, failing all else, to the last entry.</p>
+
+  <hr>
+
+<!--
+  <p>The user agent is expected to force the <span>'display'</span> property of <code>frame</code>
+  elements to 'block', the <span>'height'</span> property of <code>frame</code> elements to 0, and
+  the <span>'width'</span> property of <code>frame</code> elements to 0, irrespective of CSS rules.
+  (This only matters for when a <code>frame</code> element is rendered outside a
+  <code>frameset</code>.)</p>
+  https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2722 - as of Jan 2014, Chrome did this, but Firefox did not
+-->
+
+  <p>The contents of a <code>frame</code> element that does not have a <code>frameset</code> parent
+  are expected to be rendered as transparent black; the user agent is expected to not render the
+  <span>nested browsing context</span> in this case, and that <span>nested browsing context</span>
+  is expected to have a <span>viewport</span> with zero width and zero height.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

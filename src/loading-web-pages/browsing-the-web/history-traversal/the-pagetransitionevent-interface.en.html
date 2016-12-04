@@ -1,0 +1,51 @@
+<h5>The <code>PageTransitionEvent</code> interface</h5>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>PageTransitionEventInit</span> eventInitDict)]
+interface <dfn>PageTransitionEvent</dfn> : <span>Event</span> {
+  readonly attribute boolean <span data-x="dom-PageTransitionEvent-persisted">persisted</span>;
+};
+
+dictionary <dfn>PageTransitionEventInit</dfn> : <span>EventInit</span> {
+  boolean persisted = false;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>event</var> . <code subdfn data-x="dom-PageTransitionEvent-persisted">persisted</code></dt>
+
+   <dd>
+
+    <p>For the <code data-x="event-pageshow">pageshow</code> event, returns false if the page is
+    newly being loaded (and the <code data-x="event-load">load</code> event will fire). Otherwise,
+    returns true.</p>
+
+    <p>For the <code data-x="event-pagehide">pagehide</code> event, returns false if the page is
+    going away for the last time. Otherwise, returns true, meaning that (if nothing conspires to
+    make the page unsalvageable) the page might be reused if the user navigates back to this
+    page.</p>
+
+    <p>Things that can cause the page to be unsalvageable include:</p>
+
+    <ul class="brief">
+     <li><code data-x="dom-document-open">document.open()</code>
+     <li>Listening for <code data-x="event-beforeunload">beforeunload</code> events
+     <li>Listening for <code data-x="event-unload">unload</code> events
+     <li>Having <code>iframe</code>s that are not salvageable
+     <li>Active <code>WebSocket</code> objects
+     <li><span data-x="abort a document">Aborting a <code>Document</code></span>
+    </ul>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-PageTransitionEvent-persisted">persisted</code></dfn> attribute must
+  return the value it was initialized to. It represents the context information for the event.</p>
+
+  </div>
+
+
+
+  

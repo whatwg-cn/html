@@ -1,0 +1,261 @@
+<h4 id="the-template-element">The <dfn><code>template</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Metadata content</span>.</dd>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span data-x="script-supporting elements">Script-supporting element</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>metadata content</span> is expected.</dd>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dd>Where <span>script-supporting elements</span> are expected.</dd>
+   <dd>As a child of a <code>colgroup</code> element that doesn't have a <code data-x="attr-colgroup-span">span</code> attribute.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLTemplateElement</dfn> : <span>HTMLElement</span> {
+  readonly attribute <span>DocumentFragment</span> <span data-x="dom-template-content">content</span>;
+};</pre>
+</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>template</code> element is used to declare fragments of HTML that can be cloned and
+  inserted in the document by script.</p>
+
+  <p>In a rendering, the <code>template</code> element <span>represents</span> nothing.</p>
+
+  <p>The <span>template contents</span> of a <code>template</code> element are not children of the
+  element itself. Instead, they are stored in a <code>DocumentFragment</code> associated with a
+  different <code>Document</code> without a <span>browsing context</span> so as to avoid the
+  <code>template</code> contents interfering with the main <code>Document</code>. (For example, this
+  avoids form controls from being submitted, scripts from executing, and so forth.) The
+  <span>template contents</span> have <a href="#no-browsing-context">no conformance
+  requirements</a>.</p>
+
+  <div class="example">
+
+   <p>For example, consider the following document:</p>
+
+   <!-- https://www.quora.com/Homework-Question-How-do-I-write-a-program-that-produces-the-following-output-1 -->
+
+   <pre>&lt;!doctype html>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Homework&lt;/title>
+ &lt;body>
+  &lt;template id="template">&lt;p>Smile!&lt;/p>&lt;/template>
+  &lt;script>
+   let num = 3;
+   const fragment = document.getElementById('template').content.cloneNode(true);
+   while (num-- > 1) {
+     fragment.firstChild.before(fragment.firstChild.cloneNode(true));
+     fragment.firstChild.textContent += fragment.lastChild.textContent;
+   }
+   document.body.appendChild(fragment);
+  &lt;/script>
+&lt;/html></pre>
+
+   <p>The <code>p</code> element in the <code>template</code> is <em>not</em> a child of the
+   <code>template</code> in the DOM; it is a child of the <code>DocumentFragment</code> returned by
+   the <code>template</code> element's <code data-x="dom-template-content">content</code> IDL
+   attribute.</p>
+
+   <p>If the script were to call <code data-x="dom-node-appendchild">appendChild()</code> on the
+   <code>template</code> element, that would add a child to the <code>template</code> element (as
+   for any other element); however, doing so is a violation of the <code>template</code> element's
+   content model.</p>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>template</var> . <code subdfn data-x="dom-template-content">content</code></dt>
+
+   <dd>
+
+    <p>Returns the <span>template contents</span> (a <code>DocumentFragment</code>).</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Each <code>template</code> element has an associated <code>DocumentFragment</code> object that
+  is its <dfn>template contents</dfn>. When a <code>template</code> element is created, the user
+  agent must run the following steps to establish the <span>template contents</span>:</p>
+
+  <ol>
+
+   <li><p>Let <var>doc</var> be the <code>template</code> element's <span>node document</span>'s <span>appropriate template contents owner
+   document</span>.</p></li>
+
+   <li><p>Create a <code>DocumentFragment</code> object whose <span>node document</span> is
+   <var>doc</var> and <span data-x="concept-DocumentFragment-host">host</span> is the
+   <code>template</code> element.</p></li>
+
+   <li><p>Set the <code>template</code> element's <span>template contents</span> to the newly
+   created <code>DocumentFragment</code> object.</p></li>
+
+  </ol>
+
+  <p>A <code>Document</code> <var>doc</var>'s <dfn>appropriate template contents owner
+  document</dfn> is the <code>Document</code> returned by the following algorithm:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If <var>doc</var> is not a <code>Document</code> created by this algorithm, run
+    these substeps:</p>
+
+    <ol>
+
+     <li>
+
+      <p>If <var>doc</var> does not yet have an <dfn>associated inert template
+      document</dfn> then run these substeps:</p>
+
+      <ol>
+
+       <li><p>Let <var>new doc</var> be a new <code>Document</code> (that does not have a
+       <span data-x="concept-document-bc">browsing context</span>). This is "a
+       <code>Document</code> created by this algorithm" for the purposes of the step
+       above.</p></li>
+
+       <li><p>If <var>doc</var> is an <span data-x="HTML documents">HTML document</span>, mark
+       <var>new doc</var> as an <span data-x="HTML documents">HTML document</span>
+       also.</p></li>
+
+       <li><p>Let <var>doc</var>'s <span>associated inert template document</span> be <var>new doc</var>.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>Set <var>doc</var> to <var>doc</var>'s <span>associated inert
+     template document</span>.</p></li>
+
+    </ol>
+
+    <p class="note">Each <code>Document</code> not created by this algorithm thus gets a single
+    <code>Document</code> to act as its proxy for owning the <span>template contents</span> of all
+    its <code>template</code> elements, so that they aren't in a <span>browsing context</span> and
+    thus remain inert (e.g. scripts do not run). Meanwhile, <code>template</code> elements inside
+    <code>Document</code> objects that <em>are</em> created by this algorithm just reuse the same
+    <code>Document</code> owner for their contents.</p>
+
+   </li>
+
+   <li><p>Return <var>doc</var>.</p></li>
+
+  </ol>
+
+  <p id="template-adopting-steps">The <span data-x="concept-node-adopt-ext">adopting steps</span>
+  (with <var>node</var> and <var>oldDocument</var> as parameters) for <code>template</code> elements
+  are the following:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Let <var>doc</var> be <var>node</var>'s <span>node document</span>'s
+    <span>appropriate template contents owner document</span>.</p>
+
+    <p class="note"><var>node</var>'s <span>node document</span> is the <code>Document</code> object
+    that <var>node</var> was just adopted <em>into</em>.</p>
+
+   </li>
+
+   <li><p><span data-x="concept-node-adopt">Adopt</span> <var>node</var>'s
+   <span>template contents</span> (a <code>DocumentFragment</code> object) into <var>doc</var>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-template-content">content</code></dfn> IDL attribute must return the
+  <code>template</code> element's <span>template contents</span>.</p>
+
+  <hr>
+
+  <p>The <span data-x="concept-node-clone-ext">cloning steps</span> for a <code>template</code>
+  element <var>node</var> being cloned to a copy <var>copy</var> must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>If the <var>clone children flag</var> is not set in the calling <span
+   data-x="concept-node-clone">clone</span> algorithm, abort these steps.</p></li>
+
+   <li><p>Let <var>copied contents</var> be the result of <span
+   data-x="concept-node-clone">cloning</span> all the children of <var>node</var>'s
+   <span>template contents</span>, with <var>document</var> set to <var>copy</var>'s <span>template contents</span>'s <span>node
+   document</span>, and with the <var>clone children
+   flag</var> set.</p></li>
+
+   <li><p>Append <var>copied contents</var> to <var>copy</var>'s <span>template
+   contents</span>.</p></li>
+
+  </ol>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, a script populates a table four-column with data from a data structure, using
+   a <code>template</code> to provide the element structure instead of manually generating the
+   structure from markup.</p>
+
+   <pre>&lt;!DOCTYPE html>
+&lt;html lang='en'>
+&lt;title>Cat data&lt;/title>
+&lt;script>
+ // Data is hard-coded here, but could come from the server
+ var data = [
+   { name: 'Pillar', color: 'Ticked Tabby', sex: 'Female (neutered)', legs: 3 },
+   { name: 'Hedral', color: 'Tuxedo', sex: 'Male (neutered)', legs: 4 },
+ ];
+&lt;/script>
+&lt;table>
+ &lt;thead>
+  &lt;tr>
+   &lt;th>Name &lt;th>Color &lt;th>Sex &lt;th>Legs
+ &lt;tbody>
+  &lt;template id="row">
+   &lt;tr>&lt;td>&lt;td>&lt;td>&lt;td>
+  &lt;/template>
+&lt;/table>
+&lt;script>
+ var template = document.querySelector('#row');
+ for (var i = 0; i &lt; data.length; i += 1) {
+   var cat = data[i];
+   var clone = template.content.cloneNode(true);
+   var cells = clone.querySelectorAll('td');
+   cells[0].textContent = cat.name;
+   cells[1].textContent = cat.color;
+   cells[2].textContent = cat.sex;
+   cells[3].textContent = cat.legs;
+   template.parentNode.appendChild(clone);
+ }
+&lt;/script></pre>
+
+   <p>This example uses <code data-x="dom-node-cloneNode">cloneNode()</code> on the
+   <code>template</code>'s contents; it could equivalently have used <code
+   data-x="dom-Document-importNode">document.importNode()</code>, which does the same thing. The
+   only difference between these two APIs is when the <span>node document</span> is updated: with
+   <code data-x="dom-node-cloneNode">cloneNode()</code> it is updated when the nodes are appended
+   with <code data-x="dom-node-appendChild">appendChild()</code>, with <code
+   data-x="dom-Document-importNode">document.importNode()</code> it is updated when the nodes are
+   cloned.</p>
+
+  </div>
+
+
+
+  <div w-nodev>
+
+  

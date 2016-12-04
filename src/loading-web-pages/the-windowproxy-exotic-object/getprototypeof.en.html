@@ -1,0 +1,14 @@
+<h4 id="windowproxy-getprototypeof">[[GetPrototypeOf]] ( )</h4>
+
+  <ol>
+   <li><p>Let <var>W</var> be the value of the
+   [[<span data-x="concept-windowproxy-window">Window</span>]] internal slot of
+   <b>this</b>.</p></li>
+
+   <li><p>If <span>IsPlatformObjectSameOrigin</span>(<var>W</var>) is true, then return !
+   <span>OrdinaryGetPrototypeOf</span>(<var>W</var>).</p></li>
+
+   <li><p>Return null.</p></li>
+  </ol>
+
+  

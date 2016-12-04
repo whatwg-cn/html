@@ -1,0 +1,412 @@
+<h5>Optional tags</h5>
+
+  <p>Certain tags can be <dfn data-x="syntax-tag-omission">omitted</dfn>.</p>
+
+  <p class="note">Omitting an element's <span data-x="syntax-start-tag">start tag</span> in the
+  situations described below does not mean the element is not present; it is implied, but it is
+  still there. For example, an HTML document always has a root <code>html</code> element, even if
+  the string <code data-x="">&lt;html></code> doesn't appear anywhere in the markup.</p>
+
+  <!-- <html> -->
+  <p>An <code>html</code> element's <span data-x="syntax-start-tag">start tag</span> may be omitted
+  if the first thing inside the <code>html</code> element is not a <span
+  data-x="syntax-comments">comment</span>.</p>
+
+  <div class="example">
+
+   <p>For example, in the following case it's ok to remove the "<code data-x="">&lt;html></code>"
+   tag:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+<strong>&lt;html></strong>
+  &lt;head>
+    &lt;title>Hello&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;p>Welcome to this example.&lt;/p>
+  &lt;/body>
+&lt;/html></pre>
+
+   <p>Doing so would make the document look like this:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+
+  &lt;head>
+    &lt;title>Hello&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;p>Welcome to this example.&lt;/p>
+  &lt;/body>
+&lt;/html></pre>
+
+   <p>This has the exact same DOM. In particular, note that whitespace around the <span>document
+   element</span> is ignored by the parser. The following example would also have the exact same
+   DOM:</p>
+
+   <pre>&lt;!DOCTYPE HTML>&lt;head>
+    &lt;title>Hello&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;p>Welcome to this example.&lt;/p>
+  &lt;/body>
+&lt;/html></pre>
+
+   <p>However, in the following example, removing the start tag moves the comment to before the
+   <code>html</code> element:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html>
+  <strong>&lt;!-- where is this comment in the DOM? --></strong>
+  &lt;head>
+    &lt;title>Hello&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;p>Welcome to this example.&lt;/p>
+  &lt;/body>
+&lt;/html></pre>
+
+   <p>With the tag removed, the document actually turns into the same as this:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;!-- where is this comment in the DOM? -->
+<small>&lt;html></small>
+  &lt;head>
+    &lt;title>Hello&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;p>Welcome to this example.&lt;/p>
+  &lt;/body>
+&lt;/html></pre>
+
+   <p>This is why the tag can only be removed if it is not followed by a comment: removing the tag
+   when there is a comment there changes the document's resulting parse tree. Of course, if the
+   position of the comment does not matter, then the tag can be omitted, as if the comment had been
+   moved to before the start tag in the first place.</p>
+
+  </div>
+
+  <!-- </html> -->
+  <p>An <code>html</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if
+  the <code>html</code> element is not immediately followed by a <span
+  data-x="syntax-comments">comment</span>.</p>
+
+  <!-- <head> -->
+  <p>A <code>head</code> element's <span data-x="syntax-start-tag">start tag</span> may be omitted if
+  the element is empty, or if the first thing inside the <code>head</code> element is an
+  element.</p>
+
+  <!-- </head> -->
+  <p>A <code>head</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>head</code> element is not immediately followed by a <span>space character</span> or a <span
+  data-x="syntax-comments">comment</span>.</p>
+
+  <!-- <body> -->
+  <p>A <code>body</code> element's <span data-x="syntax-start-tag">start tag</span> may be omitted
+  if the element is empty, or if the first thing inside the <code>body</code> element is not a
+  <span>space character</span> or a <span data-x="syntax-comments">comment</span>, except if the
+  first thing inside the <code>body</code> element is a <code>meta</code>, <code>link</code>,
+  <code>script</code>, <code>style</code>, or <code>template</code> element. <!-- Note that even if
+  the </head> end tag is present, the parser makes <style> and <script> elements between </head> and
+  <body> end up in the <head> instead of implying the <body> --></p>
+
+  <!-- </body> -->
+  <p>A <code>body</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>body</code> element is not immediately followed by a <span
+  data-x="syntax-comments">comment</span>.</p>
+
+  <div class="example">
+
+   <p>Note that in the example above, the <code>head</code> element start and end tags, and the
+   <code>body</code> element start tag, can't be omitted, because they are surrounded by
+   whitespace:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html><strong>
+  </strong>&lt;head><strong>
+    </strong>&lt;title>Hello&lt;/title><strong>
+  </strong>&lt;/head><strong>
+  </strong>&lt;body><strong>
+    </strong>&lt;p>Welcome to this example.&lt;/p>
+  &lt;/body>
+&lt;/html></pre>
+
+   <p>(The <code>body</code> and <code>html</code> element end tags could be omitted without
+   trouble; any spaces after those get parsed into the <code>body</code> element anyway.)</p>
+
+   <p>Usually, however, whitespace isn't an issue. If we first remove the whitespace we don't care
+   about:</p>
+
+   <pre>&lt;!DOCTYPE HTML>&lt;html>&lt;head>&lt;title>Hello&lt;/title>&lt;/head>&lt;body>&lt;p>Welcome to this example.&lt;/p>&lt;/body>&lt;/html></pre>
+
+   <p>Then we can omit a number of tags without affecting the DOM:</p>
+
+   <pre>&lt;!DOCTYPE HTML>&lt;title>Hello&lt;/title>&lt;p>Welcome to this example.&lt;/p></pre>
+
+   <p>At that point, we can also add some whitespace back:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;title>Hello&lt;/title>
+&lt;p>Welcome to this example.&lt;/p></pre>
+
+   <p>This would be equivalent to this document, with the omitted tags shown in their
+   parser-implied positions; the only whitespace text node that results from this is the newline at
+   the end of the <code>head</code> element:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+<small>&lt;html>&lt;head></small>&lt;title>Hello&lt;/title>
+<small>&lt;/head>&lt;body></small>&lt;p>Welcome to this example.&lt;/p><small>&lt;/body>&lt;/html></small></pre>
+
+  </div>
+
+  <!-- </li> -->
+  <p>An <code>li</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>li</code> element is immediately followed by another <code>li</code> element or if there is
+  no more content in the parent element.</p>
+
+  <!-- </dt> -->
+  <p>A <code>dt</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>dt</code> element is immediately followed by another <code>dt</code> element or a
+  <code>dd</code> element.</p>
+
+  <!-- </dd> -->
+  <p>A <code>dd</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>dd</code> element is immediately followed by another <code>dd</code> element or a
+  <code>dt</code> element, or if there is no more content in the parent element.</p>
+
+  <!-- </p> -->
+  <p>A <code>p</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>p</code> element is immediately followed by an <code>address</code>, <code>article</code>,
+  <code>aside</code>, <code>blockquote</code>, <code>details</code>, <code>div</code>, <code>dl</code>,
+  <code>fieldset</code>, <code>figcaption</code>, <code>figure</code>, <code>footer</code>, <code>form</code>, <code>h1</code>, <code>h2</code>,
+  <code>h3</code>, <code>h4</code>, <code>h5</code>, <code>h6</code>, <code>header</code>,
+  <code>hgroup</code>, <code>hr</code>, <code>main</code>, <code>menu</code>, <code>nav</code>,
+  <code>ol</code>, <code>p</code>, <code>pre</code>, <code>section</code>, <code>table</code>, or
+  <code>ul</code> element, or if there is no more content in the parent element and the parent
+  element is an <span data-x="HTML elements">HTML element</span> that is not an <code>a</code>,
+  <code>audio</code>, <code>del</code>, <code>ins</code>, <code>map</code>, <code>noscript</code>,
+  or <code>video</code> element, or an <span>autonomous custom element</span>.</p>
+
+  <div class="example">
+
+   <p>We can thus simplify the earlier example further:
+
+   <pre>&lt;!DOCTYPE HTML>&lt;title>Hello&lt;/title>&lt;p>Welcome to this example.<small>&lt;/p></small></pre>
+
+  </div>
+
+  <!-- </rt> -->
+  <p>An <code>rt</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>rt</code> element is immediately followed by an <code>rt</code> or <code>rp</code> element,
+  or if there is no more content in the parent element.</p>
+
+  <!-- </rp> -->
+  <p>An <code>rp</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>rp</code> element is immediately followed by an <code>rt</code> or <code>rp</code> element,
+  or if there is no more content in the parent element.</p>
+
+  <!-- </optgroup> (the text assumes <optgroup> can only be inside a <select>; commented out text
+  below can handle the non-<select> case if we ever allow it) -->
+  <p>An <code>optgroup</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted
+  if the <code>optgroup</code> element <!--has an ancestor <code>select</code> element and--> is
+  immediately followed by another <code>optgroup</code> element, or if <!--all of the elements that
+  are ancestors of the <code>optgroup</code> element, up to and including the first ancestor element
+  that is not an <code>optgroup</code> element, have no more content--> there is no more content in
+  the parent element.</p>
+  <!-- so e.g. the max number of </optgroup>s are omitted here:
+   <select><optgroup></select>
+   <p id=x><optgroup></optgroup>x</p>
+   <p id=x><optgroup><optgroup></optgroup></optgroup>x</p>
+   <p><optgroup id=x><optgroup></optgroup>x</p>
+   <p><optgroup><optgroup id=x>x</p>
+  -->
+
+  <!-- </option> -->
+  <p>An <code>option</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if
+  the <code>option</code> element is immediately followed by another <code>option</code> element, or
+  if it is immediately followed by an <code>optgroup</code> element, or if there is no more content
+  in the parent element.</p>
+
+  <!-- </menuitem> -->
+  <p>A <code>menuitem</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted
+  if the <code>menuitem</code> element is immediately followed by a <code>menuitem</code>,
+  <code>hr</code>, or <code>menu</code> element, or if there is no more content in the parent
+  element.</p>
+
+  <!-- <colgroup> -->
+  <p>A <code>colgroup</code> element's <span data-x="syntax-start-tag">start tag</span> may be
+  omitted if the first thing inside the <code>colgroup</code> element is a <code>col</code> element,
+  and if the element is not immediately preceded by another <code>colgroup</code> element whose
+  <span data-x="syntax-end-tag">end tag</span> has been omitted. (It can't be omitted if the element
+  is empty.)</p>
+
+  <!-- </colgroup> -->
+  <p>A <code>colgroup</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if
+  the <code>colgroup</code> element is not immediately followed by a <span>space character</span> or
+  a <span data-x="syntax-comments">comment</span>.</p>
+
+  <!-- </caption> -->
+  <p>A <code>caption</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if
+  the <code>caption</code> element is not immediately followed by a <span>space character</span> or
+  a <span data-x="syntax-comments">comment</span>.</p>
+
+  <!-- </thead> -->
+  <p>A <code>thead</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if
+  the <code>thead</code> element is immediately followed by a <code>tbody</code> or
+  <code>tfoot</code> element.</p>
+
+  <!-- <tbody> -->
+  <p>A <code>tbody</code> element's <span data-x="syntax-start-tag">start tag</span> may be omitted
+  if the first thing inside the <code>tbody</code> element is a <code>tr</code> element, and if the
+  element is not immediately preceded by a <code>tbody</code>, <code>thead</code>, or
+  <code>tfoot</code> element whose <span data-x="syntax-end-tag">end tag</span> has been omitted. (It
+  can't be omitted if the element is empty.)</p>
+
+  <!-- </tbody> -->
+  <p>A <code>tbody</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if
+  the <code>tbody</code> element is immediately followed by a <code>tbody</code> or
+  <code>tfoot</code> element, or if there is no more content in the parent element.</p>
+
+  <!-- </tfoot> -->
+  <p>A <code>tfoot</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if
+  there is no more content in the parent element.</p>
+
+  <!-- </tr> -->
+  <p>A <code>tr</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>tr</code> element is immediately followed by another <code>tr</code> element, or if there is
+  no more content in the parent element.</p>
+
+  <!-- </td> -->
+  <p>A <code>td</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>td</code> element is immediately followed by a <code>td</code> or <code>th</code> element,
+  or if there is no more content in the parent element.</p>
+
+  <!-- </th> -->
+  <p>A <code>th</code> element's <span data-x="syntax-end-tag">end tag</span> may be omitted if the
+  <code>th</code> element is immediately followed by a <code>td</code> or <code>th</code> element,
+  or if there is no more content in the parent element.</p>
+
+  <div class="example">
+
+   <p>The ability to omit all these table-related tags makes table markup much terser.</p>
+
+   <p>Take this example:</p>
+
+   <pre>&lt;table>
+ &lt;caption>37547 TEE Electric Powered Rail Car Train Functions (Abbreviated)&lt;/caption>
+ &lt;colgroup>&lt;col>&lt;col>&lt;col>&lt;/colgroup>
+ &lt;thead>
+  &lt;tr>
+   &lt;th>Function&lt;/th>
+   &lt;th>Control Unit&lt;/th>
+   &lt;th>Central Station&lt;/th>
+  &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+  &lt;tr>
+   &lt;td>Headlights&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+  &lt;/tr>
+  &lt;tr>
+   &lt;td>Interior Lights&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+  &lt;/tr>
+  &lt;tr>
+   &lt;td>Electric locomotive operating sounds&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+  &lt;/tr>
+  &lt;tr>
+   &lt;td>Engineer's cab lighting&lt;/td>
+   &lt;td>&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+  &lt;/tr>
+  &lt;tr>
+   &lt;td>Station Announcements - Swiss&lt;/td>
+   &lt;td>&lt;/td>
+   &lt;td>&#x2714;&lt;/td>
+  &lt;/tr>
+ &lt;/tbody>
+&lt;/table></pre>
+
+   <p>The exact same table, modulo some whitespace differences, could be marked up as follows:</p>
+
+   <pre>&lt;table>
+ &lt;caption>37547 TEE Electric Powered Rail Car Train Functions (Abbreviated)
+ &lt;colgroup>&lt;col>&lt;col>&lt;col>
+ &lt;thead>
+  &lt;tr>
+   &lt;th>Function
+   &lt;th>Control Unit
+   &lt;th>Central Station
+ &lt;tbody>
+  &lt;tr>
+   &lt;td>Headlights
+   &lt;td>&#x2714;
+   &lt;td>&#x2714;
+  &lt;tr>
+   &lt;td>Interior Lights
+   &lt;td>&#x2714;
+   &lt;td>&#x2714;
+  &lt;tr>
+   &lt;td>Electric locomotive operating sounds
+   &lt;td>&#x2714;
+   &lt;td>&#x2714;
+  &lt;tr>
+   &lt;td>Engineer's cab lighting
+   &lt;td>
+   &lt;td>&#x2714;
+  &lt;tr>
+   &lt;td>Station Announcements - Swiss
+   &lt;td>
+   &lt;td>&#x2714;
+&lt;/table></pre>
+
+   <p>Since the cells take up much less room this way, this can be made even terser by having each
+   row on one line:</p>
+
+   <pre>&lt;table>
+ &lt;caption>37547 TEE Electric Powered Rail Car Train Functions (Abbreviated)
+ &lt;colgroup>&lt;col>&lt;col>&lt;col>
+ &lt;thead>
+  &lt;tr> &lt;th>Function                              &lt;th>Control Unit     &lt;th>Central Station
+ &lt;tbody>
+  &lt;tr> &lt;td>Headlights                            &lt;td>&#x2714;                &lt;td>&#x2714;
+  &lt;tr> &lt;td>Interior Lights                       &lt;td>&#x2714;                &lt;td>&#x2714;
+  &lt;tr> &lt;td>Electric locomotive operating sounds  &lt;td>&#x2714;                &lt;td>&#x2714;
+  &lt;tr> &lt;td>Engineer's cab lighting               &lt;td>                 &lt;td>&#x2714;
+  &lt;tr> &lt;td>Station Announcements - Swiss         &lt;td>                 &lt;td>&#x2714;
+&lt;/table></pre>
+
+   <p>The only differences between these tables, at the DOM level, is with the precise position of
+   the (in any case semantically-neutral) whitespace.</p>
+
+  </div>
+
+  <p><strong>However</strong>, a <span data-x="syntax-start-tag">start tag</span> must never be
+  omitted if it has any attributes.</p>
+
+  <div class="example">
+
+   <p>Returning to the earlier example with all the whitespace removed and then all the optional
+   tags removed:</p>
+
+   <pre>&lt;!DOCTYPE HTML>&lt;title>Hello&lt;/title>&lt;p>Welcome to this example.</pre>
+
+   <p>If the <code>body</code> element in this example had to have a <code
+   data-x="attr-class">class</code> attribute and the <code>html</code> element had to have a <code
+   data-x="attr-lang">lang</code> attribute, the markup would have to become:</p>
+
+   <pre>&lt;!DOCTYPE HTML>&lt;html lang="en">&lt;title>Hello&lt;/title>&lt;body class="demo">&lt;p>Welcome to this example.</pre>
+
+  </div>
+
+  <p class="note">This section assumes that the document is conforming, in particular, that there
+  are no <span data-x="content models">content model</span> violations. Omitting tags in the fashion
+  described in this section in a document that does not conform to the <span>content models</span>
+  described in this specification is likely to result in unexpected DOM differences (this is, in
+  part, what the content models are designed to avoid).</p>
+
+
+  

@@ -1,0 +1,26 @@
+<h5 id="location-getownproperty">[[GetOwnProperty]] ( <var>P</var> )</h5>
+
+  <ol>
+   <li>
+    <p>If <span>IsPlatformObjectSameOrigin</span>(<b>this</b>) is true, then:</p>
+
+    <ol>
+     <li><p>Let <var>desc</var> be <span>OrdinaryGetOwnProperty</span>(<b>this</b>,
+     <var>P</var>).</p></li>
+
+     <li><p>If the value of the [[<span>DefaultProperties</span>]] internal slot of <b>this</b>
+     contains <var>P</var>, then set <var>desc</var>.[[Configurable]] to true.</p></li>
+
+     <li><p>Return <var>desc</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Let <var>property</var> be ! <span>CrossOriginGetOwnPropertyHelper</span>(<b>this</b>,
+   <var>P</var>).</p></li>
+
+   <li><p>If <var>property</var> is not undefined, return <var>property</var>.</p></li>
+
+   <li><p>Throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+  </ol>
+
+  

@@ -1,0 +1,92 @@
+<h6><dfn data-x="attr-input-type-reset">Reset Button</dfn> state (<code data-x="">type=reset</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-reset">Reset Button</span> state, the rules in this section
+  apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a button that, when activated, resets
+  the form. <span w-nodev>If the element has a <code data-x="attr-input-value">value</code>
+  attribute, the button's label must be the value of that attribute; otherwise, it must be an
+  implementation-defined string that means "Reset" or some such.</span> The element is a <span
+  data-x="concept-button">button</span>.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p class="note">Since the default label is implementation-defined, and the width of the button
+  typically depends on the button's label, the button's width can leak a few bits of fingerprintable
+  information. These bits are likely to be strongly correlated to the identity of the user agent and
+  the user's locale.</p>
+
+  <div w-nodev>
+
+  <p>The element's <span>input activation behavior</span>, if the element has a <span>form
+  owner</span> and the element's <span>node document</span> is <span>fully active</span>, is to
+  <span data-x="concept-form-reset">reset</span> the <span>form owner</span>; otherwise, it is to do
+  nothing.</p>
+
+  <p><strong>Constraint validation</strong>: The element is <span>barred from constraint
+  validation</span>.</p>
+
+  </div>
+
+  <div class="bookkeeping">
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute <span
+   data-x="concept-input-apply">applies</span> to this element and is in mode <span
+   data-x="dom-input-value-default">default</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-list">list</code>,
+   <code class="no-backref" data-x="attr-input-max">max</code>,
+   <code class="no-backref" data-x="attr-input-maxlength">maxlength</code>,
+   <code class="no-backref" data-x="attr-input-min">min</code>,
+   <code class="no-backref" data-x="attr-input-minlength">minlength</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-pattern">pattern</code>,
+   <code class="no-backref" data-x="attr-input-placeholder">placeholder</code>,
+   <code class="no-backref" data-x="attr-input-readonly">readonly</code>,
+   <code class="no-backref" data-x="attr-input-required">required</code>,
+   <code class="no-backref" data-x="attr-input-size">size</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>,
+   <code class="no-backref" data-x="attr-input-step">step</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-input-list">list</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionDirection">selectionDirection</code>,
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code class="no-backref" data-x="dom-textarea/input-select">select()</code>,
+   <code class="no-backref" data-x="dom-textarea/input-setRangeText">setRangeText()</code>,
+   <code class="no-backref" data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code>,
+   <code class="no-backref" data-x="dom-input-stepDown">stepDown()</code>, and
+   <code class="no-backref" data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+   <p>The <code class="no-backref" data-x="event-input">input</code> and <code
+   class="no-backref" data-x="event-change">change</code> events <span>do not apply</span>.</p>
+
+  </div>
+
+
+  

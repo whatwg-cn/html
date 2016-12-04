@@ -1,0 +1,29 @@
+<h5>Link type "<dfn><code data-x="rel-noreferrer">noreferrer</code></dfn>"</h5>
+
+  <p>The <code data-x="rel-noreferrer">noreferrer</code> keyword may be used with <code>a</code> and
+  <code>area</code> elements. This keyword does not create a <span>hyperlink</span>, but <span
+  data-x="hyperlink annotation">annotates</span> any other hyperlinks created by the element (the
+  implied hyperlink, if no other keywords create one).</p>
+
+  <p>It indicates that no referrer information is to be leaked when following the link.</p>
+
+  <div w-nodev>
+
+  <p>If a user agent follows a link defined by an <code>a</code> or <code>area</code> element that
+  has the <code data-x="rel-noreferrer">noreferrer</code> keyword, the user agent must set their
+  <span data-x="concept-request">request</span>'s <span
+  data-x="concept-request-referrer">referrer</span> to "<code data-x="">no-referrer</code>".</p>
+
+  <p class="note">For historical reasons, the <code data-x="rel-noreferrer">noreferrer</code>
+  keyword implies the behavior associated with the <code data-x="rel-noopener">noopener</code>
+  keyword when present on a hyperlink that <span data-x="creating a new browsing
+  context">creates</span> a new <span>browsing context</span>. That is, <code data-x="">&lt;a
+  href="..." rel="noreferrer" target="_blank"&gt;</code> has the same behavior as <code
+  data-x="">&lt;a href="..." rel="noreferrer noopener" target="_blank"&gt;</code>.</p>
+
+  </div>
+
+  <!-- v2: Would be nice to apply this to other elements too, e.g. letting <img> or CSS or <video>
+  hide the referrer -->
+
+  

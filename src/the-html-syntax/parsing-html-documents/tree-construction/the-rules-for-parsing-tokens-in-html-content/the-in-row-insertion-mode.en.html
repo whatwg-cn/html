@@ -1,0 +1,111 @@
+<h6 id="parsing-main-intr">The "<dfn data-x="insertion mode: in row">in row</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in row">in
+  row</span>" <span>insertion mode</span>, the user agent must handle the token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>A start tag whose tag name is one of: "th", "td"</dt>
+   <dd>
+
+    <p><span>Clear the stack back to a table row context</span>. (See below.)</p>
+
+    <p><span>Insert an HTML element</span> for the token, then switch the <span>insertion
+    mode</span> to "<span data-x="insertion mode: in cell">in cell</span>".</p>
+
+    <p>Insert a <span data-x="concept-parser-marker">marker</span> at the end of the <span>list of
+    active formatting elements</span>.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "tr"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have a <code>tr</code> element in table scope</span>, this is a <span>parse error</span>;
+    ignore the token.</p>
+
+    <p>Otherwise:</p>
+
+    <p><span>Clear the stack back to a table row context</span>. (See below.)</p>
+
+    <p>Pop the <span>current node</span> (which will be a <code>tr</code> element) from the
+    <span>stack of open elements</span>. Switch the <span>insertion mode</span> to "<span
+    data-x="insertion mode: in table body">in table body</span>".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "caption", "col", "colgroup", "tbody", "tfoot",
+   "thead", "tr"</dt>
+   <dt>An end tag whose tag name is "table"</dt>
+   <dd>
+
+    <!-- fake <tr> -->
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have a <code>tr</code> element in table scope</span>, this is a <span>parse error</span>;
+    ignore the token.</p>
+
+    <p>Otherwise:</p>
+
+    <p><span>Clear the stack back to a table row context</span>. (See below.)</p>
+
+    <p>Pop the <span>current node</span> (which will be a <code>tr</code> element) from the
+    <span>stack of open elements</span>. Switch the <span>insertion mode</span> to "<span
+    data-x="insertion mode: in table body">in table body</span>".</p>
+    <!-- end of fake </tr> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "tbody", "tfoot", "thead"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have an element in table scope</span> that is an <span data-x="HTML elements">HTML
+    element</span> with the same tag name as the token, this is a <span>parse error</span>;
+    ignore the token.</p>
+
+    <!-- fake <tr> -->
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have a <code>tr</code> element in table scope</span>, ignore the token.</p>
+
+    <p>Otherwise:</p>
+
+    <p><span>Clear the stack back to a table row context</span>. (See below.)</p>
+
+    <p>Pop the <span>current node</span> (which will be a <code>tr</code> element) from the
+    <span>stack of open elements</span>. Switch the <span>insertion mode</span> to "<span
+    data-x="insertion mode: in table body">in table body</span>".</p>
+    <!-- end of fake </tr> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "body", "caption", "col", "colgroup", "html", "td",
+   "th"</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    table">in table</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>When the steps above require the UA to <dfn>clear the stack back to a table row context</dfn>,
+  it means that the UA must, while the <span>current node</span> is not a <code>tr</code>,
+  <code>template</code>, or <code>html</code> element, pop elements from the <span>stack of open
+  elements</span>.</p>
+
+  <p class="note">The <span>current node</span> being an <code>html</code> element after this
+  process is a <span>fragment case</span>.</p>
+
+
+  

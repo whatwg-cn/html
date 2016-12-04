@@ -1,0 +1,147 @@
+<h4>The <dfn><code>aside</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Sectioning content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no <code>main</code> element descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>aside</code> element <span>represents</span> a section of a page that consists of
+  content that is tangentially related to the content around the <code>aside</code> element, and
+  which could be considered separate from that content. Such sections are often represented as
+  sidebars in printed typography.</p>
+
+  <p>The element can be used for typographical effects like pull quotes or sidebars, for
+  advertising, for groups of <code>nav</code> elements, and for other content that is considered
+  separate from the main content of the page.</p>
+
+  <p class="note">It's not appropriate to use the <code>aside</code> element just for
+  parentheticals, since those are part of the main flow of the document.</p>
+
+  <div class="example">
+
+   <p>The following example shows how an aside is used to mark up background material on Switzerland
+   in a much longer news story on Europe.</p>
+
+   <pre>&lt;aside>
+ &lt;h1>Switzerland&lt;/h1>
+ &lt;p>Switzerland, a land-locked country in the middle of geographic
+ Europe, has not joined the geopolitical European Union, though it is
+ a signatory to a number of European treaties.&lt;/p>
+&lt;/aside></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows how an aside is used to mark up a pull quote in a longer
+   article.</p>
+
+   <pre>...
+
+&lt;p>He later joined a large company, continuing on the same work.
+&lt;q>I love my job. People ask me what I do for fun when I'm not at
+work. But I'm paid to do my hobby, so I never know what to
+answer. Some people wonder what they would do if they didn't have to
+work... but I know what I would do, because I was unemployed for a
+year, and I filled that time doing exactly what I do now.&lt;/q>&lt;/p>
+
+&lt;aside>
+ &lt;q> People ask me what I do for fun when I'm not at work. But I'm
+ paid to do my hobby, so I never know what to answer. &lt;/q>
+&lt;/aside>
+
+&lt;p>Of course his work &mdash; or should that be hobby? &mdash;
+isn't his only passion. He also enjoys other pleasures.&lt;/p>
+
+...</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following extract shows how <code>aside</code> can be used for blogrolls and other side
+   content on a blog:</p>
+
+   <pre>&lt;body>
+ &lt;header>
+  &lt;h1>My wonderful blog&lt;/h1>
+  &lt;p>My tagline&lt;/p>
+ &lt;/header>
+ &lt;aside>
+  &lt;!-- <em>this aside contains two sections that are tangentially related
+  to the page, namely, links to other blogs, and links to blog posts
+  from this blog</em> -->
+  &lt;nav>
+   &lt;h1>My blogroll&lt;/h1>
+   &lt;ul>
+    &lt;li>&lt;a href="https://blog.example.com/">Example Blog&lt;/a>
+   &lt;/ul>
+  &lt;/nav>
+  &lt;nav>
+   &lt;h1>Archives&lt;/h1>
+   &lt;ol reversed>
+    &lt;li>&lt;a href="/last-post">My last post&lt;/a>
+    &lt;li>&lt;a href="/first-post">My first post&lt;/a>
+   &lt;/ol>
+  &lt;/nav>
+ &lt;/aside>
+ &lt;aside>
+  &lt;!-- <em>this aside is tangentially related to the page also, it
+  contains twitter messages from the blog author</em> -->
+  &lt;h1>Twitter Feed&lt;/h1>
+  &lt;blockquote cite="https://twitter.example.net/t31351234">
+   I'm on vacation, writing my blog.
+  &lt;/blockquote>
+  &lt;blockquote cite="https://twitter.example.net/t31219752">
+   I'm going to go on vacation soon.
+  &lt;/blockquote>
+ &lt;/aside>
+ &lt;article>
+  &lt;!-- <em>this is a blog post</em> -->
+  &lt;h1>My last post&lt;/h1>
+  &lt;p>This is my last post.&lt;/p>
+  &lt;footer>
+   &lt;p>&lt;a href="/last-post" rel=bookmark>Permalink&lt;/a>
+  &lt;/footer>
+ &lt;/article>
+ &lt;article>
+  &lt;!-- <em>this is also a blog post</em> -->
+  &lt;h1>My first post&lt;/h1>
+  &lt;p>This is my first post.&lt;/p>
+  &lt;aside>
+   &lt;!-- <em>this aside is about the blog post, since it's inside the
+   &lt;article> element; it would be wrong, for instance, to put the
+   blogroll here, since the blogroll isn't really related to this post
+   specifically, only to the page as a whole</em> -->
+   &lt;h1>Posting&lt;/h1>
+   &lt;p>While I'm thinking about it, I wanted to say something about
+   posting. Posting is fun!&lt;/p>
+  &lt;/aside>
+  &lt;footer>
+   &lt;p>&lt;a href="/first-post" rel=bookmark>Permalink&lt;/a>
+  &lt;/footer>
+ &lt;/article>
+ &lt;footer>
+  &lt;nav>
+   &lt;a href="/archives">Archives&lt;/a> &mdash;
+   &lt;a href="/about">About me&lt;/a> &mdash;
+   &lt;a href="/copyright">Copyright&lt;/a>
+  &lt;/nav>
+ &lt;/footer>
+&lt;/body></pre>
+
+  </div>
+
+
+
+  

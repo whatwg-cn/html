@@ -1,0 +1,244 @@
+<h4 id="the-menu-element">The <dfn id="menus"><code>menu</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd>If the element's <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="toolbar state">toolbar</span> state: <span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dd>If the element's <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup menu state">popup menu</span> state: as the child of a <code>menu</code> element whose <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup menu state">popup menu</span> state.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>If the element's <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="toolbar state">toolbar</span> state: either zero or more <code>li</code> and <span data-x="script-supporting elements">script-supporting</span> elements, or, <span>flow content</span>.</dd>
+   <dd>If the element's <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup menu state">popup menu</span> state: in any order, zero or more <code>menuitem</code> elements, zero or more <code>hr</code> elements, zero or more <code>menu</code> elements whose <code data-x="attr-menu-type">type</code> attributes are in the <span data-x="popup menu state">popup menu</span> state, and zero or more <span data-x="script-supporting elements">script-supporting</span> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-menu-type">type</code></dd>
+   <dd><code data-x="attr-menu-label">label</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLMenuElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-menu-type">type</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-menu-label">label</span>;
+};</pre>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>menu</code> element represents a list of commands.</p>
+
+  <!-- v2 idea: <menu> element should get an icon, like <command> element -->
+
+  <p>The <dfn><code data-x="attr-menu-type">type</code></dfn> attribute is an <span>enumerated
+  attribute</span> indicating the kind of menu being declared. The attribute has two states. The
+  "<dfn><code data-x="attr-menu-type-context">context</code></dfn>" keyword maps to the <dfn
+  data-x="popup menu state">popup menu</dfn> state, in which the element is declaring a context menu
+  or the menu for a <span data-x="attr-button-type-menu-state">menu button</span>. The "<dfn><code
+  data-x="attr-menu-type-toolbar">toolbar</code></dfn>" keyword maps to the <dfn data-x="toolbar
+  state">toolbar</dfn> state, in which the element is declaring a toolbar. The attribute may also be
+  omitted. The <i data-x="missing value default">missing value default</i> is the <span data-x="popup menu state">popup menu</span>
+  state if the parent element is a <code>menu</code> element whose <code
+  data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup menu state">popup
+  menu</span> state; otherwise, it is the <span data-x="toolbar state">toolbar</span> state.</p>
+
+  <p>If a <code>menu</code> element's <code data-x="attr-menu-type">type</code> attribute is in the
+  <span data-x="popup menu state">popup menu</span> state, then the element <span>represents</span>
+  the commands of a popup menu, and the user can only examine and interact with the commands if that
+  popup menu is activated through some other element, either via the <code
+  data-x="attr-contextmenu">contextmenu</code> attribute or the <code>button</code> element's <code
+  data-x="attr-button-menu">menu</code> attribute.</p>
+
+  <p>If a <code>menu</code> element's <code data-x="attr-menu-type">type</code> attribute is in the
+  <span data-x="toolbar state">toolbar</span> state, then the element <span>represents</span> a
+  toolbar consisting of its contents, in the form of either an unordered list of items (represented
+  by <code>li</code> elements), each of which represents a command that the user can perform or
+  activate, or, if the element has no <code>li</code> element children, <span>flow content</span>
+  describing available commands.</p>
+
+  <p>The <dfn><code data-x="attr-menu-label">label</code></dfn> attribute gives the label of the
+  menu. It is used by user agents to display nested menus in the UI: a context menu containing
+  another menu would use the nested menu's <code data-x="attr-menu-label">label</code> attribute for
+  the submenu's menu label. The <code data-x="attr-menu-label">label</code> attribute must only be
+  specified on <code>menu</code> elements whose parent element is a <code>menu</code> element whose
+  <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup menu state">popup
+  menu</span> state.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>A <code>menu</code> is a <dfn>currently relevant <code>menu</code> element</dfn> if it is the
+  child of a <span>currently relevant <code>menu</code> element</span>, or if it is the
+  <span>designated pop-up menu</span> of a <code>button</code> element that is not
+  <span>inert</span>, does not have a <code data-x="attr-hidden">hidden</code> attribute, and is not
+  the descendant of an element with a <code data-x="attr-hidden">hidden</code> attribute.</p>
+
+  <hr>
+
+  <p>A <dfn>menu construct</dfn> consists of an ordered list of zero or more <dfn data-x="menu item construct">menu item constructs</dfn>, which can be any of:</p>
+
+  <ul class="brief">
+   <li><span data-x="concept-command">Commands</span>, which can be marked as <dfn data-x="default command">default commands</dfn> (<code>menuitem</code>)</li>
+   <li><dfn data-x="concept-separator">Separators</dfn> (<code>hr</code>)</li>
+   <li>Other <span data-x="menu construct">menu constructs</span>, each with an associated <dfn>submenu label</dfn>, which allows the list to be nested (<code>menu</code>)</li>
+  </ul>
+
+  <p>To <dfn>build and show a menu</dfn> for a particular <code>menu</code> element
+  <var>source</var> and with a particular element <var>subject</var> as a subject, the user agent
+  must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>pop-up menu</var> be the <span>menu construct</span> created by the <span>build a
+   menu construct</span> algorithm when passed the <var>source</var> element.</p>
+
+   <li>
+
+    <p>Display <var>pop-up menu</var> to the user, and let the algorithm that invoked this one continue.</p>
+
+    <p>If the user selects a <span>menu item construct</span> that corresponds to an element that still represents a <span
+    data-x="concept-command">command</span> when the user selects it, then the UA must invoke that
+    command's <span data-x="command-facet-Action">Action</span>. If the command's <span
+    data-x="command-facet-Action">Action</span> is defined as <span data-x="fire a click
+    event">firing a <code data-x="event-click">click</code> event</span>, then the <code
+    data-x="dom-MouseEvent-relatedTarget">relatedTarget</code> attribute of that <code
+    data-x="event-click">click</code> event must be initialized to <var>subject</var>.</p>
+
+    <p>Pop-up menus must not, while being shown, reflect changes in the DOM. The menu is constructed
+    from the DOM before being shown, and is then immutable.</p>
+
+   </li>
+
+  </ol>
+
+  <p>To <dfn>build a menu construct</dfn> for an element <var>source</var>, the user agent must run
+  the following steps, which return a <span>menu construct</span>:</p>
+
+  <ol>
+
+   <li><p>Let <var>generated menu</var> be an empty <span>menu construct</span>.</p></li>
+
+   <li>
+
+    <p>Run the <span>menu item generator</span> steps for the <code>menu</code> element using <var>generated menu</var>
+    as the output.</p>
+
+    <p>The <dfn>menu item generator</dfn> steps for a <code>menu</code> element using a specific <span>menu construct</span> <var>output</var> as
+    output are as follows: For each child node of the <code>menu</code> in <span>tree order</span>,
+    run the appropriate steps from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the child is a <code>menuitem</code> element that <span data-x="concept-command">defines
+     a command</span></dt>
+
+     <dd>Append the <span data-x="concept-command">command</span> to <var>output</var>, respecting the command's <span
+     data-x="concept-facet">facets</span><!-- we might need to be explicit about what this means for
+     each facet, if testing shows this isn't well-implemented. e.g.: If there's an Icon facet for
+     the command, it should be <span data-x="fetch">fetched</span><!- -FETCH- -> (this would be
+     http-origin privacy-sensitive), and then that image should be associated with the command, such
+     that each command only has its image fetched once, to prevent changes to the base URL from
+     having effects after the image has been fetched once. (no need to resolve the Icon facet, it's
+     an absolute URL) -->. If the <code>menuitem</code> element has a <code
+     data-x="attr-menuitem-default">default</code> attribute, mark the <span
+     data-x="concept-command">command</span> as being a <span>default command</span>.</dd>
+
+
+     <dt>If the child is an <code>hr</code> element</dt>
+
+     <dd>Append a <span data-x="concept-separator">separator</span> to <var>output</var>.</dd>
+
+
+     <dt>If the child is a <code>menu</code> element with no <code data-x="attr-menu-label">label</code> attribute</dt>
+
+     <dd>Append a <span data-x="concept-separator">separator</span> to <var>output</var>, then run
+     the <span>menu item generator</span> steps for this child <code>menu</code> element, using
+     <var>output</var> as the output, then append another <span
+     data-x="concept-separator">separator</span> to <var>output</var>.</dd>
+
+
+     <dt>If the child is a <code>menu</code> element with a <code data-x="attr-menu-label">label</code> attribute</dt>
+
+     <dd>Let <var>submenu</var> be the result of running the <span>build a menu construct</span> steps for the child <code>menu</code> element. Then, append <var>submenu</var> to <var>output</var>, using the value of the child
+     <code>menu</code> element's <code data-x="attr-menu-label">label</code> attribute as the <span>submenu label</span>.</dd>
+
+
+     <dt>Otherwise</dt>
+
+     <dd><span>Ignore</span> the child node.</dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Remove from <var>output</var> any <span>menu construct</span> whose <span>submenu
+   label</span> is the empty string.</p></li>
+
+   <li><p>Remove from <var>output</var> any <span>menu item construct</span> representing a <span
+   data-x="concept-command">command</span> whose <span data-x="command-facet-label">Label</span> is
+   the empty string.</p></li>
+
+   <li><p>Collapse all sequences of two or more adjacent <span
+   data-x="concept-separator">separators</span> in <var>output</var> to a single <span
+   data-x="concept-separator">separator</span>.</p></li>
+
+   <li><p>If the first <span>menu item construct</span> in <var>output</var> is a <span
+   data-x="concept-separator">separator</span>, then remove it.</p></li>
+
+   <li><p>If the last <span>menu item construct</span> in <var>output</var> is a <span
+   data-x="concept-separator">separator</span>, then remove it.</p></li>
+
+   <li><p>Return <var>output</var>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-menu-type">type</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name, <span>limited to only known values</span>.</p>
+
+  <p>The <dfn><code data-x="dom-menu-label">label</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, the <code>menu</code> element is used to describe a toolbar with three menu
+   buttons on it, each of which has a drop down menu with a series of options:</p>
+
+  <pre>&lt;menu> <!-- type="toolbar" implied -->
+ &lt;li>
+  &lt;button type=menu value="File" menu="filemenu">
+  &lt;menu id="filemenu" type="context">
+   &lt;menuitem onclick="fnew()" label="New...">
+   &lt;menuitem onclick="fopen()" label="Open...">
+   &lt;menuitem onclick="fsave()" label="Save">
+   &lt;menuitem onclick="fsaveas()" label="Save as...">
+  &lt;/menu>
+ &lt;/li>
+ &lt;li>
+  &lt;button type=menu value="Edit" menu="editmenu">
+  &lt;menu id="editmenu" type="context">
+   &lt;menuitem onclick="ecopy()" label="Copy">
+   &lt;menuitem onclick="ecut()" label="Cut">
+   &lt;menuitem onclick="epaste()" label="Paste">
+  &lt;/menu>
+ &lt;/li>
+ &lt;li>
+  &lt;button type=menu value="Help" menu="helpmenu">
+  &lt;menu id="helpmenu" type="context">
+   &lt;menuitem onclick="location='help.html'" label="Help">
+   &lt;menuitem onclick="location='about.html'" label="About">
+  &lt;/menu>
+ &lt;/li>
+&lt;/menu></pre>
+
+   <p>In a supporting user agent, this might look like this (assuming the user has just activated the
+   second button):</p>
+
+   <p><img src="/images/sample-toolbar-1.png" width="303" height="101" alt="A toolbar with three buttons, labeled 'File', 'Edit', and 'Help'; where if you select the 'Edit' button you get a drop-down menu with three more options, 'Copy', 'Cut', and 'Paste'."></p>
+
+  </div>
+
+
+
+  

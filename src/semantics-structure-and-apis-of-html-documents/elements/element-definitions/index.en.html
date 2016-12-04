@@ -1,0 +1,65 @@
+<h4>Element definitions</h4>
+
+  <p>Each element in this specification has a definition that includes the following
+  information:</p>
+
+  <dl>
+
+   <dt><dfn data-x="concept-element-categories">Categories</dfn></dt>
+
+   <dd><p>A list of <span data-x="content categories">categories</span> to which the element belongs.
+   These are used when defining the <span>content models</span> for each element.</p></dd>
+
+
+   <dt><dfn data-x="concept-element-contexts">Contexts in which this element can be used</dfn></dt>
+
+   <dd>
+
+    <p>A <em>non-normative</em> description of where the element can be used. This information is
+    redundant with the content models of elements that allow this one as a child, and is provided
+    only as a convenience.</p>
+
+    <p class="note">For simplicity, only the most specific expectations are listed. For example, an
+    element that is both <span>flow content</span> and <span>phrasing content</span> can be used
+    anywhere that either <span>flow content</span> or <span>phrasing content</span> is expected, but
+    since anywhere that <span>flow content</span> is expected, <span>phrasing content</span> is also
+    expected (since all <span>phrasing content</span> is <span>flow content</span>), only "where
+    <span>phrasing content</span> is expected" will be listed.</p>
+
+   </dd>
+
+
+   <dt><dfn data-x="concept-element-content-model">Content model</dfn></dt>
+
+   <dd><p>A normative description of what content must be included as children and descendants of
+   the element.</p></dd>
+
+
+   <dt><dfn data-x="concept-element-tag-omission">Tag omission in text/html</dfn></dt>
+
+   <dd><p>A <em>non-normative</em> description of whether, in the <code>text/html</code> syntax, the
+   <span data-x="syntax-start-tag">start</span> and <span data-x="syntax-end-tag">end</span> tags can
+   be omitted. This information is redundant with the normative requirements given in the <span
+   data-x="syntax-tag-omission">optional tags</span> section, and is provided in the element
+   definitions only as a convenience.</p></dd>
+
+
+   <dt><dfn data-x="concept-element-attributes">Content attributes</dfn></dt>
+
+   <dd><p>A normative list of attributes that may be specified on the element (except where
+   otherwise disallowed), along with non-normative descriptions of those attributes. (The content to
+   the left of the dash is normative, the content to the right of the dash is not.)</p></dd>
+
+
+   <dt><dfn data-x="concept-element-dom">DOM interface</dfn></dt>
+
+   <dd><p>A normative definition of a DOM interface that such elements must implement.</p></dd>
+
+  </dl>
+
+  <p>This is then followed by a description of what the element <span>represents</span>, along with
+  any additional normative conformance criteria that may apply to authors<span data-x=""
+  w-nodev> and implementations</span>. Examples are sometimes also included.</p>
+
+
+  

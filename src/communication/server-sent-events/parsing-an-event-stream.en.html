@@ -1,0 +1,38 @@
+<h4>Parsing an event stream</h4>
+
+  <p>This event stream format's <span>MIME type</span> is <code>text/event-stream</code>.</p>
+
+  <p>The event stream format is as described by the <code data-x="">stream</code> production of the
+  following ABNF, the character set for which is Unicode. <ref spec=ABNF></p>
+
+  <pre>stream        = [ bom ] *event
+event         = *( comment / field ) end-of-line
+comment       = colon *any-char end-of-line
+field         = 1*name-char [ colon [ space ] *any-char ] end-of-line
+end-of-line   = ( cr lf / cr / lf )
+
+; characters
+lf            = %x000A ; U+000A LINE FEED (LF)
+cr            = %x000D ; U+000D CARRIAGE RETURN (CR)
+space         = %x0020 ; U+0020 SPACE
+colon         = %x003A ; U+003A COLON (:)
+bom           = %xFEFF ; U+FEFF BYTE ORDER MARK
+name-char     = %x0000-0009 / %x000B-000C / %x000E-0039 / %x003B-10FFFF
+                ; a <span>Unicode character</span> other than U+000A LINE FEED (LF), U+000D CARRIAGE RETURN (CR), or U+003A COLON (:)
+any-char      = %x0000-0009 / %x000B-000C / %x000E-10FFFF
+                ; a <span>Unicode character</span> other than U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR)</pre>
+
+  <p>Event streams in this format must always be encoded as UTF-8. <ref spec=ENCODING></p>
+
+  <p>Lines must be separated by either a U+000D CARRIAGE RETURN U+000A LINE FEED (CRLF) character
+  pair, a single U+000A LINE FEED (LF) character, or a single U+000D CARRIAGE RETURN (CR)
+  character.</p>
+
+  <p>Since connections established to remote servers for such resources are expected to be
+  long-lived, UAs should ensure that appropriate buffering is used. In particular, while line
+  buffering with lines are defined to end with a single U+000A LINE FEED (LF) character is safe,
+  block buffering or line buffering with different expected line endings can cause delays in event
+  dispatch.</p>
+
+
+  

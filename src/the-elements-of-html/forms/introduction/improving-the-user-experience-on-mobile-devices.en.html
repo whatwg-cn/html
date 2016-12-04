@@ -1,0 +1,40 @@
+<h5>Improving the user experience on mobile devices</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Some devices, in particular those with on-screen keyboards and those in locales with languages
+  with many characters (e.g. Japanese), can provide the user with multiple input modalities. For
+  example, when typing in a credit card number the user may wish to only see keys for digits 0-9,
+  while when typing in their name they may wish to see a form field that by default capitalises each
+  word.</p>
+
+  <p>Using the <code data-x="attr-fe-inputmode">inputmode</code> attribute we can select appropriate
+  input modalities:</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi">
+ &lt;p>&lt;label>Customer name: &lt;input name="custname" required autocomplete="shipping name" <strong>inputmode="latin-name"</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Telephone: &lt;input type=tel name="custtel" autocomplete="shipping tel">&lt;/label>&lt;/p>
+ &lt;p>&lt;label>E-mail address: &lt;input type=email name="custemail" autocomplete="shipping email">&lt;/label>&lt;/p>
+ &lt;fieldset>
+  &lt;legend> Pizza Size &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="small"> Small &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="medium"> Medium &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="large"> Large &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;fieldset>
+  &lt;legend> Pizza Toppings &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="bacon"> Bacon &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="cheese"> Extra Cheese &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="onion"> Onion &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="mushroom"> Mushroom &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;p>&lt;label>Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery" required>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Delivery instructions: &lt;textarea name="comments" maxlength=1000 <strong>inputmode="latin-prose"</strong>>&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;button>Submit order&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+
+
+  

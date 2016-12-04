@@ -1,0 +1,39 @@
+<h5>Enabling client-side automatic filling of form controls</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Some browsers attempt to aid the user by automatically filling form controls rather than having
+  the user reenter their information each time. For example, a field asking for the user's telephone
+  number can be automatically filled with the user's phone number.</p>
+
+  <p>To help the user agent with this, the <code data-x="attr-fe-autocomplete">autocomplete</code>
+  attribute can be used to describe the field's purpose. In the case of this form, we have three
+  fields that can be usefully annotated in this way: the information about who the pizza is to be
+  delivered to. Adding this information looks like this:</p>
+
+  <pre>&lt;form method="post"
+      enctype="application/x-www-form-urlencoded"
+      action="https://pizza.example.com/order.cgi">
+ &lt;p>&lt;label>Customer name: &lt;input name="custname" required <strong>autocomplete="shipping name"</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Telephone: &lt;input type=tel name="custtel" <strong>autocomplete="shipping tel"</strong>>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>E-mail address: &lt;input type=email name="custemail" <strong>autocomplete="shipping email"</strong>>&lt;/label>&lt;/p>
+ &lt;fieldset>
+  &lt;legend> Pizza Size &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="small"> Small &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="medium"> Medium &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=radio name=size required value="large"> Large &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;fieldset>
+  &lt;legend> Pizza Toppings &lt;/legend>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="bacon"> Bacon &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="cheese"> Extra Cheese &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="onion"> Onion &lt;/label>&lt;/p>
+  &lt;p>&lt;label> &lt;input type=checkbox name="topping" value="mushroom"> Mushroom &lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;p>&lt;label>Preferred delivery time: &lt;input type=time min="11:00" max="21:00" step="900" name="delivery" required>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Delivery instructions: &lt;textarea name="comments" maxlength=1000>&lt;/textarea>&lt;/label>&lt;/p>
+ &lt;p>&lt;button>Submit order&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+
+  

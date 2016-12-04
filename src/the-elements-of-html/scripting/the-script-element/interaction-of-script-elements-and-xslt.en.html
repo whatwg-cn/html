@@ -1,0 +1,46 @@
+<h5 id="scriptTagXSLT">Interaction of <code>script</code> elements and XSLT</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>This specification does not define how XSLT interacts with the <code>script</code> element.
+  However, in the absence of another specification actually defining this, here are some guidelines
+  for implementors, based on existing implementations:</p>
+
+  <ul>
+
+   <li><p>When an XSLT transformation program is triggered by an <code
+   data-x="">&lt;?xml-stylesheet?></code> processing instruction and the browser implements a
+   direct-to-DOM transformation, <code>script</code> elements created by the XSLT processor need to
+   be marked <span>"parser-inserted"</span> and run in document order (modulo scripts marked <code
+   data-x="attr-script-defer">defer</code> or <code data-x="attr-script-async">async</code>),
+   <span>immediately</span>, as the transformation is occurring.</p></li>
+
+   <li><p>The <code
+   data-x="dom-XSLTProcessor-transformToDocument">XSLTProcessor.transformToDocument()</code> method
+   adds elements to a <code>Document</code> that does not have a <span
+   data-x="concept-document-bc">browsing context</span>, and, accordingly, any <code>script</code>
+   elements they create need to have their <span>"already started"</span> flag set in the
+   <span>prepare a script</span> algorithm and never get executed (<span
+   data-x="concept-bc-noscript">scripting is disabled</span>). Such <code>script</code> elements
+   still need to be marked <span>"parser-inserted"</span>, though, such that their <code
+   data-x="dom-script-async">async</code> IDL attribute will return false in the absence of an <code
+   data-x="attr-script-async">async</code> content attribute.</p></li>
+
+   <li><p>The <code
+   data-x="dom-XSLTProcessor-transformToFragment">XSLTProcessor.transformToFragment()</code> method
+   needs to create a fragment that is equivalent to one built manually by creating the elements
+   using <code data-x="dom-document-createElementNS">document.createElementNS()</code>. For instance,
+   it needs to create <code>script</code> elements that aren't <span>"parser-inserted"</span> and
+   that don't have their <span>"already started"</span> flag set, so that they will execute when the
+   fragment is inserted into a document.</p></li>
+
+  </ul>
+
+  <p>The main distinction between the first two cases and the last case is that the first two
+  operate on <code>Document</code>s and the last operates on a fragment.</p>
+
+  </div>
+
+
+
+  

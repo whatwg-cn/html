@@ -1,0 +1,160 @@
+<h5 id=rel-icon>Link type "<dfn><code data-x="rel-icon">icon</code></dfn>"</h5>
+
+  <p>The <code data-x="rel-icon">icon</code> keyword may be used with <code>link</code> elements.
+  This keyword creates an <span>external resource link</span>.</p>
+
+  <div w-nodev>
+
+  <p>The specified resource is an icon representing the page or site, and should be used by the user
+  agent when representing the page in the user interface.</p>
+
+  </div>
+
+  <p>Icons could be auditory icons, visual icons, or other kinds of icons. <span w-nodev>If
+  multiple icons are provided, the user agent must select the most appropriate icon according to the
+  <code data-x="attr-link-type">type</code>, <code data-x="attr-link-media">media</code>, and <code
+  data-x="attr-link-sizes">sizes</code> attributes. If there are multiple equally appropriate icons,
+  user agents must use the last one declared in <span>tree order</span> at the time that the user
+  agent collected the list of icons. If the user agent tries to use an icon but that icon is
+  determined, upon closer examination, to in fact be inappropriate (e.g. because it uses an
+  unsupported format), then the user agent must try the next-most-appropriate icon as determined by
+  the attributes.</span></p>
+
+  <div w-nodev>
+
+  <p class="note">User agents are not required to update icons when the list of icons changes, but
+  are encouraged to do so.</p>
+
+  <p>There is no default type for resources given by the <code data-x="rel-icon">icon</code> keyword.
+  However, for the purposes of <a href="#concept-link-type-sniffing">determining the type of the
+  resource</a>, user agents must expect the resource to be an image.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-link-sizes">sizes</code></dfn> attribute gives the sizes of icons
+  for visual media. Its value, if present, is merely advisory. User agents may use the value to
+  decide which icon(s) to use if multiple icons are available.</p>
+
+  <p>If specified, the attribute must have a value that is an <span>unordered set of unique
+  space-separated tokens</span> which are <span>ASCII case-insensitive</span>. Each value must be
+  either an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="attr-link-sizes-any">any</code>", or a value that consists of two <span data-x="valid
+  non-negative integer">valid non-negative integers</span> that do not have a leading U+0030 DIGIT
+  ZERO (0) character and that are separated by a single U+0078 LATIN SMALL LETTER X or U+0058 LATIN
+  CAPITAL LETTER X character.</p>
+
+  <p>The keywords represent icon sizes in raw pixels (as opposed to <span data-x="'px'">CSS
+  pixels</span>).</p>
+
+  <p class="note">An icon that is 50 <span data-x="'px'">CSS pixels</span> wide intended for
+  displays with a device pixel density of two device pixels per <span data-x="'px'">CSS pixel</span>
+  (2x, 192dpi) would have a width of 100 raw pixels. This feature does not support indicating that a
+  different resource is to be used for small high-resolution icons vs large low-resolution icons
+  (e.g. 50&times;50 2x vs 100&times;100 1x).</p>
+
+  <div w-nodev>
+
+  <p>To parse and process the attribute's value, the user agent must first <span data-x="split a
+  string on spaces">split the attribute's value on spaces</span>, and must then parse each resulting
+  keyword to determine what it represents.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-link-sizes-any">any</code></dfn> keyword represents that the
+  resource contains a scalable icon, e.g. as provided by an SVG image.</p>
+
+  <div w-nodev>
+
+  <p>Other keywords must be further parsed as follows to determine what they represent:</p>
+
+  <ul>
+
+   <li><p>If the keyword doesn't contain exactly one U+0078 LATIN SMALL LETTER X or U+0058 LATIN
+   CAPITAL LETTER X character, then this keyword doesn't represent anything. Abort these steps for
+   that keyword.</p></li>
+
+   <li><p>Let <var>width string</var> be the string before the "<code data-x="">x</code>" or
+   "<code data-x="">X</code>".</p></li>
+
+   <li><p>Let <var>height string</var> be the string after the "<code data-x="">x</code>" or
+   "<code data-x="">X</code>".</p></li>
+
+   <li><p>If either <var>width string</var> or <var>height string</var> start with
+   a U+0030 DIGIT ZERO (0) character or contain any characters other than <span>ASCII digits</span>,
+   then this keyword doesn't represent anything. Abort these steps for that keyword.</p></li>
+
+   <li><p>Apply the <span>rules for parsing non-negative integers</span> to <var>width
+   string</var> to obtain <var>width</var>.</p></li>
+
+   <li><p>Apply the <span>rules for parsing non-negative integers</span> to <var>height
+   string</var> to obtain <var>height</var>.</p></li>
+
+   <li><p>The keyword represents that the resource contains a bitmap icon with a width of <var>width</var> device pixels and a height of <var>height</var> device
+   pixels.</p></li>
+
+  </ul>
+
+  </div>
+
+  <p>The keywords specified on the <code data-x="attr-link-sizes">sizes</code> attribute must not
+  represent icon sizes that are not actually available in the linked resource.</p>
+
+  <div w-nodev>
+
+  <p>In the absence of a <code>link</code> with the <code data-x="rel-icon">icon</code> keyword, for
+  <code>Document</code> objects whose <span data-x="concept-document-url">URL</span>'s
+  <span data-x="concept-url-scheme">scheme</span> is an <span>HTTP(S) scheme</span>, user agents may
+  instead run these steps <span>in parallel</span>:</p>
+
+  <ol>
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is the <span>URL record</span> obtained by
+   resolving the <span>URL</span> "<code data-x="">/favicon.ico</code>" against the
+   <code>Document</code> object's <span data-x="concept-document-url">URL</span>, <span
+   data-x="concept-request-client">client</span> is the <code>Document</code> object's
+   <span>relevant settings object</span>, <span data-x="concept-request-type">type</span> is "<code
+   data-x="">image</code>", <span data-x="concept-request-destination">destination</span> is "<code
+   data-x="">image</code>", <span>synchronous flag</span> is set, <span
+   data-x="concept-request-credentials-mode">credentials mode</span> is "<code
+   data-x="">include</code>", and whose <span>use-URL-credentials flag</span> is set.</p></li>
+
+   <!--FETCH--><li><p>Let <var>response</var> be the result of <span
+   data-x="concept-fetch">fetching</span> <var>request</var>.</p></li>
+
+   <li><p>Use <var>response</var>'s <span>unsafe response</span> as an icon as if it had been
+   declared using the <code data-x="rel-icon">icon</code> keyword.</p></li>
+  </ol>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following snippet shows the top part of an application with several icons.</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>lsForums &mdash; Inbox&lt;/title>
+  &lt;link rel=icon href=favicon.png sizes="16x16" type="image/png">
+  &lt;link rel=icon href=windows.ico sizes="32x32 48x48" type="image/vnd.microsoft.icon">
+  &lt;link rel=icon href=mac.icns sizes="128x128 512x512 8192x8192 32768x32768">
+  &lt;link rel=icon href=iphone.png sizes="57x57" type="image/png">
+  &lt;link rel=icon href=gnome.svg sizes="any" type="image/svg+xml">
+  &lt;link rel=stylesheet href=lsforums.css>
+  &lt;script src=lsforums.js>&lt;/script>
+  &lt;meta name=application-name content="lsForums">
+ &lt;/head>
+ &lt;body>
+  ...</pre>
+
+  </div>
+
+  <p>For historical reasons, the <code data-x="rel-icon">icon</code> keyword may be preceded by the
+  keyword "<code data-x="">shortcut</code>". If the "<code data-x="">shortcut</code>" keyword is
+  present, the <code data-x="attr-hyperlink-rel">rel</code> attribute's entire value must be an
+  <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">shortcut&nbsp;icon</code>" (with a single U+0020 SPACE character between the tokens and
+  no other <span data-x="space character">space characters</span>).</p>
+
+
+  

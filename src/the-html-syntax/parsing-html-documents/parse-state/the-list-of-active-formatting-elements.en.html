@@ -1,0 +1,109 @@
+<h5>The list of active formatting elements</h5>
+
+  <p>Initially, the <dfn>list of active formatting elements</dfn> is empty. It is used to handle
+  mis-nested <span data-x="formatting">formatting element tags</span>.</p>
+
+  <p>The list contains elements in the <span>formatting</span> category, and <span
+  data-x="concept-parser-marker">markers</span>. The <dfn
+  data-x="concept-parser-marker">markers</dfn> are inserted when entering <code>applet</code>,
+  <code>object</code>, <code>marquee</code>, <code>template</code>, <code>td</code>,
+  <code>th</code>, and <code>caption</code> elements, and are used to prevent formatting from
+  "leaking" <em>into</em> <code>applet</code>, <code>object</code>, <code>marquee</code>,
+  <code>template</code>, <code>td</code>, <code>th</code>, and <code>caption</code> elements.</p>
+
+  <p>In addition, each element in the <span>list of active formatting elements</span> is associated
+  with the token for which it was created, so that further elements can be created for that token if
+  necessary.</p>
+
+  <p>When the steps below require the UA to <dfn>push onto the list of active formatting
+  elements</dfn> an element <var>element</var>, the UA must perform the following
+  steps:</p>
+
+  <ol id="noah">
+
+   <li><p>If there are already three elements in the <span>list of active formatting elements</span>
+   after the last <span data-x="concept-parser-marker">marker</span>, if any, or anywhere in the
+   list if there are no <span data-x="concept-parser-marker">markers</span>, that have the same tag
+   name, namespace, and attributes as <var>element</var>, then remove the earliest such
+   element from the <span>list of active formatting elements</span>. For these purposes, the
+   attributes must be compared as they were when the elements were created by the parser; two
+   elements have the same attributes if all their parsed attributes can be paired such that the two
+   attributes in each pair have identical names, namespaces, and values (the order of the attributes
+   does not matter).</p>
+
+   <p class="note">This is the Noah's Ark clause. But with three per family instead of two.</p></li>
+   <!-- A sort of polyamorous Noah's Ark, if you will. -->
+
+   <li><p>Add <var>element</var> to the <span>list of active formatting
+   elements</span>.</p></li>
+
+  </ol>
+
+  <p>When the steps below require the UA to <dfn>reconstruct the active formatting elements</dfn>,
+  the UA must perform the following steps:</p>
+
+  <ol>
+
+   <li><p>If there are no entries in the <span>list of active formatting elements</span>, then there
+   is nothing to reconstruct; stop this algorithm.</p></li>
+
+   <li><p>If the last (most recently added) entry in the <span>list of active formatting
+   elements</span> is a <span data-x="concept-parser-marker">marker</span>, or if it is an element
+   that is in the <span>stack of open elements</span>, then there is nothing to reconstruct; stop
+   this algorithm.</p></li>
+
+   <li><p>Let <var>entry</var> be the last (most recently added) element in the <span>list
+   of active formatting elements</span>.</p></li>
+
+   <li><p><i>Rewind</i>: If there are no entries before <var>entry</var> in the <span>list
+   of active formatting elements</span>, then jump to the step labeled <i>create</i>.</p></li>
+
+   <li><p>Let <var>entry</var> be the entry one earlier than <var>entry</var> in
+   the <span>list of active formatting elements</span>.</p></li>
+
+   <li><p>If <var>entry</var> is neither a <span
+   data-x="concept-parser-marker">marker</span> nor an element that is also in the <span>stack of
+   open elements</span>, go to the step labeled <i>rewind</i>.</p></li>
+
+   <li><p><i>Advance</i>: Let <var>entry</var> be the element one later than <var>entry</var> in the <span>list of active formatting elements</span>.</p></li>
+
+   <li><p><i>Create</i>: <span>Insert an HTML element</span> for the token for which the element
+   <var>entry</var> was created, to obtain <var>new element</var>.</p></li>
+
+   <li><p>Replace the entry for <var>entry</var> in the list with an entry for <var>new element</var>.</p></li>
+
+   <li><p>If the entry for <var>new element</var> in the <span>list of active formatting
+   elements</span> is not the last entry in the list, return to the step labeled
+   <i>advance</i>.</p></li>
+
+  </ol>
+
+  <p>This has the effect of reopening all the formatting elements that were opened in the current
+  body, cell, or caption (whichever is youngest) that haven't been explicitly closed.</p>
+
+  <p class="note">The way this specification is written, the <span>list of active formatting
+  elements</span> always consists of elements in chronological order with the least recently added
+  element first and the most recently added element last (except for while steps 7 to 10 of the
+  above algorithm are being executed, of course).</p>
+
+  <p>When the steps below require the UA to <dfn>clear the list of active formatting elements up to
+  the last marker</dfn>, the UA must perform the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>entry</var> be the last (most recently added) entry in the <span>list of
+   active formatting elements</span>.</p></li>
+
+   <li><p>Remove <var>entry</var> from the <span>list of active formatting
+   elements</span>.</p></li>
+
+   <li><p>If <var>entry</var> was a <span data-x="concept-parser-marker">marker</span>,
+   then stop the algorithm at this point. The list has been cleared up to the last <span
+   data-x="concept-parser-marker">marker</span>.</p></li>
+
+   <li><p>Go to step 1.</p></li>
+
+  </ol>
+
+
+  

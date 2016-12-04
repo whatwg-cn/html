@@ -1,0 +1,334 @@
+<h6>Sourcing out-of-band text tracks</h6>
+
+  <p>When a <code>track</code> element is created, it must be associated with a new <span>text
+  track</span> (with its value set as defined below) and its corresponding new
+  <code>TextTrack</code> object.</p>
+
+  <p>The <span>text track kind</span> is determined from the state of the element's <code
+  data-x="attr-track-kind">kind</code> attribute according to the following table; for a state given
+  in a cell of the first column, the <span data-x="text track kind">kind</span> is the string given
+  in the second column:</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th>State
+     <th>String
+   <tbody>
+    <tr>
+     <td><span data-x="attr-track-kind-subtitles">Subtitles</span>
+     <td><code data-x="dom-TextTrack-kind-subtitles">subtitles</code>
+    <tr>
+     <td><span data-x="attr-track-kind-captions">Captions</span>
+     <td><code data-x="dom-TextTrack-kind-captions">captions</code>
+    <tr>
+     <td><span data-x="attr-track-kind-descriptions">Descriptions</span>
+     <td><code data-x="dom-TextTrack-kind-descriptions">descriptions</code>
+    <tr>
+     <td><span data-x="attr-track-kind-chapters">Chapters</span>
+     <td><code data-x="dom-TextTrack-kind-chapters">chapters</code>
+    <tr>
+     <td><span data-x="attr-track-kind-metadata">Metadata</span>
+     <td><code data-x="dom-TextTrack-kind-metadata">metadata</code>
+  </table>
+
+  <p>The <span>text track label</span> is the element's <span>track label</span>.</p>
+
+  <p>The <span>text track language</span> is the element's <span>track language</span>, if any, or
+  the empty string otherwise.</p>
+
+  <p>As the <code data-x="attr-track-kind">kind</code>, <code data-x="attr-track-label">label</code>,
+  and <code data-x="attr-track-srclang">srclang</code> attributes are set, changed, or removed, the
+  <span>text track</span> must update accordingly, as per the definitions above.</p>
+
+  <p class="note">Changes to the <span>track URL</span> are handled in the algorithm below.</p>
+
+  <p>The <span>text track readiness state</span> is initially <span data-x="text track not
+  loaded">not loaded</span>, and the <span>text track mode</span> is initially <span data-x="text
+  track disabled">disabled</span>.</p>
+
+  <p>The <span>text track list of cues</span> is initially empty. It is dynamically modified when
+  the referenced file is parsed. Associated with the list are the <span>rules for updating the text
+  track rendering</span> appropriate for the format in question; for WebVTT, this is the <span>rules
+  for updating the display of WebVTT text tracks</span>. <ref spec=WEBVTT></p>
+
+  <p>When a <code>track</code> element's parent element changes and the new parent is a <span>media
+  element</span>, then the user agent must add the <code>track</code> element's corresponding
+  <span>text track</span> to the <span>media element</span>'s <span>list of text tracks</span>, and
+  then <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+  <code data-x="event-media-addtrack">addtrack</code> at the <span>media element</span>'s <code
+  data-x="dom-media-textTracks">textTracks</code> attribute's <code>TextTrackList</code> object,
+  using <code>TrackEvent</code>, with the <code data-x="dom-TrackEvent-track">track</code> attribute
+  initialized to the <span>text track</span>'s <code>TextTrack</code> object.</p>
+
+  <p>When a <code>track</code> element's parent element changes and the old parent was a <span>media
+  element</span>, then the user agent must remove the <code>track</code> element's corresponding
+  <span>text track</span> from the <span>media element</span>'s <span>list of text tracks</span>,
+  and then <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+  <code data-x="event-media-removetrack">removetrack</code> at the <span>media element</span>'s
+  <code data-x="dom-media-textTracks">textTracks</code> attribute's <code>TextTrackList</code>
+  object, using <code>TrackEvent</code>, with the <code data-x="dom-TrackEvent-track">track</code>
+  attribute initialized to the <span>text track</span>'s <code>TextTrack</code> object.</p>
+  <!-- removetrack -->
+
+  <hr>
+
+  <p>When a <span>text track</span> corresponding to a <code>track</code> element is added to a
+  <span>media element</span>'s <span>list of text tracks</span>, the user agent must <span>queue a
+  task</span> to run the following steps for the <span>media element</span>:</p>
+
+  <ol>
+
+   <li><p>If the element's <span>blocked-on-parser</span> flag is true, abort these steps.</p></li>
+
+   <li><p>If the element's <span>did-perform-automatic-track-selection</span> flag is true, abort
+   these steps.</p></li>
+
+   <li><p><span>Honor user preferences for automatic text track selection</span> for this
+   element.</p></li>
+
+  </ol>
+
+  <p>When the user agent is required to <dfn>honor user preferences for automatic text track
+  selection</dfn> for a <span>media element</span>, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p><span>Perform automatic text track selection</span> for <code
+   data-x="dom-TextTrack-kind-subtitles">subtitles</code> and <code
+   data-x="dom-TextTrack-kind-captions">captions</code>.</p></li>
+
+   <li><p><span>Perform automatic text track selection</span> for <code
+   data-x="dom-TextTrack-kind-descriptions">descriptions</code>.</p></li>
+
+   <li><p><span>Perform automatic text track selection</span> for <code
+   data-x="dom-TextTrack-kind-chapters">chapters</code>.</p></li>
+
+   <li><p>If there are any <span data-x="text track">text tracks</span> in the <span>media
+   element</span>'s <span>list of text tracks</span> whose <span>text track kind</span> is <code
+   data-x="dom-TextTrack-kind-metadata">metadata</code> that correspond to <code>track</code>
+   elements with a <code data-x="attr-track-default">default</code> attribute set whose <span>text
+   track mode</span> is set to <span data-x="text track disabled">disabled</span>, then set the
+   <span>text track mode</span> of all such tracks to <span data-x="text track
+   hidden">hidden</span></p></li>
+
+   <li><p>Set the element's <span>did-perform-automatic-track-selection</span> flag to
+   true.</p></li>
+
+  </ol>
+
+  <p>When the steps above say to <dfn>perform automatic text track selection</dfn> for one or more
+  <span data-x="text track kind">text track kinds</span>, it means to run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>candidates</var> be a list consisting of the <span data-x="text
+   track">text tracks</span> in the <span>media element</span>'s <span>list of text tracks</span>
+   whose <span>text track kind</span> is one of the kinds that were passed to the algorithm, if any,
+   in the order given in the <span>list of text tracks</span>.</p></li>
+
+   <li><p>If <var>candidates</var> is empty, then abort these steps.</p></li>
+
+   <li><p>If any of the <span data-x="text track">text tracks</span> in <var>candidates</var> have a <span>text track mode</span> set to <span data-x="text track
+   showing">showing</span>, abort these steps.</p></li>
+
+   <li>
+
+    <p>If the user has expressed an interest in having a track from <var>candidates</var>
+    enabled based on its <span>text track kind</span>, <span>text track language</span>, and
+    <span>text track label</span>, then set its <span>text track mode</span> to <span data-x="text
+    track showing">showing</span><!--, and if there are any <span data-x="text track">text
+    tracks</span> in <var>candidates</var> that correspond to <code>track</code> elements
+    with a <code data-x="attr-track-default">default</code> attribute set whose <span>text track
+    mode</span> is set to <span data-x="text track disabled">disabled</span>, then additionally set
+    the <span>text track mode</span> of the first such track to <span data-x="text track
+    hidden">hidden</span>-->.</p> <!-- the idea behind the commented out stuff is that we still get
+    events and stuff: we can expect authors to forget that default doesn't mean that it'll always be
+    turned on, and that they'll still rely on events firing even if it doesn't show. But it is
+    commented out, because we can equally expect authors to expect only one track is getting events,
+    so we've got problems either way, and might as well go with the simpler behavior. -->
+
+    <p class="note">For example, the user could have set a browser preference to the effect of "I
+    want French captions whenever possible", or "If there is a subtitle track with 'Commentary' in
+    the title, enable it", or "If there are audio description tracks available, enable one, ideally
+    in Swiss German, but failing that in Standard Swiss German or Standard German".</p>
+
+    <p>Otherwise, if there are any <span data-x="text track">text tracks</span> in <var>candidates</var> that correspond to <code>track</code> elements with a <code
+    data-x="attr-track-default">default</code> attribute set whose <span>text track mode</span> is
+    set to <span data-x="text track disabled">disabled</span>, then set the <span>text track
+    mode</span> of the first such track to <span data-x="text track showing">showing</span>.</p>
+
+   </li>
+
+  </ol>
+
+  <p>When a <span>text track</span> corresponding to a <code>track</code> element experiences any of
+  the following circumstances, the user agent must <span>start the <code>track</code> processing
+  model</span> for that <span>text track</span> and its <code>track</code> element:
+
+  <ul>
+
+   <li>The <code>track</code> element is created.</li>
+
+   <li>The <span>text track</span> has its <span>text track mode</span> changed.</li>
+
+   <li>The <code>track</code> element's parent element changes and the new parent is a <span>media
+   element</span>.</li>
+
+  </ul>
+
+  <p>When a user agent is to <dfn>start the <code>track</code> processing model</dfn> for a
+  <span>text track</span> and its <code>track</code> element, it must run the following algorithm.
+  This algorithm interacts closely with the <span>event loop</span> mechanism; in particular, it has
+  a <span>synchronous section</span> (which is triggered as part of the <span>event loop</span>
+  algorithm). The steps in that section are marked with &#x231B;.</p>
+
+  <ol>
+
+   <li><p>If another occurrence of this algorithm is already running for this <span>text
+   track</span> and its <code>track</code> element, abort these steps, letting that other algorithm
+   take care of this element.</p></li>
+
+   <li><p>If the <span>text track</span>'s <span>text track mode</span> is not set to one of <span
+   data-x="text track hidden">hidden</span> or <span data-x="text track showing">showing</span>, abort
+   these steps.</p></li>
+
+   <li><p>If the <span>text track</span>'s <code>track</code> element does not have a <span>media
+   element</span> as a parent, abort these steps.</p></li>
+
+   <li><p>Run the remainder of these steps <span>in parallel</span>, allowing whatever caused these steps to
+   run to continue.</p></li>
+
+   <li><p><i>Top</i>: <span>Await a stable state</span>. The <span>synchronous section</span>
+   consists of the following steps. (The steps in the <span>synchronous section</span> are marked
+   with &#x231B;.)</p></li>
+
+   <li><p>&#x231B; Set the <span>text track readiness state</span> to <span data-x="text track
+   loading">loading</span>.</p></li>
+
+   <li><p>&#x231B; Let <var>URL</var> be the <span>track URL</span> of the
+   <code>track</code> element.</p></li>
+
+   <li><p>&#x231B; If the <code>track</code> element's parent is a <span>media element</span> then
+   let <var>corsAttributeState</var> be the state of the parent <span>media element</span>'s <code
+   data-x="attr-media-crossorigin">crossorigin</code> content attribute. Otherwise, let
+   <var>corsAttributeState</var> be <span data-x="attr-crossorigin-none">No CORS</span>.</p></li>
+
+   <li><p>End the <span>synchronous section</span>, continuing the remaining steps
+   <span>in parallel</span>.</p></li>
+
+   <li>
+
+    <p>If <var>URL</var> is not the empty string, run these substeps:
+
+    <ol>
+     <li><p>Let <var>request</var> be the result of <span
+     data-x="create a potential-CORS request">creating a potential-CORS request</span> given
+     <var>URL</var>, "<code data-x="">media</code>", and <var>corsAttributeState</var>, and with the
+     <i>same-origin fallback flag</i> set.</p></li>
+
+     <li><p>Set <var>request</var>'s <span data-x="concept-request-client">client</span> to the
+     <code>track</code> element's <span>node document</span>'s <code>Window</code> object's
+     <span>environment settings object</span> and <span data-x="concept-request-type">type</span> to
+     "<code data-x="">track</code>".</p></li>
+
+     <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>.</p></li>
+    </ol>
+
+    <p>The <span data-x="concept-task">tasks</span> <span data-x="queue a task">queued</span> by the
+    fetching algorithm on the <span>networking task source</span> to process the data as it is being
+    fetched must <!--<span data-x="Content-Type sniffing">-->determine the <!--computed--> type of
+    the resource<!--</span>-->. If the <!--computed--> type of the resource is not a supported text
+    track format, the load will fail, as described below. Otherwise, the resource's data must be
+    passed to the appropriate parser (e.g., the <span>WebVTT parser</span><!-- if the file starts
+    with the "<code data-x="">WEBVTT</code>" signature-->) as it is received, with the <span>text
+    track list of cues</span> being used for that parser's output. <ref spec=WEBVTT></p><!-- see
+    also critical block below, and the word "computed" in the paragraph after that -->
+
+    <p class="note">The appropriate parser will incrementally update the <span>text track list of
+    cues</span> during these <span>networking task
+    source</span> <span data-x="concept-task">tasks</span>, as each such task is
+    run with whatever data has been received from the network).</p>
+
+    <p class="critical">This specification does not currently say whether or how to check the MIME
+    types of text tracks, or whether or how to perform file type sniffing using the actual file
+    data. Implementors differ in their intentions on this matter and it is therefore unclear what
+    the right solution is. In the absence of any requirement here, the HTTP specification's strict
+    requirement to follow the Content-Type header prevails ("Content-Type specifies the media type
+    of the underlying data." ... "If and only if the media type is not given by a Content-Type
+    field, the recipient MAY attempt to guess the media type via inspection of its content
+    and<!---->/<!---->or the name extension(s) of the URI used to identify the resource.").</p>
+
+    <p>If fetching fails for any reason (network error, the server returns an error code, CORS
+    fails, etc), or if <var>URL</var> is the empty string, then <span>queue a task</span> to first
+    change the <span>text track readiness state</span> to <span data-x="text track failed to
+    load">failed to load</span> and then <span data-x="concept-event-fire">fire an event</span>
+    named <code data-x="event-track-error">error</code> at the <code>track</code> element. This
+    <span data-x="concept-task">task</span> must use the <span>DOM manipulation task
+    source</span>.</p>
+    <!-- can't be the media element one, since there might not be a media element by this point -->
+
+    <p>If fetching does not fail, but the <!--computed--> type of the resource is not a supported
+    text track format, or the file was not successfully processed (e.g., the format in question is
+    an XML format and the file contained a well-formedness error that the XML specification requires
+    be detected and reported to the application), then the <span data-x="concept-task">task</span>
+    that is <span data-x="queue a task">queued</span> by the <span>networking task source</span> in
+    which the aforementioned problem is found must change the <span>text track readiness
+    state</span> to <span data-x="text track failed to load">failed to load</span> and <span
+    data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-track-error">error</code> at the <code>track</code> element.</p>
+
+    <p>If fetching does not fail, and the file was successfully processed, then the final <span
+    data-x="concept-task">task</span> that is <span data-x="queue a task">queued</span> by the
+    <span>networking task source</span>, after it has finished parsing the data, must change the
+    <span>text track readiness state</span> to <span data-x="text track loaded">loaded</span>, and
+    <span data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-track-load">load</code> at the <code>track</code> element.</p>
+
+    <p>If, while fetching is ongoing, either:</p>
+
+    <ul>
+
+     <li>the <span>track URL</span> changes so that it is no longer equal to <var>URL</var>, while the <span>text track mode</span> is set to <span data-x="text track
+     hidden">hidden</span> or <span data-x="text track showing">showing</span>; or</li>
+
+     <li>the <span>text track mode</span> changes to <span data-x="text track hidden">hidden</span>
+     or <span data-x="text track showing">showing</span>, while the <span>track URL</span> is not
+     equal to <var>URL</var></li>
+
+    </ul>
+
+    <p>...then the user agent must abort <span data-x="concept-fetch">fetching</span>, discarding
+    any pending <span data-x="concept-task">tasks</span> generated by that algorithm (and
+    in particular, not adding any cues to the <span>text track list of cues</span> after the moment
+    the URL changed), and then <span>queue a task</span> that first changes the <span>text track
+    readiness state</span> to <span data-x="text track failed to load">failed to load</span> and
+    then <span data-x="concept-event-fire">fires an event</span> named <code
+    data-x="event-track-error">error</code> at the <code>track</code> element. This <span
+    data-x="concept-task">task</span> must use the <span>DOM manipulation task source</span>. <!--
+    can't be the media element one, since there might not be a media element by this point --></p>
+
+   </li>
+
+   <li><p>Wait until the <span>text track readiness state</span> is no longer set to <span
+   data-x="text track loading">loading</span>.</p></li>
+
+   <li><p>Wait until the <span>track URL</span> is no longer equal to <var>URL</var>, at
+   the same time as the <span>text track mode</span> is set to <span data-x="text track
+   hidden">hidden</span> or <span data-x="text track showing">showing</span>.</p></li>
+
+   <li><p>Jump to the step labeled <i>top</i>.</p></li>
+
+  </ol>
+
+  <p>Whenever a <code>track</code> element has its <code data-x="attr-track-src">src</code> attribute
+  set, changed, or removed, the user agent must <span>immediately</span> empty the element's <span>text
+  track</span>'s <span>text track list of cues</span>. (This also causes the algorithm above to stop
+  adding cues from the resource being obtained using the previously given URL, if any.)</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

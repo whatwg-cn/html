@@ -1,0 +1,494 @@
+<h4 data-dfn-type="element" data-lt="link">The <dfn><code>link</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Metadata content</span>.</dd>
+   <dd>If the element is <span>allowed in the body</span>: <span>flow content</span>.</dd>
+   <dd>If the element is <span>allowed in the body</span>: <span>phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>metadata content</span> is expected.</dd>
+   <dd>In a <code>noscript</code> element that is a child of a <code>head</code> element.</dd>
+   <dd>If the element is <span>allowed in the body</span>: where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-link-href">href</code></dd>
+   <dd><code data-x="attr-link-crossorigin">crossorigin</code></dd>
+   <dd><code data-x="attr-link-rel">rel</code></dd>
+   <dd><code data-x="attr-link-as">as</code></dd>
+   <dd><code data-x="attr-link-media">media</code></dd>
+   <dd><code data-x="attr-link-nonce">nonce</code></dd>
+   <dd><code data-x="attr-link-integrity">integrity</code></dd>
+   <dd><code data-x="attr-link-hreflang">hreflang</code></dd>
+   <dd><code data-x="attr-link-type">type</code></dd>
+   <dd><code data-x="attr-link-sizes">sizes</code></dd>
+   <dd><code data-x="attr-link-referrerpolicy">referrerpolicy</code></dd>
+   <dd>Also, the <code data-x="attr-link-title">title</code> attribute <span data-x="attr-link-title">has special semantics</span> on this element.</dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLLinkElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-link-href">href</span>;
+  [<span>CEReactions</span>] attribute DOMString? <span data-x="dom-link-crossOrigin">crossOrigin</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-link-rel">rel</span>;
+  [<span>CEReactions</span>] attribute <span>RequestDestination</span> <span data-x="dom-link-as">as</span>; // (default "")
+  [<span>CEReactions</span>, SameObject, PutForwards=<span data-x="dom-DOMTokenList-value">value</span>] readonly attribute <span>DOMTokenList</span> <span data-x="dom-link-relList">relList</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-link-media">media</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-link-nonce">nonce</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-link-integrity">integrity</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-link-hreflang">hreflang</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-link-type">type</span>;
+  [<span>CEReactions</span>, SameObject, PutForwards=<span data-x="dom-DOMTokenList-value">value</span>] readonly attribute <span>DOMTokenList</span> <span data-x="dom-link-sizes">sizes</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-link-referrerPolicy">referrerPolicy</span>;
+};
+<span>HTMLLinkElement</span> implements <span>LinkStyle</span>;</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>link</code> element allows authors to link their document to other resources.</p>
+
+  <p>The destination of the link(s) is given by the <dfn><code data-x="attr-link-href">href</code></dfn> attribute, which must be present and must contain a
+  <span>valid non-empty URL potentially surrounded by spaces</span>. <span w-nodev>If the <code
+  data-x="attr-link-href">href</code> attribute is absent, then the element does not define a
+  link.</span></p>
+
+  <p>A <code>link</code> element must have either a <code data-x="attr-link-rel">rel</code> attribute
+  or an <code data-x="attr-itemprop">itemprop</code> attribute, but not both.</p>
+
+  <p>The types of link indicated (the relationships) are given by the value of the <dfn><code data-x="attr-link-rel">rel</code></dfn> attribute, which, if present, must have a value that
+  is a <span>set of space-separated tokens</span>. The <a href="#linkTypes">allowed keywords and
+  their meanings</a> are defined in a later section. <span w-nodev>If the <code
+  data-x="attr-link-rel">rel</code> attribute is absent, has no keywords, or if none of the keywords
+  used are allowed according to the definitions in this specification, then the element does not
+  create any links.</span></p>
+
+  <p><code data-x="attr-link-rel">rel</code>'s
+  <span data-x="concept-supported-tokens">supported tokens</span> are the keywords defined in
+  <a href="#linkTypes">HTML link types</a> which are allowed on <code>link</code> elements, impact
+  the processing model, and are supported by the user agent. The possible <span
+  data-x="concept-supported-tokens">supported tokens</span> are
+  <code data-x="rel-alternate">alternate</code>,
+  <code data-x="rel-dns-prefetch">dns-prefetch</code>,
+  <code data-x="rel-icon">icon</code>,
+  <code data-x="rel-pingback">pingback</code>,
+  <code data-x="rel-preconnect">preconnect</code>,
+  <code data-x="rel-prefetch">prefetch</code>,
+  <code data-x="rel-preload">preload</code>,
+  <code data-x="rel-prerender">prerender</code>,
+  <code data-x="rel-search">search</code>,
+  <code data-x="rel-stylesheet">stylesheet</code>, and
+  <code data-x="rel-next">next</code>.
+  <code data-x="attr-link-rel">rel</code>'s <span data-x="concept-supported-tokens">supported
+  tokens</span> must only include the tokens from this list that the user agent implements the
+  processing model for.</p>
+
+  <p>The <dfn><code data-x="attr-link-as">as</code></dfn> attribute specifies the <span
+  data-x="concept-request-destination">destination</span> for a preload request for the resource
+  given by the <code data-x="attr-link-href">href</code> attribute. If the attribute is present, the
+  value must <span data-x="case-sensitive">case-sensitively</span> match one of the <span
+  data-x="concept-request-destination">destination keywords</span>. The default value is the empty
+  string. The attribute may be omitted. The attribute must not be specified on <code>link</code>
+  elements that do not have a <code data-x="attr-link-rel">rel</code> attribute that contains the
+  <code data-x="rel-preload">preload</code> keyword.<span w-nodev> User agents must implement the
+  processing model of the <code data-x="attr-link-as">as</code> attribute described in
+  <cite>Preload</cite>. <ref spec=FETCH> <ref spec=PRELOAD></span></p>
+
+  <p>If a <code>link</code> element has an <code data-x="attr-itemprop">itemprop</code> attribute,
+  or has a <code data-x="attr-link-rel">rel</code> attribute that contains only keywords that are
+  <span>body-ok</span>, then the element is said to be <dfn>allowed in the body</dfn>. This means
+  that the element can be used where <span>phrasing content</span> is expected.</p>
+
+  <p class="note">If the <code data-x="attr-link-rel">rel</code> attribute is used, the element can
+  only sometimes be used in the <code>body</code> of the page. When used with the <code
+  data-x="attr-itemprop">itemprop</code> attribute, the element can be used both in the
+  <code>head</code> element and in the <code>body</code> of the page, subject to the constraints of
+  the microdata model.</p>
+
+  <p>Two categories of links can be created using the <code>link</code> element: <span
+  data-x="external resource link">Links to external resources</span> and <span
+  data-x="hyperlink">hyperlinks</span>. The <a href="#linkTypes">link types section</a> defines
+  whether a particular link type is an external resource or a hyperlink. One <code>link</code>
+  element can create multiple links (of which some might be external resource links and some might
+  be hyperlinks); exactly which and how many links are created depends on the keywords given in the
+  <code data-x="attr-link-rel">rel</code> attribute. User agents must process the links on a per-link
+  basis, not a per-element basis.</p>
+
+  <p class="note">Each link created for a <code>link</code> element is handled separately. For
+  instance, if there are two <code>link</code> elements with <code data-x="">rel="stylesheet"</code>,
+  they each count as a separate external resource, and each is affected by its own attributes
+  independently. Similarly, if a single <code>link</code> element has a <code
+  data-x="attr-link-rel">rel</code> attribute with the value <code data-x="">next stylesheet</code>,
+  it creates both a <span>hyperlink</span> (for the <code data-x="rel-next">next</code> keyword) and
+  an <span>external resource link</span> (for the <code data-x="rel-stylesheet">stylesheet</code>
+  keyword), and they are affected by other attributes (such as <code
+  data-x="attr-link-media">media</code> or <code data-x="attr-link-title">title</code>)
+  differently.</p>
+
+  <div class="example">
+
+   <p>For example, the following <code>link</code> element creates two hyperlinks (to the same
+   page):</p>
+
+   <pre>&lt;link rel="author license" href="/about"></pre>
+
+   <p>The two links created by this element are one whose semantic is that the target page has
+   information about the current page's author, and one whose semantic is that the target page has
+   information regarding the license under which the current page is provided.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-link-nonce">nonce</code></dfn> attribute represents a
+  cryptographic nonce ("number used once") which can be used by <cite>Content Security Policy</cite>
+  to determine whether or not an external resource specified by the link will be loaded and applied
+  to the document. The value is text. <ref spec="CSP"></p>
+
+  <p>The <dfn data-export="" data-dfn-for="link" data-dfn-type="element-attr"><code
+  data-x="attr-link-integrity">integrity</code></dfn> attribute represents the <span
+  data-x="concept-request-integrity-metadata">integrity metadata</span> for requests which this
+  element is responsible for. The value is text. The attribute must not be specified on
+  <code>link</code> elements that do not have a <code data-x="attr-link-rel">rel</code> attribute
+  that contains the <code data-x="rel-stylesheet">stylesheet</code> keyword. <ref spec="SRI"></p>
+
+  <p>The <dfn><code data-x="attr-link-crossorigin">crossorigin</code></dfn> attribute is a <span>CORS
+  settings attribute</span>. It is intended for use with external resource links.</p>
+
+  <p>The <dfn><code data-x="attr-link-referrerpolicy">referrerpolicy</code></dfn> attribute is a
+  <span>referrer policy attribute</span>. It too is intended for use with external resource
+  links, where it helps set the <span>referrer policy</span> used when <span
+  data-x="concept-link-obtain">obtaining</span> the external resource. <ref
+  spec=REFERRERPOLICY>.</p>
+
+  <p>The exact behavior for links to external resources depends on the exact relationship, as
+  defined for the relevant link type. Some of the attributes control whether or not the external
+  resource is to be applied (as defined below).</p>
+
+  <div w-nodev>
+
+  <p>For external resources that are represented in the DOM (for example, style sheets), the DOM
+  representation must be made available (modulo cross-origin restrictions) even if the resource is
+  not applied. To <dfn data-x="concept-link-obtain">obtain the resource</dfn>, the user agent must
+  run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code data-x="attr-link-href">href</code> attribute's value is the empty string,
+   then abort these steps.</p></li>
+
+   <li><p><span data-x="parse a url">Parse</span> the <span>URL</span> given by the <code
+   data-x="attr-link-href">href</code> attribute, relative to the element's <span>node
+   document</span>. If that fails, then abort these steps. Otherwise, let <var>url</var> be the
+   <span>resulting URL record</span>.</p></li>
+
+   <li><p>Let <var>corsAttributeState</var> be the current state of the element's <code
+   data-x="attr-link-crossorigin">crossorigin</code> content attribute.</p></li>
+
+   <li><p>Let <var>request</var> be the result of <span
+   data-x="create a potential-CORS request">creating a potential-CORS request</span> given
+   <var>url</var>, the empty string, and <var>corsAttributeState</var>.
+
+   <li><p>Set <var>request</var>'s <span data-x="concept-request-client">client</span> to the
+   <code>link</code> element's <span>node document</span>'s <code>Window</code> object's
+   <span>environment settings object</span>.
+
+   <li><p>Set <var>request</var>'s <span data-x="concept-request-nonce-metadata">cryptographic
+   nonce metadata</span> to the current value of the <code>link</code> element's <code
+   data-x="attr-link-nonce">nonce</code> content attribute.</p></li>
+
+   <li><p>Set <var>request</var>'s <span data-x="concept-request-integrity-metadata">integrity
+   metadata</span> to the current value of the <code>link</code> element's <code
+   data-x="attr-link-integrity">integrity</code> content attribute.</p></li>
+
+   <li><p>Set <var>request</var>'s
+   <span data-x="concept-request-referrer-policy">referrer policy</span> to the current state of the
+   <code>link</code> element's <code data-x="attr-link-referrerpolicy">referrerpolicy</code>
+   attribute.</p></li>
+
+   <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>.</p></li>
+
+  </ol>
+
+  <p>User agents may opt to only try to obtain such resources when they are needed, instead of
+  pro-actively fetching all the external resources that are not applied.</p>
+
+  <p>The semantics of the protocol used (e.g. HTTP) must be followed when fetching external
+  resources. (For example, redirects will be followed and 404 responses will cause the external
+  resource to not be applied.)</p>
+
+  <!-- the next few paragraph are similar to text in the <style> element section -->
+  <p>Once the attempts to obtain the resource and its <span>critical subresources</span> are
+  complete, the user agent must, if the loads were successful, <span>queue a task</span> to
+  <span data-x="concept-event-fire">fire an event</span> named <code data-x="event-load">load</code>
+  at the<code>link</code> element, or, if the resource or one of its <span>critical
+  subresources</span> failed to completely load for any reason (e.g. DNS error, HTTP 404 response, a
+  connection being prematurely closed, unsupported Content-Type), <span>queue a task</span> to <span
+  data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code> at
+  the <code>link</code> element. Non-network errors in processing the resource or its subresources
+  (e.g. CSS parse errors, PNG decoding errors) are not failures for the purposes of this
+  paragraph.</p>
+
+  <p>The <span>task source</span> for these <span data-x="concept-task">tasks</span> is the <span>DOM
+  manipulation task source</span>.</p>
+
+  <p>The element must <span>delay the load event</span> of the element's <span>node document</span> until all the
+  attempts to obtain the resource and its <span>critical subresources</span> are complete.
+  (Resources that the user agent has not yet attempted to obtain, e.g. because it is waiting for the
+  resource to be needed, do not <span>delay the load event</span>.)</p>
+
+  <hr>
+
+  <p id="linkui">Interactive user agents may provide users with a means to <span data-x="following
+  hyperlinks">follow the hyperlinks</span> created using the <code>link</code> element, somewhere
+  within their user interface. The exact interface is not defined by this specification, but it
+  could include the following information (obtained from the element's attributes, again as defined
+  below), in some form or another (possibly simplified), for each hyperlink created with each
+  <code>link</code> element in the document:</p>
+
+  <ul> <!-- the order here is the order that makes most sense for a UI -->
+
+   <li>The relationship between this document and the resource (given by the <code
+   data-x="attr-link-rel">rel</code> attribute)</li>
+
+   <li>The title of the resource (given by the <code data-x="attr-link-title">title</code>
+   attribute).</li>
+
+   <li>The address of the resource (given by the <code data-x="attr-link-href">href</code>
+   attribute).</li>
+
+   <li>The language of the resource (given by the <code data-x="attr-link-hreflang">hreflang</code>
+   attribute).</li>
+
+   <li>The optimum media for the resource (given by the <code data-x="attr-link-media">media</code>
+   attribute).</li>
+
+  </ul>
+
+  <p>User agents could also include other information, such as the type of the resource (as given by
+  the <code data-x="attr-link-type">type</code> attribute).</p>
+
+  </div>
+
+  <p class="note">Hyperlinks created with the <code>link</code> element and its <code
+  data-x="attr-link-rel">rel</code> attribute apply to the whole document. This contrasts with the
+  <code data-x="attr-hyperlink-rel">rel</code> attribute of <code>a</code> and <code>area</code>
+  elements, which indicates the type of a link whose context is given by the link's location within
+  the document.</p>
+
+  <p>The <dfn><code data-x="attr-link-media">media</code></dfn> attribute says which media the
+  resource applies to. The value must be a <span>valid media query list</span>.</p>
+
+  <div w-nodev>
+
+  <p>If the link is a <span>hyperlink</span> then the <code data-x="attr-link-media">media</code>
+  attribute is purely advisory, and describes for which media the document in question was
+  designed.</p>
+
+  <p>However, if the link is an <span>external resource link</span>, then the <code
+  data-x="attr-link-media">media</code> attribute is prescriptive. The user agent must apply the
+  external resource when the <code data-x="attr-link-media">media</code> attribute's value
+  <span>matches the environment</span> and the other relevant conditions apply, and must not apply
+  it otherwise.</p><!-- note similar text in <style> element section -->
+
+  <p class="note">The external resource might have further restrictions defined within that limit
+  its applicability. For example, a CSS style sheet might have some <code data-x="">@media</code>
+  blocks. This specification does not override such further restrictions or requirements.</p><!--
+  note similar text in <style> element section -->
+
+  </div>
+
+  <p id="default-media">The default, if the <code data-x="attr-link-media">media</code> attribute is
+  omitted, is "<code data-x="">all</code>", meaning that by default links apply to all media.</p>
+
+  <p>The <dfn><code data-x="attr-link-hreflang">hreflang</code></dfn> attribute on the
+  <code>link</code> element has the same semantics as the <span
+  data-x="attr-hyperlink-hreflang"><code>hreflang</code> attribute on the <code>a</code>
+  element</span>.</p>
+
+  <p>The <dfn><code data-x="attr-link-type">type</code></dfn> attribute gives the <span>MIME
+  type</span> of the linked resource. It is purely advisory. The value must be a <span>valid MIME
+  type</span>.</p>
+
+  <p>For <span data-x="external resource link">external resource links</span>, the <code
+  data-x="attr-link-type">type</code> attribute is used as a hint to user agents so that they can
+  avoid fetching resources they do not support. <span w-nodev>If the attribute is present, then
+  the user agent must assume that the resource is of the given type (even if that is not a
+  <span>valid MIME type</span>, e.g. the empty string). If the attribute is omitted, but the
+  external resource link type has a default type defined, then the user agent must assume that the
+  resource is of that type. If the UA does not support the given <span>MIME type</span> for the
+  given link relationship, then the UA should not <span data-x="concept-link-obtain">obtain</span>
+  the resource; if the UA does support the given <span>MIME type</span> for the given link
+  relationship, then the UA should <span data-x="concept-link-obtain">obtain</span> the resource at
+  the appropriate time as specified for the <span>external resource link</span>'s particular type.
+  If the attribute is omitted, and the external resource link type does not have a default type
+  defined, but the user agent would <span data-x="concept-link-obtain">obtain</span> the resource if
+  the type was known and supported, then the user agent should <span
+  data-x="concept-link-obtain">obtain</span> the resource under the assumption that it will be
+  supported.</span></p>
+
+  <div w-nodev>
+
+  <p>User agents must not consider the <code data-x="attr-link-type">type</code> attribute
+  authoritative &mdash; upon fetching the resource, user agents must not use the <code
+  data-x="attr-link-type">type</code> attribute to determine its actual type. Only the actual type
+  (as defined in the next paragraph) is used to determine whether to <em>apply</em> the resource,
+  not the aforementioned assumed type.</p>
+
+  <p id="concept-link-type-sniffing">If the external resource link type defines rules for processing
+  the resource's <span data-x="Content-Type">Content-Type metadata</span>, then those rules apply.
+  Otherwise, if the resource is expected to be an image, user agents may apply the <span
+  data-x="Content-Type sniffing: image">image sniffing rules</span>, with the <var>official
+  type</var> being the type determined from the resource's <span data-x="Content-Type">Content-Type
+  metadata</span>, and use the resulting <span data-x="Content-Type sniffing">computed type of the
+  resource</span> as if it was the actual type.
+  Otherwise, if neither of these conditions apply or if the user agent opts not to apply the image
+  sniffing rules, then the user agent must use the resource's <span
+  data-x="Content-Type">Content-Type metadata</span> to determine the type of the resource. If there
+  is no type metadata, but the external resource link type has a default type defined, then the user
+  agent must assume that the resource is of that type.</p>
+
+  <p class="note">The <code data-x="rel-stylesheet">stylesheet</code> link type defines rules for
+  processing the resource's <span data-x="Content-Type">Content-Type metadata</span>.</p>
+
+  <p>Once the user agent has established the type of the resource, the user agent must apply the
+  resource if it is of a supported type and the other relevant conditions apply, and must ignore the
+  resource otherwise.</p>
+
+  <div class="example">
+
+   <p>If a document contains style sheet links labeled as follows:</p>
+
+   <pre>&lt;link rel="stylesheet" href="A" type="text/plain"&gt;
+&lt;link rel="stylesheet" href="B" type="text/css"&gt;
+&lt;link rel="stylesheet" href="C"&gt;</pre>
+
+   <p>...then a compliant UA that supported only CSS style sheets would fetch the B and C files, and
+   skip the A file (since <code>text/plain</code> is not the <span>MIME type</span> for CSS style
+   sheets).</p>
+
+   <p>For files B and C, it would then check the actual types returned by the server. For those that
+   are sent as <code>text/css</code>, it would apply the styles, but for those labeled as
+   <code>text/plain</code>, or any other type, it would not.</p>
+
+   <p>If one of the two files was returned without a <span>Content-Type</span> metadata, or with a
+   syntactically incorrect type like <code data-x="">Content-Type:&nbsp;"null"</code>, then the
+   default type for <code data-x="rel-stylesheet">stylesheet</code> links would kick in. Since that
+   default type is <code data-x="">text/css</code>, the style sheet <em>would</em> nonetheless be
+   applied.</p>
+
+  </div>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-link-title">title</code></dfn> attribute gives the title of the
+  link. With one exception, it is purely advisory. The value is text. The exception is for style
+  sheet links that are <span>in a document tree</span>, for which the <code
+  data-x="attr-link-title">title</code> attribute defines <span data-x="CSS style sheet set">CSS
+  style sheet sets</span>.</p>
+
+  <p class="note">The <code data-x="attr-link-title">title</code> attribute on <code>link</code>
+  elements differs from the global <code data-x="attr-title">title</code> attribute of most other
+  elements in that a link without a title does not inherit the title of the parent element: it
+  merely has no title.</p>
+
+  <p>The <code data-x="attr-link-sizes">sizes</code> attribute is used with the <code
+  data-x="rel-icon">icon</code> link type. The attribute must not be specified on <code>link</code>
+  elements that do not have a <code data-x="attr-link-rel">rel</code> attribute that specifies the
+  <code data-x="rel-icon">icon</code> keyword.</p>
+
+  <div w-nodev>
+
+  <p>The <span>activation behavior</span> of <code>link</code> elements that create <span
+  data-x="hyperlink">hyperlinks</span> is to run the following steps:</p>
+
+  <ol><!-- c.f. <a> and <area>'s similar sections -->
+
+   <li><p>If the <code>link</code> element's <span>node document</span> is not <span>fully active</span>,
+   then abort these steps.</p></li>
+
+   <li><p><span data-x="following hyperlinks">Follow the hyperlink</span> created by the
+   <code>link</code> element.</p></li>
+
+  </ol>
+
+  <p>HTTP `<code data-x="http-link">Link</code>` headers, if supported, must be assumed to come
+  before any links in the document, in the order that they were given in the HTTP message. These
+  headers are to be processed according to the rules given in the relevant specifications. <ref
+  spec=HTTP> <ref spec=WEBLINK></p> <!-- WEBLINK is ref for Link: header -->
+
+  <p class="note">Registration of relation types in HTTP `<code data-x="http-link">Link</code>`
+  headers is distinct from <a href="#linkTypes">HTML link types</a>, and thus their semantics can be
+  different from same-named HTML types.</p>
+
+  <p>The IDL attributes <dfn><code data-x="dom-link-href">href</code></dfn>, <dfn><code
+  data-x="dom-link-rel">rel</code></dfn>, <dfn><code data-x="dom-link-as">as</code></dfn>,
+  <dfn><code data-x="dom-link-media">media</code></dfn>, <dfn><code
+  data-x="dom-link-hreflang">hreflang</code></dfn>, <dfn><code
+  data-x="dom-link-type">type</code></dfn>, <dfn><code data-x="dom-link-nonce">nonce</code></dfn>,
+  <dfn><code data-x="dom-link-integrity">integrity</code></dfn> and <dfn><code
+  data-x="dom-link-sizes">sizes</code></dfn> each must <span>reflect</span> the respective content
+  attributes of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-link-crossOrigin">crossOrigin</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-link-crossorigin">crossorigin</code> content attribute.</p>
+
+  <p>The IDL attribute <dfn><code data-x="dom-link-rellist">relList</code></dfn> <span
+  w-nodev>must</span> <span data-x="reflect">reflect</span> the <code
+  data-x="attr-link-rel">rel</code> content attribute.</p>
+
+  <p>The IDL attribute <dfn><code data-x="dom-link-referrerPolicy">referrerPolicy</code></dfn> must
+  <span>reflect</span> the <code data-x="attr-link-referrerpolicy">referrerpolicy</code>
+  content attribute, <span>limited to only known values</span>.</p>
+
+  <p>Other specifications may add <a href="#linkTypes">HTML link types</a> as defined in <a
+  href="#other-link-types">Other link types</a>, with the following additional requirements:</p>
+
+  <ul>
+
+   <li>Such specifications may require that their link types be included in <code
+   data-x="attr-link-rel">rel</code>'s <span data-x="concept-supported-tokens">supported
+   tokens</span>.</li>
+
+   <li>Such specifications may specify that their link types are <span>body-ok</span>.</li>
+
+  </ul>
+
+  </div>
+
+  <p>The <code>LinkStyle</code> interface is also implemented by this element. <ref spec=CSSOM></p>
+
+  <div class="example">
+
+   <p>Here, a set of <code>link</code> elements provide some style sheets:</p>
+
+   <pre>&lt;!-- a persistent style sheet -->
+&lt;link rel="stylesheet" href="default.css">
+
+&lt;!-- the preferred alternate style sheet -->
+&lt;link rel="stylesheet" href="green.css" title="Green styles">
+
+&lt;!-- some alternate style sheets -->
+&lt;link rel="alternate stylesheet" href="contrast.css" title="High contrast">
+&lt;link rel="alternate stylesheet" href="big.css" title="Big fonts">
+&lt;link rel="alternate stylesheet" href="wide.css" title="Wide screen"></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows how you can specify versions of the page that use alternative
+   formats, are aimed at other languages, and that are intended for other media:</p>
+
+   <pre>&lt;link rel=alternate href="/en/html" hreflang=en type=text/html title="English HTML">
+&lt;link rel=alternate href="/fr/html" hreflang=fr type=text/html title="French HTML">
+&lt;link rel=alternate href="/en/html/print" hreflang=en type=text/html media=print title="English HTML (for printing)">
+&lt;link rel=alternate href="/fr/html/print" hreflang=fr type=text/html media=print title="French HTML (for printing)">
+&lt;link rel=alternate href="/en/pdf" hreflang=en type=application/pdf title="English PDF">
+&lt;link rel=alternate href="/fr/pdf" hreflang=fr type=application/pdf title="French PDF"></pre>
+
+  </div>
+
+
+
+
+
+  

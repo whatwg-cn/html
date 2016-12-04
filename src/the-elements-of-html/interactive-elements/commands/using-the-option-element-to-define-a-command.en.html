@@ -1,0 +1,33 @@
+<h5><dfn data-x="option-command">Using the <code>option</code> element to define a command</dfn></h5>
+
+  <p>An <code>option</code> element with an ancestor <code>select</code> element and either no <code
+  data-x="attr-option-value">value</code> attribute or a <code data-x="attr-option-value">value</code>
+  attribute that is not the empty string <span data-x="concept-command">defines a command</span>.</p>
+
+  <p>The <span data-x="command-facet-Label">Label</span> of the command is the value of the
+  <code>option</code> element's <code data-x="attr-option-label">label</code> attribute, if there is
+  one, or else the value of <code>option</code> element's <code>textContent</code> IDL attribute,
+  with <span data-x="strip leading and trailing whitespace">leading and trailing whitespace
+  stripped</span>, and with any sequences of two or more <span data-x="space character">space
+  characters</span> replaced by a single U+0020 SPACE character.</p>
+
+  <p>The <span data-x="command-facet-AccessKey">AccessKey</span> of the command is the element's
+  <span>assigned access key</span>, if any.</p>
+
+  <p>The <span data-x="command-facet-HiddenState">Hidden State</span> of the command is true (hidden)
+  if the element has a <code data-x="attr-hidden">hidden</code> attribute, and false otherwise.</p>
+
+  <p>The <span data-x="command-facet-DisabledState">Disabled State</span> of the command is true if
+  the element is <span data-x="concept-option-disabled">disabled</span>, or if its nearest ancestor
+  <code>select</code> element is <span data-x="concept-fe-disabled">disabled</span>, or if it or one
+  of its ancestors is <span>inert</span>, and false otherwise.</p>
+
+  <p>If the <code>option</code>'s nearest ancestor <code>select</code> element has a <code
+  data-x="attr-select-multiple">multiple</code> attribute, the <span
+  data-x="command-facet-Action">Action</span> of the command is to <span
+  data-x="concept-select-pick">pick</span> the <code>option</code> element. Otherwise, the <span
+  data-x="command-facet-Action">Action</span> is to <span
+  data-x="concept-select-toggle">toggle</span> the <code>option</code> element.</p>
+
+
+  

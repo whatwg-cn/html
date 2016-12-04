@@ -1,0 +1,43 @@
+<h4>The <dfn><code>col</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>colgroup</code> element that doesn't have
+   a <code data-x="attr-col-span">span</code> attribute.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-col-span">span</code></dd>
+   <!-- v2: char, to specify the decimal character used in numeric data cells in the column (not header cells) -->
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <p><code>HTMLTableColElement</code>, same as for
+    <code>colgroup</code> elements. This interface defines one member,
+    <code data-x="dom-col-span">span</code>.</p>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>If a <code>col</code> element has a parent and that is a <code>colgroup</code> element that
+  itself has a parent that is a <code>table</code> element, then the <code>col</code> element
+  <span>represents</span> one or more <span data-x="concept-column">columns</span> in the <span
+  data-x="concept-column-group">column group</span> represented by that <code>colgroup</code>.</p>
+
+  <p>The element may have a <dfn><code data-x="attr-col-span">span</code></dfn> content attribute
+  specified, whose value must be a <span>valid non-negative integer</span> greater than zero.</p>
+
+  <div w-nodev>
+
+  <p>The <code>col</code> element and its <code data-x="attr-col-span">span</code> attribute take
+  part in the <span>table model</span>.</p>
+
+  <p>The <dfn><code data-x="dom-col-span">span</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name. The value must be <span>limited to only non-negative
+  numbers greater than zero with fallback</span>, with a default value of 1.</p>
+
+  </div>
+
+
+  

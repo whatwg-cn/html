@@ -1,0 +1,182 @@
+<h4>The <dfn><code>ol</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd>If the element's children include at least one <code>li</code> element: <span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Zero or more <code>li</code> and <span data-x="script-supporting elements">script-supporting</span> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-ol-reversed">reversed</code></dd>
+   <dd><code data-x="attr-ol-start">start</code></dd>
+   <dd><code data-x="attr-ol-type">type</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLOListElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-ol-reversed">reversed</span>;
+  [<span>CEReactions</span>] attribute long <span data-x="dom-ol-start">start</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-ol-type">type</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>ol</code> element <span>represents</span> a list of items, where the items have been
+  intentionally ordered, such that changing the order would change the meaning of the document.</p>
+
+  <p>The items of the list are the <code>li</code> element child nodes of the <code>ol</code>
+  element, in <span>tree order</span>.</p>
+
+  <p>The <dfn><code data-x="attr-ol-reversed">reversed</code></dfn> attribute is a <span>boolean
+  attribute</span>. If present, it indicates that the list is a descending list (..., 3, 2, 1). If
+  the attribute is omitted, the list is an ascending list (1, 2, 3, ...).</p>
+
+  <p>The <dfn><code data-x="attr-ol-start">start</code></dfn> attribute, if present, must be a
+  <span>valid integer</span>. It is used to determine the <span data-x="concept-ol-start">starting
+  value</span> of the list.</p>
+
+  <div w-nodev>
+
+  <!-- https://github.com/whatwg/html/issues/1617
+       https://github.com/whatwg/html/issues/1911 -->
+
+  <p>An <code>ol</code> element has a <dfn data-x="concept-ol-start">starting value</dfn>, which is
+  an integer determined as follows:</p>
+
+  <ol>
+   <li>
+    <p>If the <code>ol</code> element has a <code data-x="attr-ol-start">start</code> attribute,
+    then:</p>
+
+    <ol>
+     <li><p>Let <var>parsed</var> be the result of <span data-x="rules for parsing integers">parsing
+     the value of the attribute as an integer</span>.</p></li>
+
+     <li><p>If <var>parsed</var> is not an error, then return <var>parsed</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>If the <code>ol</code> element has a <code data-x="attr-ol-reversed">reversed</code>
+   attribute, then return the number of <span data-x="list owner">owned <code>li</code>
+   elements</span>.</p></li>
+
+   <li><p>Return 1.</p></li>
+  </ol>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-ol-type">type</code></dfn> attribute can be used to specify the kind
+  of marker to use in the list, in the cases where that matters (e.g. because items are to be
+  referenced by their number/letter). The attribute, if specified, must have a value that is a
+  <span>case-sensitive</span> match for one of the characters given in the first cell of one of the
+  rows of the following table. <span w-nodev>The <code data-x="attr-ol-type">type</code>
+  attribute represents the state given in the cell in the second column of the row whose first cell
+  matches the attribute's value; if none of the cells match, or if the attribute is omitted, then
+  the attribute represents the <span data-x="attr-ol-type-state-decimal">decimal</span>
+  state.</span></p>
+
+  <table>
+   <thead>
+    <tr>
+     <th>Keyword
+     <th>State
+     <th>Description
+     <th colspan=8>Examples for values 1-3 and 3999-4001
+   <tbody>
+    <tr>
+     <td><dfn><code data-x="attr-ol-type-keyword-decimal">1</code></dfn> (U+0031)
+     <td><dfn data-x="attr-ol-type-state-decimal">decimal</dfn>
+     <td>Decimal numbers
+     <td class="eg"><samp>1.</samp> <td class="eg"><samp>2.</samp> <td class="eg"><samp>3.</samp> <td class="eg">... <td class="eg"><samp>3999.</samp> <td class="eg"><samp>4000.</samp> <td class="eg"><samp>4001.</samp> <td class="eg">...
+    <tr>
+     <td><dfn><code data-x="attr-ol-type-keyword-lower-alpha">a</code></dfn> (U+0061)
+     <td><dfn data-x="attr-ol-type-state-lower-alpha">lower-alpha</dfn>
+     <td>Lowercase latin alphabet
+     <td class="eg"><samp>a.</samp> <td class="eg"><samp>b.</samp> <td class="eg"><samp>c.</samp> <td class="eg">... <td class="eg"><samp>ewu.</samp> <td class="eg"><samp>ewv.</samp> <td class="eg"><samp>eww.</samp> <td class="eg">...
+    <tr>
+     <td><dfn><code data-x="attr-ol-type-keyword-upper-alpha">A</code></dfn> (U+0041)
+     <td><dfn data-x="attr-ol-type-state-upper-alpha">upper-alpha</dfn>
+     <td>Uppercase latin alphabet
+     <td class="eg"><samp>A.</samp> <td class="eg"><samp>B.</samp> <td class="eg"><samp>C.</samp> <td class="eg">... <td class="eg"><samp>EWU.</samp> <td class="eg"><samp>EWV.</samp> <td class="eg"><samp>EWW.</samp> <td class="eg">...
+    <tr>
+     <td><dfn><code data-x="attr-ol-type-keyword-lower-roman">i</code></dfn> (U+0069)
+     <td><dfn data-x="attr-ol-type-state-lower-roman">lower-roman</dfn>
+     <td>Lowercase roman numerals
+     <td class="eg"><samp>i.</samp> <td class="eg"><samp>ii.</samp> <td class="eg"><samp>iii.</samp> <td class="eg">... <td class="eg"><samp>mmmcmxcix.</samp> <td class="eg"><samp>i&#x0305;v&#x0305;.</samp> <td class="eg"><samp>i&#x0305;v&#x0305;i.</samp> <td class="eg">...
+    <tr>
+     <td><dfn><code data-x="attr-ol-type-keyword-upper-roman">I</code></dfn> (U+0049)
+     <td><dfn data-x="attr-ol-type-state-upper-roman">upper-roman</dfn>
+     <td>Uppercase roman numerals
+     <td class="eg"><samp>I.</samp> <td class="eg"><samp>II.</samp> <td class="eg"><samp>III.</samp> <td class="eg">... <td class="eg"><samp>MMMCMXCIX.</samp> <td class="eg"><samp>I&#x0305;V&#x0305;.</samp> <td class="eg"><samp>I&#x0305;V&#x0305;I.</samp> <td class="eg">...
+  </table>
+
+  <div w-nodev>
+
+  <p>User agents should render the items of the list in a manner consistent with the state of the
+  <code data-x="attr-ol-type">type</code> attribute of the <code>ol</code> element. Numbers less than
+  or equal to zero should always use the decimal system regardless of the <code
+  data-x="attr-ol-type">type</code> attribute.</p>
+
+  <p class="note">For CSS user agents, a mapping for this attribute to the
+  <span>'list-style-type'</span> CSS property is given <a href="#decohints">in the rendering
+  section</a> (the mapping is straightforward: the states above have the same names as their
+  corresponding CSS values).</p>
+
+  </div>
+
+  <p class="note">It is possible to redefine the default CSS list styles used to implement this
+  attribute in CSS user agents; doing so will affect how list items are rendered.</p>
+
+  <!-- v2: resuming numbering of lists from previous lists? -->
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-ol-reversed">reversed</code></dfn> and
+  <dfn><code data-x="dom-ol-type">type</code></dfn> IDL attributes must <span>reflect</span> the
+  respective content attributes of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-ol-start">start</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name, with a default value of 1.</p>
+
+  <p class="note">This means that the <code data-x="dom-ol-start">start</code> IDL attribute does
+  not necessarily match the list's <span data-x="concept-ol-start">starting value</span>, in cases
+  where the <code data-x="attr-ol-start">start</code> content attribute is omitted and the <code
+  data-x="attr-ol-reversed">reversed</code> content attribute is specified.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following markup shows a list where the order matters, and where the <code>ol</code>
+   element is therefore appropriate. Compare this list to the equivalent list in the <code>ul</code>
+   section to see an example of the same items using the <code>ul</code> element.</p>
+
+   <pre>&lt;p>I have lived in the following countries (given in the order of when
+I first lived there):&lt;/p>
+&lt;ol>
+ &lt;li>Switzerland
+ &lt;li>United Kingdom
+ &lt;li>United States
+ &lt;li>Norway
+&lt;/ol></pre>
+
+   <p>Note how changing the order of the list changes the meaning of the document. In the following
+   example, changing the relative order of the first two items has changed the birthplace of the
+   author:</p>
+
+   <pre>&lt;p>I have lived in the following countries (given in the order of when
+I first lived there):&lt;/p>
+&lt;ol>
+ &lt;li>United Kingdom
+ &lt;li>Switzerland
+ &lt;li>United States
+ &lt;li>Norway
+&lt;/ol></pre>
+
+  </div>
+
+
+  

@@ -1,0 +1,72 @@
+<h4 id="structuredclonewithtransfer" data-export="" data-lt="StructuredCloneWithTransfer"
+  data-dfn-type="abstract-op"><dfn>StructuredCloneWithTransfer</dfn> ( <var>input</var>,
+  <var>transferList</var>, <var>targetRealm</var> )</h4>
+
+  <ol>
+   <li>
+    <p>Let <var>memory</var> be an empty map.</p>
+
+    <p class="note">The purpose of the <var>memory</var> map, both here and in the
+    <span>StructuredClone</span> abstract operation, is to avoid cloning objects twice. This ends up
+    preserving cycles and the identity of duplicate objects in graphs.</p>
+   </li>
+
+   <li>
+    <p>For each object <var>transferable</var> in <var>transferList</var>:
+
+    <ol>
+     <li><p>If <span>IsTransferable</span>(<var>transferable</var>) is false, then throw a
+     <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>.</p></li>
+
+     <li><p>Let <var>placeholder</var> be a user-agent-defined placeholder object.</p></li>
+
+     <li><p>Create an entry in <var>memory</var> with key <var>transferable</var> and value
+     <var>placeholder</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Let <var>clone</var> be the result of ?
+   <span>StructuredClone</span>(<var>input</var>, <var>targetRealm</var>,
+   <var>memory</var>).</p></li>
+
+   <li><p>Let <var>outputTransferList</var> be a new empty <span data-x="js-List">List</span>.</p></li>
+
+   <li>
+    <p>For each object <var>transferable</var> in <var>transferList</var>:
+
+    <ol>
+     <li><p>Let <var>placeholderResult</var> be the value of the entry in <var>memory</var> whose
+     key is <var>transferable</var>.</p></li>
+
+     <li><p>Let <var>transferResult</var> be ? <span
+     data-x="transfer-abstract-op">Transfer</span>(<var>transferable</var>,
+     <var>targetRealm</var>).</p></li>
+
+     <li>
+      <p>Within <var>clone</var>, replace references to <var>placeholderResult</var> with
+      <var>transferResult</var>, such that everything holding a reference to
+      <var>placeholderResult</var>, now holds a reference to <var>transferResult</var>.</p>
+
+      <p class="note">This is a rather unusual low-level operation for which no primitives are
+      defined by JavaScript.</p>
+     </li>
+
+     <li><p>Add <var>transferResult</var> as the last element of
+     <var>outputTransferList</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Return { [[Clone]]: <var>clone</var>, [[TransferList]]: <var>outputTransferList</var>
+   }.</p></li>
+  </ol>
+
+  <p class="note">Originally the <span>StructuredCloneWithTransfer</span> abstract operation was
+  known as the "structured clone" algorithm. The <span>StructuredClone</span> abstract operation was
+  known as the "internal structured clone" algorithm. Transferring objects, now handled by the
+  <span>StructuredCloneWithTransfer</span> abstract operation, were formerly handled by parts of the
+  algorithm of the <code data-x="dom-window-postmessage">postMessage()</code> method on the
+  <code>Window</code> object and the <code data-x="dom-messageport-postmessage">postMessage()</code>
+  method on the <code>MessagePort</code> object.</p>
+
+  <span id="structured-clone"></span>
+  

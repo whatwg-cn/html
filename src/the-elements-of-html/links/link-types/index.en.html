@@ -1,0 +1,240 @@
+<h4 id="linkTypes">Link types</h4>
+
+  <p>The following table summarizes the link types that are defined by this specification, by their
+  corresponding keywords. This table is non-normative; the actual definitions for the link types are
+  given in the next few sections.</p>
+
+  <p>In this section, the term <i>referenced document</i> refers to the resource identified by the
+  element representing the link, and the term <i>current document</i> refers to the resource within
+  which the element representing the link finds itself.</p>
+
+  <div w-nodev>
+
+  <p>To determine which link types apply to a <code>link</code>, <code>a</code>, or
+  <code>area</code> element, the element's <code data-x="">rel</code> attribute must be <span
+  data-x="split a string on spaces">split on spaces</span>. The resulting tokens are the keywords
+  for the link types that apply to that element.</p>
+
+  </div>
+
+  <p>Except where otherwise specified, a keyword must not be specified more than once per <code
+  data-x="attr-hyperlink-rel">rel</code> attribute.</p>
+
+  <p>Some of the sections that follow the table below list synonyms for certain keywords. The
+  indicated synonyms <span w-nodev>are to be handled as specified by user agents, but</span> must
+  not be used in documents (for example, the keyword "<code data-x="">copyright</code>").</p>
+
+  <p>Keywords are always <span>ASCII case-insensitive</span><span w-nodev>, and must be
+  compared as such</span>.</p>
+
+  <p class="example">Thus, <code data-x="">rel="next"</code> is the same as <code
+  data-x="">rel="NEXT"</code>.</p>
+
+  <p>Keywords that are <dfn>body-ok</dfn> affect whether <code>link</code> elements are
+  <span>allowed in the body</span>. The <span>body-ok</span> keywords defined by this specification
+  are
+  <code data-x="rel-dns-prefetch">dns-prefetch</code>,
+  <code data-x="rel-pingback">pingback</code>,
+  <code data-x="rel-preconnect">preconnect</code>,
+  <code data-x="rel-prefetch">prefetch</code>,
+  <code data-x="rel-preload">preload</code>,
+  <code data-x="rel-prerender">prerender</code>, and
+  <code data-x="rel-stylesheet">stylesheet</code>.
+  Other specifications can also define <span>body-ok</span> keywords.</p>
+
+  <table class="yesno">
+   <thead>
+    <tr>
+     <th rowspan="2">Link type</th>
+     <th colspan="2">Effect on...</th>
+     <th rowspan="2"><span>body-ok</span></th>
+     <th rowspan="2">Brief description</th>
+    </tr>
+    <tr>
+     <th><code>link</code></th>
+     <th><code>a</code> and <code>area</code></th>
+    </tr>
+   </thead>
+   <tbody>
+
+    <tr>
+     <td><code data-x="rel-alternate">alternate</code></td> <!-- second most used <link rel> value -->
+     <td><span>Hyperlink</span></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Gives alternate representations of the current document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-author">author</code></td>
+     <td><span>Hyperlink</span></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Gives a link to the author of the current document or article.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-bookmark">bookmark</code></td> <!-- fourth most used <a rel> value -->
+     <td><em>not allowed</em></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Gives the permalink for the nearest ancestor section.</td>
+    </tr>
+
+    <!-- <code data-x="rel-contact">contact</code></td> is not here because it's XFN (8th most used <a rel> value) -->
+
+    <tr>
+     <td><code data-x="rel-dns-prefetch">dns-prefetch</code></td>
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="yes"> Yes </td>
+     <td>Specifies that the user agent should preemptively perform DNS resolution for the target resource's <span>origin</span>.</td>
+    </tr>
+
+    <!-- fifth and sixth most used <a rel> value (sixth is "external nofollow") -->
+    <tr>
+     <td><code data-x="rel-external">external</code></td>
+     <td><em>not allowed</em></td>
+     <td><span data-x="hyperlink annotation">Annotation</span></td>
+     <td class="no"> &middot; </td>
+     <td>Indicates that the referenced document is not part of the same site as the current document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-help">help</code></td>
+     <td><span>Hyperlink</span></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Provides a link to context-sensitive help.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-icon">icon</code></td> <!-- link rel="shortcut icon" and its ilk are the fourth, sixth, and ninth most used values -->
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="no"> &middot; </td>
+     <td>Imports an icon to represent the current document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-license">license</code></td> <!-- seventh most used <a rel> value -->
+     <td><span>Hyperlink</span></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Indicates that the main content of the current document is covered by the copyright license described by the referenced document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-next">next</code></td>
+     <td><span>Hyperlink</span></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Indicates that the current document is a part of a series, and that the next document in the series is the referenced document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-nofollow">nofollow</code></td> <!-- most used <a rel> value (and sixth most used is "external nofollow") -->
+     <td><em>not allowed</em></td>
+     <td><span data-x="hyperlink annotation">Annotation</span></td>
+     <td class="no"> &middot; </td>
+     <td>Indicates that the current document's original author or publisher does not endorse the referenced document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-noreferrer">noreferrer</code></td>
+     <td><em>not allowed</em></td>
+     <td><span data-x="hyperlink annotation">Annotation</span></td>
+     <td class="no"> &middot; </td>
+     <td>Requires that the user agent not send an HTTP `<code data-x="http-referer">Referer</code>` (sic) header if the user follows the hyperlink.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-noopener">noopener</code></td>
+     <td><em>not allowed</em></td>
+     <td><span data-x="hyperlink annotation">Annotation</span></td>
+     <td class="no"> &middot; </td>
+     <td>Requires any <span>browsing context</span> created by following the hyperlink to <span data-x="disowned its opener">disown its opener</span>.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-pingback">pingback</code></td>
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="yes"> Yes </td>
+     <td>Gives the address of the pingback server that handles pingbacks to the current document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-preconnect">preconnect</code></td>
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="yes"> Yes </td>
+     <td>Specifies that the user agent should preemptively connect to the target resource's <span>origin</span>.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-prefetch">prefetch</code></td>
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="yes"> Yes </td>
+     <td>Specifies that the user agent should preemptively <span data-x="concept-fetch">fetch</span> and cache the target resource as it is likely to be required for a followup <span data-x="navigate">navigation</span>.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-preload">preload</code></td>
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="yes"> Yes </td>
+     <td>Specifies that the user agent must preemptively <span data-x="concept-fetch">fetch</span> and cache the target resource for current <span data-x="navigate">navigation</span> according to the <span data-x="concept-request-destination">destination</span> given by the <code data-x="attr-link-as">as</code> attribute (and the <span data-x="concept-request-priority">priority</span> associated with that <span data-x="concept-request-destination">destination</span>).</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-prerender">prerender</code></td>
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="yes"> Yes </td>
+     <td>Specifies that the user agent should preemptively <span data-x="concept-fetch">fetch</span> the target resource and process it in a way that helps deliver a faster response in the future.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-prev">prev</code></td> <!-- prev is used more than previous -->
+     <td><span>Hyperlink</span></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Indicates that the current document is a part of a series, and that the previous document in the series is the referenced document.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-search">search</code></td> <!-- used quite a bit -->
+     <td><span>Hyperlink</span></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Gives a link to a resource that can be used to search through the current document and its related pages.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-stylesheet">stylesheet</code></td> <!-- most commonly used <link rel> value, variants came in 7th, 8th, 12th, 17th... -->
+     <td><span data-x="external resource link">External Resource</span></td>
+     <td><em>not allowed</em></td>
+     <td class="yes"> Yes </td>
+     <td>Imports a stylesheet.</td>
+    </tr>
+
+    <tr>
+     <td><code data-x="rel-tag">tag</code></td> <!-- second and third most used <a rel> value (third is technically "category tag"). -->
+     <td><em>not allowed</em></td>
+     <td><span>Hyperlink</span></td>
+     <td class="no"> &middot; </td>
+     <td>Gives a tag (identified by the given address) that applies to the current document.</td>
+    </tr>
+
+   </tbody>
+  </table>
+
+  <!-- v2 ideas:
+   * rel="related" // see also
+   * http://microformats.org/wiki/rel-enclosure
+  -->
+
+
+  

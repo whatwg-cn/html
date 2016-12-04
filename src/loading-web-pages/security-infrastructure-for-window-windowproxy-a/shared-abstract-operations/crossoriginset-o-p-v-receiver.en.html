@@ -1,0 +1,23 @@
+<h5><dfn>CrossOriginSet</dfn> ( <var>O</var>, <var>P</var>, <var>V</var>,
+  <var>Receiver</var> )</h5>
+
+  <ol>
+   <li><p>Let <var>desc</var> be ? <var>O</var>.[[GetOwnProperty]](<var>P</var>).</p></li>
+
+   <li><p>Assert: <var>desc</var> is not undefined.</p></li>
+
+   <li>
+    <p>If <var>desc</var>.[[Set]] is present and its value is not undefined, then:
+
+    <ol>
+     <li><p>Perform ? <span>Call</span>(<var>setter</var>, <var>Receiver</var>,
+     «<var>V</var>»).</p></li>
+
+     <li><p>Return true.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+  </ol>
+
+  

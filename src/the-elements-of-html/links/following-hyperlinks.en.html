@@ -1,0 +1,86 @@
+<h4>Following hyperlinks</h4>
+
+  <p>When a user <dfn data-x="following hyperlinks">follows a hyperlink</dfn> created by an element
+  <var>subject</var>, optionally with a <var>hyperlink suffix</var>, the user agent must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>replace</var> be false.</p></li>
+
+   <li><p>Let <var>source</var> be <var>subject</var>'s <span>node document</span>'s <span
+   data-x="concept-document-bc">browsing context</span>.</p></li>
+
+   <li>
+
+    <p>If the user indicated a specific <span>browsing context</span> when following the hyperlink,
+    or if the user agent is configured to follow hyperlinks by navigating a particular browsing
+    context, then let <var>target</var> be that <span>browsing context</span>. If this is a new
+    <span>top-level browsing context</span> (e.g. when the user followed the hyperlink using "Open
+    in New Tab"), then <var>source</var> must be set as the new <span>browsing context</span>'s
+    <span>one permitted sandboxed navigator</span>.</p>
+
+    <p>Otherwise, if <var>subject</var> is an <code>a</code> or <code>area</code> element
+    that has a <code data-x="attr-hyperlink-target">target</code> attribute, then let <var>target</var> be the <span>browsing context</span> that is chosen by applying <span>the
+    rules for choosing a browsing context given a browsing context name</span>, using the value of
+    the <code data-x="attr-hyperlink-target">target</code> attribute as the browsing context name. If
+    these rules result in the creation of a new <span>browsing context</span>, set <var>replace</var> to true.</p>
+
+    <p>Otherwise, if <var>target</var> is an <code>a</code> or <code>area</code> element
+    with no <code data-x="attr-hyperlink-target">target</code> attribute, but the
+    <code>Document</code> contains a <code>base</code> element with a <code
+    data-x="attr-base-target">target</code> attribute, then let <var>target</var> be the
+    <span>browsing context</span> that is chosen by applying <span>the rules for choosing a browsing
+    context given a browsing context name</span>, using the value of the <code
+    data-x="attr-base-target">target</code> attribute of the first such <code>base</code> element as
+    the browsing context name. If these rules result in the creation of a new <span>browsing
+    context</span>, set <var>replace</var> to true.</p> <!-- c.f. concept-fs-target -->
+
+    <p>Otherwise, let <var>target</var> be <var>source</var>.</p>
+
+   </li>
+
+   <li><p>If <var>subject</var>'s <a href="#linkTypes">link types</a> include the <code
+   data-x="rel-noreferrer">noreferrer</code> or <code data-x="rel-noopener">noopener</code> keyword,
+   and <var>replace</var> is true, then <span data-x="disowned its opener">disown
+   <var>target</var>'s opener</span>.</p></li>
+
+   <li><p><span data-x="parse a url">Parse</span> the <span>URL</span> given by <var>subject</var>'s
+   <code data-x="attr-hyperlink-href">href</code> attribute, relative to <var>subject</var>'s
+   <span>node document</span>.</p></li>
+
+   <li>
+
+    <p>If that is successful, let <var>URL</var> be the <span>resulting URL string</span>.</p>
+
+    <p>Otherwise, if <span data-x="parse a url">parsing</span> the <span>URL</span> failed, the
+    user agent may report the error to the user in a user-agent-specific manner, may <span>queue a
+    task</span> to <span>navigate</span><!--DONAV hyperlink--> the <var>target</var>
+    <span>browsing context</span> to an error page to report the error, or may ignore the error and
+    do nothing. In any case, the user agent must then abort these steps.</p>
+
+   </li>
+
+   <li><p>If there is a <var>hyperlink suffix</var>, append it to <var>URL</var>.</p></li>
+
+   <li><p>Let <var>resource</var> be a new <span data-x="concept-request">request</span> whose <span
+   data-x="concept-request-url">url</span> is <var>URL</var> and whose <span
+   data-x="concept-request-referrer-policy">referrer policy</span> is the current state of
+   <var>subject</var>'s <code data-x="">referrerpolicy</code> content attribute.</p></li>
+
+   <li><p><span>Queue a task</span> to <span>navigate</span><!--DONAV hyperlink--> the
+   <var>target</var> <span>browsing context</span> to <var>resource</var>. If <var>replace</var> is
+   true, the navigation must be performed with <span>replacement enabled</span>. The
+   <span>source browsing context</span> must be <var>source</var>.</p></li>
+
+  </ol>
+
+  <p>The <span>task source</span> for the tasks mentioned above is the <span>DOM manipulation task
+  source</span>.</p>
+
+  </div>
+
+
+<!--DOWNLOAD-->
+
+  

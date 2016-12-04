@@ -1,0 +1,83 @@
+<h5>Error codes</h5>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-error">error</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>MediaError</code> object representing the current error state of the
+    element.</p>
+
+    <p>Returns null if there is no error.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>All <span data-x="media element">media elements</span> have an associated error status, which
+  records the last error the element encountered since its <span
+  data-x="concept-media-load-algorithm">resource selection algorithm</span> was last invoked. The
+  <dfn><code data-x="dom-media-error">error</code></dfn> attribute, on getting, must return the
+  <code>MediaError</code> object created for this last error, or null if there has not been an
+  error.</p>
+
+  </div>
+
+  <pre class="idl">interface <dfn>MediaError</dfn> {
+  const unsigned short <span data-x="dom-MediaError-MEDIA_ERR_ABORTED">MEDIA_ERR_ABORTED</span> = 1;
+  const unsigned short <span data-x="dom-MediaError-MEDIA_ERR_NETWORK">MEDIA_ERR_NETWORK</span> = 2;
+  const unsigned short <span data-x="dom-MediaError-MEDIA_ERR_DECODE">MEDIA_ERR_DECODE</span> = 3;
+  const unsigned short <span data-x="dom-MediaError-MEDIA_ERR_SRC_NOT_SUPPORTED">MEDIA_ERR_SRC_NOT_SUPPORTED</span> = 4;
+  readonly attribute unsigned short <span data-x="dom-MediaError-code">code</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code data-x="dom-media-error">error</code> . <code subdfn data-x="dom-MediaError-code">code</code></dt>
+
+   <dd>
+
+    <p>Returns the current error's error code, from the list below.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-MediaError-code">code</code></dfn> attribute of a
+  <code>MediaError</code> object must return the code for the error, which must be one of the
+  following:</p>
+
+  </div>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-MediaError-MEDIA_ERR_ABORTED">MEDIA_ERR_ABORTED</code></dfn> (numeric value 1)</dt>
+
+   <dd>The fetching process for the <span>media resource</span> was aborted by the user agent at the
+   user's request.</dd>
+
+   <dt><dfn><code data-x="dom-MediaError-MEDIA_ERR_NETWORK">MEDIA_ERR_NETWORK</code></dfn> (numeric value 2)</dt>
+
+   <dd>A network error of some description caused the user agent to stop fetching the <span>media
+   resource</span>, after the resource was established to be usable.</dd>
+
+   <dt><dfn><code data-x="dom-MediaError-MEDIA_ERR_DECODE">MEDIA_ERR_DECODE</code></dfn> (numeric value 3)</dt>
+
+   <dd>An error of some description occurred while decoding the <span>media resource</span>, after
+   the resource was established to be usable.</dd>
+
+   <dt><dfn><code data-x="dom-MediaError-MEDIA_ERR_SRC_NOT_SUPPORTED">MEDIA_ERR_SRC_NOT_SUPPORTED</code></dfn> (numeric value 4)</dt>
+
+   <dd>The <span>media resource</span> indicated by the <code data-x="attr-media-src">src</code>
+   attribute or <span>assigned media provider object</span> was not suitable.</dd>
+
+  </dl>
+
+
+
+  

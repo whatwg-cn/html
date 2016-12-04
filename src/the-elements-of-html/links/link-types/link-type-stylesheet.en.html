@@ -1,0 +1,174 @@
+<h5>Link type "<dfn><code data-x="rel-stylesheet">stylesheet</code></dfn>"</h5>
+
+  <p>The <code data-x="rel-stylesheet">stylesheet</code> keyword may be used with <code>link</code>
+  elements. This keyword creates an <span data-x="external resource link">external resource
+  link</span> that contributes to the styling processing model. This keyword is
+  <span>body-ok</span>.</p>
+
+  <p>The specified resource is a resource that describes how to present the document. Exactly how
+  the resource is to be processed depends on the actual type of the resource.</p>
+
+  <p>If the <code data-x="rel-alternate">alternate</code> keyword is also specified on the
+  <code>link</code> element, then <dfn>the link is an alternative stylesheet</dfn>; in this case,
+  the <code data-x="attr-title">title</code> attribute must be specified on the <code>link</code>
+  element, with a non-empty value.</p>
+
+  <p>The default type for resources given by the <code data-x="rel-stylesheet">stylesheet</code>
+  keyword is <code data-x="">text/css</code>.</p>
+
+  <div w-nodev>
+
+  <p>The appropriate times to <span data-x="concept-link-obtain">obtain</span> the resource are:
+
+  <!-- has a browsing context: https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=4299 -->
+  <ul>
+
+   <li><p>When the <span>external resource link</span> is created on a <code>link</code> element
+   that is already <span>browsing-context connected</span>.</p></li>
+   <!-- e.g. rel="" changed, href="" set... -->
+
+   <li><p>When the <span>external resource link</span>'s <code>link</code> element <span>becomes
+   browsing-context connected</span>.</p></li>
+
+   <li><p>When the <code data-x="attr-link-href">href</code> attribute of the <code>link</code>
+   element of an <span>external resource link</span> that is already <span>browsing-context
+   connected</span> is changed.</p></li>
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2588 -->
+
+   <li><p>When the <code data-x="attr-link-crossorigin">crossorigin</code> attribute of the
+   <code>link</code> element of an <span data-x="external resource link">external resource
+   link</span> that is already <span>browsing-context connected</span> is set, changed, or
+   removed.</p></li>
+
+   <li><p>When the <code data-x="attr-link-type">type</code> attribute of the <code>link</code>
+   element of an <span>external resource link</span> that is already <span>browsing-context
+   connected</span> is set or changed to a value that does not or no longer matches the <span
+   data-x="Content-Type">Content-Type metadata</span> of the previous obtained external resource, if
+   any.</p></li>
+
+   <li><p>When the <code data-x="attr-link-type">type</code> attribute of the <code>link</code>
+   element of an <span>external resource link</span> that is already <span>browsing-context
+   connected</span>, but was previously not obtained due to the <code
+   data-x="attr-link-type">type</code> attribute specifying an unsupported type, is set, removed, or
+   changed.</p></li>
+
+   <li><p>When the <span>external resource link</span> that is already <span>browsing-context
+   connected</span> changes from being <span data-x="the link is an alternative stylesheet">an
+   alternative stylesheet</span> to not being one, or vice versa.</p></li>
+
+  </ul>
+
+  <p><strong>Quirk</strong>: If the document has been set to <span>quirks mode</span>, has the
+  <span>same origin</span> as the <span>URL</span> of the external resource<!-- CVE-2010-0654 -->,
+  and the <span data-x="Content-Type">Content-Type metadata</span> of the external resource is not a
+  supported style sheet type, the user agent must instead assume it to be <code
+  data-x="">text/css</code>.</p>
+
+  <p>Once a resource has been <span data-x="concept-link-obtain">obtained</span>, if its <span
+  data-x="Content-Type">Content-Type metadata</span> is <code data-x="">text/css</code>, the user
+  agent must run these steps:</p>
+
+  <!-- note that we can only get this far if we have a browsing context, since if you don't have a
+  browsing context (and are active) you can't ever get a result back from "fetch", and thus you
+  never obtain the sheet -->
+  <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2741 -->
+
+  <ol>
+
+   <li><p>Let <var>element</var> be the <code>link</code> element that created the
+   <span>external resource link</span>.</p></li>
+
+   <li><p>If <var>element</var> has an <span>associated CSS style sheet</span>, <span
+   data-x="remove a CSS style sheet">remove the CSS style sheet</span> in question.</p></li>
+
+   <li><p>If <var>element</var> no longer creates an <span>external resource link</span>
+   that contributes to the styling processing model, or if, since the resource in question was <span
+   data-x="concept-link-obtain">obtained</span>, it has become appropriate to <span
+   data-x="concept-link-obtain">obtain</span> it again (meaning this algorithm is about to be
+   invoked again for a newly obtained resource), then abort these steps.</p></li>
+
+   <li>
+
+    <p><span>Create a CSS style sheet</span> with the following properties:</p>
+
+    <dl>
+
+     <dt><span data-x="concept-css-style-sheet-type">type</span></dt>
+     <dd><p><code data-x="">text/css</code></p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-location">location</span></dt>
+     <dd>
+
+      <p>The <span>resulting URL string</span> determined during the <span
+      data-x="concept-link-obtain">obtain</span> algorithm.</p>
+
+      <p class="note">This is before any redirects get applied.</p>
+
+     </dd>
+
+     <dt><span data-x="concept-css-style-sheet-owner-node">owner node</span></dt>
+     <dd><p><var>element</var></p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-media">media</span></dt>
+
+     <dd>
+
+      <p>The <code data-x="attr-link-media">media</code> attribute of <var>element</var>.</p>
+
+      <p class="note">This is a reference to the (possibly absent at this time) attribute, rather
+      than a copy of the attribute's current value. The CSSOM specification defines what happens
+      when the attribute is dynamically set, changed, or removed.</p>
+
+     </dd>
+
+     <dt><span data-x="concept-css-style-sheet-title">title</span></dt>
+
+     <dd>
+
+      <p>The <code data-x="attr-link-title">title</code> attribute of <var>element</var>, if
+      <var>element</var> is <span>in a document tree</span>, or the empty string otherwise.</p>
+
+      <p class="note">This is similarly a reference to the attribute, rather than a copy of the
+      attribute's current value.</p>
+
+     </dd>
+
+     <dt><span data-x="concept-css-style-sheet-alternate-flag">alternate flag</span></dt>
+     <dd><p>Set if <span>the link is an alternative stylesheet</span>; unset otherwise.</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-origin-clean-flag">origin-clean flag</span></dt>
+     <dd><p>Set if the resource is <span>CORS-same-origin</span>; unset otherwise.</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-parent-CSS-style-sheet">parent CSS style sheet</span></dt>
+     <dt><span data-x="concept-css-style-sheet-owner-CSS-rule">owner CSS rule</span></dt>
+     <dd><p>null</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-disabeld-flag">disabled flag</span></dt>
+     <dd><p>Left at its default value.</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-CSS-rules">CSS rules</span></dt>
+     <dd><p>Left uninitialized.</p></dd>
+
+    </dl>
+
+    <p>The CSS <span>environment encoding</span> is the result of running the following steps: <ref spec=CSSSYNTAX></p>
+
+    <ol>
+
+     <li><p>If the element has a <code data-x="attr-link-charset">charset</code> attribute, <span
+     data-x="getting an encoding">get an encoding</span> from that attribute's value. If that
+     succeeds, return the resulting encoding and abort these steps. <ref spec=ENCODING></p></li>
+
+     <li><p>Otherwise, return the <span>document's character encoding</span>. <ref spec=DOM></p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  </div>
+<!--REMOVE-TOPIC:CSS-->
+
+
+  

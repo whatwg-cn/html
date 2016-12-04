@@ -1,0 +1,164 @@
+<h5>Association of controls and forms</h5>
+
+  <p>A <span>form-associated element</span> can have a relationship with a <code>form</code>
+  element, which is called the element's <dfn>form owner</dfn>. If a <span>form-associated
+  element</span> is not associated with a <code>form</code> element, its <span>form owner</span> is
+  said to be null.</p>
+
+  <p>A <span>form-associated element</span> is, by default, associated with its <span
+  w-nodev>nearest</span> ancestor <code>form</code> element<span w-nodev> (as described
+  below)</span>, but, if it is <span data-x="category-listed">listed</span>, may have a <dfn><code
+  data-x="attr-fae-form">form</code></dfn> attribute specified to override this.</p>
+
+  <p class="note">This feature allows authors to work around the lack of support for nested
+  <code>form</code> elements.</p>
+
+  <p>If a <span data-x="category-listed">listed</span> <span>form-associated element</span> has a
+  <code data-x="attr-fae-form">form</code> attribute specified, then that attribute's value must be
+  the <span data-x="concept-id">ID</span> of a <code>form</code> element in the element's
+  <span>tree</span>.</p>
+
+  <div w-nodev>
+
+  <p class="note">The rules in this section are complicated by the fact that although conforming
+  documents or <span data-x="tree">trees</span> will never contain nested <code>form</code>
+  elements, it is quite possible (e.g., using a script that performs DOM manipulation) to generate
+  <span data-x="tree">trees</span> that have such nested elements. They are also complicated by
+  rules in the HTML parser that, for historical reasons, can result in a <span>form-associated
+  element</span> being associated with a <code>form</code> element that is not its ancestor.</p>
+
+  <p>When a <span>form-associated element</span> is created, its <span>form owner</span> must be
+  initialized to null (no owner).</p>
+
+  <p>When a <span>form-associated element</span> is to be <dfn
+  data-x="concept-form-association">associated</dfn> with a form, its <span>form owner</span> must
+  be set to that form.</p>
+
+  <p>When a <span>form-associated element</span> or one of its ancestors <span>becomes
+  connected</span>, then the user agent must <span>reset the form owner</span> of that
+  <span>form-associated element</span>. <span class="note">The <span>HTML parser</span> overrides
+  this requirement when inserting form controls.</span></p>
+
+  <p>When an element changes its parent node resulting in a <span>form-associated element</span> and
+  its <span>form owner</span> (if any) no longer being in the same <span>tree</span>, then the user
+  agent must <span>reset the form owner</span> of that <span>form-associated element</span>.</p>
+
+  <p>When a <span data-x="category-listed">listed</span> <span>form-associated element</span>'s
+  <code data-x="attr-fae-form">form</code> attribute is set, changed, or removed, then the user
+  agent must <span>reset the form owner</span> of that element.</p>
+
+  <p>When a <span data-x="category-listed">listed</span> <span>form-associated element</span> has a
+  <code data-x="attr-fae-form">form</code> attribute and the <span data-x="concept-id">ID</span> of
+  any of the elements in the <span>tree</span> changes, then the user agent must <span>reset the
+  form owner</span> of that <span>form-associated element</span>.</p>
+
+  <p>When a <span data-x="category-listed">listed</span> <span>form-associated element</span> has a
+  <code data-x="attr-fae-form">form</code> attribute and an element with an <span
+  data-x="concept-id">ID</span> is <span data-x="node is inserted into a document">inserted
+  into</span> or <span data-x="node is removed from a document">removed from</span> the
+  <code>Document</code>, then the user agent must <span>reset the form owner</span> of that
+  <span>form-associated element</span>.</p>
+
+  <p>When the user agent is to <dfn>reset the form owner</dfn> of a <span>form-associated
+  element</span> <var>element</var>, it must run the following steps:</p>
+
+  <ol>
+
+   <li>
+    <p>If all of the following conditions are true
+
+    <ul class="brief">
+     <li><var>element</var>'s <span>form owner</span> is not null
+     <li><var>element</var> is not <span data-x="category-listed">listed</span> or its <code
+     data-x="attr-fae-form">form</code> content attribute is not present
+     <li><var>element</var>'s <span>form owner</span> is its nearest <code>form</code> element
+     ancestor after the change to the ancestor chain
+    </ul>
+
+    <p>then do nothing, and abort these steps.</p>
+   </li>
+
+   <li><p>Set <var>element</var>'s <span>form owner</span> to null.</p></li>
+
+   <li>
+    <p>If <var>element</var> is <span data-x="category-listed">listed</span>, has a <code
+    data-x="attr-fae-form">form</code> content attribute, and is <span>connected</span>, then run
+    this substep:</p>
+
+    <ol>
+     <li><p>If the first element in <var>element</var>'s <span>tree</span>, in <span>tree
+     order</span>, to have an <span data-x="concept-id">ID</span> that is <span
+     data-x="case-sensitive">case-sensitively</span> equal to <var>element</var>'s <code
+     data-x="attr-fae-form">form</code> content attribute's value, is a <code>form</code> element,
+     then <span data-x="concept-form-association">associate</span> the <var>element</var> with that
+     <code>form</code> element.</p></li>
+     <!-- note that this ignores the name="" attribute and is unaffected by quirks mode (it's always
+          case sensitive) -->
+    </ol>
+   </li>
+
+   <li><p>Otherwise, if <var>element</var> has an ancestor <code>form</code> element, then <span
+   data-x="concept-form-association">associate</span> <var>element</var> with the nearest such
+   ancestor <code>form</code> element.</p></li>
+  </ol>
+
+  <div class="example">
+
+   <p>In the following non-conforming snippet:</p>
+
+   <pre class="bad">...
+ &lt;form id="a">
+  &lt;div id="b">&lt;/div>
+ &lt;/form>
+ &lt;script>
+  document.getElementById('b').innerHTML =
+     '&lt;table>&lt;tr>&lt;td>&lt;/form>&lt;form id="c">&lt;input id="d">&lt;/table>' +
+     '&lt;input id="e">';
+ &lt;/script>
+...</pre>
+
+   <p>The <span>form owner</span> of "d" would be the inner nested form "c", while the <span>form
+   owner</span> of "e" would be the outer form "a".</p>
+
+   <p>This happens as follows: First, the "e" node gets associated with "c" in the <span>HTML
+   parser</span>. Then, the <code data-x="dom-innerHTML">innerHTML</code> algorithm moves the nodes
+   from the temporary document to the "b" element. At this point, the nodes see their ancestor chain
+   change, and thus all the "magic" associations done by the parser are reset to normal ancestor
+   associations.</p>
+
+   <p>This example is a non-conforming document, though, as it is a violation of the content models
+   to nest <code>form</code> elements, and there is a <span>parse error</span> for the <code
+   data-x="">&lt;/form></code> tag.</p>
+
+  </div>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-fae-form">form</code></dt>
+
+   <dd>
+
+    <p>Returns the element's <span>form owner</span>.</p>
+
+    <p>Returns null if there isn't one.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p><span data-x="category-listed">Listed</span> <span data-x="form-associated
+  element">form-associated elements</span> have a <dfn><code data-x="dom-fae-form">form</code></dfn>
+  IDL attribute, which, on getting, must return the element's <span>form owner</span>, or null if
+  there isn't one.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+
+  

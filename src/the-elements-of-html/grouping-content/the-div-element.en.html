@@ -1,0 +1,64 @@
+<h4>The <dfn><code>div</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dd>As a child of a <code>dl</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>If the element is a child of a <code>dl</code> element: one or more <code>dt</code> elements followed by one or more <code>dd</code> elements, optionally intermixed with <span>script-supporting elements</span>.</dd>
+   <dd>If the element is not a child of a <code>dl</code> element: <span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLDivElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>div</code> element has no special meaning at all. It <span>represents</span> its
+  children. It can be used with the <code data-x="attr-class">class</code>, <code
+  data-x="attr-lang">lang</code>, and <code data-x="attr-title">title</code> attributes to mark up
+  semantics common to a group of consecutive elements. It can also be used in a <code>dl</code>
+  element, wrapping groups of <code>dt</code> and <code>dd</code> elements.</p>
+
+  <p class="note">Authors are strongly encouraged to view the <code>div</code> element as an element
+  of last resort, for when no other element is suitable. Use of more appropriate elements instead of
+  the <code>div</code> element leads to better accessibility for readers and easier maintainability
+  for authors.</p>
+
+  <div class="example">
+
+   <p>For example, a blog post would be marked up using <code>article</code>, a chapter using
+   <code>section</code>, a page's navigation aids using <code>nav</code>, and a group of form
+   controls using <code>fieldset</code>.</p>
+
+   <p>On the other hand, <code>div</code> elements can be useful for stylistic purposes or to wrap
+   multiple paragraphs within a section that are all to be annotated in a similar way. In the
+   following example, we see <code>div</code> elements used as a way to set the language of two
+   paragraphs at once, instead of setting the language on the two paragraph elements separately:</p>
+
+   <pre>&lt;article lang="en-US">
+ &lt;h1>My use of language and my cats&lt;/h1>
+ &lt;p>My cat's behavior hasn't changed much since her absence, except
+ that she plays her new physique to the neighbors regularly, in an
+ attempt to get pets.&lt;/p>
+ &lt;div lang="en-GB">
+  &lt;p>My other cat, <!--en-GB-->coloured black and white, is a sweetie. He followed
+  us to the pool today, walking down the pavement with us. Yesterday
+  he apparently visited our neighbours. I wonder if he <!--en-GB-->recognises that
+  their flat is a mirror image of ours.&lt;/p>
+  &lt;p>Hm, I just noticed that in the last paragraph I used British
+  English. But I'm supposed to write in American English. So I
+  shouldn't say "pavement" or "flat" or <!--en-GB-->"colour"...&lt;/p>
+ &lt;/div>
+ &lt;p>I should say "sidewalk" and "apartment" and "color"!&lt;/p>
+&lt;/article></pre>
+
+  </div>
+
+
+  

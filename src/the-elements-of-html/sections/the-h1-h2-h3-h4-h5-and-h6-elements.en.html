@@ -1,0 +1,99 @@
+<h4>The <dfn id="the-h1-element"><code>h1</code></dfn>, <dfn
+  id="the-h2-element"><code>h2</code></dfn>, <dfn id="the-h3-element"><code>h3</code></dfn>, <dfn
+  id="the-h4-element"><code>h4</code></dfn>, <dfn id="the-h5-element"><code>h5</code></dfn>, and
+  <dfn id="the-h6-element"><code>h6</code></dfn> elements</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Heading content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of an <code>hgroup</code> element.</dd>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLHeadingElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>These elements <span data-x="represents">represent</span> headings for their sections.</p>
+
+  <p>The semantics and meaning of these elements are defined in the section on <span>headings and
+  sections</span>.</p>
+
+  <p>These elements have a <dfn>rank</dfn> given by the number in their name. The <code>h1</code>
+  element is said to have the highest rank, the <code>h6</code> element has the lowest rank, and two
+  elements with the same name have equal rank.</p>
+
+  <div class="example">
+
+   <p>As far as their respective document outlines (their heading and section structures) are
+   concerned, these two snippets are semantically equivalent:</p>
+
+   <pre>&lt;body>
+&lt;h1>Let's call it a draw(ing surface)&lt;/h1>
+&lt;h2>Diving in&lt;/h2>
+&lt;h2>Simple shapes&lt;/h2>
+&lt;h2>Canvas coordinates&lt;/h2>
+&lt;h3>Canvas coordinates diagram&lt;/h3>
+&lt;h2>Paths&lt;/h2>
+&lt;/body></pre>
+
+   <pre>&lt;body>
+ &lt;h1>Let's call it a draw(ing surface)&lt;/h1>
+ &lt;section>
+  &lt;h1>Diving in&lt;/h1>
+ &lt;/section>
+ &lt;section>
+  &lt;h1>Simple shapes&lt;/h1>
+ &lt;/section>
+ &lt;section>
+  &lt;h1>Canvas coordinates&lt;/h1>
+  &lt;section>
+   &lt;h1>Canvas coordinates diagram&lt;/h1>
+  &lt;/section>
+ &lt;/section>
+ &lt;section>
+  &lt;h1>Paths&lt;/h1>
+ &lt;/section>
+&lt;/body></pre>
+
+   <p>Authors might prefer the former style for its terseness, or the latter style for its
+   convenience in the face of heavy editing; which is best is purely an issue of preferred authoring
+   style.</p>
+
+   <p>The two styles can be combined, for compatibility with legacy tools while still
+   future-proofing for when that compatibility is no longer needed. This third snippet again has the
+   same outline as the previous two:</p>
+
+   <pre>&lt;body>
+ &lt;h1>Let's call it a draw(ing surface)&lt;/h1>
+ &lt;section>
+  &lt;h2>Diving in&lt;/h2>
+ &lt;/section>
+ &lt;section>
+  &lt;h2>Simple shapes&lt;/h2>
+ &lt;/section>
+ &lt;section>
+  &lt;h2>Canvas coordinates&lt;/h2>
+  &lt;section>
+   &lt;h3>Canvas coordinates diagram&lt;/h3>
+  &lt;/section>
+ &lt;/section>
+ &lt;section>
+  &lt;h2>Paths&lt;/h2>
+ &lt;/section>
+&lt;/body></pre>
+
+  </div>
+
+
+
+
+  

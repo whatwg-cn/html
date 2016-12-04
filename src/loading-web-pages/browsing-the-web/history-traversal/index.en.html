@@ -1,0 +1,217 @@
+<h4>History traversal</h4> <!-- session history -->
+
+  <div w-nodev>
+
+  <p>When a user agent is required to <dfn>traverse the history</dfn> to a <span>session history
+  entry</span> <var>entry</var>, optionally with <span>replacement enabled</span>, and optionally
+  with the <i>non-blocking events</i> flag set, the user agent must act as follows.</p>
+
+  <p class="note">This algorithm is not just invoked when <span data-x="traverse the history by a
+  delta">explicitly going back or forwards in the session history</span> &mdash; it is also invoked
+  in other situations, for example when <span data-x="navigate">navigating a browsing context</span>,
+  as part of <span data-x="update the session history with the new page">updating the session history
+  with the new page</span>.</p>
+
+  <ol>
+
+   <li>
+
+    <p>If <var>entry</var> no longer holds a <code>Document</code> object, then
+    <span>navigate</span><!--DONAV history traversal after eviction--> the <span>browsing
+    context</span> to <var>entry</var>'s <span>URL</span> to perform an <span>entry update</span> of
+    <var>entry</var>, and abort these steps. The "<span>navigate</span>" algorithm reinvokes this
+    "traverse" algorithm to complete the traversal, at which point there <em>is</em> a
+    <code>Document</code> object and so this step gets skipped. The navigation must be done using
+    the same <span>source browsing context</span> as was used the first time <var>entry</var> was
+    created. (This can never happen with <span>replacement enabled</span>.)</p>
+
+    <p class="note">If the resource was obtained using a non-idempotent action, for example a POST
+    form submission, or if the resource is no longer available, for example because the computer is
+    now offline and the page wasn't cached, navigating to it again might not be possible. In this
+    case, the navigation will result in a different page than previously; for example, it might be
+    an error message explaining the problem or offering to resubmit the form.</p>
+
+   </li>
+
+   <li><p>If the <span>current entry</span>'s title was not set by the <code
+   data-x="dom-history-pushState">pushState()</code> or <code
+   data-x="dom-history-replaceState">replaceState()</code> methods, then set its title to the value
+   returned by the <code data-x="dom-document-title">document.title</code> IDL attribute.</p></li>
+
+   <li><p>If appropriate, update the <span>current entry</span> in the <span>browsing
+   context</span>'s <code>Document</code> object's <code>History</code> object to reflect any state
+   that the user agent wishes to persist. The entry is then said to be <span>an entry with persisted
+   user state</span>.</p></li>
+
+   <li><p>If <var>entry</var> has a different <code>Document</code> object than the <span>current
+   entry</span>, then run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Remove any <span data-x="concept-task">tasks</span> queued by the <span>history traversal
+     task source</span> that are associated with any <code>Document</code> objects in the
+     <span>top-level browsing context</span>'s <span>document family</span>.</p></li> <!-- so the
+     network is racing history.back(), in the case of setting location.href="" and then calling
+     history.back() -->
+
+     <li>
+
+      <p>If the <span>origin</span> of <var>entry</var>'s <code>Document</code> object is not the
+      <span data-x="same origin">same</span> as the <span>origin</span> of the <span>current
+      entry</span>'s <code>Document</code> object, then run the following subsubsteps:</p>
+
+      <ol>
+
+       <li><p>The current <span>browsing context name</span> must be stored with all the entries in
+       the history that are associated with <code>Document</code> objects with the <span>same
+       origin</span> as the <span>active document</span> <em>and</em> that are contiguous with the
+       <span>current entry</span>.</p></li>
+
+       <li id="resetBCName"><p>If the browsing context is a <span>top-level browsing context</span>,
+       but not an <span>auxiliary browsing context</span>, then set the browsing context's <span
+       data-x="browsing context name">name</span> to the empty string.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li id="appcache-history-2"><p>Make <var>entry</var>'s <code>Document</code> object the
+     <span>active document</span> of the <span>browsing context</span>.</p></li>
+
+     <li>
+
+      <p>If <var>entry</var> has a <span>browsing context name</span>, then run the following
+      subsubsteps:</p>
+
+      <ol>
+
+       <li><p>Set the browsing context's <span>browsing context name</span> to <var>entry</var>'s
+       <span>browsing context name</span>.</p></li>
+
+       <li><p>Clear any <span data-x="browsing context name">browsing context names</span> of all
+       entries in the history that are associated with <code>Document</code> objects with the
+       <span>same origin</span> as the new <span>active document</span> and that are contiguous with
+       <var>entry</var>.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li id="history-autocomplete"><p>If <var>entry</var>'s <code>Document</code> object has any
+     form controls whose <span>autofill field name</span> is "<code
+     data-x="attr-fe-autocomplete-off">off</code>", invoke the <span
+     data-x="concept-form-reset-control">reset algorithm</span> of each of those elements.</p></li>
+
+     <li>
+
+      <p>If the <span>current document readiness</span> of <var>entry</var>'s <code>Document</code>
+      object is "<code data-x="">complete</code>", then <span>queue a task</span> to run the
+      following subsubsteps:</p>
+
+      <ol>
+
+       <li><p>If the <code>Document</code>'s <span>page showing</span> flag is true, then abort this
+       task (i.e. don't fire the event below).</p></li>
+
+       <li><p>Set the <code>Document</code>'s <span>page showing</span> flag to true.</p></li>
+
+       <li>
+
+        <p>Run any <dfn>session history document visibility change steps</dfn> for <code>Document</code> that
+        are defined by <span>other applicable specifications</span>.</p>
+
+        <p class="note">This is specifically intended for use by the Page Visibility specification. <ref spec=PAGEVIS></p>
+
+       </li>
+
+       <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+       data-x="event-pageshow">pageshow</code> at the <code>Document</code> object's
+       <code>Window</code> object, using <code>PageTransitionEvent</code>, with the <code
+       data-x="dom-PageTransitionEvent-persisted">persisted</code> attribute initialized to true,
+       and <var>legacy target override flag</var> set.</p></li>
+
+      </ol>
+
+      <!-- an interesting thing to test would be to traverse back during onload, before the first
+      pageshow has fired, and then to traverse forward again, and see if we get _two_ pageshows. If
+      so, it indicates that browsers don't have a "page showing" flag like this and that the history
+      traversal task source has a higher priority than the DOM manipulation task source. -->
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Set the document's <span data-x="concept-document-url">URL</span> to <var>entry</var>'s
+   <span>URL</span>.</p></li>
+
+   <li><p>If <var>entry</var> has a <span>URL</span> whose <span
+   data-x="concept-url-fragment">fragment</span> differs from that of the
+   <span>current entry</span>'s when compared in a <span>case-sensitive</span> manner, and the two
+   share the same <code>Document</code> object, then let <var>hash changed</var> be true, and let
+   <var>old URL</var> be the <span>current entry</span>'s <span>URL</span> and <var>new URL</var> be
+   <var>entry</var>'s <span>URL</span>. Otherwise, let <var>hash changed</var> be false.</p></li>
+
+   <li><p>If the traversal was initiated with <dfn data-export="">replacement enabled</dfn>, remove
+   the entry immediately before the <var>specified entry</var> in the session history.</p></li>
+
+   <li><p>If <var>entry</var> is not <span>an entry with persisted user state</span>, but its
+   <span>URL</span>'s <span data-x="concept-url-fragment">fragment</span> is non-null, then
+   <span>scroll to the fragment</span>.</p></li>
+
+   <li><p>Set the <span>current entry</span> to <var>entry</var>.</p></li>
+
+   <li><p>Let <var>targetRealm</var> be the <span>current Realm Record</span>.</p></li>
+
+   <li><p>If <var>entry</var> has a <span>state object</span>, then let <var>state</var> be
+   <span>StructuredClone</span>(<var>entry</var>'s <span>state object</span>,
+   <var>targetRealm</var>). Otherwise, let <var>state</var> be null.</p></li>
+
+   <li><p>Set <code data-x="dom-history-state">history.state</code> to <var>state</var>.</p></li>
+
+   <li><p>Let <var>state changed</var> be true if <var>entry</var>'s <code>Document</code> object
+   has a <span>latest entry</span>, and that entry is not <var>entry</var>; otherwise let it be
+   false.</p>
+
+   <li><p>Set <var>entry</var>'s <code>Document</code> object's <span>latest entry</span> to
+   <var>entry</var>.</p></li>
+
+   <li>
+
+    <p>If the <i>non-blocking events</i> flag is not set, then run the following substeps
+    <span>immediately</span>. Otherwise, the <i>non-blocking events</i> flag is set; <span>queue a
+    task</span> to run the following substeps instead.</p>
+
+    <ol>
+
+     <li><p>If <var>state changed</var> is true, then <span data-x="concept-event-fire">fire an
+     event</span> named <code data-x="event-popstate">popstate</code> at the <code>Document</code>
+     object's <code>Window</code> object, using <code>PopStateEvent</code>, with the <code
+     data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true and the <code
+     data-x="dom-PopStateEvent-state">state</code> attribute initialized <var>state</var>.</p></li>
+
+     <li><p>If <var>entry</var> is <span>an entry with persisted user state</span>, then the user
+     agent may <span>restore persisted user state</span> and update aspects of the document and its
+     rendering.</p></li>
+
+     <li><p>If <var>hash changed</var> is true, then <span data-x="concept-event-fire">fire an
+     event</span> named <code data-x="event-hashchange">hashchange</code> at the <span>browsing
+     context</span>'s <code>Window</code> object, using <code>HashChangeEvent</code>, with the <code
+     data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true, the <code
+     data-x="dom-HashChangeEvent-oldURL">oldURL</code> attribute initialized to <var>old URL</var>,
+     and the <code data-x="dom-HashChangeEvent-newURL">newURL</code> attribute initialized to
+     <var>new URL</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>The <span>task source</span> for the tasks mentioned above is the <span>DOM manipulation task
+  source</span>.</p>
+
+  </div>
+
+  

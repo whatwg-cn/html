@@ -1,0 +1,42 @@
+<h3>Obsolete but conforming features</h3>
+
+  <p>Features listed in this section will trigger warnings in conformance checkers.</p>
+
+  <p>Authors should not specify a <code data-x="attr-img-border">border</code> attribute on an
+  <code>img</code> element. If the attribute is present, its value must be the string "<code
+  data-x="">0</code>". CSS should be used instead.</p>
+
+  <p>Authors should not specify a <code data-x="attr-script-language">language</code> attribute on a
+  <code>script</code> element. If the attribute is present, its value must be an <span>ASCII
+  case-insensitive</span> match for the string "<code data-x="">JavaScript</code>" and either the
+  <code data-x="attr-script-type">type</code> attribute must be omitted or its value must be an
+  <span>ASCII case-insensitive</span> match for the string "<code data-x="">text/javascript</code>".
+  The attribute should be entirely omitted instead (with the value "<code
+  data-x="">JavaScript</code>", it has no effect), or replaced with use of the <code
+  data-x="attr-script-type">type</code> attribute.</p>
+
+  <p>Authors should not specify the <code data-x="attr-a-name">name</code> attribute on
+  <code>a</code> elements. If the attribute is present, its value must not be the empty string and
+  must neither be equal to the value of any of the <span data-x="concept-id">IDs</span> in the
+  element's <span>tree</span> other than the element's own <span data-x="concept-id">ID</span>, if
+  any, nor be equal to the value of any of the other <code data-x="attr-a-name">name</code>
+  attributes on <code>a</code> elements in the element's <span>tree</span>. If this attribute is
+  present and the element has an <span data-x="concept-id">ID</span>, then the attribute's value
+  must be equal to the element's <span data-x="concept-id">ID</span>. In earlier versions of the
+  language, this attribute was intended as a way to specify possible targets for <span
+  data-x="concept-url-fragment">fragments</span> in <span data-x="URL">URLs</span>. The <code
+  data-x="attr-id">id</code> attribute should be used instead.</p>
+
+  <!-- remove this once type=number is widely supported -->
+  <p>Authors should not, but may despite requirements to the contrary elsewhere in this
+  specification, specify the <code data-x="attr-input-maxlength">maxlength</code> and <code
+  data-x="attr-input-size">size</code> attributes on <code>input</code> elements whose <code
+  data-x="attr-input-type">type</code> attributes are in the <span
+  data-x="attr-input-type-number">Number</span> state. One valid reason for using these attributes
+  regardless is to help legacy user agents that do not support <code>input</code> elements with
+  <code data-x="">type="number"</code> to still render the text control with a useful width.</p>
+
+
+  <div w-nodev>
+
+  

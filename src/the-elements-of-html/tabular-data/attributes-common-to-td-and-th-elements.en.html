@@ -1,0 +1,99 @@
+<h4>Attributes common to <code>td</code> and <code>th</code> elements</h4>
+
+  <p>The <code>td</code> and <code>th</code> elements may have a <dfn><code data-x="attr-tdth-colspan">colspan</code></dfn> content attribute specified, whose value must
+  be a <span>valid non-negative integer</span> greater than zero.</p>
+
+  <p>The <code>td</code> and <code>th</code> elements may also have a <dfn><code data-x="attr-tdth-rowspan">rowspan</code></dfn> content attribute specified, whose value must
+  be a <span>valid non-negative integer</span>. For this attribute, the value zero means that the
+  cell is to span all the remaining rows in the row group.</p> <!-- only in no-quirks and
+  limited-quirks mode though, for back compat! -->
+
+  <p>These attributes give the number of columns and rows respectively that the cell is to span.
+  These attributes must not be used to overlap cells<span w-nodev>, as described in the
+  description of the <span>table model</span></span>.</p> <!-- conformance criteria for determining
+  when this is violated are given in the processing model -->
+
+  <hr>
+
+  <p>The <code>td</code> and <code>th</code> element may have a <dfn><code data-x="attr-tdth-headers">headers</code></dfn> content attribute specified. The <code
+  data-x="attr-tdth-headers">headers</code> attribute, if specified, must contain a string consisting
+  of an <span>unordered set of unique space-separated tokens</span> that are
+  <span>case-sensitive</span>, each of which must have the value of an <span
+  data-x="concept-id">ID</span> of a <code>th</code> element taking part in the same <span
+  data-x="concept-table">table</span> as the <code>td</code> or <code>th</code> element<span
+  w-nodev> (as defined by the <span>table model</span>)</span>.</p>
+
+  <p>A <code>th</code> element with <span data-x="concept-id">ID</span> <var>id</var> is
+  said to be <i>directly targeted</i> by all <code>td</code> and <code>th</code> elements in the
+  same <span data-x="concept-table">table</span> that have <code
+  data-x="attr-tdth-headers">headers</code> attributes whose values include as one of their tokens
+  the <span data-x="concept-id">ID</span> <var>id</var>. A <code>th</code> element <var>A</var> is said to be <i>targeted</i> by a <code>th</code> or <code>td</code> element
+  <var>B</var> if either <var>A</var> is <i>directly targeted</i> by <var>B</var> or if there exists an element <var>C</var> that is itself
+  <i>targeted</i> by the element <var>B</var> and <var>A</var> is <i>directly
+  targeted</i> by <var>C</var>.</p>
+
+  <p>A <code>th</code> element must not be <i>targeted</i> by itself.</p>
+
+  <div w-nodev>
+
+  <p>The <code data-x="attr-tdth-colspan">colspan</code>, <code
+  data-x="attr-tdth-rowspan">rowspan</code>, and <code data-x="attr-tdth-headers">headers</code>
+  attributes take part in the <span>table model</span>.</p>
+
+  </div>
+
+  <hr>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>cell</var> . <code subdfn data-x="dom-tdth-cellIndex">cellIndex</code></dt>
+
+   <dd>
+
+    <p>Returns the position of the cell in the row's <code data-x="dom-tr-cells">cells</code> list.
+    This does not necessarily correspond to the <var>x</var>-position of the cell in the
+    table, since earlier cells might cover multiple rows or columns.</p>
+
+    <p>Returns &#x2212;1 if the element isn't in a row.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-tdth-colSpan">colSpan</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-tdth-colspan">colspan</code> content attribute. Its
+  default value is 1.</p>
+
+  <!--
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1699
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1700
+  -->
+
+  <p>The <dfn><code data-x="dom-tdth-rowSpan">rowSpan</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-tdth-rowspan">rowspan</code> content attribute. Its
+  default value is 1.</p>
+
+  <p>The <dfn><code data-x="dom-tdth-headers">headers</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-tdth-cellIndex">cellIndex</code></dfn> IDL attribute must, if the
+  element has a parent <code>tr</code> element, return the index of the cell's element in the parent
+  element's <code data-x="dom-tr-cells">cells</code> collection. If there is no such parent element,
+  then the attribute must return &#x2212;1.</p>
+
+  <p>The <dfn><code data-x="dom-th-scope">scope</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name, <span>limited to only known values</span>.</p>
+
+  <p>The <dfn><code data-x="dom-th-abbr">abbr</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+  <div w-nodev>
+
+  

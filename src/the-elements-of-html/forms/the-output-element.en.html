@@ -1,0 +1,194 @@
+<h4>The <dfn><code>output</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span data-x="category-listed">Listed</span>, <span data-x="category-label">labelable</span>, and <span data-x="category-reset">resettable</span> <span>form-associated element</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-output-for">for</code></dd>
+   <dd><code data-x="attr-fae-form">form</code></dd>
+   <dd><code data-x="attr-fe-name">name</code> <!-- variant --> </dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLOutputElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>, SameObject, PutForwards=<span data-x="dom-DOMTokenList-value">value</span>] readonly attribute <span>DOMTokenList</span> <span data-x="dom-output-htmlFor">htmlFor</span>;
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-fae-form">form</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fe-name">name</span>;
+
+  readonly attribute DOMString <span data-x="dom-output-type">type</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-output-defaultValue">defaultValue</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-output-value">value</span>;
+
+  readonly attribute boolean <span data-x="dom-cva-willValidate">willValidate</span>;
+  readonly attribute <span>ValidityState</span> <span data-x="dom-cva-validity">validity</span>;
+  readonly attribute DOMString <span data-x="dom-cva-validationMessage">validationMessage</span>;
+  boolean <span data-x="dom-cva-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-cva-reportValidity">reportValidity</span>();
+  void <span data-x="dom-cva-setCustomValidity">setCustomValidity</span>(DOMString error);
+
+  [SameObject] readonly attribute <span>NodeList</span> <span data-x="dom-lfe-labels">labels</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>output</code> element <span>represents</span> the result of a calculation performed
+  by the application, or the result of a user action.</p>
+
+  <p class="note">This element can be contrasted with the <code>samp</code> element, which is the
+  appropriate element for quoting the output of other programs run previously.</p>
+
+  <p>The <dfn><code data-x="attr-output-for">for</code></dfn> content attribute allows an explicit
+  relationship to be made between the result of a calculation and the elements that represent the
+  values that went into the calculation or that otherwise influenced the calculation. The <code
+  data-x="attr-output-for">for</code> attribute, if specified, must contain a string consisting of
+  an <span>unordered set of unique space-separated tokens</span> that are
+  <span>case-sensitive</span>, each of which must have the value of an <span
+  data-x="concept-id">ID</span> of an element in the same <span>tree</span>.</p>
+
+  <p>The <code data-x="attr-fae-form">form</code> attribute is used to explicitly associate the
+  <code>output</code> element with its <span>form owner</span>. The <code
+  data-x="attr-fe-name">name</code> attribute represents the element's name. The <code>output</code>
+  element is associated with a form so that it can be easily referenced from the event handlers of
+  form controls; the element's value itself is not submitted when the form is submitted.</p>
+
+  <div w-nodev>
+
+  <p>The element has a <dfn data-x="concept-output-mode">value mode flag</dfn> which is either <i
+  data-x="concept-output-mode-value">value</i> or <i
+  data-x="concept-output-mode-default">default</i>. Initially, the <span
+  data-x="concept-output-mode">value mode flag</span> must be set to <i
+  data-x="concept-output-mode-default">default</i>.</p>
+
+  <p>The element also has a <dfn data-x="concept-output-defaultValue">default value</dfn>.
+  Initially, the <span data-x="concept-output-defaultValue">default value</span> must be the empty
+  string.</p>
+
+  <p>When the <span data-x="concept-output-mode">value mode flag</span> is in mode <dfn><i
+  data-x="concept-output-mode-default">default</i></dfn>, the contents of the element represent both
+  the value of the element and its <span data-x="concept-output-defaultValue">default value</span>.
+  When the <span data-x="concept-output-mode">value mode flag</span> is in mode <dfn><i
+  data-x="concept-output-mode-value">value</i></dfn>, the contents of the element represent the
+  value of the element only, and the <span data-x="concept-output-defaultValue">default value</span>
+  is only accessible using the <code data-x="dom-output-defaultValue">defaultValue</code> IDL
+  attribute.</p>
+
+  <p>Whenever the element's descendants are changed in any way, if the <span
+  data-x="concept-output-mode">value mode flag</span> is in mode <i
+  data-x="concept-output-mode-default">default</i>, the element's <span
+  data-x="concept-output-defaultValue">default value</span> must be set to the value of the
+  element's <code>textContent</code> IDL attribute.</p>
+
+  <p>The <span data-x="concept-form-reset-control">reset algorithm</span> for <code>output</code>
+  elements is to set the element's <span data-x="concept-output-mode">value mode flag</span> to <i
+  data-x="concept-output-mode-default">default</i> and then to set the element's
+  <code>textContent</code> IDL attribute to the value of the element's <span
+  data-x="concept-output-defaultValue">default value</span> (thus replacing the element's child
+  nodes).</p>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>output</var> . <code subdfn data-x="dom-output-value">value</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the element's current value.</p>
+
+    <p>Can be set, to change the value.</p>
+
+   </dd>
+
+   <dt><var>output</var> . <code subdfn data-x="dom-output-defaultValue">defaultValue</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the element's current default value.</p>
+
+    <p>Can be set, to change the default value.</p>
+
+   </dd>
+
+   <dt><var>output</var> . <code subdfn data-x="dom-output-type">type</code></dt>
+
+   <dd>
+
+    <p>Returns the string "<code data-x="">output</code>".</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-output-value">value</code></dfn> IDL attribute must act like the
+  element's <code>textContent</code> IDL attribute, except that on setting, in addition, before the
+  child nodes are changed, the element's <span data-x="concept-output-mode">value mode flag</span>
+  must be set to <i data-x="concept-output-mode-value">value</i>.</p>
+
+  <p>The <dfn><code data-x="dom-output-defaultValue">defaultValue</code></dfn> IDL attribute, on
+  getting, must return the element's <span data-x="concept-output-defaultValue">default
+  value</span>. On setting, the attribute must set the element's <span
+  data-x="concept-output-defaultValue">default value</span>, and, if the element's <span
+  data-x="concept-output-mode">value mode flag</span> is in the mode <i
+  data-x="concept-output-mode-default">default</i>, set the element's <code>textContent</code> IDL
+  attribute as well.</p>
+
+  <p>The <dfn><code data-x="dom-output-type">type</code></dfn> attribute must return the string
+  "<code data-x="">output</code>".</p>
+
+  <p>The <dfn><code data-x="dom-output-htmlFor">htmlFor</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-output-for">for</code> content attribute.</p>
+
+  <p>The <code data-x="dom-cva-willValidate">willValidate</code>, <code
+  data-x="dom-cva-validity">validity</code>, and <code
+  data-x="dom-cva-validationMessage">validationMessage</code> IDL attributes, and the <code
+  data-x="dom-cva-checkValidity">checkValidity()</code>, <code
+  data-x="dom-cva-reportValidity">reportValidity()</code>, and <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> methods, are part of the
+  <span>constraint validation API</span>. The <code data-x="dom-lfe-labels">labels</code> IDL
+  attribute provides a list of the element's <code>label</code>s. The <code
+  data-x="dom-fae-form">form</code> and <code data-x="dom-fe-name">name</code> IDL attributes are
+  part of the element's forms API.</p>
+
+  </div> <!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>A simple calculator could use <code>output</code> for its display of calculated results:</p>
+
+   <pre>&lt;form onsubmit="return false" oninput="o.value = a.valueAsNumber + b.valueAsNumber">
+ &lt;input name=a type=number step=any> +
+ &lt;input name=b type=number step=any> =
+ &lt;output name=o for="a b">&lt;/output>
+&lt;/form></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, an <code>output</code> element is used to report the results of a calculation performed by a remote
+   server, as they come in:</p>
+
+   <pre>&lt;output id="result">&lt;/output>
+&lt;script>
+ var primeSource = new WebSocket('ws://primes.example.net/');
+ primeSource.onmessage = function (event) {
+   document.getElementById('result').value = event.data;
+ }
+&lt;/script></pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,99 @@
+<h4>Printing</h4>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code subdfn data-x="dom-print">print</code>()</dt>
+
+   <dd>
+
+    <p>Prompts the user to print the page.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>When the <dfn><code data-x="dom-print">print()</code></dfn> method is invoked, if the
+  <code>Document</code> is <span>ready for post-load tasks</span>, then the user agent must
+  run the <span>printing steps</span> <span>in parallel</span>. Otherwise, the user agent must only set the
+  <dfn>print when loaded</dfn> flag on the <code>Document</code>.</p>
+
+<!--TOPIC:HTML-->
+
+  <p>User agents should also run the <span>printing steps</span> whenever the user asks for the
+  opportunity to <span>obtain a physical form</span> (e.g. printed copy), or the representation of a
+  physical form (e.g. PDF copy), of a document.</p>
+
+  <p>The <dfn>printing steps</dfn> are as follows:</p>
+
+  <ol>
+
+   <li>
+
+    <p>The user agent may display a message to the user or abort these steps (or both).</p>
+
+    <p class="example">For instance, a kiosk browser could silently ignore any invocations of the
+    <code data-x="dom-print">print()</code> method.</p>
+
+    <p class="example">For instance, a browser on a mobile device could detect that there are no
+    printers in the vicinity and display a message saying so before continuing to offer a "save to
+    PDF" option.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <span>active sandboxing flag set</span> of this <code>Window</code> object's <span
+    data-x="concept-document-window">associated <code>Document</code></span> has the <span>sandboxed
+    modals flag</span> set, then abort these steps.</p>
+
+    <p class="note">If the printing dialog is blocked by a <code>Document</code>'s sandbox,
+    then neither the <code data-x="event-beforeprint">beforeprint</code> nor <code
+    data-x="event-afterprint">afterprint</code> events will be fired.</p>
+
+   </li>
+
+   <li>
+
+    <p>The user agent must <span data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-beforeprint">beforeprint</code> at the <code>Window</code> object of the
+    <code>Document</code> that is being printed, as well as any <span data-x="nested browsing
+    context">nested browsing contexts</span> in it.</p>
+
+    <p class="example">The <code data-x="event-beforeprint">beforeprint</code> event can be used to
+    annotate the printed copy, for instance adding the time at which the document was printed.</p>
+
+   </li>
+
+   <li>
+
+    <p>The user agent should offer the user the opportunity to <span>obtain a physical form</span>
+    (or the representation of a physical form) of the document. The user agent may wait for the user
+    to either accept or decline before returning; if so, the user agent must <span>pause</span>
+    while the method is waiting. Even if the user agent doesn't wait at this point, the user agent
+    must use the state of the relevant documents as they are at this point in the algorithm if and
+    when it eventually creates the alternate form.</p>
+
+   </li>
+
+   <li>
+
+    <p>The user agent must <span data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-afterprint">afterprint</code> at the <code>Window</code> object of the
+    <code>Document</code> that is being printed, as well as any <span data-x="nested browsing
+    context">nested browsing contexts</span> in it.</p>
+
+    <p class="example">The <code data-x="event-afterprint">afterprint</code> event can be used to
+    revert annotations added in the earlier event, as well as showing post-printing UI. For
+    instance, if a page is walking the user through the steps of applying for a home loan, the
+    script could automatically advance to the next step after having printed a form or other.</p>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+  

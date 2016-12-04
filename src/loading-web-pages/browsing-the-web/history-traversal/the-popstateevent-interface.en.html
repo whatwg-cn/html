@@ -1,0 +1,35 @@
+<h5>The <code>PopStateEvent</code> interface</h5>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>PopStateEventInit</span> eventInitDict)]
+interface <dfn>PopStateEvent</dfn> : <span>Event</span> {
+  readonly attribute any <span data-x="dom-PopStateEvent-state">state</span>;
+};
+
+dictionary <dfn>PopStateEventInit</dfn> : <span>EventInit</span> {
+  any state = null;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>event</var> . <code subdfn data-x="dom-PopStateEvent-state">state</code></dt>
+
+   <dd>
+
+    <p>Returns a copy of the information that was provided to <code
+    data-x="dom-history-pushState">pushState()</code> or <code
+    data-x="dom-history-replaceState">replaceState()</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-PopStateEvent-state">state</code></dfn> attribute must return the
+  value it was initialized to. It represents the context information for the event, or null, if the
+  state represented is the initial state of the <code>Document</code>.</p>
+
+  </div>
+
+
+  

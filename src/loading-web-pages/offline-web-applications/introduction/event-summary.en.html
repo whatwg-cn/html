@@ -1,0 +1,104 @@
+<h5 id="appcacheevents">Event summary</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>When the user visits a page that declares a manifest, the browser will try to update the cache.
+  It does this by fetching a copy of the manifest and, if the manifest has changed since the user
+  agent last saw it, redownloading all the resources it mentions and caching them anew.</p>
+
+  <p>As this is going on, a number of events get fired on the <code>ApplicationCache</code> object
+  to keep the script updated as to the state of the cache update, so that the user can be notified
+  appropriately. The events are as follows:</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th> Event name
+     <th> Interface
+     <th> Fired when...
+     <th> Next events
+   <tbody>
+
+    <tr>
+     <td> <dfn><code data-x="event-appcache-checking">checking</code></dfn>
+     <td> <code>Event</code>
+     <td> The user agent is checking for an update, or attempting to download the manifest for the
+          first time. <strong>This is always the first event in the sequence.</strong>
+     <td> <code data-x="event-appcache-noupdate">noupdate</code>, <code
+          data-x="event-appcache-downloading">downloading</code>, <code
+          data-x="event-appcache-obsolete">obsolete</code>, <code
+          data-x="event-appcache-error">error</code>
+
+    <tr>
+     <td> <dfn><code data-x="event-appcache-noupdate">noupdate</code></dfn>
+     <td> <code>Event</code>
+     <td> The manifest hadn't changed.
+     <td> Last event in sequence.
+
+    <tr>
+     <td> <dfn><code data-x="event-appcache-downloading">downloading</code></dfn>
+     <td> <code>Event</code>
+     <td> The user agent has found an update and is fetching it, or is downloading the resources
+          listed by the manifest for the first time.
+     <td> <code data-x="event-appcache-progress">progress</code>, <code
+          data-x="event-appcache-error">error</code>, <code
+          data-x="event-appcache-cached">cached</code>, <code
+          data-x="event-appcache-updateready">updateready</code>
+
+    <tr>
+     <td> <dfn><code data-x="event-appcache-progress">progress</code></dfn>
+     <td> <code>ProgressEvent</code>
+     <td> The user agent is downloading resources listed by the manifest.
+          The event object's <code data-x="dom-ProgressEvent-total">total</code> attribute returns the total number of files to be downloaded.
+          The event object's <code data-x="dom-ProgressEvent-loaded">loaded</code> attribute returns the number of files processed so far.
+     <td> <code data-x="event-appcache-progress">progress</code>, <code
+          data-x="event-appcache-error">error</code>, <code
+          data-x="event-appcache-cached">cached</code>, <code
+          data-x="event-appcache-updateready">updateready</code>
+
+    <tr>
+     <td> <dfn><code data-x="event-appcache-cached">cached</code></dfn>
+     <td> <code>Event</code>
+     <td> The resources listed in the manifest have been downloaded, and the application is now cached.
+     <td> Last event in sequence.
+
+    <tr>
+     <td> <dfn><code data-x="event-appcache-updateready">updateready</code></dfn>
+     <td> <code>Event</code>
+     <td> The resources listed in the manifest have been newly redownloaded, and the script can use
+          <code data-x="dom-appcache-swapCache">swapCache()</code> to switch to the new cache.
+     <td> Last event in sequence.
+
+    <tr>
+     <td> <dfn><code data-x="event-appcache-obsolete">obsolete</code></dfn>
+     <td> <code>Event</code>
+     <td> The manifest was found to have become a 404 or 410 page, so the application cache is being deleted.
+     <td> Last event in sequence.
+
+    <tr>
+     <td rowspan=4> <dfn><code data-x="event-appcache-error">error</code></dfn>
+     <td rowspan=4> <code>Event</code>
+     <td> The manifest was a 404 or 410 page, so the attempt to cache the application has been aborted.
+     <td rowspan=3> Last event in sequence.
+
+    <tr>
+     <td> The manifest hadn't changed, but the page referencing the manifest failed to download properly.
+
+    <tr>
+     <td> A fatal error occurred while fetching the resources listed in the manifest.
+
+    <tr>
+     <td> The manifest changed while the update was being run.
+     <td> The user agent will try fetching the files again momentarily.
+
+  </table>
+
+  <p>These events are cancelable; their default action is for the user agent to show download
+  progress information. If the page shows its own update UI, canceling the events will prevent the
+  user agent from showing redundant progress information.</p>
+
+
+
+  <div w-nodev>
+
+  

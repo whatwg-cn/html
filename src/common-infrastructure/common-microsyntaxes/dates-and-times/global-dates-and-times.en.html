@@ -1,0 +1,135 @@
+<h5>Global dates and times</h5>
+
+  <p>A <dfn data-x="concept-datetime">global date and time</dfn> consists of a specific
+  <span>proleptic-Gregorian date</span>, consisting of a year, a month, and a day, and a time,
+  consisting of an hour, a minute, a second, and a fraction of a second, expressed with a time-zone
+  offset, consisting of a signed number of hours and minutes. <ref spec=GREGORIAN></p>
+
+  <p>A string is a <dfn>valid global date and time string</dfn> representing a date, time, and a
+  time-zone offset if it consists of the following components in the given order:</p>
+
+  <ol>
+
+   <li>A <span>valid date string</span> representing the date</li>
+
+   <li>A U+0054 LATIN CAPITAL LETTER T character (T) or a U+0020 SPACE character</li>
+
+   <li>A <span>valid time string</span> representing the time</li>
+
+   <li>A <span>valid time-zone offset string</span> representing the time-zone offset</li>
+
+  </ol>
+
+  <p>Times in dates before the formation of UTC in the mid twentieth century must be expressed and
+  interpreted in terms of UT1 (contemporary Earth solar time at the 0&deg; longitude), not UTC (the
+  approximation of UT1 that ticks in SI seconds). Time before the formation of time zones must be
+  expressed and interpreted as UT1 times with explicit time zones that approximate the contemporary
+  difference between the appropriate local time and the time observed at the location of Greenwich,
+  London.</p>
+
+  <div class="example">
+
+   <p>The following are some examples of dates written as <span data-x="valid global date and time
+   string">valid global date and time strings</span>.</p>
+
+   <dl>
+
+    <dt>"<code data-x="">0037-12-13 00:00Z</code>"</dt>
+
+    <dd>Midnight in areas using London time on the birthday of Nero (the Roman Emperor). See below
+    for further discussion on which date this actually corresponds to.</dd>
+
+    <dt>"<code data-x="">1979-10-14T12:00:00.001-04:00</code>"</dt>
+
+    <dd>One millisecond after noon on October 14th 1979, in the time zone in use on the east coast
+    of the USA during daylight saving time.</dd>
+
+    <dt>"<code data-x="">8592-01-01T02:09+02:09</code>"</dt>
+
+    <dd>Midnight UTC on the 1st of January, 8592. The time zone associated with that time is two
+    hours and nine minutes ahead of UTC, which is not currently a real time zone, but is nonetheless
+    allowed.</dd>
+
+   </dl>
+
+   <p>Several things are notable about these dates:</p>
+
+   <ul>
+
+    <li>Years with fewer than four digits have to be zero-padded. The date "37-12-13" would not be a
+    valid date.</li>
+
+    <li>If the "<code data-x="">T</code>" is replaced by a space, it must be a single space
+    character. The string "<code data-x="">2001-12-21&nbsp;&nbsp;12:00Z</code>" (with two spaces
+    between the components) would not be parsed successfully.</li>
+
+    <li>To unambiguously identify a moment in time prior to the introduction of the Gregorian
+    calendar (insofar as moments in time before the formation of UTC can be unambiguously
+    identified), the date has to be first converted to the Gregorian calendar from the calendar in
+    use at the time (e.g. from the Julian calendar). The date of Nero's birth is the 15th of
+    December 37, in the Julian Calendar, which is the 13th of December 37 in the <span>proleptic
+    Gregorian calendar</span>.</li> <!-- This might not be true. I can't find a reference that gives
+    his birthday with an explicit statement about the calendar being used. However, it seems
+    unlikely that it would be given in the Gregorian calendar, so I assume sites use the Julian one.
+    -->
+
+    <li>The time and time-zone offset components are not optional.</li>
+
+    <li>Dates before the year one can't be represented as a datetime in this version of HTML.</li>
+
+    <li>Times of specific events in ancient times are, at best, approximations, since time was not
+    well coordinated or measured until relatively recent decades.</li>
+
+    <li>Time-zone offsets differ based on daylight savings time.</li>
+
+   </ul>
+
+  </div>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a global date and time string</dfn> are as follows. This will return
+  either a time in UTC, with associated time-zone offset information for round-tripping or display
+  purposes, or nothing. If at any point the algorithm says that it "fails", this means that it is
+  aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Parse a date component</span> to obtain <var>year</var>, <var>month</var>, and <var>day</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is neither a U+0054 LATIN CAPITAL LETTER T character
+   (T) nor a U+0020 SPACE character, then fail. Otherwise, move <var>position</var>
+   forwards one character.</p></li>
+
+   <li><p><span>Parse a time component</span> to obtain <var>hour</var>, <var>minute</var>, and <var>second</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var>, then
+   fail.</p></li>
+
+   <li><p><span>Parse a time-zone offset component</span> to obtain <var>timezone<sub>hours</sub></var> and <var>timezone<sub>minutes</sub></var>. If this
+   returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Let <var>time</var> be the moment in time at year <var>year</var>, month
+   <var>month</var>, day <var>day</var>, hours <var>hour</var>, minute
+   <var>minute</var>, second <var>second</var>, subtracting <var>timezone<sub>hours</sub></var> hours and <var>timezone<sub>minutes</sub></var> minutes. That moment in time is a moment in the UTC time
+   zone.</p></li>
+
+   <li><p>Let <var>timezone</var> be <var>timezone<sub>hours</sub></var>
+   hours and <var>timezone<sub>minutes</sub></var> minutes from UTC.</p></li>
+
+   <li><p>Return <var>time</var> and <var>timezone</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

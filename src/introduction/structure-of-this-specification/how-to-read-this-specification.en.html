@@ -1,0 +1,42 @@
+<h4>How to read this specification</h4>
+
+  <p>This specification should be read like all other specifications. First, it should be read
+  cover-to-cover, multiple times. Then, it should be read backwards at least once. Then it should be
+  read by picking random sections from the contents list and following all the cross-references.</p>
+
+  <p>As described in the conformance requirements section below, this specification describes
+  conformance criteria for a variety of conformance classes. In particular, there are conformance
+  requirements that apply to <em>producers</em>, for example authors and the documents they create,
+  and there are conformance requirements that apply to <em>consumers</em>, for example Web browsers.
+  They can be distinguished by what they are requiring: a requirement on a producer states what is
+  allowed, while a requirement on a consumer states how software is to act.</p>
+
+  <div class="example">
+
+   <p>For example, "the <code data-x="">foo</code> attribute's value must be a <span>valid
+   integer</span>" is a requirement on producers, as it lays out the allowed values; in contrast,
+   the requirement "the <code data-x="">foo</code> attribute's value must be parsed using the
+   <span>rules for parsing integers</span>" is a requirement on consumers, as it describes how to
+   process the content.</p>
+
+  </div>
+
+  <p><strong>Requirements on producers have no bearing whatsoever on consumers.</strong></p>
+
+  <div class="example">
+
+   <p>Continuing the above example, a requirement stating that a particular attribute's value is
+   constrained to being a <span>valid integer</span> emphatically does <em>not</em> imply anything
+   about the requirements on consumers. It might be that the consumers are in fact required to treat
+   the attribute as an opaque string, completely unaffected by whether the value conforms to the
+   requirements or not. It might be (as in the previous example) that the consumers are required to
+   parse the value using specific rules that define how invalid (non-numeric in this case) values
+   are to be processed.</p>
+
+  </div>
+
+  </div>
+
+
+
+  

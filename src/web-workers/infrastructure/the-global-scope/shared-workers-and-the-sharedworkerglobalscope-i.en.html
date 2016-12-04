@@ -1,0 +1,75 @@
+<h5>Shared workers and the <code>SharedWorkerGlobalScope</code> interface</h5>
+
+  <pre class="idl">[Global=(Worker,SharedWorker),Exposed=SharedWorker]
+interface <dfn>SharedWorkerGlobalScope</dfn> : <span>WorkerGlobalScope</span> {
+  readonly attribute DOMString <span data-x="dom-SharedWorkerGlobalScope-name">name</span>;
+  readonly attribute <span>ApplicationCache</span> <span data-x="dom-SharedWorkerGlobalScope-applicationCache">applicationCache</span>; // deprecated
+
+  void <span data-x="dom-SharedWorkerGlobalScope-close">close</span>();
+
+  attribute <span>EventHandler</span> <span data-x="handler-SharedWorkerGlobalScope-onconnect">onconnect</span>;
+};</pre>
+
+  <p>A <code>SharedWorkerGlobalScope</code> object has an associated <dfn
+  data-dfn-for="SharedWorkerGlobalScope"
+  data-x="concept-SharedWorkerGlobalScope-constructor-origin">constructor origin</dfn>, <dfn
+  data-dfn-for="SharedWorkerGlobalScope"
+  data-x="concept-SharedWorkerGlobalScope-constructor-url">constructor url</dfn>, and <dfn
+  data-dfn-for="SharedWorkerGlobalScope"
+  data-x="concept-SharedWorkerGlobalScope-name">name</dfn>. They are initialized when the
+  <code>SharedWorkerGlobalScope</code> object is created, in the <span>run a worker</span>
+  algorithm.
+
+  <p>Shared workers receive message ports through <code
+  data-x="event-WorkerGlobalScope-connect">connect</code> events on their <code>SharedWorkerGlobalScope</code> object for each
+  connection.</p>
+
+  <dl class="domintro">
+   <dt><var>sharedWorkerGlobal</var> . <code subdfn data-x="dom-SharedWorkerGlobalScope-name">name</code></dt>
+   <dd>Returns <var>sharedWorkerGlobal</var>'s <span
+   data-x="concept-SharedWorkerGlobalScope-name">name</span>.</dd>
+
+   <dt><var>sharedWorkerGlobal</var> . <code subdfn
+   data-x="dom-SharedWorkerGlobalScope-close">close</code>()</dt>
+   <dd>Aborts <var>sharedWorkerGlobal</var>.</dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-SharedWorkerGlobalScope-name">name</code></dfn> attribute must
+  return the <code>SharedWorkerGlobalScope</code> object's <span
+  data-x="concept-SharedWorkerGlobalScope-name">name</span>. Its value represents the name that can
+  be used to obtain a reference to the worker using the <code>SharedWorker</code> constructor.</p>
+
+  <p>The <dfn><code data-x="dom-SharedWorkerGlobalScope-close">close()</code></dfn> method, when
+  invoked, must <span>close a worker</span> with this <code>SharedWorkerGlobalScope</code>
+  object.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event
+  handler IDL attributes</span>, by objects implementing the <code>SharedWorkerGlobalScope</code>
+  interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-SharedWorkerGlobalScope-onconnect">onconnect</code></dfn> <td> <code data-x="event-WorkerGlobalScope-connect">connect</code>
+  </table>
+
+  <p>For the purposes of the <span>application cache</span> networking model, a shared worker is its
+  own <span>cache host</span>. The <span>run a worker</span> algorithm takes care of associating the
+  worker with an <span>application cache</span>.</p>
+
+  <p class="note">The <code
+  data-x="dom-SharedWorkerGlobalScope-applicationCache">applicationCache</code> attribute returns the
+  <code>ApplicationCache</code> object for the worker.</p><!-- normative conf criteria is in the
+  appcache section -->
+
+
+
+  

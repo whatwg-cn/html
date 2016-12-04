@@ -1,0 +1,54 @@
+<h5>Communicating with a dedicated worker</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Dedicated workers use <code>MessagePort</code> objects behind the scenes, and thus support all
+  the same features, such as sending structured data, transferring binary data, and transferring
+  other ports.</p>
+
+  <p>To receive messages from a dedicated worker, use the <code
+  data-x="handler-worker-onmessage">onmessage</code> <span data-x="event handler IDL attributes">event
+  handler IDL attribute</span> on the <code>Worker</code> object:</p>
+
+  <pre>worker.onmessage = function (event) { ... };</pre>
+
+  <p>You can also use the <code data-x="dom-EventTarget-addEventListener">addEventListener()</code>
+  method.</p>
+
+  <p class="note">The implicit <code>MessagePort</code> used by dedicated workers has its <span>port
+  message queue</span> implicitly enabled when it is created, so there is no equivalent to the
+  <code>MessagePort</code> interface's <code data-x="dom-MessagePort-start">start()</code> method on
+  the <code>Worker</code> interface.</p>
+
+  <p>To <em>send</em> data to a worker, use the <code
+  data-x="dom-Worker-postMessage">postMessage()</code> method. Structured data can be sent over this
+  communication channel. To send <code data-x="idl-ArrayBuffer">ArrayBuffer</code> objects
+  efficiently (by transferring them rather than cloning them), list them in an array in the second
+  argument.</p>
+
+  <pre>worker.postMessage({
+  operation: 'find-edges',
+  input: buffer, // an ArrayBuffer object
+  threshold: 0.6,
+}, [buffer]);</pre>
+
+  <p>To receive a message inside the worker, the <code
+  data-x="handler-DedicatedWorkerGlobalScope-onmessage">onmessage</code> <span data-x="event handler
+  IDL attributes">event handler IDL attribute</span> is used.</p>
+
+  <pre>onmessage = function (event) { ... };</pre>
+
+  <p>You can again also use the <code
+  data-x="dom-EventTarget-addEventListener">addEventListener()</code> method.</p>
+
+  <p>In either case, the data is provided in the event object's <code
+  data-x="dom-MessageEvent-data">data</code> attribute.</p>
+
+  <p>To send messages back, you again use <code
+  data-x="dom-DedicatedWorkerGlobalScope-postMessage">postMessage()</code>. It supports the
+  structured data in the same manner.</p>
+
+  <pre>postMessage(event.data.input, [event.data.input]); // transfer the buffer back</pre>
+
+
+  

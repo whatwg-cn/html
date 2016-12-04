@@ -1,0 +1,371 @@
+<h5 id="header-and-data-cell-semantics">Forming relationships between data cells and header cells</h5>
+
+  <p>Each cell can be assigned zero or more header cells. The <dfn>algorithm for assigning header
+  cells</dfn> to a cell <var>principal cell</var> is as follows.</p>
+
+  <ol>
+
+
+   <!-- INITIALIZATION -->
+
+   <li>
+
+    <p>Let <var>header list</var> be an empty list of cells.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let (<var>principal<sub>x</sub></var>, <var>principal<sub>y</sub></var>) be the coordinate of the slot to which the <var>principal
+    cell</var> is anchored.</p>
+
+   </li>
+
+   <li>
+
+    <dl class="switch">
+
+     <dt>If the <var>principal cell</var> has a <code
+     data-x="attr-tdth-headers">headers</code> attribute specified</dt>
+
+     <dd>
+
+      <!-- HEADERS="" -->
+
+      <ol>
+
+       <li>
+
+        <p>Take the value of the <var>principal cell</var>'s <code
+        data-x="attr-tdth-headers">headers</code> attribute and <span data-x="split a string on
+        spaces">split it on spaces</span>, letting <var>id list</var> be the list of tokens
+        obtained.</p>
+
+       </li>
+
+       <li>
+
+        <!-- support headers="" on <td> element for legacy compat -->
+        <!-- note that it's not conforming though -->
+        <p>For each token in the <var>id list</var>, if the
+        first element in the <code>Document</code> with an <span data-x="concept-id">ID</span> equal to
+        the token is a cell in the same <span
+        data-x="concept-table">table</span>, and that cell is not the
+        <var>principal cell</var>, then add that cell to <var>header list</var>.</p>
+
+       </li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt>If <var>principal cell</var> does not have a <code
+     data-x="attr-tdth-headers">headers</code> attribute specified</dt>
+
+     <dd>
+
+      <ol>
+
+       <li>
+
+        <p>Let <var>principal<sub>width</sub></var> be the width of the <var>principal cell</var>.</p>
+
+       </li>
+
+       <li>
+
+        <p>Let <var>principal<sub>height</sub></var> be the height of the <var>principal cell</var>.</p>
+
+       </li>
+
+
+       <!-- HORIZONTAL -->
+
+       <li>
+
+        <p>For each value of <var>y</var> from <var>principal<sub>y</sub></var> to <span data-x=""><var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1</span>, run
+        the <span>internal algorithm for scanning and assigning header cells</span>, with the <var>principal cell</var>, the <var>header list</var>, the initial coordinate
+        (<var>principal<sub>x</sub></var>,<var>y</var>), and the
+        increments <span data-x="">&Delta;<var>x</var>=&#x2212;1</span> and <span
+        data-x="">&Delta;<var>y</var>=0</span>.</p>
+
+       </li>
+
+
+       <!-- VERTICAL -->
+
+       <li>
+
+        <p>For each value of <var>x</var> from <var>principal<sub>x</sub></var> to <span data-x=""><var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1</span>, run
+        the <span>internal algorithm for scanning and assigning header cells</span>, with the <var>principal cell</var>, the <var>header list</var>, the initial coordinate
+        (<var>x</var>,<var>principal<sub>y</sub></var>), and the
+        increments <span data-x="">&Delta;<var>x</var>=0</span> and <span
+        data-x="">&Delta;<var>y</var>=&#x2212;1</span>.</p>
+
+       </li>
+
+
+       <!-- ROW GROUP HEADERS -->
+
+       <li>
+
+        <p>If the <var>principal cell</var> is anchored in a <span
+        data-x="concept-row-group">row group</span>, then add all header cells that are <span
+        data-x="row group header">row group headers</span> and are anchored in the same row group
+        with an <var>x</var>-coordinate less than or equal to <span data-x=""><var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1</span> and a <var>y</var>-coordinate less than or
+        equal to <span data-x=""><var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1</span> to <var>header
+        list</var>.</p>
+
+        <!-- this might introduce principal accidentally; fixed below -->
+
+       </li>
+
+
+       <!-- COLUMN GROUP HEADERS -->
+
+       <li>
+
+        <p>If the <var>principal cell</var> is anchored in a <span
+        data-x="concept-column-group">column group</span>, then add all header cells that are <span
+        data-x="column group header">column group headers</span> and are anchored in the same column
+        group with an <var>x</var>-coordinate less than or equal to <span data-x=""><var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1</span> and a <var>y</var>-coordinate less than or
+        equal to <span data-x=""><var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1</span> to <var>header
+        list</var>.</p>
+
+        <!-- this might introduce principal accidentally; fixed below -->
+
+       </li>
+
+      </ol>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+
+   <!--CLEANING UP-->
+
+   <li>
+
+    <p>Remove all the <span data-x="empty cell">empty cells</span> from the <var>header
+    list</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Remove any duplicates from the <var>header list</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Remove <var>principal cell</var> from the <var>header list</var> if it is
+    there.</p> <!-- see "might introduce principal accidentally" above -->
+
+   </li>
+
+   <li>
+
+    <p>Assign the headers in the <var>header list</var> to the <var>principal
+    cell</var>.</p>
+
+   </li>
+
+  </ol>
+
+  <p>The <dfn>internal algorithm for scanning and assigning header cells</dfn>, given a <var>principal cell</var>, a <var>header list</var>, an initial coordinate (<var>initial<sub>x</sub></var>, <var>initial<sub>y</sub></var>),
+  and &Delta;<var>x</var> and &Delta;<var>y</var> increments, is as follows:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Let <var>x</var> equal <var>initial<sub>x</sub></var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>y</var> equal <var>initial<sub>y</sub></var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>opaque headers</var> be an empty list of cells.</p>
+
+   </li>
+
+   <li>
+
+    <dl class="switch">
+
+     <dt>If <var>principal cell</var> is a header cell</dt>
+
+     <dd><p>Let <var>in header block</var> be true, and let <var>headers from
+     current header block</var> be a list of cells containing just the <var>principal
+     cell</var>.</p></dd>
+
+     <dt>Otherwise</dt>
+
+     <dd><p>Let <var>in header block</var> be false and let <var>headers from
+     current header block</var> be an empty list of cells.</p>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p><i>Loop</i>: Increment <var>x</var> by &Delta;<var>x</var>; increment <var>y</var> by &Delta;<var>y</var>.</p>
+
+    <p class="note">For each invocation of this algorithm, one of &Delta;<var>x</var> and
+    &Delta;<var>y</var> will be &#x2212;1, and the other will be 0.</p>
+
+   </li>
+
+   <li>
+
+    <p>If either <var>x</var> or <var>y</var> are less than 0, then abort this
+    internal algorithm.</p>
+
+   </li>
+
+   <li>
+
+    <p>If there is no cell covering slot (<var>x</var>, <var>y</var>), or if there
+    is more than one cell covering slot (<var>x</var>, <var>y</var>), return to
+    the substep labeled <i>loop</i>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>current cell</var> be the cell covering slot (<var>x</var>, <var>y</var>).</p>
+
+   </li>
+
+   <li>
+
+    <dl class="switch">
+
+     <dt>If <var>current cell</var> is a header cell</dt>
+
+     <dd>
+
+      <ol>
+
+       <li><p>Set <var>in header block</var> to true.</p></li>
+
+       <li><p>Add <var>current cell</var> to <var>headers from current header
+       block</var>.</p></li>
+
+       <li><p>Let <var>blocked</var> be false.</p></li>
+
+       <li>
+
+        <dl class="switch">
+
+         <dt>If &Delta;<var>x</var> is 0</dt>
+
+         <dd>
+
+          <p>If there are any cells in the <var>opaque headers</var> list anchored with the
+          same <var>x</var>-coordinate as the <var>current cell</var>, and with
+          the same width as <var>current cell</var>, then let <var>blocked</var>
+          be true.</p>
+
+          <p>If the <var>current cell</var> is not a <span>column header</span>, then let
+          <var>blocked</var> be true.</p>
+
+         </dd>
+
+         <dt>If &Delta;<var>y</var> is 0</dt>
+
+         <dd>
+
+          <p>If there are any cells in the <var>opaque headers</var> list anchored with the
+          same <var>y</var>-coordinate as the <var>current cell</var>, and with
+          the same height as <var>current cell</var>, then let <var>blocked</var>
+          be true.</p>
+
+          <p>If the <var>current cell</var> is not a <span>row header</span>, then let <var>blocked</var> be true.</p>
+
+         </dd>
+
+        </dl>
+
+       </li>
+
+       <li><p>If <var>blocked</var> is false, then add the <var>current cell</var>
+       to the <var>headers list</var>.</p></li>
+
+      </ol>
+
+     </dd>
+
+     <dt>If <var>current cell</var> is a data cell and <var>in header block</var> is true</dt>
+
+     <dd><p>Set <var>in header block</var> to false. Add all the cells in <var>headers from current header block</var> to the <var>opaque headers</var>
+     list, and empty the <var>headers from current header block</var> list.</p>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>Return to the step labeled <i>loop</i>.</p>
+
+   </li>
+
+  </ol>
+
+  <p>A header cell anchored at the slot with coordinate (<var>x</var>, <var>y</var>) with width <var>width</var> and height <var>height</var> is
+  said to be a <dfn>column header</dfn> if any of the following conditions are true:</p>
+
+  <ul>
+
+   <li>The cell's <code data-x="attr-th-scope">scope</code> attribute is in the <span
+   data-x="attr-th-scope-col">column</span> state, or</li>
+
+   <li>The cell's <code data-x="attr-th-scope">scope</code> attribute is in the <span
+   data-x="attr-th-scope-auto">auto</span> state, and there are no data cells in any of the cells
+   covering slots with <var>y</var>-coordinates <var>y</var> .. <span
+   data-x=""><var>y</var>+<var>height</var>-1</span>.</li>
+
+  </ul>
+
+  <p>A header cell anchored at the slot with coordinate (<var>x</var>, <var>y</var>) with width <var>width</var> and height <var>height</var> is
+  said to be a <dfn>row header</dfn> if any of the following conditions are true:</p>
+
+  <ul>
+
+   <li>The cell's <code data-x="attr-th-scope">scope</code> attribute is in the <span
+   data-x="attr-th-scope-row">row</span> state, or</li>
+
+   <li>The cell's <code data-x="attr-th-scope">scope</code> attribute is in the <span
+   data-x="attr-th-scope-auto">auto</span> state, the cell is not a <span>column header</span>, and
+   there are no data cells in any of the cells covering slots with <var>x</var>-coordinates
+   <var>x</var> .. <span data-x=""><var>x</var>+<var>width</var>-1</span>.</li>
+
+  </ul>
+
+  <p>A header cell is said to be a <dfn>column group header</dfn> if its <code
+  data-x="attr-th-scope">scope</code> attribute is in the <span data-x="attr-th-scope-colgroup">column
+  group</span> state.</p>
+
+  <p>A header cell is said to be a <dfn>row group header</dfn> if its <code
+  data-x="attr-th-scope">scope</code> attribute is in the <span data-x="attr-th-scope-rowgroup">row
+  group</span> state.</p>
+
+  <p>A cell is said to be an <dfn>empty cell</dfn> if it contains no elements and its text content,
+  if any, consists only of <span>White_Space</span> characters.</p>
+
+  </div>
+
+  

@@ -1,0 +1,65 @@
+<h4 id="table-processing-model"><span id="processing-model-2"></span>Processing model</h4>
+
+  <p>The various table elements and their content attributes together define the <dfn>table
+  model</dfn>.</p>
+
+  <p>A <dfn data-x="concept-table">table</dfn> consists of cells aligned on a two-dimensional grid of
+  <dfn data-x="concept-slots">slots</dfn> with coordinates (<var>x</var>, <var>y</var>). The grid is finite, and is either empty or has one or more slots. If the grid
+  has one or more slots, then the <var>x</var> coordinates are always in the range <span
+  data-x="">0&nbsp;&le;&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>x<sub>width</sub></var></span>, and the <var>y</var> coordinates are always in the
+  range <span data-x="">0&nbsp;&le;&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>y<sub>height</sub></var></span>. If one or both of <var>x<sub>width</sub></var> and <var>y<sub>height</sub></var> are zero, then the
+  table is empty (has no slots). Tables correspond to <code>table</code> elements.</p>
+
+  <p>A <dfn data-x="concept-cell">cell</dfn> is a set of slots anchored at a slot (<var>cell<sub>x</sub></var>, <var>cell<sub>y</sub></var>), and with
+  a particular <var>width</var> and <var>height</var> such that the cell covers
+  all the slots with coordinates (<var>x</var>, <var>y</var>) where <span
+  data-x=""><var>cell<sub>x</sub></var>&nbsp;&le;&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>cell<sub>x</sub></var>+<var>width</var></span> and <span data-x=""><var>cell<sub>y</sub></var>&nbsp;&le;&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>cell<sub>y</sub></var>+<var>height</var></span>. Cells can either be <em>data cells</em>
+  or <em>header cells</em>. Data cells correspond to <code>td</code> elements, and header cells
+  correspond to <code>th</code> elements. Cells of both types can have zero or more associated
+  header cells.</p>
+
+  <p>It is possible, in certain error cases, for two cells to occupy the same slot.</p>
+
+  <p>A <dfn data-x="concept-row">row</dfn> is a complete set of slots from <span data-x=""><var>x</var>=0</span> to <span data-x=""><var>x</var>=<var>x<sub>width</sub></var>-1</span>, for a particular value of <var>y</var>. Rows usually
+  correspond to <code>tr</code> elements, though a <span data-x="concept-row-group">row group</span>
+  can have some implied <span data-x="concept-row">rows</span> at the end in some cases involving
+  <span data-x="concept-cell">cells</span> spanning multiple rows.</p>
+
+  <p>A <dfn data-x="concept-column">column</dfn> is a complete set of slots from <span data-x=""><var>y</var>=0</span> to <span data-x=""><var>y</var>=<var>y<sub>height</sub></var>-1</span>, for a particular value of <var>x</var>. Columns can
+  correspond to <code>col</code> elements. In the absence of <code>col</code> elements, columns are
+  implied.</p>
+
+  <p>A <dfn data-x="concept-row-group">row group</dfn> is a set of <span
+  data-x="concept-row">rows</span> anchored at a slot (0, <var>group<sub>y</sub></var>) with a particular <var>height</var> such that the row group
+  covers all the slots with coordinates (<var>x</var>, <var>y</var>) where <span
+  data-x="">0&nbsp;&le;&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>x<sub>width</sub></var></span> and <span data-x=""><var>group<sub>y</sub></var>&nbsp;&le;&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>group<sub>y</sub></var>+<var>height</var></span>. Row groups correspond to
+  <code>tbody</code>, <code>thead</code>, and <code>tfoot</code> elements. Not every row is
+  necessarily in a row group.</p>
+
+  <p>A <dfn data-x="concept-column-group">column group</dfn> is a set of <span
+  data-x="concept-column">columns</span> anchored at a slot (<var>group<sub>x</sub></var>, 0) with a particular <var>width</var> such that the column group
+  covers all the slots with coordinates (<var>x</var>, <var>y</var>) where <span
+  data-x=""><var>group<sub>x</sub></var>&nbsp;&le;&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>group<sub>x</sub></var>+<var>width</var></span> and <span data-x="">0&nbsp;&le;&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>y<sub>height</sub></var></span>. Column
+  groups correspond to <code>colgroup</code> elements. Not every column is necessarily in a column
+  group.</p>
+
+  <p><span data-x="concept-row-group">Row groups</span> cannot overlap each other. Similarly, <span
+  data-x="concept-column-group">column groups</span> cannot overlap each other.</p>
+
+  <p>A <span data-x="concept-cell">cell</span> cannot cover slots that are from two or more <span
+  data-x="concept-row-group">row groups</span>. It is, however, possible for a cell to be in multiple
+  <span data-x="concept-column-group">column groups</span>. All the slots that form part of one cell
+  are part of zero or one <span data-x="concept-row-group">row groups</span> and zero or more <span
+  data-x="concept-column-group">column groups</span>.</p>
+
+  <p>In addition to <span data-x="concept-cell">cells</span>, <span
+  data-x="concept-column">columns</span>, <span data-x="concept-row">rows</span>, <span
+  data-x="concept-row-group">row groups</span>, and <span data-x="concept-column-group">column
+  groups</span>, <span data-x="concept-table">tables</span> can have a <code>caption</code> element
+  associated with them. This gives the table a heading, or legend.</p>
+
+  <p>A <dfn>table model error</dfn> is an error with the data represented by <code>table</code>
+  elements and their descendants. Documents must not have table model errors.</p>
+
+
+  

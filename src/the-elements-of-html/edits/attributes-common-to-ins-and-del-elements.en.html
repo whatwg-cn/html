@@ -1,0 +1,59 @@
+<h4>Attributes common to <code>ins</code> and <code>del</code> elements</h4>
+
+  <p>The <dfn><code data-x="attr-mod-cite">cite</code></dfn> attribute may be used to specify the
+  <span data-x="concept-document-url">URL</span> of a document that explains the change. When that
+  document is long, for instance the minutes of a meeting, authors are encouraged to include a <span
+  data-x="concept-url-fragment">fragment</span> pointing to the specific part of that document that
+  discusses the change.</p>
+
+  <p>If the <code data-x="attr-mod-cite">cite</code> attribute is present, it must be a <span>valid
+  URL potentially surrounded by spaces</span> that explains the change. <span w-nodev>To obtain
+  the corresponding citation link, the value of the attribute must be <span data-x="parse a
+  url">parsed</span> relative to the element's <span>node document</span>.</span> User agents may
+  allow users to follow such citation links, but they are primarily intended for private use (e.g.,
+  by server-side scripts collecting statistics about a site's edits), not for readers.</p>
+
+
+  <p>The <dfn><code data-x="attr-mod-datetime">datetime</code></dfn> attribute may be used to specify
+  the time and date of the change.</p>
+
+  <p>If present, the <code data-x="attr-mod-datetime">datetime</code> attribute's value must be a
+  <span>valid date string with optional time</span>.</p>
+
+  <div w-nodev>
+
+  <p>User agents must parse the <code data-x="attr-mod-datetime">datetime</code> attribute according
+  to the <span>parse a date or time string</span> algorithm. If that doesn't return a <span
+  data-x="concept-date">date</span> or a <span data-x="concept-datetime">global date and time</span>,
+  then the modification has no associated timestamp (the value is non-conforming; it is not a
+  <span>valid date string with optional time</span>). Otherwise, the modification is marked as
+  having been made at the given <span data-x="concept-date">date</span> or <span
+  data-x="concept-datetime">global date and time</span>. If the given value is a <span
+  data-x="concept-datetime">global date and time</span> then user agents should use the associated
+  time-zone offset information to determine which time zone to present the given datetime in.</p>
+
+  </div>
+
+  <p>This value <span w-nodev>may be shown to the user, but it</span> is primarily intended for
+  private use.</p>
+
+  <p>The <code>ins</code> and <code>del</code> elements <span w-nodev>must</span> implement the
+  <code>HTMLModElement</code> interface:</p>
+
+  <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLModElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-mod-cite">cite</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-mod-dateTime">dateTime</span>;
+};</pre>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-mod-cite">cite</code></dfn> IDL attribute must <span>reflect</span>
+  the element's <code data-x="attr-mod-cite">cite</code> content attribute. The <dfn><code data-x="dom-mod-dateTime">dateTime</code></dfn> IDL attribute must <span>reflect</span> the
+  element's <code data-x="attr-mod-datetime">datetime</code> content attribute.</p>
+
+  </div>
+
+
+
+  

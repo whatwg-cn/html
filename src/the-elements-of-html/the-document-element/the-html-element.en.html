@@ -1,0 +1,72 @@
+<h4 id="the-html-element">The <dfn><code>html</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As document's <span>document element</span>.</dd>
+   <dd>Wherever a subdocument fragment is allowed in a compound document.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>A <code>head</code> element followed by a <code>body</code> element.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-html-manifest">manifest</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLHtmlElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>html</code> element <span>represents</span> the root of an HTML document.</p>
+
+  <p>Authors are encouraged to specify a <code data-x="attr-lang">lang</code> attribute on the root
+  <code>html</code> element, giving the document's language. This aids speech synthesis tools to
+  determine what pronunciations to use, translation tools to determine what rules to use, and so
+  forth.</p>
+
+<!--TOPIC:Offline Web Applications-->
+  <p>The <dfn><code data-x="attr-html-manifest">manifest</code></dfn> attribute gives the address of
+  the document's <span>application cache</span> <span
+  data-x="concept-appcache-manifest">manifest</span>, if there is one. If the attribute is present,
+  the attribute's value must be a <span>valid non-empty URL potentially surrounded by
+  spaces</span>.</p>
+
+  <p>The <code data-x="attr-html-manifest">manifest</code> attribute only <span
+  data-x="concept-appcache-init">has an effect</span> during the early stages of document load.
+  Changing the attribute dynamically thus has no effect (and thus, no DOM API is provided for this
+  attribute).</p>
+
+  <p class="note">For the purposes of <span data-x="concept-appcache-init">application cache
+  selection</span>, later <code>base</code> elements cannot affect the <span data-x="parse a
+  url">parsing of URLs</span> in <code data-x="attr-html-manifest">manifest</code> attributes, as
+  the attributes are processed before those elements are seen.</p>
+
+  <p class="note">The <code data-x="dom-applicationCache">window.applicationCache</code> IDL
+  attribute provides scripted access to the offline <span>application cache</span> mechanism.</p>
+
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>The <code>html</code> element in the following example declares that the document's language
+   is English.</p>
+
+   <pre>&lt;!DOCTYPE html>
+<strong>&lt;html lang="en"></strong>
+&lt;head>
+&lt;title>Swapping Songs&lt;/title>
+&lt;/head>
+&lt;body>
+&lt;h1>Swapping Songs&lt;/h1>
+&lt;p>Tonight I swapped some of the songs I wrote with some friends, who
+gave me some of the songs they wrote. I love sharing my music.&lt;/p>
+&lt;/body>
+<strong>&lt;/html></strong></pre>
+
+  </div>
+
+
+
+
+  

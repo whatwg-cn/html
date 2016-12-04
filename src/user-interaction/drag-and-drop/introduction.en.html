@@ -1,0 +1,104 @@
+<h4 id="event-drag">Introduction</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>To make an element draggable is simple: give the element a <code
+  data-x="attr-draggable">draggable</code> attribute, and set an event listener for <code
+  data-x="event-dnd-dragstart">dragstart</code> that stores the data being dragged.</p>
+
+  <p>The event handler typically needs to check that it's not a text selection that is being
+  dragged, and then needs to store data into the <code>DataTransfer</code> object and set the
+  allowed effects (copy, move, link, or some combination).</p>
+
+  <p>For example:</p>
+
+  <pre>&lt;p>What fruits do you like?&lt;/p>
+&lt;ol ondragstart="dragStartHandler(event)">
+ &lt;li draggable="true" data-value="fruit-apple">Apples&lt;/li>
+ &lt;li draggable="true" data-value="fruit-orange">Oranges&lt;/li>
+ &lt;li draggable="true" data-value="fruit-pear">Pears&lt;/li>
+&lt;/ol>
+&lt;script>
+  var internalDNDType = 'text/x-example'; // set this to something specific to your site
+  function dragStartHandler(event) {
+    if (event.target instanceof HTMLLIElement) {
+      // use the element's data-value="" attribute as the value to be moving:
+      event.dataTransfer.setData(internalDNDType, event.target.dataset.value);
+      event.dataTransfer.effectAllowed = 'move'; // only allow moves
+    } else {
+      event.preventDefault(); // don't allow selection to be dragged
+    }
+  }
+&lt;/script></pre>
+
+  <hr>
+
+  <p>To accept a drop, the drop target has to have a <code data-x="attr-dropzone">dropzone</code>
+  attribute and listen to the <code data-x="event-dnd-drop">drop</code> event.</p>
+
+  <p>The value of the <code data-x="attr-dropzone">dropzone</code> attribute specifies what kind of
+  data to accept (e.g. "<code data-x="">string:text/plain</code>" to accept any text strings, or
+  "<code data-x="">file:image/png</code>" to accept a PNG image file) and what kind of feedback to
+  give (e.g. "<code data-x="">move</code>" to indicate that the data will be moved).</p>
+
+  <p class="note">Instead of using the <code data-x="attr-dropzone">dropzone</code> attribute, a drop
+  target can handle the <code data-x="event-dnd-dragenter">dragenter</code> event (to report whether or
+  not the drop target is to accept the drop) and the <code data-x="event-dnd-dragover">dragover</code>
+  event (to specify what feedback is to be shown to the user).</p>
+
+  <p>The <code data-x="event-dnd-drop">drop</code> event allows the actual drop to be performed. This
+  event needs to be canceled, so that the <code
+  data-x="dom-DataTransfer-DropEffect">dropEffect</code> attribute's value can be used by the source
+  (otherwise it's reset).</p>
+
+  <p>For example:</p>
+
+  <pre>&lt;p>Drop your favorite fruits below:&lt;/p>
+&lt;ol dropzone="move string:text/x-example" ondrop="dropHandler(event)">
+ &lt;!-- don't forget to change the "text/x-example" type to something
+ specific to your site -->
+&lt;/ol>
+&lt;script>
+  var internalDNDType = 'text/x-example'; // set this to something specific to your site
+  function dropHandler(event) {
+    var li = document.createElement('li');
+    var data = event.dataTransfer.getData(internalDNDType);
+    if (data == 'fruit-apple') {
+      li.textContent = 'Apples';
+    } else if (data == 'fruit-orange') {
+      li.textContent = 'Oranges';
+    } else if (data == 'fruit-pear') {
+      li.textContent = 'Pears';
+    } else {
+      li.textContent = 'Unknown Fruit';
+    }
+    event.target.appendChild(li);
+  }
+&lt;/script></pre>
+
+  <hr>
+
+  <p>To remove the original element (the one that was dragged) from the display, the <code
+  data-x="event-dnd-dragend">dragend</code> event can be used.</p>
+
+  <p>For our example here, that means updating the original markup to handle that event:</p>
+
+  <pre>&lt;p>What fruits do you like?&lt;/p>
+&lt;ol ondragstart="dragStartHandler(event)" ondragend="dragEndHandler(event)">
+ <em>...as before...</em>
+&lt;/ol>
+&lt;script>
+  function dragStartHandler(event) {
+    // <em>...as before...</em>
+  }
+  function dragEndHandler(event) {
+    if (event.dataTransfer.dropEffect == 'move') {
+      // remove the dragged element
+      event.target.parentNode.removeChild(event.target);
+    }
+  }
+&lt;/script></pre>
+
+
+
+  

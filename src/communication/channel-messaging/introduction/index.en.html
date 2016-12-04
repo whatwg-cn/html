@@ -1,0 +1,42 @@
+<h4>Introduction</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>To enable independent pieces of code (e.g. running in different <span data-x="browsing
+  context">browsing contexts</span>) to communicate directly, authors can use <span>channel
+  messaging</span>.</p>
+
+  <p>Communication channels in this mechanism are implemented as two-ways pipes, with a port at each
+  end. Messages sent in one port are delivered at the other port, and vice-versa. Messages are
+  delivered as DOM events, without interrupting or blocking running <span data-x="concept-task">tasks</span>.</p>
+
+  <p>To create a connection (two "entangled" ports), the <code data-x="">MessageChannel()</code>
+  constructor is called:</p>
+
+  <pre>var channel = new MessageChannel();</pre>
+
+  <p>One of the ports is kept as the local port, and the other port is sent to the remote code, e.g.
+  using <code data-x="dom-window-postMessage">postMessage()</code>:</p>
+
+  <pre>otherWindow.postMessage('hello', 'https://example.com', [channel.port2]);</pre>
+
+  <p>To send messages, the <code data-x="dom-MessagePort-postMessage">postMessage()</code> method on
+  the port is used:</p>
+
+  <pre>channel.port1.postMessage('hello');</pre>
+
+  <p>To receive messages, one listens to <code data-x="event-message">message</code> events:</p>
+
+  <pre>channel.port1.onmessage = handleMessage;
+function handleMessage(event) {
+  // message is in event.data
+  // ...
+}</pre>
+
+  <p>Data sent on a port can be structured data; for example here an array of strings is passed on a
+  <code>MessagePort</code>:</p>
+
+  <pre>port1.postMessage(['hello', 'world']);</pre>
+
+
+  

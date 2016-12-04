@@ -1,0 +1,72 @@
+<h4 id="svg-0">SVG</h4>
+
+  <p>The <span>SVG <code>svg</code></span> element falls into the <span>embedded content</span>,
+  <span>phrasing content</span>, <span>flow content</span>, and <span>palpable content</span>
+  categories for the purposes of the content models in this specification.</p>
+
+  <div w-nodev>
+
+  <p>To enable authors to use SVG tools that only accept SVG in its XML form, interactive HTML user
+  agents are encouraged to provide a way to export any SVG fragment as an XML namespace-well-formed
+  XML fragment.</p>
+
+  </div>
+
+  <p>When the <span>SVG <code>foreignObject</code></span> element contains elements from the
+  <span>HTML namespace</span>, such elements must all be <span>flow content</span>.</p>
+
+  <p>The content model for the <span>SVG <code>title</code></span> element inside <span>HTML
+  documents</span> is <span>phrasing content</span>. (This further constrains the requirements given
+  in the SVG specification.)</p>
+
+  <p>The semantics of SVG elements are defined by the SVG specification and <span>other applicable
+  specifications</span>. <ref spec=SVG></p>
+
+  <hr>
+
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>doc</var> = <var>iframe</var> . <code subdfn data-x="dom-media-getSVGDocument">getSVGDocument</code>()</dt>
+   <dt><var>doc</var> = <var>embed</var> . <code data-x="dom-media-getSVGDocument">getSVGDocument</code>()</dt>
+   <dt><var>doc</var> = <var>object</var> . <code data-x="dom-media-getSVGDocument">getSVGDocument</code>()</dt>
+
+   <dd>
+
+    <p>Returns the <code>Document</code> object, in the case of <code>iframe</code>, <code>embed</code>, or <code>object</code> elements being used to embed SVG images.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-getSVGDocument">getSVGDocument()</code></dfn> method must run
+  the following steps:</p>
+
+  <ol>
+
+   <li><p>If the element's <span>nested browsing context</span> is null, then return null.</p></li>
+
+   <li><p>If the <span>active document</span> of the <span>nested browsing context</span> does not
+   have the <span>same origin-domain</span> for its <span>origin</span> as the element's <span>node
+   document</span>'s <span>origin</span>, then return null.</p></li>
+
+   <li><p>If the <span>nested browsing context</span>'s <span>active document</span> was created by
+   the <span data-x="navigate-xml">page load processing model for XML files</span> section because
+   the <span data-x="Content-Type sniffing">computed type of the resource</span> in the
+   <span>navigate</span> algorithm was <code>image/svg+xml</code>, then return that
+   <code>Document</code> object.</p></li>
+
+   <li><p>Otherwise, return null.</p></li>
+
+  </ol>
+
+  </div>
+
+
+
+<!--TOPIC:HTML-->
+
+  

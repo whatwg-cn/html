@@ -1,0 +1,143 @@
+<h6>Reacting to environment changes</h6>
+
+  <p id="img-environment-changes">The user agent may at any time run the following algorithm to update an <code>img</code>
+  element's image in order to react to changes in the environment. (User agents are <em>not
+  required</em> to ever run this algorithm; for example, if the user is not looking at the page any
+  more, the user agent might want to wait until the user has returned to the page before determining
+  which image to use, in case the environment changes again in the meantime.)</p>
+
+  <p class=note>User agents are encouraged to run this algorithm in particular when the user changes
+  the <span>viewport</span>'s size (e.g. by resizing the window or changing the page zoom), and when
+  an <code>img</code> element is <span data-x="node is inserted into a document">inserted into a
+  document</span>, so that the <span>density-corrected intrinsic width and height</span> match the
+  new <span>viewport</span>, and so that the correct image is chosen when <span>art direction</span>
+  is involved.</p>
+
+  <ol>
+
+   <li><p><span>Await a stable state</span>. The <span>synchronous section</span>
+   consists of all the remaining steps of this algorithm until the algorithm says the
+   <span>synchronous section</span> has ended. (Steps in <span data-x="synchronous
+   section">synchronous sections</span> are marked with &#x231B;.)</p></li>
+
+   <li><p>&#x231B; If the <code>img</code> element does not <span>use <code>srcset</code> or
+   <code>picture</code></span>, its <span>node document</span> is not the <span>active
+   document</span>, has image data whose resource type is <code>multipart/x-mixed-replace</code>, or
+   the <span>pending request</span> is not null, then abort this algorithm.</p></li>
+
+   <!-- we don't support replacing push-JPEG images because defining what happens with
+   the tasks and events and so on in that case would become implausibly complicated. -->
+
+   <li><p>&#x231B; Let <var>selected source</var> and <var>selected pixel
+   density</var> be the URL and pixel density that results from <span data-x="select an image source">selecting an image source</span>, respectively.</p></li>
+
+   <li><p>&#x231B; If <var>selected source</var> is null, then abort these steps.</p></li>
+   <!-- not sure this can ever actually happen -->
+
+   <li><p>&#x231B; If <var>selected source</var> and <var>selected pixel
+   density</var> are the same as the element's <span>last selected source</span> and <span>current
+   pixel density</span>, then abort these steps.</p></li> <!-- note that this check happens before
+   base URL resolution, so changing the base URL doesn't trigger an update if nothing else changed
+   -->
+
+   <li><p>&#x231B; <span data-x="parse a url">Parse</span> <var>selected source</var>, relative to
+   the element's <span>node document</span>, and let <var>urlString</var> be the <span>resulting URL
+   string</span>. If that is not successful, abort these steps.</p></li>
+
+   <li><p>&#x231B; Let <var>corsAttributeState</var> be the state of the element's <code
+   data-x="attr-img-crossorigin">crossorigin</code> content attribute.</p></li>
+
+   <li><p>&#x231B; Let <var>origin</var> be the <span>origin</span> of the <code>img</code> element's <span>node document</span>.</p></li>
+
+   <li><p>&#x231B; Let <var>client</var> be the <code>img</code> element's <span>node
+   document</span>'s <code>Window</code> object's <span>environment settings object</span>.</p></li>
+
+   <li><p>&#x231B; Let <var>key</var> be a tuple consisting of <var>urlString</var>,
+   <var>corsAttributeState</var>, and, if <var>corsAttributeState</var> is not <span
+   data-x="attr-crossorigin-none">No CORS</span>, <var>origin</var>.</p></li>
+
+   <li><p>&#x231B; Let <var>image request</var> be a new <span>image request</span>
+   whose <span data-x="img-req-url">current URL</span> is <var>urlString</var></p></li>
+
+   <li><p>&#x231B; Let the element's <span>pending request</span> be <var>image request</var>.</p></li>
+
+   <li><p>End the <span>synchronous section</span>, continuing the remaining steps
+   <span>in parallel</span>.</p></li>
+
+   <li>
+
+    <p>If the <span>list of available images</span> contains an entry for <var>key</var>,
+    then set <var>image request</var>'s <span data-x="img-req-data">image data</span> to that of the entry.
+    Continue to the next step.</p>
+
+    <p>Otherwise, run these substeps:</p>
+
+    <ol>
+     <li><p>Let <var>request</var> be the result of <span
+     data-x="create a potential-CORS request">creating a potential-CORS request</span> given
+     <var>urlString</var>, "<code data-x="">image</code>", and
+     <var>corsAttributeState</var>.</p></li>
+
+     <li><p>Set <var>request</var>'s <span data-x="concept-request-client">client</span> to
+     <var>client</var>, <span data-x="concept-request-type">type</span> to "<code
+     data-x="">image</code>", <span data-x="concept-request-initiator">initiator</span> to "<code
+     data-x="">imageset</code>", and set <var>request</var>'s <span>synchronous
+     flag</span>.</p></li>
+
+     <li><p>Set <var>request</var>'s
+     <span data-x="concept-request-referrer-policy">referrer policy</span> to the current state of
+     the element's <code data-x="attr-img-referrerpolicy">referrerpolicy</code> attribute.</p></li>
+
+     <!--FETCH--><li><p>Let <var>response</var> be the result of <span
+     data-x="concept-fetch">fetching</span> <var>request</var>.</p></li>
+
+     <li><p>If <var>response</var>'s <span>unsafe response</span> is a <span>network error</span> or
+     if the image format is unsupported (as determined by applying the <span
+     data-x="Content-Type sniffing: image">image sniffing rules</span>, again as mentioned earlier),
+     or if the user agent is able to determine that <var>image request</var>'s image is corrupted in
+     some fatal way such that the image dimensions cannot be obtained, or if the resource type is
+     <code>multipart/x-mixed-replace</code>, then let <span>pending request</span> be null and abort
+     these steps.</p></li>
+
+     <li><p>Otherwise, <var>response</var>'s <span>unsafe response</span> is <var>image
+     request</var>'s <span data-x="img-req-data">image data</span>. It can be either
+     <span>CORS-same-origin</span> or <span>CORS-cross-origin</span>; this affects the
+     <span>origin</span> of the image itself (e.g., when used on a <code>canvas</code>).</p></li>
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p><span>Queue a task</span> to run the following substeps:</p>
+
+    <ol>
+
+     <li><p>If the <code>img</code> element has experienced <span>relevant mutations</span>
+     since this algorithm started, then let <span>pending request</span> be null and abort these steps.</p>
+
+     <li><p>Let the <code>img</code> element's <span>last selected source</span> be <var>selected source</var>
+     and the <code>img</code> element's <span>current pixel density</span> be <var>selected pixel density</var>.</p></li>
+
+     <li><p>Set <var>image request</var> to the <span data-x="img-all">completely available</span> state.</p></li>
+
+     <li><p>Add the image to the <span>list of available images</span> using the key <var>key</var>,
+     with the <span>ignore higher-layer caching</span> flag set.</p></li>
+
+     <li><p><span>Upgrade the pending request to the current request</span>.</p></li>
+
+     <li><p>Update the <code>img</code> element's presentation appropriately.</p></li>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-load">load</code> at the <code>img</code> element.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+  

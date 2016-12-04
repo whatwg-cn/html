@@ -1,0 +1,61 @@
+<h4>The <dfn id="the-sub-element"><code>sub</code></dfn> and <dfn id="the-sup-element"><code>sup</code></dfn> elements</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Use <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>sup</code> element <span>represents</span> a superscript and the <code>sub</code>
+  element <span>represents</span> a subscript.</p>
+
+  <p>These elements must be used only to mark up typographical conventions with specific meanings,
+  not for typographical presentation for presentation's sake. For example, it would be inappropriate
+  for the <code>sub</code> and <code>sup</code> elements to be used in the name of the LaTeX
+  document preparation system. In general, authors should use these elements only if the
+  <em>absence</em> of those elements would change the meaning of the content.</p>
+
+  <p>In certain languages, superscripts are part of the typographical conventions for some
+  abbreviations.</p>
+
+  <div class="example">
+   <pre>&lt;p>The most beautiful women are
+&lt;span lang="fr">&lt;abbr>M&lt;sup>lle&lt;/sup>&lt;/abbr> Gwendoline&lt;/span> and
+&lt;span lang="fr">&lt;abbr>M&lt;sup>me&lt;/sup>&lt;/abbr> Denise&lt;/span>.&lt;/p></pre>
+  </div>
+
+  <p>The <code>sub</code> element can be used inside a <code>var</code> element, for variables that
+  have subscripts.</p>
+
+  <div class="example">
+
+   <p>Here, the <code>sub</code> element is used to represent the subscript that identifies the
+   variable in a family of variables:</p>
+
+   <pre>&lt;p>The coordinate of the &lt;var>i&lt;/var>th point is
+(&lt;var>x&lt;sub>&lt;var>i&lt;/var>&lt;/sub>&lt;/var>, &lt;var>y&lt;sub>&lt;var>i&lt;/var>&lt;/sub>&lt;/var>).
+For example, the 10th point has coordinate
+(&lt;var>x&lt;sub>10&lt;/sub>&lt;/var>, &lt;var>y&lt;sub>10&lt;/sub>&lt;/var>).&lt;/p></pre>
+  </div>
+
+  <p>Mathematical expressions often use subscripts and superscripts. Authors are encouraged to use
+  MathML for marking up mathematics, but authors may opt to use <code>sub</code> and
+  <code>sup</code> if detailed mathematical markup is not desired. <ref spec=MATHML></p>
+
+  <div class="example">
+   <pre>&lt;var>E&lt;/var>=&lt;var>m&lt;/var>&lt;var>c&lt;/var>&lt;sup>2&lt;/sup></pre>
+   <pre>f(&lt;var>x&lt;/var>, &lt;var>n&lt;/var>) = log&lt;sub>4&lt;/sub>&lt;var>x&lt;/var>&lt;sup>&lt;var>n&lt;/var>&lt;/sup></pre>
+  </div>
+
+
+
+  

@@ -1,0 +1,92 @@
+<h4>The <dfn><code>strong</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>strong</code> element <span>represents</span> strong importance, seriousness, or
+  urgency for its contents.</p>
+
+  <p><strong>Importance</strong>: The <code>strong</code> element can be used in a heading, caption,
+  or paragraph to distinguish the part that really matters from other parts that might be more
+  detailed, more jovial, or merely boilerplate. (This is distinct from marking up subheadings, for
+  which the <code>hgroup</code> element is appropriate.)</p>
+
+  <p class="example">For example, the first word of the previous paragraph is marked up with
+  <code>strong</code> to distinguish it from the more detailed text in the rest of the
+  paragraph.</p>
+
+  <p><strong>Seriousness</strong>: The <code>strong</code> element can be used to mark up a warning
+  or caution notice.</p>
+
+  <p><strong>Urgency</strong>: The <code>strong</code> element can be used to denote contents that
+  the user needs to see sooner than other parts of the document.</p>
+
+  <p>The relative level of importance of a piece of content is given by its number of ancestor
+  <code>strong</code> elements; each <code>strong</code> element increases the importance of its
+  contents.</p>
+
+  <p>Changing the importance of a piece of text with the <code>strong</code> element does not change
+  the meaning of the sentence.</p>
+
+  <div class="example">
+
+   <p>Here, the word "chapter" and the actual chapter number are mere boilerplate, and the actual
+   name of the chapter is marked up with <code>strong</code>:</p>
+
+   <pre>&lt;h1>Chapter 1: &lt;strong>The Praxis&lt;/strong>&lt;/h1></pre>
+
+   <p>In the following example, the name of the diagram in the caption is marked up with
+   <code>strong</code>, to distinguish it from boilerplate text (before) and the description
+   (after):</p>
+
+   <pre>&lt;figcaption>Figure 1. &lt;strong>Ant colony dynamics&lt;/strong>. The ants in this colony are
+affected by the heat source (upper left) and the food source (lower right).&lt;/figcaption></pre>
+
+   <p>In this example, the heading is really "Flowers, Bees, and Honey", but the author has added a
+   light-hearted addition to the heading. The <code>strong</code> element is thus used to mark up
+   the first part to distinguish it from the latter part.</p>
+
+   <pre>&lt;h1>&lt;strong>Flowers, Bees, and Honey&lt;/strong> and other things I don't understand&lt;/h1></pre>
+
+  </div>
+
+  <div class="example">
+   <p>Here is an example of a warning notice in a game, with the
+   various parts marked up according to how important they are:</p>
+   <!-- DO NOT REFLOW THIS EXAMPLE it has been carefully balanced -->
+   <pre>&lt;p>&lt;strong>Warning.&lt;/strong> This dungeon is dangerous.
+&lt;strong>Avoid the ducks.&lt;/strong> Take any gold you find.
+&lt;strong>&lt;strong>Do not take any of the diamonds&lt;/strong>,
+they are explosive and &lt;strong>will destroy anything within
+ten meters.&lt;/strong>&lt;/strong> You have been warned.&lt;/p></pre>
+  </div>
+
+  <div class="example">
+
+   <p>In this example, the <code>strong</code> element is used to denote the part of the text that
+   the user is intended to read first.</p>
+
+   <pre>&lt;p>Welcome to Remy, the reminder system.&lt;/p>
+&lt;p>Your tasks for today:&lt;/p>
+&lt;ul>
+ &lt;li>&lt;p>&lt;strong>Turn off the oven.&lt;/strong>&lt;/p>&lt;/li>
+ &lt;li>&lt;p>Put out the trash.&lt;/p>&lt;/li>
+ &lt;li>&lt;p>Do the laundry.&lt;/p>&lt;/li>
+&lt;/ul></pre>
+
+  </div>
+
+
+  

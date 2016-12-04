@@ -1,0 +1,28 @@
+<h4 id="content-type-sniffing">Determining the type of a resource</h4>
+
+  <p>The <dfn data-x="Content-Type">Content-Type metadata</dfn> of a resource must be obtained and
+  interpreted in a manner consistent with the requirements of the WHATWG MIME Sniffing standard.
+  <ref spec=MIMESNIFF></p>
+
+  <p>The <dfn data-x="Content-Type sniffing"
+  data-x-href="https://mimesniff.spec.whatwg.org/#computed-mime-type">computed MIME type</dfn> of a
+  resource must be found in a manner consistent with the requirements given in the WHATWG MIME
+  Sniffing standard. <ref spec=MIMESNIFF></p>
+
+  <p>The <dfn data-x="Content-Type sniffing: image"
+  data-x-href="https://mimesniff.spec.whatwg.org/#rules-for-sniffing-images-specifically">rules for
+  sniffing images specifically</dfn>, the <dfn data-x="Content-Type sniffing: text or binary"
+  data-x-href="https://mimesniff.spec.whatwg.org/#rules-for-text-or-binary">rules for distinguishing
+  if a resource is text or binary</dfn>, and the <dfn data-x="Content-Type sniffing: video"
+  data-x-href="https://mimesniff.spec.whatwg.org/#rules-for-sniffing-audio-and-video-specifically">rules
+  for sniffing audio and video specifically</dfn> are also defined in the WHATWG MIME Sniffing
+  standard. These rules return a <span>MIME type</span> as their result. <ref
+  spec=MIMESNIFF></p>
+
+  <p class="warning">It is imperative that the rules in the WHATWG MIME Sniffing standard be
+  followed exactly. When a user agent uses different heuristics for content type detection than the
+  server expects, security problems can occur. For more details, see the WHATWG MIME Sniffing
+  standard. <ref spec=MIMESNIFF></p>
+
+
+  

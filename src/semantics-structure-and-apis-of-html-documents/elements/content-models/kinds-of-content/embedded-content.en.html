@@ -1,0 +1,32 @@
+<h6>Embedded content</h6>
+
+  <p><dfn id="embedded-content-category">Embedded content</dfn> is content that imports another
+  resource into the document, or content from another vocabulary that
+  is inserted into the document.</p>
+
+  <!-- when updating this also update the category index -->
+  <ul class="brief category-list">
+   <li><code>audio</code></li>
+   <li><code>canvas</code></li>
+   <li><code>embed</code></li>
+   <li><code>iframe</code></li>
+   <li><code>img</code></li>
+   <li><span>MathML <code>math</code></span></li>
+   <li><code>object</code></li>
+   <li><code>picture</code></li>
+   <li><span>SVG <code>svg</code></span></li>
+   <li><code>video</code></li>
+  </ul>
+
+  <p>Elements that are from namespaces other than the <span>HTML namespace</span> and that convey
+  content but not metadata, are <span>embedded content</span> for the purposes of the content models
+  defined in this specification. (For example, MathML, or SVG.)</p>
+
+  <p>Some embedded content elements can have <dfn>fallback content</dfn>: content that is to be used
+  when the external resource cannot be used (e.g. because it is of an unsupported format). The
+  element definitions state what the fallback is, if any.</p>
+  <!-- we might not need to define fallback content at all. consider removing it if we don't end up
+  using it anywhere (e.g. Selection) -->
+
+
+  

@@ -1,0 +1,50 @@
+<h5>Media resources with multiple media tracks</h5>
+
+  <p>A <span>media resource</span> can have multiple embedded audio and video tracks. For example,
+  in addition to the primary video and audio tracks, a <span>media resource</span> could have
+  foreign-language dubbed dialogues, director's commentaries, audio descriptions, alternative
+  angles, or sign-language overlays.</p>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-audioTracks">audioTracks</code></dt>
+
+   <dd>
+
+    <p>Returns an <code>AudioTrackList</code> object representing the audio tracks available in the
+    <span>media resource</span>.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-videoTracks">videoTracks</code></dt>
+
+   <dd>
+
+    <p>Returns a <code>VideoTrackList</code> object representing the video tracks available in the
+    <span>media resource</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-audioTracks">audioTracks</code></dfn> attribute of a
+  <span>media element</span> must return a <span>live</span> <code>AudioTrackList</code> object
+  representing the audio tracks available in the <span>media element</span>'s <span>media
+  resource</span>.</p>
+
+  <p>The <dfn><code data-x="dom-media-videoTracks">videoTracks</code></dfn> attribute of a
+  <span>media element</span> must return a <span>live</span> <code>VideoTrackList</code> object
+  representing the video tracks available in the <span>media element</span>'s <span>media
+  resource</span>.</p>
+
+  <p class="note">There are only ever one <code>AudioTrackList</code> object and one
+  <code>VideoTrackList</code> object per <span>media element</span>, even if another <span>media
+  resource</span> is loaded into the element: the objects are reused. (The <code>AudioTrack</code>
+  and <code>VideoTrack</code> objects are not, though.)</p>
+
+  </div>
+
+
+  

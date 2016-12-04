@@ -1,0 +1,715 @@
+<h4 id="drag-and-drop-processing-model">Processing model</h4>
+
+  <p>When the user attempts to begin a drag operation, the user agent must run the following steps.
+  User agents must act as if these steps were run even if the drag actually started in another
+  document or application and the user agent was not aware that the drag was occurring until it
+  intersected with a document under the user agent's purview.</p>
+
+  <ol>
+
+   <li>
+
+    <p>Determine what is being dragged, as follows:</p>
+
+    <p>If the drag operation was invoked on a selection, then it is the selection that is being
+    dragged.</p>
+
+    <p>Otherwise, if the drag operation was invoked on a <code>Document</code>, it is the first
+    element, going up the ancestor chain, starting at the node that the user tried to drag, that has
+    the IDL attribute <code data-x="dom-draggable">draggable</code> set to true. If there is no such
+    element, then nothing is being dragged; abort these steps, the drag-and-drop operation is never
+    started.</p>
+
+    <p>Otherwise, the drag operation was invoked outside the user agent's purview. What is being
+    dragged is defined by the document or application where the drag was started.</p>
+
+    <p class="note"><code>img</code> elements and <code>a</code> elements with an <code
+    data-x="attr-hyperlink-href">href</code> attribute have their <code
+    data-x="dom-draggable">draggable</code> attribute set to true by default.</p>
+
+   </li>
+
+   <li><p><span>Create a drag data store</span>. All the DND events fired subsequently by the steps
+   in this section must use this <span>drag data store</span>.</p></li>
+
+   <li>
+
+    <p>Establish which DOM node is the <dfn>source node</dfn>, as follows:</p>
+
+    <p>If it is a selection that is being dragged, then the <span>source node</span> is the
+    <code>Text</code> node that the user started the drag on (typically the <code>Text</code> node
+    that the user originally clicked). If the user did not specify a particular node, for example if
+    the user just told the user agent to begin a drag of "the selection", then the <span>source
+    node</span> is the first <code>Text</code> node containing a part of the selection.</p>
+
+    <p>Otherwise, if it is an element that is being dragged, then the <span>source node</span> is
+    the element that is being dragged.</p>
+
+    <p>Otherwise, the <span>source node</span> is part of another document or application. When this
+    specification requires that an event be dispatched at the <span>source node</span> in this case,
+    the user agent must instead follow the platform-specific conventions relevant to that
+    situation.</p>
+
+    <p class="note">Multiple events are fired on the <span>source node</span> during the course of
+    the drag-and-drop operation.</p>
+
+   </li>
+
+   <li>
+
+    <p>Determine the <dfn>list of dragged nodes</dfn>, as follows:</p>
+
+    <p>If it is a selection that is being dragged, then the <span>list of dragged nodes</span>
+    contains, in <span>tree order</span>, every node that is partially or completely included in the
+    selection (including all their ancestors).</p>
+
+    <p>Otherwise, the <span>list of dragged nodes</span> contains only the <span>source node</span>,
+    if any.</p>
+
+   </li>
+
+   <li>
+
+    <p>If it is a selection that is being dragged, then add an item to the <span>drag data store
+    item list</span>, with its properties set as follows:</p>
+
+    <dl>
+
+     <dt><span>The drag data item type string</span>
+     <dd>"<code>text/plain</code>"</dd>
+
+     <dt><span>The drag data item kind</span>
+     <dd><i>Plain Unicode string</i></dd>
+
+     <dt>The actual data</dt>
+     <dd>The text of the selection</dd>
+
+    </dl>
+
+    <p>Otherwise, if any files are being dragged, then add one item per file to the <span>drag data
+    store item list</span>, with their properties set as follows:</p>
+
+    <dl>
+
+     <dt><span>The drag data item type string</span>
+     <dd>The MIME type of the file, if known, or "<code>application/octet-stream</code>" otherwise.</dd>
+
+     <dt><span>The drag data item kind</span>
+     <dd><i>File</i></dd>
+
+     <dt>The actual data</dt>
+     <dd>The file's contents and name.</dd>
+
+    </dl>
+
+    <p class="note">Dragging files can currently only happen from outside a <span>browsing
+    context</span>, for example from a file system manager application.</p>
+
+    <p>If the drag initiated outside of the application, the user agent must add items to the
+    <span>drag data store item list</span> as appropriate for the data being dragged, honoring
+    platform conventions where appropriate; however, if the platform conventions do not use <span
+    data-x="MIME type">MIME types</span> to label dragged data, the user agent must make a
+    best-effort attempt to map the types to MIME types, and, in any case, all the <span data-x="the
+    drag data item type string">drag data item type strings</span> must be <span>converted to ASCII
+    lowercase</span>.</p>
+
+    <p>User agents may also add one or more items representing the selection or dragged element(s)
+    in other forms, e.g. as HTML.</p>
+
+   </li>
+
+   <!-- DND-v2: text/html as an export format -->
+
+   <li>
+
+    <p>If the <span>list of dragged nodes</span> is not empty, then <span data-x="extracting
+    JSON">extract the microdata from those nodes into a JSON form</span>, and add one item to the
+    <span>drag data store item list</span>, with its properties set as follows:</p>
+
+    <dl>
+
+     <dt><span>The drag data item type string</span>
+     <dd><code>application/microdata+json</code></dd>
+
+     <dt><span>The drag data item kind</span>
+     <dd><i>Plain Unicode string</i></dd>
+
+     <dt>The actual data</dt>
+     <dd>The resulting JSON string.</dd>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>Run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>urls</var> be an empty list of <span data-x="absolute URL">absolute
+     URLs</span>.</p></li>
+
+     <li>
+
+      <p>For each <var>node</var> in the <span>list of dragged nodes</span>:</p>
+
+      <dl>
+
+       <dt>If the node is an <code>a</code> element with an <code
+       data-x="attr-hyperlink-href">href</code> attribute</dt>
+
+       <dd>Add to <var>urls</var> the result of <span data-x="parse a url">parsing</span> the
+       element's <code data-x="attr-hyperlink-href">href</code> content attribute relative to the
+       element's <span>node document</span>.</dd>
+
+       <dt>If the node is an <code>img</code> element with a <code data-x="attr-img-src">src</code>
+       attribute</dt>
+
+       <dd>Add to <var>urls</var> the result of <span data-x="parse a url">parsing</span> the
+       element's <code data-x="attr-img-src">src</code> content attribute relative to the
+       element's <span>node document</span>.</dd>
+
+       <!-- DND-v2: more -->
+
+      </dl>
+
+     </li>
+
+     <li><p>If <var>urls</var> is still empty, abort these substeps.</p></li>
+
+     <li><p>Let <var>url string</var> be the result of concatenating the strings in <var>urls</var>,
+     in the order they were added, separated by a U+000D CARRIAGE RETURN U+000A LINE FEED character
+     pair (CRLF).</p></li>
+
+     <li><p>Add one item to the <span>drag data store item list</span>, with its properties set as
+     follows:</p>
+
+      <dl>
+
+       <dt><span>The drag data item type string</span>
+       <dd><code>text/uri-list</code></dd>
+
+       <dt><span>The drag data item kind</span>
+       <dd><i>Plain Unicode string</i></dd>
+
+       <dt>The actual data</dt>
+       <dd><var>url string</var></dd>
+
+      </dl>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>Update the <span>drag data store default feedback</span> as appropriate for the user agent
+    (if the user is dragging the selection, then the selection would likely be the basis for this
+    feedback; if the user is dragging an element, then that element's rendering would be used; if
+    the drag began outside the user agent, then the platform conventions for determining the drag
+    feedback should be used).</p>
+
+   </li>
+
+   <li>
+
+    <p><span>Fire a DND event</span> named <code data-x="event-dnd-dragstart">dragstart</code> at the
+    <span>source node</span>.</p>
+
+    <p>If the event is canceled, then the drag-and-drop operation should not occur; abort these
+    steps.</p> <!-- only a should because the UA can always allow the user to drag without the page
+    knowing -->
+
+    <p class="note">Since events with no event listeners registered are, almost by definition, never
+    canceled, drag-and-drop is always available to the user if the author does not specifically
+    prevent it.</p>
+
+   </li>
+
+   <li>
+
+    <p><span>Initiate the drag-and-drop operation</span> in a manner consistent with platform
+    conventions, and as described below.</p>
+
+    <p id="base-dnd-feedback">The drag-and-drop feedback must be generated from the first of the
+    following sources that is available:</p>
+
+    <ol>
+
+     <li>The <span>drag data store bitmap</span>, if any. In this case, the <span>drag data store
+     hot spot coordinate</span> should be used as hints for where to put the cursor relative to the
+     resulting image. The values are expressed as distances in <span data-x="'px'">CSS pixels</span>
+     from the left side and from the top side of the image respectively. <ref spec=CSS></li>
+
+     <li>The <span>drag data store default feedback</span>.</li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>From the moment that the user agent is to <dfn>initiate the drag-and-drop operation</dfn>,
+  until the end of the drag-and-drop operation, device input events (e.g. mouse and keyboard events)
+  must be suppressed.</p>
+
+  <p>During the drag operation, the element directly indicated by the user as the drop target is
+  called the <dfn>immediate user selection</dfn>. (Only elements can be selected by the user; other
+  nodes must not be made available as drop targets.) However, the <span>immediate user
+  selection</span> is not necessarily the <dfn>current target element</dfn>, which is the element
+  currently selected for the drop part of the drag-and-drop operation.</p>
+
+  <p>The <span>immediate user selection</span> changes as the user selects different elements
+  (either by pointing at them with a pointing device, or by selecting them in some other way). The
+  <span>current target element</span> changes when the <span>immediate user selection</span>
+  changes, based on the results of event listeners in the document, as described below.</p>
+
+  <p>Both the <span>current target element</span> and the <span>immediate user selection</span> can
+  be null, which means no target element is selected. They can also both be elements in other
+  (DOM-based) documents, or other (non-Web) programs altogether. (For example, a user could drag
+  text to a word-processor.) The <span>current target element</span> is initially null.</p>
+
+  <p>In addition, there is also a <dfn>current drag operation</dfn>, which can take on the values
+  "<dfn><code data-x="concept-current-drag-operation-none">none</code></dfn>", "<dfn><code
+  data-x="concept-current-drag-operation-copy">copy</code></dfn>", "<dfn><code
+  data-x="concept-current-drag-operation-link">link</code></dfn>", and "<dfn><code
+  data-x="concept-current-drag-operation-move">move</code></dfn>". Initially, it has the value
+  "<code data-x="concept-current-drag-operation-none">none</code>". It is updated by the user agent
+  as described in the steps below.</p>
+
+  <p>User agents must, as soon as the drag operation is <span data-x="initiate the drag-and-drop
+  operation">initiated</span> and every 350ms (&#xB1;200ms) thereafter for as long as the drag
+  operation is ongoing, <span>queue a task</span> to perform the following steps in sequence:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the user agent is still performing the previous iteration of the sequence (if any) when
+    the next iteration becomes due, abort these steps for this iteration (effectively "skipping
+    missed frames" of the drag-and-drop operation).</p>
+
+   </li>
+
+   <li>
+
+    <p><span>Fire a DND event</span> named <code data-x="event-dnd-drag">drag</code> at the
+    <span>source node</span>. If this event is canceled, the user agent must set the <span>current
+    drag operation</span> to "<code data-x="concept-current-drag-operation-none">none</code>" (no
+    drag operation).</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <code data-x="event-dnd-drag">drag</code> event was not canceled and the user has not
+    ended the drag-and-drop operation, check the state of the drag-and-drop operation, as
+    follows:</p>
+
+    <ol>
+
+     <li>
+
+      <p>If the user is indicating a different <span>immediate user selection</span> than during the
+      last iteration (or if this is the first iteration), and if this <span>immediate user
+      selection</span> is not the same as the <span>current target element</span>, then <span>fire a
+      DND event</span> named <code data-x="event-dnd-dragexit">dragexit</code> at the <span>current
+      target element</span>, and then update the <span>current target element</span> as follows:</p>
+
+      <dl class="switch">
+
+       <dt>If the new <span>immediate user selection</span> is null</dt>
+
+       <dd><p>Set the <span>current target element</span> to null also.</p></dd>
+
+       <dt>If the new <span>immediate user selection</span> is in a non-DOM document or
+       application</dt>
+
+       <dd><p>Set the <span>current target element</span> to the <span>immediate user
+       selection</span>.</p></dd>
+
+       <dt>Otherwise</dt>
+
+       <dd>
+
+        <p><span>Fire a DND event</span> named <code data-x="event-dnd-dragenter">dragenter</code>
+        at the <span>immediate user selection</span>.</p>
+
+        <p>If the event is canceled, then set the <span>current target element</span> to the
+        <span>immediate user selection</span>.</p>
+
+        <p>Otherwise, run the appropriate step from the following list:</p>
+
+        <dl class="switch">
+
+         <dt>If the <span>immediate user selection</span> is a text control (e.g.,
+         <code>textarea</code>, or an <code>input</code> element whose <code
+         data-x="attr-input-type">type</code> attribute is in the <span
+         data-x="attr-input-type-text">Text</span> state) or an <span>editing host</span> or
+         <span>editable</span> element, and the <span>drag data store item list</span> has an item
+         with <span>the drag data item type string</span> "<code>text/plain</code>" and <span>the
+         drag data item kind</span> <i>Plain Unicode string</i></dt>
+
+         <dd><p>Set the <span>current target element</span> to the <span>immediate user
+         selection</span> anyway.</p></dd>
+
+
+         <dt>If the <span>immediate user selection</span> is an element with a <code
+         data-x="attr-dropzone">dropzone</code> attribute that <span
+         data-x="concept-dropzone-match">matches</span> the <span>drag data store</span></dt>
+
+         <dd><p>Set the <span>current target element</span> to the <span>immediate user
+         selection</span> anyway.</p></dd>
+
+
+         <dt>If the <span>immediate user selection</span> is an element that itself has an ancestor
+         element with a <code data-x="attr-dropzone">dropzone</code> attribute that <span
+         data-x="concept-dropzone-match">matches</span> the <span>drag data store</span></dt>
+
+         <dd>
+
+          <p>Let <var>new target</var> be the nearest (deepest) such ancestor element.</p>
+
+          <p>If the <span>immediate user selection</span> is <var>new target</var>, then leave the
+          <span>current target element</span> unchanged.</p>
+
+          <p>Otherwise, <span>fire a DND event</span> named <code
+          data-x="event-dnd-dragenter">dragenter</code> at <var>new target</var>, with the current
+          <span>current target element</span> as the specific <var>related target</var>. Then, set
+          the <span>current target element</span> to <var>new target</var>, regardless of whether
+          that event was canceled or not.</p>
+
+         </dd>
+
+
+         <dt>If the <span>immediate user selection</span> is <span>the body element</span></dt>
+
+         <dd><p>Leave the <span>current target element</span> unchanged.</p></dd>
+
+
+         <dt>Otherwise</dt>
+
+         <dd>
+
+          <p><span>Fire a DND event</span> named <code data-x="event-dnd-dragenter">dragenter</code>
+          at <span>the body element</span>, if there is one, or at the <code>Document</code> object,
+          if not. Then, set the <span>current target element</span> to <span>the body
+          element</span>, regardless of whether that event was canceled or not.</p>
+
+         </dd>
+
+        </dl>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li>
+
+      <p>If the previous step caused the <span>current target element</span> to change, and if the
+      previous target element was not null or a part of a non-DOM document, then <span>fire a DND
+      event</span> named <code data-x="event-dnd-dragleave">dragleave</code> at the previous target
+      element, with the new <span>current target element</span> as the specific <var>related
+      target</var>.</p>
+
+     </li>
+
+     <li>
+
+      <p>If the <span>current target element</span> is a DOM element, then <span>fire a DND
+      event</span> named <code data-x="event-dnd-dragover">dragover</code> at this <span>current
+      target element</span>.</p>
+
+      <p>If the <code data-x="event-dnd-dragover">dragover</code> event is not canceled, run the
+      appropriate step from the following list:</p>
+
+      <dl class="switch">
+
+       <dt>If the <span>current target element</span> is a text control (e.g.,
+       <code>textarea</code>, or an <code>input</code> element whose <code
+       data-x="attr-input-type">type</code> attribute is in the <span
+       data-x="attr-input-type-text">Text</span> state) or an <span>editing host</span> or
+       <span>editable</span> element, and the <span>drag data store item list</span> has an item
+       with <span>the drag data item type string</span> "<code>text/plain</code>" and <span>the drag
+       data item kind</span> <i>Plain Unicode string</i></dt>
+
+       <dd><p>Set the <span>current drag operation</span> to either "<code
+       data-x="concept-current-drag-operation-copy">copy</code>" or "<code
+       data-x="concept-current-drag-operation-move">move</code>", as appropriate given the platform
+       conventions.</p></dd>
+
+
+       <dt>If the <span>current target element</span> is an element with a <code
+       data-x="attr-dropzone">dropzone</code> attribute that <span
+       data-x="concept-dropzone-match">matches</span> the <span>drag data store</span> and <span
+       data-x="concept-dropzone-operation">specifies an operation</span></dt>
+
+       <dd><p>Set the <span>current drag operation</span> to the operation <span
+       data-x="concept-dropzone-operation">specified</span> by the <code
+       data-x="attr-dropzone">dropzone</code> attribute of the <span>current target
+       element</span>.</p>
+
+
+       <dt>If the <span>current target element</span> is an element with a <code
+       data-x="attr-dropzone">dropzone</code> attribute that <span
+       data-x="concept-dropzone-match">matches</span> the <span>drag data store</span> and does not
+       <span data-x="concept-dropzone-operation">specify an operation</span></dt>
+
+       <dd><p>Set the <span>current drag operation</span> to "<code
+       data-x="concept-current-drag-operation-copy">copy</code>".</p>
+
+
+       <dt>Otherwise</dt>
+
+       <dd><p>Reset the <span>current drag operation</span> to "<code
+       data-x="concept-current-drag-operation-none">none</code>".</p></dd>
+
+      </dl>
+
+      <p>Otherwise (if the <code data-x="event-dnd-dragover">dragover</code> event <em>is</em>
+      canceled), set the <span>current drag operation</span> based on the values of the <code
+      data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> and <code
+      data-x="dom-DataTransfer-dropEffect">dropEffect</code> attributes of the
+      <code>DragEvent</code> object's <code data-x="dom-DragEvent-dataTransfer">dataTransfer</code>
+      object as they stood after the event <span data-x="concept-event-dispatch">dispatch</span>
+      finished, as per the following table:</p>
+
+      <table>
+       <thead>
+        <tr>
+         <th><code data-x="dom-DataTransfer-effectAllowed">effectAllowed</code></th>
+         <th><code data-x="dom-DataTransfer-dropEffect">dropEffect</code></th>
+         <th>Drag operation</th>
+        </tr>
+       </thead>
+       <tr>
+        <td>"<code data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>", "<code data-x="dom-DataTransfer-effectAllowed-copy">copy</code>", "<code data-x="dom-DataTransfer-effectAllowed-copyLink">copyLink</code>", "<code data-x="dom-DataTransfer-effectAllowed-copyMove">copyMove</code>", or "<code data-x="dom-DataTransfer-effectAllowed-all">all</code>"</td>
+        <td>"<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>"</td>
+        <td>"<code data-x="concept-current-drag-operation-copy">copy</code>"</td>
+       </tr>
+       <tr>
+        <td>"<code data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>", "<code data-x="dom-DataTransfer-effectAllowed-link">link</code>", "<code data-x="dom-DataTransfer-effectAllowed-copyLink">copyLink</code>", "<code data-x="dom-DataTransfer-effectAllowed-linkMove">linkMove</code>", or "<code data-x="dom-DataTransfer-effectAllowed-all">all</code>"</td>
+        <td>"<code data-x="dom-DataTransfer-dropEffect-link">link</code>"</td>
+        <td>"<code data-x="concept-current-drag-operation-link">link</code>"</td>
+       </tr>
+       <tr>
+        <td>"<code data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>", "<code data-x="dom-DataTransfer-effectAllowed-move">move</code>", "<code data-x="dom-DataTransfer-effectAllowed-copyMove">copyMove</code>", "<code data-x="dom-DataTransfer-effectAllowed-linkMove">linkMove</code>", or "<code data-x="dom-DataTransfer-effectAllowed-all">all</code>"</td>
+        <td>"<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+        <td>"<code data-x="concept-current-drag-operation-move">move</code>"</td>
+       </tr>
+       <tr>
+        <td colspan="2">Any other case</td>
+        <td>"<code data-x="concept-current-drag-operation-none">none</code>"</td>
+       </tr>
+      </table>
+
+     </li>
+
+     <li>
+
+      <p>Otherwise, if the <span>current target element</span> is not a DOM element, use
+      platform-specific mechanisms to determine what drag operation is being performed (none, copy,
+      link, or move), and set the <span>current drag operation</span> accordingly.</p>
+
+     </li>
+
+     <li>
+
+      <p>Update the drag feedback (e.g. the mouse cursor) to match the <span>current drag
+      operation</span>, as follows:</p>
+
+      <table>
+       <thead>
+        <tr>
+         <th>Drag operation</th>
+         <th>Feedback</th>
+        </tr>
+       </thead>
+       <tr>
+        <td>"<code data-x="concept-current-drag-operation-copy">copy</code>"</td>
+        <td>Data will be copied if dropped here.</td>
+       </tr>
+       <tr>
+        <td>"<code data-x="concept-current-drag-operation-link">link</code>"</td>
+        <td>Data will be linked if dropped here.</td>
+       </tr>
+       <tr>
+        <td>"<code data-x="concept-current-drag-operation-move">move</code>"</td>
+        <td>Data will be moved if dropped here.</td>
+       </tr>
+       <tr>
+        <td>"<code data-x="concept-current-drag-operation-none">none</code>"</td>
+        <td>No operation allowed, dropping here will cancel the drag-and-drop operation.</td>
+       </tr>
+      </table>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, if the user ended the drag-and-drop operation (e.g. by releasing the mouse button
+    in a mouse-driven drag-and-drop interface), or if the <code data-x="event-dnd-drag">drag</code>
+    event was canceled, then this will be the last iteration. Run the following steps, then stop the
+    drag-and-drop operation:</p>
+
+    <ol>
+
+     <li>
+
+      <p>If the <span>current drag operation</span> is "<code
+      data-x="concept-current-drag-operation-none">none</code>" (no drag operation), or, if the user
+      ended the drag-and-drop operation by canceling it (e.g. by hitting the <kbd>Escape</kbd> key),
+      or if the <span>current target element</span> is null, then the drag operation failed. Run
+      these substeps:</p>
+
+      <ol>
+
+       <li><p>Let <var>dropped</var> be false.</p></li>
+
+       <li><p>If the <span>current target element</span> is a DOM element, <span>fire a DND
+       event</span> named <code data-x="event-dnd-dragleave">dragleave</code> at it; otherwise, if
+       it is not null, use platform-specific conventions for drag cancelation.</p></li>
+
+       <li><p>Set the <span>current drag operation</span> to "<code
+       data-x="concept-current-drag-operation-none">none</code>".</p></li>
+
+      </ol>
+
+      <p>Otherwise, the drag operation might be a success; run these substeps:</p>
+
+      <ol>
+
+       <li><p>Let <var>dropped</var> be true.</p></li>
+
+       <li><p>If the <span>current target element</span> is a DOM element, <span>fire a DND
+       event</span> named <code data-x="event-dnd-drop">drop</code> at it; otherwise, use
+       platform-specific conventions for indicating a drop.</p></li>
+
+       <li>
+
+        <p>If the event is canceled, set the <span>current drag operation</span> to the value of the
+        <code data-x="dom-DataTransfer-dropEffect">dropEffect</code> attribute of the
+        <code>DragEvent</code> object's <code data-x="dom-DragEvent-dataTransfer">dataTransfer</code>
+        object as it stood after the event <span data-x="concept-event-dispatch">dispatch</span>
+        finished.</p>
+
+        <p>Otherwise, the event is not canceled; perform the event's default action, which depends
+        on the exact target as follows:</p>
+
+        <dl class="switch">
+
+         <dt>If the <span>current target element</span> is a text control (e.g.,
+         <code>textarea</code>, or an <code>input</code> element whose <code
+         data-x="attr-input-type">type</code> attribute is in the <span
+         data-x="attr-input-type-text">Text</span> state) or an <span>editing host</span> or
+         <span>editable</span> element, and the <span>drag data store item list</span> has an item
+         with <span>the drag data item type string</span> "<code>text/plain</code>" and <span>the
+         drag data item kind</span> <i>Plain Unicode string</i></dt>
+
+         <dd><p>Insert the actual data of the first item in the <span>drag data store item
+         list</span> to have <span data-x="the drag data item type string">a drag data item type
+         string</span> of "<code>text/plain</code>" and <span data-x="the drag data item kind">a drag
+         data item kind</span> that is <i>Plain Unicode string</i> into the text control or
+         <span>editing host</span> or <span>editable</span> element in a manner consistent with
+         platform-specific conventions (e.g. inserting it at the current mouse cursor position, or
+         inserting it at the end of the field).</p></dd>
+
+         <dt>Otherwise</dt>
+
+         <dd><p>Reset the <span>current drag operation</span> to "<code
+         data-x="concept-current-drag-operation-none">none</code>".</p></dd>
+
+        </dl>
+
+       </li>
+
+      </ol>
+
+     </li>
+
+     <li>
+
+      <p><span>Fire a DND event</span> named <code data-x="event-dnd-dragend">dragend</code> at the
+      <span>source node</span>.</p>
+
+     </li>
+
+     <li>
+
+      <p>Run the appropriate steps from the following list as the default action of the <code
+      data-x="event-dnd-dragend">dragend</code> event:</p>
+
+      <dl class="switch">
+
+       <dt>If <var>dropped</var> is true, the <span>current target element</span> is a <i>text
+       control</i> (see below), the <span>current drag operation</span> is "<code
+       data-x="concept-current-drag-operation-move">move</code>", and the source of the
+       drag-and-drop operation is a selection in the DOM that is entirely contained within an
+       <span>editing host</span></dt>
+
+       <dd><p><span>Delete the selection</span>.</p></dd>
+
+       <dt>If <var>dropped</var> is true, the <span>current target element</span> is a <i>text
+       control</i> (see below), the <span>current drag operation</span> is "<code
+       data-x="concept-current-drag-operation-move">move</code>", and the source of the
+       drag-and-drop operation is a selection in a text control</dt>
+
+       <dd><p>The user agent should delete the dragged selection from the relevant text
+       control.</p></dd>
+
+       <dt>If <var>dropped</var> is false or if the <span>current drag operation</span> is "<code
+       data-x="concept-current-drag-operation-none">none</code>"</dt>
+
+       <dd><p>The drag was canceled. If the platform conventions dictate that this be represented to
+       the user (e.g. by animating the dragged selection going back to the source of the
+       drag-and-drop operation), then do so.</p></dd>
+
+       <dt>Otherwise</dt>
+
+       <dd><p>The event has no default action.</p></dd>
+
+      </dl>
+
+      <p>For the purposes of this step, a <i>text control</i> is a <code>textarea</code> element or
+      an <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+      one of the
+      <span data-x="attr-input-type-text">Text</span>,
+      <span data-x="attr-input-type-search">Search</span>,
+      <span data-x="attr-input-type-tel">Tel</span>,
+      <span data-x="attr-input-type-url">URL</span>,
+      <span data-x="attr-input-type-email">E-mail</span>,
+      <span data-x="attr-input-type-password">Password</span>, or
+      <span data-x="attr-input-type-number">Number</span>
+      states.</p>
+
+
+     </li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p class="note">User agents are encouraged to consider how to react to drags near the edge of
+  scrollable regions. For example, if a user drags a link to the bottom of the <span>viewport</span>
+  on a long page, it might make sense to scroll the page so that the user can drop the link lower on
+  the page.</p>
+
+  <p class="note">This model is independent of which <code>Document</code> object the nodes involved
+  are from; the events are fired as described above and the rest of the processing model runs as
+  described above, irrespective of how many documents are involved in the operation.</p>
+
+  </div>
+
+
+  

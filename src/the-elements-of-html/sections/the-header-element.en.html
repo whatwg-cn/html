@@ -1,0 +1,87 @@
+<h4>The <dfn><code>header</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no <code>header</code>, <code>footer</code>, or <code>main</code> element descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>header</code> element <span>represents</span> a group of introductory or navigational
+  aids.</p>
+
+  <p class="note">A <code>header</code> element is intended to usually contain the section's heading
+  (an <code>h1</code>&ndash;<code>h6</code> element or an <code>hgroup</code> element), but this is
+  not required. The <code>header</code> element can also be used to wrap a section's table of
+  contents, a search form, or any relevant logos.</p>
+
+  <div class="example">
+
+  <p>Here are some sample headers. This first one is for a game:</p>
+
+   <pre>&lt;header&gt;
+ &lt;p&gt;Welcome to...&lt;/p&gt;
+ &lt;h1&gt;Voidwars!&lt;/h1&gt;
+&lt;/header&gt;</pre>
+
+   <p>The following snippet shows how the element can be used to mark
+   up a specification's header:</p>
+
+   <pre>&lt;header&gt;
+ &lt;hgroup&gt;
+  &lt;h1&gt;Fullscreen API&lt;/h1&gt;
+  &lt;h2&gt;Living Standard &mdash; Last Updated 19 October 2015&lt;/h2&gt;
+ &lt;/hgroup&gt;
+ &lt;dl&gt;
+  &lt;dt&gt;Participate:&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href="https://github.com/whatwg/fullscreen"&gt;GitHub whatwg/fullscreen&lt;/a&gt;&lt;/dd&gt;
+  &lt;dt&gt;Commits:&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href="https://github.com/whatwg/fullscreen/commits"&gt;GitHub whatwg/fullscreen/commits&lt;/a&gt;&lt;/dd&gt;
+ &lt;/dl&gt;
+&lt;/header&gt;</pre>
+
+  </div>
+
+  <p class="note">The <code>header</code> element is not <span>sectioning content</span>; it doesn't
+  introduce a new section.</p>
+
+  <div class="example">
+
+  <p>In this example, the page has a page heading given by the <code>h1</code> element, and two
+  subsections whose headings are given by <code>h2</code> elements. The content after the
+  <code>header</code> element is still part of the last subsection started in the
+  <code>header</code> element, because the <code>header</code> element doesn't take part in the
+  <span>outline</span> algorithm.</p>
+
+   <pre>&lt;body>
+ &lt;header>
+  &lt;h1>Little Green Guys With Guns&lt;/h1>
+  &lt;nav>
+   &lt;ul>
+    &lt;li>&lt;a href="/games">Games&lt;/a>
+    &lt;li>&lt;a href="/forum">Forum&lt;/a>
+    &lt;li>&lt;a href="/download">Download&lt;/a>
+   &lt;/ul>
+  &lt;/nav>
+  &lt;h2>Important News&lt;/h2> &lt;!-- this starts a second subsection -->
+  &lt;!-- this is part of the subsection entitled "Important News" -->
+  &lt;p>To play today's games you will need to update your client.&lt;/p>
+  &lt;h2>Games&lt;/h2> &lt;!-- this starts a third subsection -->
+ &lt;/header>
+ &lt;p>You have three active games:&lt;/p>
+ &lt;!-- this is still part of the subsection entitled "Games" -->
+ ...</pre>
+
+  </div>
+
+
+
+
+  

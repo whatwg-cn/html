@@ -1,0 +1,77 @@
+<h4 id="security-nav">Security</h4>
+
+  <p id="security-1">A <span>browsing context</span> <var>A</var> is <dfn>familiar
+  with</dfn> a second <span>browsing context</span> <var>B</var> if one of the following
+  conditions is true:</p>
+
+  <ul>
+
+   <li>Either the <span>origin</span> of the <span>active document</span> of <var>A</var>
+   is the <span data-x="same origin">same</span> as the <span>origin</span> of the <span>active
+   document</span> of <var>B</var>, or</li>
+
+   <li>The browsing context <var>A</var> is a <span>nested browsing context</span> with a
+   <span>top-level browsing context</span>, and its <span>top-level browsing context</span> is <var>B</var>, or</li>
+
+   <li>The browsing context <var>B</var> is an <span>auxiliary browsing context</span> and
+   <var>A</var> is <span>familiar with</span> <var>B</var>'s <span>opener
+   browsing context</span>, or</li>
+
+   <li>The browsing context <var>B</var> is not a <span>top-level browsing context</span>,
+   but there exists an <span>ancestor browsing context</span> of <var>B</var> whose
+   <span>active document</span> has the <span data-x="same origin">same</span> <span>origin</span> as
+   the <span>active document</span> of <var>A</var> (possibly in fact being <var>A</var> itself).</li>
+
+  </ul>
+
+  <hr>
+
+  <p>A <span>browsing context</span> <var>A</var> is <dfn>allowed to navigate</dfn> a
+  second <span>browsing context</span> <var>B</var> if the following algorithm terminates
+  positively:</p>
+
+  <ol>
+
+   <li><p>If <var>A</var> is not the same <span>browsing context</span> as <var>B</var>, and <var>A</var> is not one of the <span data-x="ancestor browsing
+   context">ancestor browsing contexts</span> of <var>B</var>, and <var>B</var>
+   is not a <span>top-level browsing context</span>, and <var>A</var>'s <span>active
+   document</span>'s <span>active sandboxing flag set</span> has its <span>sandboxed navigation
+   browsing context flag</span> set, then abort these steps negatively.</p></li>
+
+   <li><p>Otherwise, if <var>B</var> is a <span>top-level browsing context</span>, and is one of the
+   <span data-x="ancestor browsing context">ancestor browsing contexts</span> of <var>A</var>, and
+   <var>A</var>'s <span>active document</span>'s <span>active sandboxing flag set</span> has its
+   <span>sandboxed top-level navigation browsing context flag</span> set, then abort these steps
+   negatively.</p></li>
+
+   <li><p>Otherwise, if <var>B</var> is a <span>top-level browsing context</span>, and is
+   neither <var>A</var> nor one of the <span data-x="ancestor browsing context">ancestor
+   browsing contexts</span> of <var>A</var>, and <var>A</var>'s
+   <code>Document</code>'s <span>active sandboxing flag set</span> has its <span>sandboxed
+   navigation browsing context flag</span> set, and <var>A</var> is not the <span>one
+   permitted sandboxed navigator</span> of <var>B</var>, then abort these steps
+   negatively.</p></li> <!-- we do not check the /sandboxed auxiliary navigation browsing context
+   flag/ here, that's only for actually opening the new top-level browsing context. -->
+
+   <li><p>Otherwise, terminate positively!</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>An element has a <dfn>browsing context scope origin</dfn> if its <code>Document</code>'s
+  <span data-x="concept-document-bc">browsing context</span> is a <span>top-level browsing
+  context</span> or if all of its <code>Document</code>'s <span data-x="ancestor browsing
+  context">ancestor browsing contexts</span> all have <span data-x="active document">active
+  documents</span> whose <span>origin</span> are the <span>same origin</span> as the element's
+  <span>node document</span>'s <span>origin</span>. If an element has a <span>browsing context scope
+  origin</span>, then its value is the <span>origin</span> of the element's <span>node
+  document</span>.</p>
+
+  </div>
+<!--REMOVE-TOPIC:Security-->
+
+
+  <div w-nodev>
+
+  

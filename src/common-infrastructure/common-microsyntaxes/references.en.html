@@ -1,0 +1,41 @@
+<h4 id="syntax-references">References</h4>
+
+  <p>A <dfn>valid hash-name reference</dfn> to an element of type <var>type</var> is a
+  string consisting of a U+0023 NUMBER SIGN character (#) followed by a string which exactly matches
+  the value of the <code data-x="">name</code> attribute of an element with type <var>type</var> in
+  the same <span>tree</span>.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn>rules for parsing a hash-name reference</dfn> to an element of type <var>type</var>,
+  given a context node <var>scope</var>, are as follows:</p>
+
+  <ol>
+
+   <li><p>If the string being parsed does not contain a U+0023 NUMBER SIGN character, or if the
+   first such character in the string is the last character in the string, then return null and
+   abort these steps.</p></li>
+
+   <li><p>Let <var>s</var> be the string from the character immediately after the first
+   U+0023 NUMBER SIGN character in the string being parsed up to the end of that string.</p></li>
+
+   <li>
+    <p>Return the first element of type <var>type</var> in <var>scope</var>'s <span>tree</span>, in
+    <span>tree order</span>, that has an <code data-x="attr-id">id</code> or <code
+    data-x="">name</code> attribute whose value is <var>s</var>.</p>
+
+    <p class="note">Although <code data-x="attr-id">id</code> attributes are accounted for when
+    parsing, they are not used in determining whether a value is a <span><em>valid</em> hash-name
+    reference</span>. That is, a hash-name reference that refers to an element based on <code
+    data-x="attr-id">id</code> is a conformance error (unless that element also has a <code
+    data-x="">name</code> attribute with the same value).</p>
+   </li>
+
+   <!-- History behind case-sensitive matching above: https://github.com/whatwg/html/issues/1666 -->
+
+  </ol>
+
+  </div>
+
+
+  

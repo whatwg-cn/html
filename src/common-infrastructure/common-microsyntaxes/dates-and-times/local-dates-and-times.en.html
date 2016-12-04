@@ -1,0 +1,72 @@
+<h5>Local dates and times</h5>
+
+  <p>A <dfn data-x="concept-datetime-local">local date and time</dfn> consists of a specific
+  <span>proleptic-Gregorian date</span>, consisting of a year, a month, and a day, and a time,
+  consisting of an hour, a minute, a second, and a fraction of a second, but expressed without a
+  time zone. <ref spec=GREGORIAN></p>
+
+  <p>A string is a <dfn>valid local date and time string</dfn> representing a date and time if it
+  consists of the following components in the given order:</p>
+
+  <ol>
+
+   <li>A <span>valid date string</span> representing the date</li>
+
+   <li>A U+0054 LATIN CAPITAL LETTER T character (T) or a U+0020 SPACE character</li>
+
+   <li>A <span>valid time string</span> representing the time</li>
+
+  </ol>
+
+  <p>A string is a <!--en-GB--><dfn id="valid-normalised-local-date-and-time-string">valid
+  normalized local date and time string</dfn> representing a date and time if it consists of the
+  following components in the given order:</p>
+
+  <ol>
+
+   <li>A <span>valid date string</span> representing the date</li>
+
+   <li>A U+0054 LATIN CAPITAL LETTER T character (T)</li>
+
+   <li>A <span>valid time string</span> representing the time, expressed as the shortest possible
+   string for the given time (e.g. omitting the seconds component entirely if the given time is zero
+   seconds past the minute)</li>
+
+  </ol>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a local date and time string</dfn> are as follows. This will return
+  either a date and time, or nothing. If at any point the algorithm says that it "fails", this means
+  that it is aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Parse a date component</span> to obtain <var>year</var>, <var>month</var>, and <var>day</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is neither a U+0054 LATIN CAPITAL LETTER T character
+   (T) nor a U+0020 SPACE character, then fail. Otherwise, move <var>position</var>
+   forwards one character.</p></li>
+
+   <li><p><span>Parse a time component</span> to obtain <var>hour</var>, <var>minute</var>, and <var>second</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Let <var>date</var> be the date with year <var>year</var>, month <var>month</var>, and day <var>day</var>.</p></li>
+
+   <li><p>Let <var>time</var> be the time with hour <var>hour</var>, minute <var>minute</var>, and second <var>second</var>.</p></li>
+
+   <li><p>Return <var>date</var> and <var>time</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

@@ -1,0 +1,126 @@
+<h4>The <dfn><code>abbr</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd>Also, the <code data-x="attr-abbr-title">title</code> attribute <span data-x="attr-abbr-title">has special semantics</span> on this element.</dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>abbr</code> element <span>represents</span> an abbreviation or acronym, optionally
+  with its expansion. The <dfn><code data-x="attr-abbr-title">title</code></dfn> attribute may be
+  used to provide an expansion of the abbreviation. The attribute, if specified, must contain an
+  expansion of the abbreviation, and nothing else.</p>
+
+  <div class="example">
+
+   <p>The paragraph below contains an abbreviation marked up with the <code>abbr</code> element.
+   This paragraph <span data-x="defining term">defines the term</span> "Web Hypertext Application
+   Technology Working Group".</p>
+
+   <pre>&lt;p>The &lt;dfn id=whatwg>&lt;abbr
+title="Web Hypertext Application Technology Working Group">WHATWG&lt;/abbr>&lt;/dfn>
+is a loose unofficial collaboration of Web browser manufacturers and
+interested parties who wish to develop new technologies designed to
+allow authors to write and deploy Applications over the World Wide
+Web.&lt;/p></pre>
+
+   <p>An alternative way to write this would be:</p>
+
+   <pre>&lt;p>The &lt;dfn id=whatwg>Web Hypertext Application Technology
+Working Group&lt;/dfn> (&lt;abbr
+title="Web Hypertext Application Technology Working Group">WHATWG&lt;/abbr>)
+is a loose unofficial collaboration of Web browser manufacturers and
+interested parties who wish to develop new technologies designed to
+allow authors to write and deploy Applications over the World Wide
+Web.&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>This paragraph has two abbreviations. Notice how only one is defined; the other, with no
+   expansion associated with it, does not use the <code>abbr</code> element.</p>
+
+   <pre>&lt;p>The
+&lt;abbr title="Web Hypertext Application Technology Working Group">WHATWG&lt;/abbr>
+started working on HTML5 in 2004.&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>This paragraph links an abbreviation to its definition.</p>
+
+   <pre>&lt;p>The &lt;a href="#whatwg">&lt;abbr
+title="Web Hypertext Application Technology Working Group">WHATWG&lt;/abbr>&lt;/a>
+community does not have much representation from Asia.&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>This paragraph marks up an abbreviation without giving an expansion, possibly as a hook to
+   apply styles for abbreviations (e.g. smallcaps).</p>
+
+   <pre>&lt;p>Philip` and Dashiva both denied that they were going to
+get the issue counts from past revisions of the specification to
+backfill the &lt;abbr>WHATWG&lt;/abbr> issue graph.&lt;/p></pre>
+
+  </div>
+
+  <p>If an abbreviation is pluralized, the expansion's grammatical number (plural vs singular) must
+  match the grammatical number of the contents of the element.</p>
+
+  <div class="example">
+
+   <p>Here the plural is outside the element, so the expansion is in the singular:</p>
+
+   <pre>&lt;p>Two &lt;abbr title="Working Group">WG&lt;/abbr>s worked on
+this specification: the &lt;abbr>WHATWG&lt;/abbr> and the
+&lt;abbr>HTMLWG&lt;/abbr>.&lt;/p></pre>
+
+   <p>Here the plural is inside the element, so the expansion is in the plural:</p>
+
+   <pre>&lt;p>Two &lt;abbr title="Working Groups">WGs&lt;/abbr> worked on
+this specification: the &lt;abbr>WHATWG&lt;/abbr> and the
+&lt;abbr>HTMLWG&lt;/abbr>.&lt;/p></pre>
+
+  </div>
+
+  <p>Abbreviations do not have to be marked up using this element. It is expected to be useful in
+  the following cases:</p>
+
+  <ul>
+
+   <li>Abbreviations for which the author wants to give expansions, where using the
+   <code>abbr</code> element with a <code data-x="attr-title">title</code> attribute is an
+   alternative to including the expansion inline (e.g. in parentheses).</li>
+
+   <li>Abbreviations that are likely to be unfamiliar to the document's readers, for which authors
+   are encouraged to either mark up the abbreviation using an <code>abbr</code> element with a <code
+   data-x="attr-title">title</code> attribute or include the expansion inline in the text the first
+   time the abbreviation is used.</li>
+
+   <li>Abbreviations whose presence needs to be semantically annotated, e.g. so that they can be
+   identified from a style sheet and given specific styles, for which the <code>abbr</code> element
+   can be used without a <code data-x="attr-title">title</code> attribute.</li>
+
+  </ul>
+
+  <p data-x="note">Providing an expansion in a <code data-x="attr-title">title</code> attribute once
+  will not necessarily cause other <code>abbr</code> elements in the same document with the same
+  contents but without a <code data-x="attr-title">title</code> attribute to behave as if they had
+  the same expansion. Every <code>abbr</code> element is independent.</p>
+
+
+  

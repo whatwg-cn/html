@@ -1,0 +1,136 @@
+<h4>Browser interface elements</h4>
+
+  <p>To allow Web pages to integrate with Web browsers, certain Web browser interface elements are
+  exposed in a limited way to scripts in Web pages.</p>
+
+  <p>Each interface element is represented by a <code>BarProp</code> object:</p>
+
+  <pre class="idl">interface <dfn>BarProp</dfn> {
+  readonly attribute boolean <span data-x="dom-BarProp-visible">visible</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-locationbar">locationbar</code> . <code subdfn data-x="dom-BarProp-visible">visible</code></dt>
+   <dd>
+    <p>Returns true if the location bar is visible; otherwise, returns false.</p>
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-menubar">menubar</code> . <code data-x="dom-BarProp-visible">visible</code></dt>
+   <dd>
+    <p>Returns true if the menu bar is visible; otherwise, returns false.</p>
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-personalbar">personalbar</code> . <code data-x="dom-BarProp-visible">visible</code></dt>
+   <!--<dt><var>window</var> . <code subdfn data-x="dom-window-directories">directories</code> . <code data-x="dom-BarProp-visible">visible</code></dt>-->
+   <dd>
+    <p>Returns true if the personal bar is visible; otherwise, returns false.</p>
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-scrollbars">scrollbars</code> . <code data-x="dom-BarProp-visible">visible</code></dt>
+   <dd>
+    <p>Returns true if the scroll bars are visible; otherwise, returns false.</p>
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-statusbar">statusbar</code> . <code data-x="dom-BarProp-visible">visible</code></dt>
+   <dd>
+    <p>Returns true if the status bar is visible; otherwise, returns false.</p>
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-window-toolbar">toolbar</code> . <code data-x="dom-BarProp-visible">visible</code></dt>
+   <dd>
+    <p>Returns true if the toolbar is visible; otherwise, returns false.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn data-x="dom-BarProp-visible">visible</dfn> attribute, on getting, must return either
+  true or a value determined by the user agent to most accurately represent the visibility state of
+  the user interface element that the object represents, as described below.</p>
+
+  <p>The following <code>BarProp</code> objects exist for each <code>Document</code> object in a
+  <span>browsing context</span>. Some of the user interface elements represented by these objects
+  might have no equivalent in some user agents; for those user agents, except when otherwise
+  specified, the object must act as if it was present and visible (i.e. its <code
+  data-x="dom-BarProp-visible">visible</code> attribute must return true).</p>
+
+  <dl>
+
+   <dt><dfn>The location bar <code>BarProp</code> object</dfn></dt>
+
+   <dd>Represents the user interface element that contains a control that displays the
+   <span>URL</span> of the <span>active document</span>, or some similar interface concept.</dd>
+
+   <dt><dfn>The menu bar <code>BarProp</code> object</dfn></dt>
+
+   <dd>Represents the user interface element that contains a list of commands in menu form, or some
+   similar interface concept.</dd>
+
+   <dt><dfn>The personal bar <code>BarProp</code> object</dfn></dt>
+
+   <dd>Represents the user interface element that contains links to the user's favorite pages, or
+   some similar interface concept.</dd>
+
+   <dt><dfn>The scrollbar <code>BarProp</code> object</dfn></dt>
+
+   <dd>Represents the user interface element that contains a scrolling mechanism, or some similar
+   interface concept.</dd>
+
+   <dt><dfn>The status bar <code>BarProp</code> object</dfn></dt>
+
+   <dd>Represents a user interface element found immediately below or after the document, as
+   appropriate for the user's media, which typically provides information about ongoing network
+   activity or information about elements that the user's pointing device is current indicating. If
+   the user agent has no such user interface element, then the object may act as if the
+   corresponding user interface element was absent (i.e. its <code
+   data-x="dom-BarProp-visible">visible</code> attribute may return false).</dd>
+
+   <dt><dfn>The toolbar <code>BarProp</code> object</dfn></dt>
+
+   <dd>Represents the user interface element found immediately above or before the document, as
+   appropriate for the user's media, which typically provides <span>session history</span> traversal
+   controls (back and forward buttons, reload buttons, etc). If the user agent has no such user
+   interface element, then the object may act as if the corresponding user interface element was
+   absent (i.e. its <code data-x="dom-BarProp-visible">visible</code> attribute may return
+   false).</dd>
+
+  </dl>
+
+  <p>The <dfn><code data-x="dom-window-locationbar">locationbar</code></dfn> attribute must return
+  <span>the location bar <code>BarProp</code> object</span>.</p>
+
+  <p>The <dfn><code data-x="dom-window-menubar">menubar</code></dfn> attribute must return <span>the
+  menu bar <code>BarProp</code> object</span>.</p>
+
+  <p>The <dfn><code data-x="dom-window-personalbar">personalbar</code></dfn> attribute must return
+  <span>the personal bar <code>BarProp</code> object</span>.</p>
+
+  <p>The <dfn><code data-x="dom-window-scrollbars">scrollbars</code></dfn> attribute must return
+  <span>the scrollbar <code>BarProp</code> object</span>.</p>
+
+  <p>The <dfn><code data-x="dom-window-statusbar">statusbar</code></dfn> attribute must return
+  <span>the status bar <code>BarProp</code> object</span>.</p>
+
+  <p>The <dfn><code data-x="dom-window-toolbar">toolbar</code></dfn> attribute must return <span>the
+  toolbar <code>BarProp</code> object</span>.</p>
+
+<!--
+  <p>For legacy reasons, the <dfn><code data-x="dom-window-directories">directories</code></dfn>
+  attribute must also return <span>the personal bar <code>BarProp</code> object</span>.</p>
+-->
+
+  <hr>
+
+  <p>For historical reasons, the <dfn><code data-x="dom-window-status">status</code></dfn> attribute
+  on the <code>Window</code> object must, on getting, return the last string it was set to, and on
+  setting, must set itself to the new value. When the <code>Window</code> object is created, the
+  attribute must be set to the empty string. It does not do anything else.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

@@ -1,0 +1,369 @@
+<h5 id="event-loop-processing-model"><span id="processing-model-8"></span>Processing model</h5>
+  <!-- EVENT LOOP -->
+
+  <p>An <span>event loop</span> must continually run through the following steps for as long as it
+  exists:</p>
+
+  <ol>
+
+   <!-- lots of places in the spec refer to "step 1" -->
+
+   <li id="step1">
+
+    <p>Select the oldest <span data-x="concept-task">task</span> on one of the <span>event
+    loop</span>'s <span data-x="task queue">task queues</span>, if any, ignoring, in the case of a
+    <span>browsing context</span> <span>event loop</span>, tasks whose associated
+    <code>Document</code>s are not <span>fully active</span>. The user agent may pick any <span>task
+    queue</span>. If there is no task to select, then jump to the <i>microtasks</i> step below.</p>
+
+   </li>
+
+   <!-- note: reference to 'previous step' below -->
+
+   <li><p>Set the <span>event loop</span>'s <span>currently running task</span> to the <span
+   data-x="concept-task">task</span> selected in the previous step.</p></li>
+
+   <li><p><i>Run</i>: Run the selected <span data-x="concept-task">task</span>.</p></li>
+
+   <li><p>Set the <span>event loop</span>'s <span>currently running task</span> back to
+   null.</p></li>
+
+   <li><p>Remove the task that was run in the <i>run</i> step above from its <span>task
+   queue</span>.</p></li>
+
+   <li><p><i>Microtasks</i>: <span>Perform a microtask checkpoint</span>.</p></li>
+
+   <li>
+
+    <p><i>Update the rendering</i>: If this <span>event loop</span> is a <span>browsing
+    context</span> <span>event loop</span> (as opposed to a <a href="#workers">worker</a>
+    <span>event loop</span>), then run the following substeps.</p>
+
+    <ol>
+
+     <li><p>Let <var>now</var> be the value that would be returned by the <code>Performance</code>
+     object's <code data-x="dom-Performance-now">now()</code> method. <ref spec=HRT></p>
+
+     <li>
+
+      <p>Let <var>docs</var> be the list of <code>Document</code> objects associated with the
+      <span>event loop</span> in question, sorted arbitrarily except that the following conditions
+      must be met:</p>
+
+      <ul>
+
+       <li><p>Any <code>Document</code> <var>B</var> that is <span data-x="browsing context nested
+       through">nested through</span> a <code>Document</code> <var>A</var> must be listed after
+       <var>A</var> in the list.</p></li>
+
+       <li><p>If there are two documents <var>A</var> and <var>B</var> whose <span
+       data-x="concept-document-bc">browsing contexts</span> are both <span data-x="nested browsing
+       context">nested browsing contexts</span> and their <span data-x="browsing context
+       container">browsing context containers</span> are both elements in the same
+       <code>Document</code> <var>C</var>, then the order of <var>A</var> and <var>B</var> in the
+       list must match the relative <span>tree order</span> of their respective <span
+       data-x="browsing context container">browsing context containers</span> in
+       <var>C</var>.</p></li>
+
+      </ul>
+
+      <p>In the steps below that iterate over <var>docs</var>, each <code>Document</code> must be
+      processed in the order it is found in the list.</p>
+
+     </li>
+
+     <li>
+
+      <p>If there are <span data-x="top-level browsing context">top-level browsing contexts</span>
+      <var>B</var> that the user agent believes would not benefit from having their rendering
+      updated at this time, then remove from <var>docs</var> all <code>Document</code> objects whose
+      <span data-x="concept-document-bc">browsing context</span>'s <span>top-level browsing
+      context</span> is in <var>B</var>.</p>
+
+      <div class="note">
+       <p>Whether a <span>top-level browsing context</span> would benefit from having its rendering
+       updated depends on various factors, such as the update frequency. For example, if the browser
+       is attempting to achieve a 60Hz refresh rate, then these steps are only necessary every 60th
+       of a second (about 16.7ms). If the browser finds that a <span>top-level browsing
+       context</span> is not able to sustain this rate, it might drop to a more sustainable 30Hz for
+       that set of <code>Document</code>s, rather than occasionally dropping frames. (This
+       specification does not mandate any particular model for when to update the rendering.)
+       Similarly, if a <span>top-level browsing context</span> is in the background, the user agent
+       might decide to drop that page to a much slower 4Hz, or even less.</p>
+
+       <p>Another example of why a browser might skip updating the rendering is to ensure certain
+       <span data-x="concept-task">tasks</span> are executed immediately after each other, with only
+       <span data-x="perform a microtask checkpoint">microtask checkpoints</span> interleaved (and
+       without, e.g., <span data-x="run the animation frame callbacks">animation frame
+       callbacks</span> interleaved). For example, a user agent might wish to coalesce timer
+       callbacks together, with no intermediate rendering updates.</p>
+      </div>
+
+     </li>
+
+     <li>
+
+      <p>If there are a <span data-x="nested browsing context">nested browsing contexts</span>
+      <var>B</var> that the user agent believes would not benefit from having their rendering
+      updated at this time, then remove from <var>docs</var> all <code>Document</code> objects whose
+      <span data-x="concept-document-bc">browsing context</span> is in <var>B</var>.</p>
+
+      <p class="note">As with <span data-x="top-level browsing context">top-level browsing
+      contexts</span>, a variety of factors can influence whether it is profitable for a browser to
+      update the rendering of <span data-x="nested browsing context">nested browsing
+      contexts</span>. For example, a user agent might wish to spend less resources rendering
+      third-party content, especially if it is not currently visible to the user or if resources are
+      constrained. In such cases, the browser could decide to update the rendering for such content
+      infrequently or never.</p>
+
+     </li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, <span>run the resize
+     steps</span> for that <code>Document</code>, passing in <var>now</var> as the timestamp. <ref
+     spec="CSSOMVIEW"/></p></li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, <span>run the scroll
+     steps</span> for that <code>Document</code>, passing in <var>now</var> as the timestamp. <ref
+     spec="CSSOMVIEW"/></p></li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, <span>evaluate media queries
+     and report changes</span> for that <code>Document</code>, passing in <var>now</var> as the timestamp. <ref
+     spec="CSSOMVIEW"/></p></li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, <dfn>run CSS animations and send
+     events</dfn> for that <code>Document</code>, passing in <var>now</var> as the timestamp. <ref
+     spec="CSSANIMATIONS"/></p></li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, <dfn>run the fullscreen rendering
+     steps</dfn> for that <code>Document</code>, passing in <var>now</var> as the timestamp. <ref
+     spec="FULLSCREEN"/></p></li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, <span>run the animation frame
+     callbacks</span> for that <code>Document</code>, passing in <var>now</var> as the
+     timestamp.</p></li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, <span>run the update
+     intersection observations steps</span> for that <code>Document</code>, passing in <var>now</var> as the
+     timestamp. <ref spec="INTERSECTIONOBSERVER"/></p></li>
+
+     <li><p>For each <span>fully active</span> <code>Document</code> in <var>docs</var>, update the
+     rendering or user interface of that <code>Document</code> and its <span
+     data-x="concept-document-bc">browsing context</span> to reflect the current state.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If this is a <a href="#workers">worker</a> <span>event loop</span> (i.e. one running for a
+   <code>WorkerGlobalScope</code>), but there are no <span data-x="concept-task">tasks</span> in the
+   <span>event loop</span>'s <span data-x="task queue">task queues</span> and the
+   <code>WorkerGlobalScope</code> object's <span
+   data-x="dom-WorkerGlobalScope-closing">closing</span> flag is true, then destroy the <span>event
+   loop</span>, aborting these steps, resuming the <span>run a worker</span> steps described in the
+   <a href="#workers">Web workers</a> section below.</p></li>
+
+   <li><p>Return to the <a href="#step1">first step</a> of the <span>event loop</span>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>Each <span>event loop</span> has a <dfn>microtask queue</dfn>. A <dfn
+  data-export="">microtask</dfn> is a <span data-x="concept-task">task</span> that is originally to
+  be queued on the <span>microtask queue</span> rather than a <span>task queue</span>. There are two
+  kinds of <span data-x="microtask">microtasks</span>: <dfn data-x="solitary callback
+  microtask" data-lt="solitary callback microtask" data-export="">solitary callback
+  microtasks</dfn>, and <dfn data-x="compound microtask" data-lt="compound microtask"
+  data-export="">compound microtasks</dfn>.</p>
+
+  <p class="note">This specification only has <span data-x="solitary callback microtask">solitary
+  callback microtasks</span>. Specifications that use <span data-x="compound microtask">compound
+  microtasks</span> have to take extra care to <span data-x="execute a compound microtask
+  subtask">wrap callbacks</span> to handle <span data-x="spin the event loop">spinning the event
+  loop</span>.</p>
+
+  <p>When an algorithm requires a <span>microtask</span> to be <dfn data-x="queue a
+  microtask" data-lt="queue a microtask" data-export="">queued</dfn>, it must be appended to the
+  relevant <span>event loop</span>'s <span>microtask queue</span>; the <span>task source</span> of
+  such a <span>microtask</span> is the <dfn>microtask task source</dfn>.</p>
+
+  <p class="note">It is possible for a <span>microtask</span> to be moved to a regular <span>task
+  queue</span>, if, during its initial execution, it <span data-x="spin the event loop">spins the
+  event loop</span>. In that case, the <span>microtask task source</span> is the <span>task
+  source</span> used. Normally, the <span>task source</span> of a <span>microtask</span> is
+  irrelevant.</p>
+
+  <p>When a user agent is to <dfn data-export="">perform a microtask checkpoint</dfn>, if the
+  <span>performing a microtask checkpoint</span> flag is false, then the user agent must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>Let the <span>performing a microtask checkpoint</span> flag be true.</p></li>
+
+   <li><p><i>Microtask queue handling</i>: If the <span>event loop</span>'s <span>microtask
+   queue</span> is empty, jump to the <i>done</i> step below.</p></li>
+
+   <li><p>Select the oldest <span>microtask</span> on the <span>event loop</span>'s <span>microtask
+   queue</span>.</p></li>
+
+   <li><p>Set the <span>event loop</span>'s <span>currently running task</span> to the <span
+   data-x="concept-task">task</span> selected in the previous step.</p></li>
+
+   <li>
+
+    <p><i>Run</i>: Run the selected <span data-x="concept-task">task</span>.</p>
+
+    <p class="note">This might involve invoking scripted callbacks, which eventually calls the
+    <span>clean up after running script</span> steps, which call this <span>perform a microtask
+    checkpoint</span> algorithm again, which is why we use the <span>performing a microtask
+    checkpoint</span> flag to avoid reentrancy.</p>
+
+   </li>
+
+   <li><p>Set the <span>event loop</span>'s <span>currently running task</span> back to
+   null.</p></li>
+
+   <li><p>Remove the <span>microtask</span> run in the step above from the <span>microtask
+   queue</span>, and return to the <i>microtask queue handling</i> step.</p></li>
+
+   <li><p><i>Done</i>: For each <span>environment settings object</span> whose <span>responsible
+   event loop</span> is this <span>event loop</span>, <span>notify about rejected promises</span>
+   on that <span>environment settings object</span>.</p></li>
+
+   <li><p>Let the <span>performing a microtask checkpoint</span> flag be false.</p></li>
+
+  </ol>
+
+  <p>If, while a <span>compound microtask</span> is running, the user agent is required to
+  <dfn data-export="">execute a compound microtask subtask</dfn> to run a series of steps, the user
+  agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>parent</var> be the <span>event loop</span>'s <span>currently running
+   task</span> (the currently running <span>compound microtask</span>).</p></li>
+
+   <li><p>Let <var>subtask</var> be a new <span data-x="concept-task">task</span> that
+   consists of running the given series of steps. The <span>task source</span> of such a
+   <span>microtask</span> is the <span>microtask task source</span>. This is a <dfn>compound
+   microtask subtask</dfn>.</p></li>
+
+   <li><p>Set the <span>event loop</span>'s <span>currently running task</span> to <var>subtask</var>.</p></li>
+
+   <li><p>Run <var>subtask</var>.</p></li>
+
+   <li><p>Set the <span>event loop</span>'s <span>currently running task</span> back to <var>parent</var>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>When an algorithm running <span>in parallel</span> is to <dfn>await a stable state</dfn>, the
+  user agent must <span>queue a microtask</span> that runs the following steps, and must then stop
+  executing (execution of the algorithm resumes when the microtask is run, as described in the
+  following steps):</p>
+
+  <ol>
+
+   <li><p>Run the algorithm's <dfn>synchronous section</dfn>.</p></li>
+
+   <li><p>Resumes execution of the algorithm <span>in parallel</span>, if appropriate, as described
+   in the algorithm's steps.</p></li>
+
+  </ol>
+
+  <p class="note">Steps in <span data-x="synchronous section">synchronous sections</span> are marked
+  with &#x231B;.</p>
+
+  <hr>
+
+  <p>When an algorithm says to <dfn>spin the event loop</dfn> until a condition <var>goal</var> is met, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Let <var>task</var> be the <span>event loop</span>'s <span>currently running
+    task</span>.</p>
+
+    <p class="note">This might be a <span>microtask</span>, in which case it is a <span>solitary
+    callback microtask</span>. It could also be a <span>compound microtask subtask</span>, or a
+    regular <span data-x="concept-task">task</span> that is not a <span>microtask</span>. It will
+    <em>not</em> be a <span>compound microtask</span>.</p> <!-- well, not unless we messed up in the
+    speccing, anyway... -->
+
+   </li>
+
+   <li><p>Let <var>task source</var> be <var>task</var>'s <span>task
+   source</span>.</p></li>
+
+   <li><p>Let <var>old stack</var> be a copy of the <span>JavaScript execution context
+   stack</span>.</p></li>
+
+   <li><p>Empty the <span>JavaScript execution context stack</span>.</p></li>
+
+   <li><p><span>Run the global script clean-up jobs</span>.</p></li>
+
+   <li><p><span>Perform a microtask checkpoint</span>.</p></li>
+
+   <li>
+
+    <p>Stop <var>task</var>, allowing whatever algorithm that invoked it to resume, but
+    continue these steps <span>in parallel</span>.</p>
+
+    <p class="note">This causes one of the following algorithms to continue: the <span>event
+    loop</span>'s main set of steps, the <span>perform a microtask checkpoint</span> algorithm, or
+    the <span>execute a compound microtask subtask</span> algorithm.</p>
+
+   </li>
+
+   <li><p>Wait until the condition <var>goal</var> is met.</p></li>
+
+   <li><p><span>Queue a task</span> to continue running these steps, using the <span>task
+   source</span> <var>task source</var>. Wait until this new task runs before continuing
+   these steps.</p></li>
+
+   <li><p>Replace the <span>JavaScript execution context stack</span> with the <var>old
+   stack</var>.</p></li>
+
+   <li><p>Return to the caller.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>Some of the algorithms in this specification, for historical reasons, require the user agent to
+  <dfn>pause</dfn> while running a <span data-x="concept-task">task</span> until a condition <var>goal</var> is met. This means running the following steps:</p>
+
+  <ol>
+
+   <li><p>If necessary, update the rendering or user interface of any <code>Document</code> or
+   <span>browsing context</span> to reflect the current state.</p></li>
+
+   <li><p>Wait until the condition <var>goal</var> is met. While a user agent has a paused
+   <span data-x="concept-task">task</span>, the corresponding <span>event loop</span> must not run
+   further <span data-x="concept-task">tasks</span>, and any script in the currently running <span
+   data-x="concept-task">task</span> must block. User agents should remain responsive to user input
+   while paused, however, albeit in a reduced capacity since the <span>event loop</span> will not be
+   doing anything.</p></li>
+
+  </ol>
+
+  <div class="warning">
+   <p><span data-x="pause">Pausing</span> is highly detrimental to the user experience, especially
+   in scenarios where a single <span>event loop</span> is shared among multiple documents. User
+   agents are encouraged to experiment with alternatives to <span data-x="pause">pausing</span>,
+   such as <span data-x="spin the event loop">spinning the event loop</span> or even simply
+   proceeding without any kind of suspended execution at all, insofar as it is possible to do so
+   while preserving compatibility with existing content. This specification will happily change if
+   a less-drastic alternative is discovered to be web-compatible.</p>
+
+   <p>In the interim, implementers should be aware that the variety of alternatives that user agents
+   might experiment with can change subtle aspects of <span>event loop</span> behavior, including
+   <span data-x="concept-task">task</span> and <span>microtask</span> timing. Implementations should
+   continue experimenting even if doing so causes them to violate the exact semantics implied by the
+   <span>pause</span> operation.</p>
+  </div>
+
+  

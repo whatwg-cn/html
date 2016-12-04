@@ -1,0 +1,47 @@
+<h4>Extensibility</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>HTML has a wide array of extensibility mechanisms that can be used for adding semantics in a
+  safe manner:</p>
+
+  <ul>
+
+   <li><p>Authors can use the <code data-x="attr-class">class</code> attribute to extend elements,
+   effectively creating their own elements, while using the most applicable existing "real" HTML
+   element, so that browsers and other tools that don't know of the extension can still support it
+   somewhat well. This is the tack used by microformats, for example.</p></li>
+
+   <li><p>Authors can include data for inline client-side scripts or server-side site-wide scripts
+   to process using the <code data-x="attr-data-*">data-*=""</code> attributes. These are guaranteed
+   to never be touched by browsers, and allow scripts to include data on HTML elements that scripts
+   can then look for and process.</p></li>
+
+   <li><p>Authors can use the <code data-x="meta">&lt;meta name="" content=""></code> mechanism to
+   include page-wide metadata by registering <span data-x="concept-meta-extensions">extensions to
+   the predefined set of metadata names</span>.</p></li>
+
+   <li><p>Authors can use the <code data-x="attr-hyperlink-rel">rel=""</code> mechanism to annotate
+   links with specific meanings by registering <span data-x="concept-rel-extensions">extensions to
+   the predefined set of link types</span>. This is also used by microformats.</p></li>
+
+   <li><p>Authors can embed raw data using the <code data-x="script">&lt;script type=""></code>
+   mechanism with a custom type, for further handling by inline or server-side scripts.</p></li>
+
+   <li><p>Authors can create <span data-x="plugin">plugins</span> and invoke them using the
+   <code>embed</code> element. This is how Flash works.</p></li>
+
+   <li><p>Authors can extend APIs using the JavaScript prototyping mechanism. This is widely used by
+   script libraries, for instance.</p></li>
+
+   <li><p>Authors can use the microdata feature (the <code
+   data-x="attr-itemscope">itemscope=""</code> and <code data-x="attr-itemprop">itemprop=""</code>
+   attributes) to embed nested name-value pairs of data to be shared with other applications and
+   sites.</p></li>
+
+  </ul>
+
+
+
+
+  

@@ -1,0 +1,30 @@
+<h6>Selecting an image source</h6>
+
+  <p>When asked to <dfn>select an image source</dfn> for a given <code>img</code> element <var>el</var>,
+  user agents must do the following:</p>
+
+  <ol>
+
+   <li><p><span>Update the source set</span> for <var>el</var>.</p></li>
+
+   <li><p>If <var>el</var>'s <span>source set</span> is empty,
+   return null as the URL and undefined as the pixel density and abort these steps.</p></li>
+
+   <li><p>Otherwise, take <var>el</var>'s <span>source set</span>
+   and let it be <var>source set</var>.</p></li>
+
+   <li><p>If an entry <var>b</var> in <var>source set</var> has the same associated <span>pixel
+   density descriptor</span> as an earlier entry <var>a</var> in <var>source set</var>, then remove
+   entry <var>b</var>. Repeat this step until none of the entries in <var>source set</var> have the
+   same associated <span>pixel density descriptor</span> as an earlier entry.</p></li>
+
+   <li><p>In a user agent-specific manner,
+   choose one <span>image source</span> from <var>source set</var>.
+   Let this be <var>selected source</var>.</p></li>
+
+   <li><p>Return <var>selected source</var> and its associated pixel density.</p></li>
+
+  </ol>
+
+
+  

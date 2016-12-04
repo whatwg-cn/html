@@ -1,0 +1,117 @@
+<h5><dfn>Hyperlink auditing</dfn></h5>
+
+  <p>If a <span>hyperlink</span> created by an <code>a</code> or <code>area</code> element has a
+  <code data-x="attr-hyperlink-ping">ping</code> attribute, and the user follows the hyperlink, and
+  the value of the element's <code data-x="attr-hyperlink-href">href</code> attribute can be <span
+  data-x="parse a url">parsed</span>, relative to the element's <span>node document</span>, without
+  failure, then the user agent must take the <code data-x="attr-hyperlink-ping">ping</code>
+  attribute's value, <span data-x="split a string on spaces">split that string on spaces</span>,
+  <span data-x="parse a url">parse</span> each resulting token relative to the element's <span>node
+  document</span>, and then run these substeps for each <span>resulting URL record</span> <var>ping
+  URL</var>, ignoring tokens that fail to parse:</p>
+
+  <ol>
+   <li><p>If <var>ping URL</var>'s <span data-x="concept-url-scheme">scheme</span> is not an
+   <span>HTTP(S) scheme</span>, then abort these steps.</p></li>
+
+   <li><p>Optionally, abort these steps. (For example, the user agent might wish to ignore any or
+   all ping URLs in accordance with the user's expressed preferences.)</p></li>
+
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is <var>ping URL</var>, <span
+   data-x="concept-request-method">method</span> is `<code data-x="">POST</code>`, <span
+   data-x="concept-request-body">body</span> is `<code data-x="">PING</code>`, <span
+   data-x="concept-request-client">client</span> is the <span>environment settings object</span> of
+   the <code>Document</code> containing the <span>hyperlink</span>, <span
+   data-x="concept-request-destination">destination</span> is the empty string,
+   <span data-x="concept-request-credentials-mode">credentials mode</span> is "<code
+   data-x="">include</code>", <span data-x="concept-request-referrer">referrer</span> is "<code
+   data-x="">no-referrer</code>", and whose <span>use-URL-credentials flag</span> is set.</p></li>
+
+   <li>
+    <p>Let <var>target URL</var> be the <span>resulting URL string</span> obtained from <span
+    data-x="parse a url">parsing</span> the value of the element's <code
+    data-x="attr-hyperlink-href">href</code> attribute and then run these substeps:</p>
+
+    <dl class="switch">
+     <dt>If the <span data-x="concept-document-url">URL</span> of the <code>Document</code> object
+     containing the hyperlink being audited and <var>ping URL</var> have the <span>same
+     origin</span></dt>
+
+     <dt>If the origins are different, but the <span data-x="concept-document-https-state">HTTPS
+     state</span> of the <code>Document</code> containing the hyperlink being audited is "<code
+     data-x="">none</code>"</dt>
+
+     <dd><var>request</var> must include a `<code data-x="http-ping-from">Ping-From</code>` header
+     with, as its value, the <span data-x="concept-document-url">URL</span> of the document
+     containing the hyperlink, and a `<code data-x="http-ping-to">Ping-To</code>` HTTP header with,
+     as its value, the <var>target URL</var>.</dd>
+
+     <dt>Otherwise</dt>
+
+     <dd><var>request</var> must include a `<code data-x="http-ping-to">Ping-To</code>` HTTP header
+     with, as its value, <var>target URL</var>.  <span class="note"><var>request</var> does not
+     include a `<code data-x="http-ping-from">Ping-From</code>` header.</span></dd>
+    </dl>
+   </li>
+
+   <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>.</p></li>
+  </ol>
+
+  <p>This may be done <span>in parallel</span> with the primary fetch, and is independent of the
+  result of that fetch.</p>
+
+  <p>User agents should allow the user to adjust this behavior, for example in conjunction with a
+  setting that disables the sending of HTTP `<code data-x="http-referer">Referer</code>` (sic)
+  headers. Based on the user's preferences, UAs may either <span>ignore</span> the <code
+  data-x="attr-hyperlink-ping">ping</code> attribute altogether, or selectively ignore URLs in the
+  list (e.g. ignoring any third-party URLs); this is explicitly accounted for in the steps
+  above.</p>
+
+  <p>User agents must ignore any entity bodies returned in the responses. User agents may close the
+  connection prematurely once they start receiving a response body.</p>
+
+  <p>When the <code data-x="attr-hyperlink-ping">ping</code> attribute is present, user agents
+  should clearly indicate to the user that following the hyperlink will also cause secondary
+  requests to be sent in the background, possibly including listing the actual target URLs.</p>
+
+  <p class="example">For example, a visual user agent could include the hostnames of the target ping
+  URLs along with the hyperlink's actual URL in a status bar or tooltip.</p>
+
+  </div>
+
+  <div class="note">
+
+   <p>The <code data-x="attr-hyperlink-ping">ping</code> attribute is redundant with pre-existing
+   technologies like HTTP redirects and JavaScript in allowing Web pages to track which off-site
+   links are most popular or allowing advertisers to track click-through rates.</p>
+
+   <p>However, the <code data-x="attr-hyperlink-ping">ping</code> attribute provides these advantages
+   to the user over those alternatives:</p>
+
+   <ul>
+
+    <li>It allows the user to see the final target URL unobscured.</li>
+
+    <li>It allows the UA to inform the user about the out-of-band notifications.</li>
+
+    <li>It allows the user to disable the notifications without losing the underlying link
+    functionality.</li>
+
+    <li>It allows the UA to optimize the use of available network bandwidth so that the target page
+    loads faster.</li>
+
+   </ul>
+
+   <p>Thus, while it is possible to track users without this feature, authors are encouraged to use
+   the <code data-x="attr-hyperlink-ping">ping</code> attribute so that the user agent can make the
+   user experience more transparent.</p>
+
+  </div>
+
+  <!-- resolving ping urls happens at audit time, so base URL changes affect the values of ping
+  attributes -->
+
+
+
+  

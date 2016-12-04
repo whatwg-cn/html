@@ -1,0 +1,163 @@
+<h5>Shared workers and the <code>SharedWorker</code> interface</h5>
+
+  <pre class="idl">[<span data-x="dom-SharedWorker">Constructor</span>(USVString scriptURL, optional DOMString name = "", optional <span>WorkerOptions</span> options), Exposed=(Window,Worker)]
+interface <dfn>SharedWorker</dfn> : <span>EventTarget</span> {
+  readonly attribute <span>MessagePort</span> <span data-x="dom-SharedWorker-port">port</span>;
+};
+<span>SharedWorker</span> implements <span>AbstractWorker</span>;</pre>
+
+  <dl class="domintro">
+   <dt><var>sharedWorker</var> = new <code subdfn data-x="dom-SharedWorker">SharedWorker</code>(<var>scriptURL</var> [, <var>name</var> [,  <var>options</var> ]])</dt>
+   <dd>Returns a new <code>SharedWorker</code> object. <var>scriptURL</var> will be fetched and
+   executed in the background, creating a new global environment for which <var>sharedWorker</var>
+   represents the communication channel. <var>name</var> can be used to define the <span
+   data-x="concept-SharedWorkerGlobalScope-name">name</span> of that global environment.
+   <var>options</var> can be used to ensure this new global environment
+   supports JavaScript modules (specify <code data-x="">type: "module"</code>) and if that is
+   specified, can also be used to specify how <var>scriptURL</var> is fetched through the <code
+   data-x="">credentials</code> option.</dd>
+
+   <dt><var>sharedWorker</var> . <code subdfn data-x="dom-SharedWorker-port">port</code></dt>
+   <dd>Returns <var>sharedWorker</var>'s <code>MessagePort</code> object which can be used to
+   communicate with the global environment.</dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-SharedWorker-port">port</code></dfn> attribute must return the value
+  it was assigned by the object's constructor. It represents the <code>MessagePort</code> for
+  communicating with the shared worker.</p>
+
+  <p>When the <dfn><code data-x="dom-SharedWorker">SharedWorker(<var>scriptURL</var>,
+  <var>name</var>, <var>options</var>)</code></dfn> constructor is invoked, the user agent must run
+  the following steps:</p>
+
+  <ol>
+   <li><p>The user agent may throw a <span>"<code>SecurityError</code>"</span>
+   <code>DOMException</code> and abort these steps if the request violates a policy decision (e.g.
+   if the user agent is configured to not allow the page to start shared workers).</p></li>
+
+   <li><p>Let <var>outside settings</var> be the <span>current settings object</span>.</p></li>
+
+   <li><p><span data-x="parse a url">Parse</span> <var>scriptURL</var> relative to <var>outside
+   settings</var>.</p></li>
+
+   <li><p>If this fails, throw a <span>"<code>SyntaxError</code>"</span> <code>DOMException</code>
+   and abort these steps.</p></li>
+
+   <li>
+    <p>Otherwise, let <var>urlRecord</var> be the <span>resulting URL record</span>.</p>
+
+    <p class="note">Any <span data-x="same origin">same-origin</span> URL (including <code
+    data-x="blob protocol">blob:</code> URLs) can be used. <code data-x="data protocol">data:</code>
+    URLs can also be used, but they create a worker with an <span
+    data-x="concept-origin-opaque">opaque origin</span>.</p>
+   </li>
+
+   <li><p>Let <var>worker</var> be a new <code>SharedWorker</code> object.</p></li>
+
+   <li><p><span>Create a new <code>MessagePort</code> object</span> whose <span
+   data-x="concept-port-owner">owner</span> is <var>outside settings</var>. Let this be the
+   <var>outside port</var>.</p></li>
+
+   <li><p>Assign <var>outside port</var> to the <code data-x="dom-SharedWorker-port">port</code>
+   attribute of <var>worker</var>.</p></li>
+
+   <li><p>Let <var>isSecureContext</var> be the result of executing <span>Is environment settings
+   object a secure context?</span> on <var>outside settings</var>.</p></li>
+
+   <li>
+    <p>Run these substeps <span>in parallel</span>:</p>
+
+    <ol>
+     <li><p>Let <var>worker global scope</var> be null.</p></li>
+
+     <li>
+      <p>If there exists a <code>SharedWorkerGlobalScope</code> object whose <span
+      data-x="dom-WorkerGlobalScope-closing">closing</span> flag is false, <span
+      data-x="concept-SharedWorkerGlobalScope-constructor-origin">constructor origin</span> is
+      <span>same origin</span> with <var>outside settings</var>'s <span
+      data-x="concept-settings-object-origin">origin</span>, <span
+      data-x="concept-SharedWorkerGlobalScope-constructor-url">constructor url</span> <span
+      data-x="concept-url-equals">equals</span> <var>urlRecord</var>, and <span
+      data-x="concept-SharedWorkerGlobalScope-name">name</span> is <var>name</var>, then set
+      <var>worker global scope</var> to that <code>SharedWorkerGlobalScope</code> object.</p>
+
+      <p class="note"><code data-x="data protocol">data:</code> URLs create a worker with an <span
+      data-x="concept-origin-opaque">opaque origin</span>. Both the <span
+      data-x="concept-SharedWorkerGlobalScope-constructor-origin">constructor origin</span> and
+      <span data-x="concept-SharedWorkerGlobalScope-constructor-url">constructor url</span> are
+      compared so the same <code data-x="data protocol">data:</code> URL can be used within an
+      <span>origin</span> to get to the same <code>SharedWorkerGlobalScope</code> object, but cannot
+      be used to bypass the <span>same origin</span> restriction.</p>
+     </li>
+
+     <li>
+      <p>If <var>worker global scope</var> is not null, but the user agent has been
+      configured to disallow communication between the worker represented by the <var>worker global
+      scope</var> and the <span data-x="concept-script">scripts</span> whose <span data-x="settings
+      object">settings object</span> is <var>outside settings</var>, then set <var>worker global
+      scope</var> to null.</p>
+
+      <p class="note">For example, a user agent could have a development mode that isolates a
+      particular <span>top-level browsing context</span> from all other pages, and scripts in that
+      development mode could be blocked from connecting to shared workers running in the normal
+      browser mode.</p>
+     </li>
+
+     <li>
+      <p>If <var>worker global scope</var> is not null, then run these subsubsteps:</p>
+
+      <ol>
+       <li><p>Let <var>settings object</var> be the <span>relevant settings object</span> for
+       <var>worker global scope</var>.</p></li>
+
+       <li><p>If the result of executing <span>Is environment settings object a secure
+       context?</span> on <var>settings object</var> is not <var>isSecureContext</var>, then
+       <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+       <code data-x="event-error">error</code> at <var>worker</var> and abort these subsubsteps.
+       <ref spec="SECURE-CONTEXTS"></p></li>
+
+       <li><p>Associate <var>worker</var> with <var>worker global scope</var>.</p></li>
+
+       <li><p><span>Create a new <code>MessagePort</code> object</span> whose <span
+       data-x="concept-port-owner">owner</span> is <var>settings object</var>. Let this be
+       the <var>inside port</var>.</p></li>
+
+       <li><p><span>Entangle</span> <var>outside port</var> and <var>inside port</var>.</p></li>
+
+       <li><p><span>Queue a task</span>, using the <span>DOM manipulation task source</span>, to
+       <span data-x="concept-event-fire">fire an event</span> named <code
+       data-x="event-WorkerGlobalScope-connect">connect</code> at <var>worker global scope</var>,
+       using <code>MessageEvent</code>, with the <code data-x="dom-MessageEvent-data">data</code>
+       attribute initialized to the empty string, the <code
+       data-x="dom-MessageEvent-ports">ports</code> attribute initialized to a new <span>frozen
+       array</span> containing only <var>inside port</var>, and the <code
+       data-x="dom-MessageEvent-source">source</code> attribute initialized to <var>inside
+       port</var>.</p></li>
+
+       <li><p><span data-x="add a document to the worker's Documents">Add to <var>worker global
+       scope</var>'s list of <span>the worker's <code>Document</code>s</span></span> the
+       <span>list of relevant <code>Document</code> objects to add</span> given <var>outside
+       settings</var>.</p></li>
+
+       <li><p>If <var>outside settings</var>'s <span data-x="concept-settings-object-global">global
+       object</span> is a <code>WorkerGlobalScope</code> object, add <var>worker global scope</var>
+       to the list of <span>the worker's workers</span> of <var>outside settings</var>'s <span
+       data-x="concept-settings-object-global">global object</span>.</p></li>
+      </ol>
+     </li>
+
+     <li><p>Otherwise, <span>run a worker</span> given <var>worker</var>, <var>urlRecord</var>,
+     <var>outside settings</var>, <var>outside port</var>, <var>options</var>, and
+     <var>name</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Return <var>worker</var>.</p></li>
+  </ol>
+
+  </div>
+
+
+  

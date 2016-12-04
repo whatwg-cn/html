@@ -1,0 +1,19 @@
+<h5><dfn>RCDATA less-than sign state</dfn></h5>
+  <!-- identical to the RAWTEXT less-than sign state, except s/RAWTEXT/RCDATA/g -->
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+002F SOLIDUS (/)</dt>
+   <dd>Set the <var data-x="temporary buffer">temporary buffer</var> to the empty string. Switch to
+   the <span>RCDATA end tag open state</span>.</dd>
+
+   <dt>Anything else</dt>
+   <dd>Emit a U+003C LESS-THAN SIGN character token. <span>Reconsume</span> in the <span>RCDATA
+   state</span>.</dd>
+
+  </dl>
+
+
+  

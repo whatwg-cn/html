@@ -1,0 +1,73 @@
+<h5>Link type "<dfn><code data-x="rel-tag">tag</code></dfn>"</h5>
+
+  <p>The <code data-x="rel-tag">tag</code> keyword may be used with <code>a</code> and
+  <code>area</code> elements. This keyword creates a <span>hyperlink</span>.</p>
+
+  <p>The <code data-x="rel-tag">tag</code> keyword indicates that the <em>tag</em> that the
+  referenced document represents applies to the current document.</p>
+
+  <p class="note">Since it indicates that the tag <em>applies to the current document</em>, it would
+  be inappropriate to use this keyword in the markup of a <a href="#tag-cloud">tag cloud</a>, which
+  lists the popular tags across a set of pages.</p>
+
+  <div class="example">
+
+   <p>This document is about some gems, and so it is <i>tagged</i> with "<code
+   data-x="">https://en.wikipedia.org/wiki/Gemstone</code>" to unambiguously categorize it as applying
+   to the "jewel" kind of gems, and not to, say, the towns in the US, the Ruby package format, or
+   the Swiss locomotive class:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>My Precious&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;header>&lt;h1>My precious&lt;/h1> &lt;p>Summer 2012&lt;/p>&lt;/header>
+  &lt;p>Recently I managed to dispose of a red gem that had been
+  bothering me. I now have a much nicer blue sapphire.&lt;/p>
+  &lt;p>The red gem had been found in a bauxite stone while I was digging
+  out the office level, but nobody was willing to haul it away. The
+  same red gem stayed there for literally years.&lt;/p>
+  &lt;footer>
+   Tags: &lt;a rel=tag href="https://en.wikipedia.org/wiki/Gemstone">Gemstone&lt;/a>
+  &lt;/footer>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In <em>this</em> document, there are two articles. The "<code data-x="rel-tag">tag</code>"
+   link, however, applies to the whole page (and would do so wherever it was placed, including if it
+   was within the <code>article</code> elements).</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Gem 4/4&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;article>
+   &lt;h1>801: Steinbock&lt;/h1>
+   &lt;p>The number 801 Gem 4/4 electro-diesel has an ibex and was rebuilt in 2002.&lt;/p>
+  &lt;/article>
+  &lt;article>
+   &lt;h1>802: Murmeltier&lt;/h1>
+   &lt;figure>
+    &lt;img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Trains_de_la_Bernina_en_hiver_2.jpg"
+         alt="The 802 was red with pantographs and tall vents on the side.">
+    &lt;figcaption>The 802 in the 1980s, above Lago Bianco.&lt;/figcaption>
+   &lt;/figure>
+   &lt;p>The number 802 Gem 4/4 electro-diesel has a marmot and was rebuilt in 2003.&lt;/p>
+  &lt;/article>
+  &lt;p class="topic">&lt;a rel=tag href="https://en.wikipedia.org/wiki/Rhaetian_Railway_Gem_4/4">Gem 4/4&lt;/a>&lt;/p>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+
+  

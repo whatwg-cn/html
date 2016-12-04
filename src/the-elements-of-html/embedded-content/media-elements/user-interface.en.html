@@ -1,0 +1,182 @@
+<h5>User interface</h5>
+
+  <p>The <dfn><code data-x="attr-media-controls">controls</code></dfn> attribute is a <span>boolean
+  attribute</span>. If present, it indicates that the author has not provided a scripted controller
+  and would like the user agent to provide its own set of controls.</p>
+
+  <div w-nodev>
+
+  <p>If the attribute is present, or if <span data-x="concept-n-noscript">scripting is
+  disabled</span> for the <span>media element</span>, then the user agent should <dfn>expose a user
+  interface to the user</dfn>. This user interface should include features to begin playback, pause
+  playback, seek to an arbitrary position in the content (if the content supports arbitrary
+  seeking), change the volume, change the display of closed captions or embedded sign-language
+  tracks, select different audio tracks or turn on audio descriptions, and show the media content in
+  manners more suitable to the user (e.g. fullscreen video or in an independent resizable window).
+  Other controls may also be made available.</p>
+
+  <p>Even when the attribute is absent, however, user agents may provide controls to affect playback
+  of the media resource (e.g. play, pause, seeking, track selection, and volume controls), but such
+  features should not interfere with the page's normal rendering. For example, such features could
+  be exposed in the <span>media element</span>'s context menu, platform media keys, or a remote
+  control. The user agent may implement this simply by <span data-x="expose a user interface to the
+  user">exposing a user interface to the user</span> as described above (as if the <code
+  data-x="attr-media-controls">controls</code> attribute was present).</p>
+
+  <p>If the user agent <span data-x="expose a user interface to the user">exposes a user interface to
+  the user</span> by displaying controls over the <span>media element</span>, then the user agent
+  should suppress any user interaction events while the user agent is interacting with this
+  interface. (For example, if the user clicks on a video's playback control, <code
+  data-x="event-mousedown">mousedown</code> events and so forth would not simultaneously be fired at
+  elements on the page.)</p>
+
+  <p>Where possible (specifically, for starting, stopping, pausing, and unpausing playback, for
+  seeking, for changing the rate of playback, for fast-forwarding or rewinding, for listing,
+  enabling, and disabling text tracks, and for muting or changing the volume of the audio), user
+  interface features exposed by the user agent must be implemented in terms of the DOM API described
+  above, so that, e.g., all the same events fire.</p>
+
+  <p>Features such as fast-forward or rewind must be implemented by only changing the <code
+  data-x="">playbackRate</code> attribute (and not the <code data-x="">defaultPlaybackRate</code>
+  attribute).</p>
+
+  <p>Seeking must be implemented in terms of <span data-x="dom-media-seek">seeking</span> to the
+  requested position in the <span>media element</span>'s <span>media timeline</span>. For media
+  resources where seeking to an arbitrary position would be slow, user agents are encouraged to use
+  the <i>approximate-for-speed</i> flag when seeking in response to the user manipulating an
+  approximate position interface such as a seek bar.</p>
+
+  <p>For the purposes of listing chapters in the <span>media resource</span>, only <span data-x="text
+  track">text tracks</span> in the <span>media element</span>'s <span>list of text tracks</span>
+  that are <span data-x="text track showing">showing</span> and whose <span>text track kind</span> is
+  <code data-x="dom-TextTrack-kind-chapters">chapters</code> should be used. Such tracks must be
+  interpreted according to the <span>rules for constructing the chapter tree from a text
+  track</span>. When seeking in response to a user manipulating a chapter selection interface, user
+  agents should not use the <i>approximate-for-speed</i> flag.</p>
+
+  <p>The <dfn><code data-x="dom-media-controls">controls</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  <hr>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-volume">volume</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current playback volume, as a number in the range 0.0 to 1.0, where 0.0 is the
+    quietest and 1.0 the loudest.</p>
+
+    <p>Can be set, to change the volume.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the new
+    value is not in the range 0.0 .. 1.0.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-muted">muted</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns true if audio is muted, overriding the <code data-x="dom-media-volume">volume</code>
+    attribute, and false if the <code data-x="dom-media-volume">volume</code> attribute is being
+    honored.</p>
+
+    <p>Can be set, to change whether the audio is muted or not.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>A <span>media element</span> has a <dfn data-x="concept-media-volume">playback volume</dfn>, which is a fraction in the range 0.0 (silent) to 1.0 (loudest).
+  Initially, the volume should be 1.0, but user agents may remember the last set value across
+  sessions, on a per-site basis or otherwise, so the volume may start at other values.</p>
+
+  <p>The <dfn><code data-x="dom-media-volume">volume</code></dfn> IDL attribute must return the
+  <span data-x="concept-media-volume">playback volume</span> of any audio portions of the
+  <span>media element</span>. On setting, if the new value is in the range 0.0 to 1.0 inclusive, the
+  <span>media element</span>'s <span data-x="concept-media-volume">playback volume</span> must be
+  set to the new value. If the new value is outside the range 0.0 to 1.0 inclusive, then, on
+  setting, an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> must be thrown
+  instead.</p>
+
+  <p>A <span>media element</span> can also be <dfn data-x="concept-media-muted">muted</dfn>. If
+  anything is muting the element, then it is muted. (For example, when the <span>direction of
+  playback</span> is backwards, the element is muted.)</p>
+
+  <p>The <dfn><code data-x="dom-media-muted">muted</code></dfn> IDL attribute must return the value
+  to which it was last set. When a <span>media element</span> is created, if the element has a <code
+  data-x="attr-media-muted">muted</code> content attribute specified, then the <code
+  data-x="dom-media-muted">muted</code> IDL attribute should be set to true; otherwise, the user
+  agents may set the value to the user's preferred value (e.g. remembering the last set value across
+  sessions, on a per-site basis or otherwise). While the <code data-x="dom-media-muted">muted</code>
+  IDL attribute is set to true, the <span>media element</span> must be <span
+  data-x="concept-media-muted">muted</span>.</p>
+
+  <p>Whenever either of the values that would be returned by the <code
+  data-x="dom-media-volume">volume</code> and <code data-x="dom-media-muted">muted</code> IDL
+  attributes change, the user agent must <span>queue a task</span> to <span
+  data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-media-volumechange">volumechange</code> at the <span>media element</span>. Then, if
+  the <span>media element</span> is not <span>allowed to play</span>, the user agent must run the
+  <span>internal pause steps</span> for the <span>media element</span>.</p>
+
+  <p>An element's <dfn>effective media volume</dfn> is determined as follows:</p>
+
+  <ol>
+
+   <li><p>If the user has indicated that the user agent is to override the volume of the element,
+   then the element's <span>effective media volume</span> is the volume desired by the user. Abort
+   these steps.</p></li>
+
+   <li><p>If the element's audio output is <span data-x="concept-media-muted">muted</span>, the
+   element's <span>effective media volume</span> is zero. Abort these steps.</p></li>
+
+   <li><p>Let <var>volume</var> be the <span data-x="concept-media-volume">playback
+   volume</span> of the audio portions of the <span>media element</span>, in range 0.0 (silent) to
+   1.0 (loudest).</p></li>
+
+   <li><p>The element's <span>effective media volume</span> is <var>volume</var>,
+   interpreted relative to the range 0.0 to 1.0, with 0.0 being silent, and 1.0 being the loudest
+   setting, values in between increasing in loudness. The range need not be linear. The loudest
+   setting may be lower than the system's loudest possible setting; for example the user could have
+   set a maximum volume.</p></li>
+
+  </ol>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-media-muted">muted</code></dfn> content attribute on <span
+  data-x="media element">media elements</span> is a <span>boolean attribute</span> that controls the
+  default state of the audio output of the <span>media resource</span>, potentially overriding user
+  preferences.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-defaultMuted">defaultMuted</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-media-muted">muted</code> content attribute.</p>
+
+  </div>
+
+  <p class="note">This attribute has no dynamic effect (it only controls the default state of the
+  element).</p>
+
+  <div class="example">
+
+   <p>This video (an advertisement) autoplays, but to avoid annoying users, it does so without
+   sound, and allows the user to turn the sound on. The user agent can pause the video if it's
+   unmuted without a user interaction.</p>
+
+   <pre>&lt;video src="adverts.cgi?kind=video" controls autoplay loop muted>&lt;/video></pre>
+
+  </div>
+
+
+
+
+  

@@ -1,0 +1,415 @@
+<h6>Text styles</h6>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-font">font</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-font">font</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current font settings.</p>
+
+    <p>Can be set, to change the font. The syntax is the same as for the CSS <span>'font'</span>
+    property; values that cannot be parsed as CSS font values are ignored.</p>
+
+    <p>Relative keywords and lengths are computed relative to the font of the <code>canvas</code>
+    element.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-textAlign">textAlign</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-textAlign">textAlign</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current text alignment settings.</p>
+
+    <p>Can be set, to change the alignment. The possible values are and their meanings are given
+    below. Other values are ignored. The default is "<code data-x="">start</code>".</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-textBaseline">textBaseline</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-textBaseline">textBaseline</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current baseline alignment settings.</p>
+
+    <p>Can be set, to change the baseline alignment. The possible values and their meanings are
+    given below. Other values are ignored. The default is "<code
+    data-x="dom-context-2d-textBaseline-alphabetic">alphabetic</code>".</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-direction">direction</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-direction">direction</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current directionality.</p>
+
+    <p>Can be set, to change the directionality. The possible values and their meanings are given
+    below. Other values are ignored. The default is "<code
+    data-x="dom-context-2d-direction-inherit">inherit</code>".</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Objects that implement the <code>CanvasTextDrawingStyles</code> interface have attributes
+  (defined in this section) that control how text is laid out (rasterized or outlined) by the
+  object. Such objects can also have a <dfn>font style source object</dfn>. For
+  <code>CanvasRenderingContext2D</code> objects, this is the <code>canvas</code> element
+  referenced by the context's canvas property.</p>
+
+  <!-- Currently CanvasRenderingContext2D is the only interface that implements
+  CanvasTextDrawingStyles. Future specs for Houdini and OffscrenCanvas will change this-->
+
+  <p>The <dfn><code data-x="dom-context-2d-font">font</code></dfn> IDL attribute, on setting, must
+  be <span data-x="parse something according to a CSS grammar">parsed as a CSS &lt;'font'>
+  value</span> (but without supporting property-independent style sheet syntax like 'inherit'), and
+  the resulting font must be assigned to the context, with the <span>'line-height'</span> component
+  forced to 'normal', with the <span>'font-size'</span> component converted to <span
+  data-x="'px'">CSS pixels</span>, and with system fonts being computed to explicit values. If the
+  new value is syntactically incorrect (including using property-independent style sheet syntax like
+  'inherit' or 'initial'), then it must be ignored, without assigning a new font value. <ref
+  spec=CSS></p>
+
+  <p>Font family names must be interpreted in the context of the <span>font style source
+  object</span> when the font is to be used; any fonts embedded using <code
+  data-x="">@font-face</code> or loaded using <code>FontFace</code> objects that are visible to the
+  <span>font style source object</span> must therefore be available once they are loaded. (Each <span>font style source
+  object</span> has a <span>font source</span>, which determines what fonts are available.) If a font
+  is used before it is fully loaded, or if the <span>font style source object</span> does not have
+  that font in scope at the time the font is to be used, then it must be treated as if it was an
+  unknown font, falling back to another as described by the relevant CSS specifications. <ref
+  spec=CSSFONTS> <ref spec=CSSFONTLOAD></p>
+
+  <p>On getting, the <code data-x="dom-context-2d-font">font</code> attribute must return the <span
+  data-x="serializing a CSS value">serialized form</span> of the current font of the context (with
+  no <span>'line-height'</span> component). <ref spec=CSSOM></p>
+
+  <div class="example">
+
+   <p>For example, after the following statement:</p>
+
+   <pre>context.font = 'italic 400 12px/2 Unknown Font, sans-serif';</pre>
+
+   <p>...the expression <code data-x="">context.font</code> would evaluate to the string "<code
+   data-x="">italic&nbsp;12px&nbsp;&quot;Unknown&nbsp;Font&quot;,&nbsp;sans-serif</code>". The "400"
+   font-weight doesn't appear because that is the default value. The line-height doesn't appear
+   because it is forced to "normal", the default value.</p>
+
+  </div>
+
+  <p>When the object implementing the <code>CanvasTextDrawingStyles</code> interface is created, the
+  font of the context must be set to 10px sans-serif. When the <span>'font-size'</span> component is
+  set to lengths using percentages, <span>'em'</span> or <span>'ex'</span> units, or the 'larger' or
+  'smaller' keywords, these must be interpreted relative to the <span>computed value</span> of the
+  <span>'font-size'</span> property of the <span>font style source object</span> at the time that
+  the attribute is set, if it is an element. When the <span>'font-weight'</span> component is set to
+  the relative values 'bolder' and 'lighter', these must be interpreted relative to the
+  <span>computed value</span> of the <span>'font-weight'</span> property of the <span>font style
+  source object</span> at the time that the attribute is set, if it is an element. If the <span
+  data-x="computed value">computed values</span> are undefined for a particular case (e.g. because
+  the <span>font style source object</span> is not an element or is not <span>being
+  rendered</span>), then the relative keywords must be interpreted relative to the normal-weight
+  10px sans-serif default.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-textAlign">textAlign</code></dfn> IDL attribute, on
+  getting, must return the current value. On setting, the current value must be changed to the new
+  value. When the object implementing the <code>CanvasTextDrawingStyles</code> interface is
+  created, the <code data-x="dom-context-2d-textAlign">textAlign</code> attribute must initially
+  have the value <code data-x="dom-context-2d-textAlign-start">start</code>.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-textBaseline">textBaseline</code></dfn> IDL attribute, on
+  getting, must return the current value. On setting, the current value must be changed to the new
+  value. When the object implementing the <code>CanvasTextDrawingStyles</code> interface is
+  created, the <code data-x="dom-context-2d-textBaseline">textBaseline</code> attribute must
+  initially have the value <code data-x="dom-context-2d-textBaseline-alphabetic">alphabetic</code>.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-direction">direction</code></dfn> IDL attribute, on
+  getting, must return the current value. On setting, the current value must be changed to the new
+  value. When the object implementing the <code>CanvasTextDrawingStyles</code> interface is
+  created, the <code data-x="dom-context-2d-direction">direction</code> attribute must initially
+  have the value "<code data-x="dom-context-2d-direction-inherit">inherit</code>".</p>
+
+  </div>
+
+  <p>The <code data-x="dom-context-2d-textAlign">textAlign</code> attribute's allowed keywords are
+  as follows:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-context-2d-textAlign-start">start</code></dfn>
+   <dd><p>Align to the start edge of the text (left side in left-to-right text, right side in
+   right-to-left text).</p></dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textAlign-end">end</code></dfn>
+   <dd><p>Align to the end edge of the text (right side in left-to-right text, left side in
+   right-to-left text).</p></dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textAlign-left">left</code></dfn>
+   <dd><p>Align to the left.</p></dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textAlign-right">right</code></dfn>
+   <dd><p>Align to the right.</p></dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textAlign-center">center</code></dfn>
+   <dd><p>Align to the center.</p></dd>
+
+  </dl>
+
+  <p>The <code data-x="dom-context-2d-textBaseline">textBaseline</code>
+  attribute's allowed keywords correspond to alignment points in the
+  font:</p>
+
+  <p><img src="/images/baselines.png" width="738" height="300" alt="The top of the em square is roughly at the top of the glyphs in a font, the hanging baseline is where some glyphs like &#x0906; are anchored, the middle is half-way between the top of the em square and the bottom of the em square, the alphabetic baseline is where characters like &#x00C1;, &#x00FF;, &#x0066;, and &#x03A9; are anchored, the ideographic baseline is where glyphs like &#x79C1; and &#x9054; are anchored, and the bottom of the em square is roughly at the bottom of the glyphs in a font. The top and bottom of the bounding box can be far from these baselines, due to glyphs extending far outside the em square."></p>
+
+  <p>The keywords map to these alignment points as follows:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-context-2d-textBaseline-top">top</code></dfn>
+   <dd>The top of the em square</dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textBaseline-hanging">hanging</code></dfn>
+   <dd>The hanging baseline</dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textBaseline-middle">middle</code></dfn>
+   <dd>The middle of the em square</dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textBaseline-alphabetic">alphabetic</code></dfn>
+   <dd>The alphabetic baseline</dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textBaseline-ideographic">ideographic</code></dfn>
+   <dd>The ideographic baseline</dd>
+
+   <dt><dfn><code data-x="dom-context-2d-textBaseline-bottom">bottom</code></dfn>
+   <dd>The bottom of the em square</dd>
+
+  </dl>
+
+  <p>The <code data-x="dom-context-2d-direction">direction</code> attribute's allowed keywords are
+  as follows:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-context-2d-direction-ltr">ltr</code></dfn>
+
+   <dd><p>Treat input to the <span>text preparation algorithm</span> as left-to-right text.</p></dd>
+
+   <dt><dfn><code data-x="dom-context-2d-direction-rtl">rtl</code></dfn>
+
+   <dd><p>Treat input to the <span>text preparation algorithm</span> as right-to-left text.</p></dd>
+
+<!--
+   <dt><dfn><code data-x="dom-context-2d-direction-auto">auto</code></dfn>
+
+   <dd><p>Determine the direction from the input to the <span>text preparation algorithm</span>.</p></dd>
+-->
+
+   <dt><dfn><code data-x="dom-context-2d-direction-inherit">inherit</code></dfn>
+
+   <dd><p>Default to the directionality of the <code>canvas</code> element or <code>Document</code>
+   as appropriate.</p></dd>
+
+  </dl>
+
+  <p>The <dfn>text preparation algorithm</dfn> is as follows. It takes as input a string <var>text
+  </var>, a <code>CanvasTextDrawingStyles</code> object <var>target</var>, and an optional length
+  <var>maxWidth</var>. It returns an array of glyph shapes, each positioned on a common coordinate
+  space, a <var>physical alignment</var> whose value is one of <i>left</i>, <i>right</i>, and
+  <i>center</i>, and an <span>inline box</span>. (Most callers of this algorithm ignore the
+  <var>physical alignment</var> and the <span>inline box</span>.)</p>
+
+  <ol>
+
+   <li><p>If <var>maxWidth</var> was provided but is less than or equal to zero or equal to NaN,
+   then return an empty array.</p></li>
+
+   <li><p>Replace all the <span data-x="space character">space characters</span> in <var>text</var> with U+0020 SPACE characters.</p></li>
+
+   <li><p>Let <var>font</var> be the current font of <var>target</var>, as given
+   by that object's <code data-x="dom-context-2d-font">font</code> attribute.</p></li>
+
+   <li>
+
+    <p>Apply the appropriate step from the following list to determine the value of <var>direction</var>:</p>
+
+    <dl class="switch">
+
+     <dt>If the <var>target</var> object's <code
+     data-x="dom-context-2d-direction">direction</code> attribute has the value "<code
+     data-x="dom-context-2d-direction-ltr">ltr</code>"</dt>
+     <dd>Let <var>direction</var> be '<span data-x="concept-ltr">ltr</span>'.</dd>
+
+     <dt>If the <var>target</var> object's <code
+     data-x="dom-context-2d-direction">direction</code> attribute has the value "<code
+     data-x="dom-context-2d-direction-rtl">rtl</code>"</dt>
+     <dd>Let <var>direction</var> be '<span data-x="concept-rtl">rtl</span>'.</dd>
+
+<!--
+     <dt>If the <var>target</var> object's <code
+     data-x="dom-context-2d-direction">direction</code> attribute has the value "<code
+     data-x="dom-context-2d-direction-auto">auto</code>"</dt>
+     <dd>
+      Find the first character in <var>text</var> of bidirectional character type L, AL, or
+      R, if any. If such a character is found and it is of bidirectional character type AL or R,
+      then let <var>direction</var> be '<span data-x="concept-rtl">rtl</span>'; otherwise,
+      let <var>direction</var> be '<span data-x="concept-rtl">rtl</span>'. <ref spec=BIDI>
+     </dd>
+-->
+
+     <dt>If the <var>target</var> object's <span>font style source object</span> is an
+     element</dt>
+
+     <dd>Let <var>direction</var> be <span>the directionality</span> of the <var>target</var> object's <span>font style source object</span>.</dd>
+
+     <dt>If the <var>target</var> object's <span>font style source object</span> is a
+     <code>Document</code> with a non-null <span>document element</span></dt>
+
+     <dd>Let <var>direction</var> be <span>the directionality</span> of the <var>target</var>
+     object's <span>font style source object</span>'s <span>document element</span>.</dd>
+
+     <dt>Otherwise</dt>
+
+     <dd>Let <var>direction</var> be '<span data-x="concept-ltr">ltr</span>'.</dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Form a hypothetical infinitely-wide CSS <span>line box</span> containing a single
+   <span>inline box</span> containing the text <var>text</var>, with all the properties at their
+   initial values except the <span>'font'</span> property of the <span>inline box</span> set to
+   <var>font</var>, the <span>'direction'</span> property of the <span>inline box</span> set to
+   <var>direction</var>, and the <span>'white-space'</span> property set to 'pre'. <ref
+   spec=CSS></p></li>
+
+   <!-- if you insert a step here, make sure to adjust the next step's final words -->
+
+   <li><p>If <var>maxWidth</var> was provided and the hypothetical width of the
+   <span>inline box</span> in the hypothetical <span>line box</span> is greater than
+   <var>maxWidth</var> <span data-x="'px'">CSS pixels</span>, then change <var>font</var> to have a
+   more condensed font (if one is available or if a reasonably readable one can be synthesized by
+   applying a horizontal scale factor to the font) or a smaller font, and return to the previous
+   step.</p></li>
+
+   <li>
+
+    <p>The <var>anchor point</var> is a point on the <span>inline box</span>, and the <var>physical
+    alignment</var> is one of the values <i>left</i>, <i>right</i>, and <i>center</i>. These
+    variables are determined by the <code data-x="dom-context-2d-textAlign">textAlign</code> and
+    <code data-x="dom-context-2d-textBaseline">textBaseline</code> values as follows:</p>
+
+    <p>Horizontal position:</p>
+
+    <dl>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="dom-context-2d-textAlign-left">left</code></dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="dom-context-2d-textAlign-start">start</code> and <var>direction</var> is
+     'ltr'</dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="dom-context-2d-textAlign-end">end</code> and <var>direction</var> is 'rtl'</dt>
+
+     <dd>Let the <var>anchor point</var>'s horizontal position be the left edge of the
+     <span>inline box</span>, and let <var>physical alignment</var> be <i>left</i>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="dom-context-2d-textAlign-right">right</code></dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="dom-context-2d-textAlign-end">end</code> and <var>direction</var> is 'ltr'</dt>
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="dom-context-2d-textAlign-start">start</code> and <var>direction</var> is
+     'rtl'</dt>
+
+     <dd>Let the <var>anchor point</var>'s horizontal position be the right edge of the
+     <span>inline box</span>, and let <var>physical alignment</var> be <i>right</i>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textAlign">textAlign</code> is <code
+     data-x="dom-context-2d-textAlign-center">center</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s horizontal position be half way between the left
+     and right edges of the <span>inline box</span>, and let <var>physical alignment</var> be
+     <i>center</i>.</dd>
+
+    </dl>
+
+    <p>Vertical position:</p>
+
+    <dl>
+
+     <dt>If <code data-x="dom-context-2d-textBaseline">textBaseline</code> is <code
+     data-x="dom-context-2d-textBaseline-top">top</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be the top of the em box of
+     the first available font of the <span>inline box</span>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textBaseline">textBaseline</code> is <code
+     data-x="dom-context-2d-textBaseline-hanging">hanging</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be the hanging baseline of the
+     first available font of the <span>inline box</span>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textBaseline">textBaseline</code> is <code
+     data-x="dom-context-2d-textBaseline-middle">middle</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be half way between the bottom
+     and the top of the em box of the first available font of the <span>inline box</span>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textBaseline">textBaseline</code> is <code
+     data-x="dom-context-2d-textBaseline-alphabetic">alphabetic</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be the alphabetic baseline of
+     the first available font of the <span>inline box</span>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textBaseline">textBaseline</code> is <code
+     data-x="dom-context-2d-textBaseline-ideographic">ideographic</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be the ideographic baseline of
+     the first available font of the <span>inline box</span>.</dd>
+
+
+     <dt>If <code data-x="dom-context-2d-textBaseline">textBaseline</code> is <code
+     data-x="dom-context-2d-textBaseline-bottom">bottom</code></dt>
+
+     <dd>Let the <var>anchor point</var>'s vertical position be the bottom of the em box of
+     the first available font of the <span>inline box</span>.</dd>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>result</var> be an array constructed by iterating over each glyph in the
+    <span>inline box</span> from left to right (if any), adding to the array, for each glyph, the
+    shape of the glyph as it is in the <span>inline box</span>, positioned on a coordinate space
+    using <span data-x="'px'">CSS pixels</span> with its origin is at the <var>anchor
+    point</var>.</p>
+
+   </li>
+
+   <li><p>Return <var>result</var>, <var>physical alignment</var>, and the inline
+   box.</p></li>
+
+  </ol>
+
+
+  

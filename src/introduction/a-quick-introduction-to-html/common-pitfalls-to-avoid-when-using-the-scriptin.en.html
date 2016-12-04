@@ -1,0 +1,58 @@
+<h4>Common pitfalls to avoid when using the scripting APIs</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Scripts in HTML have "run-to-completion" semantics, meaning that the browser will generally run
+  the script uninterrupted before doing anything else, such as firing further events or continuing
+  to parse the document.</p>
+
+  <p>On the other hand, parsing of HTML files happens incrementally, meaning that
+  the parser can pause at any point to let scripts run. This is generally a good thing, but it does
+  mean that authors need to be careful to avoid hooking event handlers after the events could have
+  possibly fired.</p>
+
+  <p>There are two techniques for doing this reliably: use <span>event handler content
+  attributes</span>, or create the element and add the event handlers in the same script. The latter
+  is safe because, as mentioned earlier, scripts are run to completion before further events can
+  fire.</p>
+
+  <div class="example">
+
+   <p>One way this could manifest itself is with <code>img</code> elements and the <code
+   data-x="event-load">load</code> event. The event could fire as soon as the element has been
+   parsed, especially if the image has already been cached (which is common).</p>
+
+   <p>Here, the author uses the <code data-x="handler-onload">onload</code> handler on an
+   <code>img</code> element to catch the <code data-x="event-load">load</code> event:</p>
+
+   <pre>&lt;img src="games.png" alt="Games" onload="gamesLogoHasLoaded(event)"></pre>
+
+   <p>If the element is being added by script, then so long as the event handlers are added in the
+   same script, the event will still not be missed:</p>
+
+   <pre>&lt;script>
+ var img = new Image();
+ img.src = 'games.png';
+ img.alt = 'Games';
+ img.onload = gamesLogoHasLoaded;
+ // img.addEventListener('load', gamesLogoHasLoaded, false); // would work also
+&lt;/script></pre>
+
+   <p>However, if the author first created the <code>img</code> element and then in a separate
+   script added the event listeners, there's a chance that the <code data-x="event-load">load</code>
+   event would be fired in between, leading it to be missed:</p>
+
+   <pre class="bad">&lt;!-- Do not use this style, it has a race condition! -->
+ &lt;img id="games" src="games.png" alt="Games">
+ &lt;!-- the 'load' event might fire here while the parser is taking a
+      break, in which case you will not see it! -->
+ &lt;script>
+  var img = document.getElementById('games');
+  img.onload = gamesLogoHasLoaded; // might never fire!
+ &lt;/script></pre>
+
+  </div>
+
+
+
+  

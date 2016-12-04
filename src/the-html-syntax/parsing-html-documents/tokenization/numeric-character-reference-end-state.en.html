@@ -1,0 +1,69 @@
+<h5><dfn>Numeric character reference end state</dfn></h5>
+
+  <p>Check the <var data-x="character reference code">character reference code</var>.</p>
+
+  <p>If that number is one of the numbers in the first column of the following table, then this is
+  a <span>parse error</span>. Find the row with that number in the first column, and set
+  the <var data-x="character reference code">character reference code</var> to the number in the
+  second column of that row.</p>
+
+  <table id="table-charref-overrides">
+    <thead>
+    <tr><th>Number <th colspan=2>Unicode character
+    <tbody>
+    <tr><td>0x00 <td>0xFFFD <td>REPLACEMENT CHARACTER
+    <!-- <tr><td>0x0D <td>0x000D <td>CARRIAGE RETURN (CR) -->
+    <tr><td>0x80 <td>0x20AC <td>EURO SIGN (&#x20AC;)
+    <!-- <tr><td>0x81 <td>0x0081 <td>&lt;control> -->
+    <tr><td>0x82 <td>0x201A <td>SINGLE LOW-9 QUOTATION MARK (&#x201A;)
+    <tr><td>0x83 <td>0x0192 <td>LATIN SMALL LETTER F WITH HOOK (&#x0192;)
+    <tr><td>0x84 <td>0x201E <td>DOUBLE LOW-9 QUOTATION MARK (&#x201E;)
+    <tr><td>0x85 <td>0x2026 <td>HORIZONTAL ELLIPSIS (&#x2026;)
+    <tr><td>0x86 <td>0x2020 <td>DAGGER (&#x2020;)
+    <tr><td>0x87 <td>0x2021 <td>DOUBLE DAGGER (&#x2021;)
+    <tr><td>0x88 <td>0x02C6 <td>MODIFIER LETTER CIRCUMFLEX ACCENT (&#x02C6;)
+    <tr><td>0x89 <td>0x2030 <td>PER MILLE SIGN (&#x2030;)
+    <tr><td>0x8A <td>0x0160 <td>LATIN CAPITAL LETTER S WITH CARON (&#x0160;)
+    <tr><td>0x8B <td>0x2039 <td>SINGLE LEFT-POINTING ANGLE QUOTATION MARK (&#x2039;)
+    <tr><td>0x8C <td>0x0152 <td>LATIN CAPITAL LIGATURE OE (&#x0152;)
+    <!-- <tr><td>0x8D <td>0x008D <td>&lt;control> -->
+    <tr><td>0x8E <td>0x017D <td>LATIN CAPITAL LETTER Z WITH CARON (&#x017D;)
+    <!-- <tr><td>0x8F <td>0x008F <td>&lt;control> -->
+    <!-- <tr><td>0x90 <td>0x0090 <td>&lt;control> -->
+    <tr><td>0x91 <td>0x2018 <td>LEFT SINGLE QUOTATION MARK (&#x2018;)
+    <tr><td>0x92 <td>0x2019 <td>RIGHT SINGLE QUOTATION MARK (&#x2019;)
+    <tr><td>0x93 <td>0x201C <td>LEFT DOUBLE QUOTATION MARK (&#x201C;)
+    <tr><td>0x94 <td>0x201D <td>RIGHT DOUBLE QUOTATION MARK (&#x201D;)
+    <tr><td>0x95 <td>0x2022 <td>BULLET (&#x2022;)
+    <tr><td>0x96 <td>0x2013 <td>EN DASH (&#x2013;)
+    <tr><td>0x97 <td>0x2014 <td>EM DASH (&#x2014;)
+    <tr><td>0x98 <td>0x02DC <td>SMALL TILDE (&#x02DC;)
+    <tr><td>0x99 <td>0x2122 <td>TRADE MARK SIGN (&#x2122;)
+    <tr><td>0x9A <td>0x0161 <td>LATIN SMALL LETTER S WITH CARON (&#x0161;)
+    <tr><td>0x9B <td>0x203A <td>SINGLE RIGHT-POINTING ANGLE QUOTATION MARK (&#x203A;)
+    <tr><td>0x9C <td>0x0153 <td>LATIN SMALL LIGATURE OE (&#x0153;)
+    <!-- <tr><td>0x9D <td>0x009D <td>&lt;control> -->
+    <tr><td>0x9E <td>0x017E <td>LATIN SMALL LETTER Z WITH CARON (&#x017E;)
+    <tr><td>0x9F <td>0x0178 <td>LATIN CAPITAL LETTER Y WITH DIAERESIS (&#x0178;)
+  </table>
+
+  <p>If the number is in the range 0xD800 to 0xDFFF<!-- surrogates --> or is greater
+  than 0x10FFFF, then this is a <span>parse error</span>. Set the <var data-x="character reference
+  code">character reference code</var> to 0xFFFD.</p>
+
+  <p><!-- this is the same as the equivalent list in the input stream section, except U+000D is not
+  allowed -->If the number is in the range 0x0001 to 0x0008, <!-- HT, LF allowed
+  --> <!-- U+000B is in the next list --> <!-- FF allowed --> 0x000D to 0x001F, <!-- ASCII allowed
+  --> 0x007F <!--to 0x0084, (0x0085 NEL not allowed), 0x0086--> to 0x009F, 0xFDD0 to 0xFDEF, or is
+  one of 0x000B, 0xFFFE, 0xFFFF, 0x1FFFE, 0x1FFFF, 0x2FFFE, 0x2FFFF, 0x3FFFE, 0x3FFFF, 0x4FFFE,
+  0x4FFFF, 0x5FFFE, 0x5FFFF, 0x6FFFE, 0x6FFFF, 0x7FFFE, 0x7FFFF, 0x8FFFE, 0x8FFFF, 0x9FFFE,
+  0x9FFFF, 0xAFFFE, 0xAFFFF, 0xBFFFE, 0xBFFFF, 0xCFFFE, 0xCFFFF, 0xDFFFE, 0xDFFFF, 0xEFFFE,
+  0xEFFFF, 0xFFFFE, 0xFFFFF, 0x10FFFE, or 0x10FFFF, then this is a <span>parse error</span>.</p>
+
+  <p>Set the <var data-x="temporary buffer">temporary buffer</var> to the empty string. Append the
+  Unicode character with code point equal to the <var data-x="character reference code">character
+  reference code</var> to the <var data-x="temporary buffer">temporary buffer</var>. Switch to the
+  <span>character reference end state</span>.</p>
+
+
+  

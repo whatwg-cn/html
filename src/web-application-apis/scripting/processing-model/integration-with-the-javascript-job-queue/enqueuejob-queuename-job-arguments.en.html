@@ -1,0 +1,49 @@
+<h6><dfn>EnqueueJob</dfn>(<var>queueName</var>, <var>job</var>, <var>arguments</var>)</h6>
+
+  <p>When the JavaScript specification says to call the EnqueueJob abstract operation, the
+  following algorithm must be used in place of JavaScript's <span
+  data-x="js-EnqueueJob">EnqueueJob</span>:</p>
+
+  <ol>
+   <li><p>Assert: <var>queueName</var> is <code data-x="">"PromiseJobs"</code>. (<code
+   data-x="">"ScriptJobs"</code> must not be used by user agents.)</p></li>
+
+   <li>
+    <p>Let <var>job settings</var> be some appropriate <span>environment settings object</span>.</p>
+
+    <p class="warning">It is not yet clear how to specify the <span>environment settings
+    object</span> that should be used here. In practice, this means that the <a
+    href="#entry-everything">entry</a> concept is not correctly specified while executing a job. See
+    <a href="https://github.com/whatwg/html/pull/1189#issuecomment-224950188">discussion in issue
+    #1189</a>.</p>
+   </li>
+
+   <li><p>Let <var>incumbent settings</var> be the <span>incumbent settings object</span>.</p></li>
+
+   <li>
+    <p><span>Queue a microtask</span>, on <var>job settings</var>'s <span>responsible event
+    loop</span>, to perform the following steps:</p>
+
+    <ol>
+     <li><p><span>Check if we can run script</span> with <var>job settings</var>. If this returns
+     "do not run" then abort these steps.</p></li>
+
+     <li><p><span>Prepare to run script</span> with <var>job settings</var>.</p></li>
+
+     <li><p><span>Prepare to run a callback</span> with <var>incumbent settings</var>.</p></li>
+
+     <li><p>Let <var>result</var> be the result of performing the abstract operation specified by
+     <var>job</var>, using the elements of <var>arguments</var> as its arguments.</p></li>
+
+     <li><p><span>Clean up after running a callback</span> with <var>incumbent
+     settings</var>.</p></li>
+
+     <li><p><span>Clean up after running script</span> with <var>job settings</var>.</p></li>
+
+     <li><p>If <var>result</var> is an abrupt completion, <span>report the exception</span> given by
+     <var>result</var>.[[Value]].</p></li>
+    </ol>
+   </li>
+  </ol>
+
+  

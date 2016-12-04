@@ -1,0 +1,45 @@
+<h4>The <dfn><code>u</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>u</code> element <span>represents</span> a span of text with an unarticulated, though
+  explicitly rendered, non-textual annotation, such as labeling the text as being a proper name in
+  Chinese text (a Chinese proper name mark), or labeling the text as being misspelt.</p>
+
+  <p>In most cases, another element is likely to be more appropriate: for marking stress emphasis,
+  the <code>em</code> element should be used; for marking key words or phrases either the
+  <code>b</code> element or the <code>mark</code> element should be used, depending on the context;
+  for marking book titles, the <code>cite</code> element should be used<!-- even for the Chinese
+  wavy underline 'book title mark' -->; for labeling text with explicit textual annotations, the
+  <code>ruby</code> element should be used; for technical terms, taxonomic designation,
+  transliteration, a thought, or for labeling ship names in Western texts, the <code>i</code>
+  element should be used.</p>
+
+  <p class="note">The default rendering of the <code>u</code> element in visual presentations
+  clashes with the conventional rendering of hyperlinks (underlining). Authors are encouraged to
+  avoid using the <code>u</code> element where it could be confused for a hyperlink.</p>
+
+  <div class="example">
+
+   <p>In this example, a <code>u</code> element is used to mark a word as misspelt:</p>
+
+   <pre>&lt;p>The &lt;u>see&lt;/u> is full of fish.&lt;/p></pre>
+
+  </div>
+
+
+
+  

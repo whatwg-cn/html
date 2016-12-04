@@ -1,0 +1,422 @@
+<h4 id="textFieldSelection">APIs for the text control selections</h4>
+
+  <!-- v2 idea: DOM Range APIs to expose the textarea/input edited value (ack martijnw) -->
+
+  <p>The <code>input</code> and <code>textarea</code> elements define the following members in their
+  DOM interfaces for handling their selection:</p>
+
+  <pre class="idl extract">  void <span data-x="dom-textarea/input-select">select</span>();
+  attribute unsigned long? <span data-x="dom-textarea/input-selectionStart">selectionStart</span>;
+  attribute unsigned long? <span data-x="dom-textarea/input-selectionEnd">selectionEnd</span>;
+  attribute DOMString? <span data-x="dom-textarea/input-selectionDirection">selectionDirection</span>;
+  void <span data-x="dom-textarea/input-setRangeText">setRangeText</span>(DOMString replacement);
+  void <span data-x="dom-textarea/input-setRangeText">setRangeText</span>(DOMString replacement, unsigned long start, unsigned long end, optional <span>SelectionMode</span> selectionMode = "preserve");
+  void <span data-x="dom-textarea/input-setSelectionRange">setSelectionRange</span>(unsigned long start, unsigned long end, optional DOMString direction = "preserve");</pre>
+  <!-- v2: also add textLength? it seems to be widely used -->
+
+  <p>The <code data-x="dom-textarea/input-setRangeText">setRangeText</code> method uses the following
+  enumeration:</p>
+
+  <pre class="idl">enum <dfn>SelectionMode</dfn> {
+  "<span data-x="dom-SelectionMode-select">select</span>",
+  "<span data-x="dom-SelectionMode-start">start</span>",
+  "<span data-x="dom-SelectionMode-end">end</span>",
+  "<span data-x="dom-SelectionMode-preserve">preserve</span>" // default
+};</pre>
+
+  <p>These methods and attributes expose and control the selection of <code>input</code> and
+  <code>textarea</code> text controls.</p>
+
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-textarea/input-select">select</code>()</dt>
+
+   <dd>
+
+    <p>Selects everything in the text control.</p>
+
+   </dd>
+
+   <dt><var>element</var> . <code subdfn data-x="dom-textarea/input-selectionStart">selectionStart</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the offset to the start of the selection.</p>
+
+    <p>Can be set, to change the start of the selection.</p>
+
+   </dd>
+
+   <dt><var>element</var> . <code subdfn data-x="dom-textarea/input-selectionEnd">selectionEnd</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the offset to the end of the selection.</p>
+
+    <p>Can be set, to change the end of the selection.</p>
+
+   </dd>
+
+   <dt><var>element</var> . <code subdfn data-x="dom-textarea/input-selectionDirection">selectionDirection</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current direction of the selection.</p>
+
+    <p>Can be set, to change the direction of the selection.</p>
+
+    <p>The possible values are "<code data-x="">forward</code>", "<code data-x="">backward</code>", and "<code data-x="">none</code>".</p>
+
+   </dd>
+
+   <dt><var>element</var> . <code subdfn data-x="dom-textarea/input-setSelectionRange">setSelectionRange</code>(<var>start</var>, <var>end</var> [, <var>direction</var>] )</dt>
+
+   <dd>
+
+    <p>Changes the selection to cover the given substring in the given direction. If the direction
+    is omitted, it will be reset to be the platform default (none or forward).</p>
+
+   </dd>
+
+   <dt><var>element</var> . <code subdfn data-x="dom-textarea/input-setRangeText">setRangeText</code>(<var>replacement</var> [, <var>start</var>, <var>end</var> [, <var>selectionMode</var> ] ] )</dt>
+
+   <dd>
+
+    <p>Replaces a range of text with the new text. If the <var>start</var> and <var>end</var> arguments are not provided, the range is assumed to be the selection.</p>
+
+    <p>The final argument determines how the selection should be set after the text has been
+    replaced. The possible values are:</p>
+
+    <dl>
+
+
+     <dt>"<code data-x="dom-SelectionMode-select">select</code>"</dt>
+
+     <dd>Selects the newly inserted text.</dd>
+
+
+     <dt>"<code data-x="dom-SelectionMode-start">start</code>"</dt>
+
+     <dd>Moves the selection to just before the inserted text.</dd>
+
+
+     <dt>"<code data-x="dom-SelectionMode-end">end</code>"</dt>
+
+     <dd>Moves the selection to just after the selected text.</dd>
+
+
+     <dt>"<code data-x="dom-SelectionMode-preserve">preserve</code>"</dt>
+
+     <dd>Attempts to preserve the selection. This is the default.</dd>
+
+
+    </dl>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>For <code>input</code> elements, calling these methods while they <span data-x="do not
+  apply">don't apply</span>, and setting these attributes while they <span data-x="do not
+  apply">don't apply</span>, must throw an <span>"<code>InvalidStateError</code>"</span>
+  <code>DOMException</code>; and getting these attributes while they <span data-x="do not
+  apply">don't apply</span> must return null. Otherwise, they must act as described below.</p>
+
+  <p>For <code>input</code> elements, these methods and attributes must operate on the element's
+  <span data-x="concept-fe-value">value</span>. For <code>textarea</code> elements, these methods and
+  attributes must operate on the element's <span data-x="concept-textarea-raw-value">raw
+  value</span>.</p>
+
+  <p>Where possible, user interface features for changing the text selection in <code>input</code>
+  and <code>textarea</code> elements must be implemented in terms of the DOM API described in this
+  section, so that, e.g., all the same events fire.</p>
+
+
+  <p>The selections of <code>input</code> and <code>textarea</code> elements have a
+  <i>direction</i>, which is either <i>forward</i>, <i>backward</i>, or <i>none</i>. This direction
+  is set when the user manipulates the selection. The exact meaning of the selection direction
+  depends on the platform.</p>
+
+  <p class="note">On Windows, the direction indicates the position of the caret relative to the
+  selection: a <i>forward</i> selection has the caret at the end of the selection and a
+  <i>backward</i> selection has the caret at the start of the selection. Windows has no <i>none</i>
+  direction. On Mac, the direction indicates which end of the selection is affected when the user
+  adjusts the size of the selection using the arrow keys with the Shift modifier: the forward
+  direction means the end of the selection is modified, and the backwards direction means the start
+  of the selection is modified. The none direction is the default on Mac, it indicates that no
+  particular direction has yet been selected. The user sets the direction implicitly when first
+  adjusting the selection, based on which directional arrow key was used.</p>
+
+
+  <p>The <dfn><code data-x="dom-textarea/input-select">select()</code></dfn> method must cause the
+  contents of the text control to be fully selected, with the selection direction being none, if the
+  platform support selections with the direction <i>none</i>, or otherwise <i>forward</i>. The user
+  agent must then <span>queue a task</span>, using the <span>user interaction task source</span>, to
+  <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-select">select</code> at the element, with the <code
+  data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true.</p>
+
+  <p>In the case of <code>input</code> elements, if the control has no selectable text, then the
+  method must do nothing.</p>
+
+  <p class="example">For instance, in a user agent where <code
+  data-x="attr-input-type-color">&lt;input type=color></code> is rendered as a color well with a
+  picker, as opposed to a text control accepting a hexadecimal color code, there would be no
+  selectable text, and thus calls to the method are ignored.</p>
+
+
+  <p>The <dfn><code data-x="dom-textarea/input-selectionStart">selectionStart</code></dfn> attribute
+  must, on getting, return the offset (in logical order) to the character that immediately follows
+  the start of the selection. If there is no selection, then it must return the offset (in logical
+  order) to the character that immediately follows the text entry cursor.</p>
+
+  <p>On setting, it must <span>set the selection range</span> with the new value as the first
+  argument; the current value of the <code
+  data-x="dom-textarea/input-selectionEnd">selectionEnd</code> attribute as the second argument,
+  unless the current value of the <code data-x="dom-textarea/input-selectionEnd">selectionEnd</code>
+  is less than the new value, in which case the second argument must also be the new value; and the
+  current value of the <code
+  data-x="dom-textarea/input-selectionDirection">selectionDirection</code> as the third argument.</p>
+
+
+  <p>The <dfn><code data-x="dom-textarea/input-selectionEnd">selectionEnd</code></dfn> attribute
+  must, on getting, return the offset (in logical order) to the character that immediately follows
+  the end of the selection. If there is no selection, then it must return the offset (in logical
+  order) to the character that immediately follows the text entry cursor.</p>
+
+  <p>On setting, it must <span>set the selection range</span> with the current value of the <code
+  data-x="dom-textarea/input-selectionStart">selectionStart</code> attribute as the first argument,
+  the new value as the second argument, and the current value of the <code
+  data-x="dom-textarea/input-selectionDirection">selectionDirection</code> as the third argument.</p>
+
+
+  <p>The <dfn><code data-x="dom-textarea/input-selectionDirection">selectionDirection</code></dfn>
+  attribute must, on getting, return the string corresponding to the current selection direction: if
+  the direction is <i>forward</i>, "<code data-x="">forward</code>"; if the direction is
+  <i>backward</i>, "<code data-x="">backward</code>"; and otherwise, "<code
+  data-x="">none</code>".</p>
+
+  <p>On setting, it must <span>set the selection range</span> with the current value of the <code
+  data-x="dom-textarea/input-selectionStart">selectionStart</code> attribute as the first argument,
+  the current value of the <code data-x="dom-textarea/input-selectionEnd">selectionEnd</code>
+  attribute as the second argument, and the new value as the third argument.</p>
+
+
+  <p>The <dfn><code
+  data-x="dom-textarea/input-setSelectionRange">setSelectionRange(<var>start</var>, <var>end</var>,
+  <var>direction</var>)</code></dfn> method must <span>set the selection range</span> with the same
+  arguments.</p>
+
+  <p>To <dfn>set the selection range</dfn> with an integer or null <var>start</var>, an integer or
+  null <var>end</var>, and optionally a string <var>direction</var>, means to run these steps:</p>
+
+  <ol>
+
+   <li><p>If <var>start</var> is null, let <var>start</var> be zero.</p></li>
+
+   <li><p>If <var>end</var> is null, let <var>end</var> be zero.</p></li>
+
+   <li><p>Set the selection of the text control to the sequence of characters starting with the
+   character at the <var>start</var>th position (in logical order) and ending with the character at
+   the <span data-x="">(<var>end</var>-1)</span>th position. Arguments greater than the length of
+   the value of the text control must be treated as pointing at the end of the text control. If
+   <var>end</var> is less than or equal to <var>start</var> then the start of the selection and the
+   end of the selection must both be placed immediately before the character with offset
+   <var>end</var>. In UAs where there is no concept of an empty selection, this must set the cursor
+   to be just before the character with offset <var>end</var>. The direction of the selection must
+   be set to <i>backward</i> if <var>direction</var> is a <span>case-sensitive</span> match for the
+   string "<code data-x="">backward</code>", <i>forward</i> if <var>direction</var> is a
+   <span>case-sensitive</span> match for the string "<code data-x="">forward</code>" or if the
+   platform does not support selections with the direction <i>none</i>, and <i>none</i> otherwise
+   (including if the argument is omitted).</p></li>
+
+   <li><p><span>Queue a task</span>, using the <span>user interaction task source</span>, to <span
+   data-x="concept-event-fire">fire an event</span> named <code data-x="event-select">select</code>
+   at the element, with the <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to
+   true.</p></li>
+
+  </ol>
+
+
+  <p>The <dfn><code data-x="dom-textarea/input-setRangeText">setRangeText(<var>replacement</var>, <var>start</var>, <var>end</var>, <var>selectMode</var>)</code></dfn> method must run the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the method has only one argument, then let <var>start</var> and <var>end</var> have the values of the <code
+    data-x="dom-textarea/input-selectionStart">selectionStart</code> attribute and the <code
+    data-x="dom-textarea/input-selectionEnd">selectionEnd</code> attribute respectively.</p>
+
+    <p>Otherwise, let <var>start</var>, <var>end</var> have the values of the
+    second and third arguments respectively.</p>
+
+   </li>
+
+   <li><p>If <var>start</var> is greater than <var>end</var>, then throw an
+   <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>If <var>start</var> is greater than the length of the value of the text control, then set
+   it to the length of the value of the text control.</p></li>
+
+   <li><p>If <var>end</var> is greater than the length of the value of the text control, then set it
+   to the length of the value of the text control.</p></li>
+
+   <li><p>Let <var>selection start</var> be the current value of the <code
+   data-x="dom-textarea/input-selectionStart">selectionStart</code> attribute.</p></li>
+
+   <li><p>Let <var>selection end</var> be the current value of the <code
+   data-x="dom-textarea/input-selectionEnd">selectionEnd</code> attribute.</p></li>
+
+   <li><p>If <var>start</var> is less than <var>end</var>, delete the sequence of
+   characters starting with the character at the <var>start</var>th position (in logical
+   order) and ending with the character at the <span data-x="">(<var>end</var>-1)</span>th
+   position.</p></li>
+
+   <li><p>Insert the value of the first argument into the text of the value of the text control,
+   immediately before the <var>start</var>th character.</p></li>
+
+   <li><p>Let <var>new length</var> be the length of the value of the first argument.</p></li>
+
+   <li><p>Let <var>new end</var> be the sum of <var>start</var> and <var>new length</var>.</p></li>
+
+   <li>
+
+    <p>Run the appropriate set of substeps from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the fourth argument's value is "<dfn><code data-x="dom-SelectionMode-select">select</code></dfn>"</dt>
+
+     <dd>
+
+      <p>Let <var>selection start</var> be <var>start</var>.</p>
+
+      <p>Let <var>selection end</var> be <var>new end</var>.</p>
+
+     </dd>
+
+     <dt>If the fourth argument's value is "<dfn><code data-x="dom-SelectionMode-start">start</code></dfn>"</dt>
+
+     <dd>
+
+      <p>Let <var>selection start</var> and <var>selection end</var> be <var>start</var>.</p>
+
+     </dd>
+
+     <dt>If the fourth argument's value is "<dfn><code data-x="dom-SelectionMode-end">end</code></dfn>"</dt>
+
+     <dd>
+
+      <p>Let <var>selection start</var> and <var>selection end</var> be <var>new end</var>.</p>
+
+     </dd>
+
+     <dt>If the fourth argument's value is "<dfn><code data-x="dom-SelectionMode-preserve">preserve</code></dfn>" (the default)</dt>
+
+     <dd>
+
+      <ol>
+
+       <li><p>Let <var>old length</var> be <var>end</var> minus <var>start</var>.</p>
+
+       <li><p>Let <var>delta</var> be <var>new length</var> minus <var>old length</var>.</p>
+
+       <li>
+
+        <p>If <var>selection start</var> is greater than <var>end</var>, then
+        increment it by <var>delta</var>. (If <var>delta</var> is negative, i.e.
+        the new text is shorter than the old text, then this will <em>decrease</em> the value of
+        <var>selection start</var>.)</p>
+
+        <p>Otherwise: if <var>selection start</var> is greater than <var>start</var>, then set it to <var>start</var>. (This snaps the start of the
+        selection to the start of the new text if it was in the middle of the text that it
+        replaced.)</p>
+
+       </li>
+
+       <li>
+
+        <p>If <var>selection end</var> is greater than <var>end</var>, then
+        increment it by <var>delta</var> in the same way.</p>
+
+        <p>Otherwise: if <var>selection end</var> is greater than <var>start</var>, then set it to <var>new end</var>. (This snaps the end of the
+        selection to the end of the new text if it was in the middle of the text that it
+        replaced.)</p>
+
+       </li>
+
+      </ol>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>Set the selection of the text control to the sequence of characters starting with the
+    character at the <var>selection start</var>th position (in logical order) and ending with the
+    character at the <span data-x="">(<var>selection end</var>-1)</span>th position. In UAs
+    where there is no concept of an empty selection, this must set the cursor to be just before the
+    character with offset <var>end</var>. The direction of the selection must be set to
+    <i>forward</i> if the platform does not support selections with the direction <i>none</i>, and
+    <i>none</i> otherwise.</p>
+
+   </li>
+
+   <li><p><span>Queue a task</span>, using the <span>user interaction task source</span>, to <span
+   data-x="concept-event-fire">fire an event</span> named <code data-x="event-select">select</code>
+   at the element, with the <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to
+   true.</p></li>
+
+  </ol>
+
+  <p>All elements to which this API <span data-x="concept-input-apply">applies</span> have either a
+  selection or a text entry cursor position at all times (even for elements that are not <span>being
+  rendered</span>). User agents should follow platform conventions to determine their initial
+  state.</p>
+
+  </div>
+
+
+  <p>Characters with no visible rendering, such as U+200D ZERO WIDTH JOINER, still count as
+  characters. Thus, for instance, the selection can include just an invisible character, and the
+  text insertion cursor can be placed to one side or another of such a character.</p>
+
+  <div class="example">
+
+   <p>To obtain the currently selected text, the following JavaScript suffices:</p>
+
+   <pre>var selectionText = control.value.substring(control.selectionStart, control.selectionEnd);</pre>
+
+   <p>...where <var>control</var> is the <code>input</code> or <code>textarea</code>
+   element.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>To add some text at the start of a text control, while maintaining the text selection, the
+   three attributes must be preserved:</p>
+
+   <pre>var oldStart = control.selectionStart;
+var oldEnd = control.selectionEnd;
+var oldDirection = control.selectionDirection;
+var prefix = "http://";
+control.value = prefix + control.value;
+control.setSelectionRange(oldStart + prefix.length, oldEnd + prefix.length, oldDirection);</pre>
+
+   <p>...where <var>control</var> is the <code>input</code> or <code>textarea</code>
+   element.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+
+  

@@ -1,0 +1,35 @@
+<h5>Authors</h5>
+
+  </div>
+
+  <p id="security-4" class="warning">Use of this API requires extra care to protect users from
+  hostile entities abusing a site for their own purposes.</p>
+
+  <p>Authors should check the <code data-x="dom-MessageEvent-origin">origin</code> attribute to
+  ensure that messages are only accepted from domains that they expect to receive messages from.
+  Otherwise, bugs in the author's message handling code could be exploited by hostile sites.</p>
+
+  <p>Furthermore, even after checking the <code data-x="dom-MessageEvent-origin">origin</code>
+  attribute, authors should also check that the data in question is of the expected format.
+  Otherwise, if the source of the event has been attacked using a cross-site scripting flaw, further
+  unchecked processing of information sent using the <code
+  data-x="dom-window-postMessage">postMessage()</code> method could result in the attack being
+  propagated into the receiver.</p>
+
+  <p>Authors should not use the wildcard keyword (*) in the <var>targetOrigin</var>
+  argument in messages that contain any confidential information, as otherwise there is no way to
+  guarantee that the message is only delivered to the recipient to which it was intended.</p>
+
+  <hr>
+
+  <p>Authors who accept messages from any origin are encouraged to consider the risks of a
+  denial-of-service attack. An attacker could send a high volume of messages; if the receiving page
+  performs expensive computation or causes network traffic to be sent for each such message, the
+  attacker's message could be multiplied into a denial-of-service attack. Authors are encouraged to
+  employ rate limiting (only accepting a certain number of messages per minute) to make such attacks
+  impractical.</p>
+
+
+  <div w-nodev>
+
+  

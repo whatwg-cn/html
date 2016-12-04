@@ -1,0 +1,58 @@
+<h4 id="bidi-rendering">Bidirectional text</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+[dir]:dir(ltr), bdi:dir(ltr), input[type=tel i]:dir(ltr) { direction: ltr; }
+[dir]:dir(rtl), bdi:dir(rtl) { direction: rtl; }
+
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr,
+legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2,
+h3, h4, h5, h6, hgroup, nav, section, table, caption, colgroup, col, thead,
+tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output,
+[dir=ltr i], [dir=rtl i], [dir=auto i] {
+  unicode-bidi: isolate; <!-- anything that's similar to display:block, plus <bdi>, <output>, and dir="" -->
+}
+
+bdo, bdo[dir] { unicode-bidi: isolate-override; } <!-- bdo[dir] rule is to override the otherwise higher-specificity attribute selectors in the previous rule -->
+
+input[dir=auto i]:matches([type=search i], [type=tel i], [type=url i],
+[type=email i]), textarea[dir=auto i], pre[dir=auto i] {
+  unicode-bidi: plaintext;
+}
+/* see prose for input elements whose type attribute is in the Text state */
+
+/* the <a href="#br-wbr-content">rules setting the 'content' property</a> on <code>br</code> and <code>wbr</code> elements also has bidi implications */</pre>
+
+  <p>When an <code>input</code> element's <code data-x="attr-dir">dir</code> attribute is in the
+  <span data-x="attr-dir-auto">auto</span> state and its <code data-x="attr-input-type">type</code>
+  attribute is in the <span data-x="attr-input-type-text">Text</span> state, then the user agent is
+  expected to act as if it had a user-agent-level style sheet rule setting the
+  <span>'unicode-bidi'</span> property to 'plaintext'.</p>
+
+  <p>Input fields (i.e. <code>textarea</code> elements, and <code>input</code> elements when their
+  <code data-x="attr-input-type">type</code> attribute is in the <span
+  data-x="attr-input-type-text">Text</span>, <span data-x="attr-input-type-search">Search</span>,
+  <span data-x="attr-input-type-tel">Telephone</span>, <span data-x="attr-input-type-url">URL</span>,
+  or <span data-x="attr-input-type-email">E-mail</span> state) are expected to present an editing
+  user interface with a directionality that matches the element's <span>'direction'</span>
+  property.</p>
+
+  <p>When the document's character encoding is <span>ISO-8859-8</span>, the following rules are
+  additionally expected to apply, following those above: <ref spec=ENCODING></p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr,
+legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2,
+h3, h4, h5, h6, hgroup, nav, section, table, caption, colgroup, col, thead,
+tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, [dir=ltr i],
+[dir=rtl i], [dir=auto i], *|* {
+  unicode-bidi: bidi-override;
+}
+input:not([type=submit i]):not([type=reset i]):not([type=button i]),
+textarea, keygen {
+  unicode-bidi: normal;
+}</pre>
+
+
+  

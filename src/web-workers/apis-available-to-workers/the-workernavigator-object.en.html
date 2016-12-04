@@ -1,0 +1,22 @@
+<h4>The <code>WorkerNavigator</code> object</h4>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-worker-navigator">navigator</code></dfn> attribute
+  of the <code>WorkerGlobalScope</code> interface must return an instance of
+  the <code>WorkerNavigator</code> interface, which represents the
+  identity and state of the user agent (the client):</p>
+
+  </div>
+
+  <pre class="idl">[Exposed=Worker]
+interface <dfn>WorkerNavigator</dfn> {};
+<span>WorkerNavigator</span> implements <span>NavigatorID</span>;
+<span>WorkerNavigator</span> implements <span>NavigatorLanguage</span>;
+<span>WorkerNavigator</span> implements <span>NavigatorOnLine</span>;
+<span>WorkerNavigator</span> implements <span>NavigatorConcurrentHardware</span>;</pre>
+
+
+
+
+  

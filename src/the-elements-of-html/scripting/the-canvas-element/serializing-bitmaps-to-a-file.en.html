@@ -1,0 +1,50 @@
+<h5 id="serialising-bitmaps-to-a-file">Serializing bitmaps to a file</h5>
+
+  <div w-nodev>
+
+  <p>When a user agent is to create <!--en-GB--><dfn id="a-serialisation-of-the-bitmap-as-a-file">a
+  serialization of the bitmap as a file</dfn>, given an optional <var>type</var> and
+  <var>quality</var>, it must create an image file in the format given by <var>type</var>, or if
+  <var>type</var> was not supplied, in the PNG format. <ref spec=PNG></p>
+
+  <p>The image file's pixel data must be the bitmap's pixel data scaled to one image pixel per
+  coordinate space unit, and if the file format used supports encoding resolution metadata, the
+  resolution must be given as 96dpi (one image pixel per <span data-x="'px'">CSS pixel</span>).</p>
+
+  <p>If <var>type</var> is supplied, then it must be interpreted as a <span data-x="MIME type">MIME
+  type</span> giving the format to use. If the type has any parameters, then it must be treated as
+  not supported.</p>
+
+  <p class="example">For example, the value "<code>image/png</code>" would mean to generate a PNG
+  image, the value "<code>image/jpeg</code>" would mean to generate a JPEG image, and the value
+  "<code>image/svg+xml</code>" would mean to generate an SVG image (which would require that the
+  user agent track how the bitmap was generated, an unlikely, though potentially awesome,
+  feature).</p>
+
+  <p>User agents must support PNG ("<code>image/png</code>"). User agents may support other types.
+  If the user agent does not support the requested type, then it must create the file using the PNG
+  format. <ref spec=PNG></p>
+
+  <p>User agents must <span data-x="converted to ASCII lowercase">convert the provided type to ASCII
+  lowercase</span> before establishing if they support that type.</p>
+
+  <p>For image types that do not support an alpha channel, the serialized image must be the bitmap
+  image composited onto a solid black background using the source-over operator.</p>
+
+  <p>If <var>type</var> is an image format that supports variable quality (such as
+  "<code>image/jpeg</code>") and <var>quality</var> is given, then, if <span
+  data-x="js-Type">Type</span>(<var>quality</var>) is Number, and <var>quality</var> is in the range
+  0.0 to 1.0 inclusive, the user agent must treat <var>quality</var> as the desired quality level.
+  If <span data-x="js-Type">Type</span>(<var>quality</var>) is not Number, or if <var>quality</var>
+  is outside that range, the user agent must use its default quality value, as if the
+  <var>quality</var> argument had not been given.</p>
+
+  <p class="note">The use of type-testing here, instead of simply declaring <var>quality</var> as
+  a Web IDL <code data-x="">double</code>, is a historical artifact.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

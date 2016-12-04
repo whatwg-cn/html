@@ -1,0 +1,313 @@
+<h3>Non-conforming features</h3>
+
+  <p>Elements in the following list are entirely obsolete, and must not be used by authors:</p>
+
+  <dl><!-- alphabetical by first element in the group, except CSS goes last -->
+
+   <dt><code>applet</code></dt>
+   <dd><p>Use <code>embed</code> or <code>object</code> instead.</p></dd>
+
+   <dt><dfn><code>acronym</code></dfn></dt>
+   <dd><p>Use <code>abbr</code> instead.</p></dd>
+
+   <dt><dfn><code>bgsound</code></dfn></dt>
+   <dd><p>Use <code>audio</code> instead.</p></dd>
+
+   <dt><dfn><code>dir</code></dfn></dt>
+   <dd><p>Use <code>ul</code> instead.</p></dd>
+
+   <dt><code>frame</code></dt>
+   <dt><code>frameset</code></dt>
+   <dt><dfn><code>noframes</code></dfn></dt>
+   <dd><p>Either use <code>iframe</code> and CSS instead, or use server-side includes to generate complete pages with the various invariant parts merged in.</p></dd>
+
+   <dt><dfn><code>isindex</code></dfn></dt>
+   <dd><p>Use an explicit <code>form</code> and <span data-x="attr-input-type-text">text control</span> combination instead.</p></dd>
+
+   <dt><dfn><code>listing</code></dfn></dt>
+   <dd><p>Use <code>pre</code> and <code>code</code> instead.</p></dd>
+
+   <dt><dfn><code>nextid</code></dfn></dt>
+   <dd><p>Use GUIDs instead.</p></dd>
+
+   <dt><dfn><code>noembed</code></dfn></dt>
+   <dd><p>Use <code>object</code> instead of <code>embed</code> when fallback is necessary.</p></dd>
+
+   <dt><dfn><code>plaintext</code></dfn></dt>
+   <dd><p>Use the "<code>text/plain</code>" <span>MIME type</span> instead.</p></dd>
+
+   <dt><dfn><code>rb</code></dfn></dt>
+   <dt><dfn><code>rtc</code></dfn></dt>
+   <dd><p>Providing the ruby base directly inside the <code>ruby</code> element or using nested
+   <code>ruby</code> elements is sufficient.</p></dd>
+
+   <dt><dfn><code>strike</code></dfn></dt>
+   <dd><p>Use <code>del</code> instead if the element is marking an edit, otherwise use <code>s</code> instead.</p></dd>
+
+   <dt><dfn><code>xmp</code></dfn></dt>
+   <dd><p>Use <code>pre</code> and <code>code</code> instead, and escape "<code data-x="">&lt;</code>" and "<code data-x="">&amp;</code>" characters as "<code data-x="">&amp;lt;</code>" and "<code data-x="">&amp;amp;</code>" respectively.</p></dd>
+
+   <dt><dfn><code>basefont</code></dfn></dt>
+   <dt><dfn><code>big</code></dfn></dt>
+   <dt><dfn><code>blink</code></dfn></dt>
+   <dt><dfn><code>center</code></dfn></dt>
+   <dt><dfn><code>font</code></dfn></dt>
+   <dt><code>marquee</code></dt>
+   <dt><dfn><code>multicol</code></dfn></dt>
+   <dt><dfn><code>nobr</code></dfn></dt>
+   <dt><dfn><code>spacer</code></dfn></dt>
+   <dt><dfn><code>tt</code></dfn></dt>
+
+   <dd>
+
+    <p>Use appropriate elements or CSS instead.</p>
+
+    <p>Where the <code>tt</code> element would have been used for marking up keyboard input,
+    consider the <code>kbd</code> element; for variables, consider the <code>var</code> element; for
+    computer code, consider the <code>code</code> element; and for computer output, consider the
+    <code>samp</code> element.</p>
+
+    <p>Similarly, if the <code>big</code> element is being used to denote a heading, consider using
+    the <code>h1</code> element; if it is being used for marking up important passages, consider the
+    <code>strong</code> element; and if it is being used for highlighting text for reference
+    purposes, consider the <code>mark</code> element.</p>
+
+    <p>See also the <a href="#usage-summary">text-level semantics usage summary</a> for more
+    suggestions with examples.</p>
+
+   </dd>
+
+  </dl>
+
+  <hr>
+
+  <p>The following attributes are obsolete (though the elements are still part of the language), and
+  must not be used by authors:</p>
+
+  <dl><!-- alphabetical by element then attribute of first item in group, except CSS goes last -->
+
+   <dt><dfn><code data-x="attr-a-charset">charset</code></dfn> on <code>a</code> elements</dt>
+   <dt><dfn><code data-x="attr-link-charset">charset</code></dfn> on <code>link</code> elements</dt>
+   <dd><p>Use an HTTP `<code>Content-Type</code>` header on the linked resource instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-a-coords">coords</code></dfn> on <code>a</code> elements</dt>
+   <dt><dfn><code data-x="attr-a-shape">shape</code></dfn> on <code>a</code> elements</dt>
+   <dd><p>Use <code>area</code> instead of <code>a</code> for image maps.</p></dd>
+
+   <dt><dfn><code data-x="attr-a-methods">methods</code></dfn> on <code>a</code> elements</dt>
+   <dt><dfn><code data-x="attr-link-methods">methods</code></dfn> on <code>link</code> elements</dt>
+   <dd><p>Use the HTTP OPTIONS feature instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-a-name">name</code></dfn> on <code>a</code> elements (except as noted in the previous section)</dt>
+   <dt><dfn><code data-x="attr-embed-name">name</code></dfn> on <code>embed</code> elements</dt>
+   <dt><dfn><code data-x="attr-img-name">name</code></dfn> on <code>img</code> elements</dt>
+   <dt><dfn><code data-x="attr-option-name">name</code></dfn> on <code>option</code> elements</dt>
+   <dd><p>Use the <code data-x="attr-id">id</code> attribute instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-a-rev">rev</code></dfn> on <code>a</code> elements</dt>
+   <dt><dfn><code data-x="attr-link-rev">rev</code></dfn> on <code>link</code> elements</dt>
+   <dd><p>Use the <code data-x="attr-hyperlink-rel">rel</code>
+   attribute instead, with an opposite term. (For example, instead of
+   <code data-x="">rev="made"</code>, use <code
+   data-x="">rel="author"</code>.)</p></dd>
+
+   <dt><dfn><code data-x="attr-a-urn">urn</code></dfn> on <code>a</code> elements</dt>
+   <dt><dfn><code data-x="attr-link-urn">urn</code></dfn> on <code>link</code> elements</dt>
+   <dd><p>Specify the preferred persistent identifier using the <code data-x="attr-hyperlink-href">href</code> attribute instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-form-accept">accept</code></dfn> on <code>form</code> elements</dt>
+   <dd><p>Use the <code data-x="attr-input-accept">accept</code> attribute directly on the <code>input</code> elements instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-area-hreflang">hreflang</code></dfn> on <code>area</code>
+   elements</dt>
+   <dt><dfn><code data-x="attr-area-type">type</code></dfn> on <code>area</code> elements</dt>
+   <dd><p>These attributes do not do anything useful, and for historical reasons there are no
+   corresponding IDL attributes on <code>area</code> elements. Omit them altogether.</p></dd>
+
+   <dt><dfn><code data-x="attr-area-nohref">nohref</code></dfn> on <code>area</code> elements</dt>
+   <dd><p>Omitting the <code data-x="attr-hyperlink-href">href</code>
+   attribute is sufficient; the <code
+   data-x="attr-area-nohref">nohref</code> attribute is
+   unnecessary. Omit it altogether.</p></dd>
+
+   <dt><dfn><code data-x="attr-head-profile">profile</code></dfn> on <code>head</code> elements</dt>
+   <dd><p>When used for declaring which <code>meta</code> terms are
+   used in the document, unnecessary; omit it altogether, and <span
+   data-x="concept-meta-extensions">register the names</span>.</p></dd>
+   <dd><p>When used for triggering specific user agent behaviors: use
+   a <code>link</code> element instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-html-version">version</code></dfn> on <code>html</code> elements</dt>
+   <dd><p>Unnecessary. Omit it altogether.</p></dd>
+
+   <dt><dfn><code data-x="attr-input-ismap">ismap</code></dfn> on <code>input</code> elements</dt>
+   <dd><p>Unnecessary. Omit it altogether. All <code>input</code> elements with a <code
+   data-x="attr-input-type">type</code> attribute in the <span data-x="attr-input-type-image">Image
+   Button</span> state are processed as server-side image maps.</p></dd>
+
+   <dt><dfn><code data-x="attr-input-usemap">usemap</code></dfn> on <code>input</code> elements</dt>
+   <dd><p>Use <code>img</code> instead of <code>input</code> for image maps.</p></dd>
+
+   <dt><dfn><code data-x="attr-iframe-longdesc">longdesc</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-img-longdesc">longdesc</code></dfn> on <code>img</code> elements</dt>
+   <dd><p>Use a regular <code>a</code> element to link to the
+   description, or (in the case of images) use an <span>image
+   map</span> to provide a link from the image to the image's
+   description.</p></dd>
+
+   <dt><dfn><code data-x="attr-img-lowsrc">lowsrc</code></dfn> on <code>img</code> elements</dt>
+   <dd><p>Use a progressive JPEG image (given in the <code data-x="attr-img-src">src</code> attribute),
+   instead of using two separate images.</p></dd>
+
+   <dt><dfn><code data-x="attr-link-target">target</code></dfn> on <code>link</code> elements</dt>
+   <dd><p>Unnecessary. Omit it altogether.</p></dd>
+
+   <dt><dfn><code data-x="attr-meta-scheme">scheme</code></dfn> on <code>meta</code> elements</dt>
+   <dd><p>Use only one scheme per field, or make the scheme declaration part of the value.</p></dd>
+
+   <dt><dfn><code data-x="attr-object-archive">archive</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-classid">classid</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-code">code</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-codebase">codebase</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-codetype">codetype</code></dfn> on <code>object</code> elements</dt>
+   <dd><p>Use the <code data-x="attr-object-data">data</code> and <code
+   data-x="attr-object-type">type</code> attributes to invoke <span
+   data-x="plugin">plugins</span>. To set parameters with these names
+   in particular, the <code>param</code> element can be used.</p></dd>
+
+   <dt><dfn><code data-x="attr-object-declare">declare</code></dfn> on <code>object</code> elements</dt>
+   <dd><p>Repeat the <code>object</code> element completely each time the resource is to be reused.</p></dd>
+
+   <dt><dfn><code data-x="attr-object-standby">standby</code></dfn> on <code>object</code> elements</dt>
+   <dd><p>Optimize the linked resource so that it loads quickly or, at least, incrementally.</p></dd>
+
+   <dt><dfn><code data-x="attr-param-type">type</code></dfn> on <code>param</code> elements</dt>
+   <dt><dfn><code data-x="attr-param-valuetype">valuetype</code></dfn> on <code>param</code> elements</dt>
+   <dd><p>Use the <code data-x="attr-param-name">name</code> and <code
+   data-x="attr-param-value">value</code> attributes without declaring
+   value types.</p></dd>
+
+   <dt><dfn><code data-x="attr-script-language">language</code></dfn> on <code>script</code> elements (except as noted in the previous section)</dt>
+   <dd><p>Use the <code data-x="attr-script-type">type</code> attribute
+   instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-script-event">event</code></dfn> on <code>script</code> elements</dt>
+   <dt><dfn><code data-x="attr-script-for">for</code></dfn> on <code>script</code> elements</dt>
+   <dd><p>Use DOM events mechanisms to register event listeners. <ref spec=DOM></p></dd>
+
+   <dt><dfn><code data-x="attr-table-datapagesize">datapagesize</code></dfn> on <code>table</code> elements</dt>
+   <dd><p>Unnecessary. Omit it altogether.</p></dd>
+
+   <dt><dfn><code data-x="attr-table-summary">summary</code></dfn> on <code>table</code> elements</dt><!-- 2.65% pages -->
+   <dd><p>Use one of the <a href="#table-descriptions-techniques">techniques for describing
+   tables</a> given in the <code>table</code> section instead.</p></dd>
+
+   <dt><dfn><code data-x="attr-td-abbr">abbr</code></dfn> on <code>td</code> elements</dt>
+   <dd><p>Use text that begins in an unambiguous and terse manner, and include any more elaborate text after that. The <code data-x="attr-title">title</code> attribute can also be useful in including more detailed text, so that the cell's contents can be made terse. If it's a heading, use <code>th</code> (which has an <code data-x="attr-th-abbr">abbr</code> attribute).</p>
+
+   <dt><dfn><code data-x="attr-tdth-axis">axis</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dd><p>Use the <code data-x="attr-th-scope">scope</code> attribute on the relevant <code>th</code>.</p>
+
+   <dt><dfn><code data-x="attr-td-scope">scope</code></dfn> on <code>td</code> elements</dt>
+   <dd><p>Use <code>th</code> elements for heading cells.</p>
+
+   <dt><dfn><code data-x="attr-datasrc">datasrc</code></dfn> on <code>a</code>, <code>applet</code>, <code>button</code>, <code>div</code>, <code>frame</code>, <code>iframe</code>, <code>img</code>, <code>input</code>, <code>label</code>, <code>legend</code>, <code>marquee</code>, <code>object</code>, <code>option</code>, <code>select</code>, <code>span</code>, <code>table</code>, and <code>textarea</code> elements</dt>
+   <dt><dfn><code data-x="attr-datafld">datafld</code></dfn> on <code>a</code>, <code>applet</code>, <code>button</code>, <code>div</code>, <code>fieldset</code>, <code>frame</code>, <code>iframe</code>, <code>img</code>, <code>input</code>, <code>label</code>, <code>legend</code>, <code>marquee</code>, <code>object</code>, <code>param</code>, <code>select</code>, <code>span</code>, and <code>textarea</code> elements</dt>
+   <dt><dfn><code data-x="attr-dataformatas">dataformatas</code></dfn> on <code>button</code>, <code>div</code>, <code>input</code>, <code>label</code>, <code>legend</code>, <code>marquee</code>, <code>object</code>, <code>option</code>, <code>select</code>, <code>span</code>, and <code>table</code> elements</dt>
+   <dd><p>Use script and a mechanism such as <code>XMLHttpRequest</code> to populate the page dynamically. <ref spec=XHR></p></dd>
+
+   <dt><dfn><code data-x="attr-body-alink">alink</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-bgcolor">bgcolor</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-bottommargin">bottommargin</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-leftmargin">leftmargin</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-link">link</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-marginheight">marginheight</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-marginwidth">marginwidth</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-rightmargin">rightmargin</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-text">text</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-topmargin">margintop</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-body-vlink">vlink</code></dfn> on <code>body</code> elements</dt>
+   <dt><dfn><code data-x="attr-br-clear">clear</code></dfn> on <code>br</code> elements</dt>
+   <dt><dfn><code data-x="attr-caption-align">align</code></dfn> on <code>caption</code> elements</dt>
+   <dt><dfn><code data-x="attr-col-align">align</code></dfn> on <code>col</code> elements</dt>
+   <dt><dfn><code data-x="attr-col-char">char</code></dfn> on <code>col</code> elements</dt>
+   <dt><dfn><code data-x="attr-col-charoff">charoff</code></dfn> on <code>col</code> elements</dt>
+   <dt><dfn><code data-x="attr-col-valign">valign</code></dfn> on <code>col</code> elements</dt>
+   <dt><dfn><code data-x="attr-col-width">width</code></dfn> on <code>col</code> elements</dt>
+   <dt><dfn><code data-x="attr-div-align">align</code></dfn> on <code>div</code> elements</dt>
+   <dt><dfn><code data-x="attr-dl-compact">compact</code></dfn> on <code>dl</code> elements</dt>
+   <dt><dfn><code data-x="attr-embed-align">align</code></dfn> on <code>embed</code> elements</dt>
+   <dt><dfn><code data-x="attr-embed-hspace">hspace</code></dfn> on <code>embed</code> elements</dt>
+   <dt><dfn><code data-x="attr-embed-vspace">vspace</code></dfn> on <code>embed</code> elements</dt>
+   <dt><dfn><code data-x="attr-hr-align">align</code></dfn> on <code>hr</code> elements</dt>
+   <dt><dfn><code data-x="attr-hr-color">color</code></dfn> on <code>hr</code> elements</dt>
+   <dt><dfn><code data-x="attr-hr-noshade">noshade</code></dfn> on <code>hr</code> elements</dt>
+   <dt><dfn><code data-x="attr-hr-size">size</code></dfn> on <code>hr</code> elements</dt>
+   <dt><dfn><code data-x="attr-hr-width">width</code></dfn> on <code>hr</code> elements</dt>
+   <dt><dfn><code data-x="attr-hx-align">align</code></dfn> on <code>h1</code>&mdash;<code>h6</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-align">align</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-allowtransparency">allowtransparency</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-frameborder">frameborder</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-framespacing">framespacing</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-hspace">hspace</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-marginheight">marginheight</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-marginwidth">marginwidth</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-scrolling">scrolling</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-iframe-vspace">vspace</code></dfn> on <code>iframe</code> elements</dt>
+   <dt><dfn><code data-x="attr-input-align">align</code></dfn> on <code>input</code> elements</dt>
+   <dt><dfn><code data-x="attr-input-border">border</code></dfn> on <code>input</code> elements</dt>
+   <dt><dfn><code data-x="attr-input-hspace">hspace</code></dfn> on <code>input</code> elements</dt>
+   <dt><dfn><code data-x="attr-input-vspace">vspace</code></dfn> on <code>input</code> elements</dt>
+   <dt><dfn><code data-x="attr-img-align">align</code></dfn> on <code>img</code> elements</dt>
+   <dt><dfn><code data-x="attr-img-border">border</code></dfn> on <code>img</code> elements (except as noted in the previous section)</dt>
+   <dt><dfn><code data-x="attr-img-hspace">hspace</code></dfn> on <code>img</code> elements</dt>
+   <dt><dfn><code data-x="attr-img-vspace">vspace</code></dfn> on <code>img</code> elements</dt>
+   <dt><dfn><code data-x="attr-legend-align">align</code></dfn> on <code>legend</code> elements</dt>
+   <dt><dfn><code data-x="attr-li-type">type</code></dfn> on <code>li</code> elements</dt>
+   <dt><dfn><code data-x="attr-menu-compact">compact</code></dfn> on <code>menu</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-align">align</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-border">border</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-hspace">hspace</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-object-vspace">vspace</code></dfn> on <code>object</code> elements</dt>
+   <dt><dfn><code data-x="attr-ol-compact">compact</code></dfn> on <code>ol</code> elements</dt>
+   <dt><dfn><code data-x="attr-p-align">align</code></dfn> on <code>p</code> elements</dt>
+   <dt><dfn><code data-x="attr-pre-width">width</code></dfn> on <code>pre</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-align">align</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-bgcolor">bgcolor</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-border">border</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-bordercolor">bordercolor</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-cellpadding">cellpadding</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-cellspacing">cellspacing</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-frame">frame</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-height">height</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-rules">rules</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-table-width">width</code></dfn> on <code>table</code> elements</dt>
+   <dt><dfn><code data-x="attr-tbody-align">align</code></dfn> on <code>tbody</code>, <code>thead</code>, and <code>tfoot</code> elements</dt>
+   <dt><dfn><code data-x="attr-tbody-char">char</code></dfn> on <code>tbody</code>, <code>thead</code>, and <code>tfoot</code> elements</dt>
+   <dt><dfn><code data-x="attr-tbody-charoff">charoff</code></dfn> on <code>tbody</code>, <code>thead</code>, and <code>tfoot</code> elements</dt>
+   <dt><dfn><code data-x="attr-tbody-vAlign">valign</code></dfn> on <code>tbody</code>, <code>thead</code>, and <code>tfoot</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-align">align</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-bgcolor">bgcolor</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-char">char</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-charoff">charoff</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-height">height</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-nowrap">nowrap</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-valign">valign</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tdth-width">width</code></dfn> on <code>td</code> and <code>th</code> elements</dt>
+   <dt><dfn><code data-x="attr-tr-align">align</code></dfn> on <code>tr</code> elements</dt>
+   <dt><dfn><code data-x="attr-tr-bgcolor">bgcolor</code></dfn> on <code>tr</code> elements</dt>
+   <dt><dfn><code data-x="attr-tr-char">char</code></dfn> on <code>tr</code> elements</dt>
+   <dt><dfn><code data-x="attr-tr-charoff">charoff</code></dfn> on <code>tr</code> elements</dt>
+   <dt><dfn><code data-x="attr-tr-height">height</code></dfn> on <code>tr</code> elements</dt>
+   <dt><dfn><code data-x="attr-tr-valign">valign</code></dfn> on <code>tr</code> elements</dt>
+   <dt><dfn><code data-x="attr-ul-compact">compact</code></dfn> on <code>ul</code> elements</dt>
+   <dt><dfn><code data-x="attr-ul-type">type</code></dfn> on <code>ul</code> elements</dt>
+   <dt><dfn><code data-x="attr-background">background</code></dfn> on <code>body</code>, <code>table</code>, <code>thead</code>, <code>tbody</code>, <code>tfoot</code>, <code>tr</code>, <code>td</code>, and <code>th</code> elements</dt>
+   <dd><p>Use CSS instead.</p></dd>
+
+  </dl>
+
+
+  <div w-nodev>
+
+  

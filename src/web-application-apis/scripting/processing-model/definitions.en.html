@@ -1,0 +1,278 @@
+<h5>Definitions</h5>
+
+  <p>A <dfn data-x="concept-script" data-export="">script</dfn> is one of two possible structures.
+  All scripts have:</p>
+
+  <dl>
+
+   <dt>A <dfn data-dfn-for="script" data-export="">settings object</dfn></dt>
+
+   <dd>
+
+    <p>An <span>environment settings object</span>, containing various settings that are shared
+    with other <span data-x="concept-script">scripts</span> in the same context.</p>
+
+   </dd>
+
+  </dl>
+
+
+  <p>A <dfn data-export="">classic script</dfn> additionally has:</p>
+
+  <dl>
+
+   <dt><dfn data-x="concept-classic-script-source-text" data-export="">Source text</dfn></dt>
+
+   <dd>
+
+    <p>A string containing a block of executable code to be evaluated as a JavaScript <i
+    data-x="js-prod-Script">Script</i>.</p>
+
+   </dd>
+
+   <dt>Optionally, a <dfn>muted errors</dfn> flag</dt>
+
+   <dd>
+
+    <p>A flag which, if set, means that error information will not be provided for errors in this
+    script (used to mute errors for cross-origin scripts, since that can leak private
+    information).</p>
+
+   </dd>
+
+  </dl>
+
+  <p>A <dfn data-export="">module script</dfn> additionally has:</p>
+
+  <dl>
+
+   <dt>A <dfn data-x="concept-module-script-module-record">module record</dfn></dt>
+
+   <dd>
+
+    <p>A <span>Source Text Module Record</span> representing the parsed module, ready to be
+    evaluated.</p>
+
+   </dd>
+
+   <dt>A <dfn data-x="concept-module-script-base-url">base URL</dfn></dt>
+
+   <dd>
+
+    <p>A base URL used for resolving module specifiers when <span data-x="resolve a module
+    specifier">resolving a module specifier</span>. This will either be the URL from which the
+    script was obtained, for external module scripts, or the <span>document base URL</span> of the
+    containing document, for inline module scripts.</p>
+
+   </dd>
+
+   <dt>An <dfn data-x="concept-module-script-instantiation-state">instantiation state</dfn></dt>
+
+   <dd>
+
+    <p>One of "<code data-x="">uninstantiated</code>", "<code data-x="">errored</code>", or "<code
+    data-x="">instantiated</code>", used to prevent reinvocation of <span
+    data-x="js-ModuleDeclarationInstantiation">ModuleDeclarationInstantiation</span> on modules that
+    failed to instantiate previously.</p>
+
+   </dd>
+
+   <dt>An <dfn data-x="concept-module-script-instantiation-error">instantiation error</dfn></dt>
+
+   <dd>
+
+    <p>A JavaScript value, which has meaning only if the <span
+    data-x="concept-module-script-instantiation-state">instantiation state</span> is "<code
+    data-x="">errored</code>".</p>
+
+   </dd>
+
+   <dt>A <dfn data-x="concept-module-script-credentials-mode">credentials mode</dfn></dt>
+
+   <dd>
+
+    <p>A <span data-x="concept-request-credentials-mode">credentials mode</span> used to fetch
+    imported modules.</p>
+
+   </dd>
+
+   <dt>A <dfn data-x="concept-module-script-nonce">cryptographic nonce</dfn></dt>
+
+   <dd>
+
+    <p>A <span data-x="concept-request-nonce-metadata">cryptographic nonce</span> used to fetch
+    imported modules.</p>
+
+   </dd>
+
+   <dt>A <dfn data-x="concept-module-script-parser">parser state</dfn></dt>
+
+   <dd>
+
+    <p>The <span data-x="concept-request-parser-metadata">parser metadata</span> used to fetch
+    imported modules.</p>
+
+   </dd>
+
+  </dl>
+
+  <hr>
+
+  <p>An <dfn data-export="">environment</dfn> is an object that identifies the settings of a
+  current or potential execution environment. An <span>environment</span> has the following
+  fields:</p>
+
+  <dl>
+   <dt>An <dfn data-x="concept-environment-id" data-export=""
+   data-dfn-for="environment">id</dfn></dt>
+   <dd><p>An opaque string that uniquely identifies the <span>environment</span>.</p></dd>
+
+   <dt>A <dfn data-x="concept-environment-creation-url" data-export=""
+   data-dfn-for="environment">creation URL</dfn></dt>
+   <dd>
+    <p>An <span>absolute URL</span> that represents the location of the resource with which the
+    <span>environment</span> is associated.</p>
+
+    <p class="note">In the case of an <span>environment settings object</span>, this URL might be
+    distinct from the <span>environment settings object</span>'s <span>responsible
+    document</span>'s <span data-x="concept-document-url">URL</span>, due to mechanisms such as
+    <code data-x="dom-history-pushstate">history.pushState()</code>.</p>
+   </dd>
+
+   <dt>A <dfn data-x="concept-environment-target-browsing-context" data-export=""
+   data-dfn-for="environment">target browsing context</dfn></dt>
+   <dd><p>Null or a target <span>browsing context</span> for a <span
+   data-x="navigation-request">navigation request</span>.</p></dd>
+
+   <dt>An <dfn data-x="concept-environment-active-service-worker" data-export=""
+   data-dfn-for="environment">active service worker</dfn></dt>
+   <dd><p>Null or a <span data-x="dfn-service-worker">service worker</span> that <span
+   data-x="dfn-control">controls</span> the <span>environment</span>.</p></dd>
+
+   <dt>An <dfn data-x="concept-environment-execution-ready-flag" data-export=""
+   data-dfn-for="environment">execution ready flag</dfn></dt>
+   <dd><p>A flag that indicates whether the environment setup is done. It is initially
+   unset.</p></dd>
+  </dl>
+
+  <p>An <dfn data-export="">environment settings object</dfn> is an <span>environment</span> that
+  additionally specifies algorithms for:</p>
+
+  <dl>
+
+   <dt>A <dfn data-export="" data-dfn-for="environment settings object">realm execution
+   context</dfn></dt>
+
+   <dd>
+
+    <p>A <span>JavaScript execution context</span> shared by all
+    <span data-x="script">scripts</span> that use this settings object, i.e. all scripts in a given
+    <span>JavaScript realm</span>. When we <span>run a classic script</span> or <span>run a module
+    script</span>, this execution context becomes the top of the <span>JavaScript execution context
+    stack</span>, on top of which another execution context specific to the script in question is
+    pushed. (This setup ensures <span data-x="js-ParseScript">ParseScript</span> and <span
+    data-x="js-ModuleEvaluation">ModuleEvaluation</span> know which Realm to use.)</p>
+
+   </dd>
+
+   <dt>A <dfn data-x="concept-settings-object-module-map" data-export="" data-dfn-for="environment
+   settings object">module map</dfn></dt>
+
+   <dd>
+
+    <p>A <span>module map</span> that is used when importing JavaScript modules.</p>
+
+   </dd>
+
+   <dt>A <dfn data-export="" data-dfn-for="environment settings object">responsible browsing
+   context</dfn></dt>
+
+   <dd>
+
+    <p>A <span>browsing context</span> that is assigned responsibility for actions taken by the
+    scripts that use this <span>environment settings object</span>.</p>
+
+    <p class="example">When a script creates and <span data-x="navigate">navigates</span> a new
+    <span>top-level browsing context</span>, the <code data-x="dom-opener">opener</code> attribute
+    of the new <span>browsing context</span>'s <code>Window</code> object will be set to the
+    <span>responsible browsing context</span>'s <code>WindowProxy</code> object.</p>
+
+   </dd>
+
+   <dt>A <dfn data-export="" data-dfn-for="environment settings object">responsible event
+   loop</dfn></dt>
+
+   <dd>
+
+    <p>An <span>event loop</span> that is used when it would not be immediately clear what event
+    loop to use.</p>
+
+   </dd>
+
+   <dt>A <dfn data-export="" data-dfn-for="environment settings object">responsible document</dfn></dt>
+
+   <dd>
+
+    <p>A <code>Document</code> that is assigned responsibility for actions taken by the scripts that
+    use this <span>environment settings object</span>.</p>
+
+    <p class="example">For example, the <span data-x="concept-document-url">URL</span> of the
+    <span>responsible document</span> is used to set the <span
+    data-x="concept-document-url">URL</span> of the <code>Document</code> after it has been reset
+    using <code data-x="dom-document-open">document.open()</code>.</p>
+
+    <p>If the <span>responsible event loop</span> is not a <span>browsing context</span> <span>event loop</span>,
+    then the <span>environment settings object</span> has no <span>responsible document</span>.</p>
+
+   </dd>
+
+   <dt>An <dfn data-export="" data-dfn-for="environment settings object">API URL character encoding</dfn></dt>
+
+   <dd>
+
+    <p>A character encoding used to encode URLs by APIs called by scripts that use this <span>environment
+    settings object</span>.</p>
+
+   </dd>
+
+   <dt>An <dfn data-export="" data-dfn-for="environment settings object">API base URL</dfn></dt>
+
+   <dd>
+
+    <p>A <span>URL</span> used by APIs called by scripts that use this <span>environment settings
+    object</span> to <span data-x="parse a url">parse URLs</span>.</p>
+
+   </dd>
+
+   <dt>An <dfn data-x="concept-settings-object-origin" data-export="" data-dfn-for="environment
+   settings object">origin</dfn></dt>
+
+   <dd>
+
+    <p>An <span>origin</span> used in security checks.</p>
+
+   </dd>
+
+   <dt>An <dfn data-export="" data-dfn-for="environment settings object">HTTPS state</dfn></dt>
+
+   <dd><p>An <span>HTTPS state value</span> representing the security properties of the network
+   channel used to deliver the resource with which the <span>environment settings object</span> is
+   associated.</p></dd>
+
+   <dt>A <dfn data-x="concept-settings-object-referrer-policy" data-export=""
+   data-dfn-for="environment settings object">referrer policy</dfn></dt>
+
+   <dd><p>The default <span>referrer policy</span> for <span data-x="concept-fetch">fetches</span>
+   performed using this <span>environment settings object</span> as a <span
+   data-x="concept-request-client">request client</span>. <ref spec=REFERRERPOLICY>
+
+  </dl>
+
+  <p>An <span>environment settings object</span> also has an <dfn>outstanding rejected promises
+  weak set</dfn> and an <dfn>about-to-be-notified rejected promises list</dfn>, used to track
+  <a href="#unhandled-promise-rejections">unhandled promise rejections</a>. The <span>outstanding
+  rejected promises weak set</span> must not create strong references to any of its members, and
+  implementations are free to limit its size, e.g. by removing old entries from it when new ones
+  are added.</p>
+
+  

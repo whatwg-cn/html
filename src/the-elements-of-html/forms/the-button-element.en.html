@@ -1,0 +1,253 @@
+<h4>The <dfn><code>button</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Interactive content</span>.</dd>
+   <dd><span data-x="category-listed">Listed</span>, <span data-x="category-label">labelable</span>, and <span data-x="category-submit">submittable</span> <span>form-associated element</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>, but there must be no <span>interactive content</span> descendant.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-fe-autofocus">autofocus</code></dd>
+   <dd><code data-x="attr-fe-disabled">disabled</code></dd>
+   <dd><code data-x="attr-fae-form">form</code></dd>
+   <dd><code data-x="attr-fs-formaction">formaction</code></dd>
+   <dd><code data-x="attr-fs-formenctype">formenctype</code></dd>
+   <dd><code data-x="attr-fs-formmethod">formmethod</code></dd>
+   <dd><code data-x="attr-fs-formnovalidate">formnovalidate</code></dd>
+   <dd><code data-x="attr-fs-formtarget">formtarget</code></dd>
+   <dd><code data-x="attr-button-menu">menu</code></dd>
+   <dd><code data-x="attr-fe-name">name</code></dd>
+   <dd><code data-x="attr-button-type">type</code></dd>
+   <dd><code data-x="attr-button-value">value</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLButtonElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fe-autofocus">autofocus</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fe-disabled">disabled</span>;
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-fae-form">form</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-fs-formAction">formAction</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-formEnctype">formEnctype</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-formMethod">formMethod</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fs-formNoValidate">formNoValidate</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fs-formTarget">formTarget</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fe-name">name</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-button-type">type</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-button-value">value</span>;
+  [<span>CEReactions</span>] attribute <span>HTMLMenuElement</span>? <span data-x="dom-button-menu">menu</span>;
+
+  readonly attribute boolean <span data-x="dom-cva-willValidate">willValidate</span>;
+  readonly attribute <span>ValidityState</span> <span data-x="dom-cva-validity">validity</span>;
+  readonly attribute DOMString <span data-x="dom-cva-validationMessage">validationMessage</span>;
+  boolean <span data-x="dom-cva-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-cva-reportValidity">reportValidity</span>();
+  void <span data-x="dom-cva-setCustomValidity">setCustomValidity</span>(DOMString error);
+
+  [SameObject] readonly attribute <span>NodeList</span> <span data-x="dom-lfe-labels">labels</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>button</code> element <span>represents</span> a button labeled by its contents.</p>
+
+  <p>The element is a <span data-x="concept-button">button</span>.</p>
+
+  <p>The <dfn><code data-x="attr-button-type">type</code></dfn> attribute controls the behavior of
+  the button when it is activated. It is an <span>enumerated attribute</span>. The following table
+  lists the keywords and states for the attribute &mdash; the keywords in the left column map to the
+  states in the cell in the second column on the same row as the keyword.</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th> Keyword
+     <th> State
+     <th> Brief description
+   <tbody>
+    <tr>
+     <td><dfn><code data-x="attr-button-type-submit">submit</code></dfn>
+     <td><span data-x="attr-button-type-submit-state">Submit Button</span>
+     <td>Submits the form.
+    <tr>
+     <td><dfn><code data-x="attr-button-type-reset">reset</code></dfn>
+     <td><span data-x="attr-button-type-reset-state">Reset Button</span>
+     <td>Resets the form.
+    <tr>
+     <td><dfn><code data-x="attr-button-type-button">button</code></dfn>
+     <td><span data-x="attr-button-type-button-state">Button</span>
+     <td>Does nothing.
+    <tr>
+     <td><dfn><code data-x="attr-button-type-menu">menu</code></dfn>
+     <td><span data-x="attr-button-type-menu-state">Menu</span>
+     <td>Shows a menu.
+  </table>
+
+  <p>The <i data-x="missing value default">missing value default</i> is the <span data-x="attr-button-type-submit-state">Submit
+  Button</span> state.</p>
+
+  <p>If the <code data-x="attr-button-type">type</code> attribute is in the <span
+  data-x="attr-button-type-submit-state">Submit Button</span> state, the element is specifically a
+  <span data-x="concept-submit-button">submit button</span>.</p>
+
+  <div w-nodev>
+
+  <p><strong>Constraint validation</strong>: If the <code data-x="attr-button-type">type</code>
+  attribute is in the <span data-x="attr-button-type-reset-state">Reset Button</span> state, the
+  <span data-x="attr-button-type-button-state">Button</span> state, or the <span
+  data-x="attr-button-type-menu-state">Menu</span> state, the element is <span>barred from constraint
+  validation</span>.</p>
+
+  <p>A <code>button</code> element's <span>activation behavior</span> is to run the steps defined in
+  the following list for the current state of this element's <code
+  data-x="attr-button-type">type</code> attribute, if this element is not <span
+  data-x="concept-fe-disabled">disabled</span>, and do nothing otherwise:</p>
+
+  <dl>
+
+   <dt> <dfn data-x="attr-button-type-submit-state">Submit Button</dfn> </dt>
+
+   <dd><p>If the element has a <span>form owner</span> and the element's <span>node document</span> is
+   <span>fully active</span>, the element must <span data-x="concept-form-submit">submit</span> the
+   <span>form owner</span> from the <code>button</code> element.</p></dd>
+
+   <dt> <dfn data-x="attr-button-type-reset-state">Reset Button</dfn> </dt>
+
+   <dd><p>If the element has a <span>form owner</span> and the element's <span>node document</span> is
+   <span>fully active</span>, the element must <span data-x="concept-form-reset">reset</span> the
+   <span>form owner</span>.</p></dd>
+
+   <dt> <dfn data-x="attr-button-type-button-state">Button</dfn>
+
+   <dd><p>Do nothing.</p></dd>
+
+   <dt> <dfn data-x="attr-button-type-menu-state">Menu</dfn>
+
+   <dd>
+
+    <p>The element must follow these steps:</p>
+
+    <ol>
+
+     <li><p>If the <code>button</code> is not <span>being rendered</span>, abort these
+     steps.</p></li>
+
+     <li><p>If the <code>button</code> element's <span>node document</span> is not <span>fully
+     active</span>, abort these steps.</p></li>
+
+     <li><p>Let <var>menu</var> be the element's <span>designated pop-up menu</span>, if
+     any. If there isn't one, then abort these steps.</p></li>
+
+     <li><p>Let <var>build</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-show">show</code> at <var>menu</var>, using
+     <code>RelatedEvent</code>, with the <code data-x="dom-Event-cancelable">cancelable</code>
+     attribute initialized to true and the <code
+     data-x="dom-RelatedEvent-relatedTarget">relatedTarget</code> attribute initialized to the
+     <code>button</code> element.</p></li>
+     <!-- v2: include modifier key information -->
+
+     <li><p>If <var>build</var> is true, then <span data-x="build and show a menu">build and
+     show</span> the menu for <var>menu</var>, with the <code>button</code> element as the
+     subject.</p></li>
+
+    </ol>
+
+   </dd>
+
+  </dl>
+
+  </div>
+
+  <p>The <code data-x="attr-fae-form">form</code> attribute is used to explicitly associate the
+  <code>button</code> element with its <span>form owner</span>. The <code
+  data-x="attr-fe-name">name</code> attribute represents the element's name. The <code
+  data-x="attr-fe-disabled">disabled</code> attribute is used to make the control non-interactive and
+  to prevent its value from being submitted. The <code data-x="attr-fe-autofocus">autofocus</code>
+  attribute controls focus. The <code data-x="attr-fs-formaction">formaction</code>, <code
+  data-x="attr-fs-formenctype">formenctype</code>, <code
+  data-x="attr-fs-formmethod">formmethod</code>, <code
+  data-x="attr-fs-formnovalidate">formnovalidate</code>, and <code
+  data-x="attr-fs-formtarget">formtarget</code> attributes are <span>attributes for form
+  submission</span>.</p>
+
+  <p class="note">The <code data-x="attr-fs-formnovalidate">formnovalidate</code> attribute can be
+  used to make submit buttons that do not trigger the constraint validation.</p>
+
+  <p>The <code data-x="attr-fs-formaction">formaction</code>, <code
+  data-x="attr-fs-formenctype">formenctype</code>, <code
+  data-x="attr-fs-formmethod">formmethod</code>, <code
+  data-x="attr-fs-formnovalidate">formnovalidate</code>, and <code
+  data-x="attr-fs-formtarget">formtarget</code> must not be specified if the element's <code
+  data-x="attr-button-type">type</code> attribute is not in the <span
+  data-x="attr-button-type-submit-state">Submit Button</span> state.</p>
+
+  <p>The <dfn><code data-x="attr-button-value">value</code></dfn> attribute gives the element's value
+  for the purposes of form submission. The element's <span data-x="concept-fe-value">value</span> is
+  the value of the element's <code data-x="attr-button-value">value</code> attribute, if there is
+  one, or the empty string otherwise.</p>
+
+  <p class="note">A button (and its value) is only included in the form submission if the button
+  itself was used to initiate the form submission.</p>
+
+  <hr>
+
+  <p>If the element's <code data-x="attr-button-type">type</code> attribute is in the <span
+  data-x="attr-button-type-menu-state">Menu</span> state, the <dfn><code data-x="attr-button-menu">menu</code></dfn> attribute must be specified to give the element's
+  menu. The value must be the <span data-x="concept-id">ID</span> of a <code>menu</code> element in
+  the same <span>tree</span> whose <code data-x="attr-menu-type">type</code> attribute is in the
+  <span data-x="popup menu state">popup menu</span> state. The attribute must not be specified if
+  the element's <code data-x="attr-button-type">type</code> attribute is not in the <span
+  data-x="attr-button-type-menu-state">Menu</span> state.</p>
+
+  <div w-nodev>
+
+  <p>A <code>button</code> element's <dfn>designated pop-up menu</dfn> is the first element in the
+  <code>button</code>'s <span>tree</span> whose ID is that given by the <code>button</code>
+  element's <code data-x="attr-button-menu">menu</code> attribute, if there is such an element and
+  its <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup menu
+  state">popup menu</span> state; otherwise, the element has no <span>designated pop-up
+  menu</span>.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-button-value">value</code></dfn> and <dfn><code data-x="dom-button-menu">menu</code></dfn> IDL attributes must <span>reflect</span> the
+  content attributes of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-button-type">type</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name, <span>limited to only known
+  values</span>.</p>
+
+  <p>The <code data-x="dom-cva-willValidate">willValidate</code>, <code
+  data-x="dom-cva-validity">validity</code>, and <code
+  data-x="dom-cva-validationMessage">validationMessage</code> IDL attributes, and the <code
+  data-x="dom-cva-checkValidity">checkValidity()</code>, <code
+  data-x="dom-cva-reportValidity">reportValidity()</code>, and <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> methods, are part of the
+  <span>constraint validation API</span>. The <code data-x="dom-lfe-labels">labels</code> IDL
+  attribute provides a list of the element's <code>label</code>s. The <code
+  data-x="dom-fe-autofocus">autofocus</code>, <code data-x="dom-fe-disabled">disabled</code>, <code
+  data-x="dom-fae-form">form</code>, and <code data-x="dom-fe-name">name</code> IDL attributes are
+  part of the element's forms API.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following button is labeled "Show hint" and pops up a dialog box when activated:</p>
+
+   <pre>&lt;button type=button
+        onclick="alert('This 15-20 minute piece was composed by George Gershwin.')">
+ Show hint
+&lt;/button></pre>
+
+  </div>
+
+
+
+
+  

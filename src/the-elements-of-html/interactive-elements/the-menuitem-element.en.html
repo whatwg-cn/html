@@ -1,0 +1,231 @@
+<h4 id="the-menuitem-element">The <dfn><code>menuitem</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>menu</code> element whose <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup menu state">popup menu</span> state.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="text content">Text</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-menuitem-type">type</code></dd>
+   <dd><code data-x="attr-menuitem-label">label</code></dd>
+   <dd><code data-x="attr-menuitem-icon">icon</code></dd>
+   <dd><code data-x="attr-menuitem-disabled">disabled</code></dd>
+   <dd><code data-x="attr-menuitem-checked">checked</code></dd>
+   <dd><code data-x="attr-menuitem-radiogroup">radiogroup</code></dd>
+   <dd><code data-x="attr-menuitem-default">default</code></dd>
+   <dd>Also, the <code data-x="attr-menuitem-title">title</code> attribute <span data-x="attr-menuitem-title">has special semantics</span> on this element.</dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLMenuItemElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-menuitem-type">type</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-menuitem-label">label</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-menuitem-icon">icon</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-menuitem-disabled">disabled</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-menuitem-checked">checked</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-menuitem-radiogroup">radiogroup</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-menuitem-default">default</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>menuitem</code> element represents a command that the user can invoke from a popup
+  menu (either a <span data-x="attr-contextmenu">context menu</span> or the menu of a <span
+  data-x="attr-button-type-menu-state">menu button</span>).</p>
+
+  <p>A <code>menuitem</code> element that uses one or more of the
+   <code data-x="attr-menuitem-type">type</code>,
+   <code data-x="attr-menuitem-icon">icon</code>,
+   <code data-x="attr-menuitem-disabled">disabled</code>,
+   <code data-x="attr-menuitem-checked">checked</code>, and
+   <code data-x="attr-menuitem-radiogroup">radiogroup</code>
+  attributes, or has a non-empty <span data-x="concept-menuitem-label">label</span>, defines a new
+  command.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-menuitem-type">type</code></dfn> attribute indicates the kind of
+  command: either a normal command with an associated action, or a state or option that can be
+  toggled, or a selection of one item from a list of items.</p>
+
+  <p>The attribute is an <span>enumerated attribute</span> with three keywords and states. The
+  "<dfn><code data-x="attr-menuitem-type-keyword-command">command</code></dfn>" keyword maps to the
+  <span data-x="attr-menuitem-type-state-command">Command</span> state, the "<dfn><code
+  data-x="attr-menuitem-type-keyword-checkbox">checkbox</code></dfn>" keyword maps to the <span
+  data-x="attr-menuitem-type-state-checkbox">Checkbox</span> state, and the "<dfn><code
+  data-x="attr-menuitem-type-keyword-radio">radio</code></dfn>" keyword maps to the <span
+  data-x="attr-menuitem-type-state-radio">Radio</span> state. The <i data-x="missing value
+  default">missing value default</i> is the <span
+  data-x="attr-menuitem-type-state-command">Command</span> state.</p>
+
+  <dl>
+
+   <dt>The <dfn data-x="attr-menuitem-type-state-command">Command</dfn> state</dt>
+
+   <dd><p>The element <span>represents</span> a normal command with an associated action.</p></dd>
+
+   <dt>The <dfn data-x="attr-menuitem-type-state-checkbox">Checkbox</dfn> state</dt>
+
+   <dd><p>The element <span>represents</span> a state or option that can be toggled.</p></dd>
+
+   <dt>The <dfn data-x="attr-menuitem-type-state-radio">Radio</dfn> state</dt>
+
+   <dd><p>The element <span>represents</span> a selection of one item from a list of items.</p></dd>
+
+  </dl>
+
+  <p>The <dfn><code data-x="attr-menuitem-label">label</code></dfn> attribute gives the name of the
+  command, as shown to the user. If the <code data-x="attr-menuitem-label">label</code> attribute is
+  specified, it must have a value that is not the empty string.</p>
+
+  <p>The <dfn data-x="concept-menuitem-label">label</dfn> of a <code>menuitem</code> element is the
+  value of the <code data-x="attr-menuitem-label">label</code> content attribute, if there is one
+  and its value is not the empty string, or, otherwise, the result of <span
+  data-x="strip and collapse whitespace">stripping and collapsing whitespace</span> from the
+  <span>child text content</span> of the <code>menuitem</code> element. The <span
+  data-x="concept-menuitem-label">label</span> must not be the empty string if the element's <code
+  data-x="attr-menuitem-type">type</code> attribute value is in the <span
+  data-x="attr-menuitem-type-state-command">Command</span> state.</p>
+
+  <p>The <dfn><code data-x="attr-menuitem-icon">icon</code></dfn> attribute gives a picture that
+  represents the command. If the attribute is specified, the attribute's value must contain a
+  <span>valid non-empty URL potentially surrounded by spaces</span>. <span w-nodev>To obtain
+  the <span>absolute URL</span> of the icon when the attribute's value is not the empty string, the
+  attribute's value must be <span data-x="parse a url">parsed</span> relative to the element's
+  <span>node document</span>. When the attribute is absent, or its value is the empty string, or
+  <span data-x="parse a url">parsing</span> its value fails, there is no icon.</span></p> <!-- this
+  is affected by the base URL being changed, so users of this should cache the image once they've
+  fetched it once, at least until the relative url changes again -->
+
+  <p>The <dfn><code data-x="attr-menuitem-disabled">disabled</code></dfn> attribute is a
+  <span>boolean attribute</span> that, if present, indicates that the command is not available in
+  the current state.</p>
+
+  <p class="note">The distinction between <code data-x="attr-menuitem-disabled">disabled</code> and
+  <code data-x="attr-hidden">hidden</code> is subtle. A command would be disabled if, in the same
+  context, it could be enabled if only certain aspects of the situation were changed. A command
+  would be marked as hidden if, in that situation, the command will never be enabled. For example,
+  in the context menu for a water faucet, the command "open" might be disabled if the faucet is
+  already open, but the command "eat" would be marked hidden since the faucet could never be
+  eaten.</p>
+
+  <p>The <dfn><code data-x="attr-menuitem-checked">checked</code></dfn> attribute is a <span>boolean
+  attribute</span> that, if present, indicates that the command is selected. The attribute must be
+  omitted unless the <code data-x="attr-menuitem-type">type</code> attribute is in either the <span
+  data-x="attr-menuitem-type-state-checkbox">Checkbox</span> state or the <span
+  data-x="attr-menuitem-type-state-radio">Radio</span> state.</p>
+
+  <p>The <dfn><code data-x="attr-menuitem-radiogroup">radiogroup</code></dfn> attribute gives the
+  name of the group of commands that will be toggled when the command itself is toggled, for
+  commands whose <code data-x="attr-menuitem-type">type</code> attribute has the value "<code
+  data-x="">radio</code>". The scope of the name is the child list of the parent element. The
+  attribute must be omitted unless the <code data-x="attr-menuitem-type">type</code> attribute is in
+  the <span data-x="attr-menuitem-type-state-radio">Radio</span> state. When specified, the
+  attribute's value must be a non-empty string.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-menuitem-title">title</code></dfn> attribute gives a hint describing
+  the command, which might be shown to the user to help them.</p>
+
+  <p>The <dfn><code data-x="attr-menuitem-default">default</code></dfn> attribute indicates, if
+  present, that the command is the one that would have been invoked if the user had directly
+  activated the menu's subject instead of using the menu. The <code
+  data-x="attr-menuitem-default">default</code> attribute is a <span>boolean attribute</span>.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-menuitem-type">type</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name, <span>limited to only known
+  values</span>.</p>
+
+  <p>The <dfn><code data-x="dom-menuitem-label">label</code></dfn> IDL attribute, on getting, if
+  there is a <code data-x="attr-menuitem-label">label</code> content attribute, must return that
+  attribute's value; otherwise, it must return the element's <span
+  data-x="concept-menuitem-label">label</span>. On setting, the element's <code
+  data-x="attr-menuitem-label">label</code> content attribute must be set to the new value.</p>
+
+  <p>The <dfn><code data-x="dom-menuitem-icon">icon</code></dfn>, <dfn><code
+  data-x="dom-menuitem-disabled">disabled</code></dfn>, <dfn><code
+  data-x="dom-menuitem-checked">checked</code></dfn>, and <dfn><code
+  data-x="dom-menuitem-radiogroup">radiogroup</code></dfn>, and <dfn><code
+  data-x="dom-menuitem-default">default</code></dfn> IDL attributes must <span>reflect</span> the
+  respective content attributes of the same name.</p>
+
+  <hr>
+
+  <p>The element's <span>activation behavior</span> is to run the steps defined in the following
+  list for the current state of this <code data-x="attr-menuitem-type">type</code> attribute, if
+  this element's <span data-x="command-facet-DisabledState">Disabled State</span> is false
+  (enabled), and do nothing otherwse:</p>
+
+  <dl class="switch">
+
+   <dt>If the <code data-x="attr-menuitem-type">type</code> attribute is in the <span
+   data-x="attr-menuitem-type-state-checkbox">Checkbox</span> state</dt>
+
+   <dd><p>If the element has a <code data-x="attr-menuitem-checked">checked</code> attribute, the UA
+   must remove that attribute. Otherwise, the UA must add a <code
+   data-x="attr-menuitem-checked">checked</code> attribute, with the literal value "<code
+   data-x="">checked</code>".</p></dd>
+
+
+   <dt>If the <code data-x="attr-menuitem-type">type</code> attribute is in the <span
+   data-x="attr-menuitem-type-state-radio">Radio</span> state</dt>
+
+   <dd><p>If the element has a parent, then the UA must walk the list of child nodes of that parent
+   element, and for each node that is a <code>menuitem</code> element, if that element has a <code
+   data-x="attr-menuitem-radiogroup">radiogroup</code> attribute whose value exactly matches the
+   current element's (treating missing <code data-x="attr-menuitem-radiogroup">radiogroup</code>
+   attributes as if they were the empty string), and has a <code
+   data-x="attr-menuitem-checked">checked</code> attribute, must remove that attribute.</p>
+
+   <p>Then, the element's <code data-x="attr-menuitem-checked">checked</code> attribute must be set
+   to the literal value "<code data-x="">checked</code>".</p></dd>
+
+
+   <dt>Otherwise</dt>
+
+   <dd><p>The element's <span>activation behavior</span> is to do nothing.</p></dd>
+
+  </dl>
+
+  <p class="note">Firing a synthetic <code data-x="event-click">click</code> event at the element
+  does not cause any of the actions described above to happen.</p>
+
+  <!-- v2COMMAND: Expose the Triggers facet again. -->
+
+  </div>
+
+  <p class="note">The <code>menuitem</code> element is not rendered except as <span
+  data-x="menu">part of a popup menu</span>.</p>
+
+  <div class="example">
+
+   <p>Here is an example of a pop-up menu button with three options that let the user toggle between
+   left, center, and right alignment. One could imagine such a toolbar as part of a text editor. The
+   menu also has a separator followed by another menu item labeled "Publish", though that menu item
+   is disabled.</p>
+
+   <pre>&lt;button type=menu menu=editmenu>Commands...&lt;/button>
+&lt;menu type="context" id="editmenu">
+ &lt;menuitem type="radio" radiogroup="alignment" checked="checked"
+          label="Left" icon="icons/alL.png" onclick="setAlign('left')">
+ &lt;menuitem type="radio" radiogroup="alignment"
+          label="Center" icon="icons/alC.png" onclick="setAlign('center')">
+ &lt;menuitem type="radio" radiogroup="alignment"
+          label="Right" icon="icons/alR.png" onclick="setAlign('right')">
+ &lt;hr>
+ &lt;menuitem type="command" disabled
+          label="Publish" icon="icons/pub.png" onclick="publish()">
+&lt;/menu></pre>
+
+  </div>
+
+
+  

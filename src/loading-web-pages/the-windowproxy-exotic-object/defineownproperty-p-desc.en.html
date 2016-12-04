@@ -1,0 +1,29 @@
+<h4 id="windowproxy-defineownproperty">[[DefineOwnProperty]] ( <var>P</var>, <var>Desc</var>
+  )</h4>
+
+  <ol>
+   <li><p>Let <var>W</var> be the value of the
+   [[<span data-x="concept-windowproxy-window">Window</span>]] internal slot of
+   <b>this</b>.</p></li>
+
+   <li>
+    <p>If <span>IsPlatformObjectSameOrigin</span>(<var>W</var>) is true, then:
+
+    <ol>
+     <li><p>If <var>P</var> is an <span>array index property name</span>, return false.</p></li>
+
+     <li>
+      <p>Return ? <span>OrdinaryDefineOwnProperty</span>(<var>W</var>, <var>P</var>,
+      <var>Desc</var>).</p>
+
+      <p class="note">This is a <span>willful violation</span> of the JavaScript specification's
+      <span>invariants of the essential internal methods</span> to maintain compatibility with
+      existing Web content. See <a href="https://github.com/tc39/ecma262/issues/672">tc39/ecma262
+      issue #672</a> for more information. <ref spec=JAVASCRIPT></p>
+     </li>
+    </ol>
+
+   <li><p>Throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+  </ol>
+
+  

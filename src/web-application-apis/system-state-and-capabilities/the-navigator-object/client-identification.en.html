@@ -1,0 +1,199 @@
+<h5>Client identification</h5>
+
+  <pre class="idl">[NoInterfaceObject, Exposed=(Window,Worker)]
+interface <dfn>NavigatorID</dfn> {
+  readonly attribute DOMString <span data-x="dom-navigator-appCodeName">appCodeName</span>; // constant "Mozilla"
+  readonly attribute DOMString <span data-x="dom-navigator-appName">appName</span>; // constant "Netscape"
+  readonly attribute DOMString <span data-x="dom-navigator-appVersion">appVersion</span>;
+  readonly attribute DOMString <span data-x="dom-navigator-platform">platform</span>;
+  readonly attribute DOMString <span data-x="dom-navigator-product">product</span>; // constant "Gecko"
+  [Exposed=Window] readonly attribute DOMString <span data-x="dom-navigator-productSub">productSub</span>;
+  readonly attribute DOMString <span data-x="dom-navigator-userAgent">userAgent</span>;
+  [Exposed=Window] readonly attribute DOMString <span data-x="dom-navigator-vendor">vendor</span>;
+  [Exposed=Window] readonly attribute DOMString <span data-x="dom-navigator-vendorSub">vendorSub</span>; // constant ""
+};</pre>
+
+  <p>In certain cases, despite the best efforts of the entire industry, Web browsers have bugs and
+  limitations that Web authors are forced to work around.</p>
+
+  <p>This section defines a collection of attributes that can be used to determine, from script, the
+  kind of user agent in use, in order to work around these issues.</p>
+
+  <div w-nodev>
+
+  <p>The user agent has a <dfn data-x="concept-navigator-compatibility-mode">navigator compatibility
+  mode</dfn>, which is either <i>Chrome</i>, <i>Gecko</i>, or <i>WebKit</i>.</p>
+
+  <p class="note">The <span data-x="concept-navigator-compatibility-mode">navigator compatibility
+  mode</span> constrains the <span>NavigatorID</span> interface to the combinations of attribute
+  values and presence of <code data-x="dom-navigator-taintEnabled">taintEnabled()</code> and <code
+  data-x="dom-navigator-oscpu">oscpu</code> that are known to be compatible with existing Web
+  content.</p>
+
+  </div>
+
+  <p>Client detection should always be limited to detecting known current versions; future versions
+  and unknown versions should always be assumed to be fully compliant.</p>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-appCodeName">appCodeName</code></dt>
+   <dd>
+    <p>Returns the string "<code data-x="">Mozilla</code>".</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-appName">appName</code></dt>
+   <dd>
+    <p>Returns the string "<code data-x="">Netscape</code>".</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-appVersion">appVersion</code></dt>
+   <dd>
+    <p>Returns the version of the browser.</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-platform">platform</code></dt>
+   <dd>
+    <p>Returns the name of the platform.</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-product">product</code></dt>
+   <dd>
+    <p>Returns the string "<code data-x="">Gecko</code>".</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-productSub">productSub</code></dt>
+   <dd>
+    <p>Returns either the string "<code data-x="">20030107</code>", or the string "<code data-x="">20100101</code>".</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-userAgent">userAgent</code></dt>
+   <dd>
+    <p>Returns the complete `<code data-x="">User-Agent</code>` header.</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-vendor">vendor</code></dt>
+   <dd>
+    <p>Returns either the empty string, the string "<code data-x="">Apple Computer, Inc.</code>", or
+    the string "<code data-x="">Google Inc.</code>".</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-vendorSub">vendorSub</code></dt>
+   <dd>
+    <p>Returns the empty string.</p>
+   </dd>
+
+
+  </dl>
+
+  <div w-nodev>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-navigator-appCodeName">appCodeName</code></dfn></dt>
+   <dd><p>Must return the string "<code data-x="">Mozilla</code>".</p></dd>
+
+   <!-- appMinorVersion: IE only. In IE8b1, returns " Beta" (with the space) -->
+
+   <dt><dfn><code data-x="dom-navigator-appName">appName</code></dfn></dt>
+   <dd><p>Must return the string "<code data-x="">Netscape</code>".</p></dd>
+
+   <dt><dfn><code data-x="dom-navigator-appVersion">appVersion</code></dfn></dt>
+   <dd><p>Must return either the string "<code data-x="">4.0</code>" or a string representing the
+   version of the browser in detail, e.g. "<code data-x="">1.0 (VMS; en-US)
+   Mellblomenator/9000</code>".</p></dd>
+
+   <!-- buildID: Mozilla only -->
+
+   <!-- oscpu: Mozilla only -->
+
+   <dt><dfn><code data-x="dom-navigator-platform">platform</code></dfn></dt>
+   <dd><p>Must return either the empty string or a string representing the platform on which the
+   browser is executing, e.g. "<code data-x="">MacIntel</code>", "<code data-x="">Win32</code>",
+   "<code data-x="">FreeBSD i386</code>", "<code data-x="">WebTV OS</code>".</p></dd>
+
+   <dt><dfn><code data-x="dom-navigator-product">product</code></dfn></dt>
+   <dd><p>Must return the string "<code data-x="">Gecko</code>".</p></dd>
+
+   <dt><dfn><code data-x="dom-navigator-productSub">productSub</code></dfn></dt>
+   <dd>
+
+    <p>Must return the appropriate string from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the <span data-x="concept-navigator-compatibility-mode">navigator compatibility
+     mode</span> is <i>Chrome</i> or <i>WebKit</i></dt>
+     <dd><p>The string "<code data-x="">20030107</code>".</p></dd>
+
+     <dt>If the <span data-x="concept-navigator-compatibility-mode">navigator compatibility
+     mode</span> is <i>Gecko</i></dt>
+     <dd><p>The string "<code data-x="">20100101</code>".</p></dd>
+
+    </dl>
+
+   </dd>
+
+   <!-- securityPolicy: Mozilla only; always returns "" -->
+
+   <dt><dfn><code data-x="dom-navigator-userAgent">userAgent</code></dfn></dt>
+   <dd><p>Must return the <span data-x="default-user-agent-value">default `<code>User-Agent</code>`
+   value</span>.</p></dd>
+
+   <dt><dfn><code data-x="dom-navigator-vendor">vendor</code></dfn></dt>
+   <dd>
+
+    <p>Must return the appropriate string from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the <span data-x="concept-navigator-compatibility-mode">navigator compatibility
+     mode</span> is <i>Chrome</i></dt>
+     <dd><p>The string "<code data-x="">Google Inc.</code>".</p></dd>
+
+     <dt>If the <span data-x="concept-navigator-compatibility-mode">navigator compatibility
+     mode</span> is <i>Gecko</i></dt>
+     <dd><p>The empty string.</p></dd>
+
+     <dt>If the <span data-x="concept-navigator-compatibility-mode">navigator compatibility
+     mode</span> is <i>WebKit</i></dt>
+     <dd><p>The string "<code data-x="">Apple Computer, Inc.</code>".</p></dd>
+
+    </dl>
+
+   </dd>
+
+   <dt><dfn><code data-x="dom-navigator-vendorSub">vendorSub</code></dfn></dt>
+   <dd><p>Must return the empty string.</p></dd>
+
+  </dl>
+
+  <p>If the <span data-x="concept-navigator-compatibility-mode">navigator compatibility mode</span>
+  is <i>Gecko</i>, then the user agent must also support the following partial interface:</p>
+
+  <pre class="idl">partial interface <span id="NavigatorID-partial">NavigatorID</span> {
+  [Exposed=Window] boolean <span data-x="dom-navigator-taintEnabled">taintEnabled</span>(); // constant false
+  [Exposed=Window] readonly attribute DOMString <span data-x="dom-navigator-oscpu">oscpu</span>;
+};</pre>
+
+  <p>The <dfn><code data-x="dom-navigator-taintEnabled">taintEnabled()</code></dfn> method must
+  return false.</p>
+
+  <p>The <dfn><code data-x="dom-navigator-oscpu">oscpu</code></dfn> attribute's getter must return
+  either the empty string or a string representing the platform on which the browser is executing,
+  e.g. "<code data-x="">Windows NT 10.0; Win64; x64</code>", "<code data-x="">Linux
+  x86_64</code>".</p>
+
+  <!-- similar paragraph in next section -->
+  <p class="warning">Any information in this API that varies from user to user can be used to
+  profile the user. In fact, if enough such information is available, a user can actually be
+  uniquely identified. For this reason, user agent implementors are strongly urged to include as
+  little information in this API as possible.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  </div>
+
+  <!-- next section refers to previous section as "previous section" -->
+
+  

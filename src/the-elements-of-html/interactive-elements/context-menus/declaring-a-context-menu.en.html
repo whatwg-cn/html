@@ -1,0 +1,37 @@
+<h5>Declaring a context menu</h5>
+
+  <p>The <dfn><code data-x="attr-contextmenu">contextmenu</code></dfn> attribute gives the element's
+  context menu. The value must be the <span data-x="concept-id">ID</span> of a <code>menu</code>
+  element in the same <span>tree</span> whose <code data-x="attr-menu-type">type</code> attribute is
+  in the <span data-x="popup menu state">popup menu</span> state.</p>
+
+  <p class="note">When a user right-clicks on an element with a <code
+  data-x="attr-contextmenu">contextmenu</code> attribute, the user agent will first fire a <code
+  data-x="event-contextmenu">contextmenu</code> event at the element, and then, if that event is not
+  canceled, a <code data-x="event-show">show</code> event at the <code>menu</code> element.</p>
+
+  <div class="example">
+
+   <p>Here is an example of a context menu for an input control:</p>
+
+   <pre>&lt;form name="npc">
+ &lt;label>Character name: &lt;input name=char type=text contextmenu=namemenu required>&lt;/label>
+ &lt;menu type=context id=namemenu>
+  &lt;menuitem onclick="document.forms.npc.elements.char.value = getRandomName()">
+   Pick random name
+  &lt;menuitem onclick="prefillFields(document.forms.npc.elements.char.value)">
+   Prefill other fields based on name
+ &lt;/menu>
+&lt;/form></pre>
+
+   <p>This adds two items to the control's context menu, one called "Pick random name", and one
+   called "Prefill other fields based on name". They invoke scripts that are not shown in the
+   example above.</p>
+
+  </div>
+
+
+
+  <div w-nodev>
+
+  

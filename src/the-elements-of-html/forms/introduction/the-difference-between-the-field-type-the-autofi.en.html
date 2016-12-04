@@ -1,0 +1,80 @@
+<h5>The difference between the field type, the autofill field name, and the input modality</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The <code data-x="attr-input-type">type</code>, <code
+  data-x="attr-fe-autocomplete">autocomplete</code>, and <code
+  data-x="attr-fe-inputmode">inputmode</code> attributes can seem confusingly similar. For instance,
+  in all three cases, the string "<code data-x="">email</code>" is a valid value. This section
+  attempts to illustrate the difference between the three attributes and provides advice suggesting
+  how to use them.</p>
+
+  <p>The <code data-x="attr-input-type">type</code> attribute on <code>input</code> elements decides
+  what kind of control the user agent will use to expose the field. Choosing between different
+  values of this attribute is the same choice as choosing whether to use an <code>input</code>
+  element, a <code>textarea</code> element, a <code>select</code> element, a <code>keygen</code>
+  element, etc.</p>
+
+  <p>The <code data-x="attr-fe-autocomplete">autocomplete</code> attribute, in contrast, describes
+  what the value that the user will enter actually represents. Choosing between different values of
+  this attribute is the same choice as choosing what the label for the element will be.</p>
+
+  <p>First, consider telephone numbers. If a page is asking for a telephone number from the user,
+  the right form control to use is <code data-x="attr-input-type-tel">&lt;input type=tel></code>.
+  However, which <code data-x="attr-fe-autocomplete">autocomplete</code> value to use depends on
+  which phone number the page is asking for, whether they expect a telephone number in the
+  international format or just the local format, and so forth.</p>
+
+  <p>For example, a page that forms part of a checkout process on an e-commerce site for a customer
+  buying a gift to be shipped to a friend might need both the buyer's telephone number (in case of
+  payment issues) and the friend's telephone number (in case of delivery issues). If the site
+  expects international phone numbers (with the country code prefix), this could thus look like
+  this:</p>
+
+  <pre>&lt;p>&lt;label>Your phone number: &lt;input type=tel name=custtel autocomplete="billing tel">&lt;/label>
+&lt;p>&lt;label>Recipient's phone number: &lt;input type=tel name=shiptel autocomplete="shipping tel">&lt;/label>
+&lt;p>Please enter complete phone numbers including the country code prefix, as in "+1 555 123 4567".</pre>
+
+  <p>But if the site only supports British customers and recipients, it might instead look like this
+  (notice the use of <code data-x="attr-fe-autocomplete-tel-national">tel-national</code> rather than
+  <code data-x="attr-fe-autocomplete-tel">tel</code>):</p>
+
+  <pre>&lt;p>&lt;label>Your phone number: &lt;input type=tel name=custtel autocomplete="billing tel-national">&lt;/label>
+&lt;p>&lt;label>Recipient's phone number: &lt;input type=tel name=shiptel autocomplete="shipping tel-national">&lt;/label>
+&lt;p>Please enter complete UK phone numbers, as in "(01632) 960 123".</pre>
+
+  <p>Now, consider a person's preferred languages. The right <code
+  data-x="attr-fe-autocomplete">autocomplete</code> value is <code
+  data-x="attr-fe-autocomplete-language">language</code>. However, there could be a number of
+  different form controls used for the purpose: a text control (<code
+  data-x="attr-input-type-text">&lt;input type=text></code>), a drop-down list (<code
+  data-x="select">&lt;select></code>), radio buttons (<code data-x="attr-input-type-radio">&lt;input
+  type=radio></code>), etc. It only depends on what kind of interface is desired.</p>
+
+  <p>The <code data-x="attr-fe-inputmode">inputmode</code> decides what kind of input modality (e.g.
+  keyboard) to use, when the control is a text control.</p>
+
+  <p>Consider names. If a page just wants one name from the user, then the relevant control is <code
+  data-x="attr-input-type-text">&lt;input type=text></code>. If the page is asking for the user's
+  full name, then the relevant <code data-x="attr-fe-autocomplete">autocomplete</code> value is <code
+  data-x="attr-fe-autocomplete-name">name</code>. But if the user is Japanese, and the page is asking
+  for the user's Japanese name and the user's romanized name, then it would be helpful to the user
+  if the first field defaulted to a Japanese input modality, while the second defaulted to a Latin
+  input modality (ideally with automatic capitalization of each word). This is where the <code
+  data-x="attr-fe-inputmode">inputmode</code> attribute can help:</p>
+
+  <pre>&lt;p>&lt;label>Japanese name: &lt;input name="j" type="text" autocomplete="section-jp name" inputmode="kana">&lt;/label>
+&lt;label>Romanized name: &lt;input name="e" type="text" autocomplete="section-en name" inputmode="latin-name">&lt;/label></pre>
+
+  <p>In this example, the "<code data-x="attr-fe-autocomplete-section">section-*</code>" keywords in
+  the <code data-x="attr-fe-autocomplete">autocomplete</code> attributes' values tell the user agent
+  that the two fields expect <em>different</em> names. Without them, the user agent could
+  automatically fill the second field with the value given in the first field when the user gave a
+  value to the first field.</p>
+
+  <p class="note">The "<code data-x="">-jp</code>" and "<code data-x="">-en</code>" parts of the
+  keywords are opaque to the user agent; the user agent cannot guess, from those, that the two names
+  are expected to be in Japanese and English respectively.</p>
+
+
+  

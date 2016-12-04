@@ -1,0 +1,442 @@
+<h4>The <dfn><code>table</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>In this order: optionally a <code>caption</code> element, followed by zero or more
+   <code>colgroup</code> elements, followed optionally by a <code>thead</code> element, followed by
+   either zero or more <code>tbody</code> elements or one or more <code>tr</code> elements, followed
+   optionally by a <code>tfoot</code> element, optionally intermixed with one or more
+   <span>script-supporting elements</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLTableElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute <span>HTMLTableCaptionElement</span>? <span data-x="dom-table-caption">caption</span>;
+  <span>HTMLTableCaptionElement</span> <span data-x="dom-table-createCaption">createCaption</span>();
+  [<span>CEReactions</span>] void <span data-x="dom-table-deleteCaption">deleteCaption</span>();
+
+  [<span>CEReactions</span>] attribute <span>HTMLTableSectionElement</span>? <span data-x="dom-table-tHead">tHead</span>;
+  <span>HTMLTableSectionElement</span> <span data-x="dom-table-createTHead">createTHead</span>();
+  [<span>CEReactions</span>] void <span data-x="dom-table-deleteTHead">deleteTHead</span>();
+
+  [<span>CEReactions</span>] attribute <span>HTMLTableSectionElement</span>? <span data-x="dom-table-tFoot">tFoot</span>;
+  <span>HTMLTableSectionElement</span> <span data-x="dom-table-createTFoot">createTFoot</span>();
+  [<span>CEReactions</span>] void <span data-x="dom-table-deleteTFoot">deleteTFoot</span>();
+
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-table-tBodies">tBodies</span>;
+  <span>HTMLTableSectionElement</span> <span data-x="dom-table-createTBody">createTBody</span>();
+
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-table-rows">rows</span>;
+  <span>HTMLTableRowElement</span> <span data-x="dom-table-insertRow">insertRow</span>(optional long index = -1);
+  [<span>CEReactions</span>] void <span data-x="dom-table-deleteRow">deleteRow</span>(long index);
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>table</code> element <span>represents</span> data with more than one dimension, in
+  the form of a <span data-x="concept-table">table</span>.</p>
+
+  <p><span w-nodev>The <code>table</code> element takes part in the <span>table
+  model</span>.</span> Tables have rows, columns, and cells given by their descendants. The rows and
+  columns form a grid; a table's cells must completely cover that grid without overlap.</p>
+
+  <div w-nodev>
+
+  <p class="note">Precise rules for determining whether this conformance requirement is met are
+  described in the description of the <span>table model</span>.</p>
+
+  </div>
+
+  <p>Authors are encouraged to provide information describing how to interpret complex tables.
+  Guidance on how to <a href="#table-descriptions-techniques">provide such information</a> is given
+  below.</p>
+
+  <p>Tables must not be used as layout aids. Historically, some Web authors have misused tables in
+  HTML as a way to control their page layout. This usage is non-conforming, because tools attempting
+  to extract tabular data from such documents would obtain very confusing results. In particular,
+  users of accessibility tools like screen readers are likely to find it very difficult to navigate
+  pages with tables used for layout.</p>
+
+  <p class="note">There are a variety of alternatives to using HTML tables for layout, primarily
+  using CSS positioning and the CSS table model. <ref spec=CSS></p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>Tables can be complicated to understand and navigate. To help users with this, user agents
+  should clearly delineate cells in a table from each other, unless the user agent has classified
+  the table as a (non-conforming) layout table.</p>
+
+  </div>
+
+  <p class="note">Authors <span w-nodev>and implementors</span> are encouraged to consider
+  using some of the <a href="#table-layout-techniques">table design techniques</a> described below
+  to make tables easier to navigate for users.</p>
+
+  <div w-nodev>
+
+  <p>User agents, especially those that do table analysis on arbitrary content, are encouraged to
+  find heuristics to determine which tables actually contain data and which are merely being used
+  for layout. This specification does not define a precise heuristic, but the following are
+  suggested as possible indicators:</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th>Feature
+     <th>Indication
+   <tbody>
+    <tr>
+     <td>The use of the <code data-x="attr-aria-role">role</code> attribute with the value <code
+     data-x="attr-aria-role-presentation">presentation</code>
+     <td>Probably a layout table
+    <tr>
+     <td>The use of the non-conforming <code data-x="attr-table-border">border</code> attribute with the non-conforming value 0
+     <td>Probably a layout table
+    <tr>
+     <td>The use of the non-conforming <code data-x="attr-table-cellspacing">cellspacing</code> and
+     <code data-x="attr-table-cellpadding">cellpadding</code> attributes with the value 0
+     <td>Probably a layout table
+   <tbody>
+    <tr>
+     <td>The use of <code>caption</code>, <code>thead</code>, or <code>th</code> elements
+     <td>Probably a non-layout table
+    <tr>
+     <td>The use of the <code data-x="attr-tdth-headers">headers</code> and <code data-x="attr-th-scope">scope</code> attributes
+     <td>Probably a non-layout table
+    <tr>
+     <td>The use of the non-conforming <code data-x="attr-table-border">border</code> attribute with a value other than 0
+     <td>Probably a non-layout table
+    <tr>
+     <td>Explicit visible borders set using CSS
+     <td>Probably a non-layout table
+   <tbody>
+    <tr>
+     <td>The use of the <code data-x="attr-table-summary">summary</code> attribute
+     <td>Not a good indicator (both layout and non-layout tables have historically been given this attribute)
+  </table>
+
+  <p class="note">It is quite possible that the above suggestions are wrong. Implementors are urged
+  to provide feedback elaborating on their experiences with trying to create a layout table
+  detection heuristic.</p>
+
+  <p>If a <code>table</code> element has a (non-conforming) <code
+  data-x="attr-table-summary">summary</code> attribute, and the user agent has not classified the
+  table as a layout table, the user agent may report the contents of that attribute to the user.</p>
+
+  </div>
+
+  <hr>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-caption">caption</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns the table's <code>caption</code> element.</p>
+
+    <p>Can be set, to replace the <code>caption</code> element.</p>
+
+   </dd>
+
+   <dt><var>caption</var> = <var>table</var> . <code subdfn data-x="dom-table-createCaption">createCaption</code>()</dt>
+   <dd>
+
+    <p>Ensures the table has a <code>caption</code> element, and returns it.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-deleteCaption">deleteCaption</code>()</dt>
+   <dd>
+
+    <p>Ensures the table does not have a <code>caption</code> element.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-tHead">tHead</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns the table's <code>thead</code> element.</p>
+
+    <p>Can be set, to replace the <code>thead</code> element. If the new value is not a
+    <code>thead</code> element, throws a <span>"<code>HierarchyRequestError</code>"</span>
+    <code>DOMException</code>.</p>
+
+   </dd>
+
+   <dt><var>thead</var> = <var>table</var> . <code subdfn data-x="dom-table-createTHead">createTHead</code>()</dt>
+   <dd>
+
+    <p>Ensures the table has a <code>thead</code> element, and returns it.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-deleteTHead">deleteTHead</code>()</dt>
+   <dd>
+
+    <p>Ensures the table does not have a <code>thead</code> element.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-tFoot">tFoot</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns the table's <code>tfoot</code> element.</p>
+
+    <p>Can be set, to replace the <code>tfoot</code> element. If the new value is not a
+    <code>tfoot</code> element, throws a <span>"<code>HierarchyRequestError</code>"</span>
+    <code>DOMException</code>.</p>
+
+   </dd>
+
+   <dt><var>tfoot</var> = <var>table</var> . <code subdfn data-x="dom-table-createTFoot">createTFoot</code>()</dt>
+   <dd>
+
+    <p>Ensures the table has a <code>tfoot</code> element, and returns it.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-deleteTFoot">deleteTFoot</code>()</dt>
+   <dd>
+
+    <p>Ensures the table does not have a <code>tfoot</code> element.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-tBodies">tBodies</code></dt>
+   <dd>
+
+    <p>Returns an <code>HTMLCollection</code> of the <code>tbody</code> elements of the table.</p>
+
+   </dd>
+
+   <dt><var>tbody</var> = <var>table</var> . <code subdfn data-x="dom-table-createTBody">createTBody</code>()</dt>
+   <dd>
+
+    <p>Creates a <code>tbody</code> element, inserts it into the table, and returns it.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-rows">rows</code></dt>
+   <dd>
+
+    <p>Returns an <code>HTMLCollection</code> of the <code>tr</code> elements of the table.</p>
+
+   </dd>
+
+   <dt><var>tr</var> = <var>table</var> . <code subdfn data-x="dom-table-insertRow">insertRow</code>( [ <var>index</var> ] )</dt>
+   <dd>
+
+    <p>Creates a <code>tr</code> element, along with a <code>tbody</code> if required, inserts them
+    into the table at the position given by the argument, and returns the <code>tr</code>.</p>
+
+    <p>The position is relative to the rows in the table. The index &#x2212;1, which is the default
+    if the argument is omitted, is equivalent to inserting at the end of the table.</p>
+
+    <p>If the given position is less than &#x2212;1 or greater than the number of rows, throws an
+    <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>.</p>
+
+   </dd>
+
+   <dt><var>table</var> . <code subdfn data-x="dom-table-deleteRow">deleteRow</code>(<var>index</var>)</dt>
+   <dd>
+
+    <p>Removes the <code>tr</code> element with the given position in the table.</p>
+
+    <p>The position is relative to the rows in the table. The index &#x2212;1 is equivalent to
+    deleting the last row of the table.</p>
+
+    <p>If the given position is less than &#x2212;1 or greater than the index of the last row, or if
+    there are no rows, throws an <span>"<code>IndexSizeError</code>"</span>
+    <code>DOMException</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>In all of the following attribute and method definitions, when an element is to be
+  <dfn>table-created</dfn>, that means to <span>create an element</span> given the
+  <code>table</code> element's <span>node document</span>, the given local name, and the <span>HTML
+  namespace</span>.</p>
+
+  <p>The <dfn><code data-x="dom-table-caption">caption</code></dfn> IDL attribute must return, on
+  getting, the first <code>caption</code> element child of the <code>table</code> element, if any,
+  or null otherwise. On setting, the first <code>caption</code> element child of the
+  <code>table</code> element, if any, must be removed, and the new value, if not null, must be
+  inserted as the first node of the <code>table</code> element.</p>
+
+  <p>The <dfn><code data-x="dom-table-createCaption">createCaption()</code></dfn> method must return
+  the first <code>caption</code> element child of the <code>table</code> element, if any; otherwise
+  a new <code>caption</code> element must be <span>table-created</span>, inserted as the first node
+  of the <code>table</code> element, and then returned.</p>
+
+  <p>The <dfn><code data-x="dom-table-deleteCaption">deleteCaption()</code></dfn> method must remove
+  the first <code>caption</code> element child of the <code>table</code> element, if any.</p>
+
+  <p>The <dfn><code data-x="dom-table-tHead">tHead</code></dfn> IDL attribute must return, on
+  getting, the first <code>thead</code> element child of the <code>table</code> element, if any, or
+  null otherwise. On setting, if the new value is null or a <code>thead</code> element, the first
+  <code>thead</code> element child of the <code>table</code> element, if any, must be removed, and
+  the new value, if not null, must be inserted immediately before the first element in the
+  <code>table</code> element that is neither a <code>caption</code> element nor a
+  <code>colgroup</code> element, if any, or at the end of the table if there are no such elements.
+  If the new value is neither null nor a <code>thead</code> element, then a
+  <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code> must be thrown
+  instead.</p>
+
+  <p>The <dfn><code data-x="dom-table-createTHead">createTHead()</code></dfn> method must return the
+  first <code>thead</code> element child of the <code>table</code> element, if any; otherwise a new
+  <code>thead</code> element must be <span>table-created</span> and inserted immediately before the
+  first element in the <code>table</code> element that is neither a <code>caption</code> element nor
+  a <code>colgroup</code> element, if any, or at the end of the table if there are no such elements,
+  and then that new element must be returned.</p>
+
+  <p>The <dfn><code data-x="dom-table-deleteTHead">deleteTHead()</code></dfn> method must remove the
+  first <code>thead</code> element child of the <code>table</code> element, if any.</p>
+
+  <p>The <dfn><code data-x="dom-table-tFoot">tFoot</code></dfn> IDL attribute must return, on
+  getting, the first <code>tfoot</code> element child of the <code>table</code> element, if any, or
+  null otherwise. On setting, if the new value is null or a <code>tfoot</code> element, the first
+  <code>tfoot</code> element child of the <code>table</code> element, if any, must be removed, and
+  the new value, if not null, must be inserted at the end of the table. If the new value is neither
+  null nor a <code>tfoot</code> element, then a <span>"<code>HierarchyRequestError</code>"</span>
+  <code>DOMException</code> must be thrown instead.</p>
+
+  <p>The <dfn><code data-x="dom-table-createTFoot">createTFoot()</code></dfn> method must return the
+  first <code>tfoot</code> element child of the <code>table</code> element, if any; otherwise a new
+  <code>tfoot</code> element must be <span>table-created</span> and inserted at the end of the
+  table, and then that new element must be returned.</p>
+
+  <p>The <dfn><code data-x="dom-table-deleteTFoot">deleteTFoot()</code></dfn> method must remove the
+  first <code>tfoot</code> element child of the <code>table</code> element, if any.</p>
+
+  <p>The <dfn><code data-x="dom-table-tBodies">tBodies</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>table</code> node, whose filter matches only
+  <code>tbody</code> elements that are children of the <code>table</code> element.</p>
+
+  <p>The <dfn><code data-x="dom-table-createTBody">createTBody()</code></dfn> method must
+  <span data-x="table-created">table-create</span> a new <code>tbody</code> element, insert it
+  immediately after the last <code>tbody</code> element child in the <code>table</code> element, if
+  any, or at the end of the <code>table</code> element if the <code>table</code> element has no
+  <code>tbody</code> element children, and then must return the new <code>tbody</code> element.</p>
+
+  <p>The <dfn><code data-x="dom-table-rows">rows</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>table</code> node, whose filter matches only
+  <code>tr</code> elements that are either children of the <code>table</code> element, or children
+  of <code>thead</code>, <code>tbody</code>, or <code>tfoot</code> elements that are themselves
+  children of the <code>table</code> element. The elements in the collection must be ordered such
+  that those elements whose parent is a <code>thead</code> are included first, in <span>tree order</span>,
+  followed by those elements whose parent is either a <code>table</code> or <code>tbody</code>
+  element, again in <span>tree order</span>, followed finally by those elements whose parent is a
+  <code>tfoot</code> element, still in <span>tree order</span>.</p>
+
+  <p>The behavior of the <dfn><code data-x="dom-table-insertRow">insertRow(<var>index</var>)</code></dfn> method depends on the state of the table. When it is called,
+  the method must act as required by the first item in the following list of conditions that
+  describes the state of the table and the <var>index</var> argument:</p>
+
+  <dl class="switch">
+
+   <dt>If <var>index</var> is less than &#x2212;1 or greater than the number of elements
+   in <code data-x="dom-table-rows">rows</code> collection:</dt>
+
+   <dd>The method must throw an <span>"<code>IndexSizeError</code>"</span>
+   <code>DOMException</code>.</dd>
+
+   <dt>If the <code data-x="dom-table-rows">rows</code> collection has zero elements in it, and the
+   <code>table</code> has no <code>tbody</code> elements in it:</dt>
+
+   <dd>The method must <span data-x="table-created">table-create</span> a <code>tbody</code>
+   element, then <span data-x="table-created">table-create</span> a <code>tr</code> element, then
+   append the <code>tr</code> element to the <code>tbody</code> element, then append the
+   <code>tbody</code> element to the <code>table</code> element, and finally return the
+   <code>tr</code> element.</dd>
+
+   <dt>If the <code data-x="dom-table-rows">rows</code> collection has zero elements in it:</dt>
+
+   <dd>The method must <span data-x="table-created">table-create</span> a <code>tr</code> element,
+   append it to the last <code>tbody</code> element in the table, and return the <code>tr</code>
+   element.</dd>
+
+   <dt>If <var>index</var> is &#x2212;1 or equal to the number of items in <code
+   data-x="dom-table-rows">rows</code> collection:</dt>
+
+   <dd>The method must <span data-x="table-created">table-create</span> a <code>tr</code> element,
+   and append it to the parent of the last <code>tr</code> element in the <code
+   data-x="dom-table-rows">rows</code> collection. Then, the newly created <code>tr</code> element
+   must be returned.</dd>
+
+   <dt>Otherwise:</dt>
+
+   <dd>The method must <span data-x="table-created">table-create</span> a <code>tr</code> element,
+   insert it immediately before the <var>index</var>th <code>tr</code> element in the <code
+   data-x="dom-table-rows">rows</code> collection, in the same parent, and finally must return the
+   newly created <code>tr</code> element.</dd>
+
+  </dl>
+
+  <p>When the <dfn><code data-x="dom-table-deleteRow">deleteRow(<var>index</var>)</code></dfn> method is called, the user agent must run the following
+  steps:</p>
+
+  <ol>
+   <li><p>If <var>index</var> is less than &#x2212;1 or greater than or equal to the number of
+   elements in the <code data-x="dom-table-rows">rows</code> collection, then throw an
+   <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If <var>index</var> is &#x2212;1, then <span data-x="concept-node-remove">remove</span>
+   the last element in the <code data-x="dom-table-rows">rows</code> collection from its parent, or
+   do nothing if the <code data-x="dom-table-rows">rows</code> collection is empty.</p></li>
+
+   <li><p>Otherwise, <span data-x="concept-node-remove">remove</span> the <var>index</var>th element
+   in the <code data-x="dom-table-rows">rows</code> collection from its parent.</p></li>
+  </ol>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>Here is an example of a table being used to mark up a Sudoku puzzle. Observe the lack of
+   headers, which are not necessary in such a table.</p>
+
+   <pre>&lt;style>
+ #sudoku { border-collapse: collapse; border: solid thick; }
+ #sudoku colgroup, table#sudoku tbody { border: solid medium; }
+ #sudoku td { border: solid thin; height: 1.4em; width: 1.4em; text-align: center; padding: 0; }
+&lt;/style>
+&lt;h1>Today's Sudoku&lt;/h1>
+&lt;table id="sudoku">
+ &lt;colgroup>&lt;col>&lt;col>&lt;col>
+ &lt;colgroup>&lt;col>&lt;col>&lt;col>
+ &lt;colgroup>&lt;col>&lt;col>&lt;col>
+ &lt;tbody>
+  &lt;tr> &lt;td> 1 &lt;td>   &lt;td> 3 &lt;td> 6 &lt;td>   &lt;td> 4 &lt;td> 7 &lt;td>   &lt;td> 9
+  &lt;tr> &lt;td>   &lt;td> 2 &lt;td>   &lt;td>   &lt;td> 9 &lt;td>   &lt;td>   &lt;td> 1 &lt;td>
+  &lt;tr> &lt;td> 7 &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td> 6
+ &lt;tbody>
+  &lt;tr> &lt;td> 2 &lt;td>   &lt;td> 4 &lt;td>   &lt;td> 3 &lt;td>   &lt;td> 9 &lt;td>   &lt;td> 8
+  &lt;tr> &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td>
+  &lt;tr> &lt;td> 5 &lt;td>   &lt;td>   &lt;td> 9 &lt;td>   &lt;td> 7 &lt;td>   &lt;td>   &lt;td> 1
+ &lt;tbody>
+  &lt;tr> &lt;td> 6 &lt;td>   &lt;td>   &lt;td>   &lt;td> 5 &lt;td>   &lt;td>   &lt;td>   &lt;td> 2
+  &lt;tr> &lt;td>   &lt;td>   &lt;td>   &lt;td>   &lt;td> 7 &lt;td>   &lt;td>   &lt;td>   &lt;td>
+  &lt;tr> &lt;td> 9 &lt;td>   &lt;td>   &lt;td> 8 &lt;td>   &lt;td> 2 &lt;td>   &lt;td>   &lt;td> 5
+&lt;/table>
+</pre>
+
+  </div>
+
+
+
+
+  

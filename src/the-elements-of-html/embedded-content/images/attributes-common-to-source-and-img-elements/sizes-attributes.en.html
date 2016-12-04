@@ -1,0 +1,29 @@
+<h6>Sizes attributes</h6>
+
+  <p>A <dfn>sizes attribute</dfn> is an attribute with requirements defined in this section.</p>
+
+  <p>If present, the value must be a <span>valid source size list</span>.</p>
+
+  <p>A <dfn>valid source size list</dfn> is a string that matches the following grammar:
+  <ref spec=CSSVALUES> <ref spec=MQ></p>
+
+<pre><dfn>&lt;source-size-list></dfn> = [ <span>&lt;source-size></span># , ]? <span>&lt;source-size-value></span>
+<dfn>&lt;source-size></dfn> = <span>&lt;media-condition></span> <span>&lt;source-size-value></span>
+<dfn>&lt;source-size-value></dfn> = <span>&lt;length></span></pre>
+
+  <p>A <span>&lt;source-size-value></span> must not be negative, and must not use CSS functions
+  other than the <span>'calc()'</span> function.</p>
+
+  <p>The <span>&lt;source-size-value></span> gives the intended layout width of the image. The
+  author can specify different widths for different environments with
+  <span>&lt;media-condition></span>s.</p>
+
+  <p class="note">Percentages are not allowed in a <span>&lt;source-size-value></span>,
+  to avoid confusion about what it would be relative to.
+  The <span>'vw'</span> unit can be used for sizes relative to the <span>viewport</span>
+  width.</p>
+
+
+  <div w-nodev>
+
+  

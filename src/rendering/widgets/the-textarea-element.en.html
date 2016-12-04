@@ -1,0 +1,53 @@
+<h4>The <code>textarea</code> element</h4>
+
+  <p>The <code>textarea</code> element is expected to render as an <span>'inline-block'</span> box
+  depicting a multiline text control. If this multiline text control provides a selection, then,
+  when the user changes the current selection, the user agent is expected to <span>queue a
+  task</span>, using the <span>user interaction task source</span>, to <span
+  data-x="concept-event-fire">fire an event</span> named <code data-x="event-select">select</code>
+  at the element, with the <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to
+  true.</p>
+
+  <p>If the element has a <code data-x="attr-textarea-cols">cols</code> attribute, and parsing that
+  attribute's value using the <span>rules for parsing non-negative integers</span> doesn't generate
+  an error, then the user agent is expected to use the attribute as a <span data-x="presentational
+  hints">presentational hint</span> for the <span>'width'</span> property on the element, with the
+  value being the <span>textarea effective width</span> (as defined below). Otherwise, the user
+  agent is expected to act as if it had a user-agent-level style sheet rule setting the
+  <span>'width'</span> property on the element to the <span>textarea effective width</span>.</p>
+
+  <p>The <dfn>textarea effective width</dfn> of a <code>textarea</code> element is <span
+  data-x=""><var>size</var>&times;<var>avg</var>&nbsp;+&nbsp;<var>sbw</var></span>, where
+  <var>size</var> is the element's <span data-x="attr-textarea-cols-value">character width</span>,
+  <var>avg</var> is the average character width of the primary font of the element, in <span
+  data-x="'px'">CSS pixels</span>, and <var>sbw</var> is the width of a scroll bar, in <span
+  data-x="'px'">CSS pixels</span>. (The element's <span>'letter-spacing'</span> property does not
+  affect the result.)</p>
+
+  <p>If the element has a <code data-x="attr-textarea-rows">rows</code> attribute, and parsing that
+  attribute's value using the <span>rules for parsing non-negative integers</span> doesn't generate
+  an error, then the user agent is expected to use the attribute as a <span data-x="presentational
+  hints">presentational hint</span> for the <span>'height'</span> property on the element, with the
+  value being the <span>textarea effective height</span> (as defined below). Otherwise, the user
+  agent is expected to act as if it had a user-agent-level style sheet rule setting the
+  <span>'height'</span> property on the element to the <span>textarea effective height</span>.</p>
+
+  <p>The <dfn>textarea effective height</dfn> of a <code>textarea</code> element is the height in
+  <span data-x="'px'">CSS pixels</span> of the number of lines specified the element's <span
+  data-x="attr-textarea-rows-value">character height</span>, plus the height of a scrollbar in <span
+  data-x="'px'">CSS pixels</span>.</p>
+
+  <p>User agents are expected to apply the <span>'white-space'</span> CSS property to
+  <code>textarea</code> elements. For historical reasons, if the element has a <code
+  data-x="attr-textarea-wrap">wrap</code> attribute whose value is an <span>ASCII
+  case-insensitive</span> match for the string "<code data-x="attr-textarea-wrap-off"
+  undefined>off</code>", then the user agent is expected to treat the attribute as a <span
+  data-x="presentational hints">presentational hint</span> setting the element's
+  <span>'white-space'</span> property to 'pre'.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

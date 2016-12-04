@@ -1,0 +1,538 @@
+<h4 data-dfn-type="element" data-lt="img">The <dfn><code>img</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Embedded content</span>.</dd>
+   <dd><span>Form-associated element</span>.</dd>
+   <dd>If the element has a <code data-x="attr-hyperlink-usemap">usemap</code> attribute: <span>Interactive content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>embedded content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-img-alt">alt</code></dd>
+   <dd><code data-x="attr-img-src">src</code></dd>
+   <dd><code data-x="attr-img-srcset">srcset</code></dd>
+   <dd><code data-x="attr-img-sizes">sizes</code></dd>
+   <dd><code data-x="attr-img-crossorigin">crossorigin</code></dd>
+   <dd><code data-x="attr-hyperlink-usemap">usemap</code></dd>
+   <dd><code data-x="attr-img-ismap">ismap</code></dd>
+   <dd><code data-x="attr-dim-width">width</code></dd>
+   <dd><code data-x="attr-dim-height">height</code></dd>
+   <dd><code data-x="attr-img-referrerpolicy">referrerpolicy</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>, NamedConstructor=<span data-x="dom-image">Image</span>(optional unsigned long width, optional unsigned long height)]
+interface <dfn>HTMLImageElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-img-alt">alt</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-img-src">src</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-img-srcset">srcset</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-img-sizes">sizes</span>;
+  [<span>CEReactions</span>] attribute DOMString? <span data-x="dom-img-crossOrigin">crossOrigin</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-img-useMap">useMap</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-img-isMap">isMap</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-img-width">width</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-img-height">height</span>;
+  readonly attribute unsigned long <span data-x="dom-img-naturalWidth">naturalWidth</span>;
+  readonly attribute unsigned long <span data-x="dom-img-naturalHeight">naturalHeight</span>;
+  readonly attribute boolean <span data-x="dom-img-complete">complete</span>;
+  readonly attribute USVString <span data-x="dom-img-currentSrc">currentSrc</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-img-referrerPolicy">referrerPolicy</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>An <code>img</code> element represents an image.</p>
+
+  <!-- v2 ideas for <img>:
+
+     * Maps sites would like to know which images are already cached, so that they can use images
+       that are vaguely suitable while they wait for the most appropriate image to download.
+
+       Almost like lowsrc="", except that many images might be appropriate.
+
+       Slight hitch: their images are at a different origin, and we don't want to allow arbitrary
+       cross-origin inspection (privacy leak risk). So it will require them to do CORS opt-in.
+
+     * See note at rel=noreferrer.
+
+  -->
+
+  <p>The image given by the <dfn data-x="attr-img-src"><code>src</code></dfn> and <dfn
+  data-x="attr-img-srcset"><code>srcset</code></dfn> attributes, and any previous sibling
+  <code>source</code> elements' <code data-x="attr-source-srcset">srcset</code> attributes if the
+  parent is a <code>picture</code> element, is the embedded content; the value of the <dfn
+  data-x="attr-img-alt"><code>alt</code></dfn> attribute provides equivalent content for those who
+  cannot process images or who have image loading disabled (i.e. it is the <code>img</code>
+  element's <span>fallback content</span>).</p>
+
+  <p>The requirements on the <code data-x="attr-img-alt">alt</code> attribute's value are described
+  <a href="#alt">in a separate section</a>.</p>
+
+  <p>The <code data-x="attr-img-src">src</code> attribute must be present, and must contain a
+  <span>valid non-empty URL potentially surrounded by spaces</span> referencing a non-interactive,
+  optionally animated, image resource that is neither paged nor scripted.</p>
+
+  <p class="note">The requirements above imply that images can be static bitmaps (e.g. PNGs, GIFs,
+  JPEGs), single-page vector documents (single-page PDFs, XML files with an SVG document element),
+  animated bitmaps (APNGs, animated GIFs), animated vector graphics (XML files with an SVG
+  <span>document element</span> that use declarative SMIL animation), and so forth. However, these
+  definitions preclude SVG files with script, multipage PDF files, interactive MNG files, HTML
+  documents, plain text documents, and so forth. <ref spec=PNG> <ref spec=GIF> <ref spec=JPEG> <ref
+  spec=PDF> <ref spec=XML> <ref spec=APNG> <ref spec=SVG> <ref spec=MNG> </p>
+
+  <p>The <code data-x="attr-img-srcset">srcset</code> attribute may also be present, and is a
+  <span>srcset attribute</span>.</p>
+
+  <p>The <code data-x="attr-img-srcset">srcset</code> attribute and the <code
+  data-x="attr-img-src">src</code> attribute (if <span data-x="width descriptor">width
+  descriptors</span> are not used) contribute the <span data-x="image source">image sources</span>
+  to the <span>source set</span> (if no <code>source</code> element was selected).</p>
+
+  <p>If the <code data-x="attr-img-srcset">srcset</code> attribute is present and has any <span
+  data-x="image candidate string">image candidate strings</span> using a <span>width
+  descriptor</span>, the <dfn data-x="attr-img-sizes"><code>sizes</code></dfn> attribute must also
+  be present, and is a <span>sizes attribute</span>. The <code data-x="attr-img-sizes">sizes</code>
+  attribute contributes the <span>source size</span> to the <span>source set</span> (if no
+  <code>source</code> element was selected).</p>
+
+  <p>The <dfn data-x="attr-img-crossorigin"><code>crossorigin</code></dfn> attribute is a <span>CORS
+  settings attribute</span>. Its purpose is to allow images from third-party sites that allow
+  cross-origin access to be used with <code>canvas</code>.</p>
+
+  <p>The <dfn data-x="attr-img-referrerpolicy"><code>referrerpolicy</code></dfn> attribute is a
+  <span>referrer policy attribute</span>. Its purpose is to set the <span>referrer policy</span>
+  used when <span data-x="concept-fetch">fetching</span> the image. <ref spec=REFERRERPOLICY></p>
+
+  <hr>
+
+  <p>The <code>img</code> element must not be used as a layout tool. In particular, <code>img</code>
+  elements should not be used to display transparent images, as such images rarely convey meaning and
+  rarely add anything useful to the document.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>What an <code>img</code> element represents depends on the <code
+  data-x="attr-img-src">src</code> attribute and the <code data-x="attr-img-alt">alt</code>
+  attribute.</p>
+
+  <dl class="switch">
+
+   <dt>If the <code data-x="attr-img-src">src</code> attribute is set and the <code
+   data-x="attr-img-alt">alt</code> attribute is set to the empty string</dt>
+
+   <dd>
+
+    <p>The image is either decorative or supplemental to the rest of the content, redundant with
+    some other information in the document.</p>
+
+    <p>If the image is <span data-x="img-available">available</span> and the user agent is configured
+    to display that image, then the element <span>represents</span> the element's image data.</p>
+
+    <p>Otherwise, the element <span>represents</span> nothing, and may be omitted completely from
+    the rendering. User agents may provide the user with a notification that an image is present but
+    has been omitted from the rendering.</p>
+
+   </dd>
+
+   <dt>If the <code data-x="attr-img-src">src</code> attribute is set and the <code
+   data-x="attr-img-alt">alt</code> attribute is set to a value that isn't empty</dt>
+
+   <dd>
+
+    <p>The image is a key part of the content; the <code data-x="attr-img-alt">alt</code> attribute
+    gives a textual equivalent or replacement for the image.</p>
+
+    <p>If the image is <span data-x="img-available">available</span> and the user agent is configured
+    to display that image, then the element <span>represents</span> the element's image data.</p>
+
+    <p>Otherwise, the element <span>represents</span> the text given by the <code
+    data-x="attr-img-alt">alt</code> attribute. User agents may provide the user with a notification
+    that an image is present but has been omitted from the rendering.</p>
+
+   </dd>
+
+   <dt>If the <code data-x="attr-img-src">src</code> attribute is set and the <code
+   data-x="attr-img-alt">alt</code> attribute is not</dt>
+
+   <dd>
+
+    <p>The image might be a key part of the content, and there is no textual equivalent of the image
+    available.</p>
+
+    <p class="note">In a conforming document, the absence of the <code
+    data-x="attr-img-alt">alt</code> attribute indicates that the image is a key part of the content
+    but that a textual replacement for the image was not available when the image was generated.</p>
+
+    <p>If the image is <span data-x="img-available">available</span> and the user agent is configured
+    to display that image, then the element <span>represents</span> the element's image data.</p>
+
+    <p>Otherwise, the user agent should display some sort of indicator that there is an image that
+    is not being rendered, and may, if requested by the user, or if so configured, or when required
+    to provide contextual information in response to navigation, provide caption information for the
+    image, derived as follows:</p>
+
+    <ol>
+
+     <!-- when editing this list, search for the two other occurrences of 'critical-no-alt' -->
+
+     <!-- NOTE: the order of these steps is important; it's intended to make the innermost caption
+     override the outer ones -->
+
+     <li><p>If the image has a <code data-x="attr-title">title</code> attribute whose value is not
+     the empty string, then the value of that attribute is the caption information; abort these
+     steps.</p></li>
+
+<!--CLEANUP-->
+     <li><p>If the image is a descendant of a <code>figure</code> element that has a child
+     <code>figcaption</code> element, and, ignoring the <code>figcaption</code> element and its
+     descendants, the <code>figure</code> element has no <span>flow content</span> descendants other
+     than <span>inter-element whitespace</span> and the <code>img</code> element, then the contents of the first such
+     <code>figcaption</code> element are the caption information; abort these steps.</p></li>
+
+     <li><p>There is no caption information.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <dt>If the <code data-x="attr-img-src">src</code> attribute is not set and either the <code
+   data-x="attr-img-alt">alt</code> attribute is set to the empty string or the <code
+   data-x="attr-img-alt">alt</code> attribute is not set at all</dt>
+
+   <dd>
+
+    <p>The element <span>represents</span> nothing.</p>
+
+   </dd>
+
+   <dt>Otherwise</dt>
+
+   <dd>
+
+    <p>The element <span>represents</span> the text given by the <code
+    data-x="attr-img-alt">alt</code> attribute.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>The <code data-x="attr-img-alt">alt</code> attribute does not represent advisory information.
+  User agents must not present the contents of the <code data-x="attr-img-alt">alt</code> attribute
+  in the same way as content of the <code data-x="attr-title">title</code> attribute.</p>
+
+  <p>User agents may always provide the user with the option to display any image, or to prevent any
+  image from being displayed. User agents may also apply heuristics to help the user make use of the
+  image when the user is unable to see it, e.g. due to a visual disability or because they are using
+  a text terminal with no graphics capabilities. Such heuristics could include, for instance,
+  optical character recognition (OCR) of text found within the image.</p>
+
+  <p class="warning">While user agents are encouraged to repair cases of missing <code
+  data-x="attr-img-alt">alt</code> attributes, authors must not rely on such behavior. <a
+  href="#alt">Requirements for providing text to act as an alternative for images</a> are described
+  in detail below.</p>
+
+  <p>The <em>contents</em> of <code>img</code> elements, if any, are ignored for the purposes of
+  rendering.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The <code data-x="attr-hyperlink-usemap">usemap</code> attribute,
+  if present, can indicate that the image has an associated
+  <span>image map</span>.</p>
+
+  <p>The <dfn data-x="attr-img-ismap"><code>ismap</code></dfn>
+  attribute, when used on an element that is a descendant of an
+  <code>a</code> element with an <code
+  data-x="attr-hyperlink-href">href</code> attribute, indicates by its
+  presence that the element provides access to a server-side image
+  map. This affects how events are handled on the corresponding
+  <code>a</code> element.</p>
+
+  <p>The <code data-x="attr-img-ismap">ismap</code> attribute is a
+  <span>boolean attribute</span>. The attribute must not be specified
+  on an element that does not have an ancestor <code>a</code> element
+  with an <code data-x="attr-hyperlink-href">href</code> attribute.</p>
+
+  <p class="note">The <code data-x="attr-hyperlink-usemap">usemap</code> and <code
+  data-x="attr-img-ismap">ismap</code> attributes can result in confusing behavior when used
+  together with <code>source</code> elements with the <code data-x="attr-source-media">media</code>
+  attribute specified in a <code>picture</code> element.</p>
+
+  <p>The <code>img</code> element supports <span>dimension
+  attributes</span>.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn data-x="dom-img-alt"><code>alt</code></dfn>, <dfn
+  data-x="dom-img-src"><code>src</code></dfn>, <dfn
+  data-x="dom-img-srcset"><code>srcset</code></dfn> and <dfn
+  data-x="dom-img-sizes"><code>sizes</code></dfn> IDL attributes must <span>reflect</span> the
+  respective content attributes of the same name.</p>
+
+  <p>The <dfn data-x="dom-img-crossOrigin"><code>crossOrigin</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-img-crossorigin">crossorigin</code> content attribute.</p>
+
+  <p>The <dfn data-x="dom-img-useMap"><code>useMap</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-hyperlink-usemap">usemap</code> content attribute.</p>
+
+  <p>The <dfn data-x="dom-img-isMap"><code>isMap</code></dfn> IDL attribute must <span>reflect</span>
+  the <code data-x="attr-img-ismap">ismap</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-img-referrerPolicy">referrerPolicy</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-img-referrerpolicy">referrerpolicy</code>
+  content attribute, <span>limited to only known values</span>.</p>
+
+  </div>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>image</var> . <code data-x="dom-img-width">width</code> [ = <var>value</var> ]</dt>
+   <dt><var>image</var> . <code data-x="dom-img-height">height</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+<!--CLEANUP-->
+    <p>These attributes return the actual rendered dimensions of the
+    image, or zero if the dimensions are not known.</p>
+
+    <p>They can be set, to change the corresponding content
+    attributes.</p>
+
+   </dd>
+
+   <dt><var>image</var> . <code data-x="dom-img-naturalWidth">naturalWidth</code></dt>
+   <dt><var>image</var> . <code data-x="dom-img-naturalHeight">naturalHeight</code></dt>
+
+   <dd>
+
+<!--CLEANUP-->
+    <p>These attributes return the intrinsic dimensions of the image,
+    or zero if the dimensions are not known.</p>
+
+   </dd>
+
+   <dt><var>image</var> . <code data-x="dom-img-complete">complete</code></dt>
+
+   <dd>
+
+<!--CLEANUP-->
+    <p>Returns true if the image has been completely downloaded or if
+    no image is specified; otherwise, returns false.</p>
+
+   </dd>
+
+   <dt><var>image</var> . <code data-x="dom-img-currentSrc">currentSrc</code></dt>
+
+   <dd>
+
+    <p>Returns the image's <span>absolute URL</span>.</p>
+
+   </dd>
+
+   <dt><var>image</var> = new <code data-x="dom-image">Image</code>( [ <var>width</var> [, <var>height</var> ] ] )</dt>
+
+   <dd>
+
+<!--CLEANUP-->
+    <p>Returns a new <code>img</code> element, with the <code
+    data-x="attr-dim-width">width</code> and <code
+    data-x="attr-dim-height">height</code> attributes set to the values
+    passed in the relevant arguments, if applicable.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The IDL attributes <dfn data-x="dom-img-width"><code>width</code></dfn> and <dfn
+  data-x="dom-img-height"><code>height</code></dfn> must return the rendered width and height of the
+  image, in <span data-x="'px'">CSS pixels</span>, if the image is <span>being rendered</span>, and
+  is being rendered to a visual medium; or else the <span>density-corrected intrinsic width and
+  height</span> of the image, in <span data-x="'px'">CSS pixels</span>, if the image has
+  <span>intrinsic dimensions</span> and is <i data-x="img-available">available</i> but not being
+  rendered to a visual medium; or else 0, if the image is not <i
+  data-x="img-available">available</i> or does not have <span>intrinsic dimensions</span>. <ref
+  spec=CSS></p>
+
+  <p>On setting, they must act as if they <span data-x="reflect">reflected</span> the respective
+  content attributes of the same name.</p>
+
+  <p>The IDL attributes <dfn data-x="dom-img-naturalWidth"><code>naturalWidth</code></dfn> and
+  <dfn data-x="dom-img-naturalHeight"><code>naturalHeight</code></dfn> must return the
+  <span>density-corrected intrinsic width and height</span> of the image, in <span
+  data-x="'px'">CSS pixels</span>, if the image has <span>intrinsic dimensions</span> and is <i
+  data-x="img-available">available</i>, or else 0. <ref spec=CSS></p>
+
+  <p>The IDL attribute <dfn data-x="dom-img-complete"><code>complete</code></dfn> must return true if
+  any of the following conditions is true:</p>
+
+  <ul class="brief">
+
+   <!--TODO: check picture parent-->
+
+   <li>Both the <code data-x="attr-img-src">src</code> attribute and the <code
+   data-x="attr-img-srcset">srcset</code> attribute are omitted.
+
+   <li>The <code data-x="attr-img-srcset">srcset</code> attribute is omitted and the <code
+   data-x="attr-img-src">src</code> attribute's value is the empty string. <!-- we only have this
+   hack for src="", not srcset=""; present but empty or bogus srcset="" still means complete=false
+   if it's not in the img-error state -->
+
+   <li>The final <span data-x="concept-task">task</span> that is <span data-x="queue a
+   task">queued</span> by the <span>networking task source</span> once the resource has been fetched
+   has been <span data-x="queue a task">queued</span>.
+
+   <li>The <code>img</code> element is <span data-x="img-all">completely available</span>.
+
+   <li>The <code>img</code> element is <span data-x="img-error">broken</span>.
+
+  </ul>
+
+  <p>Otherwise, the attribute must return false.</p>
+
+  <p class="note">The value of <code data-x="dom-img-complete">complete</code> can thus change while
+  a <span data-x="concept-script">script</span> is executing.</p>
+
+  <p>The <dfn data-x="dom-img-currentSrc"><code>currentSrc</code></dfn> IDL attribute
+  must return the <code>img</code> element's <span>current request</span>'s <span data-x="img-req-url">current URL</span>.</p>
+
+  <p>A constructor is provided for creating <code>HTMLImageElement</code> objects (in addition to
+  the factory methods from DOM such as <code
+  data-x="dom-Document-createElement">createElement()</code>): <dfn
+  data-x="dom-image"><code>Image(<var>width</var>, <var>height</var>)</code></dfn>. When invoked,
+  the constructor must perform the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>document</var> be the <span>current global object</span>'s <span
+   data-x="concept-document-window">associated <code>Document</code></span>.</p></li>
+
+   <li><p>Let <var>img</var> be the result of <span data-x="create an element">creating an
+   element</span> given <var>document</var>, <code>img</code>, and the <span>HTML
+   namespace</span>.</p></li>
+
+   <li><p>If <var>width</var> is given, then <span data-x="concept-element-attributes-set-value">set
+   an attribute value</span> for <var>img</var> using "<code data-x="attr-dim-width">width</code>"
+   and <var>width</var>.</p></li>
+
+   <li><p>If <var>height</var> is given, then <span
+   data-x="concept-element-attributes-set-value">set an attribute value</span> for <var>img</var>
+   using "<code data-x="attr-dim-height">height</code>" and <var>height</var>.</p></li>
+
+   <li><p>Return <var>img</var>.</p></li>
+  </ol>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>A single image can have different appropriate alternative text depending on the context.</p>
+
+   <p>In each of the following cases, the same image is used, yet the <code
+   data-x="attr-img-alt">alt</code> text is different each time. The image is the coat of arms of the
+   Carouge municipality in the canton Geneva in Switzerland.</p>
+
+   <p>Here it is used as a supplementary icon:</p>
+   <pre>&lt;p>I lived in &lt;img src="carouge.svg" alt=""> Carouge.&lt;/p></pre>
+
+   <p>Here it is used as an icon representing the town:</p>
+   <pre>&lt;p>Home town: &lt;img src="carouge.svg" alt="Carouge">&lt;/p></pre>
+
+   <p>Here it is used as part of a text on the town:</p>
+
+   <pre>&lt;p>Carouge has a coat of arms.&lt;/p>
+&lt;p>&lt;img src="carouge.svg" alt="The coat of arms depicts a lion, sitting in front of a tree.">&lt;/p>
+&lt;p>It is used as decoration all over the town.&lt;/p></pre>
+
+   <p>Here it is used as a way to support a similar text where the description is given as well as,
+   instead of as an alternative to, the image:</p>
+
+   <pre>&lt;p>Carouge has a coat of arms.&lt;/p>
+&lt;p>&lt;img src="carouge.svg" alt="">&lt;/p>
+&lt;p>The coat of arms depicts a lion, sitting in front of a tree.
+It is used as decoration all over the town.&lt;/p></pre>
+
+   <p>Here it is used as part of a story:</p>
+
+   <pre>&lt;p>She picked up the folder and a piece of paper fell out.&lt;/p>
+&lt;p>&lt;img src="carouge.svg" alt="Shaped like a shield, the paper had a
+red background, a green tree, and a yellow lion with its tongue
+hanging out and whose tail was shaped like an S.">&lt;/p>
+&lt;p>She stared at the folder. S! The answer she had been looking for all
+this time was simply the letter S! How had she not seen that before? It all
+came together now. The phone call where Hector had referred to a lion's tail,
+the time Maria had stuck her tongue out...&lt;/p></pre>
+
+   <p>Here it is not known at the time of publication what the image will be, only that it will be a
+   coat of arms of some kind, and thus no replacement text can be provided, and instead only a brief
+   caption for the image is provided, in the <code data-x="attr-title">title</code> attribute:</p>
+
+   <pre>&lt;p>The last user to have uploaded a coat of arms uploaded this one:&lt;/p>
+&lt;p>&lt;img src="last-uploaded-coat-of-arms.cgi" title="User-uploaded coat of arms.">&lt;/p></pre>
+
+   <p>Ideally, the author would find a way to provide real replacement text even in this case, e.g.
+   by asking the previous user. Not providing replacement text makes the document more difficult to
+   use for people who are unable to view images, e.g. blind users, or users or very low-bandwidth
+   connections or who pay by the byte, or users who are forced to use a text-only Web browser.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here are some more examples showing the same picture used in different contexts, with
+   different appropriate alternate texts each time.</p>
+
+   <pre>&lt;article>
+ &lt;h1>My cats&lt;/h1>
+ &lt;h2>Fluffy&lt;/h2>
+ &lt;p>Fluffy is my favorite.&lt;/p>
+ &lt;img src="fluffy.jpg" alt="She likes playing with a ball of yarn.">
+ &lt;p>She's just too cute.&lt;/p>
+ &lt;h2>Miles&lt;/h2>
+ &lt;p>My other cat, Miles just eats and sleeps.&lt;/p>
+&lt;/article></pre>
+
+   <pre>&lt;article>
+ &lt;h1>Photography&lt;/h1>
+ &lt;h2>Shooting moving targets indoors&lt;/h2>
+ &lt;p>The trick here is to know how to anticipate; to know at what speed and
+ what distance the subject will pass by.&lt;/p>
+ &lt;img src="fluffy.jpg" alt="A cat flying by, chasing a ball of yarn, can be
+ photographed quite nicely using this technique.">
+ &lt;h2>Nature by night&lt;/h2>
+ &lt;p>To achieve this, you'll need either an extremely sensitive film, or
+ immense flash lights.&lt;/p>
+&lt;/article></pre>
+
+   <pre>&lt;article>
+ &lt;h1>About me&lt;/h1>
+ &lt;h2>My pets&lt;/h2>
+ &lt;p>I've got a cat named Fluffy and a dog named Miles.&lt;/p>
+ &lt;img src="fluffy.jpg" alt="Fluffy, my cat, tends to keep itself busy.">
+ &lt;p>My dog Miles and I like go on long walks together.&lt;/p>
+ &lt;h2>music&lt;/h2>
+ &lt;p>After our walks, having emptied my mind, I like listening to Bach.&lt;/p>
+&lt;/article></pre>
+
+   <pre>&lt;article>
+ &lt;h1>Fluffy and the Yarn&lt;/h1>
+ &lt;p>Fluffy was a cat who liked to play with yarn. She also liked to jump.&lt;/p>
+ &lt;aside>&lt;img src="fluffy.jpg" alt="" title="Fluffy">&lt;/aside>
+ &lt;p>She would play in the morning, she would play in the evening.&lt;/p>
+&lt;/article></pre>
+
+  </div>
+
+
+  

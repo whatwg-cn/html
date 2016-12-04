@@ -1,0 +1,33 @@
+<h5>Delegation</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>With multicore CPUs becoming prevalent, one way to obtain better performance is to split
+  computationally expensive tasks amongst multiple workers. In this example, a computationally
+  expensive task that is to be performed for every number from 1 to 10,000,000 is farmed out to ten
+  subworkers.</p>
+
+  <p>The main page is as follows, it just reports the result:</p>
+
+  <pre>EXAMPLE workers/multicore/page.html</pre>
+
+  <p>The worker itself is as follows:</p>
+
+  <pre>EXAMPLE workers/multicore/worker.js</pre>
+
+  <p>It consists of a loop to start the subworkers, and then a handler
+  that waits for all the subworkers to respond.</p>
+
+  <p>The subworkers are implemented as follows:</p>
+
+  <pre>EXAMPLE workers/multicore/core.js</pre>
+
+  <p>They receive two numbers in two events, perform the computation for the range of numbers thus
+  specified, and then report the result back to the parent.</p>
+
+  <p><a href="/demos/workers/multicore/page.html">View this example online</a>.</p>
+
+<!--(this uses startConversation, which has been removed; it can be cleaned up once
+     https://github.com/whatwg/html/issues/30 is fixed)
+
+  

@@ -1,0 +1,23 @@
+<h6>Selecting specific audio and video tracks declaratively</h6>
+
+  <p>The <code data-x="dom-media-audioTracks">audioTracks</code> and <code
+  data-x="dom-media-videoTracks">videoTracks</code> attributes allow scripts to select which track
+  should play, but it is also possible to select specific tracks declaratively, by specifying
+  particular tracks in the <span data-x="concept-url-fragment">fragment</span> of the
+  <span>URL</span> of the <span>media resource</span>. The format of the <span
+  data-x="concept-url-fragment">fragment</span> depends on the <span>MIME type</span> of the
+  <span>media resource</span>. <ref spec=RFC2046> <ref spec=URL></p>
+
+  <div class="example">
+
+   <p>In this example, a video that uses a format that supports <span>media fragment syntax</span>
+   is embedded in such a way that the alternative angles labeled "Alternative" are enabled instead
+   of the default video track.</p>
+
+   <pre>&lt;video src="myvideo#track=Alternative">&lt;/video></pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,33 @@
+<h5>A background number-crunching worker</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The simplest use of workers is for performing a computationally
+  expensive task without interrupting the user interface.</p>
+
+  <p>In this example, the main document spawns a worker to (na&iuml;vely) compute prime numbers, and
+  progressively displays the most recently found prime number.</p>
+
+  <p>The main page is as follows:</p>
+
+  <pre>EXAMPLE workers/primes/page.html</pre>
+
+  <p>The <code data-x="dom-Worker">Worker()</code> constructor call creates a worker and returns a
+  <code>Worker</code> object representing that worker, which is used to communicate with the worker.
+  That object's <code data-x="handler-Worker-onmessage">onmessage</code> event handler allows the
+  code to receive messages from the worker.</p>
+
+  <p>The worker itself is as follows:</p>
+
+  <pre>EXAMPLE workers/primes/worker.js</pre>
+
+  <p>The bulk of this code is simply an unoptimized search for a prime number. The <code
+  data-x="dom-DedicatedWorkerGlobalScope-postMessage">postMessage()</code> method is used to send a
+  message back to the page when a prime is found.</p>
+
+  <p><a href="/demos/workers/primes/page.html">View this example online</a>.</p>
+
+
+
+
+  

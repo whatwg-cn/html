@@ -1,0 +1,27 @@
+<H4>Authoring notes</h4>
+
+  <p>Legacy proxy servers are known to, in certain cases, drop HTTP connections after a short
+  timeout. To protect against such proxy servers, authors can include a comment line (one starting
+  with a ':' character) every 15 seconds or so.</p>
+
+  <p>Authors wishing to relate event source connections to each other or to specific documents
+  previously served might find that relying on IP addresses doesn't work, as individual clients can
+  have multiple IP addresses (due to having multiple proxy servers) and individual IP addresses can
+  have multiple clients (due to sharing a proxy server). It is better to include a unique identifier
+  in the document when it is served and then pass that identifier as part of the URL when the
+  connection is established.</p>
+
+  <p>Authors are also cautioned that HTTP chunking can have unexpected negative effects on the
+  reliability of this protocol, in particular if the chunking is done by a different layer unaware
+  of the timing requirements. If this is a problem, chunking can be disabled for serving event
+  streams.</p> <!-- v2 can we get a better solution? -->
+
+  <p>Clients that support HTTP's per-server connection limitation might run into trouble when
+  opening multiple pages from a site if each page has an <code>EventSource</code> to the same
+  domain. Authors can avoid this using the relatively complex mechanism of using unique domain names
+  per connection, or by allowing the user to enable or disable the <code>EventSource</code>
+  functionality on a per-page basis, or by sharing a single <code>EventSource</code> object using a
+  <span data-x="SharedWorkerGlobalScope">shared worker</span>.</p>
+
+
+  

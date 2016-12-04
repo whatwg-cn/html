@@ -1,0 +1,45 @@
+<h3 id="offline">Offline Web applications</h3> <!--APPCACHE-->
+
+  <p class="critical">This feature is in the process of being removed from the Web platform. (This
+  is a long process that takes many years.) Using any of the offline Web application features at
+  this time is highly discouraged. Use service workers instead. <ref spec=SW></p>
+
+  <!-- v2 ideas for appcache:
+
+     * A way to limit what gets download when the user agent is updating the application cache and
+       it turns out the server has changed EVERY page because every page has a dynamic "site last
+       modified" date on it.
+
+       https://groups.google.com/group/gears-users/browse_thread/thread/efbd808325df607a/c73adb34f9b63cf7?hl=en&q=whatwg#c73adb34f9b63cf7
+
+
+     * Multiuser appcaches.
+
+       If the application code (HTML, JS, CSS) is all the same for two users, then appcache works
+       for multiple users by just having the data for the users separate from the logic.
+
+       This is the expected model for most apps. For example, your typical blog has just one set of
+       CSS for all users.
+
+       For systems where the user affects what HTML, JS, and CSS is served back, the spec as written
+       pretty much requires that there be one app per user, and one generic "login" app that then
+       redirects to one of those other apps - and where each app has a different base URL, separate
+       manifest, etc.
+
+       An alternative that we could explore in a future version is to have the manifest include a
+       manifest name, and then have script that allows you to "activate" a particular manifest name
+       for a given appcache.
+
+       So each appcache group would be further subdivided into named subgroups, and for a given
+       manifest URL with such a group of subgroups, one subgroup would be the default one at a time.
+       The inactive ones would just lie dormant, but and the active ones would act like now, but
+       there'd be a scripted way to change the default (and maybe query what available variants
+       exist for the current appcache), so that you could log back in as someone else by just making
+       the script pick the other user's variant, and then reloading.
+
+
+     * Add and remove specific additional files from the cache (e.g. precaching new master entries).
+
+  -->
+
+  

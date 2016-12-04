@@ -1,0 +1,31 @@
+<h4 id="istransferable" data-export="" data-lt="IsTransferable" data-dfn-type="abstract-op"
+  data-x="IsTransferable"><dfn>IsTransferable</dfn> ( <var>O</var> )</h4>
+
+  <ol>
+   <li><p>Assert: <span data-x="js-Type">Type</span>(<var>O</var>) is Object.</p></li>
+
+   <li>
+    <p>If <var>O</var> has an [[ArrayBufferData]] internal slot, then:</p>
+
+    <ol>
+     <li><p>If <span>IsDetachedBuffer</span>(<var>O</var>) is true, then return false.</p></li>
+
+     <li><p>Return true.</p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Otherwise, if <var>O</var> has a [[<span>Detached</span>]] internal slot, then:</p>
+
+    <ol>
+     <li><p>If <var>O</var>'s [[<span>Detached</span>]] internal slot value is true, then return
+     false.</p></li>
+
+     <li><p>Return true.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Return false.</p></li>
+  </ol>
+
+  

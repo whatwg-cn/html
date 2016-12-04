@@ -1,0 +1,91 @@
+<h4 id="the-title-element">The <dfn><code>title</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Metadata content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>In a <code>head</code> element containing no other <code>title</code> elements.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="text content">Text</span> that is not <span>inter-element whitespace</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLTitleElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-title-text">text</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>title</code> element <span>represents</span> the document's title or name. Authors
+  should use titles that identify their documents even when they are used out of context, for
+  example in a user's history or bookmarks, or in search results. The document's title is often
+  different from its first heading, since the first heading does not have to stand alone when taken
+  out of context.</p>
+
+  <p>There must be no more than one <code>title</code> element per document.</p>
+
+  <p class="note">If it's reasonable for the <code>Document</code> to have no title, then the
+  <code>title</code> element is probably not required. See the <code>head</code> element's content
+  model for a description of when the element is required.</p>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>title</var> . <code subdfn data-x="dom-title-text">text</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the <span>child text content</span> of the element.</p>
+
+    <p>Can be set, to replace the element's children with the given value.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The IDL attribute <dfn><code data-x="dom-title-text">text</code></dfn> must return the
+  <span>child text content</span> of the <code>title</code> element. On setting, it must act the
+  same way as the <code>textContent</code> IDL attribute.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>Here are some examples of appropriate titles, contrasted with the top-level headings that
+   might be used on those same pages.</p>
+
+   <pre>  &lt;title>Introduction to The Mating Rituals of Bees&lt;/title>
+    ...
+  &lt;h1>Introduction&lt;/h1>
+  &lt;p>This companion guide to the highly successful
+  &lt;cite>Introduction to Medieval Bee-Keeping&lt;/cite> book is...</pre>
+
+   <p>The next page might be a part of the same site. Note how the title describes the subject
+   matter unambiguously, while the first heading assumes the reader knows what the context is and
+   therefore won't wonder if the dances are Salsa or Waltz:</p>
+
+   <pre>  &lt;title>Dances used during bee mating rituals&lt;/title>
+    ...
+  &lt;h1>The Dances&lt;/h1></pre>
+
+  </div>
+
+  <p>The string to use as the document's title is given by the <code
+  data-x="dom-document-title">document.title</code> IDL attribute.</p>
+
+  <div w-nodev>
+
+  <p>User agents should use the document's title when referring to the document in their user
+  interface. When the contents of a <code>title</code> element are used in this way, <span>the
+  directionality</span> of that <code>title</code> element should be used to set the directionality
+  of the document's title in the user interface.</p>
+
+  </div>
+
+
+  

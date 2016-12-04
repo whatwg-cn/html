@@ -1,0 +1,18 @@
+<h5><dfn data-x="the-hostensurecancompilestrings-implementation">HostEnsureCanCompileStrings</dfn>(<var>callerRealm</var>, <var>calleeRealm</var>)</h5>
+
+  <p>JavaScript contains an implementation-defined <span
+  data-x="js-HostEnsureCanCompileStrings">HostEnsureCanCompileStrings</span>(<var>callerRealm</var>,
+  <var>calleeRealm</var>) abstract operation. User agents must use the following implementation:
+  <ref spec=JAVASCRIPT></p>
+
+  <ol>
+
+   <li><p>Perform ? <span
+   data-x="csp-EnsureCSPDoesNotBlockStringCompilation">EnsureCSPDoesNotBlockStringCompilation</span>(<var>callerRealm</var>,
+   <var>calleeRealm</var>). <ref spec=CSP></p></li>
+
+  </ol>
+
+  <div w-nodev>
+
+  

@@ -1,0 +1,66 @@
+<h4>Extensibility</h4>
+
+  <p>Vendor-specific proprietary user agent extensions to this specification are strongly
+  discouraged. Documents must not use such extensions, as doing so reduces interoperability and
+  fragments the user base, allowing only users of specific user agents to access the content in
+  question.</p>
+
+  <div w-nodev>
+
+  <p>All extensions must be defined so that the use of extensions neither contradicts nor causes the
+  non-conformance of functionality defined in the specification.</p> <!-- thanks to QA Framework -->
+
+  <div class="example">
+
+   <p>For example, while strongly discouraged from doing so, an implementation could add a new IDL
+   attribute "<code data-x="">typeTime</code>" to a control that returned the time it took the user
+   to select the current value of a control (say). On the other hand, defining a new control that
+   appears in a form's <code data-x="dom-form-elements">elements</code> array would be in violation
+   of the above requirement, as it would violate the definition of <code
+   data-x="dom-form-elements">elements</code> given in this specification.</p>
+
+  </div>
+
+  </div>
+
+  <hr>
+
+  <p>When vendor-neutral extensions to this specification are needed, either this specification can
+  be updated accordingly, or an extension specification can be written that overrides the
+  requirements in this specification. When someone applying this specification to their activities
+  decides that they will recognize the requirements of such an extension specification, it becomes
+  an <dfn data-x="other applicable specifications">applicable specification</dfn> for the purposes
+  of conformance requirements in this specification.</p>
+
+  <p class="note">Someone could write a specification that defines any arbitrary byte stream as
+  conforming, and then claim that their random junk is conforming. However, that does not mean that
+  their random junk actually is conforming for everyone's purposes: if someone else decides that
+  that specification does not apply to their work, then they can quite legitimately say that the
+  aforementioned random junk is just that, junk, and not conforming at all. As far as conformance
+  goes, what matters in a particular community is what that community <em>agrees</em> is
+  applicable.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>User agents must treat elements and attributes that they do not understand as semantically
+  neutral; leaving them in the DOM (for DOM processors), and styling them according to CSS (for CSS
+  processors), but not inferring any meaning from them.</p>
+
+<!--ADD-TOPIC:Security-->
+  <p>When support for a feature is disabled (e.g. as an emergency measure to mitigate a security
+  problem, or to aid in development, or for performance reasons), user agents must act as if they
+  had no support for the feature whatsoever, and as if the feature was not mentioned in this
+  specification. For example, if a particular feature is accessed via an attribute in a Web IDL
+  interface, the attribute itself would be omitted from the objects that implement that interface
+  &mdash; leaving the attribute on the object but making it return null or throw an exception is
+  insufficient.</p>
+<!--REMOVE-TOPIC:Security-->
+
+  </div>
+
+
+  <div w-nodev>
+
+  

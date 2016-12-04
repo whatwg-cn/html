@@ -1,0 +1,145 @@
+<h4>The <dfn><code>footer</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no <code>header</code>, <code>footer</code>, or <code>main</code> element descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>footer</code> element <span>represents</span> a footer for its nearest ancestor
+  <span>sectioning content</span> or <span>sectioning root</span> element. A footer typically
+  contains information about its section such as who wrote it, links to related documents, copyright
+  data, and the like.</p>
+
+  <p>When the <code>footer</code> element contains entire sections, they <span
+  data-x="represents">represent</span> appendices, indexes, long colophons, verbose license
+  agreements, and other such content.</p>
+
+  <p class="note">Contact information for the author or editor of a section belongs in an
+  <code>address</code> element, possibly itself inside a <code>footer</code>. Bylines and other
+  information that could be suitable for both a <code>header</code> or a <code>footer</code> can be
+  placed in either (or neither). The primary purpose of these elements is merely to help the author
+  write self-explanatory markup that is easy to maintain and style; they are not intended to impose
+  specific structures on authors.</p>
+
+  <p>Footers don't necessarily have to appear at the <em>end</em> of a section, though they usually
+  do.</p>
+
+  <p>When the nearest ancestor <span>sectioning content</span> or <span>sectioning root</span>
+  element is <span>the body element</span>, then it applies to the whole page.</p>
+
+  <p class="note">The <code>footer</code> element is not <span>sectioning content</span>; it doesn't
+  introduce a new section.</p>
+
+  <div class="example">
+
+   <p>Here is a page with two footers, one at the top and one at the bottom, with the same
+   content:</p>
+
+   <pre>&lt;body>
+ &lt;footer>&lt;a href="../">Back to index...&lt;/a>&lt;/footer>
+ &lt;hgroup>
+  &lt;h1>Lorem ipsum&lt;/h1>
+  &lt;h2>The ipsum of all lorems&lt;/h2>
+ &lt;/hgroup>
+ &lt;p>A dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+ tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+ veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+ ea commodo consequat. Duis aute irure dolor in reprehenderit in
+ voluptate velit esse cillum dolore eu fugiat nulla
+ pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+ culpa qui officia deserunt mollit anim id est laborum.&lt;/p>
+ &lt;footer>&lt;a href="../">Back to index...&lt;/a>&lt;/footer>
+&lt;/body></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here is an example which shows the <code>footer</code> element being used both for a site-wide
+   footer and for a section footer.</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;HTML LANG="en">&lt;HEAD>
+&lt;TITLE>The Ramblings of a Scientist&lt;/TITLE>
+&lt;BODY>
+&lt;H1>The Ramblings of a Scientist&lt;/H1>
+&lt;ARTICLE>
+ &lt;H1>Episode 15&lt;/H1>
+ &lt;VIDEO SRC="/fm/015.ogv" CONTROLS PRELOAD>
+  &lt;P>&lt;A HREF="/fm/015.ogv">Download video&lt;/A>.&lt;/P>
+ &lt;/VIDEO>
+ &lt;FOOTER> &lt;!-- footer for article -->
+  &lt;P>Published &lt;TIME DATETIME="2009-10-21T18:26-07:00">on 2009/10/21 at 6:26pm&lt;/TIME>&lt;/P>
+ &lt;/FOOTER>
+&lt;/ARTICLE>
+&lt;ARTICLE>
+ &lt;H1>My Favorite Trains&lt;/H1>
+ &lt;P>I love my trains. My favorite train of all time is a K&ouml;f.&lt;/P>
+ &lt;P>It is fun to see them pull some coal cars because they look so
+ dwarfed in comparison.&lt;/P>
+ &lt;FOOTER> &lt;!-- footer for article -->
+  &lt;P>Published &lt;TIME DATETIME="2009-09-15T14:54-07:00">on 2009/09/15 at 2:54pm&lt;/TIME>&lt;/P>
+ &lt;/FOOTER>
+&lt;/ARTICLE>
+&lt;FOOTER> &lt;!-- site wide footer -->
+ &lt;NAV>
+  &lt;P>&lt;A HREF="/credits.html">Credits&lt;/A> &mdash;
+     &lt;A HREF="/tos.html">Terms of Service&lt;/A> &mdash;
+     &lt;A HREF="/index.html">Blog Index&lt;/A>&lt;/P>
+ &lt;/NAV>
+ &lt;P>Copyright &copy; 2009 Gordon Freeman&lt;/P>
+&lt;/FOOTER>
+&lt;/BODY>
+&lt;/HTML></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Some site designs have what is sometimes referred to as "fat footers" &mdash; footers that
+   contain a lot of material, including images, links to other articles, links to pages for sending
+   feedback, special offers... in some ways, a whole "front page" in the footer.</p>
+
+   <p>This fragment shows the bottom of a page on a site with a "fat footer":</p>
+
+   <pre>...
+ &lt;footer>
+  &lt;nav>
+   &lt;section>
+    &lt;h1>Articles&lt;/h1>
+    &lt;p>&lt;img src="images/somersaults.jpeg" alt=""> Go to the gym with
+    our somersaults class! Our teacher Jim takes you through the paces
+    in this two-part article. &lt;a href="articles/somersaults/1">Part
+    1&lt;/a> &middot; &lt;a href="articles/somersaults/2">Part 2&lt;/a>&lt;/p>
+    &lt;p>&lt;img src="images/kindplus.jpeg"> Tired of walking on the edge of
+    a clif&lt;!-- sic -->? Our guest writer Lara shows you how to bumble
+    your way through the bars. &lt;a href="articles/kindplus/1">Read
+    more...&lt;/a>&lt;/p>
+    &lt;p>&lt;img src="images/crisps.jpeg"> The chips are down, now all
+    that's left is a potato. What can you do with it? &lt;a
+    href="articles/crisps/1">Read more...&lt;/a>&lt;/p>
+   &lt;/section>
+   &lt;ul>
+    &lt;li> &lt;a href="/about">About us...&lt;/a>
+    &lt;li> &lt;a href="/feedback">Send feedback!&lt;/a>
+    &lt;li> &lt;a href="/sitemap">Sitemap&lt;/a>
+   &lt;/ul>
+  &lt;/nav>
+  &lt;p>&lt;small>Copyright &copy; 2015 The Snacker &mdash;
+  &lt;a href="/tos">Terms of Service&lt;/a>&lt;/small>&lt;/p>
+ &lt;/footer>
+&lt;/body></pre>
+
+  </div>
+
+
+  

@@ -1,0 +1,173 @@
+<h4>The <dfn><code>li</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Inside <code>ol</code> elements.</dd>
+   <dd>Inside <code>ul</code> elements.</dd>
+   <dd>Inside <code>menu</code> elements whose <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="toolbar state">toolbar</span> state.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd>If the element is not a child of an <code>ul</code> or <code>menu</code> element: <code data-x="attr-li-value">value</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLLIElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute long <span data-x="dom-li-value">value</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>li</code> element <span>represents</span> a list item. If its parent element is an
+  <code>ol</code>, <code>ul</code>, or <code>menu</code> element, then the element is an item of the
+  parent element's list, as defined for those elements. Otherwise, the list item has no defined
+  list-related relationship to any other <code>li</code> element.</p>
+
+  <p>The <dfn><code data-x="attr-li-value">value</code></dfn> attribute, if present, must be a
+  <span>valid integer</span>. It is used to determine the <span>ordinal value</span> of the list
+  item, when the <code>li</code>'s <span>list owner</span> is an <code>ol</code> element.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>Any element whose <span>computed value</span> of <span>'display'</span> is 'list-item' has a
+  <dfn>list owner</dfn>, which is determined as follows:</p>
+
+  <ol>
+   <li><p>If the element is not <span>being rendered</span>, return null; the element has no
+   <span>list owner</span>.</p>
+
+   <li><p>Let <var>ancestor</var> be the element's parent.</p></li>
+
+   <li><p>If the element has an <code>ol</code>, <code>ul</code>, or <code>menu</code> ancestor, set
+   <var>ancestor</var> to the closest such ancestor element.</p></li>
+
+   <li><p>Return the closest inclusive ancestor of <var>ancestor</var> that produces a CSS box, if
+   any. If no such inclusive ancestor exists, then return null; the element has no <span>list
+   owner</span>.</p></li>
+  </ol>
+
+  <p>To determine the <dfn>ordinal value</dfn> of each element owned by a given <span>list
+  owner</span> <var>owner</var>, perform the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>i</var> be 1.</p></li>
+
+   <li><p>If <var>owner</var> is an <code>ol</code> element, let <var>numbering</var> be
+   <var>owner</var>'s <span data-x="concept-ol-start">starting value</span>. Otherwise, let
+   <var>numbering</var> be 1.</p></li>
+
+   <li><p><i>Loop:</i> If <var>i</var> is greater than the number of <span
+   data-x="list owner">list items that <var>owner</var> owns</span>, then abort this algorithm; all
+   of <var>owner</var>'s <span data-x="list owner">owned list items</span> have been assigned <span
+   data-x="ordinal value">ordinal values</span>.</p></li>
+
+   <li><p>Let <var>item</var> be the <var>i</var>th of <var>owner</var>'s <span data-x="list
+   owner">owned list items</span>, in <span>tree order</span>.</p>
+
+   <li>
+    <p>If <var>item</var> is an <code>li</code> element that has a <code
+    data-x="attr-li-value">value</code> attribute, then:</p>
+
+    <ol>
+     <li><p>Let <var>parsed</var> be the result of <span data-x="rules for parsing integers">parsing
+     the value of the attribute as an integer</span>.</p></li>
+
+     <li><p>If <var>parsed</var> is not an error, then set <var>numbering</var> to
+     <var>parsed</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>The <span>ordinal value</span> of <var>item</var> is <var>numbering</var>.</p></li>
+
+   <li><p>If <var>owner</var> is an <code>ol</code> element, and <var>owner</var> has a <code
+   data-x="attr-ol-reversed">reversed</code> attribute, decrement <var>numbering</var> by 1;
+   otherwise, increment <var>numbering</var> by 1.</p></li>
+
+   <li><p>Increment <var>i</var> by 1.</p></li>
+
+   <li><p>Go to the step labeled <i>loop</i>.</p>
+  </ol>
+
+  <p>The <span>ordinal value</span> of any element with a <span>list owner</span> of null is 0.</p>
+
+  <p class="note">This can only impact the rendered counter when all of the element's ancestors do
+  not produce CSS boxes, such as if they are all styled with <code data-x="">display:
+  contents</code>.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-li-value">value</code></dfn> IDL attribute must <span>reflect</span>
+  the value of the <code data-x="attr-li-value">value</code> content attribute.</p>
+
+  <div class="example">
+   <p>The element's <code data-x="dom-li-value">value</code> IDL attribute does not directly
+   correspond to its <span>ordinal value</span>; it simply <span data-x="reflect">reflects</span>
+   the content attribute. For example, given this list:
+
+   <pre>&lt;ol>
+ &lt;li>Item 1
+ &lt;li value="3">Item 3
+ &lt;li>Item 4
+&lt;/ol></pre>
+
+   <p>The <span data-x="ordinal value">ordinal values</span> are 1, 3, and 4, whereas the <code
+   data-x="dom-li-value">value</code> IDL attributes return 0, 3, 0 on getting.</p>
+  </div>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example, the top ten movies are listed (in reverse order). Note the way the list
+   is given a title by using a <code>figure</code> element and its <code>figcaption</code>
+   element.</p>
+
+   <pre>&lt;figure>
+ &lt;figcaption>The top 10 movies of all time&lt;/figcaption>
+ &lt;ol>
+  &lt;li value="10">&lt;cite>Josie and the Pussycats&lt;/cite>, 2001&lt;/li>
+  &lt;li value="9">&lt;cite lang="sh">&#x0426;&#x0440;&#x043d;&#x0430; &#x043c;&#x0430;&#x0447;&#x043a;&#x0430;, &#x0431;&#x0435;&#x043b;&#x0438; &#x043c;&#x0430;&#x0447;&#x043e;&#x0440;&lt;/cite>, 1998&lt;/li>
+  &lt;li value="8">&lt;cite>A Bug's Life&lt;/cite>, 1998&lt;/li>
+  &lt;li value="7">&lt;cite>Toy Story&lt;/cite>, 1995&lt;/li>
+  &lt;li value="6">&lt;cite>Monsters, Inc&lt;/cite>, 2001&lt;/li>
+  &lt;li value="5">&lt;cite>Cars&lt;/cite>, 2006&lt;/li>
+  &lt;li value="4">&lt;cite>Toy Story 2&lt;/cite>, 1999&lt;/li>
+  &lt;li value="3">&lt;cite>Finding Nemo&lt;/cite>, 2003&lt;/li>
+  &lt;li value="2">&lt;cite>The Incredibles&lt;/cite>, 2004&lt;/li>
+  &lt;li value="1">&lt;cite>Ratatouille&lt;/cite>, 2007&lt;/li>
+ &lt;/ol>
+&lt;/figure></pre>
+
+   <p>The markup could also be written as follows, using the <code
+   data-x="attr-ol-reversed">reversed</code> attribute on the <code>ol</code> element:</p>
+
+   <pre>&lt;figure>
+ &lt;figcaption>The top 10 movies of all time&lt;/figcaption>
+ &lt;ol reversed>
+  &lt;li>&lt;cite>Josie and the Pussycats&lt;/cite>, 2001&lt;/li>
+  &lt;li>&lt;cite lang="sh">&#x0426;&#x0440;&#x043d;&#x0430; &#x043c;&#x0430;&#x0447;&#x043a;&#x0430;, &#x0431;&#x0435;&#x043b;&#x0438; &#x043c;&#x0430;&#x0447;&#x043e;&#x0440;&lt;/cite>, 1998&lt;/li>
+  &lt;li>&lt;cite>A Bug's Life&lt;/cite>, 1998&lt;/li>
+  &lt;li>&lt;cite>Toy Story&lt;/cite>, 1995&lt;/li>
+  &lt;li>&lt;cite>Monsters, Inc&lt;/cite>, 2001&lt;/li>
+  &lt;li>&lt;cite>Cars&lt;/cite>, 2006&lt;/li>
+  &lt;li>&lt;cite>Toy Story 2&lt;/cite>, 1999&lt;/li>
+  &lt;li>&lt;cite>Finding Nemo&lt;/cite>, 2003&lt;/li>
+  &lt;li>&lt;cite>The Incredibles&lt;/cite>, 2004&lt;/li>
+  &lt;li>&lt;cite>Ratatouille&lt;/cite>, 2007&lt;/li>
+ &lt;/ol>
+&lt;/figure></pre>
+  </div>
+
+  <p class="note">While it is conforming to include heading elements (e.g. <code>h1</code>) inside
+  <code>li</code> elements, it likely does not convey the semantics that the author intended. A
+  heading starts a new section, so a heading in a list implicitly splits the list into spanning
+  multiple sections.</p>
+
+
+
+  

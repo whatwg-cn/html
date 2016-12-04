@@ -1,0 +1,98 @@
+<h3 id="serialising-xhtml-fragments">Serializing XML fragments</h3>
+
+  <p>The <!--en-GB--><dfn id="xml-fragment-serialisation-algorithm">XML fragment serialization
+  algorithm</dfn> for a <code>Document</code> or <code>Element</code> node either returns a fragment
+  of XML that represents that node or throws an exception.</p>
+
+  <p>For <code>Document</code>s, the algorithm must return a string in the form of a <a
+  href="https://www.w3.org/TR/xml/#sec-well-formed">document entity</a>, if none of the error cases
+  below apply.</p>
+
+  <p>For <code>Element</code>s, the algorithm must return a string in the form of an <a
+  href="https://www.w3.org/TR/xml/#wf-entities">internal general parsed entity</a>, if none of the
+  error cases below apply.</p>
+
+  <p>In both cases, the string returned must be XML namespace-well-formed and must be an isomorphic
+  serialization of all of that node's <span>relevant child nodes</span>, in <span>tree order</span>.
+  User agents may adjust prefixes and namespace declarations in the serialization (and indeed might
+  be forced to do so in some cases to obtain namespace-well-formed XML). User agents may use a
+  combination of regular text and character references to represent <code>Text</code> nodes in the
+  DOM.</p>
+
+  <p>A node's <dfn>relevant child nodes</dfn> are those that apply given the following rules:</p>
+
+  <dl>
+
+   <dt>For <code>template</code> elements</dt>
+
+   <dd>The <span>relevant child nodes</span> are the child nodes of the <code>template</code>
+   element's <span>template contents</span>, if any.</dd>
+
+   <dt>For all other nodes</dt>
+
+   <dd>The <span>relevant child nodes</span> are the child nodes of node itself, if any.</dd>
+
+  </dl>
+
+  <p>For <code>Element</code>s, if any of the elements in the serialization are in no namespace, the
+  default namespace in scope for those elements must be explicitly declared as the empty string.<!--
+  because otherwise round-tripping might break since it'll pick up the surrounding default ns when
+  setting --> (This doesn't apply in the <code>Document</code> case.) <ref spec=XML>
+  <ref spec=XMLNS></p>
+
+  <p>For the purposes of this section, an internal general parsed entity is considered XML
+  namespace-well-formed if a document consisting of an element with no namespace declarations whose
+  contents are the internal general parsed entity would itself be XML namespace-well-formed.</p>
+
+  <p>If any of the following error cases are found in the DOM subtree being serialized, then the
+  algorithm must throw an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>
+  instead of returning a string:</p>
+
+  <ul>
+
+   <li>A <code>Document</code> node with no child element nodes.</li>
+
+   <li>A <code>DocumentType</code> node that has an external subset public identifier that contains
+   characters that are not matched by the XML <code data-x="">PubidChar</code> production. <ref spec=XML></li>
+
+   <li>A <code>DocumentType</code> node that has an external subset system identifier that contains
+   both a U+0022 QUOTATION MARK (") and a U+0027 APOSTROPHE (') or that contains characters that are
+   not matched by the XML <code data-x="">Char</code> production. <ref spec=XML></li>
+
+   <li>A node with a <!--prefix or--> local name containing a U+003A COLON (:).</li> <!--(prefixes
+   can get adjusted, so this isn't an excuse) -->
+
+   <li>A node with a <!--prefix or--> local name that does not match the XML <code
+   data-x="xml-Name">Name</code> production. <ref spec=XML></li> <!--(again, prefixes can get
+   adjusted, so this isn't an excuse) -->
+
+   <li>An <code>Attr</code> node with no namespace whose local name is the lowercase string "<code
+   data-x="">xmlns</code>". <ref spec=XMLNS></li>
+
+   <li>An <code>Element</code> node with two or more attributes with the same local name and
+   namespace.</li>
+
+   <li>An <code>Attr</code> node, <code>Text</code> node, <code>Comment</code> node, or
+   <code>ProcessingInstruction</code> node whose data contains characters that are not matched by
+   the XML <code data-x="">Char</code> production. <ref spec=XML></li>
+
+   <li>A <code>Comment</code> node whose data contains two adjacent U+002D HYPHEN-MINUS characters
+   (-) or ends with such a character.</li>
+
+   <li>A <code>ProcessingInstruction</code> node whose target name is an <span>ASCII
+   case-insensitive</span> match for the string "<code data-x="">xml</code>".</li>
+
+   <li>A <code>ProcessingInstruction</code> node whose target name contains a U+003A COLON (:).</li>
+
+   <li>A <code>ProcessingInstruction</code> node whose data contains the string "<code
+   data-x="">?></code>".</li>
+
+  </ul>
+
+  <p class="note">These are the only ways to make a DOM unserialisable. The DOM enforces all the
+  other XML constraints; for example, trying to append two elements to a <code>Document</code> node
+  will throw a <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code>.</p>
+
+
+
+  

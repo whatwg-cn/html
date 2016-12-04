@@ -1,0 +1,130 @@
+<h4>Common parser idioms</h4>
+
+  </div>
+
+  <p>The <dfn data-x="space character" data-export="">space characters</dfn>, for the purposes of
+  this specification, are U+0020 SPACE, U+0009 CHARACTER TABULATION (tab), U+000A LINE FEED (LF),
+  U+000C FORM FEED (FF), and U+000D CARRIAGE RETURN (CR).</p>
+
+  <p>The <dfn data-x="White_Space">White_Space characters</dfn> are those that have the Unicode
+  property "White_Space" in the Unicode <code data-x="">PropList.txt</code> data file. <ref spec=UNICODE></p>
+
+  <p class="note">This should not be confused with the "White_Space" value (abbreviated "WS") of the
+  "Bidi_Class" property in the <code data-x="">Unicode.txt</code> data file.</p>
+
+  <p>The <dfn>control characters</dfn> are those whose Unicode "General_Category" property has the
+  value "Cc" in the Unicode <code data-x="">UnicodeData.txt</code> data file. <ref spec=UNICODE></p>
+
+  <p>The <dfn>uppercase ASCII letters</dfn> are the characters in the range U+0041 LATIN CAPITAL
+  LETTER A to U+005A LATIN CAPITAL LETTER Z.</p>
+
+  <p>The <dfn>lowercase ASCII letters</dfn> are the characters in the range U+0061 LATIN SMALL
+  LETTER A to U+007A LATIN SMALL LETTER Z.</p>
+
+  <p>The <dfn>ASCII letters</dfn> are the characters that are either <span>uppercase ASCII
+  letters</span> or <span>lowercase ASCII letters</span>.</p>
+
+  <p>The <dfn>ASCII digits</dfn> are the characters in the range U+0030 DIGIT ZERO (0) to U+0039
+  DIGIT NINE (9).</p>
+
+  <p>The <dfn>alphanumeric ASCII characters</dfn> are those that are either <span>ASCII
+  letters</span> or <span>ASCII digits</span>.</p>
+
+  <p>The <dfn>ASCII hex digits</dfn> are the characters in the ranges U+0030 DIGIT ZERO (0) to
+  U+0039 DIGIT NINE (9), U+0041 LATIN CAPITAL LETTER A to U+0046 LATIN CAPITAL LETTER F, and U+0061
+  LATIN SMALL LETTER A to U+0066 LATIN SMALL LETTER F.</p>
+
+  <p>The <dfn>uppercase ASCII hex digits</dfn> are the characters in the ranges U+0030 DIGIT ZERO (0) to
+  U+0039 DIGIT NINE (9) and U+0041 LATIN CAPITAL LETTER A to U+0046 LATIN CAPITAL LETTER F only.</p>
+
+  <p>The <dfn>lowercase ASCII hex digits</dfn> are the characters in the ranges U+0030 DIGIT ZERO
+  (0) to U+0039 DIGIT NINE (9) and U+0061 LATIN SMALL LETTER A to U+0066 LATIN SMALL LETTER F
+  only.</p>
+
+  <div w-nodev>
+
+  <p>Some of the micro-parsers described below follow the pattern of having an <var>input</var>
+  variable that holds the string being parsed, and having a <var>position</var> variable pointing at
+  the next character to parse in <var>input</var>.</p>
+
+  <p>For parsers based on this pattern, a step that requires the user agent to <dfn
+  data-export="">collect a sequence of characters</dfn> means that the following algorithm must be
+  run, with <var>characters</var> being the set of characters that can be collected:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> and <var>position</var> be the same variables as
+   those of the same name in the algorithm that invoked these steps.</p></li>
+
+   <li><p>Let <var>result</var> be the empty string.</p></li>
+
+   <li><p>While <var>position</var> doesn't point past the end of <var>input</var> and the character
+   at <var>position</var> is one of the <var>characters</var>, append that character to the end of
+   <var>result</var> and advance <var>position</var> to the next character in
+   <var>input</var>.</p></li>
+
+   <li><p>Return <var>result</var>.</p></li>
+
+  </ol>
+
+  <p>The step <dfn>skip whitespace</dfn> means that the user agent must <span>collect a sequence of
+  characters</span> that are <span data-x="space character">space characters</span>. <!--The step
+  <dfn>skip White_Space characters</dfn> means that the user agent must <span>collect a sequence of
+  characters</span> that are <span>White_Space</span> characters. In both cases, the--> The collected
+  characters are not used. <!--<ref spec=UNICODE>--></p>
+
+  <p>When a user agent is to <dfn data-export="">strip line breaks</dfn> from a string, the user
+  agent must remove any U+000A LINE FEED (LF) and U+000D CARRIAGE RETURN (CR) characters from that
+  string.</p>
+
+  <p>When a user agent is to <dfn data-export="">strip leading and trailing whitespace</dfn> from a
+  string, the user agent must remove all <span data-x="space character">space characters</span> that
+  are at the start or end of the string.</p>
+
+  <p>When a user agent is to <dfn data-export="">strip and collapse whitespace</dfn> in a string, it
+  must replace any sequence of one or more consecutive <span data-x="space character">space
+  characters</span> in that string with a single U+0020 SPACE character, and then <span>strip
+  leading and trailing whitespace</span> from that string.</p>
+
+  <p>When a user agent has to <dfn data-export="">strictly split a string</dfn> on a particular
+  delimiter character <var>delimiter</var>, it must use the following algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p>Let <var>tokens</var> be an ordered list of tokens, initially empty.</p></li>
+
+   <li><p>While <var>position</var> is not past the end of <var>input</var>:</p>
+
+    <ol>
+
+     <li><p><span>Collect a sequence of characters</span> that are not the <var>delimiter</var>
+     character.</p></li>
+
+     <li><p>Append the string collected in the previous step to <var>tokens</var>.</p></li>
+
+     <li><p>Advance <var>position</var> to the next character in <var>input</var>.</p></li> <!--
+     skips past the delimiter -->
+
+    </ol>
+
+   </li>
+
+   <li><p>Return <var>tokens</var>.</p></li>
+
+  </ol>
+
+  <p class="note">For the special cases of splitting a string <span data-x="split a string on
+  spaces">on spaces</span> and <span data-x="split a string on commas">on commas</span>, this
+  algorithm does not apply (those algorithms also perform <span data-x="strip leading and trailing
+  whitespace">whitespace trimming</span>).</p>
+
+  </div>
+
+
+
+  

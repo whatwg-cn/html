@@ -1,0 +1,45 @@
+<h4>Sections and headings</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section {
+  display: block;<!-- see also unicode-bidi: isolate rules-->
+}
+
+h1 { margin-block-start: 0.67em; margin-block-end: 0.67em; font-size: 2.00em; font-weight: bold; }
+h2 { margin-block-start: 0.83em; margin-block-end: 0.83em; font-size: 1.50em; font-weight: bold; }
+h3 { margin-block-start: 1.00em; margin-block-end: 1.00em; font-size: 1.17em; font-weight: bold; }
+h4 { margin-block-start: 1.33em; margin-block-end: 1.33em; font-size: 1.00em; font-weight: bold; }
+h5 { margin-block-start: 1.67em; margin-block-end: 1.67em; font-size: 0.83em; font-weight: bold; }
+h6 { margin-block-start: 2.33em; margin-block-end: 2.33em; font-size: 0.67em; font-weight: bold; }</pre>
+
+  <p>In the following CSS block, <var>x</var> is shorthand for the following selector:
+  <code data-x="">:matches(article, aside, nav, section)</code></p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+<var>x</var> h1 { margin-block-start: 0.83em; margin-block-end: 0.83em; font-size: 1.50em; }
+<var>x</var> <var>x</var> h1 { margin-block-start: 1.00em; margin-block-end: 1.00em; font-size: 1.17em; }
+<var>x</var> <var>x</var> <var>x</var> h1 { margin-block-start: 1.33em; margin-block-end: 1.33em; font-size: 1.00em; }
+<var>x</var> <var>x</var> <var>x</var> <var>x</var> h1 { margin-block-start: 1.67em; margin-block-end: 1.67em; font-size: 0.83em; }
+<var>x</var> <var>x</var> <var>x</var> <var>x</var> <var>x</var> h1 { margin-block-start: 2.33em; margin-block-end: 2.33em; font-size: 0.67em; }
+
+<var>x</var> hgroup > h1 ~ h2 { margin-block-start: 1.00em; margin-block-end: 1.00em; font-size: 1.17em; }
+<var>x</var> <var>x</var> hgroup > h1 ~ h2 { margin-block-start: 1.33em; margin-block-end: 1.33em; font-size: 1.00em; }
+<var>x</var> <var>x</var> <var>x</var> hgroup > h1 ~ h2 { margin-block-start: 1.67em; margin-block-end: 1.67em; font-size: 0.83em; }
+<var>x</var> <var>x</var> <var>x</var> <var>x</var> hgroup > h1 ~ h2 { margin-block-start: 2.33em; margin-block-end: 2.33em; font-size: 0.67em; }
+
+<var>x</var> hgroup > h1 ~ h3 { margin-block-start: 1.33em; margin-block-end: 1.33em; font-size: 1.00em; }
+<var>x</var> <var>x</var> hgroup > h1 ~ h3 { margin-block-start: 1.67em; margin-block-end: 1.67em; font-size: 0.83em; }
+<var>x</var> <var>x</var> <var>x</var> hgroup > h1 ~ h3 { margin-block-start: 2.33em; margin-block-end: 2.33em; font-size: 0.67em; }
+
+<var>x</var> hgroup > h1 ~ h4 { margin-block-start: 1.67em; margin-block-end: 1.67em; font-size: 0.83em; }
+<var>x</var> <var>x</var> hgroup > h1 ~ h4 { margin-block-start: 2.33em; margin-block-end: 2.33em; font-size: 0.67em; }
+
+<var>x</var> hgroup > h1 ~ h5 { margin-block-start: 2.33em; margin-block-end: 2.33em; font-size: 0.67em; }</pre>
+
+  <p class="note">The shorthand is used to keep this block at least mildly readable.</p>
+
+
+
+  

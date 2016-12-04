@@ -1,0 +1,101 @@
+<h6 id="parsing-main-incolgroup">The "<dfn data-x="insertion mode: in column group">in column group</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in column
+  group">in column group</span>" <span>insertion mode</span>, the user agent must handle the token
+  as follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token that is one of U+0009 CHARACTER TABULATION, U+000A LINE FEED (LF), U+000C
+   FORM FEED (FF), U+000D CARRIAGE RETURN (CR), or U+0020 SPACE</dt>
+   <dd>
+    <p><span data-x="insert a character">Insert the character</span>.</p>
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+    <p><span>Insert a comment</span>.</p>
+   </dd>
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "html"</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "col"</dt>
+   <dd>
+
+    <p><span>Insert an HTML element</span> for the token. Immediately pop the <span>current
+    node</span> off the <span>stack of open elements</span>.</p>
+
+    <p><span data-x="acknowledge self-closing flag">Acknowledge the token's <i data-x="self-closing flag">self-closing
+    flag</i></span>, if it is set.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "colgroup"</dt>
+   <dd>
+
+    <p>If the <span>current node</span> is not a <code>colgroup</code> element, then this is a
+    <span>parse error</span>; ignore the token.</p> <!-- e.g. colgroup fragment case, or
+    <template><col></colgroup> -->
+
+    <p>Otherwise, pop the <span>current node</span> from the <span>stack of open elements</span>.
+    Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in table">in
+    table</span>".</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "col"</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "template"</dt>
+   <dt>An end tag whose tag name is "template"</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    head">in head</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>An end-of-file token</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <!-- fake </colgroup> -->
+    <p>If the <span>current node</span> is not a <code>colgroup</code> element, then this is a
+    <span>parse error</span>; ignore the token.</p> <!-- e.g. colgroup fragment case, or
+    <template><col></colgroup> -->
+
+    <p>Otherwise, pop the <span>current node</span> from the <span>stack of open
+    elements</span>.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in table">in
+    table</span>".</p>
+    <!-- end of fake </colgroup> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

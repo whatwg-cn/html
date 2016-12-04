@@ -1,0 +1,46 @@
+<h4>Edits and tables</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The elements that form part of the table model have complicated content model requirements that
+  do not allow for the <code>ins</code> and <code>del</code> elements, so indicating edits to a
+  table can be difficult.</p>
+
+  <p>To indicate that an entire row or an entire column has been added or removed, the entire
+  contents of each cell in that row or column can be wrapped in <code>ins</code> or <code>del</code>
+  elements (respectively).</p>
+
+  <div class="example">
+
+   <p>Here, a table's row has been added:</p>
+
+   <pre>&lt;table>
+ &lt;thead>
+  &lt;tr> &lt;th> Game name           &lt;th> Game publisher   &lt;th> Verdict
+ &lt;tbody>
+  &lt;tr> &lt;td> Diablo 2            &lt;td> Blizzard         &lt;td> 8/10
+  &lt;tr> &lt;td> Portal              &lt;td> Valve            &lt;td> 10/10
+<strong>  &lt;tr> &lt;td> &lt;ins>Portal 2&lt;/ins> &lt;td> &lt;ins>Valve&lt;/ins> &lt;td> &lt;ins>10/10&lt;/ins></strong>
+&lt;/table></pre>
+
+   <p>Here, a column has been removed (the time at which it was removed is given also, as is a link
+   to the page explaining why):</p>
+
+   <pre>&lt;table>
+ &lt;thead>
+  &lt;tr> &lt;th> Game name           &lt;th> Game publisher   &lt;th> <strong>&lt;del cite="/edits/r192" datetime="2011-05-02 14:23Z">Verdict&lt;/del></strong>
+ &lt;tbody>
+  &lt;tr> &lt;td> Diablo 2            &lt;td> Blizzard         &lt;td> <strong>&lt;del cite="/edits/r192" datetime="2011-05-02 14:23Z">8/10&lt;/del></strong>
+  &lt;tr> &lt;td> Portal              &lt;td> Valve            &lt;td> <strong>&lt;del cite="/edits/r192" datetime="2011-05-02 14:23Z">10/10&lt;/del></strong>
+  &lt;tr> &lt;td> Portal 2            &lt;td> Valve            &lt;td> <strong>&lt;del cite="/edits/r192" datetime="2011-05-02 14:23Z">10/10&lt;/del></strong>
+&lt;/table></pre>
+
+  </div>
+
+  <p>Generally speaking, there is no good way to indicate more complicated edits (e.g. that a cell
+  was removed, moving all subsequent cells up or to the left).</p>
+
+
+
+
+  

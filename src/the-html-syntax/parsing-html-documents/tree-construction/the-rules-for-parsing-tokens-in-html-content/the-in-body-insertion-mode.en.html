@@ -1,0 +1,1317 @@
+<h6 id="parsing-main-inbody">The "<dfn data-x="insertion mode: in body">in body</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in body">in
+  body</span>" <span>insertion mode</span>, the user agent must handle the token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token that is U+0000 NULL</dt>
+   <dd>
+
+    <p><span>Parse error</span>. Ignore the token.</p>
+
+    <!-- The D-Link DSL-G604T ADSL router has a zero byte in its
+         configuration UI before a <frameset>, which is why U+0000 is
+         special-cased here.
+         refs: https://bugzilla.mozilla.org/show_bug.cgi?id=563526
+               https://www.w3.org/Bugs/Public/show_bug.cgi?id=9659
+    -->
+
+   </dd>
+
+   <dt>A character token that is one of U+0009 CHARACTER TABULATION,
+   U+000A LINE FEED (LF), U+000C FORM FEED (FF), U+000D CARRIAGE
+   RETURN (CR), or U+0020 SPACE</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span data-x="insert a character">Insert the token's character</span>.</p>
+
+   </dd>
+
+   <dt>Any other character token</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span data-x="insert a character">Insert the token's character</span>.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+    <p><span>Insert a comment</span>.</p>
+   </dd>
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "html"</dt>
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <p>If there is a <code>template</code> element on the <span>stack of open elements</span>, then
+    ignore the token.</p>
+
+    <p>Otherwise, for each attribute on the token, check to see if the attribute is already present
+    on the top element of the <span>stack of open elements</span>. If it is not, add the attribute
+    and its corresponding value to that element.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "base", "basefont", "bgsound", "link", "meta",
+   "noframes", "script", "style", "template", "title"</dt>
+   <dt>An end tag whose tag name is "template"</dt>
+   <dd>
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    head">in head</span>" <span>insertion mode</span>.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "body"</dt>
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <p>If the second element on the <span>stack of open elements</span> is not a <code>body</code>
+    element, if the <span>stack of open elements</span> has only one node on it, or if there is a
+    <code>template</code> element on the <span>stack of open elements</span>, then ignore the token.
+    (<span>fragment case</span>)</p>
+
+    <p>Otherwise, set the <span>frameset-ok flag</span> to "not ok"; then, for each attribute on the
+    token, check to see if the attribute is already present on the <code>body</code> element (the
+    second element) on the <span>stack of open elements</span>, and if it is not, add the attribute
+    and its corresponding value to that element.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "frameset"</dt>
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <p>If the <span>stack of open elements</span> has only one node on it, or if the second element
+    on the <span>stack of open elements</span> is not a <code>body</code> element, then ignore the
+    token. (<span>fragment case</span>)</p>
+
+    <p>If the <span>frameset-ok flag</span> is set to "not ok", ignore the token.</p>
+
+    <p>Otherwise, run the following steps:</p>
+
+    <ol>
+
+     <li><p>Remove the second element on the <span>stack of open elements</span> from its parent
+     node, if it has one.</p></li>
+
+     <li><p>Pop all the nodes from the bottom of the <span>stack of open elements</span>, from the
+     <span>current node</span> up to, but not including, the root <code>html</code> element.</p>
+
+     <li><p><span>Insert an HTML element</span> for the token.</p></li>
+
+     <li><p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in frameset">in
+     frameset</span>".</p>
+
+    </ol>
+
+   </dd>
+
+   <dt>An end-of-file token</dt>
+   <dd>
+
+    <p>If the <span>stack of template insertion modes</span> is not empty, then process the token
+    <span>using the rules for</span> the "<span data-x="insertion mode: in template">in
+    template</span>" <span>insertion mode</span>.</p>
+    <!-- this is needed to handle <head><template>...[EOF] - otherwise we don't construct the <body> element -->
+
+    <p>Otherwise, follow these steps:</p>
+
+    <ol>
+
+     <li><p>If there is a node in the <span>stack of open elements</span> that is not either a
+     <code>dd</code> element, a <code>dt</code> element, an <code>li</code> element, a
+     <code>menuitem</code> element, an <code>optgroup</code> element, an <code>option</code>
+     element, a <code>p</code> element, an <code>rb</code> element, an <code>rp</code> element, an
+     <code>rt</code> element, an <code>rtc</code> element, a <code>tbody</code> element, a
+     <code>td</code> element, a <code>tfoot</code> element, a <code>th</code> element, a
+     <code>thead</code> element, a <code>tr</code> element, the <code>body</code> element, or the
+     <code>html</code> element, then this is a <span>parse error</span>.</p></li> <!-- (some of
+     those are fragment cases) -->
+
+     <li><p><span>Stop parsing</span>.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "body"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in
+    scope">have a <code>body</code> element in scope</span>, this is a <span>parse error</span>;
+    ignore the token.</p>
+
+    <!-- if we get here, the insertion mode here is forcibly "in body". -->
+
+    <p>Otherwise, if there is a node in the <span>stack of open elements</span> that is not either a
+    <code>dd</code> element, a <code>dt</code> element, an <code>li</code> element, a
+    <code>menuitem</code> element, an <code>optgroup</code> element, an <code>option</code> element,
+    a <code>p</code> element, an <code>rb</code> element, an <code>rp</code> element, an
+    <code>rt</code> element, an <code>rtc</code> element, a <code>tbody</code> element, a
+    <code>td</code> element, a <code>tfoot</code> element, a <code>th</code> element, a
+    <code>thead</code> element, a <code>tr</code> element, the <code>body</code> element, or the
+    <code>html</code> element, then this is a <span>parse error</span>.</p> <!-- (some of those are
+    fragment cases, e.g., for <tbody> you'd have hit the first paragraph since the <body> wouldn't
+    be in scope, unless it was a fragment case) -->
+
+    <!-- If we ever change the frameset-ok flag to an insertion mode, then we'd have to somehow keep
+    track of its state when we switch to after-body. -->
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: after body">after
+    body</span>".</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "html"</dt>
+   <dd>
+
+    <!-- fake </body> -->
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in
+    scope">have a <code>body</code> element in scope</span>, this is a <span>parse error</span>;
+    ignore the token.</p>
+
+    <!-- if we get here, the insertion mode here is forcibly "in body". -->
+
+    <p>Otherwise, if there is a node in the <span>stack of open elements</span> that is not either a
+    <code>dd</code> element, a <code>dt</code> element, an <code>li</code> element, a
+    <code>menuitem</code> element, an <code>optgroup</code> element, an <code>option</code> element,
+    a <code>p</code> element, an <code>rb</code> element, an <code>rp</code> element, an
+    <code>rt</code> element, an <code>rtc</code> element, a <code>tbody</code> element, a
+    <code>td</code> element, a <code>tfoot</code> element, a <code>th</code> element, a
+    <code>thead</code> element, a <code>tr</code> element, the <code>body</code> element, or the
+    <code>html</code> element, then this is a <span>parse error</span>.</p> <!-- (some of those are
+    fragment cases, e.g., for <tbody> you'd have hit the first paragraph since the <body> wouldn't
+    be in scope, unless it was a fragment case) -->
+
+    <!-- If we ever change the frameset-ok flag to an insertion mode, then we'd have to somehow keep
+    track of its state when we switch to after-body. -->
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: after body">after
+    body</span>".</p>
+    <!-- end fake </body> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+   <!-- start tags for non-phrasing flow content elements -->
+
+   <!-- the normal ones -->
+   <dt>A start tag whose tag name is one of: "address", "article", "aside", "blockquote", "center",
+   "details", "dialog", "dir", "div", "dl", "fieldset", "figcaption", "figure", "footer", "header",
+   "hgroup", "main", "nav", "ol", "p", "section", "summary", "ul"</dt>
+   <dd>
+
+    <!-- As of May 2008 this doesn't match any browser exactly, but is as close to what IE does as I
+    can get without doing the non-tree DOM nonsense, and thus should actually afford better
+    compatibility when implemented by the other browsers. -->
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has a
+    <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <!-- as normal, but close menuitem if it's the current node -->
+   <dt>A start tag whose tag name is "menu"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has a
+    <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <!-- fake </menuitem> (maybe) -->
+    <p>If the <span>current node</span> is a <code>menuitem</code> element, pop that node from the
+    <span>stack of open elements</span>.</p>
+    <!-- end of fake </menuitem> -->
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <!-- as normal, but close h1-h6 if it's the current node -->
+   <dt>A start tag whose tag name is one of: "h1", "h2", "h3", "h4",
+   "h5", "h6"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has a
+    <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <p>If the <span>current node</span> is an <span data-x="HTML elements">HTML element</span> whose
+    tag name is one of "h1", "h2", "h3", "h4", "h5", or "h6", then this is a <span>parse
+    error</span>; pop the <span>current node</span> off the <span>stack of open elements</span>.</p>
+    <!-- See https://bugs.webkit.org/show_bug.cgi?id=12646 -->
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <!-- as normal, but drops leading newline -->
+   <dt>A start tag whose tag name is one of: "pre", "listing"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has
+    a <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p>If the <span>next token</span> is a U+000A LINE FEED (LF) character token, then ignore that
+    token and move on to the next one. (Newlines at the start of <code>pre</code> blocks are ignored
+    as an authoring convenience.)</p>
+
+    <!-- <pre>[CR]X will eat the [CR], <pre>&#x10;X will eat the
+    &#x10;, but <pre>&#x13;X will not eat the &#x13;. -->
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+   </dd>
+
+   <!-- as normal, but interacts with the form element pointer -->
+   <dt>A start tag whose tag name is "form"</dt>
+   <dd>
+
+    <p>If the <span><code data-x="form">form</code> element pointer</span> is not null, and there is
+    no <code>template</code> element on the <span>stack of open elements</span>, then this is a
+    <span>parse error</span>; ignore the token.</p>
+
+    <p>Otherwise:</p>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has
+    a <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token, and, if there is no <code>template</code>
+    element on the <span>stack of open elements</span>, set the <span><code
+    data-x="form">form</code> element pointer</span> to point to the element created.</p>
+
+   </dd>
+
+   <!-- as normal, but imply </li> when there's another <li> open in weird cases -->
+   <dt>A start tag whose tag name is "li"</dt>
+   <dd>
+
+    <p>Run these steps:</p>
+
+    <ol>
+
+     <li><p>Set the <span>frameset-ok flag</span> to "not ok".</p></li>
+
+     <li><p>Initialize <var>node</var> to be the <span>current
+     node</span> (the bottommost node of the stack).</p></li>
+
+     <li>
+
+      <p><i>Loop</i>: If <var>node</var> is an <code>li</code> element, then run these
+      substeps:</p>
+
+      <ol>
+
+       <!-- fake </li> -->
+       <li><p><span>Generate implied end tags</span>, except for <code>li</code> elements.</p></li>
+
+       <li><p>If the <span>current node</span> is not an <code>li</code> element, then this is a
+       <span>parse error</span>.</p></li>
+
+       <li><p>Pop elements from the <span>stack of open elements</span> until an <code>li</code>
+       element has been popped from the stack.</p></li>
+       <!-- end of fake </li> -->
+
+       <li><p>Jump to the step labeled <i>done</i> below.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>If <var>node</var> is in the <span>special</span> category, but is not an
+     <code>address</code>, <code>div</code>, or <code>p</code> element, then jump to the step
+     labeled <i>done</i> below.</p></li>
+     <!-- an element <foo> is in this list if the following markup:
+
+         <!DOCTYPE html><body><ol><li><foo><li>
+
+     ...results in the second <li> not being (in any way) a descendant of the first <li>, or if
+     <foo> is a formatting element that gets reopened later. -->
+
+     <li><p>Otherwise, set <var>node</var> to the previous entry in the <span>stack of open
+     elements</span> and return to the step labeled <i>loop</i>.</p></li>
+
+     <li><p><i>Done</i>: If the <span>stack of open elements</span> <span data-x="has an element in
+     button scope">has a <code>p</code> element in button scope</span>, then <span>close a
+     <code>p</code> element</span>.</p></li>
+
+     <li><p>Finally, <span>insert an HTML element</span> for the token.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- as normal, but imply </dt> or </dd> when there's another <dt> or <dd> open in weird cases  -->
+   <dt>A start tag whose tag name is one of: "dd", "dt"</dt>
+   <dd>
+
+    <p>Run these steps:</p>
+
+    <ol>
+
+     <li><p>Set the <span>frameset-ok flag</span> to "not ok".</p></li>
+
+     <li><p>Initialize <var>node</var> to be the <span>current
+     node</span> (the bottommost node of the stack).</p></li>
+
+     <li>
+
+      <p><i>Loop</i>: If <var>node</var> is a <code>dd</code> element, then run these
+      substeps:</p>
+
+      <ol>
+
+       <!-- fake </dd> -->
+       <li><p><span>Generate implied end tags</span>, except for <code>dd</code> elements.</p></li>
+
+       <li><p>If the <span>current node</span> is not a <code>dd</code> element, then this is a
+       <span>parse error</span>.</p></li>
+
+       <li><p>Pop elements from the <span>stack of open elements</span> until a <code>dd</code>
+       element has been popped from the stack.</p></li>
+       <!-- end of fake </dd> -->
+
+       <li><p>Jump to the step labeled <i>done</i> below.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li>
+
+      <p>If <var>node</var> is a <code>dt</code> element, then run these substeps:</p>
+
+      <ol>
+
+       <!-- fake </dt> -->
+       <li><p><span>Generate implied end tags</span>, except for <code>dt</code> elements.</p></li>
+
+       <li><p>If the <span>current node</span> is not a <code>dt</code> element, then this is a
+       <span>parse error</span>.</p></li>
+
+       <li><p>Pop elements from the <span>stack of open elements</span> until a <code>dt</code>
+       element has been popped from the stack.</p></li>
+       <!-- end of fake </dt> -->
+
+       <li><p>Jump to the step labeled <i>done</i> below.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>If <var>node</var> is in the <span>special</span> category, but is not an
+     <code>address</code>, <code>div</code>, or <code>p</code> element, then jump to the step
+     labeled <i>done</i> below.</p></li>
+     <!-- an element <foo> is in this list if the following markup:
+
+         <!DOCTYPE html><body><dl><dt><foo><dt>
+
+     ...results in the second <dt> not being (in any way) a descendant of the first <dt>, or if
+     <foo> is a formatting element that gets reopened later. -->
+
+     <li><p>Otherwise, set <var>node</var> to the previous entry in the <span>stack of open
+     elements</span> and return to the step labeled <i>loop</i>.</p></li>
+
+     <li><p><i>Done</i>: If the <span>stack of open elements</span> <span data-x="has an element in
+     button scope">has a <code>p</code> element in button scope</span>, then <span>close a
+     <code>p</code> element</span>.</p></li>
+
+     <li><p>Finally, <span>insert an HTML element</span> for the token.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- same as normal, but effectively ends parsing -->
+   <dt>A start tag whose tag name is "plaintext"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has a
+    <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p>Switch the tokenizer to the <span>PLAINTEXT state</span>.</p>
+
+    <p class="note">Once a start tag with the tag name "plaintext" has been seen, that will be the
+    last token ever seen other than character tokens (and the end-of-file token), because there is
+    no way to switch out of the <span>PLAINTEXT state</span>.</p>
+
+   </dd>
+
+   <!-- button is a hybrid -->
+   <dt>A start tag whose tag name is "button"</dt>
+   <dd>
+
+    <ol>
+
+     <li>
+
+      <p>If the <span>stack of open elements</span> <span data-x="has an element in scope">has a
+      <code>button</code> element in scope</span>, then run these substeps:</p>
+
+      <ol>
+
+       <li><p><span>Parse error</span>.</p></li>
+
+       <li><p><span>Generate implied end tags</span>.</p></li>
+
+       <li><p>Pop elements from the <span>stack of open elements</span> until a <code>button</code>
+       element has been popped from the stack.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p><span>Reconstruct the active formatting elements</span>, if any.</p></li>
+
+     <li><p><span>Insert an HTML element</span> for the token.</p></li>
+
+     <li><p>Set the <span>frameset-ok flag</span> to "not ok".</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- end tags for non-phrasing flow content elements (and button) -->
+
+   <!-- the normal ones (and menu) -->
+   <dt>An end tag whose tag name is one of: "address", "article", "aside", "blockquote", "button",
+   "center", "details", "dialog", "dir", "div", "dl", "fieldset", "figcaption", "figure", "footer",
+   "header", "hgroup", "listing", "main", "menu", "nav", "ol", "pre", "section", "summary",
+   "ul"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in
+    scope">have an element in scope</span> that is an <span data-x="HTML elements">HTML
+    element</span> with the same tag name as that of the token, then this is a <span>parse
+    error</span>; ignore the token.</p>
+
+    <p>Otherwise, run these steps:</p>
+
+    <ol>
+
+     <li><p><span>Generate implied end tags</span>.</p></li>
+
+     <li><p>If the <span>current node</span> is not an <span data-x="HTML elements">HTML element</span> with
+     the same tag name as that of the token, then this is a
+     <span>parse error</span>.</p></li>
+
+     <li><p>Pop elements from the <span>stack of open elements</span> until an <span data-x="HTML
+     elements">HTML element</span> with the same tag name as the token has been popped from the
+     stack.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- removes the form element pointer instead of the matching node -->
+   <dt>An end tag whose tag name is "form"</dt>
+   <dd>
+
+    <p>If there is no <code>template</code> element on the <span>stack of open elements</span>, then
+    run these substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>node</var> be the element that the <span><code data-x="">form</code>
+     element pointer</span> is set to, or null if it is not set to an element.</p></li>
+
+     <li><p>Set the <span><code data-x="">form</code> element pointer</span> to null.</p></li>
+
+     <li><p>If <var>node</var> is null or if the <span>stack of open elements</span> does
+     not <span data-x="has an element in scope">have <var>node</var> in scope</span>, then
+     this is a <span>parse error</span>; abort these steps and ignore the token.</p></li>
+
+     <li><p><span>Generate implied end tags</span>.</p></li>
+
+     <li><p>If the <span>current node</span> is not <var>node</var>, then this is a
+     <span>parse error</span>.</p></li>
+
+     <li><p>Remove <var>node</var> from the <span>stack of open elements</span>.</p></li>
+
+    </ol>
+
+    <p>If there <em>is</em> a <code>template</code> element on the <span>stack of open
+    elements</span>, then run these substeps instead:</p>
+
+    <ol>
+
+     <li><p>If the <span>stack of open elements</span> does not <span data-x="has an element in
+     scope">have a <code>form</code> element in scope</span>, then this is a <span>parse
+     error</span>; abort these steps and ignore the token.</p></li>
+
+     <li><p><span>Generate implied end tags</span>.</p></li>
+
+     <li><p>If the <span>current node</span> is not a <code>form</code> element, then this is a
+     <span>parse error</span>.</p></li>
+
+     <li><p>Pop elements from the <span>stack of open elements</span> until a <code>form</code>
+     element has been popped from the stack.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- as normal, except </p> implies <p> if there's no <p> in scope, and needs care as the elements have optional tags -->
+   <dt>An end tag whose tag name is "p"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in button
+    scope">have a <code>p</code> element in button scope</span>, then this is a <span>parse
+    error</span>; <span>insert an HTML element</span> for a "p" start tag token with no
+    attributes.</p>
+
+    <p><span>Close a <code>p</code> element</span>.</p>
+
+   </dd>
+
+   <!-- as normal, but needs care as the elements have optional tags, and are further scoped by <ol>/<ul> -->
+   <dt>An end tag whose tag name is "li"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in list item
+    scope">have an <code>li</code> element in list item scope</span>, then this is a <span>parse
+    error</span>; ignore the token.</p>
+
+    <p>Otherwise, run these steps:</p>
+
+    <ol>
+
+     <li><p><span>Generate implied end tags</span>, except for <code>li</code> elements.</p></li>
+
+     <li><p>If the <span>current node</span> is not an <code>li</code> element, then this is a
+     <span>parse error</span>.</p></li>
+
+     <li><p>Pop elements from the <span>stack of open elements</span> until an <code>li</code>
+     element has been popped from the stack.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- as normal, but needs care as the elements have optional tags -->
+   <dt>An end tag whose tag name is one of: "dd", "dt"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in
+    scope">have an element in scope</span> that is an <span data-x="HTML elements">HTML
+    element</span> with the same tag name as that of the token, then this is a <span>parse
+    error</span>; ignore the token.</p>
+
+    <p>Otherwise, run these steps:</p>
+
+    <ol>
+
+     <li><p><span>Generate implied end tags</span>, except for <span>HTML elements</span> with the
+     same tag name as the token.</p></li>
+
+     <li><p>If the <span>current node</span> is not an <span data-x="HTML elements">HTML
+     element</span> with the same tag name as that of the token, then this is a <span>parse
+     error</span>.</p></li>
+
+     <li><p>Pop elements from the <span>stack of open elements</span> until an <span data-x="HTML
+     elements">HTML element</span> with the same tag name as the token has been popped from the
+     stack.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- as normal, except acts as a closer for any of the h1-h6 elements -->
+   <dt>An end tag whose tag name is one of: "h1", "h2", "h3", "h4", "h5", "h6"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in
+    scope">have an element in scope</span> that is an <span data-x="HTML elements">HTML
+    element</span> and whose tag name is one of "h1", "h2", "h3", "h4", "h5", or "h6", then this is
+    a <span>parse error</span>; ignore the token.</p>
+
+    <p>Otherwise, run these steps:</p>
+
+    <ol>
+
+     <li><p><span>Generate implied end tags</span>.</p></li>
+
+     <li><p>If the <span>current node</span> is not an <span data-x="HTML elements">HTML
+     element</span> with the same tag name as that of the token, then this is a <span>parse
+     error</span>.</p></li>
+
+     <li><p>Pop elements from the <span>stack of open elements</span> until an <span data-x="HTML
+     elements">HTML element</span> whose tag name is one of "h1", "h2", "h3", "h4", "h5", or "h6"
+     has been popped from the stack.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <!-- see also applet/marquee/object lower down -->
+
+   <dt>An end tag whose tag name is "sarcasm"</dt>
+   <dd>
+    <p>Take a deep breath, then act as described in the "any other end
+    tag" entry below.</p>
+   </dd>
+
+   <!-- ADOPTION AGENCY ELEMENTS
+        Mozilla-only: bdo blink del ins sub sup q
+        Safari-only: code dfn kbd nobr samp var wbr
+        Both: a b big em font i s small strike strong tt u -->
+
+   <dt>A start tag whose tag name is "a"</dt>
+   <dd>
+
+    <p>If the <span>list of active formatting elements</span> contains an <code>a</code> element
+    between the end of the list and the last <span data-x="concept-parser-marker">marker</span> on
+    the list (or the start of the list if there is no <span
+    data-x="concept-parser-marker">marker</span> on the list), then this is a <span>parse
+    error</span>; run the <span>adoption agency algorithm</span> for the token, then remove that
+    element from the <span>list of active formatting elements</span> and the <span>stack of open
+    elements</span> if the <span>adoption agency algorithm</span> didn't already remove it (it might
+    not have if the element is not <span data-x="has an element in table scope">in table
+    scope</span>).</p>
+
+    <p class="example">In the non-conforming stream
+    <code data-x="">&lt;a&nbsp;href="a">a&lt;table>&lt;a&nbsp;href="b">b&lt;/table>x</code>, the first
+    <code>a</code> element would be closed upon seeing the second one, and the "x" character would
+    be inside a link to "b", not to "a". This is despite the fact that the outer <code>a</code>
+    element is not in table scope (meaning that a regular <code data-x="">&lt;/a></code> end tag at the start
+    of the table wouldn't close the outer <code>a</code> element). The result is that the two
+    <code>a</code> elements are indirectly nested inside each other &mdash; non-conforming markup
+    will often result in non-conforming DOMs when parsed.</p>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token. <span>Push onto the list of active
+    formatting elements</span> that element.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "b", "big", "code", "em",
+   "font", "i", "s", "small", "strike", "strong", "tt", "u"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token. <span>Push onto the list of active
+    formatting elements</span> that element.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "nobr"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in scope">has a
+    <code>nobr</code> element in scope</span>, then this is a <span>parse error</span>; run the
+    <span>adoption agency algorithm</span> for the token, then once again <span>reconstruct the
+    active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token. <span>Push onto the list of active
+    formatting elements</span> that element.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "a",
+   "b", "big", "code", "em", "font", "i", "nobr", "s", "small",
+   "strike", "strong", "tt", "u"</dt>
+   <dd>
+
+    <p>Run the <span>adoption agency algorithm</span> for the token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "applet", "marquee", "object"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p>Insert a <span data-x="concept-parser-marker">marker</span> at the end of the <span>list of
+    active formatting elements</span>.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+   </dd>
+
+   <dt>An end tag token whose tag name is one of: "applet", "marquee", "object"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in
+    scope">have an element in scope</span> that is an <span data-x="HTML elements">HTML
+    element</span> with the same tag name as that of the token, then this is a <span>parse
+    error</span>; ignore the token.</p>
+
+    <p>Otherwise, run these steps:</p>
+
+    <ol>
+
+     <li><p><span>Generate implied end tags</span>.</p></li>
+
+     <li><p>If the <span>current node</span> is not an <span data-x="HTML elements">HTML
+     element</span> with the same tag name as that of the token, then this is a <span>parse
+     error</span>.</p></li>
+
+     <li><p>Pop elements from the <span>stack of open elements</span> until an <span data-x="HTML
+     elements">HTML element</span> with the same tag name as the token has been popped from the
+     stack.</p></li>
+
+     <li><span>Clear the list of active formatting elements up to the last marker</span>.</li>
+
+    </ol>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "table"</dt>
+   <dd>
+
+    <p>If the <code>Document</code> is <em>not</em> set to <span>quirks mode</span>, and the
+    <span>stack of open elements</span> <span data-x="has an element in button scope">has a
+    <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p> <!-- i hate myself (this quirk was basically caused by acid2; if i'd
+    realized we could change the specs when i wrote acid2, we could have avoided having any
+    parsing-mode quirks) -Hixie -->
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in table">in
+    table</span>".</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "br"</dt>
+   <dd>
+
+    <p><span>Parse error</span>. Drop the attributes from the token, and act as described in the
+    next entry; i.e. act as if this was a "br" start tag token with no attributes, rather than the
+    end tag token that it actually is.</p>
+
+   </dd>
+
+   <!-- do not insert things here, since the previous entry refers to the next entry -->
+
+   <dt>A start tag whose tag name is one of: "area", "br", "embed",
+   "img", "keygen", "wbr"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token. Immediately pop the <span>current
+    node</span> off the <span>stack of open elements</span>.</p>
+
+    <p><span data-x="acknowledge self-closing flag">Acknowledge the token's <i data-x="self-closing flag">self-closing
+    flag</i></span>, if it is set.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+    <!-- shouldn't really do this for <area> -->
+
+   </dd>
+
+   <dt>A start tag whose tag name is "input"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token. Immediately pop the <span>current
+    node</span> off the <span>stack of open elements</span>.</p>
+
+    <p><span data-x="acknowledge self-closing flag">Acknowledge the token's <i data-x="self-closing flag">self-closing
+    flag</i></span>, if it is set.</p>
+
+    <p>If the token does not have an attribute with the name "type", or if it does, but that
+    attribute's value is not an <span>ASCII case-insensitive</span> match for the string "<code
+    data-x="">hidden</code>", then: set the <span>frameset-ok flag</span> to "not ok".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "param", "source", "track"</dt>
+   <dd>
+
+    <p><span>Insert an HTML element</span> for the token. Immediately pop the <span>current
+    node</span> off the <span>stack of open elements</span>.</p>
+
+    <p><span data-x="acknowledge self-closing flag">Acknowledge the token's <i data-x="self-closing flag">self-closing
+    flag</i></span>, if it is set.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "hr"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has a
+    <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <!-- fake </menuitem> (maybe) -->
+    <p>If the <span>current node</span> is a <code>menuitem</code> element, pop that node from the
+    <span>stack of open elements</span>.</p>
+    <!-- end of fake </menuitem> -->
+
+    <p><span>Insert an HTML element</span> for the token. Immediately pop the <span>current
+    node</span> off the <span>stack of open elements</span>.</p>
+
+    <p><span data-x="acknowledge self-closing flag">Acknowledge the token's <i data-x="self-closing flag">self-closing
+    flag</i></span>, if it is set.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "image"</dt>
+   <dd>
+    <!-- As of 2005-12, studies showed that around 0.2% of pages used the <image> element. -->
+    <p><span>Parse error</span>. Change the token's tag name to "img" and reprocess it. (Don't
+    ask.)</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "textarea"</dt>
+   <dd>
+
+    <p>Run these steps:</p>
+
+    <ol>
+
+     <li><p><span>Insert an HTML element</span> for the token.</p></li>
+
+     <li><p>If the <span>next token</span> is a U+000A LINE FEED (LF) character token, then ignore
+     that token and move on to the next one. (Newlines at the start of <code>textarea</code>
+     elements are ignored as an authoring convenience.)</p></li>
+
+     <!-- see comment in <pre> start tag bit -->
+
+     <li><p>Switch the tokenizer to the <span>RCDATA state</span>.</p></li>
+
+     <li><p>Let the <span>original insertion mode</span> be the current <span>insertion
+     mode</span>.</p>
+
+     <li><p>Set the <span>frameset-ok flag</span> to "not ok".</p></li>
+
+     <li><p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode:
+     text">text</span>".</p></li>
+
+    </ol>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "xmp"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in button scope">has a
+    <code>p</code> element in button scope</span>, then <span>close a <code>p</code>
+    element</span>.</p>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+    <p>Follow the <span>generic raw text element parsing algorithm</span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "iframe"</dt>
+   <dd>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+    <p>Follow the <span>generic raw text element parsing algorithm</span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "noembed"</dt>
+   <dt>A start tag whose tag name is "noscript", if the <span>scripting flag</span> is enabled</dt>
+   <dd>
+
+    <p>Follow the <span>generic raw text element parsing algorithm</span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "select"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+
+    <p>If the <span>insertion mode</span> is one of "<span data-x="insertion mode: in table">in
+    table</span>", "<span data-x="insertion mode: in caption">in caption</span>", "<span
+    data-x="insertion mode: in table body">in table body</span>", "<span data-x="insertion mode: in
+    row">in row</span>", or "<span data-x="insertion mode: in cell">in cell</span>", then switch the
+    <span>insertion mode</span> to "<span data-x="insertion mode: in select in table">in select in
+    table</span>". Otherwise, switch the <span>insertion mode</span> to "<span data-x="insertion
+    mode: in select">in select</span>".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "optgroup", "option"</dt>
+   <dd>
+
+    <p>If the <span>current node</span> is an <code>option</code> element, then pop the
+    <span>current node</span> off the <span>stack of open elements</span>.</p>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "menuitem"</dt>
+   <dd>
+
+    <p>If the <span>current node</span> is a <code>menuitem</code> element, then pop the
+    <span>current node</span> off the <span>stack of open elements</span>.</p>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "rb", "rtc"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in scope">has a
+    <code>ruby</code> element in scope</span>, then <span>generate implied end tags</span>. If the
+    <span>current node</span> is not now a <code>ruby</code> element, this is a
+    <span>parse error</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "rp", "rt"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> <span data-x="has an element in scope">has a
+    <code>ruby</code> element in scope</span>, then <span>generate implied end tags</span>, except
+    for <code>rtc</code> elements. If the <span>current node</span> is not now a <code>rtc</code>
+    element or a <code>ruby</code> element, this is a <span>parse error</span>.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "math"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Adjust MathML attributes</span> for the token. (This fixes the case of MathML
+    attributes that are not all lowercase.)</p>
+
+    <p><span>Adjust foreign attributes</span> for the token. (This fixes the use of namespaced
+    attributes, in particular XLink.)</p>
+
+    <p><span>Insert a foreign element</span> for the token, in the <span>MathML
+    namespace</span>.</p>
+
+    <!-- If we ever change the frameset-ok flag to an insertion mode, the following change would be
+    implied, except we'd have to do it even in the face of a self-closed tag:
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+    -->
+
+    <p>If the token has its <i data-x="self-closing flag">self-closing flag</i> set, pop the <span>current node</span> off the
+    <span>stack of open elements</span> and <span data-x="acknowledge self-closing flag">acknowledge
+    the token's <i data-x="self-closing flag">self-closing flag</i></span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "svg"</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Adjust SVG attributes</span> for the token. (This fixes the case of SVG attributes that
+    are not all lowercase.)</p>
+
+    <p><span>Adjust foreign attributes</span> for the token. (This fixes the use of namespaced
+    attributes, in particular XLink in SVG.)</p>
+
+    <p><span>Insert a foreign element</span> for the token, in the <span>SVG namespace</span>.</p>
+
+    <!-- If we ever change the frameset-ok flag to an insertion mode, the following change would be
+    implied, except we'd have to do it even in the face of a self-closed tag:
+    <p>Set the <span>frameset-ok flag</span> to "not ok".</p>
+    -->
+
+    <p>If the token has its <i data-x="self-closing flag">self-closing flag</i> set, pop the <span>current node</span> off the
+    <span>stack of open elements</span> and <span data-x="acknowledge self-closing flag">acknowledge
+    the token's <i data-x="self-closing flag">self-closing flag</i></span>.</p>
+
+   </dd>
+
+   <dt>A start <!--or end--> tag whose tag name is one of: "caption", "col", "colgroup", "frame",
+   "head", "tbody", "td", "tfoot", "th", "thead", "tr"</dt>
+   <!--<dt>An end tag whose tag name is one of: "area", "base", "basefont", "bgsound", "embed",
+   "hr", "iframe", "image", "img", "input", "keygen", "link", "meta", "noembed", "noframes",
+   "param", "script", "select", "source", "style", "table", "textarea", "title", "track",
+   "wbr"</dt>-->
+   <!--<dt>An end tag whose tag name is "noscript", if the <span>scripting flag</span> is
+   enabled</dt>-->
+   <dd>
+
+    <p><span>Parse error</span>. Ignore the token.</p>
+
+    <!-- end tags are commented out because since they can never end up on the stack anyway, the
+    default end tag clause will automatically handle them. we don't want to have text in the spec
+    that is just an optimization, as that detracts from the spec itself -->
+
+   </dd>
+
+   <dt>Any other start tag</dt>
+   <dd>
+
+    <p><span>Reconstruct the active formatting elements</span>, if any.</p>
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+    <p class="note">This element will be an <span>ordinary</span>
+    element.</p>
+
+   </dd>
+
+   <dt>Any other end tag</dt>
+   <dd>
+
+    <p>Run these steps:</p>
+
+    <ol>
+
+     <li><p>Initialize <var>node</var> to be the <span>current node</span> (the bottommost
+     node of the stack).</p></li>
+
+     <li><p><i>Loop</i>: If <var>node</var> is an <span data-x="HTML elements">HTML
+     element</span> with the same tag name as the token, then:</p>
+
+      <ol>
+
+       <li><p><span>Generate implied end tags</span>, except for <span>HTML elements</span> with the
+       same tag name as the token.</p></li>
+
+       <li><p>If <var>node</var> is not the <span>current node</span>, then this is a
+       <span>parse error</span>.</p></li>
+
+       <li><p>Pop all the nodes from the <span>current node</span> up to <var>node</var>,
+       including <var>node</var>, then stop these steps.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>Otherwise, if <var>node</var> is in the <span>special</span> category, then
+     this is a <span>parse error</span>; ignore the token, and abort these steps.</p></li>
+
+     <li><p>Set <var>node</var> to the previous entry in the <span>stack of open
+     elements</span>.</p></li>
+
+     <li><p>Return to the step labeled <i>loop</i>.</p></li>
+
+    </ol>
+
+   </dd>
+
+  </dl>
+
+  <p>When the steps above say the user agent is to <dfn>close a <code>p</code> element</dfn>, it
+  means that the user agent must run the following steps:</p>
+
+  <ol> <!-- prereq: p in scope -->
+
+   <li><p><span>Generate implied end tags</span>, except for <code>p</code> elements.</p></li>
+
+   <li><p>If the <span>current node</span> is not a <code>p</code> element, then this is a
+   <span>parse error</span>.</p></li>
+
+   <li><p>Pop elements from the <span>stack of open elements</span> until a <code>p</code> element
+   has been popped from the stack.</p></li>
+
+  </ol>
+
+  <!-- AAA -->
+  <p id="adoptionAgency">The <dfn>adoption agency algorithm</dfn>, which takes as its only argument
+  a token <var>token</var> for which the algorithm is being run, consists of the following
+  steps:</p>
+
+  <ol>
+
+   <!-- don't forget about the noah's ark clause when looking at this algorithm! -->
+
+   <li><p>Let <var>subject</var> be <var>token</var>'s tag name.</p></li>
+
+   <li><p>If the <span>current node</span> is an <span data-x="HTML elements">HTML element</span>
+   whose tag name is <var>subject</var>, and the <span>current node</span> is not in the
+   <span>list of active formatting elements</span>, then pop the <span>current node</span> off the
+   <span>stack of open elements</span>, and abort these steps.</p></li>
+
+   <li><p>Let <var>outer loop counter</var> be zero.</p></li>
+
+   <li><p><i>Outer loop</i>: If <var>outer loop counter</var> is greater than or equal to
+   eight, then abort these steps.</p></li>
+
+   <li><p>Increment <var>outer loop counter</var> by one.</p></li>
+
+   <li>
+
+    <p>Let <var>formatting element</var> be the last element in the <span>list of active
+    formatting elements</span> that:</p>
+
+    <ul>
+
+     <li>is between the end of the list and the last <span
+     data-x="concept-parser-marker">marker</span> in the list, if any, or the start of the list
+     otherwise, and</li>
+
+     <li>has the tag name <var>subject</var>.</li>
+
+    </ul>
+
+    <p>If there is no such element, then abort these steps and instead act as described in the "any
+    other end tag" entry above.</p>
+
+   </li>
+
+   <li><p>If <var>formatting element</var> is not in the <span>stack of open
+   elements</span>, then this is a <span>parse error</span>; remove the element from the list, and
+   abort these steps.</p></li>
+
+   <li><p>If <var>formatting element</var> is in the <span>stack of open elements</span>,
+   but the element is not <span data-x="has an element in scope">in scope</span>, then this is a
+   <span>parse error</span>; abort these steps.</p></li>
+
+   <!-- at this point, <var>formatting element</var> is in <span data-x="stack of open
+        elements">the stack</span> and <span data-x="list of active formatting elements">the
+        list</span>, and is <span data-x="has an element in scope">in scope</span>. -->
+
+   <li><p>If <var>formatting element</var> is not the <span>current node</span>, this is a
+   <span>parse error</span>. (But do not abort these steps.)</p></li>
+
+   <li><p>Let <var>furthest block</var> be the topmost node in the <span>stack of open
+   elements</span> that is lower in the stack than <var>formatting element</var>, and is an
+   element in the <span>special</span> category. There might not be one.</p></li>
+
+   <!-- <html> ... <formatting element> ... <furthest block> ... <current node> -->
+
+   <li><p>If there is no <var>furthest block</var>, then the UA must first pop all the
+   nodes from the bottom of the <span>stack of open elements</span>, from the <span>current
+   node</span> up to and including <var>formatting element</var>, then remove <var>formatting element</var> from the <span>list of active formatting elements</span>, and
+   finally abort these steps.</p></li> <!-- the "reconstruct the active formatting elements"
+   algorithm will rebuild them later -->
+
+   <li><p>Let <var>common ancestor</var> be the element immediately above <var>formatting element</var> in the <span>stack of open elements</span>.</p></li>
+
+   <!-- <html> ... <common ancestor> <formatting element> ... <furthest block> ... <current node> -->
+
+   <li><p>Let a bookmark note the position of <var>formatting element</var> in the
+   <span>list of active formatting elements</span> relative to the elements on either side of it in
+   the list.</p></li>
+
+   <li>
+
+    <p>Let <var>node</var> and <var>last node</var> be <var>furthest
+    block</var>. Follow these steps:</p>
+
+    <ol>
+
+     <li><p>Let <var>inner loop counter</var> be zero.</p></li>
+
+     <li><p><i>Inner loop</i>: Increment <var>inner loop counter</var> by one.</p></li>
+
+     <li><p>Let <var>node</var> be the element immediately above <var>node</var>
+     in the <span>stack of open elements</span>, or if <var>node</var> is no longer in the
+     <span>stack of open elements</span> (e.g. because it got removed by this algorithm<!-- in
+     particular, the step labeled "removal" below -->), the element that was immediately above <var>node</var> in the <span>stack of open elements</span> before <var>node</var>
+     was removed.</p></li>
+
+     <li><p>If <var>node</var> is <var>formatting element</var>, then go to the
+     next step in the overall algorithm.</p></li>
+
+     <li><p>If <var>inner loop counter</var> is greater than three and <var>node</var> is in the <span>list of active formatting elements</span>, then remove <var>node</var> from the <span>list of active formatting elements</span>.</p></li>
+
+     <li><p><!-- "removal" step: -->If <var>node</var> is not in the <span>list of active
+     formatting elements</span>, then remove <var>node</var> from the <span>stack of open
+     elements</span> and then go back to the step labeled <i>inner loop</i>.</p></li>
+
+     <li><p><span>Create an element for the token</span> for which the element <var>node</var> was created, in the <span>HTML namespace</span>, with <var>common
+     ancestor</var> as the intended parent; replace the entry for <var>node</var> in the
+     <span>list of active formatting elements</span> with an entry for the new element, replace the
+     entry for <var>node</var> in the <span>stack of open elements</span> with an entry for
+     the new element, and let <var>node</var> be the new element.</p></li>
+
+     <li><p>If <var>last node</var> is <var>furthest block</var>, then move the
+     aforementioned bookmark to be immediately after the new <var>node</var> in the
+     <span>list of active formatting elements</span>.</p></li>
+
+     <li><p>Insert <var>last node</var> into <var>node</var>, first removing it
+     from its previous parent node if any.</p></li>
+
+     <li><p>Let <var>last node</var> be <var>node</var>.</p></li>
+
+     <li><p>Return to the step labeled <i>inner loop</i>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Insert whatever <var>last node</var> ended up being in the previous step at the
+   <span>appropriate place for inserting a node</span>, but using <var>common
+   ancestor</var> as the <i>override target</i>.</p></li>
+
+   <li><p><span>Create an element for the token</span> for which <var>formatting
+   element</var> was created, in the <span>HTML namespace</span>, with <var>furthest
+   block</var> as the intended parent.</p></li>
+
+   <li><p>Take all of the child nodes of <var>furthest block</var> and append them to the
+   element created in the last step.</p></li>
+
+   <li><p>Append that new element to <var>furthest block</var>.</p></li>
+
+   <li><p>Remove <var>formatting element</var> from the <span>list of active formatting
+   elements</span>, and insert the new element into the <span>list of active formatting
+   elements</span> at the position of the aforementioned bookmark.</p></li>
+
+   <li><p>Remove <var>formatting element</var> from the <span>stack of open
+   elements</span>, and insert the new element into the <span>stack of open elements</span>
+   immediately below the position of <var>furthest block</var> in that stack.</p></li>
+
+   <li><p>Jump back to the step labeled <i>outer loop</i>.</p></li>
+
+  </ol>
+
+  <p class="note">This algorithm's name, the "adoption agency algorithm", comes from the way it
+  causes elements to change parents, and is in contrast with other possible algorithms for dealing
+  with misnested content, which included the "incest algorithm", the "secret affair algorithm", and
+  the "Heisenberg algorithm".</p>
+
+
+
+
+
+  

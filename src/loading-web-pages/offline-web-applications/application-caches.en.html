@@ -1,0 +1,208 @@
+<h4 id="appcache">Application caches</h4> <!--APPCACHE-->
+
+  <p>An <dfn data-export="">application cache</dfn> is a set of cached resources consisting of:</p>
+
+  <ul>
+
+   <li>
+
+    <p>One or more resources (including their out-of-band metadata, such as HTTP headers, if any),
+    identified by URLs, each falling into one (or more) of the following categories:</p>
+
+    <dl>
+
+     <dt><dfn data-x="concept-appcache-master">Master entries</dfn>
+
+     <dd><p class="note">These are documents that were added to the cache because a <span>browsing
+     context</span> was <span data-x="navigate">navigated</span> to that document and the document
+     indicated that this was its cache, using the <code data-x="attr-html-manifest">manifest</code>
+     attribute.</p>
+
+
+     <dt><dfn data-x="concept-appcache-manifest">The manifest</dfn>
+
+     <dd><p class="note">This is the resource corresponding to the URL that was given in a master
+     entry's <code>html</code> element's <code data-x="attr-html-manifest">manifest</code> attribute.
+     The manifest is fetched and processed during the <span>application cache download
+     process</span>. All the <span data-x="concept-appcache-master">master entries</span> have the
+     <span data-x="same origin">same origin</span> as the manifest.</p>
+
+
+     <dt><dfn data-x="concept-appcache-explicit">Explicit entries</dfn>
+
+     <dd><p class="note">These are the resources that were listed in the cache's <span
+     data-x="concept-appcache-manifest">manifest</span> in an <span
+     data-x="concept-appcache-manifest-explicit">explicit section</span>.</p>
+
+
+     <dt><dfn data-x="concept-appcache-fallback">Fallback entries</dfn>
+
+     <dd><p class="note">These are the resources that were listed in the cache's <span
+     data-x="concept-appcache-manifest">manifest</span> in a <span
+     data-x="concept-appcache-manifest-fallback">fallback section</span>.</p>
+
+
+    </dl>
+
+    <p><span data-x="concept-appcache-explicit">Explicit entries</span> and <span
+    data-x="concept-appcache-fallback">Fallback entries</span> can be marked as <dfn
+    data-x="concept-appcache-foreign">foreign</dfn>, which means that they have a <code
+    data-x="attr-html-manifest">manifest</code> attribute but that it doesn't point at this cache's
+    <span data-x="concept-appcache-manifest">manifest</span>.</p>
+
+    <p class="note">A URL in the list can be flagged with multiple different types, and thus an
+    entry can end up being categorized as multiple entries. For example, an entry can be a manifest
+    entry and an explicit entry at the same time, if the manifest is listed within the manifest.</p>
+
+   </li>
+
+   <li>
+
+    <p>Zero or more <dfn data-x="concept-appcache-fallback-ns">fallback namespaces</dfn>, each of
+    which is mapped to a <span data-x="concept-appcache-fallback">fallback entry</span>.</p>
+
+    <p class="note">These are URLs used as <span data-x="concept-appcache-matches-fallback">prefix
+    match patterns</span> for resources that are to be fetched from the network if possible, or to
+    be replaced by the corresponding <span data-x="concept-appcache-fallback">fallback entry</span>
+    if not. Each namespace URL has the <span>same origin</span> as <span
+    data-x="concept-appcache-manifest">the manifest</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Zero or more URLs that form the <dfn data-x="concept-appcache-onlinesafelist">online
+    safelist namespaces</dfn>.</p>
+
+    <p class="note">These are used as prefix match patterns, and declare URLs for which the user
+    agent will ignore the application cache, instead fetching them normally (i.e. from the network
+    or local HTTP cache as appropriate).</p>
+
+   </li>
+
+   <li>
+
+    <p>An <dfn data-x="concept-appcache-onlinesafelist-wildcard">online safelist wildcard
+    flag</dfn>, which is either <i>open</i> or <i>blocking</i>.</p>
+
+    <p class="note">The <i>open</i> state indicates that any URL not listed as cached is to
+    be implicitly treated as being in the <span data-x="concept-appcache-onlinesafelist">online
+    safelist namespaces</span>; the <i>blocking</i> state indicates that URLs not listed
+    explicitly in the manifest are to be treated as unavailable.</p>
+
+   </li>
+
+   <li>
+
+    <p>A <dfn data-x="concept-appcache-mode">cache mode flag</dfn>, which is either in the <dfn
+    data-x="concept-appcache-mode-fast"><i>fast</i></dfn> state or the <dfn
+    data-x="concept-appcache-mode-prefer-online"><i>prefer-online</i></dfn> state.</p>
+
+   </li>
+
+  </ul>
+
+  <p>Each <span>application cache</span> has a <dfn
+  data-x="concept-appcache-completeness">completeness flag</dfn>, which is either <i>complete</i> or
+  <i>incomplete</i>.</p>
+
+  <hr>
+
+  <p>An <dfn>application cache group</dfn> is a group of <span data-x="application cache">application
+  caches</span>, identified by the <span>absolute URL</span> of a resource <span
+  data-x="concept-appcache-manifest">manifest</span> which is used to populate the caches in the
+  group.</p>
+
+  <p>An <span>application cache</span> is <dfn data-x="concept-appcache-newer">newer</dfn> than
+  another if it was created after the other (in other words, <span data-x="application
+  cache">application caches</span> in an <span>application cache group</span> have a chronological
+  order).</p>
+
+  <p>Only the newest <span>application cache</span> in an <span>application cache group</span> can
+  have its <span data-x="concept-appcache-completeness">completeness flag</span> set to
+  <i>incomplete</i>; the others are always all <i>complete</i>.</p>
+
+  <p>Each <span>application cache group</span> has an <dfn data-x="concept-appcache-status">update
+  status</dfn>, which is one of the following: <i>idle</i>, <i>checking</i>, <i>downloading</i>.</p>
+
+  <p>A <dfn>relevant application cache</dfn> is an <span>application cache</span> that is the <span
+  data-x="concept-appcache-newer">newest</span> in its <span data-x="application cache
+  group">group</span> to be <i>complete</i>.</p>
+
+  <p>Each <span>application cache group</span> has a <dfn
+  data-x="concept-appcache-pending-masters">list of pending master entries</dfn>. Each entry in this
+  list consists of a resource and a corresponding <code>Document</code> object. It is used during
+  the <span>application cache download process</span> to ensure that new master entries are cached
+  even if the <span>application cache download process</span> was already running for their
+  <span>application cache group</span> when they were loaded.</p>
+
+  <p>An <span>application cache group</span> can be marked as <dfn
+  data-x="concept-appcache-obsolete">obsolete</dfn>, meaning that it must be ignored when looking at
+  what <span data-x="application cache group">application cache groups</span> exist.</p>
+
+  <hr>
+
+  <p>A <dfn>cache host</dfn> is a <code>Document</code> or a <code>SharedWorkerGlobalScope</code>
+  object. A <span>cache host</span> can be associated with an <span>application cache</span>.</p>
+
+  <p>A <code>Document</code> initially is not associated with an <span>application cache</span>, but
+  can become associated with one early during the page load process, when steps <a
+  href="#parser-appcache">in the parser</a> and in the <span data-x="navigate">navigation</span>
+  sections cause <span data-x="concept-appcache-init">cache selection</span> to occur.</p>
+
+  <p>A <code>SharedWorkerGlobalScope</code> can be associated with an <span>application cache</span>
+  when it is created.</p>
+
+  <p>Each <span>cache host</span> has an associated <code>ApplicationCache</code> object.</p>
+
+  <hr>
+
+  <p>Multiple <span data-x="application cache">application caches</span> in different <span
+  data-x="application cache group">application cache groups</span> can contain the same resource,
+  e.g. if the manifests all reference that resource. If the user agent is to <dfn
+  data-x="concept-appcache-selection">select an application cache</dfn> from a list of <span
+  data-x="relevant application cache">relevant application caches</span> that contain a resource, the
+  user agent must use the application cache that the user most likely wants to see the resource
+  from, taking into account the following:</p>
+
+  <ul>
+
+   <li>which application cache was most recently updated,
+
+   <li>which application cache was being used to display the resource from which the user decided to
+   look at the new resource, and
+
+   <li>which application cache the user prefers.
+
+  </ul>
+
+  <hr>
+
+  <p>A URL <dfn data-x="concept-appcache-matches-fallback">matches a fallback namespace</dfn> if
+  there exists a <span>relevant application cache</span> whose <span
+  data-x="concept-appcache-manifest">manifest</span>'s URL has the <span>same origin</span> as the
+  URL in question, and that has a <span data-x="concept-appcache-fallback-ns">fallback
+  namespace</span> that is a <span>prefix match</span> for the URL being examined. If multiple
+  fallback namespaces match the same URL, the longest one is the one that matches. A URL looking for
+  a fallback namespace can match more than one application cache at a time, but only matches one
+  namespace in each cache.</p>
+
+  <div class="example">
+
+   <p>If a manifest <code data-x="">https://example.com/app1/manifest</code> declares that <code
+   data-x="">https://example.com/resources/images</code> is a fallback namespace, and the user
+   navigates to <code data-x="">https://example.com:80/resources/images/cat.png</code>, then the user
+   agent will decide that the application cache identified by <code
+   data-x="">https://example.com/app1/manifest</code> contains a namespace with a match for that
+   URL.</p>
+
+   <!-- "parse a url" canonicalises the case for the scheme and host and removes the port if it is
+   the default -->
+
+  </div>
+
+  </div>
+
+
+
+  

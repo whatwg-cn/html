@@ -1,0 +1,88 @@
+<h4>The application cache selection algorithm</h4>
+
+  <p>When the <dfn data-x="concept-appcache-init">application cache selection algorithm</dfn>
+  algorithm is invoked with a <code>Document</code> <var>document</var> and optionally a
+  manifest <span>URL</span> <var>manifest URL</var>, the user agent must run the first
+  applicable set of steps from the following list:</p>
+
+  <dl class="switch">
+
+   <dt>If there is a <var>manifest URL</var>, and <var>document</var> was loaded
+   from an <span>application cache</span>, and the URL of the <span
+   data-x="concept-appcache-manifest">manifest</span> of that cache's <span>application cache
+   group</span> is <em>not</em> the same as <var>manifest URL</var></dt>
+
+   <dd>
+
+    <p>Mark the entry for the resource from which <var>document</var> was taken in the
+    <span>application cache</span> from which it was loaded as <span
+    data-x="concept-appcache-foreign">foreign</span>.</p>
+
+    <p>Restart the current navigation from the top of the <span data-x="navigate">navigation
+    algorithm</span>, undoing any changes that were made as part of the initial load (changes can be
+    avoided by ensuring that the step to <span>update the session history with the new page</span>
+    is only ever completed <em>after</em> this <span data-x="concept-appcache-init">application cache
+    selection algorithm</span> is run, though this is not required).</p>
+
+    <p class="note">The navigation will not result in the same resource being loaded, because
+    "foreign" entries are never picked during navigation.</p>
+
+    <p>User agents may notify the user of the inconsistency between the cache manifest and the
+    document's own metadata, to aid in application development.</p>
+
+   </dd>
+
+
+   <dt>If <var>document</var> was loaded from an <span>application cache</span>, and that
+   <span>application cache</span> still exists (it is not now <span
+   data-x="concept-appcache-obsolete">obsolete</span>)<!--[redundant], and either there is no <var>manifest URL</var>, or the URL of the <span
+   data-x="concept-appcache-manifest">manifest</span> of the cache's <span>application cache
+   group</span> is the same as <var>manifest URL</var>--></dt>
+
+   <dd>
+
+    <p>Associate <var>document</var> with the <span>application cache</span> from which it
+    was loaded. Invoke, in the background, the <span>application cache download process</span> for
+    that <span>application cache</span>'s <span>application cache group</span>, with <var>document</var> as the <span>cache host</span>.</p>
+
+   </dd>
+
+
+   <dt>If <var>document</var> <!--[redundant] was not loaded from an <span>application
+   cache</span>, but it--> was loaded using `<code data-x="">GET</code>`, and, there is a
+   <var>manifest URL</var>, and <var>manifest URL</var> has the <span>same origin</span> as
+   <var>document</var></dt>
+
+   <dd>
+
+    <p>Invoke, in the background, the <span>application cache download process</span> for <var>manifest URL</var>, with <var>document</var> as the <span>cache host</span>
+    and with the resource from which <var>document</var> was parsed as the <span
+    data-x="concept-appcache-master">master</span> resource.</p>
+
+    <p>If there are <span data-x="relevant application cache">relevant application caches</span> that
+    are identified by a URL with the <span>same origin</span> as the URL of <var>document</var>, and that have this URL as one of their entries, excluding entries
+    marked as <span data-x="concept-appcache-foreign">foreign</span>, then the user agent should use
+    the <span data-x="concept-appcache-selection">most appropriate application cache</span> of those
+    that match as an HTTP cache for any subresource loads. User agents may also have other caches in
+    place that are also honored.</p>
+
+   </dd>
+
+
+   <dt>Otherwise</dt> <!-- not from cache and either no <var>manifest URL</var>, or
+   non-GET, or wrong-origin manifest -->
+
+   <dd>
+
+    <p>The <code>Document</code> is not associated with any <span>application cache</span>.</p>
+
+    <p>If there was a <var>manifest URL</var>, the user agent may report to the user that
+    it was ignored, to aid in application development.</p>
+
+   </dd>
+
+  </dl>
+
+
+
+  

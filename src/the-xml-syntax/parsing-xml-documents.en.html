@@ -1,0 +1,134 @@
+<h3 id="parsing-xhtml-documents">Parsing XML documents</h3>
+
+  <p>This section describes the relationship between XML and the DOM, with a particular emphasis on
+  how this interacts with HTML.</p>
+
+  <p>An <dfn data-export="">XML parser</dfn>, for the purposes of this specification, is a construct
+  that follows the rules given in the XML specification to map a string of bytes or characters into
+  a <code>Document</code> object.</p>
+
+  <p class="note">At the time of writing, no such rules actually exist.</p><!--XMLPARSE-->
+
+  <p>An <span>XML parser</span> is either associated with a <code>Document</code> object when it is
+  created, or creates one implicitly.</p>
+
+  <p>This <code>Document</code> must then be populated with DOM nodes that represent the tree
+  structure of the input passed to the parser, as defined by the XML specification, the Namespaces
+  in XML specification, and the WHATWG DOM standard. When creating DOM nodes representing elements,
+  the <span data-x="create an element for the token">create an element for a token</span> algorithm
+  or some equivalent that operates on appropriate XML datastructures must be used, to ensure the
+  proper <span data-x="element interface">element interfaces</span> are created and that <span
+  data-x="custom element">custom elements</span> are set up correctly.</p>
+
+  <p>DOM mutation events must not fire for the operations that the <span>XML parser</span> performs
+  on the <code>Document</code>'s tree, but the user agent must act as if elements and attributes
+  were individually appended and set respectively so as to trigger rules in this specification
+  regarding what happens when an element is inserted into a document or has its attributes set, and
+  the WHATWG DOM standard's requirements regarding <span>mutation observers</span> mean that
+  mutation observers <em>are</em> fired (unlike mutation events). <ref spec=XML> <ref spec=XMLNS>
+  <ref spec=DOM> <ref spec=UIEVENTS></p>
+
+  <p>Between the time an element's start tag is parsed and the time either the element's end tag is
+  parsed or the parser detects a well-formedness error, the user agent must act as if the element
+  was in a <span>stack of open elements</span>.</p>
+
+  <p class="note">This is used, e.g. by the <code>object</code> element to avoid instantiating plugins
+  before the <code>param</code> element children have been parsed.</p>
+
+  <p>This specification provides the following additional information that user agents should use
+  when retrieving an external entity: the public identifiers given in the following list all
+  correspond to <a href="<!--BOILERPLATE entities-dtd.url-->">the URL given by this link</a>. (This
+  URL is a DTD containing the <a href="https://www.w3.org/TR/xml/#sec-entity-decl">entity
+  declarations</a> for the names listed in the <span>named character references</span> section.) <ref spec=XML></p>
+
+  <ul class="brief">
+   <li><code data-x="">-//W3C//DTD XHTML 1.0 Transitional//EN</code></li>
+   <li><code data-x="">-//W3C//DTD XHTML 1.1//EN</code></li>
+   <li><code data-x="">-//W3C//DTD XHTML 1.0 Strict//EN</code></li>
+   <li><code data-x="">-//W3C//DTD XHTML 1.0 Frameset//EN</code></li>
+   <li><code data-x="">-//W3C//DTD XHTML Basic 1.0//EN</code></li>
+   <li><code data-x="">-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN</code></li>
+   <li><code data-x="">-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN</code></li>
+   <li><code data-x="">-//W3C//DTD MathML 2.0//EN</code></li>
+   <li><code data-x="">-//WAPFORUM//DTD XHTML Mobile 1.0//EN</code></li>
+  </ul>
+
+  <p>Furthermore, user agents should attempt to retrieve the above external entity's content when
+  one of the above public identifiers is used, and should not attempt to retrieve any other external
+  entity's content.</p>
+
+  <p class="note">This is not strictly a <span data-x="willful violation">violation</span> of the XML
+  specification, but it does contradict the spirit of the XML specification's requirements. This is
+  motivated by a desire for user agents to all handle entities in an interoperable fashion without
+  requiring any network access for handling external subsets. <ref spec=XML></p>
+
+  <p>XML parsers can be invoked with <dfn data-export="">XML scripting support enabled</dfn> or <dfn
+  data-export="">XML scripting support disabled</dfn>. Except where otherwise specified, XML parsers
+  are invoked with <span>XML scripting support enabled</span>.</p>
+
+  <p id="scriptTagXML">When an <span>XML parser</span> with <span>XML scripting support enabled</span>
+  creates a <code>script</code> element, it
+  must be marked as being <span>"parser-inserted"</span> and its <span>"non-blocking"</span> flag
+  must be unset. If the parser was originally created for the <span>XML fragment parsing
+  algorithm</span>, then the element must be marked as <span>"already started"</span> also. When the
+  element's end tag is subsequently parsed, the user agent must <span>perform a microtask checkpoint</span>, and
+  then <span data-x="prepare a script">prepare</span> the <code>script</code> element. If this
+  causes there to be a <span>pending parsing-blocking script</span>, then the user agent must run
+  the following steps:</p>
+
+  <ol>
+
+   <li><p>Block this instance of the <span>XML parser</span>, such that the <span>event loop</span>
+   will not run <span data-x="concept-task">tasks</span> that invoke it.</p></li>
+
+   <li><p><span>Spin the event loop</span> until the parser's <code>Document</code> <span>has no
+   style sheet that is blocking scripts</span> and the <span>pending parsing-blocking
+   script</span>'s <span>"ready to be parser-executed"</span> flag is set.</p></li>
+
+   <li><p>Unblock this instance of the <span>XML parser</span>, such that <span
+   data-x="concept-task">tasks</span> that invoke it can again be run.</p></li>
+
+   <li><p><span data-x="execute the script block">Execute</span> the <span>pending parsing-blocking
+   script</span>.</p></li>
+
+   <li><p>There is no longer a <span>pending parsing-blocking script</span>.</p></li>
+
+  </ol>
+
+  <p class="note">Since the <code data-x="dom-document-write">document.write()</code> API is not
+  available for <span>XML documents</span>, much of the complexity in the <span>HTML parser</span>
+  is not needed in the <span>XML parser</span>.</p>
+
+  <p class="note">When the <span>XML parser</span> has <span>XML scripting support disabled</span>,
+  none of this happens.</p>
+
+  <p id="templateTagXML">When an <span>XML parser</span> would append a node to a
+  <code>template</code> element, it must instead append it to the <code>template</code> element's
+  <span>template contents</span> (a <code>DocumentFragment</code> node).</p>
+
+  <p class="note">This is a <span>willful violation</span> of the XML specification; unfortunately,
+  XML is not formally extensible in the manner that is needed for <code>template</code> processing.
+  <ref spec=XML></p>
+
+  <p>When an <span>XML parser</span> creates a <code>Node</code> object, its <span>node document</span>
+  must be set to the <span>node document</span> of
+  the node into which the newly created node is to be inserted.</p>
+
+  <p>Certain algorithms in this specification <dfn data-x="feed the parser">spoon-feed the
+  parser</dfn> characters one string at a time. In such cases, the <span>XML parser</span> must act
+  as it would have if faced with a single string consisting of the concatenation of all those
+  characters.</p>
+
+  <p>When an <span>XML parser</span> reaches the end of its input, it must <span>stop
+  parsing</span>, following the same rules as the <span>HTML parser</span>. An <span>XML
+  parser</span> can also be <span data-x="abort a parser">aborted</span>, which must again be done in
+  the same way as for an <span>HTML parser</span>.</p>
+
+  <p>For the purposes of conformance checkers, if a resource is determined to be in <span>the XML
+  syntax</span>, then it is an <span data-x="XML documents">XML document</span>.</p>
+
+
+<!--//HTMLPARSER-->
+
+
+  <!--en-GB-->

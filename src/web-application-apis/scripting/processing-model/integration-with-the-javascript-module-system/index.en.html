@@ -1,0 +1,90 @@
+<h5>Integration with the JavaScript module system</h5>
+
+  <p>The JavaScript specification defines a syntax for modules, as well as some host-agnostic parts
+  of their processing model. This specification defines the rest of their processing model: how the
+  module system is bootstrapped, via the <code>script</code> element with <code
+  data-x="attr-script-type">type</code> attribute set to "<code data-x="">module</code>", and how
+  modules are fetched, resolved, and executed. <ref spec="JAVASCRIPT"></p>
+
+  <p class="note">Although the JavaScript specification speaks in terms of "scripts" versus
+  "modules", in general this specification speaks in terms of <span data-x="classic script">classic
+  scripts</span> versus <span data-x="module script">module scripts</span>, since both of them use
+  the <code>script</code> element.</p>
+
+  <p>A <dfn>module map</dfn> is a <span data-x="ordered map">map</span> of <span data-x="absolute
+  URL">absolute URLs</span> to values that are either a <span>module script</span>, null (used to
+  represent failed fetches), or a placeholder value "<code data-x="">fetching</code>". <span
+  data-x="module map">Module maps</span> are used to ensure that imported JavaScript modules are
+  only fetched, parsed, and evaluated once per <code>Document</code> or <a href="#workers">worker</a>.</p>
+
+  <p>To <dfn>resolve a module specifier</dfn> given a <span>module script</span> <var>script</var>
+  and a string <var>specifier</var>, perform the following steps. It will return either an
+  <span>absolute URL</span> or failure.</p>
+
+  <ol>
+   <li><p>Apply the <span>URL parser</span> to <var>specifier</var>. If the result is not failure,
+   return the result.</p></li>
+
+   <li>
+    <p>If <var>specifier</var> does not start with the character U+002F SOLIDUS (<code
+    data-x="">/</code>), the two-character sequence U+002E FULL STOP, U+002F SOLIDUS (<code
+    data-x="">./</code>), or the three-character sequence U+002E FULL STOP, U+002E FULL STOP,
+    U+002F SOLIDUS (<code data-x="">../</code>), return failure and abort these steps.</p>
+
+    <p class="note">This restriction is in place so that in the future we can allow custom module
+    loaders to give special meaning to "bare" import specifiers, like <code
+    data-x="">import "jquery"</code> or <code data-x="">import "web/crypto"</code>. For now any
+    such imports will fail, instead of being treated as relative URLs.</p>
+   </li>
+
+   <li><p>Return the result of applying the <span>URL parser</span> to <var>specifier</var> with
+   <var>script</var>'s <span data-x="concept-module-script-base-url">base URL</span> as the base
+   URL.</p></li>
+  </ol>
+
+  <div class="example">
+   <p>The following are valid module specifiers according to the above algorithm:</p>
+
+   <ul class="brief">
+    <li><code data-x="">https://example.com/apples.js</code></li>
+
+    <li><code data-x="">http:example.com\pears.mjs</code> (becomes <code
+    data-x="">http://example.com/pears.mjs</code> as step 1 parses with no base URL)</li>
+
+    <li><code data-x="">//example.com/bananas</code></li>
+
+    <li><code data-x="">./strawberries.js.cgi</code></li>
+
+    <li><code data-x="">../lychees</code></li>
+
+    <li><code data-x="">/limes.jsx</code></li>
+
+    <li><code data-x="">data:text/javascript,export default 'grapes';</code></li>
+
+    <li><code data-x="">blob:https://whatwg.org/d0360e2f-caee-469f-9a2f-87d5b0456f6f</code></li>
+   </ul>
+
+   <p>The following are valid module specifiers according to the above algorithm, but will
+   invariably cause failures when they are <span data-x="fetch a single module
+   script">fetched</span>:</p>
+
+   <ul class="brief">
+    <li><code data-x="">javascript:export default 'artichokes';</code></li>
+
+    <li><code data-x="">data:text/plain,export default 'kale';</code></li>
+
+    <li><code data-x="">about:legumes</code></li>
+
+    <li><code data-x="">wss://example.com/celery</code></li>
+   </ul>
+
+   <p>The following are not valid module specifiers according to the above algorithm:</p>
+
+   <ul class="brief">
+    <li><code data-x="">https://f:b/c</code></li>
+
+    <li><code data-x="">pumpkins.js</code></li>
+   </ul>
+  </div>
+
+  

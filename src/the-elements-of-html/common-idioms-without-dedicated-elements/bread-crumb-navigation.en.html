@@ -1,0 +1,33 @@
+<h4 id="rel-up">Bread crumb navigation</h4>
+
+  <p>This specification does not provide a machine-readable way of describing bread-crumb navigation
+  menus. Authors are encouraged to just use a series of links in a paragraph. The <code>nav</code>
+  element can be used to mark the section containing these paragraphs as being navigation
+  blocks.</p>
+
+  <!-- If there was implementation interest, we could go back to rel="up", rel="up up", rel="up up
+  top" to programmatically indicate the actual breadcrumb structure. However, UAs and ATs don't seem
+  interested in exposing this in a useful way to users. So... -->
+
+  <div class="example">
+
+   <p>In the following example, the current page can be reached via two paths.</p>
+
+   <pre>&lt;nav>
+ &lt;p>
+  &lt;a href="/">Main&lt;/a> &#x25B8;
+  &lt;a href="/products/">Products&lt;/a> &#x25B8;
+  &lt;a href="/products/dishwashers/">Dishwashers&lt;/a> &#x25B8;
+  &lt;a>Second hand&lt;/a>
+ &lt;/p>
+ &lt;p>
+  &lt;a href="/">Main&lt;/a> &#x25B8;
+  &lt;a href="/second-hand/">Second hand&lt;/a> &#x25B8;
+  &lt;a>Dishwashers&lt;/a>
+ &lt;/p>
+&lt;/nav></pre>
+
+  </div>
+
+
+  

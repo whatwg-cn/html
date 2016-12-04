@@ -1,0 +1,136 @@
+<h4>The <dfn><code>th</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As a child of a <code>tr</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no <code>header</code>, <code>footer</code>,
+   <span>sectioning content</span>, or <span>heading content</span> descendants.</dd>
+   <!-- EDITING NOTE: If you remove 'heading content' from the list above, make sure to fix the definition of 'sectioning root' to include <th> elements -->
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-tdth-colspan">colspan</code></dd>
+   <dd><code data-x="attr-tdth-rowspan">rowspan</code></dd>
+   <dd><code data-x="attr-tdth-headers">headers</code></dd>
+   <dd><code data-x="attr-th-scope">scope</code></dd>
+   <dd><code data-x="attr-th-abbr">abbr</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <code>HTMLTableCellElement</code>, as defined for <code>td</code> elements.
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>th</code> element <span>represents</span> a header <span
+  data-x="concept-cell">cell</span> in a table.</p>
+
+  <p>The <code>th</code> element may have a <dfn><code data-x="attr-th-scope">scope</code></dfn>
+  content attribute specified. The <code data-x="attr-th-scope">scope</code> attribute is an
+  <span>enumerated attribute</span> with five states, four of which have explicit keywords:</p>
+
+  <dl>
+
+   <dt>The <dfn><code data-x="attr-th-scope-row">row</code></dfn> keyword, which maps to the
+   <i>row</i> state</dt>
+
+   <dd>The <i>row</i> state means the header cell applies to some of the subsequent cells in the
+   same row(s).</dd>
+
+   <dt>The <dfn><code data-x="attr-th-scope-col">col</code></dfn> keyword, which maps to the
+   <i>column</i> state</dt>
+
+   <dd>The <i>column</i> state means the header cell applies to some of the subsequent cells in the
+   same column(s).</dd>
+
+   <dt>The <dfn><code data-x="attr-th-scope-rowgroup">rowgroup</code></dfn> keyword, which maps to
+   the <i>row group</i> state</dt>
+
+   <dd>The <i>row group</i> state means the header cell applies to all the remaining cells in the
+   row group. A <code>th</code> element's <code data-x="attr-th-scope">scope</code> attribute must
+   not be in the <span data-x="attr-th-scope-rowgroup">row group</span> state if the element is not
+   anchored in a <span data-x="concept-row-group">row group</span>.</dd>
+
+   <dt>The <dfn><code data-x="attr-th-scope-colgroup">colgroup</code></dfn> keyword, which maps to
+   the <i>column group</i> state</dt>
+
+   <dd>The <i>column group</i> state means the header cell applies to all the remaining cells in the
+   column group. A <code>th</code> element's <code data-x="attr-th-scope">scope</code> attribute must
+   not be in the <span data-x="attr-th-scope-colgroup">column group</span> state if the element is
+   not anchored in a <span data-x="concept-column-group">column group</span>.</dd>
+
+   <dt>The <dfn data-x="attr-th-scope-auto">auto</dfn> state</dt>
+
+   <dd>The <i>auto</i> state makes the header cell apply to a set of cells selected based on
+   context.</dd>
+
+  </dl>
+
+  <p>The <code data-x="attr-th-scope">scope</code> attribute's <i data-x="missing value default">missing value default</i> is the
+  <i>auto</i> state.</p>
+
+  <p>The <code>th</code> element may have an <dfn><code data-x="attr-th-abbr">abbr</code></dfn>
+  content attribute specified. Its value must be an alternative label for the header cell, to be
+  used when referencing the cell in other contexts (e.g. when describing the header cells that apply
+  to a data cell). It is typically an abbreviated form of the full header cell, but can also be an
+  expansion, or merely a different phrasing.</p>
+
+  <div w-nodev>
+
+  <p>The <code>th</code> element and its <code data-x="attr-tdth-colspan">colspan</code>, <code
+  data-x="attr-tdth-rowspan">rowspan</code>, <code data-x="attr-tdth-headers">headers</code>, and
+  <code data-x="attr-th-scope">scope</code> attributes take part in the <span>table model</span>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following example shows how the <code data-x="attr-th-scope">scope</code> attribute's <code
+   data-x="attr-th-scope-rowgroup">rowgroup</code> value affects which data cells a header cell
+   applies to.</p>
+
+   <p>Here is a markup fragment showing a table:</p>
+
+   <pre>&lt;table>
+ &lt;thead>
+  &lt;tr> &lt;th> ID &lt;th> Measurement &lt;th> Average &lt;th> Maximum
+ &lt;tbody>
+  &lt;tr> &lt;td> &lt;th scope=rowgroup> Cats &lt;td> &lt;td>
+  &lt;tr> &lt;td> 93 &lt;th scope=row> Legs &lt;td> 3.5 &lt;td> 4
+  &lt;tr> &lt;td> 10 &lt;th scope=row> Tails &lt;td> 1 &lt;td> 1
+ &lt;tbody>
+  &lt;tr> &lt;td> &lt;th scope=rowgroup> English speakers &lt;td> &lt;td>
+  &lt;tr> &lt;td> 32 &lt;th scope=row> Legs &lt;td> 2.67 &lt;td> 4
+  &lt;tr> &lt;td> 35 &lt;th scope=row> Tails &lt;td> 0.33 &lt;td> 1
+&lt;/table></pre>
+
+   <p>This would result in the following table:</p>
+
+   <table>
+    <thead>
+     <tr> <th> ID <th> Measurement <th> Average <th> Maximum
+    <tbody>
+     <tr> <td> <th scope=rowgroup> Cats <td> <td>
+     <tr> <td> 93 <th scope=row> Legs <td> 3.5 <td> 4
+     <tr> <td> 10 <th scope=row> Tails <td> 1 <td> 1
+    <tbody>
+     <tr> <td> <th scope=rowgroup> English speakers <td> <td>
+     <tr> <td> 32 <th scope=row> Legs <td> 2.67 <td> 4
+     <tr> <td> 35 <th scope=row> Tails <td> 0.33 <td> 1
+   </table>
+
+   <p>The headers in the first row all apply directly down to the rows in their column.</p>
+
+   <p>The headers with the explicit <code data-x="attr-th-scope">scope</code> attributes apply to all
+   the cells in their row group other than the cells in the first column.</p>
+
+   <p>The remaining headers apply just to the cells to the right of them.</p>
+
+   <!-- image source: https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=151 -->
+   <img src="/images/table-scope-diagram.png" width="459" height="256" alt=""><!-- (alt is empty because the diagram is completely described by the previous paragraphs) -->
+
+  </div>
+
+
+
+  

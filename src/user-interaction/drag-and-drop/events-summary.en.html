@@ -1,0 +1,125 @@
+<h4 id="dndevents">Events summary</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The following events are involved in the drag-and-drop
+  model.</p>
+
+  <table>
+
+   <thead>
+    <tr>
+     <th> Event Name </th>
+     <th> Target </th>
+     <!-- <th> Bubbles? </th> -->
+     <th> Cancelable? </th>
+     <th> <span>Drag data store mode</span> </th>
+     <!-- <th> <code data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> </th> -->
+     <th> <code data-x="dom-DataTransfer-dropEffect">dropEffect</code> </th>
+     <th> Default Action </th>
+    </tr>
+   </thead>
+
+   <tbody>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-dragstart">dragstart</code></dfn></td>
+     <td><span>Source node</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&#x2713; Cancelable</td>
+     <td><span data-x="concept-dnd-rw">Read/write mode</span>
+     <!-- <td>"<code data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>"</td> -->
+     <td>"<code data-x="dom-DataTransfer-dropEffect-none">none</code>"</td>
+     <td>Initiate the drag-and-drop operation</td>
+    </tr>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-drag">drag</code></dfn></td>
+     <td><span>Source node</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&#x2713; Cancelable</td>
+     <td><span data-x="concept-dnd-p">Protected mode</span>
+     <!-- <td>Same as last event</td> -->
+     <td>"<code data-x="dom-DataTransfer-dropEffect-none">none</code>"</td>
+     <td>Continue the drag-and-drop operation</td>
+    </tr>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-dragenter">dragenter</code></dfn></td>
+     <td><span>Immediate user selection</span> or <span>the body element</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&#x2713; Cancelable</td>
+     <td><span data-x="concept-dnd-p">Protected mode</span>
+     <!-- <td>Same as last event</td> -->
+     <td><!--en-GB--><a href="#dropEffect-initialisation">Based on <code>effectAllowed</code> value</a></td>
+     <td>Reject <span>immediate user selection</span> as potential <span data-x="current target element">target element</span></td>
+    </tr>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-dragexit">dragexit</code></dfn></td>
+     <td><span data-x="current target element">Previous target element</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&mdash;</td>
+     <td><span data-x="concept-dnd-p">Protected mode</span>
+     <!-- <td>Same as last event</td> -->
+     <td>"<code data-x="dom-DataTransfer-dropEffect-none">none</code>"</td>
+     <td>None</td>
+    </tr>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-dragleave">dragleave</code></dfn></td>
+     <td><span data-x="current target element">Previous target element</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&mdash;</td>
+     <td><span data-x="concept-dnd-p">Protected mode</span>
+     <!-- <td>Same as last event</td> -->
+     <td>"<code data-x="dom-DataTransfer-dropEffect-none">none</code>"</td>
+     <td>None</td>
+    </tr>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-dragover">dragover</code></dfn></td>
+     <td><span>Current target element</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&#x2713; Cancelable</td>
+     <td><span data-x="concept-dnd-p">Protected mode</span>
+     <!-- <td>Same as last event</td> -->
+     <td><!--en-GB--><a href="#dropEffect-initialisation">Based on <code>effectAllowed</code> value</a></td>
+     <td>Reset the <span>current drag operation</span> to "none"</td>
+    </tr>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-drop">drop</code></dfn></td>
+     <td><span>Current target element</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&#x2713; Cancelable</td>
+     <td><span data-x="concept-dnd-ro">Read-only mode</span>
+     <!-- <td>Same as last event</td> -->
+     <td><span>Current drag operation</span></td>
+     <td>Varies</td>
+    </tr>
+
+    <tr>
+     <td><dfn><code data-x="event-dnd-dragend">dragend</code></dfn></td>
+     <td><span>Source node</span></td>
+     <!-- <td>&#x2713; Bubbles</td> -->
+     <td>&mdash;</td>
+     <td><span data-x="concept-dnd-p">Protected mode</span>
+     <!-- <td>Same as last event</td> -->
+     <td><span>Current drag operation</span></td>
+     <td>Varies</td>
+    </tr>
+
+   </tbody>
+
+  </table>
+
+  <p>Not shown in the above table: all these events bubble, are composed, and the <code
+  data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> attribute always has the value it had
+  after the <code data-x="event-dnd-dragstart">dragstart</code> event, defaulting to "<code
+  data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>" in the <code
+  data-x="event-dnd-dragstart">dragstart</code> event.</p>
+
+
+
+  

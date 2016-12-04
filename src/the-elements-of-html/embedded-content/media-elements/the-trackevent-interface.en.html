@@ -1,0 +1,34 @@
+<h5>The <code>TrackEvent</code> interface</h5>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>TrackEventInit</span> eventInitDict)]
+interface <dfn>TrackEvent</dfn> : <span>Event</span> {
+  readonly attribute (<span>VideoTrack</span> or <span>AudioTrack</span> or <span>TextTrack</span>)? <span data-x="dom-TrackEvent-track">track</span>;
+};
+
+dictionary <dfn>TrackEventInit</dfn> : <span>EventInit</span> {
+  (<span>VideoTrack</span> or <span>AudioTrack</span> or <span>TextTrack</span>)? track = null;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>event</var> . <code subdfn data-x="dom-TrackEvent-track">track</code></dt>
+
+   <dd>
+
+    <p>Returns the track object (<code>TextTrack</code>, <code>AudioTrack</code>, or
+    <code>VideoTrack</code>) to which the event relates.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-TrackEvent-track">track</code></dfn> attribute must return the value
+  it was initialized to. It represents the context information for the event.</p>
+
+  </div>
+
+
+
+  

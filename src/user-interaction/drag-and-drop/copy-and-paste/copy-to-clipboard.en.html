@@ -1,0 +1,15 @@
+<h5>Copy to clipboard</h5>
+
+  <p>When the user invokes a copy operation, the user agent must act as if the user had invoked a
+  drag on the current selection. If the drag-and-drop operation initiates, then the user agent must
+  act as if the user had indicated (as the <span>immediate user selection</span>) a hypothetical
+  application representing the clipboard. Then, the user agent must act as if the user had ended the
+  drag-and-drop operation without canceling it. If the drag-and-drop operation didn't get canceled,
+  the user agent should then follow the relevant platform-specific conventions for copy operations
+  (e.g. updating the clipboard).</p>
+
+  <p>The events involved in this process are the <code data-x="event-dnd-dragstart">dragstart</code>,
+  <code data-x="event-dnd-drag">drag</code>, and <code data-x="event-dnd-dragend">dragend</code> events.</p>
+
+
+  

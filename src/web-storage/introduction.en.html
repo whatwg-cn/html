@@ -1,0 +1,92 @@
+<h3>Introduction</h3>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>This specification introduces two related mechanisms, similar to HTTP session cookies, for
+  storing name-value pairs on the client side. <ref spec=COOKIES></p>
+
+  <p>The first is designed for scenarios where the user is carrying out a single transaction, but
+  could be carrying out multiple transactions in different windows at the same time.</p>
+
+  <p>Cookies don't really handle this case well. For example, a user could be buying plane tickets
+  in two different windows, using the same site. If the site used cookies to keep track of which
+  ticket the user was buying, then as the user clicked from page to page in both windows, the ticket
+  currently being purchased would "leak" from one window to the other, potentially causing the user
+  to buy two tickets for the same flight without really noticing.</p>
+
+  <p>To address this, this specification introduces the <code
+  data-x="dom-sessionStorage">sessionStorage</code> IDL attribute. Sites can add data to the session
+  storage, and it will be accessible to any page from the same site opened in that window.</p> <!--
+  we're not using xrefs here because this is just an intro -->
+
+  <div class="example">
+
+   <p>For example, a page could have a checkbox that the user ticks to
+   indicate that they want insurance:</p>
+
+   <pre>&lt;label>
+ &lt;input type="checkbox" onchange="sessionStorage.insurance = checked ? 'true' : ''">
+  I want insurance on this trip.
+&lt;/label></pre>
+
+   <p>A later page could then check, from script, whether the user had checked the checkbox or
+   not:</p>
+
+   <pre>if (sessionStorage.insurance) { ... }</pre>
+
+   <p>If the user had multiple windows opened on the site, each one would have its own individual
+   copy of the session storage object.</p>
+
+  </div>
+
+  <!--
+
+   sessionStorage.flightDeparture = 'OSL';
+   sessionStorage.flightArrival = 'NYC';
+
+   for (var i in forms[0].elements)
+      sessionStorage["data_" + i.name] = i.value;
+
+   // if we add storage of non-strings
+   if (!sessionStorage[documents])
+     sessionStorage[documents] = {};
+   sessionStorage[documents][filename] = <document/>;
+
+  -->
+
+  <p>The second storage mechanism is designed for storage that spans multiple windows, and lasts
+  beyond the current session. In particular, Web applications may wish to store megabytes of user
+  data, such as entire user-authored documents or a user's mailbox, on the client side for
+  performance reasons.</p>
+
+  <p>Again, cookies do not handle this case well, because they are transmitted with every
+  request.</p>
+
+  <p>The <code data-x="dom-localStorage">localStorage</code> IDL attribute is used to access a page's
+  local storage area.</p>
+
+  <div class="example">
+
+   <p>The site at example.com can display a count of how many times the user has loaded its page by
+   putting the following at the bottom of its page:</p>
+
+   <pre>&lt;p>
+  You have viewed this page
+  &lt;span id="count">an untold number of&lt;/span>
+  time(s).
+&lt;/p>
+&lt;script>
+  if (!localStorage.pageLoadCount)
+    localStorage.pageLoadCount = 0;
+  localStorage.pageLoadCount = parseInt(localStorage.pageLoadCount) + 1;
+  document.getElementById('count').textContent = localStorage.pageLoadCount;
+&lt;/script></pre>
+
+  </div>
+
+  <p>Each site has its own separate storage area.</p>
+
+
+
+
+  

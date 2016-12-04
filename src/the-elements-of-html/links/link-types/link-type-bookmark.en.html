@@ -1,0 +1,40 @@
+<h5>Link type "<dfn><code data-x="rel-bookmark">bookmark</code></dfn>"</h5>
+
+  <p>The <code data-x="rel-bookmark">bookmark</code> keyword may be used with <code>a</code> and
+  <code>area</code> elements. This keyword creates a <span>hyperlink</span>.</p>
+
+  <p>The <code data-x="rel-bookmark">bookmark</code> keyword gives a permalink for the nearest
+  ancestor <code>article</code> element of the linking element in question, or of <a
+  href="#associatedSection">the section the linking element is most closely associated with</a>, if
+  there are no ancestor <code>article</code> elements.</p>
+
+  <div class="example">
+
+   <p>The following snippet has three permalinks. A user agent could determine which permalink
+   applies to which part of the spec by looking at where the permalinks are given.</p>
+
+   <pre> ...
+ &lt;body>
+  &lt;h1>Example of permalinks&lt;/h1>
+  &lt;div id="a">
+   &lt;h2>First example&lt;/h2>
+   &lt;p>&lt;a href="a.html" rel="bookmark">This permalink applies to
+   only the content from the first H2 to the second H2&lt;/a>. The DIV isn't
+   exactly that section, but it roughly corresponds to it.&lt;/p>
+  &lt;/div>
+  &lt;h2>Second example&lt;/h2>
+  &lt;article id="b">
+   &lt;p>&lt;a href="b.html" rel="bookmark">This permalink applies to
+   the outer ARTICLE element&lt;/a> (which could be, e.g., a blog post).&lt;/p>
+   &lt;article id="c">
+    &lt;p>&lt;a href="c.html" rel="bookmark">This permalink applies to
+    the inner ARTICLE element&lt;/a> (which could be, e.g., a blog comment).&lt;/p>
+   &lt;/article>
+  &lt;/article>
+ &lt;/body>
+ ...</pre>
+
+  </div>
+
+
+  

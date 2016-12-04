@@ -1,0 +1,17 @@
+<h5><dfn>Script data double escaped less-than sign state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+002F SOLIDUS (/)</dt>
+   <dd>Set the <var data-x="temporary buffer">temporary buffer</var> to the empty string. Switch to
+   the <span>script data double escape end state</span>. Emit a U+002F SOLIDUS character token.</dd>
+
+   <dt>Anything else</dt>
+   <dd><span>Reconsume</span> in the <span>script data double escaped state</span>.</dd>
+
+  </dl>
+
+
+  

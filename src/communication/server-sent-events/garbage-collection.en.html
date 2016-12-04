@@ -1,0 +1,38 @@
+<h4>Garbage collection</h4>
+
+  <p>While an <code>EventSource</code> object's <code
+  data-x="dom-EventSource-readyState">readyState</code> is <code
+  data-x="dom-EventSource-CONNECTING">CONNECTING</code>, and the object has one or more event
+  listeners registered for <code data-x="event-open">open</code>, <code
+  data-x="event-message">message</code> or <code data-x="event-error">error</code> events, there must
+  be a strong reference from the <code>Window</code> or <code>WorkerGlobalScope</code> object that
+  the <code>EventSource</code> object's constructor was invoked from to the <code>EventSource</code>
+  object itself.</p>
+
+  <p>While an <code>EventSource</code> object's <code
+  data-x="dom-EventSource-readyState">readyState</code> is <code
+  data-x="dom-EventSource-OPEN">OPEN</code>, and the object has one or more event listeners
+  registered for <code data-x="event-message">message</code> or <code
+  data-x="event-error">error</code> events, there must be a strong reference from the
+  <code>Window</code> or <code>WorkerGlobalScope</code> object that the <code>EventSource</code>
+  object's constructor was invoked from to the <code>EventSource</code> object itself.</p>
+
+  <p>While there is a task queued by an <code>EventSource</code> object on the <span>remote event
+  task source</span>, there must be a strong reference from the <code>Window</code> or
+  <code>WorkerGlobalScope</code> object that the <code>EventSource</code> object's constructor was
+  invoked from to that <code>EventSource</code> object.</p>
+
+  <p>If a user agent is to <dfn data-x="concept-EventSource-forcibly-close">forcibly close</dfn> an
+  <code>EventSource</code> object (this happens when a <code>Document</code> object goes away
+  permanently), the user agent must abort any instances of the <span
+  data-x="concept-fetch">fetch</span> algorithm started for this <code>EventSource</code> object,
+  and must set the <code data-x="dom-EventSource-readyState">readyState</code> attribute to <code
+  data-x="dom-EventSource-CLOSED">CLOSED</code>.</p> <!-- same as calling close() -->
+
+  <p>If an <code>EventSource</code> object is garbage collected while its connection is still open,
+  the user agent must abort any instance of the <span data-x="concept-fetch">fetch</span> algorithm
+  opened by this <code>EventSource</code>.</p> <!-- no need to throw tasks away or anything; for it
+  to get garbage collected, there can't be anything that would be able to receive those events -->
+
+
+  

@@ -1,0 +1,150 @@
+<h4>The drag data store</h4>
+
+  <p>The data that underlies a drag-and-drop operation, known as the <dfn>drag data store</dfn>,
+  consists of the following information:</p>
+
+  <ul>
+
+   <li><p>A <dfn>drag data store item list</dfn>, which is a list of items representing the dragged
+   data, each consisting of the following information:</p>
+
+    <dl>
+
+     <dt><dfn>The drag data item kind</dfn></dt>
+
+     <dd>
+
+      <p>The kind of data:</p>
+
+      <dl>
+
+       <dt><i>Plain Unicode string</i></dt>
+       <dd>
+        <p>Text.</p>
+       </dd>
+
+<!-- DND-v3:
+       <dt><i>Blob</i></dt>
+       <dd>
+        <p>Binary data.</p>
+       </dd>
+-->
+
+       <dt><i>File</i></dt>
+       <dd>
+        <p>Binary data with a file name.</p>
+       </dd>
+
+<!-- DND-v4:
+       <dt><i>Structured object</i></dt>
+       <dd>
+        <p>An object that will be cloned using the <span>structured clone</span> algorithm.</p>
+       </dd>
+-->
+
+      </dl>
+
+     </dd>
+
+     <dt><dfn>The drag data item type string</dfn></dt>
+
+     <dd>
+
+      <p>A Unicode string giving the type or format of the data, generally given by a <span>MIME
+      type</span>. Some values that are not <span data-x="MIME type">MIME types</span> are
+      special-cased for legacy reasons. The API does not enforce the use of <span data-x="MIME
+      type">MIME types</span>; other values can be used as well. In all cases, however, the values
+      are all <span>converted to ASCII lowercase</span> by the API.</p>
+
+      <p class="note">Strings that contain <span data-x="space character">space characters</span>
+      cannot be used with the <code data-x="attr-dropzone">dropzone</code> attribute, so authors are
+      encouraged to use only <span data-x="MIME type">MIME types</span> or custom strings (without
+      spaces).</p>
+
+      <p>There is a limit of one <i>Plain Unicode string</i> item per <span data-x="The drag data
+      item type string">item type string</span>.</p> <!-- DND-v4: consider limiting the structured
+      objects too -->
+
+     </dd>
+
+     <dt>The actual data</dt>
+
+     <dd><p>A Unicode or binary string, in some cases with a file name (itself a Unicode string),
+     <!-- (DND-v4:) or an object, --> as per <span>the drag data item kind</span>.</p></dd>
+
+    </dl>
+
+    <p>The <span>drag data store item list</span> is ordered in the order that the items were added
+    to the list; most recently added last.</p>
+
+   </li>
+
+   <li>
+
+    <p>The following information, used to generate the UI feedback during the drag:</p>
+
+    <ul>
+
+     <li>User-agent-defined default feedback information, known as the <dfn>drag data store default
+     feedback</dfn>.</li>
+
+     <li>Optionally, a bitmap image and the coordinate of a point within that image, known as the
+     <dfn>drag data store bitmap</dfn> and <dfn>drag data store hot spot coordinate</dfn>.</li>
+
+    </ul>
+
+   </li>
+
+   <li>
+
+    <p>A <dfn>drag data store mode</dfn>, which is one of the following:</p>
+
+    <dl>
+
+     <dt><dfn data-x="concept-dnd-rw">Read/write mode</dfn></dt>
+     <dd>
+
+      <p>For the <code data-x="event-dnd-dragstart">dragstart</code> event. New data can be added to the
+      <span>drag data store</span>.</p>
+
+     </dd>
+
+     <dt><dfn data-x="concept-dnd-ro">Read-only mode</dfn></dt>
+     <dd>
+
+      <p>For the <code data-x="event-dnd-drop">drop</code> event. The list of items representing dragged
+      data can be read, including the data. No new data can be added.</p>
+
+     </dd>
+
+     <dt><dfn data-x="concept-dnd-p">Protected mode</dfn></dt>
+     <dd>
+
+      <p>For all other events. The formats and kinds in the <span>drag data store</span> list of
+      items representing dragged data can be enumerated, but the data itself is unavailable and no
+      new data can be added.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>A <dfn>drag data store allowed effects state</dfn>, which is a string.</p>
+
+   </li>
+
+  </ul>
+
+  <p>When a <span>drag data store</span> is <dfn data-x="create a drag data store">created</dfn>, it
+  must be initialized such that its <span>drag data store item list</span> is empty, it has no
+  <span>drag data store default feedback</span>, it has no <span>drag data store bitmap</span> and
+  <span>drag data store hot spot coordinate</span>, its <span>drag data store mode</span> is <span
+  data-x="concept-dnd-p">protected mode</span>, and its <span>drag data store allowed effects
+  state</span> is the string "<code
+  data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>".</p>
+
+
+  

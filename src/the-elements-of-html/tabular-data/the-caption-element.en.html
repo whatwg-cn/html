@@ -1,0 +1,83 @@
+<h4>The <dfn><code>caption</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As the first element child of a <code>table</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no descendant <code>table</code> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLTableCaptionElement</dfn> : <span>HTMLElement</span> {};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>caption</code> element <span>represents</span> the title of the <code>table</code>
+  that is its parent, if it has a parent and that is a <code>table</code> element.</p>
+
+  <div w-nodev>
+
+  <p>The <code>caption</code> element takes part in the <span>table model</span>.</p>
+
+  </div>
+
+  <p>When a <code>table</code> element is the only content in a <code>figure</code> element other
+  than the <code>figcaption</code>, the <code>caption</code> element should be omitted in favor of
+  the <code>figcaption</code>.</p>
+
+  <p>A caption can introduce context for a table, making it significantly easier to understand.</p>
+
+  <div class="example">
+
+   <p>Consider, for instance, the following table:</p>
+
+   <table class="dice-example">
+    <tr> <th>   <th> 1 <th> 2 <th> 3 <th> 4 <th> 5 <th> 6
+    <tr> <th> 1 <td> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7
+    <tr> <th> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8
+    <tr> <th> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9
+    <tr> <th> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10
+    <tr> <th> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11
+    <tr> <th> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11 <td> 12
+   </table>
+
+   <p>In the abstract, this table is not clear. However, with a caption giving the table's number
+   (for reference in the main prose) and explaining its use, it makes more sense:</p>
+
+   <pre>&lt;caption>
+&lt;p>Table 1.
+&lt;p>This table shows the total score obtained from rolling two
+six-sided dice. The first row represents the value of the first die,
+the first column the value of the second die. The total is given in
+the cell that corresponds to the values of the two dice.
+&lt;/caption></pre>
+
+   <p>This provides the user with more context:</p>
+
+   <table class="dice-example">
+    <caption>
+     <p>Table 1.
+     <p>This table shows the total score obtained from rolling two
+     six-sided dice. The first row represents the value of the first
+     die, the first column the value of the second die. The total is
+     given in the cell that corresponds to the values of the two dice.
+    </caption>
+    <tr> <th>   <th> 1 <th> 2 <th> 3 <th> 4 <th> 5 <th> 6
+    <tr> <th> 1 <td> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7
+    <tr> <th> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8
+    <tr> <th> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9
+    <tr> <th> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10
+    <tr> <th> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11
+    <tr> <th> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11 <td> 12
+   </table>
+
+  </div>
+
+
+
+
+  

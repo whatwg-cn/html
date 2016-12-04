@@ -1,0 +1,52 @@
+<h5><dfn data-x="input-command">Using the <code>input</code> element to define a command</dfn></h5>
+
+  <p>An <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+  one of the <span data-x="attr-input-type-submit">Submit Button</span>, <span
+  data-x="attr-input-type-reset">Reset Button</span>, <span data-x="attr-input-type-image">Image
+  Button</span>, <span data-x="attr-input-type-button">Button</span>, <span
+  data-x="attr-input-type-radio">Radio Button</span>, or <span
+  data-x="attr-input-type-checkbox">Checkbox</span> states <span data-x="concept-command">defines a
+  command</span>.</p>
+
+  <p>The <span data-x="command-facet-Label">Label</span> of the command is determined as
+  follows:</p>
+
+  <ul>
+
+    <li><p>If the <code data-x="attr-input-type">type</code> attribute is in one of the
+    <span data-x="attr-input-type-submit">Submit Button</span>, <span
+    data-x="attr-input-type-reset">Reset Button</span>, <span data-x="attr-input-type-image">Image
+    Button</span>, or <span data-x="attr-input-type-button">Button</span> states, then the
+    <span data-x="command-facet-Label">Label</span> is the string given by the
+    <code data-x="attr-input-value">value</code> attribute, if any, and a UA-dependent,
+    locale-dependent value that the UA uses to label the button itself if the attribute is
+    absent.</p></li>
+
+    <li><p>Otherwise, if the element is a <span>labeled control</span>, then the
+    <span data-x="command-facet-Label">Label</span> is the string given by the
+    <code>textContent</code> of the first <code>label</code> element in <span>tree order</span>
+    whose <span>labeled control</span> is the element in question. (In DOM terms, this is the
+    string given by <code data-x=""><var>element</var>.labels[0].textContent</code>.)</p></li>
+
+    <li><p>Otherwise, if the <code data-x="attr-input-value">value</code> attribute is present, then
+    the <span data-x="command-facet-Label">Label</span> is the value of that attribute.</p></li>
+
+    <li><p>Otherwise, the <span data-x="command-facet-Label">Label</span> is the empty string.</p></li>
+
+  </ul>
+
+  <p>The <span data-x="command-facet-AccessKey">AccessKey</span> of the command is the element's
+  <span>assigned access key</span>, if any.</p>
+
+  <p>The <span data-x="command-facet-HiddenState">Hidden State</span> of the command is true (hidden)
+  if the element has a <code data-x="attr-hidden">hidden</code> attribute, and false otherwise.</p>
+
+  <p>The <span data-x="command-facet-DisabledState">Disabled State</span> of the command is true if
+  the element or one of its ancestors is <span>inert</span>, or if the element's <span
+  data-x="concept-fe-disabled">disabled</span> state is set, and false otherwise.</p>
+
+  <p>The <span data-x="command-facet-Action">Action</span> of the command is to <span>fire a <code
+  data-x="event-click">click</code> event</span> at the element.</p>
+
+
+  

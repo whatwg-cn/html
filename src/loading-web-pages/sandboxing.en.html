@@ -1,0 +1,339 @@
+<h3>Sandboxing</h3>
+
+  <p>A <dfn data-export="">sandboxing flag set</dfn> is a set of zero or more of the following
+  flags, which are used to restrict the abilities that potentially untrusted resources have:</p>
+
+  <dl>
+
+   <dt>The <dfn data-export="">sandboxed navigation browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag <a href="#sandboxLinks">prevents content from navigating browsing contexts other
+    than the sandboxed browsing context itself</a> (or browsing contexts further nested inside it),
+    <span data-x="auxiliary browsing context">auxiliary browsing contexts</span> (which are protected
+    by the <span>sandboxed auxiliary navigation browsing context flag</span> defined next), and the
+    <span>top-level browsing context</span> (which is protected by the <span>sandboxed top-level
+    navigation browsing context flag</span> defined below).</p>
+
+    <p>If the <span>sandboxed auxiliary navigation browsing context flag</span> is not set, then in
+    certain cases the restrictions nonetheless allow popups (new <span data-x="top-level browsing
+    context">top-level browsing contexts</span>) to be opened. These <span data-x="browsing
+    context">browsing contexts</span> always have <dfn>one permitted sandboxed navigator</dfn>, set
+    when the browsing context is created, which allows the <span>browsing context</span> that
+    created them to actually navigate them. (Otherwise, the <span>sandboxed navigation browsing
+    context flag</span> would prevent them from being navigated even if they were opened.)</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed auxiliary navigation browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag <a href="#sandboxWindowOpen">prevents content from creating new auxiliary browsing
+    contexts</a>, e.g. using the <code data-x="attr-hyperlink-target">target</code> attribute or
+    the <code data-x="dom-open">window.open()</code> method.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed top-level navigation browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag <a href="#sandboxLinks">prevents content from navigating their <span>top-level
+    browsing context</span></a> and <a href="#sandboxClose">prevents content from closing their
+    <span>top-level browsing context</span></a>.</p>
+
+    <p>When the <span>sandboxed top-level navigation browsing context flag</span> is <em>not</em>
+    set, content can navigate its <span>top-level browsing context</span>, but other <span
+    data-x="browsing context">browsing contexts</span> are still protected by the <span>sandboxed
+    navigation browsing context flag</span> and possibly the <span>sandboxed auxiliary navigation
+    browsing context flag</span>.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed plugins browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag prevents content from instantiating <span data-x="plugin">plugins</span>, whether
+    using <a href="#sandboxPluginEmbed">the <code>embed</code> element</a>, <a
+    href="#sandboxPluginObject">the <code>object</code> element</a>, <a
+    href="#sandboxPluginApplet">the <code>applet</code> element</a>, or through <a
+    href="#sandboxPluginNavigate">navigation</a> of a <span>nested browsing context</span>, unless
+    those <span data-x="plugin">plugins</span> can be <span
+    data-x="concept-plugin-secure">secured</span>.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed origin browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag <a href="#sandboxOrigin">forces content into a unique origin</a>, thus preventing
+    it from accessing other content from the same <span>origin</span>.</p>
+
+    <p>This flag also <a href="#sandboxCookies">prevents script from reading from or writing to the
+    <code data-x="dom-document-cookie">document.cookie</code> IDL attribute</a>, and blocks access to
+    <code data-x="dom-localStorage">localStorage</code>.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed forms browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag <a href="#sandboxSubmitBlocked">blocks form submission</a>.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed pointer lock browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag disables the Pointer Lock API. <ref spec=POINTERLOCK></p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed scripts browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag <a href="#sandboxScriptBlocked">blocks script execution</a>.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed automatic features browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag blocks features that trigger automatically, such as <span
+    data-x="attr-media-autoplay">automatically playing a video</span> or <span
+    data-x="attr-fe-autofocus">automatically focusing a form control</span>.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed storage area URLs flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag prevents URL schemes that use storage areas from being able to access the origin's
+    data.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandboxed <code data-x="dom-document-domain">document.domain</code>
+   browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag prevents content from using the
+    <code data-x="dom-document-domain">document.domain</code> setter.</p>
+
+   </dd>
+
+
+   <dt>The <dfn data-export="">sandbox propagates to auxiliary browsing contexts flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag prevents content from escaping the sandbox by ensuring that any
+    <span>auxiliary browsing context</span> it creates inherits the content's
+    <span>active sandboxing flag set</span>.</p>
+
+   </dd>
+
+   <dt>The <dfn data-export="">sandboxed modals flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag prevents content from using any of the following features to produce modal
+    dialogs:</p>
+
+    <ul>
+     <li><code data-x="dom-alert">window.alert()</code></li>
+     <li><code data-x="dom-confirm">window.confirm()</code></li>
+     <li><code data-x="dom-print">window.print()</code></li>
+     <li><code data-x="dom-prompt">window.prompt()</code></li>
+     <li>the <code data-x="event-beforeunload">beforeunload</code> event</li>
+    </ul>
+
+   </dd>
+
+   <dt>The <dfn data-export="">sandboxed orientation lock browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag disables the ability to lock the screen orientation. <ref
+    spec=SCREENORIENTATION></p>
+
+   </dd>
+
+   <dt>The <dfn data-export="">sandboxed presentation browsing context flag</dfn></dt>
+
+   <dd>
+
+    <p>This flag disables the Presentation API. <ref spec=PRESENTATION></p>
+
+   </dd>
+
+ </dl>
+
+  <p>When the user agent is to <dfn data-export="">parse a sandboxing directive</dfn>, given a
+  string <var>input</var>, a <span>sandboxing flag set</span> <var>output</var>, it must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p><span data-x="split a string on spaces">Split <var>input</var> on spaces</span>,
+   to obtain <var>tokens</var>.</p></li>
+
+   <li><p>Let <var>output</var> be empty.</p></li>
+
+   <li>
+
+    <p>Add the following flags to <var>output</var>:</p>
+
+    <ul>
+
+     <li><p>The <span>sandboxed navigation browsing context flag</span>.</p></li>
+
+     <li><p>The <span>sandboxed auxiliary navigation browsing context flag</span>, unless <var>tokens</var> contains the <dfn><code data-x="attr-iframe-sandbox-allow-popups">allow-popups</code></dfn> keyword.</p></li>
+
+     <li><p>The <span>sandboxed top-level navigation browsing context flag</span>, unless <var>tokens</var> contains the <dfn><code data-x="attr-iframe-sandbox-allow-top-navigation">allow-top-navigation</code></dfn>
+     keyword.</p></li>
+
+     <li><p>The <span>sandboxed plugins browsing context flag</span>.</p></li>
+
+     <li>
+
+      <p>The <span>sandboxed origin browsing context flag</span>, unless the <var>tokens</var> contains the <dfn><code data-x="attr-iframe-sandbox-allow-same-origin">allow-same-origin</code></dfn>
+      keyword.</p>
+
+      <div class="note">
+
+       <p>The <code data-x="attr-iframe-sandbox-allow-same-origin">allow-same-origin</code> keyword
+       is intended for two cases.</p>
+
+       <p>First, it can be used to allow content from the same site to be sandboxed to disable
+       scripting, while still allowing access to the DOM of the sandboxed content.</p>
+
+       <p>Second, it can be used to embed content from a third-party site, sandboxed to prevent that
+       site from opening pop-up windows, etc, without preventing the embedded page from
+       communicating back to its originating site, using the database APIs to store data, etc.</p>
+
+      </div>
+
+     </li>
+
+     <li><p>The <span>sandboxed forms browsing context flag</span>, unless <var>tokens</var> contains the <dfn><code data-x="attr-iframe-sandbox-allow-forms">allow-forms</code></dfn> keyword.</p></li>
+
+     <li><p>The <span>sandboxed pointer lock browsing context flag</span>, unless <var>tokens</var> contains the <dfn><code data-x="attr-iframe-sandbox-allow-pointer-lock">allow-pointer-lock</code></dfn>
+     keyword.</p></li>
+
+     <li><p>The <span>sandboxed scripts browsing context flag</span>, unless <var>tokens</var> contains the <dfn><code data-x="attr-iframe-sandbox-allow-scripts">allow-scripts</code></dfn> keyword.</p></li>
+
+     <li>
+
+      <p>The <span>sandboxed automatic features browsing context flag</span>, unless <var>tokens</var> contains the <code
+      data-x="attr-iframe-sandbox-allow-scripts">allow-scripts</code> keyword (defined above).</p>
+
+      <p class="note">This flag is relaxed by the same keyword as scripts, because when scripts are
+      enabled these features are trivially possible anyway, and it would be unfortunate to force
+      authors to use script to do them when sandboxed rather than allowing them to use the
+      declarative features.</p>
+
+     </li>
+
+     <li><p>The <span>sandboxed storage area URLs flag</span>.</p></li>
+
+     <li><p>The <span>sandboxed <code data-x="dom-document-domain">document.domain</code> browsing
+     context flag</span>.</p></li>
+
+     <li><p>The <span>sandbox propagates to auxiliary browsing contexts flag</span>, unless
+     <var>tokens</var> contains the <dfn><code data-x="attr-iframe-sandbox-allow-popups-to-escape-sandbox">allow-popups-to-escape-sandbox</code></dfn>
+     keyword.</p></li>
+
+     <li><p>The <span>sandboxed modals flag</span>, unless <var>tokens</var> contains the <dfn><code
+     data-x="attr-iframe-sandbox-allow-modals">allow-modals</code></dfn> keyword.</p></li>
+
+     <li><p>The <span>sandboxed orientation lock browsing context flag</span>, unless
+     <var>tokens</var> contains the <dfn><code
+     data-x="attr-iframe-sandbox-allow-orientation-lock">allow-orientation-lock</code></dfn>
+     keyword.</p></li>
+
+     <li><p>The <span>sandboxed presentation browsing context flag</span>, unless <var>tokens</var>
+     contains the <dfn><code
+     data-x="attr-iframe-sandbox-allow-presentation">allow-presentation</code></dfn>
+     keyword.</p></li>
+
+    </ul>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>Every <span>top-level browsing context</span> has a <dfn>popup sandboxing flag set</dfn>, which
+  is a <span>sandboxing flag set</span>. When a <span>browsing context</span> is created, its
+  <span>popup sandboxing flag set</span> must be empty. It is populated by <span>the rules for
+  choosing a browsing context given a browsing context name</span>.</p>
+
+  <p>Every <span>browsing context</span> that is a <span>nested browsing context</span> has an
+  <dfn><code>iframe</code> sandboxing flag set</dfn>, which is a <span>sandboxing flag set</span>.
+  Which flags in a <span>nested browsing context</span>'s <span><code>iframe</code> sandboxing flag
+  set</span> are set at any particular time is determined by the <code>iframe</code> element's <code
+  data-x="attr-iframe-sandbox">sandbox</code> attribute.</p>
+
+  <p>Every <code>Document</code> has an <dfn>active sandboxing flag set</dfn>, which is a
+  <span>sandboxing flag set</span>. When the <code>Document</code> is created, its <span>active
+  sandboxing flag set</span> must be empty. It is populated by the <span data-x="navigate">navigation
+  algorithm</span>.</p>
+
+  <p>Every resource that is obtained by the <span data-x="navigate">navigation algorithm</span> has
+  a <dfn data-export="">forced sandboxing flag set</dfn>, which is a <span>sandboxing flag
+  set</span>. A resource by default has no flags set in its <span>forced sandboxing flag set</span>,
+  but other specifications can define that certain flags are set.</p>
+
+  <p class="note">In particular, the <span>forced sandboxing flag set</span> is used by
+  <cite>Content Security Policy</cite>. <ref spec=CSP></p>
+
+  <hr>
+
+  <p>To <dfn>implement the sandboxing</dfn> for a <code>Document</code> object <var>document</var>,
+  populate <var>document</var>'s <span>active sandboxing flag set</span> with the union of the flags
+  that are present in the following <span data-x="sandboxing flag set">sandboxing flag
+  sets</span>:</p>
+
+  <ul>
+   <li><p>If <var>document</var>'s <span data-x="concept-document-bc">browsing context</span> is a
+   <span>top-level browsing context</span>, then: the flags set on the <span>browsing
+   context</span>'s <span>popup sandboxing flag set</span>.</p></li>
+
+   <li><p>If <var>document</var>'s <span data-x="concept-document-bc">browsing context</span> is a
+   <span>nested browsing context</span>, then: the flags set on the <span>browsing context</span>'s
+   <span><code>iframe</code> sandboxing flag set</span>.</p></li>
+
+   <li><p>If <var>document</var>'s <span data-x="concept-document-bc">browsing context</span> is a
+   <span>nested browsing context</span>, then: the flags set on the <span>browsing context</span>'s
+   <span>parent browsing context</span>'s <span>active document</span>'s <span>active sandboxing
+   flag set</span>.</p></li>
+
+   <li><p>The flags set on <var>document</var>'s resource's <span>forced sandboxing flag set</span>,
+   if it has one.</p></li>
+  </ul>
+
+
+
+  

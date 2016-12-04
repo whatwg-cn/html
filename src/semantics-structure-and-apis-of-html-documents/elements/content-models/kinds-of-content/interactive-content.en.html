@@ -1,0 +1,37 @@
+<h6>Interactive content</h6>
+
+<!--
+TESTS:
+https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C%21DOCTYPE%20html%3E%0A%3Cp%20tabindex%3D1%3Etest%20%3Ca%20href%3D%22%22%3E%20%3Cem%3Etest%3C/em%3E%20%3C/a%3E%0A%3Cscript%3E%0A%20function%20test%20%28e%29%20%7B%20w%28e.type%20+%20%27%20on%20%27%20+%20e.target.tagName%20+%20%27%20through%20%27%20+%20e.currentTarget.tagName%29%3B%20%7D%0A%20document.getElementsByTagName%28%27a%27%29%5B0%5D.addEventListener%28%27click%27%2C%20test%2C%20false%29%3B%0A%20document.getElementsByTagName%28%27a%27%29%5B0%5D.addEventListener%28%27DOMActivate%27%2C%20test%2C%20false%29%3B%0A%20document.getElementsByTagName%28%27p%27%29%5B0%5D.addEventListener%28%27click%27%2C%20test%2C%20false%29%3B%0A%20document.getElementsByTagName%28%27p%27%29%5B0%5D.addEventListener%28%27DOMActivate%27%2C%20test%2C%20false%29%3B%0A%3C/script%3E%0A
+https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C%21DOCTYPE%20HTML%3E%0A%3Ca%20href%3Dhttp%3A//google.com/%20target%3Da%3EA%3C/a%3E%3Ca%20href%3Dhttp%3A//yahoo.com/%20target%3Db%3EB%3C/a%3E%3Cbr%3E%0A%3Ciframe%20name%3Da%3E%3C/iframe%3E%3Ciframe%20name%3Db%3E%3C/iframe%3E%0A%3Cscript%3E%0A%20var%20a%20%3D%20document.getElementsByTagName%28%27a%27%29%5B0%5D%3B%0A%20var%20b%20%3D%20document.getElementsByTagName%28%27a%27%29%5B1%5D%3B%0A%20a.appendChild%28b%29%3B%0A%3C/script%3E
+https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C%21DOCTYPE%20HTML%3E%0A%3Cform%20action%3D%22http%3A//google.com/%22%20onsubmit%3D%22w%28%27onsubmit%27%29%22%3E%3Cem%3EA%3C/em%3E%3C/form%3E%0A%3Cscript%3E%0Adocument.getElementsByTagName%28%27form%27%29%5B0%5D.attachEvent%28%27onsubmit%27%2C%20function%20%28%29%20%7B%20w%28%27submit%20fired%27%29%20%7D%29%3B%0Adocument.getElementsByTagName%28%27form%27%29%5B0%5D.fireEvent%28%27onsubmit%27%29%3B%0A%3C/script%3E
+https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C%21DOCTYPE%20HTML%3E%0A%3Cform%20action%3D%22http%3A//google.com/%22%3EX%3C/form%3E%0A%3Cscript%3E%0Avar%20evt%20%3D%20document.createEvent%28%22Events%22%29%3B%0Aevt.initEvent%28%22submit%22%2C%20true%2C%20true%29%3B%0Adocument.getElementsByTagName%28%27form%27%29%5B0%5D.dispatchEvent%28evt%29%3B%0A%3C/script%3E
+-->
+
+  <p><dfn>Interactive content</dfn> is content that is specifically intended for user
+  interaction.</p>
+
+  <!-- when updating this also update the category index -->
+  <ul class="brief category-list">
+   <li><code>a</code> (if the <code data-x="attr-hyperlink-href">href</code> attribute is present)</li>
+   <li><code>audio</code> (if the <code data-x="attr-media-controls">controls</code> attribute is present)</li>
+   <li><code>button</code></li>
+   <li><code>details</code></li>
+   <li><code>embed</code></li>
+   <li><code>iframe</code></li>
+   <li><code>img</code> (if the <code data-x="attr-hyperlink-usemap">usemap</code> attribute is present)</li>
+   <li><code>input</code> (if the <code data-x="attr-input-type">type</code> attribute is <em>not</em> in the <span data-x="attr-input-type-hidden">Hidden</span> state)</li>
+   <li><code>keygen</code></li>
+   <li><code>label</code></li>
+   <li><code>object</code> (if the <code data-x="attr-hyperlink-usemap">usemap</code> attribute is present)<!-- see also comment in <object> element section --></li>
+   <li><code>select</code></li>
+   <li><code>textarea</code></li>
+   <li><code>video</code> (if the <code data-x="attr-media-controls">controls</code> attribute is present)</li>
+  </ul>
+
+  <p>The <code data-x="attr-tabindex">tabindex</code> attribute can also make any element into
+  <span>interactive content</span>.</p>
+
+
+
+  

@@ -1,0 +1,41 @@
+<h5>Authoring</h5>
+
+  </div>
+
+  <p>An <dfn>image map</dfn> allows geometric areas on an image to be associated with <span
+  data-x="hyperlink">hyperlinks</span>.</p>
+
+  <p>An image, in the form of an <code>img</code> element or an <code>object</code> element
+  representing an image, may be associated with an image map (in the form of a <code>map</code>
+  element) by specifying a <dfn><code data-x="attr-hyperlink-usemap">usemap</code></dfn> attribute on
+  the <code>img</code> or <code>object</code> element. The <code
+  data-x="attr-hyperlink-usemap">usemap</code> attribute, if specified, must be a <span>valid
+  hash-name reference</span> to a <code>map</code> element.</p>
+
+  <div class="example">
+
+   <p>Consider an image that looks as follows:</p>
+
+   <p><img src="/images/sample-usemap.png" width="600" height="150" alt="A line with four shapes in it, equally spaced: a red hollow box, a green circle, a blue triangle, and a yellow four-pointed star."></p>
+
+   <p>If we wanted just the colored areas to be clickable, we could do it as follows:</p>
+
+   <pre>&lt;p>
+ Please select a shape:
+ &lt;img src="shapes.png" usemap="#shapes"
+      alt="Four shapes are available: a red hollow box, a green circle, a blue triangle, and a yellow four-pointed star.">
+ &lt;map name="shapes">
+  &lt;area shape=rect coords="50,50,100,100"> &lt;!-- the hole in the red box -->
+  &lt;area shape=rect coords="25,25,125,125" href="red.html" alt="Red box.">
+  &lt;area shape=circle coords="200,75,50" href="green.html" alt="Green circle.">
+  &lt;area shape=poly coords="325,25,262,125,388,125" href="blue.html" alt="Blue triangle.">
+  &lt;area shape=poly coords="450,25,435,60,400,75,435,90,450,125,465,90,500,75,465,60"
+        href="yellow.html" alt="Yellow star.">
+ &lt;/map>
+&lt;/p></pre>
+
+  </div>
+
+  <div w-nodev>
+
+  

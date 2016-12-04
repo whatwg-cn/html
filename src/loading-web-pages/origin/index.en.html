@@ -1,0 +1,333 @@
+<h3>Origin</h3>
+  <!-- Hallowed are the Ori -->
+
+  <p>Origins are the fundamental currency of the Web's security model. Two actors in the Web
+  platform that share an origin are assumed to trust each other and to have the same authority.
+  Actors with differing origins are considered potentially hostile versus each other, and are
+  isolated from each other to varying degrees.</p>
+
+  <p class="example">For example, if Example Bank's Web site, hosted at <code
+  data-x="">bank.example.com</code>, tries to examine the DOM of Example Charity's Web site, hosted
+  at <code data-x="">charity.example.org</code>, a <span>"<code>SecurityError</code>"</span>
+  <code>DOMException</code> will be raised.</p>
+
+  <hr>
+
+  <p id="origin-2">An <dfn id="concept-origin" data-export="">origin</dfn> is
+  one of the following:</p>
+
+  <dl>
+   <dt>An <dfn data-export="" data-x="concept-origin-opaque">opaque origin</dfn></dt>
+   <dd><p>An internal value, with no serialization it can be recreated from (it is serialized as
+   "<code data-x="">null</code>" per <span>ASCII serialization of an origin</span>), for which the
+   only meaningful operation is testing for equality.</p></dd>
+
+   <dt>A <dfn data-export="" data-x="concept-origin-tuple">tuple origin</dfn></dt>
+   <dd>
+    <p>A <span data-x="concept-origin-tuple">tuple</span> consists of:
+
+    <ul class="brief">
+     <li>A <dfn data-export="" data-dfn-for="origin" data-x="concept-origin-scheme">scheme</dfn> (a
+     <span data-x="concept-url-scheme">scheme</span>).</li>
+     <li>A <dfn data-export="" data-dfn-for="origin" data-x="concept-origin-host">host</dfn> (a
+     <span data-x="concept-host">host</span>).</li>
+     <li>A <dfn data-export="" data-dfn-for="origin" data-x="concept-origin-port">port</dfn> (a
+     <span data-x="concept-url-port">port</span>).</li>
+     <li>A <dfn data-export="" data-dfn-for="origin" data-x="concept-origin-domain">domain</dfn>
+     (null or a <span data-x="concept-domain">domain</span>). Null unless stated otherwise.</li>
+    </ul>
+   </dd>
+  </dl>
+
+  <p class="note"><span data-x="origin">Origins</span> can be shared, e.g., among multiple
+  <code>Document</code> objects. Furthermore, <span data-x="origin">origins</span> are generally
+  immutable. Only the <span data-x="concept-origin-domain">domain</span> of a <span
+  data-x="concept-origin-tuple">tuple origin</span> can be changed, and only through the <code
+  data-x="dom-document-domain">document.domain</code> API.</p>
+
+  <p>The <dfn data-export="" data-x="concept-origin-effective-domain">effective domain</dfn> of an
+  <span>origin</span> <var>origin</var> is computed as follows:</p>
+
+  <ol>
+   <li><p>If <var>origin</var> is an <span data-x="concept-origin-opaque">opaque origin</span>, then
+   return <var>origin</var>.</p></li>
+
+   <li><p>If <var>origin</var>'s <span data-x="concept-origin-domain">domain</span> is non-null,
+   then return <var>origin</var>'s <span data-x="concept-origin-domain">domain</span>.</p></li>
+
+   <li><p>Return <var>origin</var>'s <span data-x="concept-origin-host">host</span>.</p></li>
+  </ol>
+
+  <div w-nodev>
+
+  <p>Various specification objects are defined to have an <span>origin</span>. These <span
+  data-x="origin">origins</span> are determined as follows:</p>
+
+  <dl>
+
+   <dt>For <code>Document</code> objects</dt>
+
+   <dd>
+
+    <dl class="switch">
+
+     <dt id="sandboxOrigin">If the <code>Document</code>'s <span>active sandboxing flag set</span>
+     has its <span>sandboxed origin browsing context flag</span> set</dt>
+
+     <dt>If the <code>Document</code> was generated from a <span data-x="data
+     protocol"><code>data:</code> URL</span></dt>
+
+     <dd><p>A unique <span data-x="concept-origin-opaque">opaque origin</span> assigned when the
+     <code>Document</code> is created.</p></dd>
+
+
+     <dt>If the <code>Document</code>'s <span data-x="concept-document-url">URL</span>'s <span
+     data-x="concept-url-scheme">scheme</span> is a <span>network scheme</span></dt>
+
+     <dd>
+      <p>A copy of the <code>Document</code>'s <span data-x="concept-document-url">URL</span>'s
+      <span data-x="concept-url-origin">origin</span> assigned when the <code>Document</code> is
+      created.</p>
+
+      <p class="note">The <code data-x="dom-document-open">document.open()</code> method can change
+      the <code>Document</code>'s <span data-x="concept-document-url">URL</span> to
+      "<code>about:blank</code>". Therefore the <span>origin</span> is assigned when the
+      <code>Document</code> is created.</p>
+     </dd>
+
+
+     <dt>If the <code>Document</code> is the initial "<code>about:blank</code>" document</dt>
+
+     <dd><p><a href="#about-blank-origin">The one it was assigned when its browsing context was
+     created</a>.</p></dd>
+
+
+     <dt>If the <code>Document</code> is a non-initial "<code>about:blank</code>" document</dt>
+
+     <dd><p>The <span data-x="concept-settings-object-origin">origin</span> of the <span>incumbent
+     settings object</span> when the <span>navigate</span> algorithm was invoked, or, if no <span
+     data-x="concept-script">script</span> was involved, the <span>origin</span> of the <span>node
+     document</span> of the element that initiated the <span data-x="navigate">navigation</span> to
+     that <span>URL</span>.</p></dd>
+
+
+     <dt>If the <code>Document</code> was created as part of the processing for <span
+     data-x="javascript protocol"><code>javascript:</code> URLs</span></dt>
+
+     <dd><p>The <span>origin</span> of the <span>active document</span> of the <span>browsing
+     context</span> being navigated when the <span>navigate</span> algorithm was invoked.</p></dd>
+
+
+     <dt>If the <code>Document</code> is <span>an <code>iframe</code> <code
+     data-x="attr-iframe-srcdoc">srcdoc</code> document</span></dt>
+
+     <dd><p>The <span>origin</span> of the <code>Document</code>'s <span
+     data-x="concept-document-bc">browsing context</span>'s <span>browsing context
+     container</span>'s <span>node document</span>.</p></dd>
+
+
+     <dt>If the <code>Document</code> was obtained in some other manner (e.g. a <code>Document</code>
+     created using the <code data-x="dom-DOMImplementation-createDocument">createDocument()</code>
+     API, etc)</dt>
+
+     <dd>
+      <p>The default behavior as defined in the WHATWG DOM standard applies. <ref spec=DOM>.</p>
+
+      <p class="note">The <span>origin</span> is a unique <span
+      data-x="concept-origin-opaque">opaque origin</span> assigned when the <code>Document</code> is
+      created.</p>
+     </dd>
+
+    </dl>
+
+   </dd>
+
+
+   <dt>For images of <code>img</code> elements</dt>
+
+   <dd>
+
+    <dl class="switch">
+
+     <dt>If the image data is <span>CORS-cross-origin</span></dt>
+
+     <dd><p>A unique <span data-x="concept-origin-opaque">opaque origin</span> assigned when the
+     image is created.</p></dd>
+
+
+     <dt>If the image data is <span>CORS-same-origin</span></dt>
+
+     <dd><p>The <code>img</code> element's <span>node document</span>'s
+     <span>origin</span>.</p></dd>
+
+    </dl>
+
+   </dd>
+
+
+   <dt>For <code>audio</code> and <code>video</code> elements</dt>
+
+   <dd>
+
+    <dl class="switch">
+
+     <dt>If the <span>media data</span> is <span>CORS-cross-origin</span></dt>
+
+     <dd><p>A unique <span data-x="concept-origin-opaque">opaque origin</span> assigned when the
+     <span>media data</span> is fetched.</p></dd>
+
+
+     <dt>If the <span>media data</span> is <span>CORS-same-origin</span></dt>
+
+     <dd><p>The <span>media element</span>'s <span>node document</span>'s
+     <span>origin</span>.</p></dd>
+
+    </dl>
+
+   </dd>
+
+  </dl>
+
+  <p>Other specifications can override the above definitions by themselves specifying the origin of
+  a particular <code>Document</code> object, image, or <span>media element</span>.</p>
+
+  <hr>
+
+  <p>The <!--en-GB--><dfn id="unicode-serialisation-of-an-origin" data-export="">Unicode
+  serialization of an origin</dfn> is the string obtained by applying the following algorithm to the
+  given <span>origin</span> <var>origin</var>:</p>
+
+  <ol>
+   <li><p>If <var>origin</var> is an <span data-x="concept-origin-opaque">opaque origin</span>, then
+   return "<code data-x="">null</code>".</p></li>
+
+   <li><p>Let <var>host</var> be <var>origin</var>'s <span
+   data-x="concept-origin-host">host</span>.</p></li>
+
+   <li><p>Let <var>unicodeHost</var> be <var>host</var> if <var>host</var> is not a <span
+   data-x="concept-domain">domain</span>, and the result of applying <span>domain to Unicode</span>
+   to <var>host</var> otherwise.</p></li>
+
+   <li><p>Let <var>unicodeOrigin</var> be a new <span data-x="concept-origin-tuple">tuple
+   origin</span> consisting <var>origin</var>'s <span data-x="concept-origin-scheme">scheme</span>,
+   <var>unicodeHost</var>, and <var>origin</var>'s <span
+   data-x="concept-origin-port">port</span>.</p></li>
+
+   <li>
+    <p>Return the <span>ASCII serialization of an origin</span>, given <var>unicodeOrigin</var>.</p>
+
+    <p class="note">The name <span>ASCII serialization of an origin</span> is misleading, as it
+    merely serializes an origin, which are all ASCII by default due to the <span>URL
+    parser</span>.</p>
+   </li>
+  </ol>
+
+  <p class="example">The <span data-x="Unicode serialization of an origin">Unicode
+  serialization</span> of ("<code data-x="">https</code>", "<code
+  data-x="">xn--maraa-rta.example</code>", null, null) is "<code
+  data-x="">https://maraña.example</code>".</p>
+
+  <p>The <!--en-GB--><dfn id="ascii-serialisation-of-an-origin" data-export="">ASCII serialization
+  of an origin</dfn> is the string obtained by applying the following algorithm to the given
+  <span>origin</span> <var>origin</var>:</p>
+
+  <ol>
+   <li><p>If <var>origin</var> is an <span data-x="concept-origin-opaque">opaque origin</span>, then
+   return "<code data-x="">null</code>".</p></li>
+
+   <li><p>Otherwise, let <var>result</var> be <var>origin</var>'s <span
+   data-x="concept-origin-scheme">scheme</span>.</p></li>
+
+   <li><p>Append "<code data-x="">://</code>" to <var>result</var>.</p></li>
+
+   <li><p>Append <var>origin</var>'s <span data-x="concept-origin-host">host</span>, <span
+   data-x="host serializer">serialized</span>, to <var>result</var>.</p></li>
+
+   <li><p>If <var>origin</var>'s <span data-x="concept-origin-port">port</span> is non-null, append
+   a U+003A COLON character (:), and <var>origin</var>'s <span
+   data-x="concept-origin-port">port</span>, <span data-x="serialize an integer">serialized</span>,
+   to <var>result</var>.</p></li>
+
+   <li><p>Return <var>result</var>.</p></li>
+  </ol>
+
+  <hr>
+
+  <p>Two <span data-x="origin">origins</span>, <var>A</var> and <var>B</var>, are said to be
+  <dfn data-export="">same origin</dfn> if the following algorithm returns true:</p>
+
+  <ol>
+   <li><p>If <var>A</var> and <var>B</var> are the same <span data-x="concept-origin-opaque">opaque
+   origin</span>, then return true.</p></li>
+
+   <li><p>If <var>A</var> and <var>B</var> are both <span data-x="concept-origin-tuple">tuple
+   origins</span> and their <span data-x="concept-origin-scheme">schemes</span>, <span
+   data-x="concept-origin-host">hosts</span>, and <span data-x="concept-origin-port">port</span> are
+   identical, then return true.</p></li>
+
+   <li><p>Return false.</p></li>
+  </ol>
+
+  <p>Two <span data-x="origin">origins</span>, <var>A</var> and <var>B</var>, are said to be
+  <dfn data-export="">same origin-domain</dfn> if the following algorithm returns true:</p>
+
+  <ol>
+   <li><p>If <var>A</var> and <var>B</var> are the same <span data-x="concept-origin-opaque">opaque
+   origin</span>, then return true.</p></li>
+
+   <li>
+    <p>If <var>A</var> and <var>B</var> are both <span data-x="concept-origin-tuple">tuple
+    origins</span>, run these substeps:</p>
+
+    <ol>
+     <li><p>If <var>A</var> and <var>B</var>'s <span data-x="concept-origin-scheme">schemes</span>
+     are identical, and their <span data-x="concept-origin-domain">domains</span> are identical and
+     non-null, then return true.</p></li>
+
+     <li><p>Otherwise, if <var>A</var> and <var>B</var> are <span>same origin</span> and their <span
+     data-x="concept-origin-domain">domains</span> are identical and null, then return
+     true.</p></li>
+    </ol>
+
+   <li><p>Return false.</p></li>
+  </ol>
+
+  <div class="example">
+   <table>
+    <tr>
+     <th><var>A</var>
+     <th><var>B</var>
+     <th><span>same origin</span>
+     <th><span>same origin-domain</span>
+    <tr>
+     <td>("<code data-x="">https</code>", "<code data-x="">example.org</code>", null, null)
+     <td>("<code data-x="">https</code>", "<code data-x="">example.org</code>", null, null)
+     <td>✅
+     <td>✅
+    <tr>
+     <td>("<code data-x="">https</code>", "<code data-x="">example.org</code>", 314, "<code
+     data-x="">example.org</code>")
+     <td>("<code data-x="">https</code>", "<code data-x="">example.org</code>", 420, "<code
+     data-x="">example.org</code>")
+     <td>❌
+     <td>✅
+    <tr>
+     <td>("<code data-x="">https</code>", "<code data-x="">example.org</code>", null, null)
+     <td>("<code data-x="">https</code>", "<code data-x="">example.org</code>", null, "<code
+     data-x="">example.org</code>")
+     <td>✅
+     <td>❌
+    <tr>
+     <td>("<code data-x="">https</code>", "<code data-x="">example.org</code>", null, "<code
+     data-x="">example.org</code>")
+     <td>("<code data-x="">http</code>", "<code data-x="">example.org</code>", null, "<code
+     data-x="">example.org</code>")
+     <td>❌
+     <td>❌
+   </table>
+  </div>
+
+  </div>
+
+
+  

@@ -1,0 +1,481 @@
+<h5>Creating and inserting nodes</h5>
+
+  <p>While the parser is processing a token, it can enable or disable <dfn data-x="foster
+  parent">foster parenting</dfn>. This affects the following algorithm.</p>
+
+  <p>The <dfn>appropriate place for inserting a node</dfn>, optionally using a particular
+  <i>override target</i>, is the position in an element returned by running the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If there was an <i>override target</i> specified, then let <var>target</var> be the
+    <i>override target</i>.</p>
+
+    <p>Otherwise, let <var>target</var> be the <span>current node</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Determine the <var>adjusted insertion location</var> using the first matching steps
+    from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If <span data-x="foster parent">foster parenting</span> is enabled and <var>target</var> is a <code>table</code>, <code>tbody</code>, <code>tfoot</code>,
+     <code>thead</code>, or <code>tr</code> element</dt> <!-- same list as handling of characters
+     in "in table" mode -->
+
+     <dd>
+
+      <p class="note">Foster parenting happens when content is misnested in tables.</p>
+
+      <p>Run these substeps:</p>
+
+      <ol>
+
+       <li><p>Let <var>last template</var> be the last <code>template</code> element in the
+       <span>stack of open elements</span>, if any.</p>
+
+       <li><p>Let <var>last table</var> be the last <code>table</code> element in the
+       <span>stack of open elements</span>, if any.</p>
+
+       <li><p>If there is a <var>last template</var> and either there is no <var>last table</var>, or there is one, but <var>last template</var> is lower
+       (more recently added) than <var>last table</var> in the <span>stack of open
+       elements</span>, then: let <var>adjusted insertion location</var> be inside <var>last template</var>'s <span>template contents</span>, after its last child (if any),
+       and abort these substeps.</p></li>
+
+       <li><p>If there is no <var>last table</var>, <!-- there's also implicitly no last
+       template, since we didn't hit the previous step --> then let <var>adjusted insertion
+       location</var> be inside the first element in the <span>stack of open elements</span> (the
+       <code>html</code> element), after its last child (if any), and abort these substeps.
+       (<span>fragment case</span>)</p>
+
+       <!-- if we get here, we know there's a last table, and if there's a last template, it's older
+       than the last table. -->
+
+       <li><p>If <var>last table</var> has a parent node, then let <var>adjusted insertion location</var> be inside <var>last table</var>'s parent
+       node, immediately before <var>last table</var>, and abort these
+       substeps.</p></li>
+
+       <!-- if we get here, we know there's a last table, but it has no parent, and if there's a
+       last template, it's older than the last table. -->
+
+       <li><p>Let <var>previous element</var> be the element immediately above <var>last table</var> in the <span>stack of open elements</span>.</p></li>
+
+       <li><p>Let <var>adjusted insertion location</var> be inside <var>previous
+       element</var>, after its last child (if any).</p></li>
+
+      </ol>
+
+      <p class="note">These steps are involved in part because it's possible for elements, the
+      <code>table</code> element in this case in particular, to have been moved by a script around
+      in the DOM, or indeed removed from the DOM entirely, after the element was inserted by the
+      parser.</p>
+
+     </dd>
+
+     <dt>Otherwise</dt>
+
+     <dd>
+
+      <p>Let <var>adjusted insertion location</var> be inside <var>target</var>,
+      after its last child (if any).</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>If the <var>adjusted insertion location</var> is inside a <code>template</code>
+    element, let it instead be inside the <code>template</code> element's <span>template
+    contents</span>, after its last child (if any).</p>
+
+   </li>
+
+   <li>
+
+    <p>Return the <var>adjusted insertion location</var>.</p>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>When the steps below require the UA to <dfn data-x="create an element for the token">create an
+  element for a token</dfn> in a particular <var>given namespace</var> and with a
+  particular <var>intended parent</var>, the UA must run the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>document</var> be <var>intended parent</var>'s <span>node document</span>.</li>
+
+   <li><p>Let <var>local name</var> be the tag name of the token.</p></li>
+
+   <li><p>Let <var>is</var> be the value of the "<code data-x="attr-is">is</code>" attribute in the
+   given token, if such an attribute exists, or null otherwise.</p></li>
+
+   <li><p>Let <var>definition</var> be the result of <span data-x="look up a custom element
+   definition">looking up a custom element definition</span> given <var>document</var>, <var>given
+   namespace</var>, <var>local name</var>, and <var>is</var>.</p></li>
+
+   <li><p>If <var>definition</var> is non-null and the parser was not originally created for the
+   <span>HTML fragment parsing algorithm</span>, then let <var>will execute script</var> be true.
+   Otherwise, let it be false.</p></li>
+
+   <li>
+    <p>If <var>will execute script</var> is true, then:</p>
+
+    <ol>
+     <li><p>Increment <var>document</var>'s <span>throw-on-dynamic-markup-insertion
+     counter</span>.</p></li>
+
+     <li><p>If the <span>JavaScript execution context stack</span> is empty, then <span>perform a
+     microtask checkpoint</span>.</p></li>
+
+     <li><p>Push a new <span>element queue</span> onto the <span>custom element reactions
+     stack</span>.</li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Let <var>element</var> be the result of <span data-x="create an element">creating an
+    element</span> given <var>document</var>, <var>localName</var>, <var>given
+    namespace</var>, null, and <var>is</var>. If <var>will execute script</var> is true, set the
+    <var>synchronous custom elements flag</var>; otherwise, leave it unset.</p>
+
+    <p class="note">This will cause <span data-x="custom element constructor">custom element
+    constructors</span> to run, if <var>will execute script</var> is true. However, since we
+    incremented the <span>throw-on-dynamic-markup-insertion counter</span>, this cannot cause <span
+    data-x="dom-document-write">new characters to be inserted into the tokenizer</span>, or <span
+    data-x="dom-document-open">the document to be blown away</span>.</p>
+   </li>
+
+   <li>
+    <p><span data-x="concept-element-attributes-append">Append</span> each attribute in the given
+    token to <var>element</var>.</p>
+
+    <p class="note">This can <span>enqueue a custom element callback reaction</span> for the
+    <code data-x="">attributeChangedCallback</code>, which might run immediately (in the next
+    step).</p>
+
+    <p class="note">Even though the <code data-x="attr-is">is</code> attribute governs the <span
+    data-x="create an element">creation</span> of a <span>customized built-in element</span>, it is
+    not present during the execution of the relevant <span>custom element constructor</span>; it is
+    appended in this step, along with all other attributes.</p>
+   </li>
+
+   <li>
+    <p>If <var>will execute script</var> is true, then:</p>
+
+    <ol>
+     <li><p>Let <var>queue</var> be the result of popping the <span>current element queue</span>
+     from the <span>custom element reactions stack</span>. (This will be the same <span>element
+     queue</span> as was pushed above.)</p></li>
+
+     <li><p><span>Invoke custom element reactions</span> in <var>queue</var>.</p></li>
+
+     <li><p>Decrement <var>document</var>'s <span>throw-on-dynamic-markup-insertion
+     counter</span>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>If <var>element</var> has an <code data-x="">xmlns</code> attribute <em>in the <span>XMLNS
+   namespace</span></em> whose value is not exactly the same as the element's namespace, that is a
+   <span>parse error</span>. Similarly, if <var>element</var> has an <code
+   data-x="">xmlns:xlink</code> attribute in the <span>XMLNS namespace</span> whose value is not the
+   <span>XLink Namespace</span>, that is a <span>parse error</span>.</p></li>
+
+   <li><p>If <var>element</var> is a <span data-x="category-reset">resettable element</span>, invoke
+   its <span data-x="concept-form-reset-control">reset algorithm</span>. (This initializes the
+   element's <span data-x="concept-fe-value">value</span> and <span
+   data-x="concept-fe-checked">checkedness</span> based on the element's attributes.)</p></li>
+
+   <li><p>If <var>element</var> is a <span>form-associated element</span>, and the <span><code
+   data-x="">form</code> element pointer</span> is not null, and there is no <code>template</code>
+   element on the <span>stack of open elements</span>, and <var>element</var> is either not <span
+   data-x="category-listed">listed</span> or doesn't have a <code
+   data-x="attr-fae-form">form</code> attribute, and the <var>intended parent</var> is in
+   the same <span>tree</span> as the element pointed to by the <span><code data-x="">form</code>
+   element pointer</span>, <span data-x="concept-form-association">associate</span>
+   <var>element</var> with the <code>form</code> element pointed to by the <span><code
+   data-x="">form</code> element pointer</span>, and suppress the running of the <span>reset the
+   form owner</span> algorithm when the parser subsequently attempts to insert the element.</p></li>
+
+   <li><p>Return <var>element</var>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <!-- The names of these algorithms are kinda confusing; e.g. see the confusion in
+         https://www.w3.org/Bugs/Public/show_bug.cgi?id=18367
+       Not sure what we could call them instead, though... -->
+
+  <p>When the steps below require the user agent to <dfn>insert a foreign element</dfn> for a token
+  in a given namespace, the user agent must run these steps:</p>
+
+  <ol>
+   <li><p>Let the <var>adjusted insertion location</var> be the <span>appropriate place for
+   inserting a node</span>.</p></li>
+
+   <!-- this insertion stuff should be cleaned up: https://github.com/whatwg/html/issues/1706 -->
+
+   <li><p>Let <var>element</var> be the result of <span data-x="create an element for the
+   token">creating an element for the token</span> in the given namespace, with the intended
+   parent being the element in which the <var>adjusted insertion location</var> finds
+   itself.</p></li>
+
+   <li>
+    <p>If it is possible to insert <var>element</var> at the <var>adjusted insertion location</var>,
+    then:</p>
+
+    <ol>
+     <li><p>Push a new <span>element queue</span> onto the <span>custom element reactions
+     stack</span>.</li>
+
+     <li><p>Insert <var>element</var> at the <var>adjusted insertion location</var>.</p></li>
+
+     <li><p>Pop the <span>element queue</span> from the <span>custom element reactions stack</span>,
+     and <span>invoke custom element reactions</span> in that queue.</p></li>
+    </ol>
+
+    <p class="note">If the <var>adjusted insertion location</var> cannot accept more
+    elements, e.g. because it's a <code>Document</code> that already has an element child, then
+    <var>element</var> is dropped on the floor.</p>
+   </li>
+
+   <li><p>Push <var>element</var> onto the <span>stack of open elements</span> so that it is the new
+   <span>current node</span>.</p></li>
+
+   <li><p>Return <var>element</var>.</p></li>
+  </ol>
+
+  <p>When the steps below require the user agent to <dfn>insert an HTML element</dfn> for a token,
+  the user agent must <span>insert a foreign element</span> for the token, in the <span>HTML
+  namespace</span>.</p>
+
+  <hr>
+
+  <p>When the steps below require the user agent to <dfn>adjust MathML attributes</dfn> for a token,
+  then, if the token has an attribute named <code data-x="">definitionurl</code>, change its name to
+  <code data-x="">definitionURL</code> (note the case difference).</p>
+
+  <p>When the steps below require the user agent to <dfn>adjust SVG attributes</dfn> for a token,
+  then, for each attribute on the token whose attribute name is one of the ones in the first column
+  of the following table, change the attribute's name to the name given in the corresponding cell in
+  the second column. (This fixes the case of SVG attributes that are not all lowercase.)</p>
+
+  <table>
+   <thead>
+    <tr> <th> Attribute name on token <th> Attribute name on element
+   <tbody>
+    <tr> <td> <code data-x="">attributename</code> <td> <code data-x="">attributeName</code>
+    <tr> <td> <code data-x="">attributetype</code> <td> <code data-x="">attributeType</code>
+    <tr> <td> <code data-x="">basefrequency</code> <td> <code data-x="">baseFrequency</code>
+    <tr> <td> <code data-x="">baseprofile</code> <td> <code data-x="">baseProfile</code>
+    <tr> <td> <code data-x="">calcmode</code> <td> <code data-x="">calcMode</code>
+    <tr> <td> <code data-x="">clippathunits</code> <td> <code data-x="">clipPathUnits</code>
+    <tr> <td> <code data-x="">diffuseconstant</code> <td> <code data-x="">diffuseConstant</code>
+    <tr> <td> <code data-x="">edgemode</code> <td> <code data-x="">edgeMode</code>
+    <tr> <td> <code data-x="">filterunits</code> <td> <code data-x="">filterUnits</code>
+    <tr> <td> <code data-x="">glyphref</code> <td> <code data-x="">glyphRef</code>
+    <tr> <td> <code data-x="">gradienttransform</code> <td> <code data-x="">gradientTransform</code>
+    <tr> <td> <code data-x="">gradientunits</code> <td> <code data-x="">gradientUnits</code>
+    <tr> <td> <code data-x="">kernelmatrix</code> <td> <code data-x="">kernelMatrix</code>
+    <tr> <td> <code data-x="">kernelunitlength</code> <td> <code data-x="">kernelUnitLength</code>
+    <tr> <td> <code data-x="">keypoints</code> <td> <code data-x="">keyPoints</code>
+    <tr> <td> <code data-x="">keysplines</code> <td> <code data-x="">keySplines</code>
+    <tr> <td> <code data-x="">keytimes</code> <td> <code data-x="">keyTimes</code>
+    <tr> <td> <code data-x="">lengthadjust</code> <td> <code data-x="">lengthAdjust</code>
+    <tr> <td> <code data-x="">limitingconeangle</code> <td> <code data-x="">limitingConeAngle</code>
+    <tr> <td> <code data-x="">markerheight</code> <td> <code data-x="">markerHeight</code>
+    <tr> <td> <code data-x="">markerunits</code> <td> <code data-x="">markerUnits</code>
+    <tr> <td> <code data-x="">markerwidth</code> <td> <code data-x="">markerWidth</code>
+    <tr> <td> <code data-x="">maskcontentunits</code> <td> <code data-x="">maskContentUnits</code>
+    <tr> <td> <code data-x="">maskunits</code> <td> <code data-x="">maskUnits</code>
+    <tr> <td> <code data-x="">numoctaves</code> <td> <code data-x="">numOctaves</code>
+    <tr> <td> <code data-x="">pathlength</code> <td> <code data-x="">pathLength</code>
+    <tr> <td> <code data-x="">patterncontentunits</code> <td> <code data-x="">patternContentUnits</code>
+    <tr> <td> <code data-x="">patterntransform</code> <td> <code data-x="">patternTransform</code>
+    <tr> <td> <code data-x="">patternunits</code> <td> <code data-x="">patternUnits</code>
+    <tr> <td> <code data-x="">pointsatx</code> <td> <code data-x="">pointsAtX</code>
+    <tr> <td> <code data-x="">pointsaty</code> <td> <code data-x="">pointsAtY</code>
+    <tr> <td> <code data-x="">pointsatz</code> <td> <code data-x="">pointsAtZ</code>
+    <tr> <td> <code data-x="">preservealpha</code> <td> <code data-x="">preserveAlpha</code>
+    <tr> <td> <code data-x="">preserveaspectratio</code> <td> <code data-x="">preserveAspectRatio</code>
+    <tr> <td> <code data-x="">primitiveunits</code> <td> <code data-x="">primitiveUnits</code>
+    <tr> <td> <code data-x="">refx</code> <td> <code data-x="">refX</code>
+    <tr> <td> <code data-x="">refy</code> <td> <code data-x="">refY</code>
+    <tr> <td> <code data-x="">repeatcount</code> <td> <code data-x="">repeatCount</code>
+    <tr> <td> <code data-x="">repeatdur</code> <td> <code data-x="">repeatDur</code>
+    <tr> <td> <code data-x="">requiredextensions</code> <td> <code data-x="">requiredExtensions</code>
+    <tr> <td> <code data-x="">requiredfeatures</code> <td> <code data-x="">requiredFeatures</code>
+    <tr> <td> <code data-x="">specularconstant</code> <td> <code data-x="">specularConstant</code>
+    <tr> <td> <code data-x="">specularexponent</code> <td> <code data-x="">specularExponent</code>
+    <tr> <td> <code data-x="">spreadmethod</code> <td> <code data-x="">spreadMethod</code>
+    <tr> <td> <code data-x="">startoffset</code> <td> <code data-x="">startOffset</code>
+    <tr> <td> <code data-x="">stddeviation</code> <td> <code data-x="">stdDeviation</code>
+    <tr> <td> <code data-x="">stitchtiles</code> <td> <code data-x="">stitchTiles</code>
+    <tr> <td> <code data-x="">surfacescale</code> <td> <code data-x="">surfaceScale</code>
+    <tr> <td> <code data-x="">systemlanguage</code> <td> <code data-x="">systemLanguage</code>
+    <tr> <td> <code data-x="">tablevalues</code> <td> <code data-x="">tableValues</code>
+    <tr> <td> <code data-x="">targetx</code> <td> <code data-x="">targetX</code>
+    <tr> <td> <code data-x="">targety</code> <td> <code data-x="">targetY</code>
+    <tr> <td> <code data-x="">textlength</code> <td> <code data-x="">textLength</code>
+    <tr> <td> <code data-x="">viewbox</code> <td> <code data-x="">viewBox</code>
+    <tr> <td> <code data-x="">viewtarget</code> <td> <code data-x="">viewTarget</code>
+    <tr> <td> <code data-x="">xchannelselector</code> <td> <code data-x="">xChannelSelector</code>
+    <tr> <td> <code data-x="">ychannelselector</code> <td> <code data-x="">yChannelSelector</code>
+    <tr> <td> <code data-x="">zoomandpan</code> <td> <code data-x="">zoomAndPan</code>
+  </table>
+
+  <p>When the steps below require the user agent to <dfn>adjust foreign attributes</dfn> for a
+  token, then, if any of the attributes on the token match the strings given in the first column of
+  the following table, let the attribute be a namespaced attribute, with the prefix being the string
+  given in the corresponding cell in the second column, the local name being the string given in the
+  corresponding cell in the third column, and the namespace being the namespace given in the
+  corresponding cell in the fourth column. (This fixes the use of namespaced attributes, in
+  particular <span data-x="attr-xml-lang"><code data-x="">lang</code> attributes in the <span>XML
+  namespace</span></span>.)</p>
+
+  <table>
+   <thead>
+    <tr> <th> Attribute name <th> Prefix <th> Local name <th> Namespace
+   <tbody>
+    <tr> <td> <code data-x="">xlink:actuate</code> <td> <code data-x="">xlink</code> <td> <code data-x="">actuate</code> <td> <span>XLink namespace</span>
+    <tr> <td> <code data-x="">xlink:arcrole</code> <td> <code data-x="">xlink</code> <td> <code data-x="">arcrole</code> <td> <span>XLink namespace</span>
+    <tr> <td> <code data-x="">xlink:href</code> <td> <code data-x="">xlink</code> <td> <code data-x="">href</code> <td> <span>XLink namespace</span>
+    <tr> <td> <code data-x="">xlink:role</code> <td> <code data-x="">xlink</code> <td> <code data-x="">role</code> <td> <span>XLink namespace</span>
+    <tr> <td> <code data-x="">xlink:show</code> <td> <code data-x="">xlink</code> <td> <code data-x="">show</code> <td> <span>XLink namespace</span>
+    <tr> <td> <code data-x="">xlink:title</code> <td> <code data-x="">xlink</code> <td> <code data-x="">title</code> <td> <span>XLink namespace</span>
+    <tr> <td> <code data-x="">xlink:type</code> <td> <code data-x="">xlink</code> <td> <code data-x="">type</code> <td> <span>XLink namespace</span>
+    <tr> <td> <code data-x="">xml:lang</code> <td> <code data-x="">xml</code> <td> <code data-x="">lang</code> <td> <span>XML namespace</span>
+    <tr> <td> <code data-x="">xml:space</code> <td> <code data-x="">xml</code> <td> <code data-x="">space</code> <td> <span>XML namespace</span>
+    <tr> <td> <code data-x="">xmlns</code> <td> (none) <td> <code data-x="">xmlns</code> <td> <span>XMLNS namespace</span>
+    <tr> <td> <code data-x="">xmlns:xlink</code> <td> <code data-x="">xmlns</code> <td> <code data-x="">xlink</code> <td> <span>XMLNS namespace</span>
+  </table>
+
+  <hr>
+
+  <p>When the steps below require the user agent to <dfn>insert a character</dfn> while processing a
+  token, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>data</var> be the characters passed to the algorithm, or, if no
+   characters were explicitly specified, the character of the character token being
+   processed.</p></li>
+
+   <li><p>Let the <var>adjusted insertion location</var> be the <span>appropriate
+   place for inserting a node</span>.</p></li>
+
+   <li>
+
+    <p>If the <var>adjusted insertion location</var> is in a <code>Document</code> node,
+    then abort these steps.
+
+    <p class="note">The DOM will not let <code>Document</code> nodes have <code>Text</code> node
+    children, so they are dropped on the floor.</p>
+
+   </li>
+
+   <li>
+
+    <p>If there is a <code>Text</code> node immediately before the <var>adjusted insertion
+    location</var>, then append <var>data</var> to that <code>Text</code> node's data.</p>
+
+    <p>Otherwise, create a new <code>Text</code> node whose data is <var>data</var> and
+    whose <span>node document</span> is the same as that of the
+    element in which the <var>adjusted insertion location</var> finds itself, and insert
+    the newly created node at the <var>adjusted insertion location</var>.</p>
+
+   </li>
+
+  </ol>
+
+  <div class="example">
+
+   <p>Here are some sample inputs to the parser and the corresponding number of <code>Text</code>
+   nodes that they result in, assuming a user agent that executes scripts.</p>
+
+   <table>
+    <thead>
+     <tr>
+      <th>Input <th>Number of <code>Text</code> nodes
+    <tbody>
+     <tr>
+      <td><pre>A&lt;script>
+var&nbsp;script&nbsp;=&nbsp;document.getElementsByTagName('script')[0];
+document.body.removeChild(script);
+&lt;/script>B</pre>
+      <td>One <code>Text</code> node in the document, containing "AB".
+     <tr>
+      <td><pre>A&lt;script>
+var&nbsp;text&nbsp;=&nbsp;document.createTextNode('B');
+document.body.appendChild(text);
+&lt;/script>C</pre>
+      <td>Three <code>Text</code> nodes; "A" before the script, the script's contents, and "BC" after the script (the parser appends to the <code>Text</code> node created by the script).
+     <tr>
+      <td><pre>A&lt;script>
+var&nbsp;text&nbsp;=&nbsp;document.getElementsByTagName('script')[0].firstChild;
+text.data&nbsp;=&nbsp;'B';
+document.body.appendChild(text);
+&lt;/script>C</pre>
+      <td>Two adjacent <code>Text</code> nodes in the document, containing "A" and "BC".
+     <tr>
+      <td><pre>A&lt;table>B&lt;tr>C&lt;/tr>D&lt;/table></pre>
+      <td>One <code>Text</code> node before the table, containing "ABCD". (This is caused by <span data-x="foster parent">foster parenting</span>.)
+     <tr>
+      <td><pre>A&lt;table>&lt;tr>&nbsp;B&lt;/tr>&nbsp;C&lt;/table></pre>
+      <td>One <code>Text</code> node before the table, containing "A&nbsp;B&nbsp;C" (A-space-B-space-C). (This is caused by <span data-x="foster parent">foster parenting</span>.)
+     <tr>
+      <td><pre>A&lt;table>&lt;tr>&nbsp;B&lt;/tr>&nbsp;&lt;/em>C&lt;/table></pre>
+      <td>One <code>Text</code> node before the table, containing "A&nbsp;BC" (A-space-B-C), and one <code>Text</code> node inside the table (as a child of a <code>tbody</code>) with a single space character. (Space characters separated from non-space characters by non-character tokens are not affected by <span data-x="foster parent">foster parenting</span>, even if those other tokens then get ignored.)
+   </table>
+
+  </div>
+
+  <hr>
+
+  <p>When the steps below require the user agent to <dfn>insert a comment</dfn> while processing a
+  comment token, optionally with an explicitly insertion position <var>position</var>, the
+  user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>data</var> be the data given in the comment token being
+   processed.</p></li>
+
+   <li><p>If <var>position</var> was specified, then let the <var>adjusted
+   insertion location</var> be <var>position</var>. Otherwise, let <var>adjusted
+   insertion location</var> be the <span>appropriate place for inserting a node</span>.</p></li>
+
+   <li><p>Create a <code>Comment</code> node whose <code data-x="">data</code> attribute is set to
+   <var>data</var> and whose <span>node document</span> is
+   the same as that of the node in which the <var>adjusted insertion location</var> finds
+   itself.</p>
+
+   <li><p>Insert the newly created node at the <var>adjusted insertion
+   location</var>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p id="mutation-during-parsing">DOM mutation events must not fire for changes caused by the UA
+  parsing the document. This includes the parsing of any content inserted using <code
+  data-x="dom-document-write">document.write()</code> and <code
+  data-x="dom-document-writeln">document.writeln()</code> calls. <ref spec=UIEVENTS></p>
+
+  <p>However, <span>mutation observers</span> <em>do</em> fire, as required by the WHATWG DOM
+  Standard.</p>
+
+
+
+  

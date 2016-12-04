@@ -1,0 +1,225 @@
+<h4>Restrictions on content models and on attribute values</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Beyond the syntax of the language, this specification also places restrictions on how elements
+  and attributes can be specified. These restrictions are present for similar reasons:</p>
+
+  <dl>
+
+
+   <dt>Errors involving content with dubious semantics</dt>
+
+   <dd>
+
+    <p>To avoid misuse of elements with defined meanings, content models are defined that restrict
+    how elements can be nested when such nestings would be of dubious value.</p>
+
+    <p class="example">For example, this specification disallows nesting a <code>section</code>
+    element inside a <code>kbd</code> element, since it is highly unlikely for an author to indicate
+    that an entire section should be keyed in.</p>
+
+   </dd>
+
+
+   <dt>Errors that involve a conflict in expressed semantics</dt>
+
+   <dd>
+
+    <p>Similarly, to draw the author's attention to mistakes in the use of elements, clear
+    contradictions in the semantics expressed are also considered conformance errors.</p>
+
+    <div class="example">
+
+     <p>In the fragments below, for example, the semantics are nonsensical: a separator cannot
+     simultaneously be a cell, nor can a radio button be a progress bar.</p>
+
+     <pre class="bad">&lt;hr role="cell"></pre>
+     <pre class="bad">&lt;input type=radio role=progressbar></pre>
+
+    </div>
+
+    <p class="example">Another example is the restrictions on the content models of the
+    <code>ul</code> element, which only allows <code>li</code> element children. Lists by definition
+    consist just of zero or more list items, so if a <code>ul</code> element contains something
+    other than an <code>li</code> element, it's not clear what was meant.</p>
+
+   </dd>
+
+
+   <dt>Cases where the default styles are likely to lead to confusion</dt>
+
+   <dd>
+
+    <p>Certain elements have default styles or behaviors that make certain combinations likely to
+    lead to confusion. Where these have equivalent alternatives without this problem, the confusing
+    combinations are disallowed.</p>
+
+    <p class="example">For example, <code>div</code> elements are rendered as <span
+    data-x="block box">block boxes</span>, and <code>span</code> elements as <span
+    data-x="inline box">inline boxes</span>. Putting a <span>block box</span> in an
+    <span>inline box</span> is unnecessarily confusing; since either nesting just <code>div</code>
+    elements, or nesting just <code>span</code> elements, or nesting <code>span</code> elements
+    inside <code>div</code> elements all serve the same purpose as nesting a <code>div</code>
+    element in a <code>span</code> element, but only the latter involves a <span>block box</span> in
+    an <span>inline box</span>, the latter combination is disallowed.</p>
+
+    <p class="example">Another example would be the way <span>interactive content</span> cannot be
+    nested. For example, a <code>button</code> element cannot contain a <code>textarea</code>
+    element. This is because the default behavior of such nesting interactive elements would be
+    highly confusing to users. Instead of nesting these elements, they can be placed side by
+    side.</p>
+
+   </dd>
+
+
+   <dt>Errors that indicate a likely misunderstanding of the specification</dt>
+
+   <dd>
+
+    <p>Sometimes, something is disallowed because allowing it would likely cause author
+    confusion.</p>
+
+    <p class="example">For example, setting the <code data-x="attr-fe-disabled">disabled</code>
+    attribute to the value "<code data-x="">false</code>" is disallowed, because despite the
+    appearance of meaning that the element is enabled, it in fact means that the element is
+    <em>disabled</em> (what matters for implementations is the presence of the attribute, not its
+    value).</p>
+
+   </dd>
+
+
+   <dt>Errors involving limits that have been imposed merely to simplify the language</dt>
+
+   <dd>
+
+    <p>Some conformance errors simplify the language that authors need to learn.</p>
+
+    <p class="example">For example, the <code>area</code> element's <code
+    data-x="attr-area-shape">shape</code> attribute, despite accepting both <code
+    data-x="attr-area-shape-keyword-circ">circ</code> and <code
+    data-x="attr-area-shape-keyword-circle">circle</code> values in practice as synonyms, disallows
+    the use of the <code data-x="attr-area-shape-keyword-circ">circ</code> value, so as to simplify
+    tutorials and other learning aids. There would be no benefit to allowing both, but it would
+    cause extra confusion when teaching the language.</p>
+
+   </dd>
+
+
+   <dt>Errors that involve peculiarities of the parser</dt>
+
+   <dd>
+
+    <p>Certain elements are parsed in somewhat eccentric ways (typically for historical reasons),
+    and their content model restrictions are intended to avoid exposing the author to these
+    issues.</p>
+
+    <div class="example">
+
+     <p>For example, a <code>form</code> element isn't allowed inside <span>phrasing content</span>,
+     because when parsed as HTML, a <code>form</code> element's start tag will imply a
+     <code>p</code> element's end tag. Thus, the following markup results in two <span
+     data-x="paragraph">paragraphs</span>, not one:</p>
+
+     <pre>&lt;p>Welcome. &lt;form>&lt;label>Name:&lt;/label> &lt;input>&lt;/form></pre>
+
+     <p>It is parsed exactly like the following:</p>
+
+     <pre>&lt;p>Welcome. &lt;/p>&lt;form>&lt;label>Name:&lt;/label> &lt;input>&lt;/form></pre>
+
+    </div>
+
+   </dd>
+
+
+   <dt>Errors that would likely result in scripts failing in hard-to-debug ways</dt>
+
+   <dd>
+
+    <p>Some errors are intended to help prevent script problems that would be hard to debug.</p>
+
+    <p class="example">This is why, for instance, it is non-conforming to have two <code
+    data-x="attr-id">id</code> attributes with the same value. Duplicate IDs lead to the wrong
+    element being selected, with sometimes disastrous effects whose cause is hard to determine.</p>
+
+   </dd>
+
+
+   <dt>Errors that waste authoring time</dt>
+
+   <dd>
+
+    <p>Some constructs are disallowed because historically they have been the cause of a lot of
+    wasted authoring time, and by encouraging authors to avoid making them, authors can save time in
+    future efforts.</p>
+
+    <p class="example">For example, a <code>script</code> element's <code
+    data-x="attr-script-src">src</code> attribute causes the element's contents to be ignored.
+    However, this isn't obvious, especially if the element's contents appear to be executable script
+    &mdash; which can lead to authors spending a lot of time trying to debug the inline script
+    without realizing that it is not executing. To reduce this problem, this specification makes it
+    non-conforming to have executable script in a <code>script</code> element when the <code
+    data-x="attr-script-src">src</code> attribute is present. This means that authors who are
+    validating their documents are less likely to waste time with this kind of mistake.</p>
+
+   </dd>
+
+
+   <dt>Errors that involve areas that affect authors migrating between the HTML and XML
+   syntaxes</dt>
+
+   <dd>
+
+    <p>Some authors like to write files that can be interpreted as both XML and HTML with similar
+    results. Though this practice is discouraged in general due to the myriad of subtle
+    complications involved (especially when involving scripting, styling, or any kind of automated
+    serialization), this specification has a few restrictions intended to at least somewhat mitigate
+    the difficulties. This makes it easier for authors to use this as a transitionary step when
+    migrating between the HTML and XML syntaxes.</p>
+
+    <p class="example">For example, there are somewhat complicated rules surrounding the <code
+    data-x="attr-lang">lang</code> and <code data-x="attr-xml-lang">xml:lang</code> attributes
+    intended to keep the two synchronized.</p>
+
+    <p class="example">Another example would be the restrictions on the values of <code
+    data-x="">xmlns</code> attributes in the HTML serialization, which are intended to ensure that
+    elements in conforming documents end up in the same namespaces whether processed as HTML or
+    XML.</p>
+
+   </dd>
+
+
+   <dt>Errors that involve areas reserved for future expansion</dt>
+
+   <dd>
+
+    <p>As with the restrictions on the syntax intended to allow for new syntax in future revisions
+    of the language, some restrictions on the content models of elements and values of attributes
+    are intended to allow for future expansion of the HTML vocabulary.</p>
+
+    <p class="example">For example, limiting the values of the <code
+    data-x="attr-hyperlink-target">target</code> attribute that start with an U+005F LOW LINE
+    character (_) to only specific predefined values allows new predefined values to be introduced
+    at a future time without conflicting with author-defined values.</p>
+
+   </dd>
+
+
+   <dt>Errors that indicate a mis-use of other specifications</dt>
+
+   <dd>
+
+    <p>Certain restrictions are intended to support the restrictions made by other
+    specifications.</p>
+
+    <p class="example">For example, requiring that attributes that take media query lists use only
+    <em>valid</em> media query lists reinforces the importance of following the conformance rules of
+    that specification.</p>
+
+   </dd>
+
+  </dl>
+
+
+
+  

@@ -1,0 +1,100 @@
+<h6>Updating the source set</h6>
+
+  <p>When asked to <dfn>update the source set</dfn> for a given <code>img</code> element <var>el</var>,
+  user agents must do the following:</p>
+
+  <ol>
+
+   <li><p>Set <var>el</var>'s <span>source set</span> to an empty <span>source set</span>.</p></li>
+
+   <li><p>If <var>el</var> has a parent node and that is a <code>picture</code> element,
+   let <var>elements</var> be an array containing <var>el</var>'s parent node's child elements, retaining relative order.
+   Otherwise, let <var>elements</var> be array containing only <var>el</var>.</p></li>
+
+   <li><p>If <var>el</var> has a <code data-x="attr-dim-width">width</code> attribute, and parsing
+   that attribute's value using the <span>rules for parsing dimension values</span> doesn't generate
+   an error or a percentage value, then let <var>width</var> be the returned integer value.
+   Otherwise, let <var>width</var> be null.</p></li>
+
+   <li>
+
+    <p>Iterate through <var>elements</var>,
+    doing the following for each item <var>child</var>:</p>
+
+    <ol>
+
+     <li>
+
+      <p>If <var>child</var> is <var>el</var>:</p>
+
+      <ol>
+
+       <li><p>If <var>child</var> has a <code data-x="attr-img-srcset">srcset</code> attribute,
+       <span data-x="parse a srcset attribute">parse <var>child</var>'s srcset attribute</span>
+       and let the returned <span>source set</span> be <var>source set</var>.
+       Otherwise, let <var>source set</var> be an empty <span>source set</span>.</p></li>
+
+       <li><p><span data-x="parse a sizes attribute">Parse <var>child</var>'s sizes
+       attribute</span> with the fallback width <var>width</var>, and let <var>source set</var>'s
+       <span>source size</span> be the returned value.</p></li>
+
+       <li><p>If <var>child</var> has a <code data-x="attr-img-src">src</code> attribute
+       whose value is not the empty string
+       and <var>source set</var> does not contain an
+       <span>image source</span> with a <span>pixel density descriptor</span> value of 1,
+       and no <span>image source</span> with a <span>width descriptor</span>,
+       append <var>child</var>'s <code data-x="attr-img-src">src</code> attribute value to <var>source set</var>.</p></li>
+
+       <li><p><span>Normalize the source densities</span> of <var>source set</var>.</p></li>
+
+       <li><p>Let <var>el</var>'s <span>source set</span> be <var>source set</var>.</p></li>
+
+       <li><p>Abort this algorithm.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>If <var>child</var> is not a <code>source</code> element, continue to the next child.
+     Otherwise, <var>child</var> is a <code>source</code> element.</p></li>
+
+     <li><p>If <var>child</var> does not have a <code data-x="attr-source-srcset">srcset</code>
+     attribute, continue to the next child.</p></li>
+
+     <li><p><span data-x="parse a srcset attribute">Parse <var>child</var>'s srcset attribute</span> and
+     let the returned <span>source set</span> be <var>source set</var>.</p></li>
+
+     <li><p>If <var>source set</var> has zero <span data-x="image source">image sources</span>,
+     continue to the next child.</p></li>
+
+     <li><p>If <var>child</var> has a <code data-x="attr-source-media">media</code> attribute, and
+     its value does not <span data-x="matches the environment">match the environment</span>,
+     continue to the next child.</p></li>
+
+     <li><p><span data-x="parse a sizes attribute">Parse <var>child</var>'s sizes attribute</span>
+     with the fallback width <var>width</var>, and let <var>source set</var>'s <span>source
+     size</span> be the returned value.</p></li>
+
+     <li><p>If <var>child</var> has a <code data-x="attr-source-type">type</code> attribute, and its
+     value is an unknown or unsupported <span>MIME type</span>, continue to the next child.</p></li>
+
+     <li><p><span>Normalize the source densities</span> of <var>source set</var>.</p></li>
+
+     <li><p>Let <var>el</var>'s <span>source set</span> be <var>source set</var>.</p></li>
+
+     <li><p>Abort this algorithm.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p class="note">Each <code>img</code> element independently considers its previous sibling
+  <code>source</code> elements plus the <code>img</code> element itself for selecting an <span>image
+  source</span>, ignoring any other (invalid) elements, including other <code>img</code> elements in
+  the same <code>picture</code> element, or <code>source</code> elements that are following siblings
+  of the relevant <code>img</code> element.</p>
+
+
+  

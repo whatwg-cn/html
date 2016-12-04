@@ -1,0 +1,129 @@
+<h5 id="custom-elements-autonomous-drawbacks">Drawbacks of autonomous custom elements</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>As specified below, and alluded to above, simply defining and using an element called
+  <code data-x="">taco-button</code> does not mean that such elements <span
+  data-x="represents">represent</span> buttons. That is, tools such as Web browsers, search engines,
+  or accessibility technology will not automatically treat the resulting element as a button just
+  based on its defined name.</p>
+
+  <p>To convey the desired button semantics to a variety of users, while still using an
+  <span>autonomous custom element</span>, a number of techniques would need to be employed:</p>
+
+  <ul>
+   <li><p>The addition of the <code data-x="attr-tabindex">tabindex</code> attribute would make the
+   <code data-x="">taco-button</code> <span>interactive content</span>, thus making it
+   <span data-x="focusable area">focusable</span>. Note that if the
+   <code data-x="">taco-button</code> were to become logically disabled, the <code
+   data-x="attr-tabindex">tabindex</code> attribute would need to be removed.</p></li>
+
+   <li><p>The addition of various ARIA attributes helps convey semantics to accessibility
+   technology. For example, setting the <code data-x="attr-aria-role">role</code> attribute to
+   "<code data-x="attr-aria-role-button">button</code>" will convey the semantics that this is a
+   button, enabling users to successfully interact with the control using usual button-like
+   interactions in their accessibility technology. Setting the <code
+   data-x="attr-aria-label">aria-label</code> attribute is necessary to give the button an
+   <span data-x="concept-accessible-name">accessible name</span>, instead of having accessibility
+   technology traverse its child text nodes and announce them. And setting <code
+   data-x="attr-aria-disabled">aria-disabled</code> to "<code data-x="">true</code>" when the button
+   is logically disabled conveys to accessibility technology the button's disabled state.</p></li>
+
+   <li><p>The addition of event handlers to handle commonly-expected button behaviors helps convey
+   the semantics of the button to Web browser users. In this case, the most relevant event handler
+   would be one that proxies appropriate <code data-x="event-keydown">keydown</code> events to
+   become <code data-x="event-click">click</code> events, so that you can activate the button both
+   with keyboard and by clicking.</li>
+
+   <li><p>In addition to any default visual styling provided for <code data-x="">taco-button</code>
+   elements, the visual styling will also need to be updated to reflect changes in logical state,
+   such as becoming disabled; that is, whatever stylesheet has rules for <code
+   data-x="">taco-button</code> will also need to have rules for <code
+   data-x="">taco-button[disabled]</code>.</p></li>
+  </ul>
+
+  <p>With these points in mind, a full-featured <code data-x="">taco-button</code> that took on the
+  responsibility of conveying button semantics (including the ability to be disabled) might look
+  something like this:</p>
+
+  <pre>class TacoButton extends HTMLElement {
+  static get observedAttributes() { return ["disabled"]; }
+
+  constructor() {
+    super();
+
+    this.addEventListener("keydown", e => {
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        this.dispatchEvent(new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true
+        }));
+      }
+    });
+
+    this.addEventListener("click", e => {
+      if (this.disabled) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
+
+    this._observer = new MutationObserver(() => {
+      this.setAttribute("aria-label", this.textContent);
+    });
+  }
+
+  connectedCallback() {
+    this.setAttribute("role", "button");
+    this.setAttribute("tabindex", "0");
+
+    this._observer.observe(this, {
+      childList: true,
+      characterData: true,
+      subtree: true
+    });
+  }
+
+  disconnectedCallback() {
+    this._observer.disconnect();
+  }
+
+  get disabled() {
+    return this.hasAttribute("disabled");
+  }
+
+  set disabled(v) {
+    if (v) {
+      this.setAttribute("disabled", "");
+    } else {
+      this.removeAttribute("disabled");
+    }
+  }
+
+  attributeChangedCallback() {
+    // only is called for the disabled attribute due to observedAttributes
+    if (this.disabled) {
+      this.removeAttribute("tabindex");
+      this.setAttribute("aria-disabled", "true");
+    } else {
+      this.setAttribute("tabindex", "0");
+      this.setAttribute("aria-disabled", "false");
+    }
+  }
+}</pre>
+
+  <p>Even with this rather-complicated element definition, the element is not a pleasure to use for
+  consumers: it will be continually "sprouting" <code data-x="attr-tabindex">tabindex</code> and
+  <code data-x="attr-aria-*">aria-*</code> attributes of its own volition. This is because as of now
+  there is no way to specify default accessibility semantics or focus behavior for custom elements,
+  forcing the use of these attributes to do so (even though they are usually reserved for allowing
+  the consumer to override default behavior).</p>
+
+  <p>In contrast, a simple <span>customized built-in element</span>, as shown in the previous
+  section, would automatically inherit the semantics and behavior of the <code>button</code>
+  element, with no need to implement these behaviors manually. In general, for any elements with
+  nontrivial behavior and semantics that build on top of existing elements of HTML, <span
+  data-x="customized built-in element">customized built-in elements</span> will be easier to
+  develop, maintain, and consume.</p>
+
+  

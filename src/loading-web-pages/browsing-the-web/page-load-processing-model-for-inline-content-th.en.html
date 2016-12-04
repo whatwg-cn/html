@@ -1,0 +1,28 @@
+<h4 id="read-ua-inline"><dfn data-x="navigate-ua-inline">Page load processing model for inline
+  content that doesn't have a DOM</dfn></h4>
+
+  <p>When the user agent is to display a user agent page inline in a <span>browsing context</span>,
+  the user agent should create a <code>Document</code> object, mark it as being an <span
+  data-x="HTML documents">HTML document</span>, set its <span
+  data-x="concept-document-content-type">content type</span> to "<code data-x="">text/html</code>",
+  <span>initialize the <code>Document</code> object</span>, and then either associate that
+  <code>Document</code> with a custom rendering that is not rendered using the normal
+  <code>Document</code> rendering rules, or mutate that <code>Document</code> until it represents
+  the content the user agent wants to render.</p>
+
+  <!-- next two paragraphs are similar to the navigate-text section, keep them in sync -->
+
+  <p>Once the page has been set up, the user agent must act as if it had <span data-x="stop
+  parsing">stopped parsing</span>.</p>
+
+  <p>Upon creation of the <code>Document</code> object, the user agent must run the <span
+  data-x="concept-appcache-init">application cache selection algorithm</span> with no manifest,
+  passing in the newly-created <code>Document</code>.</p>
+
+  <p>After creating the <code>Document</code> object, but potentially before the page has been
+  completely set up, the user agent must <span>update the session history with the new
+  page</span>.</p>
+
+
+
+  

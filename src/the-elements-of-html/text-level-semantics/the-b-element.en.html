@@ -1,0 +1,87 @@
+<h4>The <dfn><code>b</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>b</code> element <span>represents</span> a span of text to which attention is being
+  drawn for utilitarian purposes without conveying any extra importance and with no implication of
+  an alternate voice or mood, such as key words in a document abstract, product names in a review,
+  actionable words in interactive text-driven software, or an article lede.</p>
+
+  <div class="example">
+
+   <p>The following example shows a use of the <code>b</code> element to highlight key words without
+   marking them up as important:</p>
+
+   <pre>&lt;p>The &lt;b>frobonitor&lt;/b> and &lt;b>barbinator&lt;/b> components are fried.&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, objects in a text adventure are highlighted as being special by use
+   of the <code>b</code> element.</p>
+
+   <pre>&lt;p>You enter a small room. Your &lt;b>sword&lt;/b> glows
+brighter. A &lt;b>rat&lt;/b> scurries past the corner wall.&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Another case where the <code>b</code> element is appropriate is in marking up the lede (or
+   lead) sentence or paragraph. The following example shows how a <a
+   href="http://news.bbc.co.uk/2/hi/uk_news/scotland/north_east/7101506.stm">BBC article about
+   kittens adopting a rabbit as their own</a> could be marked up:</p>
+
+   <pre>&lt;article>
+ &lt;h2>Kittens 'adopted' by pet rabbit&lt;/h2>
+ &lt;p>&lt;b class="lede">Six abandoned kittens have found an
+ unexpected new mother figure &mdash; a pet rabbit.&lt;/b>&lt;/p>
+ &lt;p>Veterinary nurse Melanie Humble took the three-week-old
+ kittens to her Aberdeen home.&lt;/p>
+<i>[...]</i></pre>
+
+  </div>
+
+  <p>As with the <code>i</code> element, authors can use the <code data-x="attr-class">class</code>
+  attribute on the <code>b</code> element to identify why the element is being used, so that if the
+  style of a particular use is to be changed at a later date, the author doesn't have to go through
+  annotating each use.</p>
+
+  <p>The <code>b</code> element should be used as a last resort when no other element is more
+  appropriate. In particular, headings should use the <code>h1</code> to <code>h6</code> elements,
+  stress emphasis should use the <code>em</code> element, importance should be denoted with the
+  <code>strong</code> element, and text marked or highlighted should use the <code>mark</code>
+  element.</p>
+
+  <div class="example">
+
+   <p>The following would be <em>incorrect</em> usage:</p>
+
+   <pre class="bad">&lt;p>&lt;b>WARNING!&lt;/b> Do not frob the barbinator!&lt;/p></pre>
+
+   <p>In the previous example, the correct element to use would have been <code>strong</code>, not
+   <code>b</code>.</p>
+
+  </div>
+
+  <p class="note">Style sheets can be used to format <code>b</code> elements, just like any other
+  element can be restyled. Thus, it is not the case that content in <code>b</code> elements will
+  necessarily be boldened.</p>
+
+
+
+  

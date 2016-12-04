@@ -1,0 +1,136 @@
+<h4>Associating names with items</h4>
+
+  <p>To find <dfn>the properties of an item</dfn> defined by the element <var>root</var>,
+  the user agent must run the following steps. These steps are also used to flag <span
+  data-x="microdata error">microdata errors</span>.</p>
+
+  <ol>
+
+   <li><p>Let <var>results</var>, <var>memory</var>, and <var>pending</var> be empty lists of elements.</p></li>
+
+   <li><p>Add the element <var>root</var> to <var>memory</var>.</p></li>
+
+   <li><p>Add the child elements of <var>root</var>, if any, to <var>pending</var>.</p></li>
+
+   <li><p>If <var>root</var> has an <code data-x="attr-itemref">itemref</code> attribute,
+   <span data-x="split a string on spaces">split the value of that <code
+   data-x="attr-itemref">itemref</code> attribute on spaces</span>. For each resulting token
+   <var>ID</var>, if there is an element in the <span>tree</span> of <var>root</var> with the <span
+   data-x="concept-ID">ID</span> <var>ID</var>, then add the first such element to
+   <var>pending</var>.</p></li>
+
+   <li><p><i>Loop</i>: If <var>pending</var> is empty, jump to the step labeled <i>end of
+   loop</i>.</p></li>
+
+   <li><p>Remove an element from <var>pending</var> and let <var>current</var> be
+   that element.</p></li>
+
+   <li><p>If <var>current</var> is already in <var>memory</var>, there is a
+   <span>microdata error</span>; return to the step labeled <i>loop</i>.</p></li>
+
+   <li><p>Add <var>current</var> to <var>memory</var>.</p></li>
+
+   <li><p>If <var>current</var> does not have an <code
+   data-x="attr-itemscope">itemscope</code> attribute, then: add all the child elements of <var>current</var> to <var>pending</var>.</p></li>
+
+   <li><p>If <var>current</var> has an <code data-x="attr-itemprop">itemprop</code>
+   attribute specified and has one or more <span>property names</span>, then add <var>current</var> to <var>results</var>.</p></li>
+
+   <li><p>Return to the step labeled <i>loop</i>.</p></li>
+
+   <li><p><i>End of loop</i>: Sort <var>results</var> in <span>tree order</span>.</p></li>
+
+   <li><p>Return <var>results</var>.</p></li>
+
+  </ol>
+
+  <p>A document must not contain any <span data-x="concept-item">items</span> for which the algorithm
+  to find <span>the properties of an item</span> finds any <dfn data-x="microdata error">microdata
+  errors</dfn>.</p>
+
+  <p>An <span data-x="concept-item">item</span> is a <dfn data-x="top-level microdata items">top-level
+  microdata item</dfn> if its element does not have an <code data-x="attr-itemprop">itemprop</code>
+  attribute.</p>
+
+<!--(this is currently redundant with "requirement itemprop" below)
+  <p>An <span data-x="concept-item">item</span> is a <dfn data-x="used microdata items">used microdata
+  item</dfn> if it is a <span data-x="top-level microdata items">top-level microdata item</span>, or
+  if it has an <code data-x="attr-itemprop">itemprop</code> attribute and would be <span data-x="the
+  properties of an item">found to be the property</span> of an <span
+  data-x="concept-item">item</span> that is itself a <span data-x="used microdata items">used
+  microdata item</span>.</p>
+
+  <p>All <span data-x="concept-item">items</span> in a document must be <span>used microdata
+  items</span>.</p>
+-->
+
+  <p>All <code data-x="attr-itemref">itemref</code> attributes in a <code>Document</code> must be
+  such that there are no cycles in the graph formed from representing each <span
+  data-x="concept-item">item</span> in the <code>Document</code> as a node in the graph and each
+  <span data-x="the properties of an item">property</span> of an item whose <span
+  data-x="concept-property-value">value</span> is another item as an edge in the graph connecting
+  those two items.</p>
+
+  <!-- "requirement itemprop" (see above) -->
+  <p>A document must not contain any elements that have an <code
+  data-x="attr-itemprop">itemprop</code> attribute that would not be found to be a property of any of
+  the <span data-x="concept-item">items</span> in that document were their <span data-x="the
+  properties of an item">properties</span> all to be determined.</p>
+
+  <div class="example">
+
+   <p>In this example, a single license statement is applied to two works, using <code
+   data-x="attr-itemref">itemref</code> from the items representing the works:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Photo gallery&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>My photos&lt;/h1>
+  &lt;figure itemscope itemtype="http://n.whatwg.org/work" itemref="licenses">
+   &lt;img itemprop="work" src="images/house.jpeg" alt="A white house, boarded up, sits in a forest.">
+   &lt;figcaption itemprop="title">The house I found.&lt;/figcaption>
+  &lt;/figure>
+  &lt;figure itemscope itemtype="http://n.whatwg.org/work" itemref="licenses">
+   &lt;img itemprop="work" src="images/mailbox.jpeg" alt="Outside the house is a mailbox. It has a leaflet inside.">
+   &lt;figcaption itemprop="title">The mailbox.&lt;/figcaption>
+  &lt;/figure>
+  &lt;footer>
+   &lt;p id="licenses">All images licensed under the &lt;a itemprop="license"
+   href="http://www.opensource.org/licenses/mit-license.php">MIT
+   license&lt;/a>.&lt;/p>
+  &lt;/footer>
+ &lt;/body>
+&lt;/html></pre>
+
+   <p>The above results in two items with the type "<code data-x="">http://n.whatwg.org/work</code>",
+   one with:</p>
+
+   <dl class="brief">
+    <dt>work
+    <dd><code data-x="">images/house.jpeg</code>
+    <dt>title
+    <dd>The house I found.
+    <dt>license
+    <dd><code data-x="">http://www.opensource.org/licenses/mit-license.php</code>
+   </dl>
+
+   <p>...and one with:</p>
+
+   <dl class="brief">
+    <dt>work
+    <dd><code data-x="">images/mailbox.jpeg</code>
+    <dt>title
+    <dd>The mailbox.
+    <dt>license
+    <dd><code data-x="">http://www.opensource.org/licenses/mit-license.php</code>
+   </dl>
+
+  </div>
+
+  </div> <!-- see comment above -->
+
+
+  

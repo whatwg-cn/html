@@ -1,0 +1,196 @@
+<h5>Conversion to iCalendar</h5>
+
+  <p>Given a list of nodes <var>nodes</var> in a <code>Document</code>, a user agent must
+  run the following algorithm to <dfn data-x="extracting vEvent data">extract any vEvent data
+  represented by those nodes</dfn>:</p>
+
+  <ol>
+
+   <li><p>If none of the nodes in <var>nodes</var> are <span
+   data-x="concept-item">items</span> with the type <code
+   data-x="md-vevent">http://microformats.org/profile/hcalendar#vevent</code>, then there is no
+   vEvent data. Abort the algorithm, returning nothing.</p></li>
+
+   <li><p>Let <var>output</var> be an empty string.</p></li>
+
+   <li><p><span>Add an iCalendar line</span> with the type "<code data-x="">BEGIN</code>" and the
+   value "<code data-x="">VCALENDAR</code>" to <var>output</var>.</p></li>
+
+   <li><p><span>Add an iCalendar line</span> with the type "<code data-x="">PRODID</code>" and the
+   value equal to a user-agent-specific string representing the user agent to <var>output</var>.</p></li>
+
+   <li><p><span>Add an iCalendar line</span> with the type "<code data-x="">VERSION</code>" and the
+   value "<code data-x="">2.0</code>" to <var>output</var>.</p></li>
+
+   <li>
+
+    <p>For each node <var>node</var> in <var>nodes</var> that is an <span
+    data-x="concept-item">item</span> with the type <code
+    data-x="md-vevent">http://microformats.org/profile/hcalendar#vevent</code>, run the following
+    steps:</p>
+
+    <ol>
+
+     <li><p><span>Add an iCalendar line</span> with the type "<code data-x="">BEGIN</code>" and the
+     value "<code data-x="">VEVENT</code>" to <var>output</var>.</p></li>
+
+     <li><p><span>Add an iCalendar line</span> with the type "<code data-x="">DTSTAMP</code>" and a
+     value consisting of an iCalendar DATE-TIME string representing the current date and time, with
+     the annotation "<code data-x="">VALUE=DATE-TIME</code>", to <var>output</var>. <ref spec=RFC5545></p></li>
+
+     <li>
+
+      <p>For each element <var>element</var> that is <span data-x="the properties of an
+      item">a property of the item</span> <var>node</var>: for each name <var>name</var> in <var>element</var>'s <span>property names</span>, run the
+      appropriate set of substeps from the following list:</p>
+
+      <dl>
+
+       <dt>If the property's <span data-x="concept-property-value">value</span> is an <span
+       data-x="concept-item">item</span></dt>
+
+       <dd>
+
+        <p>Skip the property.</p>
+
+       </dd>
+
+
+       <dt>If the property is <code data-x="md-vevent-dtend">dtend</code></dt>
+       <dt>If the property is <code data-x="md-vevent-dtstart">dtstart</code></dt>
+       <dt>If the property is <code data-x="md-vevent-exdate">exdate</code></dt>
+       <dt>If the property is <code data-x="md-vevent-rdate">rdate</code></dt>
+       <dt>If the property is <code data-x="md-vevent-created">created</code></dt>
+       <dt>If the property is <code data-x="md-vevent-last-modified">last-modified</code></dt>
+
+       <dd>
+
+        <p>Let <var>value</var> be the result of stripping all U+002D HYPHEN-MINUS (-) and
+        U+003A COLON (:) characters from the property's <span
+        data-x="concept-property-value">value</span>.</p>
+
+        <p>If the property's <span data-x="concept-property-value">value</span> is a <span>valid date
+        string</span> then <span>add an iCalendar line</span> with the type <var>name</var>
+        and the value <var>value</var> to <var>output</var>, with the annotation
+        "<code data-x="">VALUE=DATE</code>".</p>
+
+        <p>Otherwise, if the property's <span data-x="concept-property-value">value</span> is a
+        <span>valid global date and time string</span> then <span>add an iCalendar line</span> with
+        the type <var>name</var> and the value <var>value</var> to <var>output</var>, with the annotation "<code data-x="">VALUE=DATE-TIME</code>".</p>
+
+        <p>Otherwise skip the property.</p>
+
+       </dd>
+
+
+       <dt>Otherwise</dt>
+
+       <dd>
+
+        <p><span>Add an iCalendar line</span> with the type <var>name</var> and the
+        property's <span data-x="concept-property-value">value</span> to <var>output</var>.</p>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li><p><span>Add an iCalendar line</span> with the type "<code data-x="">END</code>" and the
+     value "<code data-x="">VEVENT</code>" to <var>output</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p><span>Add an iCalendar line</span> with the type "<code data-x="">END</code>" and the value
+   "<code data-x="">VCALENDAR</code>" to <var>output</var>.</p></li>
+
+  </ol>
+
+  <p>When the above algorithm says that the user agent is to <dfn>add an iCalendar line</dfn>
+  consisting of a type <var>type</var>, a value <var>value</var>, and optionally
+  an annotation, to a string <var>output</var>, it must run the following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>line</var> be an empty string.</p></li>
+
+   <li><p>Append <var>type</var>, <span>converted to ASCII uppercase</span>, to <var>line</var>.</p></li>
+
+   <li>
+
+    <p>If there is an annotation:</p>
+
+    <ol>
+
+     <li><p>Append a U+003B SEMICOLON character (;) to <var>line</var>.</p></li>
+
+     <li><p>Append the annotation to <var>line</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Append a U+003A COLON character (:) to <var>line</var>.</p></li>
+
+   <li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+   another U+005C REVERSE SOLIDUS character (\).</p></li>
+
+   <li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C REVERSE
+   SOLIDUS character (\).</p></li>
+
+   <li><p>Prefix every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C
+   REVERSE SOLIDUS character (\).</p></li>
+
+   <li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN SMALL
+   LETTER N character (n).</p></li>
+
+   <li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF) character in
+   <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+   SMALL LETTER N character (n).</p></li>
+
+   <li><p>Append <var>value</var> to <var>line</var>.</p></li>
+
+   <li><p>Let <var>maximum length</var> be 75.</p></li>
+
+   <li>
+
+    <p>If and while <var>line</var> is longer than <var>maximum length</var>
+    Unicode code points long, run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Append the first <var>maximum length</var> Unicode code points of <var>line</var> to <var>output</var>.</p></li>
+
+     <li><p>Remove the first <var>maximum length</var> Unicode code points from <var>line</var>.</p></li>
+
+     <li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.</p></li>
+
+     <li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</p></li>
+
+     <li><p>Append a U+0020 SPACE character to <var>output</var>.</p></li>
+
+     <li><p>Let <var>maximum length</var> be 74.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Append (what remains of) <var>line</var> to <var>output</var>.</p></li>
+
+   <li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.</p></li>
+
+   <li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</p></li>
+
+  </ol>
+
+  <p class="note">This algorithm can generate invalid iCalendar output, if the input does not
+  conform to the rules described for the <code
+  data-x="md-vevent">http://microformats.org/profile/hcalendar#vevent</code> <span data-x="item
+  types">item type</span> and <span data-x="defined property name">defined property names</span>.</p>
+  <!-- of course since iCalendar doesn't define error handling, this is somewhat problematic. -->
+
+
+
+  

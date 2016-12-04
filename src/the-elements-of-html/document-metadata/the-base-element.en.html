@@ -1,0 +1,160 @@
+<h4 data-dfn-type="element" data-lt="base">The <dfn><code>base</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Metadata content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>In a <code>head</code> element containing no other <code>base</code> elements.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span data-x="concept-content-nothing">Nothing</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-base-href">href</code></dd>
+   <dd><code data-x="attr-base-target">target</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLBaseElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-base-href">href</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-base-target">target</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>base</code> element allows authors to specify the <span>document base URL</span> for
+  the purposes of <span data-x="parse a url">parsing URLs</span>, and the name of the default
+  <span>browsing context</span> for the purposes of <span>following hyperlinks</span>. The element
+  does not <span data-x="represents">represent</span> any content beyond this information.</p>
+
+  <p>There must be no more than one <code>base</code> element per document.</p>
+
+  <p>A <code>base</code> element must have either an <code data-x="attr-base-href">href</code>
+  attribute, a <code data-x="attr-base-target">target</code> attribute, or both.</p>
+
+  <p>The <dfn><code data-x="attr-base-href">href</code></dfn> content attribute, if specified, must
+  contain a <span>valid URL potentially surrounded by spaces</span>.</p>
+
+  <p>A <code>base</code> element, if it has an <code data-x="attr-base-href">href</code> attribute,
+  must come before any other elements in the tree that have attributes defined as taking <span
+  data-x="URL">URLs</span>, except the <code>html</code> element (its <code
+  data-x="attr-html-manifest">manifest</code> attribute isn't affected by <code>base</code>
+  elements).</p>
+
+  <div w-nodev>
+
+  <p class="note">If there are multiple <code>base</code> elements with <code
+  data-x="attr-base-href">href</code> attributes, all but the first are ignored.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-base-target">target</code></dfn> attribute, if specified, must
+  contain a <span>valid browsing context name or keyword</span>, which specifies which
+  <span>browsing context</span> is to be used as the default when <span
+  data-x="hyperlink">hyperlinks</span> and <span data-x="form">forms</span> in the
+  <code>Document</code> cause <span data-x="navigate">navigation</span>.</p>
+
+  <p>A <code>base</code> element, if it has a <code data-x="attr-base-target">target</code>
+  attribute, must come before any elements in the tree that represent <span
+  data-x="hyperlink">hyperlinks</span>.</p>
+
+  <div w-nodev>
+
+  <p class="note">If there are multiple <code>base</code> elements with <code
+  data-x="attr-base-target">target</code> attributes, all but the first are ignored.</p>
+
+  <p>A <code>base</code> element that is the first <code>base</code> element with an <code
+  data-x="attr-base-href">href</code> content attribute <span>in a document tree</span> has a
+  <dfn>frozen base URL</dfn>. The <span>frozen base URL</span> must be <span>immediately</span>
+  <span data-x="set the frozen base URL">set</span> for an element whenever any of the following
+  situations occur:</p>
+
+  <ul class="brief">
+
+   <li>The <code>base</code> element becomes the first <code>base</code> element in <span>tree
+   order</span> with an <code data-x="attr-base-href">href</code> content attribute in its
+   <code>Document</code>.</li>
+
+   <li>The <code>base</code> element is the first <code>base</code> element in <span>tree
+   order</span> with an <code data-x="attr-base-href">href</code> content attribute in its
+   <code>Document</code>, and its <code data-x="attr-base-href">href</code> content attribute is
+   changed.</li>
+
+  </ul>
+
+  <p>To <dfn data-export="">set the frozen base URL</dfn> for an element <var>element</var>:</p>
+
+  <ol>
+   <li><p>Let <var>document</var> be <var>element</var>'s <span>node document</span>.
+
+   <li><p>Let <var>urlRecord</var> be the result of <span data-x="URL parser">parsing</span> the
+   value of <var>element</var>'s <code data-x="attr-base-href">href</code> content attribute with
+   <var>document</var>'s <span>fallback base URL</span>, and <var>document</var>'s <span
+   data-x="document's character encoding">character encoding</span>. (Thus, the <code>base</code>
+   element isn't affected by itself.)</p></li>
+   <!-- This uses the URL parser rather than parse a URL since otherwise we'd have to unnecessarily
+        complicate the latter for two callsites. -->
+
+   <li><p>Set <var>element</var>'s <span>frozen base URL</span> to <var>document</var>'s
+   <span>fallback base URL</span>, if <var>urlRecord</var> is failure or running <span>Is base
+   allowed for Document?</span> on the <span>resulting URL record</span> and <var>document</var>
+   returns "<code data-x="">Blocked</code>", and to <var>urlRecord</var> otherwise.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-base-href">href</code></dfn> IDL attribute, on getting, must return
+  the result of running the following algorithm:
+  <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1715
+       https://github.com/whatwg/html/issues/1060#issuecomment-211221664 -->
+
+  <ol>
+   <li><p>Let <var>document</var> be <var>element</var>'s <span>node document</span>.
+
+   <li><p>Let <var>url</var> be the value of the <code data-x="attr-base-href">href</code>
+   attribute of this element, if it has one, and the empty string otherwise.</p></li>
+
+   <li><p>Let <var>urlRecord</var> be the result of <span data-x="URL parser">parsing</span>
+   <var>url</var> with <var>document</var>'s <span>fallback base URL</span>, and
+   <var>document</var>'s <span data-x="document's character encoding">character encoding</span>.
+   (Thus, the <code>base</code> element isn't affected by other <code>base</code> elements or
+   itself.)</p></li>
+   <!-- This uses the URL parser rather than parse a URL since otherwise we'd have to unnecessarily
+        complicate the latter for two callsites. -->
+
+   <li><p>If <var>urlRecord</var> is failure, return <var>url</var>.</p></li>
+
+   <li><p>Return the <span data-x="concept-url-serializer">serialization</span> of
+   <var>urlRecord</var>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-base-href">href</code> IDL attribute, on setting, must set the <code
+  data-x="attr-base-href">href</code> content attribute to the given new value.</p>
+
+  <p>The <dfn><code data-x="dom-base-target">target</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, a <code>base</code> element is used to set the <span>document base
+   URL</span>:</p>
+
+   <pre>&lt;!DOCTYPE html>
+&lt;html lang="en">
+    &lt;head>
+        &lt;title>This is an example for the &amp;lt;base&amp;gt; element&lt;/title>
+        &lt;base href="https://www.example.com/news/index.html">
+    &lt;/head>
+    &lt;body>
+        &lt;p>Visit the &lt;a href="archives.html">archives&lt;/a>.&lt;/p>
+    &lt;/body>
+&lt;/html></pre>
+
+   <p>The link in the above example would be a link to "<code
+   data-x="">https://www.example.com/news/archives.html</code>".</p>
+
+  </div>
+
+
+
+
+  

@@ -1,0 +1,14 @@
+<h4>Broadcasting to many ports</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Broadcasting to many ports is in principle relatively simple: keep an array of
+  <code>MessagePort</code> objects to send messages to, and iterate through the array to send a
+  message. However, this has one rather unfortunate effect: it prevents the ports from being garbage
+  collected, even if the other side has gone away. To avoid this problem, implement a simple
+  protocol whereby the other side acknowledges it still exists. If it doesn't do so after a certain
+  amount of time, assume it's gone, close the <code>MessagePort</code> object, and let it be garbage
+  collected.</p>
+
+
+  

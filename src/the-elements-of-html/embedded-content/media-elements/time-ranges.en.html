@@ -1,0 +1,95 @@
+<h5>Time ranges</h5>
+
+  <p>Objects implementing the <code>TimeRanges</code> interface
+  represent a list of ranges (periods) of time.</p>
+
+  <pre class="idl">interface <dfn>TimeRanges</dfn> {
+  readonly attribute unsigned long <span data-x="dom-TimeRanges-length">length</span>;
+  double <span data-x="dom-TimeRanges-start">start</span>(unsigned long index);
+  double <span data-x="dom-TimeRanges-end">end</span>(unsigned long index);
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-TimeRanges-length">length</code></dt>
+
+   <dd>
+
+    <p>Returns the number of ranges in the object.</p>
+
+   </dd>
+
+   <dt><var>time</var> = <var>media</var> . <code subdfn data-x="dom-TimeRanges-start">start</code>(<var>index</var>)</dt>
+
+   <dd>
+
+    <p>Returns the time for the start of the range with the given index.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the index
+    is out of range.</p>
+
+   </dd>
+
+   <dt><var>time</var> = <var>media</var> . <code subdfn data-x="dom-TimeRanges-end">end</code>(<var>index</var>)</dt>
+
+   <dd>
+
+    <p>Returns the time for the end of the range with the given index.</p>
+
+    <p>Throws an <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code> if the index
+    is out of range.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-TimeRanges-length">length</code></dfn> IDL attribute must return the
+  number of ranges represented by the object.</p>
+
+  <p>The <dfn><code data-x="dom-TimeRanges-start">start(<var>index</var>)</code></dfn>
+  method must return the position of the start of the <var>index</var>th range represented
+  by the object, in seconds measured from the start of the timeline that the object covers.</p>
+
+  <p>The <dfn><code data-x="dom-TimeRanges-end">end(<var>index</var>)</code></dfn> method
+  must return the position of the end of the <var>index</var>th range represented by the
+  object, in seconds measured from the start of the timeline that the object covers.</p>
+
+  <p>These methods must throw <span>"<code>IndexSizeError</code>"</span> <code>DOMException</code>s
+  if called with an <var>index</var> argument greater than or equal to the number of ranges
+  represented by the object.</p>
+
+  <p>When a <code>TimeRanges</code> object is said to be a
+  <!--en-GB--><dfn id="normalised-timeranges-object">normalized <code>TimeRanges</code>
+  object</dfn>, the ranges it represents must obey the following criteria:</p>
+
+  <ul>
+
+   <li>The start of a range must be greater than the end of all earlier ranges.</li>
+
+   <li>The start of a range must be less than or equal to the end of that same range.</li>
+
+  </ul>
+
+  <p>In other words, the ranges in such an object are ordered, don't overlap, and don't touch
+  (adjacent ranges are folded into one bigger range). A range can be empty (referencing just a
+  single moment in time), e.g. to indicate that only one frame is currently buffered in the case
+  that the user agent has discarded the entire <span>media resource</span> except for the current
+  frame, when a <span>media element</span> is paused.</p>
+
+  <p>Ranges in a <code>TimeRanges</code> object must be inclusive.</p>
+
+  <p class="example">Thus, the end of a range would be equal to the start of a following adjacent
+  (touching but not overlapping) range. Similarly, a range covering a whole timeline anchored at
+  zero would have a start equal to zero and an end equal to the duration of the timeline.</p>
+
+  <p>The timelines used by the objects returned by the <code
+  data-x="dom-media-buffered">buffered</code>, <code data-x="dom-media-seekable">seekable</code> and
+  <code data-x="dom-media-played">played</code> IDL attributes of <span data-x="media element">media
+  elements</span> must be that element's <span>media timeline</span>.</p>
+
+  </div>
+
+
+  

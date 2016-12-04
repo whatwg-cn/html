@@ -1,0 +1,45 @@
+<h4>The <dfn>input byte stream</dfn></h4>
+
+  <p>The stream of Unicode code points that comprises the input to the tokenization stage will be
+  initially seen by the user agent as a stream of bytes (typically coming over the network or from
+  the local file system). The bytes encode the actual characters according to a particular
+  <i>character encoding</i>, which the user agent uses to decode the bytes into characters.</p>
+
+  <p class="note">For XML documents, the algorithm user agents are required to use to determine the
+  character encoding is given by the XML specification. This section does not apply to XML
+  documents. <ref spec=XML></p>
+
+  <p>Usually, the <span>encoding sniffing algorithm</span> defined below is used to determine the
+  character encoding.</p>
+
+  <p>Given a character encoding, the bytes in the <span>input byte stream</span> must be converted
+  to characters for the tokenizer's <span>input stream</span>, by passing the <span>input byte
+  stream</span> and character encoding to <span>decode</span>.</p>
+
+  <p class="note">A leading Byte Order Mark (BOM) causes the character encoding argument to be
+  ignored and will itself be skipped.</p>
+
+  <p class="note">Bytes or sequences of bytes in the original byte stream that did not conform to
+  the Encoding standard (e.g. invalid UTF-8 byte sequences in a UTF-8 input byte stream) are errors
+  that conformance checkers are expected to report. <ref spec=ENCODING></p>
+
+  <p class="warning">The decoder algorithms describe how to handle invalid input; for security
+  reasons, it is imperative that those rules be followed precisely. Differences in how invalid byte
+  sequences are handled can result in, amongst other problems, script injection vulnerabilities
+  ("XSS").</p>
+
+  <p>When the HTML parser is decoding an input byte stream, it uses a character encoding and a <dfn
+  data-x="concept-encoding-confidence">confidence</dfn>. The confidence is either <i>tentative</i>,
+  <i>certain</i>, or <i>irrelevant</i>. The encoding used, and whether the confidence in that
+  encoding is <i>tentative</i> or <i>certain</i>, is <a href="#meta-charset-during-parse">used
+  during the parsing</a> to determine whether to <span>change the encoding</span>. If no encoding is
+  necessary, e.g. because the parser is operating on a Unicode stream and doesn't have to use a
+  character encoding at all, then the <span data-x="concept-encoding-confidence">confidence</span> is
+  <i>irrelevant</i>.</p>
+
+  <p class="note">Some algorithms feed the parser by directly adding characters to the <span>input
+  stream</span> rather than adding bytes to the <span>input byte stream</span>.</p>
+
+
+
+  

@@ -1,0 +1,182 @@
+<h4>The <dfn><code>nav</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Sectioning content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no <code>main</code> element descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>nav</code> element <span>represents</span> a section of a page that links to other
+  pages or to parts within the page: a section with navigation links.</p>
+
+  <p class="note">Not all groups of links on a page need to be in a <code>nav</code> element &mdash;
+  the element is primarily intended for sections that consist of major navigation blocks. In
+  particular, it is common for footers to have a short list of links to various pages of a site,
+  such as the terms of service, the home page, and a copyright page. The <code>footer</code> element
+  alone is sufficient for such cases; while a <code>nav</code> element can be used in such cases, it
+  is usually unnecessary.</p>
+
+  <p class="note">User agents (such as screen readers) that are targeted at users who can benefit
+  from navigation information being omitted in the initial rendering, or who can benefit from
+  navigation information being immediately available, can use this element as a way to determine
+  what content on the page to initially skip or provide on request (or both).</p>
+
+  <div class="example">
+
+   <p>In the following example, there are two <code>nav</code> elements, one for primary navigation
+   around the site, and one for secondary navigation around the page itself.</p>
+
+   <pre>&lt;body>
+ &lt;h1>The Wiki Center Of Exampland&lt;/h1>
+ &lt;nav>
+  &lt;ul>
+   &lt;li>&lt;a href="/">Home&lt;/a>&lt;/li>
+   &lt;li>&lt;a href="/events">Current Events&lt;/a>&lt;/li>
+   <em>...more...</em>
+  &lt;/ul>
+ &lt;/nav>
+ &lt;article>
+  &lt;header>
+   &lt;h1>Demos in Exampland&lt;/h1>
+   &lt;p>Written by A. N. Other.&lt;/p>
+  &lt;/header>
+  &lt;nav>
+   &lt;ul>
+    &lt;li>&lt;a href="#public">Public demonstrations&lt;/a>&lt;/li>
+    &lt;li>&lt;a href="#destroy">Demolitions&lt;/a>&lt;/li>
+    <em>...more...</em>
+   &lt;/ul>
+  &lt;/nav>
+  &lt;div>
+   &lt;section id="public">
+    &lt;h1>Public demonstrations&lt;/h1>
+    &lt;p><em>...more...</em>&lt;/p>
+   &lt;/section>
+   &lt;section id="destroy">
+    &lt;h1>Demolitions&lt;/h1>
+    &lt;p><em>...more...</em>&lt;/p>
+   &lt;/section>
+   <em>...more...</em>
+  &lt;/div>
+  &lt;footer>
+   &lt;p>&lt;a href="?edit">Edit&lt;/a> | &lt;a href="?delete">Delete&lt;/a> | &lt;a href="?Rename">Rename&lt;/a>&lt;/p>
+  &lt;/footer>
+ &lt;/article>
+ &lt;footer>
+  &lt;p>&lt;small>&copy; copyright 1998 Exampland Emperor&lt;/small>&lt;/p>
+ &lt;/footer>
+&lt;/body></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In the following example, the page has several places where links are present, but only one of
+   those places is considered a navigation section.</p>
+
+   <pre>&lt;body itemscope itemtype="http://schema.org/Blog">
+ &lt;header>
+  &lt;h1>Wake up sheeple!&lt;/h1>
+  &lt;p>&lt;a href="news.html">News&lt;/a> -
+     &lt;a href="blog.html">Blog&lt;/a> -
+     &lt;a href="forums.html">Forums&lt;/a>&lt;/p>
+  &lt;p>Last Modified: &lt;span itemprop="dateModified">2009-04-01&lt;/span>&lt;/p>
+  &lt;nav>
+   &lt;h1>Navigation&lt;/h1>
+   &lt;ul>
+    &lt;li>&lt;a href="articles.html">Index of all articles&lt;/a>&lt;/li>
+    &lt;li>&lt;a href="today.html">Things sheeple need to wake up for today&lt;/a>&lt;/li>
+    &lt;li>&lt;a href="successes.html">Sheeple we have managed to wake&lt;/a>&lt;/li>
+   &lt;/ul>
+  &lt;/nav>
+ &lt;/header>
+ &lt;main>
+  &lt;article itemprop="blogPosts" itemscope itemtype="http://schema.org/BlogPosting">
+   &lt;header>
+    &lt;h1 itemprop="headline">My Day at the Beach&lt;/h1>
+   &lt;/header>
+   &lt;main itemprop="articleBody">
+    &lt;p>Today I went to the beach and had a lot of fun.&lt;/p>
+    <em>...more content...</em>
+   &lt;/main>
+   &lt;footer>
+    &lt;p>Posted &lt;time itemprop="datePublished" datetime="2009-10-10">Thursday&lt;/time>.&lt;/p>
+   &lt;/footer>
+  &lt;/article>
+  <em>...more blog posts...</em>
+ &lt;/main>
+ &lt;footer>
+  &lt;p>Copyright &copy;
+   &lt;span itemprop="copyrightYear">2010&lt;/span>
+   &lt;span itemprop="copyrightHolder">The Example Company&lt;/span>
+  &lt;/p>
+  &lt;p>&lt;a href="about.html">About&lt;/a> -
+     &lt;a href="policy.html">Privacy Policy&lt;/a> -
+     &lt;a href="contact.html">Contact Us&lt;/a>&lt;/p>
+ &lt;/footer>
+&lt;/body></pre>
+
+   <p>Notice the <code>main</code> elements being used to wrap all the contents of the page other
+   than the header and footer, and all the contents of the blog entry other than its header and
+   footer.</p>
+
+   <p>You can also see microdata annotations in the above example that use the schema.org vocabulary
+   to provide the publication date and other metadata about the blog post.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>A <code>nav</code> element doesn't have to contain a list, it can contain other kinds of
+   content as well. In this navigation block, links are provided in prose:</p>
+
+   <pre>&lt;nav>
+ &lt;h1>Navigation&lt;/h1>
+ &lt;p>You are on my home page. To the north lies &lt;a href="/blog">my
+ blog&lt;/a>, from whence the sounds of battle can be heard. To the east
+ you can see a large mountain, upon which many &lt;a
+ href="/school">school papers&lt;/a> are littered. Far up thus mountain
+ you can spy a little figure who appears to be me, desperately
+ scribbling a &lt;a href="/school/thesis">thesis&lt;/a>.&lt;/p>
+ &lt;p>To the west are several exits. One fun-looking exit is labeled &lt;a
+ href="https://games.example.com/">"games"&lt;/a>. Another more
+ boring-looking exit is labeled &lt;a
+ href="https://isp.example.net/">ISP&trade;&lt;/a>.&lt;/p>
+ &lt;p>To the south lies a dark and dank &lt;a href="/about">contacts
+ page&lt;/a>. Cobwebs cover its disused entrance, and at one point you
+ see a rat run quickly out of the page.&lt;/p>
+&lt;/nav></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, <code>nav</code> is used in an e-mail application, to let the user switch
+   folders:</p>
+
+   <pre>&lt;p>&lt;input type=button value="Compose" onclick="compose()">&lt;/p>
+&lt;nav>
+ &lt;h1>Folders&lt;/h1>
+ &lt;ul>
+  &lt;li> &lt;a href="/inbox" onclick="return openFolder(this.href)">Inbox&lt;/a> &lt;span class=count>&lt;/span>
+  &lt;li> &lt;a href="/sent" onclick="return openFolder(this.href)">Sent&lt;/a>
+  &lt;li> &lt;a href="/drafts" onclick="return openFolder(this.href)">Drafts&lt;/a>
+  &lt;li> &lt;a href="/trash" onclick="return openFolder(this.href)">Trash&lt;/a>
+  &lt;li> &lt;a href="/customers" onclick="return openFolder(this.href)">Customers&lt;/a>
+ &lt;/ul>
+&lt;/nav></pre>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,60 @@
+<h5>Changing the encoding while parsing</h5>
+
+  <p>When the parser requires the user agent to <dfn>change the encoding</dfn>, it must run the
+  following steps. This might happen if the <span>encoding sniffing algorithm</span> described above
+  failed to find a character encoding, or if it found a character encoding that was not the actual
+  encoding of the file.</p>
+
+  <ol>
+
+   <li><p>If the encoding that is already being used to interpret the input stream is a <span>UTF-16
+   encoding</span>, then set the <span data-x="concept-encoding-confidence">confidence</span> to
+   <i>certain</i> and abort these steps. The new encoding is ignored; if it was anything but the
+   same encoding, then it would be clearly incorrect.</p></li>
+
+   <!-- the next two steps are redundant with similar logic in the sniffer -->
+   <!-- if you add anything else here, then factor it out into a common algorithm -->
+
+   <li><p>If the new encoding is a <span>UTF-16 encoding</span>, then change it to
+   <span>UTF-8</span>.</p></li>
+
+   <li><p>If the new encoding is <span>x-user-defined</span>, then change it to
+   <span>windows-1252</span>.</p></li> <!-- apparently this was a Chrome invention, later picked up
+   by Mozilla -->
+
+   <li><p>If the new encoding is identical or equivalent to the encoding that is already being used
+   to interpret the input stream, then set the <span
+   data-x="concept-encoding-confidence">confidence</span> to <i>certain</i> and abort these steps.
+   This happens when the encoding information found in the file matches what the <span>encoding
+   sniffing algorithm</span> determined to be the encoding, and in the second pass through the
+   parser if the first pass found that the encoding sniffing algorithm described in the earlier
+   section failed to find the right encoding.</p></li>
+
+   <li><p>If all the bytes up to the last byte converted by the current decoder have the same
+   Unicode interpretations in both the current encoding and the new encoding, and if the user agent
+   supports changing the converter on the fly, then the user agent may change to the new converter
+   for the encoding on the fly. Set the <span>document's character encoding</span> and the encoding
+   used to convert the input stream to the new encoding, set the <span
+   data-x="concept-encoding-confidence">confidence</span> to <i>certain</i>, and abort these
+   steps.</p></li>
+
+   <li><p>Otherwise, <span>navigate</span><!--DONAV reparse--> to the document again, with
+   <span>replacement enabled</span>, and using the same <span>source browsing context</span>, but
+   this time skip the <span>encoding sniffing algorithm</span> and instead just set the encoding to
+   the new encoding and the <span data-x="concept-encoding-confidence">confidence</span> to
+   <i>certain</i>. Whenever possible, this should be done without actually contacting the network
+   layer (the bytes should be re-parsed from memory), even if, e.g., the document is marked as not
+   being cacheable. If this is not possible and contacting the network layer would involve repeating
+   a request that uses a method other than `<code data-x="">GET</code>`), then instead set the <span
+   data-x="concept-encoding-confidence">confidence</span> to <i>certain</i> and ignore the new
+   encoding. The resource will be misinterpreted. User agents may notify the user of the situation,
+   to aid in application development.</p></li>
+
+  </ol>
+
+  <p class="note">This algorithm is only invoked when a new encoding is found declared on a
+  <code>meta</code> element.</p> <!-- this is important for the x-user-defined stuff in particular
+  -->
+
+
+  

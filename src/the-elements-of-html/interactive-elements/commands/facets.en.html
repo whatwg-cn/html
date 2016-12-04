@@ -1,0 +1,65 @@
+<h5>Facets</h5>
+
+  <p>A <dfn data-x="concept-command">command</dfn> is the abstraction behind menu items, buttons, and
+  links. Once a command is defined, other parts of the interface can refer to the same command,
+  allowing many access points to a single feature to share facets such as the <span
+  data-x="command-facet-DisabledState">Disabled State</span>.</p>
+
+  <p id="facets">Commands are defined to have the following <dfn
+  data-x="concept-facet">facets</dfn>:</p>
+
+  <dl>
+
+   <dt><dfn data-x="command-facet-Label">Label</dfn></dt>
+
+   <dd>The name of the command as seen by the user.</dd>
+
+   <dt><dfn data-x="command-facet-AccessKey">Access Key</dfn></dt>
+
+   <dd>A key combination selected by the user agent that triggers the command. A command might not
+   have an Access Key.</dd>
+
+   <dt><dfn data-x="command-facet-HiddenState">Hidden State</dfn></dt>
+
+   <dd>Whether the command is hidden or not (basically, whether it should be shown in menus).</dd>
+
+   <dt><dfn data-x="command-facet-DisabledState">Disabled State</dfn></dt>
+
+   <dd>Whether the command is relevant and can be triggered or not.</dd>
+
+   <dt><dfn data-x="command-facet-Action">Action</dfn></dt>
+
+   <dd>The actual effect that triggering the command will have. This could be a scripted event
+   handler, a <span>URL</span> to which to <span>navigate</span>, or a form submission.</dd>
+
+  </dl>
+
+  <p id="expose-commands-in-ui">User agents may expose the <span
+  data-x="concept-command">commands</span> that match the following criteria:</p>
+
+  <ul class="brief">
+
+   <li>The <span data-x="command-facet-HiddenState">Hidden State</span> facet is false (visible)</li>
+
+   <li>The element is <span>in a document</span> that has an associated <span
+   data-x="concept-document-bc">browsing context</span>.</li>
+
+   <li>Neither the element nor any of its ancestors has a <code data-x="attr-hidden">hidden</code>
+   attribute specified.</li>
+
+   <li>The element is not a <code>menuitem</code> element, or it is a child of a <span>currently
+   relevant <code>menu</code> element</span>, or it has an <span
+   data-x="command-facet-accesskey">Access Key</span>.</li>
+
+  </ul>
+
+  <p>User agents are encouraged to do this especially for commands that have <span
+  data-x="command-facet-AccessKey">Access Keys</span>, as a way to advertise those keys to the
+  user.</p>
+
+  <p class="example">For example, such commands could be listed in the user agent's menu bar.</p>
+
+
+  <div w-nodev>
+
+  

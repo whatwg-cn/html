@@ -1,0 +1,40 @@
+<h5>Navigating auxiliary browsing contexts in the DOM</h5>
+
+  <p>The <dfn><code data-x="dom-opener">opener</code></dfn> IDL attribute on the <code>Window</code>
+  object, on getting, must return the <code>WindowProxy</code> object of the <span>browsing
+  context</span> from which the current <span>browsing context</span> was created (its <span>opener
+  browsing context</span>), if there is one, if it is still available, and if the current
+  <span>browsing context</span> has not <i data-x="disowned its opener">disowned its opener</i>;
+  otherwise, it must return null. On setting, if the new value is null then the current
+  <span>browsing context</span> must <dfn data-x="disowned its opener" data-export="">disown its
+  opener</dfn>; if the new value is anything else then the user agent must
+
+    <!-- dark magic incantation begins -->
+    call the [[DefineOwnProperty]] internal method of the <code>Window</code> object, passing the
+    property name "<code data-x="">opener</code>" as the property key, and the Property Descriptor {
+    [[Value]]: <var>value</var>, [[Writable]]: true, [[Enumerable]]: true,
+    [[Configurable]]: true } as the property descriptor,
+    <!-- dark magic incantation ends -->
+
+  where <var>value</var> is the new value.</p>
+
+ <div class="note">
+  <p>If a <span>browsing context</span> has <span data-x="disowned its opener">disowned its
+  opener</span>, the value of its <code data-x="dom-opener">window.opener</code> is <code
+  data-x="">null</code>. That prevents scripts in the <span>browsing context</span> from changing
+  any properties of its <span>opener browsing context</span>'s <code>Window</code> (i.e., the window
+  from which the <span>browsing context</span> was created).</p>
+
+  <p>Otherwise, if a <span>browsing context</span> has <em>not</em> <span>disowned its
+  opener</span>, then scripts in that <span>browsing context</span> can use <code
+  data-x="dom-opener">window.opener</code> to change properties of its <span>opener browsing
+  context</span>'s <code>Window</code>. For example, a script running in the <span>browsing
+  context</span> can change the value of <code data-x="">window.opener.location</code>, causing the
+  <span>opener browsing context</span> to navigate to a completely different document.</p>
+ </div>
+
+
+<!--ADD-TOPIC:Security-->
+  <div w-nodev>
+
+  

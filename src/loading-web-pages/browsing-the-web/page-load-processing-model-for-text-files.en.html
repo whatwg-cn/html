@@ -1,0 +1,53 @@
+<h4 id="read-text"><dfn data-x="navigate-text">Page load processing model for text files</dfn></h4>
+
+  <p>When a plain text document is to be loaded in a <span>browsing context</span>, the user agent
+  must <span>queue a task</span> to create a <code>Document</code> object, mark it as being an <span
+  data-x="HTML documents">HTML document</span>, set its <span
+  data-x="concept-document-content-type">content type</span> to the <span
+  data-x="Content-Type sniffing">computed MIME type</span> of the resource (<var>type</var> in the
+  <span>navigate</span> algorithm), <span>initialize the <code>Document</code> object</span>,
+  create an <span>HTML parser</span>, associate it with the <code>Document</code>, act as if the
+  tokenizer had emitted a start tag token with the tag name "pre" followed by a single U+000A LINE
+  FEED (LF) character<!-- to get eaten, so that a leading LF in the text/plain stream doesn't get
+  eaten itself-->, and switch the <span>HTML parser</span>'s tokenizer to the <span>PLAINTEXT
+  state</span>. Each <span data-x="concept-task">task</span> that the <span>networking task
+  source</span> places on the <span>task queue</span> while fetching runs must then fill the
+  parser's <span>input byte stream</span> with the fetched bytes and cause the <span>HTML
+  parser</span> to perform the appropriate processing of the input stream.</p>
+
+  <p>The rules for how to convert the bytes of the plain text document into actual characters, and
+  the rules for actually rendering the text to the user, are defined by the specifications for the
+  <span data-x="Content-Type sniffing">computed MIME type</span> of the resource (<var>type</var>
+  in the <span>navigate</span> algorithm).</p>
+
+  <p>The <span>document's character encoding</span> must be set to the character encoding used to
+  decode the document.</p>
+
+  <p>Upon creation of the <code>Document</code> object, the user agent must run the <span
+  data-x="concept-appcache-init">application cache selection algorithm</span> with no manifest, and
+  passing in the newly-created <code>Document</code>.</p>
+
+  <!-- next two paragraphs are nearly identical to the navigate-html section and similar to the
+  "navigate-ua-inline" section, and the next three are similar to the navigate-media and
+  navigate-plugin sections; keep them all in sync -->
+
+  <p>When no more bytes are available, the user agent must <span>queue a task</span> for the parser
+  to process the implied EOF character, which eventually causes a <code
+  data-x="event-load">load</code> event to be fired.</p>
+
+  <p>After creating the <code>Document</code> object, but potentially before the page has finished
+  parsing, the user agent must <span>update the session history with the new page</span>.</p>
+
+  <p>User agents may add content to the <code>head</code> element of the <code>Document</code>,
+  e.g., linking to a style sheet, providing script, or giving the document a <code>title</code>.</p>
+
+  <p class="note">In particular, if the user agent supports the <code data-x="">Format=Flowed</code>
+  feature of RFC 3676 then the user agent would need to apply extra styling to cause the text to
+  wrap correctly and to handle the quoting feature. This could be performed using, e.g., a CSS
+  extension.</p>
+
+  <p>The <span>task source</span> for the two tasks mentioned in this section must be the
+  <span>networking task source</span>.</p>
+
+
+  

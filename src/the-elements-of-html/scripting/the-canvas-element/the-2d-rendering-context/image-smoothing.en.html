@@ -1,0 +1,49 @@
+<h6>Image smoothing</h6>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-imageSmoothingEnabled">imageSmoothingEnabled</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns whether pattern fills and the <code
+    data-x="dom-context-2d-drawImage">drawImage()</code> method will attempt to smooth images if
+    their pixels don't line up exactly with the display, when scaling images up.</p>
+
+    <p>Can be set, to change whether images are smoothed (true) or not (false).</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-imageSmoothingQuality">imageSmoothingQuality</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current image-smoothing-quality preference.</p>
+
+    <p>Can be set, to change the preferred quality of image smoothing. Unknown values are
+    ignored.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Objects that implement the <code>CanvasImageSmoothing</code> interface have attributes that
+  control how image smoothing is performed.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-imageSmoothingEnabled">imageSmoothingEnabled</code></dfn>
+  attribute, on getting, must return the last value it was set to. On setting, it must be set to the
+  new value. When the object implementing the <code>CanvasImageSmoothing</code> interface is
+  created, the attribute must be set to true.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-imageSmoothingQuality">imageSmoothingQuality</code></dfn>
+  attribute, on getting, must return the last value it was set to. On setting, it must be set to the
+  new value. When the object implementing the <code>CanvasImageSmoothing</code> interface is
+  created, the attribute must be set to "<code data-x="dom-context-2d-imageSmoothingQuality-low">
+  low</code>".</p>
+
+  </div>
+
+
+  

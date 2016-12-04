@@ -1,0 +1,94 @@
+<h4>Links created by <code>a</code> and <code>area</code> elements</h4>
+
+  <p>The <dfn><code data-x="attr-hyperlink-href">href</code></dfn> attribute on <code>a</code> and
+  <code>area</code> elements must have a value that is a <span>valid URL potentially surrounded by
+  spaces</span>.</p>
+
+  <p class="note">The <code data-x="attr-hyperlink-href">href</code> attribute on <code>a</code> and
+  <code>area</code> elements is not required; when those elements do not have <code
+  data-x="attr-hyperlink-href">href</code> attributes they do not create hyperlinks.</p>
+
+  <p>The <dfn><code data-x="attr-hyperlink-target">target</code></dfn> attribute, if present, must be
+  a <span>valid browsing context name or keyword</span>. It gives the name of the <span>browsing
+  context</span> that will be used. <span w-nodev>User agents use this name when
+  <span>following hyperlinks</span>.</span></p>
+
+  <p>When an <code>a</code> or <code>area</code> element's <span>activation behavior</span> is
+  invoked, the user agent may allow the user to indicate a preference regarding whether the
+  hyperlink is to be used for <span data-x="navigate">navigation</span> or whether the resource it
+  specifies is to be downloaded.</p>
+
+  <p>In the absence of a user preference, the default should be navigation if the element has no
+  <code data-x="attr-hyperlink-download">download</code> attribute, and should be to download the
+  specified resource if it does.</p>
+
+  <p>Whether determined by the user's preferences or via the presence or absence of the attribute,
+  if the decision is to use the hyperlink for <span data-x="navigate">navigation</span> then the user
+  agent must <span data-x="following hyperlinks">follow the hyperlink</span>, and if the decision is
+  to use the hyperlink to download a resource, the user agent must <span data-x="downloading
+  hyperlinks">download the hyperlink</span>. These terms are defined in subsequent sections
+  below.</p>
+
+  <p>The <dfn><code data-x="attr-hyperlink-download">download</code></dfn> attribute, if present,
+  indicates that the author intends the hyperlink to be used for <span data-x="downloading
+  hyperlinks">downloading a resource</span>. The attribute may have a value; the value, if any,
+  specifies the default file name that the author recommends for use in labeling the resource in a
+  local file system. There are no restrictions on allowed values, but authors are cautioned that
+  most file systems have limitations with regard to what punctuation is supported in file names,
+  and user agents are likely to adjust file names accordingly.</p>
+
+
+  <p>The <dfn id="ping" data-x="attr-hyperlink-ping"><code>ping</code></dfn> attribute, if present,
+  gives the URLs of the resources that are interested in being notified if the user follows the
+  hyperlink. The value must be a <span>set of space-separated tokens</span>, each of which must be a
+  <span>valid non-empty URL</span> whose <span data-x="concept-url-scheme">scheme</span> is an
+  <span>HTTP(S) scheme</span>. <span w-nodev>The value is used by the user agent for <span>hyperlink
+  auditing</span>.</span></p>
+
+  <p>The <dfn><code data-x="attr-hyperlink-rel">rel</code></dfn> attribute on <code>a</code> and
+  <code>area</code> elements controls what kinds of links the elements create. The attribute's value
+  must be a <span>set of space-separated tokens</span>. The <a href="#linkTypes">allowed keywords
+  and their meanings</a> are defined below.</p>
+
+  <p><code data-x="attr-hyperlink-rel">rel</code>'s
+  <span data-x="concept-supported-tokens">supported tokens</span> are the keywords defined in
+  <a href="#linkTypes">HTML link types</a> which are allowed on <code>a</code> and
+  <code>area</code> elements, impact the processing model, and are supported by the user agent. The
+  possible <span data-x="concept-supported-tokens">supported tokens</span> are
+  <code data-x="rel-noreferrer">noreferrer</code> and
+  <code data-x="rel-noopener">noopener</code>.
+  <code data-x="attr-hyperlink-rel">rel</code>'s
+  <span data-x="concept-supported-tokens">supported tokens</span> must only include the tokens from
+  this list that the user agent implements the processing model for.</p>
+
+  <p>Other specifications may add <a href="#linkTypes">HTML link types</a> as
+  defined in <a href="#other-link-types">Other link types</a>. These specifications may require
+  that their link types be included in <code data-x="attr-hyperlink-rel">rel</code>'s supported
+  tokens.</p>
+
+  <p>The <code data-x="attr-hyperlink-rel">rel</code> attribute has no default value. If the
+  attribute is omitted or if none of the values in the attribute are recognized by the user agent,
+  then the document has no particular relationship with the destination resource other than there
+  being a hyperlink between the two.</p>
+
+  <p>The <dfn><code data-x="attr-hyperlink-hreflang">hreflang</code></dfn> attribute on
+  <code>a</code> elements that create <span data-x="hyperlink">hyperlinks</span>, if present, gives
+  the language of the linked resource. It is purely advisory. The value must be a valid BCP 47
+  language tag. <ref spec=BCP47> <span w-nodev>User agents must not consider this attribute
+  authoritative &mdash; upon fetching the resource, user agents must use only language information
+  associated with the resource to determine its language, not metadata included in the link to the
+  resource.</span></p>
+
+  <p>The <dfn><code data-x="attr-hyperlink-type">type</code></dfn> attribute, if present, gives the
+  <span>MIME type</span> of the linked resource. It is purely advisory. The value must be a
+  <span>valid MIME type</span>. <span w-nodev>User agents must not consider the <code
+  data-x="attr-hyperlink-type">type</code> attribute authoritative &mdash; upon fetching the
+  resource, user agents must not use metadata included in the link to the resource to determine its
+  type.</span></p>
+
+  <p>The <dfn><code data-x="attr-hyperlink-referrerpolicy">referrerpolicy</code></dfn> attribute
+  is a <span>referrer policy attribute</span>. Its purpose is to set the <span>referrer policy</span>
+  used when <span>following hyperlinks</span>. <ref spec=REFERRERPOLICY></p>
+
+
+  

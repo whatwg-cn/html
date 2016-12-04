@@ -1,0 +1,580 @@
+<h6>Text track API</h6>
+
+  <pre class="idl">interface <dfn>TextTrackList</dfn> : <span>EventTarget</span> {
+  readonly attribute unsigned long <span data-x="dom-TextTrackList-length">length</span>;
+  <a href="#dom-texttracklist-item">getter</a> <span>TextTrack</span> (unsigned long index);
+  <span>TextTrack</span>? <span data-x="dom-TextTrackList-getTrackById">getTrackById</span>(DOMString id);
+
+  attribute <span>EventHandler</span> <span data-x="handler-TextTrackList-onchange">onchange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-TextTrackList-onaddtrack">onaddtrack</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-TextTrackList-onremovetrack">onremovetrack</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-textTracks">textTracks</code> . <code data-x="">length</code></dt>
+   <dd>
+    <p>Returns the number of <span data-x="text track">text tracks</span> associated with the <span>media element</span> (e.g. from <code>track</code> elements). This is the number of <span data-x="text track">text tracks</span> in the <span>media element</span>'s <span>list of text tracks</span>.</p>
+   </dd>
+
+   <dt><var>media</var> . <code data-x="dom-media-textTracks">textTracks[</code> <var>n</var> <code data-x="">]</code></dt>
+   <dd>
+    <p>Returns the <code>TextTrack</code> object representing the <var>n</var>th <span>text track</span> in the <span>media element</span>'s <span>list of text tracks</span>.</p>
+   </dd>
+
+   <dt><var>textTrack</var> = <var>media</var> . <code data-x="dom-media-textTracks">textTracks</code> . <code subdfn data-x="dom-TextTrackList-getTrackById">getTrackById</code>( <var>id</var> )</dt>
+
+   <dd>
+
+    <p>Returns the <code>TextTrack</code> object with the given identifier, or null if no track has that identifier.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>A <code>TextTrackList</code> object represents a dynamically updating list of <span data-x="text
+  track">text tracks</span> in a given order.</p>
+
+  <p>The <dfn><code data-x="dom-media-textTracks">textTracks</code></dfn> attribute of <span
+  data-x="media element">media elements</span> must return a <code>TextTrackList</code> object
+  representing the <code>TextTrack</code> objects of the <span data-x="text track">text tracks</span>
+  in the <span>media element</span>'s <span>list of text tracks</span>, in the same order as in the
+  <span>list of text tracks</span>.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackList-length">length</code></dfn> attribute of a
+  <code>TextTrackList</code> object must return the number of <span data-x="text track">text
+  tracks</span> in the list represented by the <code>TextTrackList</code> object.</p>
+
+  <p>The <span>supported property indices</span> of a <code>TextTrackList</code> object at any
+  instant are the numbers from zero to the number of <span data-x="text track">text tracks</span> in
+  the list represented by the <code>TextTrackList</code> object minus one, if any. If there are no
+  <span data-x="text track">text tracks</span> in the list, there are no <span>supported property
+  indices</span>.</p>
+
+  <p id="dom-texttracklist-item">To <span>determine the value of an indexed property</span> of a
+  <code>TextTrackList</code> object for a given index <var>index</var>, the user agent must return
+  the <var>index</var>th <span>text track</span> in the list represented by the
+  <code>TextTrackList</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackList-getTrackById">getTrackById(<var>id</var>)</code></dfn> method must return the first <code>TextTrack</code> in the
+  <code>TextTrackList</code> object whose <code data-x="dom-TextTrack-id">id</code> IDL attribute
+  would return a value equal to the value of the <var>id</var> argument. When no tracks
+  match the given argument, the method must return null.</p>
+
+  </div>
+
+  <hr>
+
+  <pre class="idl">enum <dfn>TextTrackMode</dfn> {<!--
+   --> "<span data-x="dom-TextTrack-disabled">disabled</span>", <!--
+   --> "<span data-x="dom-TextTrack-hidden">hidden</span>", <!--
+   --> "<span data-x="dom-TextTrack-showing">showing</span>" };
+enum <dfn>TextTrackKind</dfn> {<!--
+   --> "<span data-x="dom-TextTrack-kind-subtitles">subtitles</span>", <!--
+   --> "<span data-x="dom-TextTrack-kind-captions">captions</span>", <!--
+   --> "<span data-x="dom-TextTrack-kind-descriptions">descriptions</span>", <!--
+   --> "<span data-x="dom-TextTrack-kind-chapters">chapters</span>", <!--
+   --> "<span data-x="dom-TextTrack-kind-metadata">metadata</span>" };
+interface <dfn>TextTrack</dfn> : <span>EventTarget</span> {
+  readonly attribute <span>TextTrackKind</span> <span data-x="dom-TextTrack-kind">kind</span>;
+  readonly attribute DOMString <span data-x="dom-TextTrack-label">label</span>;
+  readonly attribute DOMString <span data-x="dom-TextTrack-language">language</span>;
+
+  readonly attribute DOMString <span data-x="dom-TextTrack-id">id</span>;
+  readonly attribute DOMString <span data-x="dom-TextTrack-inBandMetadataTrackDispatchType">inBandMetadataTrackDispatchType</span>;
+
+  attribute <span>TextTrackMode</span> <span data-x="dom-TextTrack-mode">mode</span>;
+
+  readonly attribute <span>TextTrackCueList</span>? <span data-x="dom-TextTrack-cues">cues</span>;
+  readonly attribute <span>TextTrackCueList</span>? <span data-x="dom-TextTrack-activeCues">activeCues</span>;
+
+  void <span data-x="dom-TextTrack-addCue">addCue</span>(<span>TextTrackCue</span> cue);
+  void <span data-x="dom-TextTrack-removeCue">removeCue</span>(<span>TextTrackCue</span> cue);
+
+  attribute <span>EventHandler</span> <span data-x="handler-TextTrack-oncuechange">oncuechange</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>textTrack</var> = <var>media</var> . <code subdfn data-x="dom-media-addTextTrack">addTextTrack</code>( <var>kind</var> [, <var>label</var> [, <var>language</var> ] ] )</dt>
+   <dd>
+
+    <p>Creates and returns a new <code>TextTrack</code> object, which is also added to the
+    <span>media element</span>'s <span>list of text tracks</span>.</p>
+
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-kind">kind</code></dt>
+   <dd>
+
+    <p>Returns the <span>text track kind</span> string.</p>
+
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-label">label</code></dt>
+   <dd>
+
+    <p>Returns the <span>text track label</span>, if there is one, or the empty string otherwise
+    (indicating that a custom label probably needs to be generated from the other attributes of the
+    object if the object is exposed to the user).</p>
+
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-language">language</code></dt>
+   <dd>
+    <p>Returns the <span>text track language</span> string.</p>
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-id">id</code></dt>
+   <dd>
+
+    <p>Returns the ID of the given track.</p>
+
+    <p>For in-band tracks, this is the ID that can be used with a <span
+    data-x="concept-url-fragment">fragment</span> if the format supports <span>media fragment
+    syntax</span>, and that can be used with the <code
+    data-x="dom-TextTrackList-getTrackById">getTrackById()</code> method.</p>
+
+    <p>For <code>TextTrack</code> objects corresponding to <code>track</code> elements, this is the
+    ID of the <code>track</code> element.</p>
+
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-inBandMetadataTrackDispatchType">inBandMetadataTrackDispatchType</code></dt>
+   <dd>
+
+    <p>Returns the <span>text track in-band metadata track dispatch type</span> string.</p>
+
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-mode">mode</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns the <span>text track mode</span>, represented by a string from the following
+    list:</p>
+
+    <dl>
+     <dt>"<code data-x="dom-TextTrack-disabled">disabled</code>"</dt>
+     <dd>
+      <p>The <span>text track disabled</span> mode.</p>
+     </dd>
+     <dt>"<code data-x="dom-TextTrack-hidden">hidden</code>"</dt>
+     <dd>
+      <p>The <span>text track hidden</span> mode.</p>
+     </dd>
+     <dt>"<code data-x="dom-TextTrack-showing">showing</code>"</dt>
+     <dd>
+      <p>The <span>text track showing</span> mode.</p>
+     </dd>
+    </dl>
+
+    <p>Can be set, to change the mode.</p>
+
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-cues">cues</code></dt>
+   <dd>
+    <p>Returns the <span>text track list of cues</span>, as a <code>TextTrackCueList</code> object.</p>
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-activeCues">activeCues</code></dt>
+   <dd>
+
+    <p>Returns the <span data-x="text track cue">text track cues</span> from the <span>text track
+    list of cues</span> that are currently active (i.e. that start before the <span>current playback
+    position</span> and end after it), as a <code>TextTrackCueList</code> object.</p>
+
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-addCue">addCue</code>( <var>cue</var> )</dt>
+   <dd>
+    <p>Adds the given cue to <var>textTrack</var>'s <span>text track list of cues</span>.</p>
+   </dd>
+
+   <dt><var>textTrack</var> . <code subdfn data-x="dom-TextTrack-removeCue">removeCue</code>( <var>cue</var> )</dt>
+   <dd>
+    <p>Removes the given cue from <var>textTrack</var>'s <span>text track list of cues</span>.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-addTextTrack">addTextTrack(<var>kind</var>, <var>label</var>, <var>language</var>)</code></dfn> method of <span data-x="media
+  element">media elements</span>, when invoked, must run the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Create a new <code>TextTrack</code> object.</p>
+
+   </li>
+
+   <li>
+
+    <p>Create a new <span>text track</span> corresponding to the new object, and set its <span>text
+    track kind</span> to <var>kind</var>, its <span>text track label</span> to <var>label</var>, its <span>text track language</span> to <var>language</var>, its
+    <span>text track readiness state</span> to the <span>text track loaded</span> state, its
+    <span>text track mode</span> to the <span>text track hidden</span> mode, and its <span>text
+    track list of cues</span> to an empty list.</p>
+
+    <p>Initially, the <span>text track list of cues</span> is not associated with any <span>rules
+    for updating the text track rendering</span>. When a <span>text track cue</span> is added to it,
+    the <span>text track list of cues</span> has its rules permanently set accordingly.</p>
+
+   </li>
+
+   <li>
+
+    <p>Add the new <span>text track</span> to the <span>media element</span>'s <span>list of text
+    tracks</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+    <code data-x="event-media-addtrack">addtrack</code> at the <span>media element</span>'s <code
+    data-x="dom-media-textTracks">textTracks</code> attribute's <code>TextTrackList</code> object,
+    using <code>TrackEvent</code>, with the <code data-x="dom-TrackEvent-track">track</code>
+    attribute initialized to the new <span>text track</span>'s <code>TextTrack</code> object.</p>
+
+   </li>
+
+   <li>
+
+    <p>Return the new <code>TextTrack</code> object.</p>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-TextTrack-kind">kind</code></dfn> attribute must return the
+  <span>text track kind</span> of the <span>text track</span> that the <code>TextTrack</code> object
+  represents.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrack-label">label</code></dfn> attribute must return the
+  <span>text track label</span> of the <span>text track</span> that the <code>TextTrack</code>
+  object represents.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrack-language">language</code></dfn> attribute must return the
+  <span>text track language</span> of the <span>text track</span> that the <code>TextTrack</code>
+  object represents.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrack-id">id</code></dfn> attribute returns the track's
+  identifier, if it has one, or the empty string otherwise. For tracks that correspond to
+  <code>track</code> elements, the track's identifier is the value of the element's <code
+  data-x="attr-id">id</code> attribute, if any. For in-band tracks, the track's identifier is
+  specified by the <span>media resource</span>. If the <span>media resource</span> is in a format
+  that supports <span>media fragment syntax</span>, the identifier returned for a particular
+  track must be the same identifier that would enable the track if used as the name of a track in
+  the track dimension of such a <span data-x="concept-url-fragment">fragment</span>.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrack-inBandMetadataTrackDispatchType">inBandMetadataTrackDispatchType</code></dfn>
+  attribute must return the <span>text track in-band metadata track dispatch type</span> of the
+  <span>text track</span> that the <code>TextTrack</code> object represents.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrack-mode">mode</code></dfn> attribute, on getting, must return
+  the string corresponding to the <span>text track mode</span> of the <span>text track</span> that
+  the <code>TextTrack</code> object represents, as defined by the following list:</p>
+
+  <dl>
+   <dt>"<dfn><code data-x="dom-TextTrack-disabled">disabled</code></dfn>"</dt>
+   <dd>The <span>text track disabled</span> mode.</dd>
+   <dt>"<dfn><code data-x="dom-TextTrack-hidden">hidden</code></dfn>"</dt>
+   <dd>The <span>text track hidden</span> mode.</dd>
+   <dt>"<dfn><code data-x="dom-TextTrack-showing">showing</code></dfn>"</dt>
+   <dd>The <span>text track showing</span> mode.</dd>
+  </dl>
+
+  <p>On setting, if the new value isn't equal to what the attribute would currently return, the new
+  value must be processed as follows:</p>
+
+  <dl class="switch">
+
+   <dt>If the new value is "<code data-x="dom-TextTrack-disabled">disabled</code>"</dt>
+
+   <dd>
+
+    <p>Set the <span>text track mode</span> of the <span>text track</span> that the
+    <code>TextTrack</code> object represents to the <span>text track disabled</span> mode.</p>
+
+   </dd>
+
+   <dt>If the new value is "<code data-x="dom-TextTrack-hidden">hidden</code>"</dt>
+
+   <dd>
+
+    <p>Set the <span>text track mode</span> of the <span>text track</span> that the
+    <code>TextTrack</code> object represents to the <span>text track hidden</span> mode.</p>
+
+   </dd>
+
+   <dt>If the new value is "<code data-x="dom-TextTrack-showing">showing</code>"</dt>
+
+   <dd>
+
+    <p>Set the <span>text track mode</span> of the <span>text track</span> that the
+    <code>TextTrack</code> object represents to the <span>text track showing</span> mode.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>If the <span>text track mode</span> of the <span>text track</span> that the
+  <code>TextTrack</code> object represents is not the <span>text track disabled</span> mode, then
+  the <dfn><code data-x="dom-TextTrack-cues">cues</code></dfn> attribute must return a
+  <span>live</span> <code>TextTrackCueList</code> object that represents the subset of the
+  <span>text track list of cues</span> of the <span>text track</span> that the
+  <code>TextTrack</code> object represents whose <span data-x="text track cue end time">end
+  times</span> occur at or after the <span>earliest possible position when the script
+  started</span>, in <span>text track cue order</span>. Otherwise, it must return null. For each <code>TextTrack</code> object, when an
+  object is returned, the same <code>TextTrackCueList</code> object must be returned each time.</p>
+
+  <p>The <dfn>earliest possible position when the script started</dfn> is whatever the
+  <span>earliest possible position</span> was the last time the <span>event loop</span> reached step
+  1.</p>
+
+  <p>If the <span>text track mode</span> of the <span>text track</span> that the
+  <code>TextTrack</code> object represents is not the <span>text track disabled</span> mode, then
+  the <dfn><code data-x="dom-TextTrack-activeCues">activeCues</code></dfn> attribute must return a
+  <span>live</span> <code>TextTrackCueList</code> object that represents the subset of the
+  <span>text track list of cues</span> of the <span>text track</span> that the
+  <code>TextTrack</code> object represents whose <span>active flag was set when the script
+  started</span>, in <span>text track cue order</span>. Otherwise, it must return null. For each <code>TextTrack</code> object, when an
+  object is returned, the same <code>TextTrackCueList</code> object must be returned each time.</p>
+
+  <p>A <span>text track cue</span>'s <dfn>active flag was set when the script started</dfn> if its
+  <span>text track cue active flag</span> was set the last time the <span>event loop</span> reached
+  <a href="#step1">step 1</a>.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-TextTrack-addCue">addCue(<var>cue</var>)</code></dfn> method
+  of <code>TextTrack</code> objects, when invoked, must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <span>text track list of cues</span> does not yet have any associated <span>rules
+   for updating the text track rendering</span>, then associate the <span>text track list of
+   cues</span> with the <span>rules for updating the text track rendering</span> appropriate to <var>cue</var>.</p>
+
+   <li><p>If <span>text track list of cues</span>' associated <span>rules for updating the text
+   track rendering</span> are not the same <span>rules for updating the text track rendering</span>
+   as appropriate for <var>cue</var>, then throw an <span>"<code>InvalidStateError</code>"</span>
+   <code>DOMException</code> and abort these steps.</p>
+
+   <li><p>If the given <var>cue</var> is in a <span>text track list of cues</span>, then
+   remove <var>cue</var> from that <span>text track list of cues</span>.</p></li>
+
+   <li><p>Add <var>cue</var> to the method's <code>TextTrack</code> object's <span>text
+   track</span>'s <span>text track list of cues</span>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-TextTrack-removeCue">removeCue(<var>cue</var>)</code></dfn>
+  method of <code>TextTrack</code> objects, when invoked, must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the given <var>cue</var> is not currently listed in the method's
+   <code>TextTrack</code> object's <span>text track</span>'s <span>text track list of cues</span>,
+   then throw a <span>"<code>NotFoundError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>Remove <var>cue</var> from the method's <code>TextTrack</code> object's
+   <span>text track</span>'s <span>text track list of cues</span>.</p></li>
+
+  </ol>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, an <code>audio</code> element is used to play a specific sound-effect from a
+   sound file containing many sound effects. A cue is used to pause the audio, so that it ends
+   exactly at the end of the clip, even if the browser is busy running some script. If the page had
+   relied on script to pause the audio, then the start of the next clip might be heard if the
+   browser was not able to run the script at the exact time specified.</p>
+
+   <pre>var sfx = new Audio('sfx.wav');
+var sounds = sfx.addTextTrack('metadata');
+
+// add sounds we care about
+function addFX(start, end, name) {
+  var cue = new VTTCue(start, end, '');
+  cue.id = name;
+  cue.pauseOnExit = true;
+  sounds.addCue(cue);
+}
+addFX(12.783, 13.612, 'dog bark');
+addFX(13.612, 15.091, 'kitten mew'))
+
+function playSound(id) {
+  sfx.currentTime = sounds.getCueById(id).startTime;
+  sfx.play();
+}
+
+// play a bark as soon as we can
+sfx.oncanplaythrough = function () {
+  playSound('dog bark');
+}
+// meow when the user tries to leave,
+// and have the browser ask them to stay
+window.onbeforeunload = function (e) {
+  playSound('kitten mew');
+  e.preventDefault();
+}</pre>
+
+  </div>
+
+  <hr>
+
+  <pre class="idl">interface <dfn>TextTrackCueList</dfn> {
+  readonly attribute unsigned long <span data-x="dom-TextTrackCueList-length">length</span>;
+  <a href="#dom-texttrackcuelist-item">getter</a> <span>TextTrackCue</span> (unsigned long index);
+  <span>TextTrackCue</span>? <span data-x="dom-TextTrackCueList-getCueById">getCueById</span>(DOMString id);
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>cuelist</var> . <code subdfn data-x="dom-TextTrackCueList-length">length</code></dt>
+   <dd>
+    <p>Returns the number of <span data-x="text track cue">cues</span> in the list.</p>
+   </dd>
+
+   <dt><var>cuelist</var>[<var>index</var>]</dt>
+   <dd>
+    <p>Returns the <span>text track cue</span> with index <var>index</var> in the list. The cues are sorted in <span>text track cue order</span>.</p>
+   </dd>
+
+   <dt><var>cuelist</var> . <code subdfn data-x="dom-TextTrackCueList-getCueById">getCueById</code>( <var>id</var> )</dt>
+   <dd>
+    <p>Returns the first <span>text track cue</span> (in <span>text track cue order</span>) with <span>text track cue identifier</span> <var>id</var>.</p>
+    <p>Returns null if none of the cues have the given identifier or if the argument is the empty string.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>A <code>TextTrackCueList</code> object represents a dynamically updating list of <span
+  data-x="text track cue">text track cues</span> in a given order.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackCueList-length">length</code></dfn> attribute must return
+  the number of <span data-x="text track cue">cues</span> in the list represented by the
+  <code>TextTrackCueList</code> object.</p>
+
+  <p>The <span>supported property indices</span> of a <code>TextTrackCueList</code> object at any
+  instant are the numbers from zero to the number of <span data-x="text track cue">cues</span> in the
+  list represented by the <code>TextTrackCueList</code> object minus one, if any. If there are no
+  <span data-x="text track cue">cues</span> in the list, there are no <span>supported property
+  indices</span>.</p>
+
+  <p id="dom-texttrackcuelist-item">To <span>determine the value of an indexed property</span> for a
+  given index <var>index</var>, the user agent must return the <var>index</var>th <span>text track
+  cue</span> in the list represented by the <code>TextTrackCueList</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackCueList-getCueById">getCueById(<var>id</var>)</code></dfn> method, when called with an argument other than the empty string,
+  must return the first <span>text track cue</span> in the list represented by the
+  <code>TextTrackCueList</code> object whose <span>text track cue identifier</span> is <var>id</var>, if any, or null otherwise. If the argument is the empty string, then the method
+  must return null.</p>
+
+  </div>
+
+  <hr>
+
+  <pre class="idl">interface <dfn>TextTrackCue</dfn> : <span>EventTarget</span> {
+  readonly attribute <span>TextTrack</span>? <span data-x="dom-TextTrackCue-track">track</span>;
+
+  attribute DOMString <span data-x="dom-TextTrackCue-id">id</span>;
+  attribute double <span data-x="dom-TextTrackCue-startTime">startTime</span>;
+  attribute double <span data-x="dom-TextTrackCue-endTime">endTime</span>;
+  attribute boolean <span data-x="dom-TextTrackCue-pauseOnExit">pauseOnExit</span>;
+
+  attribute <span>EventHandler</span> <span data-x="handler-TextTrackCue-onenter">onenter</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-TextTrackCue-onexit">onexit</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>cue</var> . <span data-x="dom-TextTrackCue-track">track</span></dt>
+   <dd>
+    <p>Returns the <code>TextTrack</code> object to which this
+    <span>text track cue</span> belongs, if any, or null
+    otherwise.</p>
+   </dd>
+
+   <dt><var>cue</var> . <span data-x="dom-TextTrackCue-id">id</span> [ = <var>value</var> ]</dt>
+   <dd>
+    <p>Returns the <span>text track cue identifier</span>.</p>
+    <p>Can be set.</p>
+   </dd>
+
+   <dt><var>cue</var> . <span data-x="dom-TextTrackCue-startTime">startTime</span> [ = <var>value</var> ]</dt>
+   <dd>
+    <p>Returns the <span>text track cue start time</span>, in seconds.</p>
+    <p>Can be set.</p>
+   </dd>
+
+   <dt><var>cue</var> . <span data-x="dom-TextTrackCue-endTime">endTime</span> [ = <var>value</var> ]</dt>
+   <dd>
+    <p>Returns the <span>text track cue end time</span>, in seconds.</p>
+    <p>Can be set.</p>
+   </dd>
+
+   <dt><var>cue</var> . <span data-x="dom-TextTrackCue-pauseOnExit">pauseOnExit</span> [ = <var>value</var> ]</dt>
+   <dd>
+    <p>Returns true if the <span>text track cue pause-on-exit flag</span> is set, false otherwise.</p>
+    <p>Can be set.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-TextTrackCue-track">track</code></dfn> attribute, on getting, must
+  return the <code>TextTrack</code> object of the <span>text track</span> in whose <span data-x="text
+  track list of cues">list of cues</span> the <span>text track cue</span> that the
+  <code>TextTrackCue</code> object represents finds itself, if any; or null otherwise.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackCue-id">id</code></dfn> attribute, on getting, must return
+  the <span>text track cue identifier</span> of the <span>text track cue</span> that the
+  <code>TextTrackCue</code> object represents. On setting, the <span>text track cue
+  identifier</span> must be set to the new value.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackCue-startTime">startTime</code></dfn> attribute, on
+  getting, must return the <span>text track cue start time</span> of the <span>text track cue</span>
+  that the <code>TextTrackCue</code> object represents, in seconds. On setting, the <span>text track
+  cue start time</span> must be set to the new value, interpreted in seconds; then, if the
+  <code>TextTrackCue</code> object's <span>text track cue</span> is in a <span>text track</span>'s
+  <span data-x="text track list of cues">list of cues</span>, and that <span>text track</span> is in
+  a <span>media element</span>'s <span>list of text tracks</span>, and the <span>media
+  element</span>'s <span>show poster flag</span> is not set, then run the <i data-x="time marches
+  on">time marches on</i> steps for that <span>media element</span>.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackCue-endTime">endTime</code></dfn> attribute, on getting,
+  must return the <span>text track cue end time</span> of the <span>text track cue</span> that the
+  <code>TextTrackCue</code> object represents, in seconds. On setting, the <span>text track cue end
+  time</span> must be set to the new value, interpreted in seconds; then, if the
+  <code>TextTrackCue</code> object's <span>text track cue</span> is in a <span>text track</span>'s
+  <span data-x="text track list of cues">list of cues</span>, and that <span>text track</span> is in
+  a <span>media element</span>'s <span>list of text tracks</span>, and the <span>media
+  element</span>'s <span>show poster flag</span> is not set, then run the <i data-x="time marches
+  on">time marches on</i> steps for that <span>media element</span>.</p>
+
+  <p>The <dfn><code data-x="dom-TextTrackCue-pauseOnExit">pauseOnExit</code></dfn> attribute, on
+  getting, must return true if the <span>text track cue pause-on-exit flag</span> of the <span>text
+  track cue</span> that the <code>TextTrackCue</code> object represents is set; or false otherwise.
+  On setting, the <span>text track cue pause-on-exit flag</span> must be set if the new value is
+  true, and must be unset otherwise.</p>
+
+  </div>
+
+
+  

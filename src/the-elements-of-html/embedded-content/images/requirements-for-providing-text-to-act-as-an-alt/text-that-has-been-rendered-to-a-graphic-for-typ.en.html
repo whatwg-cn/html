@@ -1,0 +1,56 @@
+<h6>Text that has been rendered to a graphic for typographical effect</h6>
+
+  <p>Sometimes, an image just consists of text, and the purpose of the image is not to highlight the
+  actual typographic effects used to render the text, but just to convey the text itself.</p>
+
+  <p>In such cases, the <code data-x="attr-img-alt">alt</code> attribute must be present but must
+  consist of the same text as written in the image itself.</p>
+
+  <div class="example">
+
+   <p>Consider a graphic containing the text "Earth Day", but with the letters all decorated with
+   flowers and plants. If the text is merely being used as a heading, to spice up the page for
+   graphical users, then the correct alternative text is just the same text "Earth Day", and no
+   mention need be made of the decorations:</p>
+
+   <pre>&lt;h1><strong>&lt;img src="earthdayheading.png" alt="Earth Day"></strong>&lt;/h1></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>An illuminated manuscript might use graphics for some of its images. The alternative text in
+   such a situation is just the character that the image represents.</p>
+
+   <pre>&lt;p>&lt;img src="initials/o.svg" alt="O">nce upon a time and a long long time ago, late at
+night, when it was dark, over the hills, through the woods, across a great ocean, in a land far
+away, in a small house, on a hill, under a full moon...</pre> <!-- The End. -->
+
+  </div>
+
+  <p>When an image is used to represent a character that cannot otherwise be represented in Unicode,
+  for example gaiji, itaiji, or new characters such as novel currency symbols, the alternative text
+  should be a more conventional way of writing the same thing, e.g. using the phonetic hiragana or
+  katakana to give the character's pronunciation.</p>
+
+  <div class="example">
+
+   <p>In this example from 1997, a new-fangled currency symbol that looks like a curly E with two
+   bars in the middle instead of one is represented using an image. The alternative text gives the
+   character's pronunciation.</p>
+
+   <pre>&lt;p>Only &lt;img src="euro.png" alt="euro ">5.99!</pre>
+
+  </div>
+
+  <p>An image should not be used if Unicode characters would serve an identical purpose. Only when
+  the text cannot be directly represented using Unicode, e.g. because of decorations or because the
+  character is not in the Unicode character set (as in the case of gaiji), would an image be
+  appropriate.</p>
+
+  <p class="note">If an author is tempted to use an image because their default system font does not
+  support a given character, then Web Fonts are a better solution than images.</p>
+
+
+
+  

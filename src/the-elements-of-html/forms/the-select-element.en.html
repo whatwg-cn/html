@@ -1,0 +1,552 @@
+<h4>The <dfn><code>select</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Interactive content</span>.</dd>
+   <dd><span data-x="category-listed">Listed</span>, <span data-x="category-label">labelable</span>, <span data-x="category-submit">submittable</span>, and <span data-x="category-reset">resettable</span> <span>form-associated element</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Zero or more <code>option</code>, <code>optgroup</code>, and <span data-x="script-supporting elements">script-supporting</span> elements.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-fe-autocomplete">autocomplete</code></dd>
+   <dd><code data-x="attr-fe-autofocus">autofocus</code></dd>
+   <dd><code data-x="attr-fe-disabled">disabled</code></dd>
+   <dd><code data-x="attr-fae-form">form</code></dd>
+   <dd><code data-x="attr-select-multiple">multiple</code></dd>
+   <dd><code data-x="attr-fe-name">name</code></dd>
+   <dd><code data-x="attr-select-required">required</code></dd>
+   <dd><code data-x="attr-select-size">size</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLSelectElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fe-autocomplete">autocomplete</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fe-autofocus">autofocus</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fe-disabled">disabled</span>;
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-fae-form">form</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-select-multiple">multiple</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fe-name">name</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-select-required">required</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-select-size">size</span>;
+
+  readonly attribute DOMString <span data-x="dom-select-type">type</span>;
+
+  [SameObject] readonly attribute <span>HTMLOptionsCollection</span> <span data-x="dom-select-options">options</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-select-length">length</span>;
+  getter <span>Element</span>? <span data-x="dom-select-item">item</span>(unsigned long index);
+  <span>HTMLOptionElement</span>? <span data-x="dom-select-namedItem">namedItem</span>(DOMString name);
+  [<span>CEReactions</span>] void <span data-x="dom-select-add">add</span>((<span>HTMLOptionElement</span> or <span>HTMLOptGroupElement</span>) element, optional (<span>HTMLElement</span> or long)? before = null);
+  [<span>CEReactions</span>] void <span data-x="dom-select-remove">remove</span>(); // ChildNode overload
+  [<span>CEReactions</span>] void <span data-x="dom-select-remove">remove</span>(long index);
+  [<span>CEReactions</span>] <a href="#dom-select-setter">setter</a> void (unsigned long index, <span>HTMLOptionElement</span>? option);
+
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-select-selectedOptions">selectedOptions</span>;
+  attribute long <span data-x="dom-select-selectedIndex">selectedIndex</span>;
+  attribute DOMString <span data-x="dom-select-value">value</span>;
+
+  readonly attribute boolean <span data-x="dom-cva-willValidate">willValidate</span>;
+  readonly attribute <span>ValidityState</span> <span data-x="dom-cva-validity">validity</span>;
+  readonly attribute DOMString <span data-x="dom-cva-validationMessage">validationMessage</span>;
+  boolean <span data-x="dom-cva-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-cva-reportValidity">reportValidity</span>();
+  void <span data-x="dom-cva-setCustomValidity">setCustomValidity</span>(DOMString error);
+
+  [SameObject] readonly attribute <span>NodeList</span> <span data-x="dom-lfe-labels">labels</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <!-- Proposals for v2:
+       * <select value=""> as an alternative to <option selected>
+         http://developers.slashdot.org/comments.pl?sid=426306&cid=22142072
+         <Philip`> http://www.ipiao.com.cn/ does <select size="1" name="to"><script>City_Default="PEK"</script><SCRIPT language=javascript
+                   src="/js/flightcity.js"></SCRIPT></select> which is the kind of thing that could be much simpler with <select value="PEK">
+    -->
+
+  <p>The <code>select</code> element represents a control for selecting amongst a set of
+  options.</p>
+
+  <p>The <dfn><code data-x="attr-select-multiple">multiple</code></dfn> attribute is a <span>boolean
+  attribute</span>. If the attribute is present, then the <code>select</code> element
+  <span>represents</span> a control for selecting zero or more options from the <span
+  data-x="concept-select-option-list">list of options</span>. If the attribute is absent, then the
+  <code>select</code> element <span>represents</span> a control for selecting a single option from
+  the <span data-x="concept-select-option-list">list of options</span>.</p>
+
+  <p>The <dfn><code data-x="attr-select-size">size</code></dfn> attribute gives the number of options
+  to show to the user. The <code data-x="attr-select-size">size</code> attribute, if specified, must
+  have a value that is a <span>valid non-negative integer</span> greater than zero.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn data-x="concept-select-size">display size</dfn> of a <code>select</code> element is the
+  result of applying the <span>rules for parsing non-negative integers</span> to the value of
+  element's <code data-x="attr-select-size">size</code> attribute, if it has one and parsing it is
+  successful. If applying those rules to the attribute's value is not successful, or if the <code
+  data-x="attr-select-size">size</code> attribute is absent, then the element's <span
+  data-x="concept-select-size">display size</span> is 4 if the element's <code
+  data-x="attr-select-multiple">multiple</code> content attribute is present, and 1 otherwise.</p>
+
+  </div>
+
+  <p>The <dfn data-x="concept-select-option-list">list of options</dfn> for a <code>select</code>
+  element consists of all the <code>option</code> element children of the <code>select</code>
+  element, and all the <code>option</code> element children of all the <code>optgroup</code> element
+  children of the <code>select</code> element, in <span>tree order</span>.</p>
+
+  <p>The <dfn><code data-x="attr-select-required">required</code></dfn> attribute is a <span>boolean
+  attribute</span>. When specified, the user will be required to select a value before submitting
+  the form.</p>
+
+  <p>If a <code>select</code> element has a <code data-x="attr-select-required">required</code>
+  attribute specified, does not have a <code data-x="attr-select-multiple">multiple</code> attribute
+  specified, and has a <span data-x="concept-select-size">display size</span> of 1; and if the <span
+  data-x="concept-option-value">value</span> of the first <code>option</code> element in the
+  <code>select</code> element's <span data-x="concept-select-option-list">list of options</span> (if
+  any) is the empty string, and that <code>option</code> element's parent node is the
+  <code>select</code> element (and not an <code>optgroup</code> element), then that
+  <code>option</code> is the <code>select</code> element's <dfn>placeholder label option</dfn>.</p>
+
+  <p>If a <code>select</code> element has a <code data-x="attr-select-required">required</code>
+  attribute specified, does not have a <code data-x="attr-select-multiple">multiple</code> attribute
+  specified, and has a <span data-x="concept-select-size">display size</span> of 1, then the
+  <code>select</code> element must have a <span>placeholder label option</span>.</p>
+
+  <p class="note">In practice, the requirement stated in the paragraph above can only apply when a
+  <code>select</code> element does not have a <code data-x="attr-link-sizes">sizes</code> attribute
+  with a value greater than 1.</p>
+
+  <div w-nodev>
+
+  <p><strong>Constraint validation</strong>: If the element has its <code
+  data-x="attr-select-required">required</code> attribute specified, and either none of the
+  <code>option</code> elements in the <code>select</code> element's <span
+  data-x="concept-select-option-list">list of options</span> have their <span
+  data-x="concept-option-selectedness">selectedness</span> set to true, or the only
+  <code>option</code> element in the <code>select</code> element's <span
+  data-x="concept-select-option-list">list of options</span> with its <span
+  data-x="concept-option-selectedness">selectedness</span> set to true is the <span>placeholder label
+  option</span>, then the element is <span>suffering from being missing</span>.</p>
+
+  </div>
+
+  <div w-nodev>
+
+  <p>If the <code data-x="attr-select-multiple">multiple</code> attribute is absent, and the element
+  is not <span data-x="concept-fe-disabled">disabled</span>, then the user agent should allow the
+  user to pick an <code>option</code> element in its <span data-x="concept-select-option-list">list
+  of options</span> that is itself not <span data-x="concept-option-disabled">disabled</span>. Upon
+  this <code>option</code> element being <dfn data-x="concept-select-pick">picked</dfn> (either
+  through a click, or through unfocusing the element after changing its value, or through a <span
+  data-x="option-command">menu command</span>, or through any other mechanism), and before the
+  relevant user interaction event <!-- interaction event spec point --> is queued (e.g. before the
+  <code data-x="event-click">click</code> event), the user agent must set the <span
+  data-x="concept-option-selectedness">selectedness</span> of the picked <code>option</code> element
+  to true, set its <span data-x="concept-option-dirtiness">dirtiness</span> to true, and then
+  <span>send <code>select</code> update notifications</span>.</p>
+
+  <p>If the <code data-x="attr-select-multiple">multiple</code> attribute is absent, whenever an
+  <code>option</code> element in the <code>select</code> element's <span
+  data-x="concept-select-option-list">list of options</span> has its <span
+  data-x="concept-option-selectedness">selectedness</span> set to true, and whenever an
+  <code>option</code> element with its <span
+  data-x="concept-option-selectedness">selectedness</span> set to true is added to the
+  <code>select</code> element's <span data-x="concept-select-option-list">list of options</span>,
+  the user agent must set the <span data-x="concept-option-selectedness">selectedness</span> of all
+  the other <code>option</code> elements in its <span data-x="concept-select-option-list">list of
+  options</span> to false.</p>
+
+  <p>If the <code data-x="attr-select-multiple">multiple</code> attribute is absent and the
+  element's <span data-x="concept-select-size">display size</span> is greater than 1, then the user
+  agent should also allow the user to request that the <code>option</code> whose <span
+  data-x="concept-option-selectedness">selectedness</span> is true, if any, be unselected. Upon this
+  request being conveyed to the user agent, and before the relevant user interaction event <!--
+  interaction event spec point --> is queued (e.g. before the <code
+  data-x="event-click">click</code> event), the user agent must set the <span
+  data-x="concept-option-selectedness">selectedness</span> of that <code>option</code> element to
+  false, set its <span data-x="concept-option-dirtiness">dirtiness</span> to true, and then
+  <span>send <code>select</code> update notifications</span>.</p>
+
+  <p>If <span>nodes are inserted</span> or <span>nodes are removed</span> causing the <span
+  data-x="concept-select-option-list">list of options</span> to gain or lose one or more
+  <code>option</code> elements, or if an <code>option</code> element in the <span
+  data-x="concept-select-option-list">list of options</span> <dfn data-x="ask for a reset">asks for
+  a reset</dfn>, then, if the <code>select</code> element's <code
+  data-x="attr-select-multiple">multiple</code> attribute is absent, the user agent must run the
+  first applicable set of steps from the following list:</p>
+
+  <dl class="switch">
+
+   <dt>If the <code>select</code>
+   element's <span data-x="concept-select-size">display size</span> is 1, and no <code>option</code>
+   elements in the <code>select</code> element's <span data-x="concept-select-option-list">list of
+   options</span> have their <span data-x="concept-option-selectedness">selectedness</span> set to
+   true</dt>
+
+   <dd><p>Set the <span data-x="concept-option-selectedness">selectedness</span> of the first
+   <code>option</code> element in the <span data-x="concept-select-option-list">list of
+   options</span> in <span>tree order</span> that is not <span
+   data-x="concept-option-disabled">disabled</span>, if any, to true.</p></dd>
+
+   <dt>If two or more <code>option</code> elements in the <code>select</code> element's <span
+   data-x="concept-select-option-list">list of options</span> have their <span
+   data-x="concept-option-selectedness">selectedness</span> set to true</dt>
+
+   <dd><p>Set the <span data-x="concept-option-selectedness">selectedness</span> of all but the last
+   <code>option</code> element with its <span
+   data-x="concept-option-selectedness">selectedness</span> set to true in the <span
+   data-x="concept-select-option-list">list of options</span> in <span>tree order</span> to
+   false.</p></dd>
+
+  </dl>
+
+  <p>If the <code data-x="attr-select-multiple">multiple</code> attribute is present, and the
+  element is not <span data-x="concept-fe-disabled">disabled</span>, then the user agent should
+  allow the user to <dfn data-x="concept-select-toggle">toggle</dfn> the <span
+  data-x="concept-option-selectedness">selectedness</span> of the <code>option</code> elements in
+  its <span data-x="concept-select-option-list">list of options</span> that are themselves not <span
+  data-x="concept-option-disabled">disabled</span>. Upon such an element being <span
+  data-x="concept-select-toggle">toggled</span> (either through a click, or through a <span
+  data-x="option-command">menu command</span>, or any other mechanism), and before the relevant user
+  interaction event <!-- interaction event spec point --> is queued (e.g. before a related <code
+  data-x="event-click">click</code> event), the <span
+  data-x="concept-option-selectedness">selectedness</span> of the <code>option</code> element must
+  be changed (from true to false or false to true), the <span
+  data-x="concept-option-dirtiness">dirtiness</span> of the element must be set to true, and the
+  user agent must <span>send <code>select</code> update notifications</span>.</p>
+
+  <p>When the user agent is to <dfn>send <code>select</code> update notifications</dfn>, <span>queue
+  a task</span>, using the <span>user interaction task source</span>, to run these steps:</p>
+
+  <ol>
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-input">input</code> at the <code>select</code> element, with the <code
+   data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true.</p></li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-change">change</code> at the <code>select</code> element, with the <code
+   data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true.</p></li>
+  </ol>
+
+  <p>The <span data-x="concept-form-reset-control">reset algorithm</span> for <code>select</code>
+  elements is to go through all the <code>option</code> elements in the element's <span
+  data-x="concept-select-option-list">list of options</span>, set their <span
+  data-x="concept-option-selectedness">selectedness</span> to true if the <code>option</code>
+  element has a <code data-x="attr-option-selected">selected</code> attribute, and false otherwise,
+  set their <span data-x="concept-option-dirtiness">dirtiness</span> to false, and then have the
+  <code>option</code> elements <span>ask for a reset</span>.</p>
+
+  </div>
+
+  <p>
+  The <code data-x="attr-fae-form">form</code> attribute is used to explicitly associate the <code>select</code> element with its <span>form owner</span>.
+  The <code data-x="attr-fe-name">name</code> attribute represents the element's name.
+  The <code data-x="attr-fe-disabled">disabled</code> attribute is used to make the control non-interactive and to prevent its value from being submitted.
+  The <code data-x="attr-fe-autofocus">autofocus</code> attribute controls focus.
+  The <code data-x="attr-fe-autocomplete">autocomplete</code> attribute controls how the user agent provides autofill behavior.
+  </p>
+
+  <p>A <code>select</code> element that is not <span data-x="concept-fe-disabled">disabled</span> is
+  <i data-x="concept-fe-mutable">mutable</i>.</p>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>select</var> . <code subdfn data-x="dom-select-type">type</code></dt>
+
+   <dd>
+
+    <p>Returns "<code data-x="">select-multiple</code>" if the element has a <code
+    data-x="attr-select-multiple">multiple</code> attribute, and "<code data-x="">select-one</code>"
+    otherwise.</p>
+
+   </dd>
+
+   <dt><var>select</var> . <code subdfn data-x="dom-select-options">options</code></dt>
+
+   <dd>
+
+    <p>Returns an <code>HTMLOptionsCollection</code> of the <span
+    data-x="concept-select-option-list">list of options</span>.</p>
+
+   </dd>
+
+   <dt><var>select</var> . <code subdfn data-x="dom-select-length">length</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns the number of elements in the <span data-x="concept-select-option-list">list of
+    options</span>.</p>
+
+    <p>When set to a smaller number, truncates the number of <code>option</code> elements in the
+    <code>select</code>.</p>
+
+    <p>When set to a greater number, adds new blank <code>option</code> elements to the
+    <code>select</code>.</p>
+
+   </dd>
+
+   <dt><var>element</var> = <var>select</var> . <code subdfn data-x="dom-select-item">item</code>(<var>index</var>)</dt>
+   <dt><var>select</var>[<var>index</var>]</dt>
+   <dd>
+
+    <p>Returns the item with index <var>index</var> from the <span
+    data-x="concept-select-option-list">list of options</span>. The items are sorted in <span>tree
+    order</span>.</p>
+
+   </dd>
+
+   <dt><var>element</var> = <var>select</var> . <code subdfn data-x="dom-select-namedItem">namedItem</code>(<var>name</var>)</dt>
+   <dd>
+
+    <p>Returns the first item with <span data-x="concept-id">ID</span> or <code
+    data-x="attr-option-name">name</code> <var>name</var> from the <span
+    data-x="concept-select-option-list">list of options</span>.</p>
+
+    <p>Returns null if no element with that <span data-x="concept-id">ID</span> could be found.</p>
+
+   </dd>
+
+   <dt><var>select</var> . <code subdfn data-x="dom-select-add">add</code>(<var>element</var> [, <var>before</var> ] )</dt>
+   <dd>
+
+    <p>Inserts <var>element</var> before the node given by <var>before</var>.</p>
+
+    <p>The <var>before</var> argument can be a number, in which case <var>element</var> is inserted before the item with that number, or an element from the
+    <span data-x="concept-select-option-list">list of options</span>, in which case <var>element</var> is inserted before that element.</p>
+
+    <p>If <var>before</var> is omitted, null, or a number out of range, then <var>element</var> will be added at the end of the list.</p>
+
+    <p>This method will throw a <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code> if
+    <var>element</var> is an ancestor of the element into which it is to be inserted.</p>
+
+   </dd>
+
+   <dt><var>select</var> . <code subdfn data-x="dom-select-selectedOptions">selectedOptions</code></dt>
+
+   <dd>
+
+    <p>Returns an <code>HTMLCollection</code> of the <span data-x="concept-select-option-list">list
+    of options</span> that are selected.</p>
+
+   </dd>
+
+   <dt><var>select</var> . <code subdfn data-x="dom-select-selectedIndex">selectedIndex</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the index of the first selected item, if any, or &#x2212;1 if there is no selected
+    item.</p>
+
+    <p>Can be set, to change the selection.</p>
+
+   </dd>
+
+   <dt><var>select</var> . <code subdfn data-x="dom-select-value">value</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the <span data-x="concept-option-value">value</span> of the first selected item, if
+    any, or the empty string if there is no selected item.</p>
+
+    <p>Can be set, to change the selection.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-select-type">type</code></dfn> IDL attribute, on getting, must
+  return the string "<code data-x="">select-one</code>" if the <code
+  data-x="attr-select-multiple">multiple</code> attribute is absent, and the string "<code
+  data-x="">select-multiple</code>" if the <code data-x="attr-select-multiple">multiple</code>
+  attribute is present.</p>
+
+  <p>The <dfn><code data-x="dom-select-options">options</code></dfn> IDL attribute must return an
+  <code>HTMLOptionsCollection</code> rooted at the <code>select</code> node, whose filter matches
+  the elements in the <span data-x="concept-select-option-list">list of options</span>.</p>
+
+  <p>The <code data-x="dom-select-options">options</code> collection is also mirrored on the
+  <code>HTMLSelectElement</code> object. The <span>supported property indices</span> at any instant
+  are the indices supported by the object returned by the <code
+  data-x="dom-select-options">options</code> attribute at that instant.</p>
+
+  <p>The <dfn><code data-x="dom-select-length">length</code></dfn> IDL attribute must return the
+  number of nodes <span data-x="represented by the collection">represented</span> by the <code
+  data-x="dom-select-options">options</code> collection. On setting, it must act like the attribute
+  of the same name on the <code data-x="dom-select-options">options</code> collection.</p>
+
+  <p>The <dfn><code data-x="dom-select-item">item(<var>index</var>)</code></dfn> method
+  must return the value returned by <span data-x="dom-HTMLCollection-item">the method of the same
+  name</span> on the <code data-x="dom-select-options">options</code> collection, when invoked with
+  the same argument.</p>
+
+  <p>The <dfn><code data-x="dom-select-namedItem">namedItem(<var>name</var>)</code></dfn>
+  method must return the value returned by <span data-x="dom-HTMLCollection-namedItem">the
+  method of the same name</span> on the <code data-x="dom-select-options">options</code> collection,
+  when invoked with the same argument.</p>
+
+  <p id="dom-select-setter">When the user agent is to <span>set the value of a new indexed
+  property</span> or <span>set the value of an existing indexed property</span> for a
+  <code>select</code> element, it must instead run <a href="#dom-htmloptionscollection-setter">the
+  corresponding algorithm</a> on the <code>select</code> element's <code
+  data-x="dom-select-options">options</code> collection.</p>
+
+  <p>Similarly, the <dfn><code data-x="dom-select-add">add()</code></dfn> method must act like its
+  namesake method on that same <code data-x="dom-select-options">options</code> collection.</p>
+
+  <p>The <dfn><code data-x="dom-select-remove">remove()</code></dfn> method must act like its
+  namesake method on that same <code data-x="dom-select-options">options</code> collection when it
+  has arguments, and like its namesake method on the <code>ChildNode</code> interface implemented by
+  the <code>HTMLSelectElement</code> ancestor interface <code>Element</code> when it has no
+  arguments.</p>
+
+  <p>The <dfn><code data-x="dom-select-selectedOptions">selectedOptions</code></dfn> IDL attribute
+  must return an <code>HTMLCollection</code> rooted at the <code>select</code> node, whose filter
+  matches the elements in the <span data-x="concept-select-option-list">list of options</span> that
+  have their <span data-x="concept-option-selectedness">selectedness</span> set to true.</p>
+
+  <p>The <dfn><code data-x="dom-select-selectedIndex">selectedIndex</code></dfn> IDL attribute, on
+  getting, must return the <span data-x="concept-option-index">index</span> of the first
+  <code>option</code> element in the <span data-x="concept-select-option-list">list of
+  options</span> in <span>tree order</span> that has its <span
+  data-x="concept-option-selectedness">selectedness</span> set to true, if any. If there isn't one,
+  then it must return &#x2212;1.</p>
+
+  <p>On setting, the <code data-x="dom-select-selectedIndex">selectedIndex</code> attribute must set
+  the <span data-x="concept-option-selectedness">selectedness</span> of all the <code>option</code>
+  elements in the <span data-x="concept-select-option-list">list of options</span> to false, and
+  then the <code>option</code> element in the <span data-x="concept-select-option-list">list of
+  options</span> whose <span data-x="concept-option-index">index</span> is the given new value, if
+  any, must have its <span data-x="concept-option-selectedness">selectedness</span> set to true and
+  its <span data-x="concept-option-dirtiness">dirtiness</span> set to true.</p>
+
+  <p class="note">This can result in no element having a <span
+  data-x="concept-option-selectedness">selectedness</span> set to true even in the case of the
+  <code>select</code> element having no <code data-x="attr-select-multiple">multiple</code>
+  attribute and a <span data-x="concept-select-size">display size</span> of 1.</p>
+
+  <p>The <dfn><code data-x="dom-select-value">value</code></dfn> IDL attribute, on getting, must
+  return the <span data-x="concept-option-value">value</span> of the first <code>option</code>
+  element in the <span data-x="concept-select-option-list">list of options</span> in <span>tree
+  order</span> that has its <span data-x="concept-option-selectedness">selectedness</span> set to
+  true, if any. If there isn't one, then it must return the empty string.</p>
+
+  <p>On setting, the <code data-x="dom-select-value">value</code> attribute must set the <span
+  data-x="concept-option-selectedness">selectedness</span> of all the <code>option</code> elements
+  in the <span data-x="concept-select-option-list">list of options</span> to false, and then the
+  first <code>option</code> element in the <span data-x="concept-select-option-list">list of
+  options</span>, in <span>tree order</span>, whose <span data-x="concept-option-value">value</span>
+  is equal to the given new value, if any, must have its <span
+  data-x="concept-option-selectedness">selectedness</span> set to true and its <span
+  data-x="concept-option-dirtiness">dirtiness</span> set to true.</p>
+
+  <p class="note">This can result in no element having a <span
+  data-x="concept-option-selectedness">selectedness</span> set to true even in the case of the
+  <code>select</code> element having no <code data-x="attr-select-multiple">multiple</code>
+  attribute and a <span data-x="concept-select-size">display size</span> of 1.</p>
+
+  <p>The <dfn><code data-x="dom-select-multiple">multiple</code></dfn>, <dfn><code data-x="dom-select-required">required</code></dfn>, and <dfn><code data-x="dom-select-size">size</code></dfn> IDL attributes must <span>reflect</span> the
+  respective content attributes of the same name. The <code data-x="dom-select-size">size</code> IDL
+  attribute has a default value of zero.</p> <!-- see bug 12288 for compat reasons why .size allows
+  zero (it's not limited to values greater than zero) even though that value really makes no sense
+  -->
+
+  <p class="note">For historical reasons, the default value of the <code
+  data-x="dom-select-size">size</code> IDL attribute does not return the actual size used, which, in
+  the absence of the <code data-x="attr-select-size">size</code> content attribute, is either 1 or 4
+  depending on the presence of the <code data-x="attr-select-multiple">multiple</code>
+  attribute.</p>
+
+  <p>The <code data-x="dom-cva-willValidate">willValidate</code>, <code
+  data-x="dom-cva-validity">validity</code>, and <code
+  data-x="dom-cva-validationMessage">validationMessage</code> IDL attributes, and the <code
+  data-x="dom-cva-checkValidity">checkValidity()</code>, <code
+  data-x="dom-cva-reportValidity">reportValidity()</code>, and <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> methods, are part of the
+  <span>constraint validation API</span>. The <code data-x="dom-lfe-labels">labels</code> IDL
+  attribute provides a list of the element's <code>label</code>s. The <code
+  data-x="dom-fe-autofocus">autofocus</code>, <code data-x="dom-fe-disabled">disabled</code>, <code
+  data-x="dom-fae-form">form</code>, and <code data-x="dom-fe-name">name</code> IDL attributes are
+  part of the element's forms API.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>The following example shows how a <code>select</code> element can be used to offer the user
+   with a set of options from which the user can select a single option. The default option is
+   preselected.</p>
+
+   <pre>&lt;p>
+ &lt;label for="unittype">Select unit type:&lt;/label>
+ &lt;select id="unittype" name="unittype">
+  &lt;option value="1"> Miner &lt;/option>
+  &lt;option value="2"> Puffer &lt;/option>
+  &lt;option value="3" selected> Snipey &lt;/option>
+  &lt;option value="4"> Max &lt;/option>
+  &lt;option value="5"> Firebot &lt;/option>
+ &lt;/select>
+&lt;/p></pre>
+
+   <p>When there is no default option, a placeholder can be used instead:</p>
+
+   <pre>&lt;select name="unittype" <strong>required</strong>>
+ <strong>&lt;option value=""> Select unit type &lt;/option></strong>
+ &lt;option value="1"> Miner &lt;/option>
+ &lt;option value="2"> Puffer &lt;/option>
+ &lt;option value="3"> Snipey &lt;/option>
+ &lt;option value="4"> Max &lt;/option>
+ &lt;option value="5"> Firebot &lt;/option>
+&lt;/select></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here, the user is offered a set of options from which they can select any number. By default,
+   all five options are selected.</p>
+
+   <pre>&lt;p>
+ &lt;label for="allowedunits">Select unit types to enable on this map:&lt;/label>
+ &lt;select id="allowedunits" name="allowedunits" multiple>
+  &lt;option value="1" selected> Miner &lt;/option>
+  &lt;option value="2" selected> Puffer &lt;/option>
+  &lt;option value="3" selected> Snipey &lt;/option>
+  &lt;option value="4" selected> Max &lt;/option>
+  &lt;option value="5" selected> Firebot &lt;/option>
+ &lt;/select>
+&lt;/p></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Sometimes, a user has to select one or more items. This example shows such an interface.</p>
+
+   <pre>&lt;p>Select the songs from that you would like on your Act II Mix Tape:&lt;/p>
+&lt;select multiple required name="act2">
+ &lt;option value="s1">It Sucks to Be Me (Reprise)
+ &lt;option value="s2">There is Life Outside Your Apartment
+ &lt;option value="s3">The More You Ruv Someone
+ &lt;option value="s4">Schadenfreude
+ &lt;option value="s5">I Wish I Could Go Back to College
+ &lt;option value="s6">The Money Song
+ &lt;option value="s7">School for Monsters
+ &lt;option value="s8">The Money Song (Reprise)
+ &lt;option value="s9">There's a Fine, Fine Line (Reprise)
+ &lt;option value="s10">What Do You Do With a B.A. in English? (Reprise)
+ &lt;option value="s11">For Now
+&lt;/select></pre>
+
+  </div>
+
+
+
+  

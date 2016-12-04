@@ -1,0 +1,106 @@
+<h6>Image sources for 2D rendering contexts</h6>
+
+  <p>Some methods on the <code>CanvasDrawImage</code> and <code>CanvasFillStrokeStyles</code>
+  interfaces take the union type <code>CanvasImageSource</code> as an argument.</p>
+
+  <p>This union type allows objects implementing any of the following interfaces to be used as image
+  sources:</p>
+
+  <ul>
+
+   <li><code>HTMLOrSVGImageElement</code> (<code>img</code> or <span>SVG <code>image</code></span>
+   elements)</li>
+
+   <li><code>HTMLVideoElement</code> (<code>video</code> elements)</li>
+
+   <li><code>HTMLCanvasElement</code> (<code>canvas</code> elements)</li>
+
+   <li><code>ImageBitmap</code></li>
+
+  </ul>
+
+  <p class="note">Although not formally specified as such, <span>SVG <code>image</code></span>
+  elements are expected to be implemented nearly identical to <code>img</code> elements. That is,
+  <span>SVG <code>image</code></span> elements share the fundamental concepts and features of
+  <code>img</code> elements.</p>
+
+  <p class="note">The <code>ImageBitmap</code> interface can be created from a number of other
+  image-representing types, including <code>ImageData</code>.</p>
+
+  <p>When a user agent is required to <dfn>check the usability of the <var>image</var>
+  argument</dfn>, where <var>image</var> is a <code>CanvasImageSource</code> object, the
+  user agent must run these steps, which return either <i>good</i>, <i>bad</i>, or
+  <i>aborted</i>:</p>
+
+  <ol>
+
+   <li><p>If <var>image</var> is an <code>HTMLOrSVGImageElement</code> object that is in the <span
+   data-x="img-error">broken</span> state, then throw an
+   <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>, return <i>aborted</i>,
+   and abort these steps.</p></li>
+
+   <li><p>If <var>image</var> is an <code>HTMLOrSVGImageElement</code> object that is not <span
+   data-x="img-good">fully decodable</span>, or if <var>image</var> is an
+   <code>HTMLVideoElement</code> object whose <code data-x="dom-media-readyState">readyState</code>
+   attribute is either <code data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code> or <code
+   data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code>, then return <i>bad</i> and abort these
+   steps.</p></li>
+
+   <li><p>If <var>image</var> is an <code>HTMLOrSVGImageElement</code> object with an
+   <span>intrinsic width</span> or <span>intrinsic height</span> (or both) equal to zero, then
+   return <i>bad</i> and abort these steps.</p></li> <!--
+   https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2567 -->
+
+   <li><p>If <var>image</var> is an <code>HTMLCanvasElement</code> object with either a horizontal
+   dimension or a vertical dimension equal to zero, then return <i>bad</i> and abort these
+   steps.</p></li>
+
+   <li><p>If <var>image</var> is an <code>ImageBitmap</code> object with its
+   [[<span>Detached</span>]] internal slot value set to true, then throw an
+   <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>, return <i>aborted</i>,
+   and abort these steps.</p></li>
+
+   <li><p>Return <i>good</i>.</p></li>
+
+  </ol>
+
+  <p>When a <code>CanvasImageSource</code> object represents an <code>HTMLOrSVGImageElement</code>,
+  the element's image must be used as the source image.</p>
+
+  <p>Specifically, when a <code>CanvasImageSource</code> object represents an animated image in an
+  <code>HTMLOrSVGImageElement</code>, the user agent must use the default image of the animation
+  (the one that the format defines is to be used when animation is not supported or is disabled),
+  or, if there is no such image, the first frame of the animation, when rendering the image for
+  <code>CanvasRenderingContext2D</code> APIs.</p>
+
+  <p>When a <code>CanvasImageSource</code> object represents an <code>HTMLVideoElement</code>, then
+  the frame at the <span>current playback position</span> when the method with the argument is
+  invoked must be used as the source image when rendering the image for
+  <code>CanvasRenderingContext2D</code> APIs, and the source image's dimensions must be the <span
+  data-x="concept-video-intrinsic-width">intrinsic width</span> and <span
+  data-x="concept-video-intrinsic-height">intrinsic height</span> of the <span>media resource</span>
+  (i.e. after any aspect-ratio correction has been applied).</p>
+
+  <p>When a <code>CanvasImageSource</code> object represents an <code>HTMLCanvasElement</code>, the
+  element's bitmap must be used as the source image.</p>
+
+  <p>When a <code>CanvasImageSource</code> object represents an element that is <span>being
+  rendered</span> and that element has been resized, the original image data of the source image
+  must be used, not the image as it is rendered (e.g. <code data-x="attr-dim-width">width</code> and
+  <code data-x="attr-dim-height">height</code> attributes on the source element have no effect on how
+  the object is interpreted when rendering the image for <code>CanvasRenderingContext2D</code>
+  APIs).</p>
+
+  <p>When a <code>CanvasImageSource</code> object represents an <code>ImageBitmap</code>, the
+  object's bitmap image data must be used as the source image.</p>
+
+  <p><dfn>The <var>image argument</var> is not origin-clean</dfn> if it is an
+  <code>HTMLOrSVGImageElement</code> or <code>HTMLVideoElement</code> whose <span>origin</span> is
+  not the <span data-x="same origin">same</span> as the <span
+  data-x="concept-settings-object-origin">origin</span> specified by the <span>entry settings
+  object</span>, or if it is an <code>HTMLCanvasElement</code> whose bitmap's <span
+  data-x="concept-canvas-origin-clean">origin-clean</span> flag is false.</p>
+
+
+
+  

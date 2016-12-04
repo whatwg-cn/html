@@ -1,0 +1,22 @@
+<h5><dfn>Numeric character reference state</dfn></h5>
+
+  <p>Set the <dfn><var data-x="character reference code">character reference code</var></dfn> to
+  zero (0).</p>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+    <dt>U+0078 LATIN SMALL LETTER X</dt>
+    <dt>U+0058 LATIN CAPITAL LETTER X</dt>
+    <dd>Append the <span>current input character</span> to the <var data-x="temporary
+    buffer">temporary buffer</var>. Switch to the <span>hexademical character reference start
+    state</span>.</dd>
+
+    <dt>Anything else</dt>
+    <dd><span>Reconsume</span> in the <span>decimal character reference start state</span>.</dd>
+
+  </dl>
+
+
+  

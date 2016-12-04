@@ -1,0 +1,192 @@
+<h4>Items</h4>
+
+  <p>Every <span data-x="HTML elements">HTML element</span> may have an <dfn><code data-x="attr-itemscope">itemscope</code></dfn> attribute specified. The <code
+  data-x="attr-itemscope">itemscope</code> attribute is a <span>boolean attribute</span>.</p>
+
+  <p>An element with the <code data-x="attr-itemscope">itemscope</code> attribute specified creates a
+  new <dfn data-x="concept-item">item</dfn>, a group of name-value pairs.</p>
+
+  <hr>
+
+  <p>Elements with an <code data-x="attr-itemscope">itemscope</code> attribute may have an <dfn><code data-x="attr-itemtype">itemtype</code></dfn> attribute specified, to give the <span>item
+  types</span> of the <span data-x="concept-item">item</span>.</p>
+
+  <p>The <code data-x="attr-itemtype">itemtype</code> attribute, if specified, must have a value that
+  is an <span>unordered set of unique space-separated tokens</span> that are
+  <span>case-sensitive</span>, each of which is a <span>valid URL</span> that is an <span>absolute
+  URL</span>, and all of which are defined to use the same vocabulary. The attribute's value must
+  have at least one token.</p>
+
+  <p>The <dfn>item types</dfn> of an <span data-x="concept-item">item</span> are the tokens obtained
+  by <span data-x="split a string on spaces">splitting the element's <code
+  data-x="attr-itemtype">itemtype</code> attribute's value on spaces</span>. If the <code
+  data-x="attr-itemtype">itemtype</code> attribute is missing or parsing it in this way finds no
+  tokens, the <span data-x="concept-item">item</span> is said to have no <span>item types</span>.</p>
+
+  <p>The <span>item types</span> must all be types defined in <span data-x="other applicable
+  specifications">applicable specifications</span> and must all be defined to use the same
+  vocabulary.</p>
+
+  <div w-nodev>
+
+   <p>Except if otherwise specified by that specification, the <span data-x="URL">URLs</span> given
+   as the <span>item types</span> should not be automatically dereferenced.</p>
+
+   <p class="note">A specification could define that its <span data-x="item types">item type</span>
+   can be dereferenced to provide the user with help information, for example. In fact, vocabulary
+   authors are encouraged to provide useful information at the given <span>URL</span>.</p>
+
+   <p><span>Item types</span> are opaque identifiers, and user agents must not dereference unknown
+   <span>item types</span>, or otherwise deconstruct them, in order to determine how to process
+   <span data-x="concept-item">items</span> that use them.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-itemtype">itemtype</code> attribute must not be specified on elements
+  that do not have an <code data-x="attr-itemscope">itemscope</code> attribute specified.</p>
+
+  <hr>
+
+  <p>An <span data-x="concept-item">item</span> is said to be a <dfn>typed item</dfn> when either it
+  has an <span data-x="item types">item type</span>, or it is the <span
+  data-x="concept-property-value">value</span> of a <span data-x="the properties of an
+  item">property</span> of a <span>typed item</span>. The <dfn>relevant types</dfn> for a
+  <span>typed item</span> is the <span data-x="concept-item">item</span>'s <span>item types</span>,
+  if it has any, or else is the <span>relevant types</span> of the <span
+  data-x="concept-item">item</span> for which it is a <span data-x="the properties of an
+  item">property</span>'s <span data-x="concept-property-value">value</span>.</p>
+
+  <hr>
+
+  <p>Elements with an <code data-x="attr-itemscope">itemscope</code> attribute and an <code
+  data-x="attr-itemtype">itemtype</code> attribute that references a vocabulary that is defined to
+  <dfn>support global identifiers for items</dfn> may also have an <dfn><code data-x="attr-itemid">itemid</code></dfn> attribute specified, to give a global identifier for
+  the <span data-x="concept-item">item</span>, so that it can be related to other <span
+  data-x="concept-item">items</span> on pages elsewhere on the Web.</p>
+
+  <p>The <code data-x="attr-itemid">itemid</code> attribute, if specified, must have a value that is
+  a <span>valid URL potentially surrounded by spaces</span>.</p>
+
+  <p>The <dfn>global identifier</dfn> of an <span data-x="concept-item">item</span> is the value of
+  its element's <code data-x="attr-itemid">itemid</code> attribute, if it has one, <span
+  data-x="parse a url">parsed</span> relative to the <span>node document</span> of the element on
+  which the attribute is specified. If the <code data-x="attr-itemid">itemid</code> attribute is
+  missing or if resolving it fails, it is said to have no <span>global identifier</span>.</p>
+
+  <p>The <code data-x="attr-itemid">itemid</code> attribute must not be specified on elements that do
+  not have both an <code data-x="attr-itemscope">itemscope</code> attribute and an <code
+  data-x="attr-itemtype">itemtype</code> attribute specified, and must not be specified on elements
+  with an <code data-x="attr-itemscope">itemscope</code> attribute whose <code
+  data-x="attr-itemtype">itemtype</code> attribute specifies a vocabulary that does not <span>support
+  global identifiers for items</span>, as defined by that vocabulary's specification.</p>
+
+  <p>The exact meaning of a <span>global identifier</span> is determined by the vocabulary's
+  specification. It is up to such specifications to define whether multiple items with the same
+  global identifier (whether on the same page or on different pages) are allowed to exist, and what
+  the processing rules for that vocabulary are with respect to handling the case of multiple items
+  with the same ID.</p>
+
+  <hr>
+
+  <p>Elements with an <code data-x="attr-itemscope">itemscope</code> attribute may have an <dfn><code data-x="attr-itemref">itemref</code></dfn> attribute specified, to give a list of additional
+  elements to crawl to find the name-value pairs of the <span data-x="concept-item">item</span>.</p>
+
+  <p>The <code data-x="attr-itemref">itemref</code> attribute, if specified, must have a value that
+  is an <span>unordered set of unique space-separated tokens</span> that are
+  <span>case-sensitive</span>, consisting of <span data-x="concept-ID">IDs</span> of elements in the
+  same <span>tree</span>.</p>
+
+  <p>The <code data-x="attr-itemref">itemref</code> attribute must not be specified on elements that
+  do not have an <code data-x="attr-itemscope">itemscope</code> attribute specified.</p>
+
+  <p class="note">The <code data-x="attr-itemref">itemref</code> attribute is not part of the
+  microdata data model. It is merely a syntactic construct to aid authors in adding annotations to
+  pages where the data to be annotated does not follow a convenient tree structure. For example, it
+  allows authors to mark up data in a table so that each column defines a separate <span
+  data-x="concept-item">item</span>, while keeping the properties in the cells.</p>
+
+  <div class="example">
+
+   <p>This example shows a simple vocabulary used to describe the products of a model railway
+   manufacturer. The vocabulary has just five property names:</p>
+
+   <dl>
+    <dt>product-code</dt>
+    <dd>An integer that names the product in the manufacturer's catalog.</dd>
+    <dt>name</dt>
+    <dd>A brief description of the product.</dd>
+    <dt>scale</dt>
+    <dd>One of "HO", "1", or "Z" (potentially with leading or trailing
+    whitespace), indicating the scale of the product.</dd>
+    <dt>digital</dt>
+    <dd>If present, one of "Digital", "Delta", or "Systems"
+    (potentially with leading or trailing whitespace) indicating that
+    the product has a digital decoder of the given type.</dd>
+    <dt>track-type</dt>
+    <dd>For track-specific products, one of "K", "M", "C" (potentially
+    with leading or trailing whitespace) indicating the type of track
+    for which the product is intended.</dd>
+   </dl>
+
+   <p>This vocabulary has four defined <span>item types</span>:</p>
+
+   <dl>
+    <dt>https://md.example.com/loco</dt>
+    <dd>Rolling stock with an engine</dd>
+    <dt>https://md.example.com/passengers</dt>
+    <dd>Passenger rolling stock</dd>
+    <dt>https://md.example.com/track</dt>
+    <dd>Track pieces</dd>
+    <dt>https://md.example.com/lighting</dt>
+    <dd>Equipment with lighting</dd>
+   </dl>
+
+   <p>Each <span data-x="concept-item">item</span> that uses this vocabulary can be given one or more
+   of these types, depending on what the product is.</p>
+
+   <p>Thus, a locomotive might be marked up as:</p>
+
+<pre>&lt;dl itemscope itemtype="https://md.example.com/loco
+                        https://md.example.com/lighting">
+ &lt;dt>Name:
+ &lt;dd itemprop="name">Tank Locomotive (DB 80)
+ &lt;dt>Product code:
+ &lt;dd itemprop="product-code">33041
+ &lt;dt>Scale:
+ &lt;dd itemprop="scale">HO
+ &lt;dt>Digital:
+ &lt;dd itemprop="digital">Delta
+&lt;/dl></pre>
+
+   <p>A turnout lantern retrofit kit might be marked up as:</p>
+
+   <pre>&lt;dl itemscope itemtype="https://md.example.com/track
+                       https://md.example.com/lighting">
+ &lt;dt>Name:
+ &lt;dd itemprop="name">Turnout Lantern Kit
+ &lt;dt>Product code:
+ &lt;dd itemprop="product-code">74470
+ &lt;dt>Purpose:
+ &lt;dd>For retrofitting 2 &lt;span itemprop="track-type">C&lt;/span> Track
+ turnouts. &lt;meta itemprop="scale" content="HO">
+&lt;/dl></pre>
+
+   <p>A passenger car with no lighting might be marked up as:</p>
+
+   <pre>&lt;dl itemscope itemtype="https://md.example.com/passengers">
+ &lt;dt>Name:
+ &lt;dd itemprop="name">Express Train Passenger Car (DB Am 203)
+ &lt;dt>Product code:
+ &lt;dd itemprop="product-code">8710
+ &lt;dt>Scale:
+ &lt;dd itemprop="scale">Z
+&lt;/dl></pre>
+
+   <p>Great care is necessary when creating new vocabularies. Often, a hierarchical approach to
+   types can be taken that results in a vocabulary where each item only ever has a single type,
+   which is generally much simpler to manage.</p>
+
+  </div>
+
+
+  

@@ -1,0 +1,55 @@
+<h4>Making entire documents editable: The <code data-x="dom-document-designMode">designMode</code> IDL attribute</h4>
+
+  <div w-nodev>
+
+  <p>Documents have a <dfn id="designMode"
+  data-x="dom-document-designMode"><code>designMode</code></dfn>, which can be either enabled or
+  disabled.</p>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-designMode">designMode</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns "<code data-x="">on</code>" if the document is editable, and "<code
+    data-x="">off</code>" if it isn't.</p>
+
+    <p>Can be set, to change the document's current state. This focuses the document and resets the
+    selection in that document.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <code data-x="dom-document-designMode">designMode</code> IDL attribute on the
+  <code>Document</code> object takes two values, "<code data-x="">on</code>" and "<code
+  data-x="">off</code>". On setting, the new value must be compared in an <span>ASCII
+  case-insensitive</span> manner to these two values; if it matches the "<code data-x="">on</code>"
+  value, then <code data-x="dom-document-designMode">designMode</code> must be enabled, and if it
+  matches the "<code data-x="">off</code>" value, then <code
+  data-x="dom-document-designMode">designMode</code> must be disabled. Other values must be
+  ignored.</p>
+
+  <p>On getting, if <code data-x="dom-document-designMode">designMode</code> is enabled, the IDL
+  attribute must return the value "<code data-x="">on</code>"; otherwise it is disabled, and the
+  attribute must return the value "<code data-x="">off</code>".</p>
+
+  <p>The last state set must persist until the document is destroyed or the state is changed.
+  Initially, documents must have their <code data-x="dom-document-designMode">designMode</code>
+  disabled.</p>
+
+  <p>When the <code data-x="dom-document-designMode">designMode</code> changes from being disabled to
+  being enabled, the user agent must <span>immediately</span> reset the document's <span>active range</span>'s
+  start and end boundary points to be at the start of the <code>Document</code> and then run the
+  <span>focusing steps</span> for the <span>document element</span> of the <code>Document</code>, if
+  non-null.</p>
+
+  </div>
+
+
+  

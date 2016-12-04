@@ -1,0 +1,69 @@
+<h5>Transparent content models</h5>
+
+  <p>Some elements are described as <dfn>transparent</dfn>; they have "transparent" in the
+  description of their content model. The content model of a <span>transparent</span> element is
+  derived from the content model of its parent element: the elements required in the part of the
+  content model that is "transparent" are the same elements as required in the part of the content
+  model of the parent of the transparent element in which the transparent element finds itself.</p>
+
+  <div class="example">
+
+   <p>For instance, an <code>ins</code> element inside a <code>ruby</code> element cannot contain an
+   <code>rt</code> element, because the part of the <code>ruby</code> element's content model that
+   allows <code>ins</code> elements is the part that allows <span>phrasing content</span>, and the
+   <code>rt</code> element is not <span>phrasing content</span>.</p>
+
+  </div>
+
+<!--(as far as I can tell, there's no way to violate this requirement
+     without first violating the earlier requirement)
+  <p>Furthermore, when a content model includes a part that is "transparent", those parts must not
+  contain content that would not be conformant if all transparent elements in the tree were
+  replaced, in their parent element, by the <span data-x="concept-html-contents">contents</span> in
+  the "transparent" part of their content model, retaining order.</p>
+
+  <div class="example">
+
+   <p>Consider the following markup fragment:</p>
+
+   <pre>&lt;p>Hello &lt;a href="world.html">&lt;em>wonderful&lt;/em> world&lt;/a>!&lt;/p></pre>
+
+   <p>Its DOM looks like the following:</p>
+
+   <ul class="domTree"><li class="t1"><code>p</code><ul><li class="t3"><code>#text</code>: <span data-x="">Hello </span></li><li class="t1"><code>a</code> <span class="t2" data-x=""><code class="attribute name" data-x="attr-hyperlink-href">href</code>="<code class="attribute value" data-x="">world.html</code>"</span><ul><li class="t1"><code>em</code><ul><li class="t3"><code>#text</code>: <span data-x="">wonderful</span></li></ul></li><li class="t3"><code>#text</code>: <span data-x=""> world</span></li></ul></li><li class="t3"><code>#text</code>: <span data-x="">!</span></li></ul></li></ul>
+
+   <p>The content model of the <code>a</code> element is <span>transparent</span>. To see if its
+   contents are conforming, therefore, the element is replaced by its contents:</p>
+
+   <ul class="domTree"><li class="t1"><code>p</code><ul><li class="t3"><code>#text</code>: <span data-x="">Hello </span></li><li class="t1"><code>em</code><ul><li class="t3"><code>#text</code>: <span data-x="">wonderful</span></li></ul></li><li class="t3"><code>#text</code>: <span data-x=""> world</span></li><li class="t3"><code>#text</code>: <span data-x="">!</span></li></ul></li></ul>
+
+   <p>Since that is conforming, the contents of the <code>a</code> are conforming in the original
+   fragment (there is no complication regarding the various parts of the <code>p</code> element's
+   content model, since that element's content model has only one part).</p>
+
+  </div>
+-->
+
+  <p class="note">In some cases, where transparent elements are nested in each other, the process
+  has to be applied iteratively.</p>
+
+  <div class="example">
+
+   <p>Consider the following markup fragment:</p>
+
+   <pre>&lt;p>&lt;object>&lt;param>&lt;ins>&lt;map>&lt;a href="/">Apples&lt;/a>&lt;/map>&lt;/ins>&lt;/object>&lt;/p></pre>
+
+   <p>To check whether "Apples" is allowed inside the <code>a</code> element, the content models are
+   examined. The <code>a</code> element's content model is transparent, as is the <code>map</code>
+   element's, as is the <code>ins</code> element's, as is the part of the <code>object</code>
+   element's in which the <code>ins</code> element is found. The <code>object</code> element is
+   found in the <code>p</code> element, whose content model is <span>phrasing content</span>. Thus,
+   "Apples" is allowed, as text is phrasing content.</p>
+
+  </div>
+
+  <p>When a transparent element has no parent, then the part of its content model that is
+  "transparent" must instead be treated as accepting any <span>flow content</span>.</p>
+
+
+  

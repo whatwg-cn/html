@@ -1,0 +1,41 @@
+<h4>The <dfn><code>dd</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>After <code>dt</code> or <code>dd</code> elements inside <code>dl</code> elements.</dd>
+   <dd>After <code>dt</code> or <code>dd</code> elements inside <code>div</code> elements that are children of a <code>dl</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>dd</code> element <span>represents</span> the description, definition, or value, part
+  of a term-description group in a description list (<code>dl</code> element).</p>
+
+  <div class="example">
+
+   <p>A <code>dl</code> can be used to define a vocabulary list, like in a dictionary. In the
+   following example, each entry, given by a <code>dt</code> with a <code>dfn</code>, has several
+   <code>dd</code>s, showing the various parts of the definition.</p>
+
+   <!-- the actual pronunciations below are nonsense. -->
+   <pre>&lt;dl>
+ &lt;dt>&lt;dfn>happiness&lt;/dfn>&lt;/dt>
+ &lt;dd class="pronunciation">/'h&aelig; p. nes/&lt;/dd>
+ &lt;dd class="part-of-speech">&lt;i>&lt;abbr>n.&lt;/abbr>&lt;/i>&lt;/dd>
+ &lt;dd>The state of being happy.&lt;/dd>
+ &lt;dd>Good fortune; success. &lt;q>Oh &lt;b>happiness&lt;/b>! It worked!&lt;/q>&lt;/dd>
+ &lt;dt>&lt;dfn>rejoice&lt;/dfn>&lt;/dt>
+ &lt;dd class="pronunciation">/ri jois'/&lt;/dd>
+ &lt;dd>&lt;i class="part-of-speech">&lt;abbr>v.intr.&lt;/abbr>&lt;/i> To be delighted oneself.&lt;/dd>
+ &lt;dd>&lt;i class="part-of-speech">&lt;abbr>v.tr.&lt;/abbr>&lt;/i> To cause one to be delighted.&lt;/dd>
+&lt;/dl></pre>
+  </div>
+
+
+  

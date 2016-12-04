@@ -1,0 +1,70 @@
+<h4>Garbage collection</h4>
+
+  <p>A <code>WebSocket</code> object whose <code data-x="dom-WebSocket-readyState">readyState</code>
+  attribute's value was set to <code data-x="dom-WebSocket-CONNECTING">CONNECTING</code> (0) as of
+  the last time the <span>event loop</span> reached <a href="#step1">step 1</a> must not be garbage collected if there
+  are any event listeners registered for <code data-x="event-open">open</code> events, <code
+  data-x="event-message">message</code> events, <code data-x="event-error">error</code> events, or
+  <code data-x="event-close">close</code> events.</p>
+
+  <p>A <code>WebSocket</code> object whose <code data-x="dom-WebSocket-readyState">readyState</code>
+  attribute's value was set to <code data-x="dom-WebSocket-OPEN">OPEN</code> (1) as of the last time
+  the <span>event loop</span> reached <a href="#step1">step 1</a> must not be garbage collected if there are any event
+  listeners registered for <code data-x="event-message">message</code> events, <code
+  data-x="event-error">error</code>, or <code data-x="event-close">close</code> events.</p>
+
+  <p>A <code>WebSocket</code> object whose <code data-x="dom-WebSocket-readyState">readyState</code>
+  attribute's value was set to <code data-x="dom-WebSocket-CLOSING">CLOSING</code> (2) as of the
+  last time the <span>event loop</span> reached <a href="#step1">step 1</a> must not be garbage collected if there are
+  any event listeners registered for <code data-x="event-error">error</code> or <code
+  data-x="event-close">close</code> events.</p>
+
+  <p>A <code>WebSocket</code> object with <i data-x="concept-websocket-established">an
+  established connection</i> that has data queued to be transmitted to the network must not be
+  garbage collected. <ref spec=WSP></p>
+
+  <p>If a <code>WebSocket</code> object is garbage collected while its connection is still open, the
+  user agent must <i data-x="concept-websocket-start-closing-handshake">start the WebSocket closing
+  handshake</i>, with no status code<!--CLOSE CODE--> for the Close message. <ref spec=WSP></p>
+
+  <hr>
+
+  <p>If a user agent is to <dfn>make disappear</dfn> a <code>WebSocket</code> object (this happens
+  when a <code>Document</code> object goes away), the user agent must follow the first appropriate
+  set of steps from the following list:</p>
+
+  <dl class="switch">
+
+   <dt>If the WebSocket connection is not yet <i data-x="concept-websocket-established">established</i> <ref spec=WSP></dt>
+
+   <dd>
+
+    <p><i data-x="concept-websocket-fail">Fail the WebSocket connection</i>. <ref spec=WSP></p>
+
+   </dd>
+
+
+   <dt>If the WebSocket closing handshake has not yet been <i
+   data-x="concept-websocket-closing-handshake">started</i> <ref spec=WSP></dt>
+
+   <dd>
+
+    <p><i data-x="concept-websocket-start-closing-handshake">Start the WebSocket closing
+    handshake</i>, with the status code<!--CLOSE CODE--> to use in the WebSocket Close message being
+    1001. <ref spec=WSP></p>
+
+   </dd>
+
+
+   <dt>Otherwise</dt>
+
+   <dd>
+
+    <p>Do nothing.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

@@ -1,0 +1,348 @@
+<h5 id="common-input-element-apis">Common <code>input</code> element APIs</h5>
+
+  <dl class="domintro">
+
+   <dt><var>input</var> . <code subdfn data-x="dom-input-value">value</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current <span data-x="concept-fe-value">value</span> of the form control.</p>
+
+    <p>Can be set, to change the value.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if it is
+    set to any value other than the empty string when the control is a file upload control.</p>
+
+   </dd>
+
+   <dt><var>input</var> . <code subdfn data-x="dom-input-checked">checked</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current <span data-x="concept-fe-checked">checkedness</span> of the form
+    control.</p>
+
+    <p>Can be set, to change the <span data-x="concept-fe-checked">checkedness</span>.</p>
+
+   </dd>
+
+   <dt><var>input</var> . <code subdfn data-x="dom-input-files">files</code> <!-- [ = <var>files</var> ] --></dt>
+
+   <dd>
+
+    <p>Returns a <code>FileList</code> object listing the <span
+    data-x="concept-input-type-file-selected">selected files</span> of the form control.</p>
+
+    <p>Returns null if the control isn't a file control.</p>
+
+<!--
+    <p>Can be set to an array of <code>File</code> or <code>Blob</code> instances.</p>-
+-->
+
+   </dd>
+
+   <dt><var>input</var> . <code subdfn data-x="dom-input-valueAsDate">valueAsDate</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns a <code>Date</code> object representing the form control's <span
+    data-x="concept-fe-value">value</span>, if applicable; otherwise, returns null.</p>
+
+    <p>Can be set, to change the value.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the
+    control isn't date- or time-based.</p>
+
+   </dd>
+
+   <dt><var>input</var> . <code subdfn data-x="dom-input-valueAsNumber">valueAsNumber</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns a number representing the form control's <span data-x="concept-fe-value">value</span>,
+    if applicable; otherwise, returns NaN.</p>
+
+    <p>Can be set, to change the value. Setting this to NaN will set the underlying value to the
+    empty string.</p>
+
+    <p>Throws an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the
+    control is neither date- or time-based nor numeric.</p>
+
+   </dd>
+
+   <dt><var>input</var> . <code subdfn data-x="dom-input-stepUp">stepUp</code>( [ <var>n</var> ] )</dt>
+   <dt><var>input</var> . <code subdfn data-x="dom-input-stepDown">stepDown</code>( [ <var>n</var> ] )</dt>
+
+   <dd>
+
+    <p>Changes the form control's <span data-x="concept-fe-value">value</span> by the value given in
+    the <code data-x="attr-input-step">step</code> attribute, multiplied by <var>n</var>.
+    The default value for <var>n</var> is 1.</p>
+
+    <p>Throws <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> if the control
+    is neither date- or time-based nor numeric, or if the <code data-x="attr-input-step">step</code>
+    attribute's value is "<code data-x="">any</code>".</p>
+
+   </dd>
+
+   <dt><var>input</var> . <code subdfn data-x="dom-input-list">list</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>datalist</code> element indicated by the <code
+    data-x="attr-input-list">list</code> attribute.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-input-value">value</code></dfn> IDL attribute allows scripts to
+  manipulate the <span data-x="concept-fe-value">value</span> of an <code>input</code> element. The
+  attribute is in one of the following modes, which define its behavior:</p>
+
+  <dl>
+
+   <dt><dfn data-x="dom-input-value-value">value</dfn>
+
+   <dd>
+
+    <p>On getting, it must return the current <span data-x="concept-fe-value">value</span> of the
+    element. On setting, it must set the element's <span data-x="concept-fe-value">value</span> to
+    the new value, set the element's <span data-x="concept-input-value-dirty-flag">dirty value
+    flag</span> to true, invoke the <span>value sanitization algorithm</span>, if the element's
+    <code data-x="attr-input-type">type</code> attribute's current state defines one, and then, if
+    the element has a text entry cursor position, should move the text entry cursor position to the
+    end of the text control, unselecting any selected text and resetting the selection direction to
+    <i>none</i>.</p>
+
+   </dd>
+
+   <dt><dfn data-x="dom-input-value-default">default</dfn>
+
+   <dd>
+
+    <p>On getting, if the element has a <code data-x="attr-input-value">value</code> attribute, it
+    must return that attribute's value; otherwise, it must return the empty string. On setting, it
+    must set the element's <code data-x="attr-input-value">value</code> attribute to the new
+    value.</p>
+
+   </dd>
+
+   <dt><dfn data-x="dom-input-value-default-on">default/on</dfn>
+
+   <dd>
+
+    <p>On getting, if the element has a <code data-x="attr-input-value">value</code> attribute, it
+    must return that attribute's value; otherwise, it must return the string "<code
+    data-x="">on</code>". On setting, it must set the element's <code
+    data-x="attr-input-value">value</code> attribute to the new value.</p>
+
+   </dd>
+
+   <dt><dfn data-x="dom-input-value-filename">filename</dfn>
+
+   <dd id="fakepath-orly">
+
+    <p>On getting, it must return the string "<code data-x="">C:\fakepath\</code>" followed by the
+    name of the first file in the list of <span data-x="concept-input-type-file-selected">selected
+    files</span>, if any, or the empty string if the list is empty. On setting, if the new value is
+    the empty string, it must empty the list of <span
+    data-x="concept-input-type-file-selected">selected files</span>; otherwise, it must throw an
+    <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>.</p>
+
+    <p class="note">This "fakepath" requirement is a sad accident of history. See <a
+    href="#fakepath-srsly">the example in the File Upload state section</a> for more
+    information.</p>
+
+    <p class="note">Since <span data-x="concept-input-file-path">path components</span> are not
+    permitted in file names in the list of <span data-x="concept-input-type-file-selected">selected
+    files</span>, the "\fakepath\" cannot be mistaken for a path component.</p>
+
+   </dd>
+
+  </dl>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-input-checked">checked</code></dfn> IDL attribute allows scripts to
+  manipulate the <span data-x="concept-fe-checked">checkedness</span> of an <code>input</code>
+  element. On getting, it must return the current <span
+  data-x="concept-fe-checked">checkedness</span> of the element; and on setting, it must set the
+  element's <span data-x="concept-fe-checked">checkedness</span> to the new value and set the
+  element's <span data-x="concept-input-checked-dirty-flag">dirty checkedness flag</span> to
+  true.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-input-files">files</code></dfn> IDL attribute allows scripts to
+  access the element's <span data-x="concept-input-type-file-selected">selected files</span>. On
+  getting, if the IDL attribute <span data-x="concept-input-apply">applies</span>, it must return a
+  <code>FileList</code> object that represents the current <span
+  data-x="concept-input-type-file-selected">selected files</span>. The same object must be returned
+  until the list of <span data-x="concept-input-type-file-selected">selected files</span> changes. If
+  the IDL attribute <span data-x="do not apply">does not apply</span>, then it must instead return
+  null. <ref spec=FILEAPI></p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-input-valueAsDate">valueAsDate</code></dfn> IDL attribute represents
+  the <span data-x="concept-fe-value">value</span> of the element, interpreted as a date.</p>
+
+  <p>On getting, if the <code data-x="dom-input-valueAsDate">valueAsDate</code> attribute <span
+  data-x="do not apply">does not apply</span>, as defined for the <code>input</code> element's <code
+  data-x="attr-input-type">type</code> attribute's current state, then return null. Otherwise, run
+  the <span data-x="concept-input-value-string-date">algorithm to convert a string to a
+  <code>Date</code> object</span> defined for that state to the element's <span
+  data-x="concept-fe-value">value</span>; if the algorithm returned a <code>Date</code> object, then
+  return it, otherwise, return null.</p>
+
+  <p>On setting, if the <code data-x="dom-input-valueAsDate">valueAsDate</code> attribute <span
+  data-x="do not apply">does not apply</span>, as defined for the <code>input</code> element's <code
+  data-x="attr-input-type">type</code> attribute's current state, then throw an
+  <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>; otherwise, if the new
+  value is not null and not a <code >Date</code> object throw a <code>TypeError</code> exception;
+  otherwise if the new value is null or a <code>Date</code> object representing the NaN time value,
+  then set the <span data-x="concept-fe-value">value</span> of the element to the empty string;
+  otherwise, run the <span data-x="concept-input-value-date-string">algorithm to convert a
+  <code>Date</code> object to a string</span>, as defined for that state, on the new value, and set
+  the <span data-x="concept-fe-value">value</span> of the element to the resulting string.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-input-valueAsNumber">valueAsNumber</code></dfn> IDL attribute
+  represents the <span data-x="concept-fe-value">value</span> of the element, interpreted as a
+  number.</p>
+
+  <p>On getting, if the <code data-x="dom-input-valueAsNumber">valueAsNumber</code> attribute <span
+  data-x="do not apply">does not apply</span>, as defined for the <code>input</code> element's <code
+  data-x="attr-input-type">type</code> attribute's current state, then return a Not-a-Number (NaN)
+  value. Otherwise, run the <span data-x="concept-input-value-string-number">algorithm to convert a
+  string to a number</span> defined for that state to the element's <span
+  data-x="concept-fe-value">value</span>; if the algorithm returned a number, then return it,
+  otherwise, return a Not-a-Number (NaN) value.</p>
+
+  <p>On setting, if the new value is infinite, then throw a <code>TypeError</code> exception.
+  Otherwise, if the <code data-x="dom-input-valueAsNumber">valueAsNumber</code> attribute <span
+  data-x="do not apply">does not apply</span>, as defined for the <code>input</code> element's <code
+  data-x="attr-input-type">type</code> attribute's current state, then throw an
+  <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>. Otherwise, if the new
+  value is a Not-a-Number (NaN) value, then set the <span data-x="concept-fe-value">value</span> of
+  the element to the empty string. Otherwise, run the <span
+  data-x="concept-input-value-number-string">algorithm to convert a number to a string</span>, as
+  defined for that state, on the new value, and set the <span data-x="concept-fe-value">value</span>
+  of the element to the resulting string.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-input-stepDown">stepDown(<var>n</var>)</code></dfn> and <dfn><code data-x="dom-input-stepUp">stepUp(<var>n</var>)</code></dfn> methods, when invoked,
+  must run the following algorithm:</p>
+
+  <ol>
+
+   <li><p>If the <code data-x="dom-input-stepDown">stepDown()</code> and <code
+   data-x="dom-input-stepUp">stepUp()</code> methods <span>do not apply</span>, as defined for the
+   <code>input</code> element's <code data-x="attr-input-type">type</code> attribute's current state,
+   then throw an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>, and abort
+   these steps.</p></li>
+
+   <li><p>If the element has no <span data-x="concept-input-step">allowed value step</span>, then
+   throw an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>, and abort these
+   steps.</p></li>
+
+   <li><p>If the element has a <span data-x="concept-input-min">minimum</span> and a <span
+   data-x="concept-input-max">maximum</span> and the <span data-x="concept-input-min">minimum</span>
+   is greater than the <span data-x="concept-input-max">maximum</span>, then abort these steps.</p>
+
+   <li><p>If the element has a <span data-x="concept-input-min">minimum</span> and a <span
+   data-x="concept-input-max">maximum</span> and there is no value greater than or equal to the
+   element's <span data-x="concept-input-min">minimum</span> and less than or equal to the element's
+   <span data-x="concept-input-max">maximum</span> that, when subtracted from the <span
+   data-x="concept-input-min-zero">step base</span>, is an integral multiple of the <span
+   data-x="concept-input-step">allowed value step</span>, then abort these steps.</p>
+
+   <li><p>If applying the <span data-x="concept-input-value-string-number">algorithm to convert a
+   string to a number</span> to the string given by the element's <span
+   data-x="concept-fe-value">value</span> does not result in an error, then let <var>value</var> be the result of that algorithm. Otherwise, let <var>value</var>
+   be zero.</p></li>
+
+   <li><p>Let <var>valueBeforeStepping</var> be <var>value</var>.</p></li>
+
+   <li>
+
+    <p>If <var>value</var> subtracted from the <span data-x="concept-input-min-zero">step
+    base</span> is not an integral multiple of the <span data-x="concept-input-step">allowed value
+    step</span>, then set <var>value</var> to the nearest value that, when subtracted from
+    the <span data-x="concept-input-min-zero">step base</span>, is an integral multiple of the <span
+    data-x="concept-input-step">allowed value step</span>, and that is less than <var>value</var> if
+    the method invoked was the <code data-x="dom-input-stepDown">stepDown()</code> method, and more
+    than <var>value</var> otherwise.</p>
+
+    <p>Otherwise (<var>value</var> subtracted from the <span
+    data-x="concept-input-min-zero">step base</span> is an integral multiple of the <span
+    data-x="concept-input-step">allowed value step</span>), run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>n</var> be the argument.</p></li>
+
+     <li><p>Let <var>delta</var> be the <span data-x="concept-input-step">allowed value
+     step</span> multiplied by <var>n</var>.</p></li>
+
+     <li><p>If the method invoked was the <code data-x="dom-input-stepDown">stepDown()</code> method,
+     negate <var>delta</var>.</p></li>
+
+     <li><p>Let <var>value</var> be the result of adding <var>delta</var> to <var>value</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the element has a <span data-x="concept-input-min">minimum</span>, and <var>value</var> is less than that <span data-x="concept-input-min">minimum</span>, then set
+   <var>value</var> to the smallest value that, when subtracted from the <span
+   data-x="concept-input-min-zero">step base</span>, is an integral multiple of the <span
+   data-x="concept-input-step">allowed value step</span>, and that is more than or equal to <var>minimum</var>.</p></li>
+
+   <li><p>If the element has a <span data-x="concept-input-min">maximum</span>, and <var>value</var> is greater than that <span data-x="concept-input-min">maximum</span>, then
+   set <var>value</var> to the largest value that, when subtracted from the <span
+   data-x="concept-input-min-zero">step base</span>, is an integral multiple of the <span
+   data-x="concept-input-step">allowed value step</span>, and that is less than or equal to <var>maximum</var>.</p></li>
+
+   <li>
+    <p>If either the method invoked was the <code data-x="dom-input-stepDown">stepDown()</code>
+    method and <var>value</var> is greater than <var>valueBeforeStepping</var>, or the method
+    invoked was the <code data-x="dom-input-stepUp">stepUp()</code> method and <var>value</var> is
+    less than <var>valueBeforeStepping</var>, then abort these steps.</p>
+
+    <div class="example">
+     <p>This ensures that invoking the <code data-x="dom-input-stepUp">stepUp()</code> method on the
+     <code>input</code> element in the following example does not change the <span
+     data-x="concept-fe-value">value</span> of that element:</p>
+
+     <pre>&lt;input type=number value=1 max=0></pre>
+    </div>
+   </li>
+
+   <li><p>Let <var>value as string</var> be the result of running the <span
+   data-x="concept-input-value-number-string">algorithm to convert a number to a string</span>, as
+   defined for the <code>input</code> element's <code data-x="attr-input-type">type</code>
+   attribute's current state, on <var>value</var>.</p></li>
+
+   <li><p>Set the <span data-x="concept-fe-value">value</span> of the element to <var>value
+   as string</var>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-input-list">list</code></dfn> IDL attribute must return the current
+  <span data-x="concept-input-list">suggestions source element</span>, if any, or null otherwise.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+  <div w-nodev>
+
+  

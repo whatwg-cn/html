@@ -1,0 +1,37 @@
+<h4 id="read-html"><dfn data-x="navigate-html">Page load processing model for HTML files</dfn></h4>
+
+  <p>When an HTML document is to be loaded in a <span>browsing context</span>, the user agent must
+  <span>queue a task</span> to create a <code>Document</code> object, mark it as being an <span
+  data-x="HTML documents">HTML document</span>, set its <span
+  data-x="concept-document-content-type">content type</span> to "<code data-x="">text/html</code>",
+  <span>initialize the <code>Document</code> object</span>, and finally create an <span>HTML
+  parser</span> and associate it with the <code>Document</code>. Each <span
+  data-x="concept-task">task</span> that the <span>networking task source</span> places on the
+  <span>task queue</span> while fetching runs must then fill the parser's <span>input byte
+  stream</span> with the fetched bytes and cause the <span>HTML parser</span> to perform the
+  appropriate processing of the input stream.</p>
+
+  <p class="note">The <span>input byte stream</span> converts bytes into characters for use in the
+  <span data-x="tokenization">tokenizer</span>. This process relies, in part, on character encoding
+  information found in the real <span data-x="Content-Type">Content-Type metadata</span> of the
+  resource; the computed type is not used for this purpose.</p>
+
+  <!-- next two paragraphs are nearly identical to the navigate-text section, keep them in sync -->
+
+  <p>When no more bytes are available, the user agent must <span>queue a task</span> for the parser
+  to process the implied EOF character, which eventually causes a <code
+  data-x="event-load">load</code> event to be fired.</p>
+
+  <p>After creating the <code>Document</code> object, but before any script execution, certainly
+  before the parser <span data-x="stop parsing">stops</span>, the user agent must <span>update the
+  session history with the new page</span>.</p>
+
+  <p class="note"><span data-x="concept-appcache-init">Application cache selection</span> happens <a
+  href="#parser-appcache">in the HTML parser</a>.</p>
+
+  <p>The <span>task source</span> for the two tasks mentioned in this section must be the
+  <span>networking task source</span>.</p>
+
+
+
+  

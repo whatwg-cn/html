@@ -1,0 +1,68 @@
+<h3 id="windoworworkerglobalscope-mixin">The <code>WindowOrWorkerGlobalScope</code> mixin</h3>
+
+  <p>The <code>WindowOrWorkerGlobalScope</code> mixin is for use of APIs that are to be exposed on
+  <code>Window</code> and <code>WorkerGlobalScope</code> objects.</p>
+
+  <p class="note">Other standards are encouraged to further extend it using <code data-x="">partial
+  interface <span>WindowOrWorkerGlobalScope</span> { &hellip; };</code> along with an appropriate
+  reference.</p>
+
+  <pre class="idl">typedef (DOMString or <span data-x="idl-Function">Function</span>) <dfn>TimerHandler</dfn>;
+
+[NoInterfaceObject, Exposed=(Window,Worker)]
+interface <dfn>WindowOrWorkerGlobalScope</dfn> {
+  [Replaceable] readonly attribute USVString <span data-x="dom-origin">origin</span>;
+
+  // base64 utility methods
+  DOMString <span data-x="dom-btoa">btoa</span>(DOMString data);
+  DOMString <span data-x="dom-atob">atob</span>(DOMString data);
+
+  // timers
+  long <span data-x="dom-setTimeout">setTimeout</span>(<span>TimerHandler</span> handler, optional long timeout = 0, any... arguments);
+  void <span data-x="dom-clearTimeout">clearTimeout</span>(optional long handle = 0);
+  long <span data-x="dom-setInterval">setInterval</span>(<span>TimerHandler</span> handler, optional long timeout = 0, any... arguments);
+  void <span data-x="dom-clearInterval">clearInterval</span>(optional long handle = 0);
+
+  // ImageBitmap
+  Promise&lt;<span>ImageBitmap</span>&gt; <span data-x="dom-createImageBitmap">createImageBitmap</span>(<span>ImageBitmapSource</span> image, optional <span>ImageBitmapOptions</span> options);
+  Promise&lt;<span>ImageBitmap</span>&gt; <span data-x="dom-createImageBitmap">createImageBitmap</span>(<span>ImageBitmapSource</span> image, long sx, long sy, long sw, long sh, optional <span>ImageBitmapOptions</span> options);
+};
+<span>Window</span> implements <span>WindowOrWorkerGlobalScope</span>;
+<span>WorkerGlobalScope</span> implements <span>WindowOrWorkerGlobalScope</span>;</pre>
+
+  <!-- Demonstrating the need for wrapping of the timeout argument value treated as long rather than clamping or treating as double:
+          https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1228
+       Demonstrating the need for the timeout argument to be signed rather than unsigned:
+          https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=1229
+  -->
+
+  <dl class="domintro">
+   <dt><var>origin</var> = self . <code subdfn data-x="dom-origin">origin</code></dt>
+
+   <dd><p>Returns the global object's <span>origin</span>, serialized as string.</p></dd>
+  </dl>
+
+  <div class="example">
+   <p>Developers are strongly encouraged to use <code data-x="">self.origin</code> over <code
+   data-x="">location.origin</code>. The former returns the <span>origin</span> of the environment,
+   the latter of the URL of the environment. Imagine the following script executing in a document on
+   <code data-x="">https://stargate.example/</code>:</p>
+
+   <pre>var frame = document.createElement("iframe")
+frame.onload = function() {
+  var frameWin = frame.contentWindow
+  console.log(frameWin.location.origin) // "null"
+  console.log(frameWin.origin) // "https://stargate.example"
+}
+document.body.appendChild(frame)</pre>
+
+   <p><code data-x="">self.origin</code> is a more reliable security indicator.</p>
+  </div>
+
+  <p>The <dfn data-x="dom-origin"><code>origin</code></dfn> attribute's getter must return this
+  object's <span>relevant settings object</span>'s <span
+  data-x="concept-settings-object-origin">origin</span>, <span data-x="Unicode serialization of an
+  origin">serialized</span>.</p>
+
+
+  

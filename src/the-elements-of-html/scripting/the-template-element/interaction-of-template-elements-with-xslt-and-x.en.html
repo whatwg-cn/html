@@ -1,0 +1,30 @@
+<h5 id="template-XSLT-XPath">Interaction of <code>template</code> elements with XSLT and XPath</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>This specification does not define how XSLT and XPath interact with the <code>template</code>
+  element. However, in the absence of another specification actually defining this, here are some
+  guidelines for implementors, which are intended to be consistent with other processing described
+  in this specification:</p>
+
+  <ul>
+
+   <li><p>An XSLT processor based on an XML parser that acts <span data-x="xml parser">as described
+   in this specification</span> needs to act as if <code>template</code> elements contain as
+   descendants their <span>template contents</span> for the purposes of the transform.</p></li>
+
+   <li><p>An XSLT processor that outputs a DOM needs to ensure that nodes that would go into a
+   <code>template</code> element are instead placed into the element's <span>template
+   contents</span>.</p></li>
+
+   <li><p>XPath evaluation using the XPath DOM API when applied to a <code>Document</code> parsed
+   using the <span>HTML parser</span> or the <span>XML parser</span> described in this specification
+   needs to ignore <span>template contents</span>.</p>
+
+  </ul>
+
+  </div>
+
+
+
+  

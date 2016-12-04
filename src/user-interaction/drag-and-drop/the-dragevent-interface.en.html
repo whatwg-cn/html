@@ -1,0 +1,202 @@
+<h4>The <code>DragEvent</code> interface</h4>
+
+  <p>The drag-and-drop processing model involves several events. They all use the
+  <code>DragEvent</code> interface.</p>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>DragEventInit</span> eventInitDict)]
+interface <dfn>DragEvent</dfn> : <span>MouseEvent</span> {
+  readonly attribute <span>DataTransfer</span>? <span data-x="dom-DragEvent-dataTransfer">dataTransfer</span>;
+};
+
+dictionary <dfn>DragEventInit</dfn> : <span>MouseEventInit</span> {
+  <span>DataTransfer</span>? dataTransfer = null;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>event</var> . <code subdfn data-x="dom-DragEvent-dataTransfer">dataTransfer</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>DataTransfer</code> object for the event.</p>
+
+   </dd>
+
+  </dl>
+
+  <p class="note">Although, for consistency with other event interfaces, the <code>DragEvent</code>
+  interface has a constructor, it is not particularly useful. In particular, there's no way to
+  create a useful <code>DataTransfer</code> object from script, as <code>DataTransfer</code> objects
+  have a processing and security model that is coordinated by the browser during drag-and-drops.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-DragEvent-dataTransfer">dataTransfer</code></dfn> attribute of the
+  <code>DragEvent</code> interface must return the value it was initialized to. It represents the
+  context information for the event.</p>
+
+  </div>
+
+  <div w-nodev>
+
+  <p>When a user agent is required to <dfn>fire a DND event</dfn> named <var>e</var> at an element,
+  using a particular <span>drag data store</span>, and optionally with a specific <var>related
+  target</var>, the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If no specific <var>related target</var> was provided, set <var>related target</var> to
+   null.</p></li>
+
+   <li><p>Let <var>window</var> be the <code>Window</code> object of the <code>Document</code>
+   object of the specified target element.</p></li>
+
+   <li>
+
+    <p>If <var>e</var> is <code data-x="event-dnd-dragstart">dragstart</code>, set the <span>drag
+    data store mode</span> to the <span data-x="concept-dnd-rw">read/write mode</span>.</p>
+
+    <p>If <var>e</var> is <code data-x="event-dnd-drop">drop</code>, set the <span>drag data store
+    mode</span> to the <span data-x="concept-dnd-ro">read-only mode</span>.</p>
+
+   </li>
+
+   <li><p>Let <var>dataTransfer</var> be a newly created <code>DataTransfer</code> object
+   associated with the given <span>drag data store</span>.</p></li>
+
+   <li><!--en-GB--><p id="effectAllowed-initialisation">Set the <code
+   data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> attribute to the <span>drag data
+   store</span>'s <span>drag data store allowed effects state</span>.</p></li>
+
+   <li>
+
+    <!--en-GB--><p id="dropEffect-initialisation">Set the <code
+    data-x="dom-DataTransfer-dropEffect">dropEffect</code> attribute to "<code
+    data-x="dom-DataTransfer-dropEffect-none">none</code>" if <var>e</var> is <code
+    data-x="event-dnd-dragstart">dragstart</code>, <code data-x="event-dnd-drag">drag</code>, <code
+    data-x="event-dnd-dragexit">dragexit</code>, or <code
+    data-x="event-dnd-dragleave">dragleave</code>; to the value corresponding to the <span>current
+    drag operation</span> if <var>e</var> is <code data-x="event-dnd-drop">drop</code> or
+    <code data-x="event-dnd-dragend">dragend</code>; and to a value based on the <code
+    data-x="dom-DataTransfer-effectAllowed">effectAllowed</code> attribute's value and the
+    drag-and-drop source, as given by the following table, otherwise (i.e. if <var>e</var>
+    is <code data-x="event-dnd-dragenter">dragenter</code> or <code
+    data-x="event-dnd-dragover">dragover</code>):</p>
+
+    <table>
+     <thead>
+      <tr>
+       <th><code data-x="dom-DataTransfer-effectAllowed">effectAllowed</code></th>
+       <th><code data-x="dom-DataTransfer-dropEffect">dropEffect</code></th>
+      </tr>
+     </thead>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-none">none</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-none">none</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-copy">copy</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-copyLink">copyLink</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, "<code data-x="dom-DataTransfer-dropEffect-link">link</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-copyMove">copyMove</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, "<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-all">all</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, either "<code data-x="dom-DataTransfer-dropEffect-link">link</code>" or "<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-link">link</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-link">link</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-linkMove">linkMove</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-link">link</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, "<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-move">move</code>"</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>" when what is being dragged is a selection from a text control</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-move">move</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, either "<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>" or "<code data-x="dom-DataTransfer-dropEffect-link">link</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>" when what is being dragged is a selection</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, either "<code data-x="dom-DataTransfer-dropEffect-link">link</code>" or "<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+     </tr>
+     <tr>
+      <td>"<code data-x="dom-DataTransfer-effectAllowed-uninitialized">uninitialized</code>" when what is being dragged is an <code>a</code> element with an <code data-x="attr-hyperlink-href">href</code> attribute</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-link">link</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, either "<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>" or "<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+     </tr>
+     <tr>
+      <td>Any other case</td>
+      <td>"<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>", or, <span data-x="concept-platform-dropEffect-override">if appropriate</span>, either "<code data-x="dom-DataTransfer-dropEffect-link">link</code>" or "<code data-x="dom-DataTransfer-dropEffect-move">move</code>"</td>
+     </tr>
+    </table>
+
+    <p>Where the table above provides <dfn data-x="concept-platform-dropEffect-override">possibly
+    appropriate alternatives</dfn>, user agents may instead use the listed alternative values if
+    platform conventions dictate that the user has requested those alternate effects.</p>
+
+    <p class="example">For example, Windows platform conventions are such that dragging while
+    holding the "alt" key indicates a preference for linking the data, rather than moving or copying
+    it. Therefore, on a Windows system, if "<code data-x="dom-DataTransfer-dropEffect-link">link</code>" is an option according to
+    the table above while the "alt" key is depressed, the user agent could select that instead of
+    "<code data-x="dom-DataTransfer-dropEffect-copy">copy</code>" or "<code data-x="dom-DataTransfer-dropEffect-move">move</code>".</p>
+
+   </li>
+
+   <li><p>Let <var>event</var> be the result of <span>creating an event</span> using
+   <code>DragEvent</code>.</p></li>
+
+   <li><p>Initialize <var>event</var>'s <code data-x="dom-Event-type">type</code> attribute to
+   <var>e</var>, its <code data-x="dom-Event-bubbles">bubbles</code> attribute to true, its <code
+   data-x="dom-UIEvent-view">view</code> attribute to <var>window</var>, its <code
+   data-x="dom-MouseEvent-relatedTarget">relatedTarget</code> attribute to <var>related
+   target</var>, and its <code data-x="dom-DragEvent-dataTransfer">dataTransfer</code> attribute to
+   <var>dataTransfer</var>.</p></li>
+
+   <li><p>If <var>e</var> is not <code data-x="event-dnd-dragexit">dragexit</code>, <code
+   data-x="event-dnd-dragleave">dragleave</code>, or <code
+   data-x="event-dnd-dragend">dragend</code>, then initialize <var>event</var>'s <code
+   data-x="dom-Event-cancelable">cancelable</code> attribute to true.</p></li>
+
+   <li>
+    <p>Initialize <var>event</var>'s mouse and key attributes initialized according to the state of
+    the input devices as they would be for user interaction events.</p>
+
+    <!-- interaction event spec point -->
+
+    <p>If there is no relevant pointing device, then initialize <var>event</var>'s <code
+    data-x="">screenX</code>, <code data-x="">screenY</code>, <code data-x="">clientX</code>, <code
+    data-x="">clientY</code>, and <code data-x="">button</code> attributes to 0.</p>
+   </li>
+
+   <li><p><span data-x="concept-event-dispatch">Dispatch</span> <var>event</var> at the specified
+   target element.</p></li>
+
+   <li><p>Set the <span>drag data store allowed effects state</span> to the current value of
+   <var>dataTransfer</var>'s <code data-x="dom-DataTransfer-effectAllowed">effectAllowed</code>
+   attribute. (It can only have changed value if <var>e</var> is <code
+   data-x="event-dnd-dragstart">dragstart</code>.)</p></li>
+
+   <li><p>Set the <span>drag data store mode</span> back to the <span
+   data-x="concept-dnd-p">protected mode</span> if it was changed in the first step.</p></li>
+
+   <li><p>Break the association between <var>dataTransfer</var> and the <span>drag data
+   store</span>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

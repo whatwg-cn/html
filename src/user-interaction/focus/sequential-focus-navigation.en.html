@@ -1,0 +1,179 @@
+<h4><dfn>Sequential focus navigation</dfn></h4>
+
+  <p>Each <span>control group</span> has a <dfn>sequential focus navigation order</dfn>, which orders some
+  or all of the <span data-x="focusable area">focusable areas</span> in the <span>control group</span>
+  relative to each other. The order in the <span>sequential focus navigation order</span> does not
+  have to be related to the order in the <span>control group</span> itself. If a <span>focusable area</span> is
+  omitted from the <span>sequential focus navigation order</span> of its <span>control group</span>, then
+  it is unreachable via <span>sequential focus navigation</span>.</p>
+
+  <p>There can also be a <dfn>sequential focus navigation starting point</dfn>. It is initially
+  unset. The user agent may set it when the user indicates that it should be moved.</p>
+
+  <p class="example">For example, the user agent could set it to the position of the user's click if
+  the user clicks on the document contents.</p>
+
+  <p>When the user requests that focus move from the <span>currently focused area of a top-level
+  browsing context</span> to the next or previous <span>focusable area</span> (e.g. as the default action
+  of pressing the <kbd>tab</kbd> key), or when the user requests that focus sequentially move to a
+  <span>top-level browsing context</span> in the first place (e.g. from the browser's location bar),
+  the user agent must use the following algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>starting point</var> be the <span>currently focused area of a top-level
+   browsing context</span>, if the user requested to move focus sequentially from there, or else the
+   <span>top-level browsing context</span> itself, if the user instead requested to move focus from
+   outside the <span>top-level browsing context</span>.</p></li>
+
+   <li><p>If there is a <span>sequential focus navigation starting point</span> defined and it is
+   inside <var>starting point</var>, then let <var>starting point</var> be the <span>sequential
+   focus navigation starting point</span> instead.</p></li>
+
+   <li>
+
+    <p>Let <var>direction</var> be <i>forward</i> if the user requested the <em>next</em>
+    control, and <i>backward</i> if the user requested the previous control.</p>
+
+    <p class="note">Typically, pressing <kbd>tab</kbd> requests the next control, and pressing
+    <kbd><kbd>shift</kbd>+<kbd>tab</kbd></kbd> requests the previous control.</p>
+
+   </li>
+
+   <li>
+
+    <p><i>Loop</i>: Let <var>selection mechanism</var> be <i>sequential</i> if the <var>starting
+    point</var> is a <span>browsing context</span> or if <var>starting point</var> is in its
+    <span>control group</span>'s <span>sequential focus navigation order</span>.</p>
+
+    <p>Otherwise, <var>starting point</var> is not in its <span>control group</span>'s
+    <span>sequential focus navigation order</span>; let <var>selection mechanism</var> be
+    <i>DOM</i>.</p>
+
+   </li>
+
+   <li><p>Let <var>candidate</var> be the result of running the <span>sequential navigation search
+   algorithm</span> with <var>starting point</var>, <var>direction</var>, and <var>selection
+   mechanism</var> as the arguments.</p></li>
+
+   <li><p>If <var>candidate</var> is not null, then run the <span>focusing steps</span> for
+   <var>candidate</var> and abort these steps.</p></li>
+
+   <li><p>Otherwise, unset the <span>sequential focus navigation starting point</span>.</p></li>
+
+   <li>
+
+    <p>If <var>starting point</var> is the <span>top-level browsing context</span>, or a
+    <span>focusable area</span> in the <span>top-level browsing context</span>, the user agent
+    should transfer focus to its own controls appropriately (if any), honouring
+    <var>direction</var>, and then abort these steps.</p>
+
+    <p class="example">For example, if <var>direction</var> is <i>backward</i>, then the last
+    focusable control before the browser's rendering area would be the control to focus.</p>
+
+    <p>If the user agent has no focusable controls &mdash; a kiosk-mode browser, for instance
+    &mdash; <!--and <var>starting point</var> is not the <span>top-level browsing context</span>,-->
+    then the user agent may instead restart these steps with the <var>starting point</var> being the
+    <span>top-level browsing context</span> itself.</p>
+
+    <!-- in theory, the top-level browsing context _always_ has at least one focusable area: the
+    viewport. Even a "blocked by a modal dialog" doesn't disable the viewport (since the Document is
+    its DOM anchor, and the Document isn't made inert by "blocked by a modal dialog"). Note that
+    nested browsing contexts can have inert viewports, though (if the browsing context container
+    itself is inert, for example) -->
+
+   </li>
+
+   <li><p>Otherwise, <var>starting point</var> is a <span>focusable area</span> in a
+   <span>nested browsing context</span>. Let <var>starting point</var> be that
+   <span>nested browsing context</span>'s <span>browsing context container</span>, and return to the
+   step labeled <i>loop</i>.</p>
+    <!--
+     https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2856
+     https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2857
+    -->
+   </li>
+
+  </ol>
+
+
+  <p>The <dfn>sequential navigation search algorithm</dfn> consists of the following steps. This
+  algorithm takes three arguments: <var>starting point</var>, <var>direction</var>,
+  and <var>selection mechanism</var>.</p>
+
+  <ol>
+
+   <li>
+
+    <p>Pick the appropriate cell from the following table, and follow the instructions in that
+    cell.</p>
+
+    <p>The appropriate cell is the one that is from the column whose header describes <var>direction</var> and from the first row whose header describes <var>starting point</var> and <var>selection mechanism</var>.</p>
+
+    <table>
+     <thead>
+      <tr>
+       <th>
+       <th> <var>direction</var> is <i>forward</i>
+       <th> <var>direction</var> is <i>backward</i>
+     <tbody>
+      <tr>
+       <th><var>starting point</var> is a <span>browsing context</span>
+       <td>Let <var>candidate</var> be the first <span>suitable sequentially focusable area</span> in <var>starting point</var>'s <span>active document</span>'s <span>primary control group</span>, if any; or else null
+       <td>Let <var>candidate</var> be the last <span>suitable sequentially focusable area</span> in <var>starting point</var>'s <span>active document</span>'s <span>primary control group</span>, if any; or else null
+      <tr>
+       <th><var>selection mechanism</var> is <i>DOM</i>
+       <td>Let <var>candidate</var> be the first <span>suitable sequentially focusable area</span> in the <span>home control group</span> following <var>starting point</var>, if any; or else null
+       <td>Let <var>candidate</var> be the last <span>suitable sequentially focusable area</span> in the <span>home control group</span> preceding <var>starting point</var>, if any; or else null
+      <tr>
+       <th><var>selection mechanism</var> is <i>sequential</i>
+       <td>Let <var>candidate</var> be the first <span>suitable sequentially focusable area</span> in the <span>home sequential focus navigation order</span> following <var>starting point</var>, if any; or else null
+       <td>Let <var>candidate</var> be the last <span>suitable sequentially focusable area</span> in the <span>home sequential focus navigation order</span> preceding <var>starting point</var>, if any; or else null
+
+    </table>
+
+    <p>A <dfn>suitable sequentially focusable area</dfn> is a <span>focusable area</span> whose <span>DOM
+    anchor</span> is not <span>inert</span> and that is in its <span>control group</span>'s <span>sequential
+    focus navigation order</span>.</p>
+
+    <p>The <dfn>primary control group</dfn> of a <span>control group owner object</span> <var>X</var> is the <span>control group</span> of <var>X</var> if <var>X</var> has no <span>dialog group</span> or if its <span>dialog group</span> has no
+    designated <span>focused dialog of the dialog group</span>, otherwise, it is the <span>primary
+    control group</span> of <var>X</var>'s <span>dialog group</span>'s designated
+    <span>focused dialog of the dialog group</span>.</p>
+
+    <p>The <dfn>home control group</dfn> is the <span>control group</span> to which <var>starting point</var> belongs.</p>
+
+    <p>The <dfn>home sequential focus navigation order</dfn> is the <span>sequential focus
+    navigation order</span> to which <var>starting point</var> belongs.</p>
+
+    <p class="note">The <span>home sequential focus navigation order</span> is the <span>home
+    control group</span>'s <span>sequential focus navigation order</span>, but is only used when the
+    <var>starting point</var> is in that <span>sequential focus navigation order</span>
+    (when it's not, <var>selection mechanism</var> will be <i>DOM</i>).</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>candidate</var> is a <span>browsing context container</span> with a non-null
+    <span>nested browsing context</span>, then let <var>new candidate</var> be the result of running
+    the <span>sequential navigation search algorithm</span> with <var>candidate</var>'s <span>nested
+    browsing context</span> as the first argument, <var>direction</var> as the second, and
+    <i>sequential</i> <!-- shift-tab from the end in
+    https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2855 --> as the third.</p>
+
+    <p>If <var>new candidate</var> is null, then let <var>starting point</var>
+    be <var>candidate</var>, and return to the top of this algorithm. Otherwise, let
+    <var>candidate</var> be <var>new candidate</var>.</p>
+
+   </li>
+
+   <li><p>Return <var>candidate</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+<!--TOPIC:DOM APIs-->
+  

@@ -1,0 +1,47 @@
+<h4>The <code>input</code> element as a text entry widget</h4>
+
+  <p>An <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-text">Text</span>, <span
+  data-x="attr-input-type-search">Search</span>, <span
+  data-x="attr-input-type-tel">Telephone</span>, <span data-x="attr-input-type-url">URL</span>, or
+  <span data-x="attr-input-type-email">E-mail</span> state, is expected to render as an
+  <span>'inline-block'</span> box depicting a text control. Additionally, the
+  <span>'line-height'</span> property, if it has a <span>computed value</span> equivalent to a value
+  that is less than 1.0, must have a <span>used value</span> of 1.0.</p>
+
+  <p>An <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-password">Password</span> state is expected to render as an
+  <span>'inline-block'</span> box depicting a text control that obscures data entry.</p>
+
+  <p>If these text controls provide a text selection, then, when the user changes the current
+  selection, the user agent is expected to <span>queue a task</span>, using the <span>user
+  interaction task source</span>, to <span data-x="concept-event-fire">fire an event</span> named
+  <code data-x="event-select">select</code> at the element, with the <code
+  data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true.</p>
+
+  <p>If an <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is
+  in one of the above states has a <code data-x="attr-input-size">size</code> attribute, and parsing
+  that attribute's value using the <span>rules for parsing non-negative integers</span> doesn't
+  generate an error, then the user agent is expected to use the attribute as a <span
+  data-x="presentational hints">presentational hint</span> for the <span>'width'</span> property on
+  the element, with the value obtained from applying the <span>converting a character width to
+  pixels</span> algorithm to the value of the attribute.</p>
+
+  <p>If an <code>input</code> element whose <code data-x="attr-input-type">type</code> attribute is
+  in one of the above states does <em>not</em> have a <code data-x="attr-input-size">size</code>
+  attribute, then the user agent is expected to act as if it had a user-agent-level style sheet rule
+  setting the <span>'width'</span> property on the element to the value obtained from applying the
+  <span>converting a character width to pixels</span> algorithm to the number 20.</p>
+
+  <p>The <dfn>converting a character width to pixels</dfn> algorithm returns <span data-x="">(<var>size</var>-1)&times;<var>avg</var>&nbsp;+&nbsp;<var>max</var></span>,
+  where <var>size</var> is the character width to convert, <var>avg</var> is the
+  average character width of the primary font for the element for which the algorithm is being run,
+  in pixels, and <var>max</var> is the maximum character width of that same font, also in
+  pixels. (The element's <span>'letter-spacing'</span> property does not affect the result.)</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

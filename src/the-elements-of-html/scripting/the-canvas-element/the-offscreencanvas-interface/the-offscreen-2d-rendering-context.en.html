@@ -1,0 +1,171 @@
+<h6>The offscreen 2D rendering context</h6>
+
+  <pre class="idl">[Exposed=(Window,Worker)]
+interface <span>OffscreenCanvasRenderingContext2D</span> {
+  void <span data-x="offscreencontext2d-commit">commit</span>();
+  readonly attribute <span>OffscreenCanvas</span> <span data-x="offscreencontext2d-canvas">canvas</span>;
+};
+
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasState</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasTransform</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasCompositing</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasImageSmoothing</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasFillStrokeStyles</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasShadowStyles</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasFilters</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasRect</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasDrawPath</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasDrawImage</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasImageData</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasPathDrawingStyles</span>;
+<span>OffscreenCanvasRenderingContext2D</span> implements <span>CanvasPath</span>;
+</pre>
+
+  <p>The <dfn><code>OffscreenCanvasRenderingContext2D</code></dfn> is a rendering context
+  interface for drawing to the <span data-x="offscreencanvas-bitmap">bitmap</span> of an
+  <code>OffscreenCanvas</code> object. It is similar to <code>CanvasRenderingContext2D</code>,
+  with the following differences:</p>
+  <ul>
+   <li><p><span data-x="CanvasText">text rendering</span> is not supported;</p></li>
+   <!-- Text rendering may be added in the future -->
+   <li><p>there is no support for <span data-x="CanvasUserInterface">user interface</span>
+   features;</p></li>
+   <li><p>its <code data-x="offscreencontext2d-canvas">canvas</code> attribute refers to an
+   <code>OffscreenCanvas</code> object rather than a <code>canvas</code> element;</p></li>
+   <li><p>it has a <code data-x="offscreencontext2d-commit">commit()</code> method for pushing the
+   rendered image to the context's <code>OffscreenCanvas</code> object's <span
+   data-x="offscreencanvas-placeholder">placeholder <code>canvas</code> element</span>.</p></li>
+  </ul>
+
+  <p>An <code>OffscreenCanvasRenderingContext2D</code> object has a <dfn
+  data-x="offscreencontext2d-bitmap">bitmap</dfn> that is initialized when the object is
+  created.</p>
+
+  <p>The <span data-x="offscreencontext2d-bitmap">bitmap</span> has an <dfn
+  data-x="offscreencontext2d-origin-clean">origin-clean</dfn> flag, which can be set to true or
+  false. Initially, when one of these bitmaps is created, its <span
+  data-x="offscreencontext2d-origin-clean">origin-clean</span> flag must be set to true.</p>
+
+  <p>An <code>OffscreenCanvasRenderingContext2D</code> object also has an <dfn
+  data-x="offscreencontext2d-alpha">alpha</dfn> flag, which can be set to true or false. Initially,
+  when the context is created, its alpha flag must be set to true. When a
+  <code>OffscreenCanvasRenderingContext2D</code> object has its <span
+  data-x="offscreencontext2d-alpha">alpha</span> flag set to false, then its alpha channel must be
+  fixed to 1.0 (fully opaque) for all pixels, and attempts to change the alpha component of any pixel
+  must be silently ignored.</p>
+
+  <p>An <code>OffscreenCanvasRenderingContext2D</code> object has an <dfn>associated
+  <code>OffscreenCanvas</code> object</dfn>, which is the <code>OffscreenCanvas</code> object
+  from which the <code>OffscreenCanvasRenderingContext2D</code> object was created.
+
+  <dl class="domintro">
+
+   <dt><var>offscreenCanvasRenderingContext2D</var> . <code subdfn data-x="offscreencontext2d-commit">commit</code>()</dt>
+
+   <dd>
+    <p>Copies the rendering context's <span data-x="offscreencontext2d-bitmap">bitmap</span> to
+    the bitmap of the <span data-x="offscreencanvas-placeholder">placeholder <code>canvas</code>
+    element</span> of the <span>associated <code>OffscreenCanvas</code> object</span>. The copy
+    operation is asynchronous.</p>
+   </dd>
+
+   <dt><var>offscreenCanvas</var> = <var>offscreenCanvasRenderingContext2D</var> . <code subdfn
+   data-x="offscreencontext2d-canvas">canvas</code></dt>
+
+   <dd>
+    <p>Returns the <span>associated <code>OffscreenCanvas</code> object</span>.</p>
+   </dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn>offscreen 2D context creation algorithm</dfn>, which is passed a
+  <var>target</var> (an <code>OffscreenCanvas</code> object) and optionally some arguments,
+  consists of running the following steps:</p>
+
+  <ol>
+   <li><p>If the algorithm was passed some arguments, let <var>arg</var> be the first such
+   argument. Otherwise, let <var>arg</var> be undefined.</p></li>
+
+   <li><p>Let <var>settings</var> be the result of <span
+   data-x="coerce context arguments for 2D">coercing the <var>arg</var> context arguments
+   for 2D</span>.</p></li>
+
+   <li><p>Let <var>context</var> be a new <code>OffscreenCanvasRenderingContext2D</code>
+   object.</p></li>
+
+   <li><p>Set <var>context</var>'s <span>associated <code>OffscreenCanvas</code> object</span> to
+   <var>target</var>.</p></li>
+
+   <li><p>Process each of the members of <var>settings</var> as follows:</p>
+    <dl>
+     <dt><code data-x="dom-CanvasRenderingContext2DSettings-alpha">alpha</code></dt>
+     <dd>If false, set <var>context</var>'s <span data-x="offscreencontext2d-alpha">alpha</span>
+     flag to false.</dd>
+    </dl>
+   </li>
+
+   <li><p>Set <var>context</var>'s <span data-x="offscreencontext2d-bitmap">bitmap</span> to a newly
+   created bitmap with the dimensions specified by the <code
+   data-x="dom-OffscreenCanvas-width">width</code> and <code
+   data-x="dom-OffscreenCanvas-height">height</code> attributes of <var>target</var>, and set
+   <var>target</var>'s bitmap to the same bitmap (so that they are shared).</p></li>
+
+   <li><p>If <var>context</var>'s <span data-x="offscreencontext2d-alpha">alpha</span> flag is set
+   to true, initialize all the pixels of <var>context</var>'s <span
+   data-x="offscreencontext2d-bitmap">bitmap</span> to transparent black. Otherwise, initialize
+   the pixels to opaque black.</p></li>
+
+   <li><p>Return <var>context</var>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="offscreencontext2d-commit">commit()</code></dfn> method, when invoked,
+  must run the following steps:</p>
+
+  <ol>
+    <li><p>If this <code>OffscreenCanvasRenderingContext2D</code>'s <span>associated
+    <code>OffscreenCanvas</code> object</span> does not have a <span
+    data-x="offscreencanvas-placeholder">placeholder <code>canvas</code> element</span>, abort
+    these steps.</p></li>
+
+    <li><p>Let <var>image</var> be a copy of this <code>OffscreenCanvasRenderingContext2D</code>'s
+    <span data-x="offscreencontext2d-bitmap">bitmap</span>.</p></li>
+
+    <li>
+     <p><span>Queue a task</span> in the <span
+     data-x="offscreencanvas-placeholder">placeholder <code>canvas</code> element</span>'s
+     <span>relevant settings object</span>'s <span>responsible event loop</span> (which will be a
+     <span>browsing context</span> <span>event loop</span>) to set the <span
+     data-x="offscreencanvas-placeholder">placeholder <code>canvas</code> element</span>'s
+     <span>output bitmap</span> to be a reference to <var>image</var>.</p>
+    </li>
+  </ol>
+
+  <p class="note">Implementations are encouraged to short-circuit the graphics update steps of
+  the <span>browsing context</span> <span>event loop</span> for the purposes of updating the
+  contents of a <span data-x="offscreencanvas-placeholder">placeholder <code>canvas</code>
+  element</span> to the display. This could mean, for example, that the <code
+  data-x="offscreencontext2d-commit">commit()</code> method may copy the bitmap contents directly
+  to a graphics buffer that is mapped to the physical display location of the <span
+  data-x="offscreencanvas-placeholder">placeholder <code>canvas</code> element</span>. This or
+  similar short-circuiting approaches may significantly reduce display latency, especially in cases
+  where the <code data-x="offscreencontext2d-commit">commit()</code> method is invoked from a worker
+  and the <span>event loop</span> of the <span
+  data-x="offscreencanvas-placeholder">placeholder <code>canvas</code> element</span>'s
+  <span>browsing context</span> is busy. However, such shortcuts must not have any
+  script-observable side-effects. This means that the committed bitmap still needs to be sent to
+  the <span data-x="offscreencanvas-placeholder">placeholder <code>canvas</code> element</span>, in
+  case the element is used as a <code>CanvasImageSource</code>, as an
+  <code>ImageBitmapSource</code>, or in case <code data-x="dom-canvas-toDataURL">toDataURL()</code>
+  or <code data-x="dom-canvas-toBlob">toBlob()</code> are called on it.</p>
+
+  <p>The <dfn><code data-x="offscreencontext2d-canvas">canvas</code></dfn> attribute, on getting,
+  must return this <code>OffscreenCanvasRenderingContext2D</code>'s <span>associated
+  <code>OffscreenCanvas</code> object</span>.
+
+  </div>
+
+  <div w-nodev>
+
+  <!--en-GB-->

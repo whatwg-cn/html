@@ -1,0 +1,114 @@
+<h6>Drawing focus rings and scrolling paths into view</h6>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-drawFocusIfNeeded">drawFocusIfNeeded</code>(<var>element</var>)</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-drawFocusIfNeeded">drawFocusIfNeeded</code>(<var>path</var>, <var>element</var>)</dt>
+
+   <dd>
+
+    <p>If the given element is <span>focused</span>, draws a focus ring around the <span>current
+    default path</span> or the given path, following the platform conventions for focus rings.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-scrollPathIntoView">scrollPathIntoView</code>()</dt>
+   <dt><var>context</var> . <code data-x="dom-context-2d-scrollPathIntoView">scrollPathIntoView</code>(<var>path</var>)</dt>
+
+   <dd>
+
+    <p>Scrolls the <span>current default path</span> or the given path into view. This is especially
+    useful on devices with small screens, where the whole canvas might not be visible at once.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  Objects that implement the <code>CanvasUserInterface</code> interface provide the following
+  methods to control drawing focus rings and scrolling paths into view.
+
+  <hr>
+
+  <p id="dom-context-2d-drawosfocusring">The <dfn><code
+  data-x="dom-context-2d-drawFocusIfNeeded">drawFocusIfNeeded(<var>element</var>)</code></dfn>
+  method, when invoked, must run these steps:</p>
+
+  <ol>
+
+   <li><p>If <var>element</var> is not <span>focused</span> or is not a descendant of the element with
+   whose context the method is associated, then abort these steps.</p></li>
+
+   <li>
+
+    <p>Draw a focus ring of the appropriate style along the intended path, following platform
+    conventions.</p>
+
+    <p class="note">Some platforms only draw focus rings around elements that have been focused from
+    the keyboard, and not those focused from the mouse. Other platforms simply don't draw focus
+    rings around some elements at all unless relevant accessibility features are enabled. This API
+    is intended to follow these conventions. User agents that implement distinctions based on the
+    manner in which the element was focused are encouraged to classify focus driven by the <code
+    data-x="dom-focus">focus()</code> method based on the kind of user interaction event from which
+    the call was triggered (if any).</p>
+
+    <p>The focus ring should not be subject to the <span data-x="shadows">shadow effects</span>, the
+    <span data-x="dom-context-2d-globalAlpha">global alpha</span>, the <span
+    data-x="dom-context-2d-globalCompositeOperation">global composition operators</span>, or any of
+    the members in the <code>CanvasFillStrokeStyles</code>, <code>CanvasPathDrawingStyles</code>,
+    <code>CanvasTextDrawingStyles</code> interfaces, but <em>should</em> be subject to the
+    <span>clipping region</span>. (The effect of transformations is described above and varies based
+    on which path is being used.)</p>
+
+   </li>
+
+   <li><p><a href="#inform">Inform the user</a> that the focus is at the location given by the
+   intended path. User agents may wait until the next time the <span>event loop</span> reaches its
+   <i>update the rendering</i> step to optionally inform the user.</p></li>
+
+  </ol>
+
+  <p>User agents should not implicitly close open subpaths in the intended path when drawing the
+  focus ring.</p>
+
+  <p class="note">This might be a moot point, however. For example, if the focus ring is drawn as an
+  axis-aligned bounding rectangle around the points in the intended path, then whether the subpaths
+  are closed or not has no effect. This specification intentionally does not specify precisely how
+  focus rings are to be drawn: user agents are expected to honor their platform's native
+  conventions.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-scrollPathIntoView">scrollPathIntoView()</code></dfn>
+  method, when invoked, must run these steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>the specified rectangle</var> be the rectangle of the bounding box of
+   the intended path.</p></li>
+
+   <li><p>Let <var>notional child</var> be a hypothetical element that is a rendered child
+   of the <code>canvas</code> element whose dimensions are those of <var>the specified
+   rectangle</var>.</p></li>
+
+   <li><p><span data-x="scroll an element into view">Scroll <var>notional child</var> into
+   view</span> with the <var>align to top flag</var> set.</p>
+
+   <li><p>Optionally, <a href="#inform">inform the user</a> that the caret or selection (or both)
+   cover <var>the specified rectangle</var> of the canvas. The user agent may wait until the next
+   time the <span>event loop</span> reaches its <i>update the rendering</i> step to
+   optionally inform the user.</p></li>
+
+  </ol>
+
+  <p id="inform">"Inform the user", as used in this section, does not imply any persistent state
+  change. It could mean, for instance, calling a system accessibility API to notify assistive
+  technologies such as magnification tools so that the user's magnifier moves to the given area of
+  the canvas. However, it does not associate the path with the element, or provide a region for
+  tactile feedback, etc.</p>
+
+  </div>
+
+  

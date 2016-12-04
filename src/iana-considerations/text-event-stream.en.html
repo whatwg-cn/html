@@ -1,0 +1,93 @@
+<h3><dfn><code>text/event-stream</code></dfn></h3>
+
+  <p>This registration is for community review and will be submitted to the IESG for review,
+  approval, and registration with IANA.</p>
+
+  <!--
+   To: ietf-types@iana.org
+   Subject: Registration of media type text/event-stream
+  -->
+
+  <dl>
+   <dt>Type name:</dt>
+   <dd>text</dd>
+   <dt>Subtype name:</dt>
+   <dd>event-stream</dd>
+   <dt>Required parameters:</dt>
+   <dd>No parameters</dd>
+   <dt>Optional parameters:</dt>
+   <dd>
+    <dl>
+     <dt><code data-x="">charset</code></dt>
+     <dd>
+
+      <p>The <code data-x="">charset</code> parameter may be provided. The parameter's value must be
+      "<code data-x="">utf-8</code>". This parameter serves no purpose; it is only allowed for
+      compatibility with legacy servers.</p>
+
+     </dd>
+    </dl>
+   </dd>
+   <dt>Encoding considerations:</dt>
+   <dd>8bit (always UTF-8)</dd>
+<!--ADD-TOPIC:Security-->
+   <dt>Security considerations:</dt>
+   <dd>
+
+    <p>An event stream from an origin distinct from the origin of the content consuming the event
+    stream can result in information leakage. To avoid this, user agents are required to apply CORS
+    semantics. <ref spec=FETCH></p>
+
+    <p>Event streams can overwhelm a user agent; a user agent is expected to apply suitable
+    restrictions to avoid depleting local resources because of an overabundance of information from
+    an event stream.</p>
+
+    <p>Servers can be overwhelmed if a situation develops in which the server is causing clients to
+    reconnect rapidly. Servers should use a 5xx status code to indicate capacity problems, as this
+    will prevent conforming clients from reconnecting automatically.</p>
+
+   </dd>
+<!--REMOVE-TOPIC:Security-->
+   <dt>Interoperability considerations:</dt>
+   <dd>
+    Rules for processing both conforming and non-conforming content are defined in this
+    specification.
+   </dd>
+   <dt>Published specification:</dt>
+   <dd>
+    This document is the relevant specification.
+   </dd>
+   <dt>Applications that use this media type:</dt>
+   <dd>
+    Web browsers and tools using Web services.
+   </dd>
+   <dt>Additional information:</dt>
+   <dd>
+    <dl>
+     <dt>Magic number(s):</dt>
+     <dd>No sequence of bytes can uniquely identify an event stream.</dd>
+     <dt>File extension(s):</dt>
+     <dd>No specific file extensions are recommended for this type.</dd>
+     <dt>Macintosh file type code(s):</dt>
+     <dd>No specific Macintosh file type codes are recommended for this type.</dd>
+    </dl>
+   </dd>
+   <dt>Person &amp; email address to contact for further information:</dt>
+   <dd>Ian Hickson &lt;ian@hixie.ch></dd>
+   <dt>Intended usage:</dt>
+   <dd>Common</dd>
+   <dt>Restrictions on usage:</dt>
+   <dd>This format is only expected to be used by dynamic open-ended streams served using HTTP or a
+   similar protocol. Finite resources are not expected to be labeled with this type.</dd>
+   <dt>Author:</dt>
+   <dd>Ian Hickson &lt;ian@hixie.ch></dd>
+   <dt>Change controller:</dt>
+   <dd>W3C</dd>
+  </dl>
+
+  <p><span data-x="concept-url-fragment">Fragments</span> have no meaning with
+  <code>text/event-stream</code> resources.</p>
+
+
+  <!--TOPIC:HTML-->
+  

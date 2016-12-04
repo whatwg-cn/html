@@ -1,0 +1,81 @@
+<h5 id="runtime-script-errors">Runtime script errors</h5>
+
+  <div w-nodev>
+
+  <p>When the user agent is required to <dfn data-x="report the error">report an error</dfn> for a
+  particular <span data-x="concept-script">script</span> <var>script</var> with a particular
+  position <var>line</var>:<var>col</var>, using a particular target <var>target</var>, it must run these steps, after which the error is either <dfn
+  data-x="concept-error-handled"><i>handled</i></dfn> or <dfn data-x="concept-error-nothandled"><i>not
+  handled</i></dfn>:</p>
+
+  <ol>
+
+   <li><p>If <var>target</var> is <span>in error reporting mode</span>, then abort these
+   steps; the error is <i data-x="concept-error-nothandled">not handled</i>.</p></li>
+
+   <li><p>Let <var>target</var> be <dfn>in error reporting mode</dfn>.</p></li>
+
+   <li><p>Let <var>message</var> be a user-agent-defined string describing the error in a
+   helpful manner.
+   <!--INSERT FINGERPRINT-->
+   </p></li>
+
+   <li><p>Let <var>errorValue</var> be the value that represents the error: in the case of an
+   uncaught exception, that would be the value that was thrown; in the case of a JavaScript error
+   that would be an <code data-x="idl-Error">Error</code> object. If there is no corresponding
+   value, then the null value must be used instead.</p></li>
+
+   <li>
+
+    <p>Let <var>urlString</var> be the result of applying the <span
+    data-x="concept-url-serializer">URL serializer</span> to the <span>URL record</span> that
+    corresponds to the resource from which <var>script</var> was obtained.</p>
+
+    <p class="note">The resource containing the script will typically be the file from which the
+    <code>Document</code> was parsed, e.g. for inline <code>script</code> elements or <span>event
+    handler content attributes</span>; or the JavaScript file that the script was in, for external
+    scripts. Even for dynamically-generated scripts, user agents are strongly encouraged to attempt
+    to keep track of the original source of a script. For example, if an external script uses the
+    <code data-x="dom-document-write">document.write()</code> API to insert an inline
+    <code>script</code> element during parsing, the URL of the resource containing the script would
+    ideally be reported as being the external script, and the line number might ideally be reported
+    as the line with the <code data-x="dom-document-write">document.write()</code> call or where the
+    string passed to that call was first constructed. Naturally, implementing this can be somewhat
+    non-trivial.</p>
+
+    <p class="note">User agents are similarly encouraged to keep careful track of the original line
+    numbers, even in the face of <code data-x="dom-document-write">document.write()</code> calls
+    mutating the document as it is parsed, or <span>event handler content attributes</span> spanning
+    multiple lines.</p>
+
+   </li>
+
+   <li><p>If <var>script</var> has <span>muted errors</span>, then set <var>message</var> to "<code
+   data-x="">Script error.</code>", <var>urlString</var> to the empty string, <var>line</var> and
+   <var>col</var> to 0, and <var>errorValue</var> to null.</p></li>
+
+   <li><p>Let <var>notHandled</var> be the result of <span data-x="concept-event-fire">firing an
+   event</span> named <code data-x="event-error">error</code> at <var>target</var>, using
+   <code>ErrorEvent</code>, with the <code data-x="dom-Event-cancelable">cancelable</code> attribute
+   initialized to true, the <code data-x="dom-ErrorEvent-message">message</code> attribute
+   initialized to <var>message</var>, the <code data-x="dom-ErrorEvent-filename">filename</code>
+   attribute initialized to <var>urlString</var>, the <code
+   data-x="dom-ErrorEvent-lineno">lineno</code> attribute initialized to <var>line</var>, the <code
+   data-x="dom-ErrorEvent-colno">colno</code> attribute initialized to <var>col</var>, and the <code
+   data-x="dom-ErrorEvent-error">error</code> attribute initialized to
+   <var>errorValue</var>.</p></li>
+
+   <li><p>Let <var>target</var> no longer be <span>in error reporting mode</span>.</p></li>
+
+   <li>
+    <p>If <var>notHandled</var> is false, then the error is <i
+    data-x="concept-error-handled">handled</i>. Otherwise, the error is <i
+    data-x="concept-error-nothandled">not handled</i>.</p>
+
+    <p class="note">Returning true in an event handler cancels the event per <span>the event handler
+    processing algorithm</span>.</p>
+   </li>
+  </ol>
+
+
+  

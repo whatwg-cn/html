@@ -1,0 +1,94 @@
+<h4>Flow content</h4>
+
+  <!-- del, ins, and map are inline. -->
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr,
+legend, listing, main, p, plaintext, pre, xmp {
+  display: block;<!-- see also unicode-bidi: isolate rules-->
+}
+
+blockquote, figure, listing, p, plaintext, pre, xmp {
+  margin-block-start: 1em; margin-block-end: 1em;
+}
+
+blockquote, figure { margin-inline-start: 40px; margin-inline-end: 40px; }
+
+address { font-style: italic; }
+listing, plaintext, pre, xmp {
+  font-family: monospace; white-space: pre;
+}
+
+dialog:not([open]) { display: none; }
+dialog {
+  position: absolute;
+  left: 0; right: 0;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  border: solid;
+  padding: 1em;
+  background: white;
+  color: black;
+}
+dialog::backdrop {
+  background: rgba(0,0,0,0.1);
+}
+
+/* for small devices, modal dialogs go full-screen */
+@media screen and (max-width: 540px) {
+  dialog:modal {
+    top: 0;
+    width: auto;
+    margin: 1em;
+  }
+}
+
+slot {
+  display: contents;
+}
+</pre>
+
+  <p>The following rules are also expected to apply, as <span>presentational hints</span>:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+pre[wrap] { white-space: pre-wrap; }</pre>
+
+  <p>In <span>quirks mode</span>, the following rules are also expected to apply:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+form { margin-block-end: 1em; }</pre>
+
+  <hr>
+
+  <p>The <code>center</code> element, and the <code>div</code> element when it has an <code
+  data-x="attr-div-align">align</code> attribute whose value is an <span>ASCII
+  case-insensitive</span> match for either the string "<code data-x="">center</code>" or the string
+  "<code data-x="">middle</code>", are expected to center text within themselves, as if they had
+  their <span>'text-align'</span> property set to 'center' in a <span data-x="presentational
+  hints">presentational hint</span>, and to <span>align descendants</span> to the center.</p>
+
+  <p>The <code>div</code> element, when it has an <code data-x="attr-div-align">align</code>
+  attribute whose value is an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">left</code>", is expected to left-align text within itself, as if it had its
+  <span>'text-align'</span> property set to 'left' in a <span data-x="presentational
+  hints">presentational hint</span>, and to <span>align descendants</span> to the left.</p>
+
+  <p>The <code>div</code> element, when it has an <code data-x="attr-div-align">align</code>
+  attribute whose value is an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">right</code>", is expected to right-align text within itself, as if it had its
+  <span>'text-align'</span> property set to 'right' in a <span data-x="presentational
+  hints">presentational hint</span>, and to <span>align descendants</span> to the right.</p>
+
+  <p>The <code>div</code> element, when it has an <code data-x="attr-div-align">align</code>
+  attribute whose value is an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">justify</code>", is expected to full-justify text within itself, as if it had its
+  <span>'text-align'</span> property set to 'justify' in a <span data-x="presentational
+  hints">presentational hint</span>, and to <span>align descendants</span> to the left.</p>
+
+
+
+  

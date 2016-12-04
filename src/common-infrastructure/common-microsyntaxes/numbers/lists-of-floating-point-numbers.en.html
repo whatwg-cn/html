@@ -1,0 +1,62 @@
+<h5>Lists of floating-point numbers</h5>
+
+  <p>A <dfn>valid list of floating-point numbers</dfn> is a number of <span data-x="valid
+  floating-point number">valid floating-point numbers</span> separated by U+002C COMMA characters,
+  with no other characters (e.g. no <span data-x="space character">space characters</span>). In
+  addition, there might be restrictions on the number of floating-point numbers that can be given,
+  or on the range of values allowed.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn>rules for parsing a list of floating-point numbers</dfn> are as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially pointing at the
+   start of the string.</p></li>
+
+   <li><p>Let <var>numbers</var> be an initially empty list of floating-point numbers. This list
+   will be the result of this algorithm.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span data-x="space
+   character">space characters</span>, U+002C COMMA, or U+003B SEMICOLON characters. This skips past
+   any leading delimiters.</p></li>
+
+   <li><p>While <var>position</var> is not past the end of <var>input</var>:</p>
+
+    <ol>
+
+     <li><p><span>Collect a sequence of characters</span> that are not <span data-x="space
+     character">space characters</span>, U+002C COMMA, U+003B SEMICOLON, <span>ASCII digits</span>,
+     U+002E FULL STOP, or U+002D HYPHEN-MINUS characters. This skips past leading garbage.</p></li>
+
+     <li><p><span>Collect a sequence of characters</span> that are not <span data-x="space
+     character">space characters</span>, U+002C COMMA, or U+003B SEMICOLON characters, and let
+     <var>unparsed number</var> be the result.</p></li>
+
+     <li><p>Let <var>number</var> be the result of parsing <var>unparsed number</var> using the
+     <span>rules for parsing floating-point number values</span>.</p></li>
+
+     <li><p>If <var>number</var> is an error, set <var>number</var> to zero.</p></li>
+
+     <li><p>Append <var>number</var> to <var>numbers</var>.</p></li>
+
+     <li><p><span>Collect a sequence of characters</span> that are <span data-x="space
+     character">space characters</span>, U+002C COMMA, or U+003B SEMICOLON characters. This skips
+     past the delimiter.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return <var>numbers</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+  <div w-nodev>
+
+  

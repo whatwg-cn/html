@@ -1,0 +1,80 @@
+<h6>A graphical representation of some of the surrounding text</h6>
+
+  <p>In many cases, the image is actually just supplementary, and its presence merely reinforces the
+  surrounding text. In these cases, the <code data-x="attr-img-alt">alt</code> attribute must be
+  present but its value must be the empty string.</p>
+
+  <p>In general, an image falls into this category if removing the image doesn't make the page any
+  less useful, but including the image makes it a lot easier for users of visual browsers to
+  understand the concept.</p>
+
+  <div class="example">
+
+   <p>A flowchart that repeats the previous paragraph in graphical form:</p>
+
+   <pre>&lt;p>The Network passes data to the Input Stream Preprocessor, which
+passes it to the Tokenizer, which passes it to the Tree Construction
+stage. From there, data goes to both the DOM and to Script Execution.
+Script Execution is linked to the DOM, and, using document.write(),
+passes data to the Tokenizer.&lt;/p>
+<strong>&lt;p>&lt;img src="images/parsing-model-overview.png" alt="">&lt;/p></strong></pre>
+
+   <p>In these cases, it would be wrong to include alternative text that consists of just a caption.
+   If a caption is to be included, then either the <code data-x="attr-title">title</code> attribute
+   can be used, or the <code>figure</code> and <code>figcaption</code> elements can be used. In the
+   latter case, the image would in fact be a phrase or paragraph with an alternative graphical
+   representation, and would thus require alternative text.</p>
+
+   <pre>&lt;!-- Using the title="" attribute -->
+&lt;p>The Network passes data to the Input Stream Preprocessor, which
+passes it to the Tokenizer, which passes it to the Tree Construction
+stage. From there, data goes to both the DOM and to Script Execution.
+Script Execution is linked to the DOM, and, using document.write(),
+passes data to the Tokenizer.&lt;/p>
+&lt;p><strong>&lt;img src="images/parsing-model-overview.png" alt=""
+        title="Flowchart representation of the parsing model."></strong>&lt;/p></pre>
+
+   <pre>&lt;!-- Using &lt;figure> and &lt;figcaption> -->
+&lt;p>The Network passes data to the Input Stream Preprocessor, which
+passes it to the Tokenizer, which passes it to the Tree Construction
+stage. From there, data goes to both the DOM and to Script Execution.
+Script Execution is linked to the DOM, and, using document.write(),
+passes data to the Tokenizer.&lt;/p>
+&lt;figure>
+ <strong>&lt;img src="images/parsing-model-overview.png" alt="The Network leads to
+ the Input Stream Preprocessor, which leads to the Tokenizer, which
+ leads to the Tree Construction stage. The Tree Construction stage
+ leads to two items. The first is Script Execution, which leads via
+ document.write() back to the Tokenizer. The second item from which
+ Tree Construction leads is the DOM. The DOM is related to the Script
+ Execution."></strong>
+ &lt;figcaption>Flowchart representation of the parsing model.&lt;/figcaption>
+&lt;/figure></pre>
+
+   <pre class="bad">&lt;!-- This is WRONG. Do not do this. Instead, do what the above examples do. -->
+&lt;p>The Network passes data to the Input Stream Preprocessor, which
+passes it to the Tokenizer, which passes it to the Tree Construction
+stage. From there, data goes to both the DOM and to Script Execution.
+Script Execution is linked to the DOM, and, using document.write(),
+passes data to the Tokenizer.&lt;/p>
+&lt;p>&lt;img src="images/parsing-model-overview.png"
+        alt="Flowchart representation of the parsing model.">&lt;/p>
+&lt;!-- Never put the image's caption in the alt="" attribute! --></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>A graph that repeats the previous paragraph in graphical form:</p>
+
+   <pre>&lt;p>According to a study covering several billion pages,
+about 62% of documents on the Web in 2007 triggered the Quirks
+rendering mode of Web browsers, about 30% triggered the Almost
+Standards mode, and about 9% triggered the Standards mode.&lt;/p>
+<strong>&lt;p>&lt;img src="rendering-mode-pie-chart.png" alt="">&lt;/p></strong></pre>
+
+  </div>
+
+
+
+  

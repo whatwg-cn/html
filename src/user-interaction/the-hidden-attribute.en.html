@@ -1,0 +1,100 @@
+<h3>The <dfn><code data-x="attr-hidden">hidden</code></dfn> attribute</h3>
+
+  <p>All <span>HTML elements</span> may have the <code data-x="attr-hidden">hidden</code> content
+  attribute set. The <code data-x="attr-hidden">hidden</code> attribute is a <span>boolean
+  attribute</span>. When specified on an element, it indicates that the element is not yet, or is no
+  longer, directly relevant to the page's current state, or that it is being used to declare content
+  to be reused by other parts of the page as opposed to being directly accessed by the user. <span
+  w-nodev>User agents should not render elements that have the <code
+  data-x="attr-hidden">hidden</code> attribute specified. This requirement may be implemented
+  indirectly through the style layer. For example, an HTML+CSS user agent could implement these
+  requirements <a href="#hiddenCSS">using the rules suggested in the Rendering
+  section</a>.</span></p>
+
+  <p class="note">Because this attribute is typically implemented using CSS, it's also possible to
+  override it using CSS. For instance, a rule that applies 'display: block' to all elements will
+  cancel the effects of the <code data-x="attr-hidden">hidden</code> attribute. Authors therefore
+  have to take care when writing their style sheets to make sure that the attribute is still styled
+  as expected.</p>
+
+  <div class="example">
+
+   <p>In the following skeletal example, the attribute is used to hide the Web game's main screen
+   until the user logs in:</p>
+
+   <pre>  &lt;h1>The Example Game&lt;/h1>
+  &lt;section id="login">
+   &lt;h2>Login&lt;/h2>
+   &lt;form>
+    ...
+    &lt;!-- calls login() once the user's credentials have been checked -->
+   &lt;/form>
+   &lt;script>
+    function login() {
+      // switch screens
+      document.getElementById('login').hidden = true;
+      document.getElementById('game').hidden = false;
+    }
+   &lt;/script>
+  &lt;/section>
+  &lt;section id="game" hidden>
+   ...
+  &lt;/section></pre>
+
+  </div>
+
+  <p>The <code data-x="attr-hidden">hidden</code> attribute must not be used to hide content that
+  could legitimately be shown in another presentation. For example, it is incorrect to use <code
+  data-x="attr-hidden">hidden</code> to hide panels in a tabbed dialog, because the tabbed interface
+  is merely a kind of overflow presentation &mdash; one could equally well just show all the form
+  controls in one big page with a scrollbar. It is similarly incorrect to use this attribute to hide
+  content just from one presentation &mdash; if something is marked <code
+  data-x="attr-hidden">hidden</code>, it is hidden from all presentations, including, for instance,
+  screen readers.</p>
+
+  <!-- for example, "<a hidden href=#content>Skip to content</a>" would be inappropriate. -->
+  <!-- (but only add that example if you first add some more good valid examples -->
+
+  <p>Elements that are not themselves <code data-x="attr-hidden">hidden</code> must not
+  <span>hyperlink</span> to elements that are <code data-x="attr-hidden">hidden</code>. The <code
+  data-x="">for</code> attributes of <code>label</code> and <code>output</code> elements that are not
+  themselves <code data-x="attr-hidden">hidden</code> must similarly not refer to elements that are
+  <code data-x="attr-hidden">hidden</code>. In both cases, such references would cause user
+  confusion.</p>
+
+  <p>Elements and scripts may, however, refer to elements that are <code
+  data-x="attr-hidden">hidden</code> in other contexts.</p>
+
+  <div class="example">
+
+   <p>For example, it would be incorrect to use the <code data-x="attr-hyperlink-href">href</code>
+   attribute to link to a section marked with the <code data-x="attr-hidden">hidden</code> attribute.
+   If the content is not applicable or relevant, then there is no reason to link to it.</p>
+
+   <p>It would be fine, however, to use the ARIA <code
+   data-x="attr-aria-describedby">aria-describedby</code> attribute to refer to descriptions that are
+   themselves <code data-x="attr-hidden">hidden</code>. While hiding the descriptions implies that
+   they are not useful alone, they could be written in such a way that they are useful in the
+   specific context of being referenced from the images that they describe.</p>
+
+   <p>Similarly, a <code>canvas</code> element with the <code data-x="attr-hidden">hidden</code>
+   attribute could be used by a scripted graphics engine as an off-screen buffer, and a form control
+   could refer to a hidden <code>form</code> element using its <code
+   data-x="attr-fae-form">form</code> attribute.</p>
+
+  </div>
+
+  <p>Elements in a section hidden by the <code data-x="attr-hidden">hidden</code> attribute are still
+  active, e.g. scripts and form controls in such sections still execute and submit respectively.
+  Only their presentation to the user changes.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-hidden">hidden</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name.</p>
+
+  </div>
+
+
+
+  

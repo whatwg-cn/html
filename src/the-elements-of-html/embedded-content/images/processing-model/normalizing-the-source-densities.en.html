@@ -1,0 +1,47 @@
+<h6>Normalizing the source densities</h6>
+
+  <p>An <span>image source</span> can have a <span>pixel density descriptor</span>, a <span>width
+  descriptor</span>, or no descriptor at all accompanying its URL. Normalizing a <span>source
+  set</span> gives every <span>image source</span> a <span>pixel density descriptor</span>.</p>
+
+  <p>When asked to <!--en-GB--><dfn id="normalise-the-source-densities">normalize the source
+  densities</dfn> of a <span>source set</span> <var>source set</var>, the user agent must do the
+  following:</p>
+
+  <ol>
+
+   <li><p>Let <var>source size</var> be <var>source set</var>'s <span>source size</span>.</p></li>
+
+   <li>
+
+    <p>For each <span>image source</span> in <var>source set</var>:</p>
+
+    <ol>
+
+     <li><p>If the <span>image source</span> has a <span>pixel density descriptor</span>, continue to the next
+     <span>image source</span>.</p></li>
+
+     <li>
+
+      <p>Otherwise, if the <span>image source</span> has a <span>width descriptor</span>, replace the <span>width
+      descriptor</span> with a <span>pixel density descriptor</span> with a <span data-x="pixel density descriptor
+      value">value</span> of the <span>width descriptor value</span> divided by the <span>source size</span> and a unit
+      of <code data-x="">x</code>.</p>
+
+      <p class="note">If the <span>source size</span> is zero,
+      the density would be infinity,
+      which results in the <span>intrinsic dimensions</span> being zero by zero.</p>
+
+     </li>
+
+     <li><p>Otherwise, give the <span>image source</span> a <span>pixel density descriptor</span> of <code
+     data-x="">1x</code>.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+
+  

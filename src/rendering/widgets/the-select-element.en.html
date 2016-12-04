@@ -1,0 +1,55 @@
+<h4>The <code>select</code> element</h4>
+
+  <p>A <code>select</code> element whose <code data-x="attr-select-multiple">multiple</code>
+  attribute is present is expected to render as a multi-select list box.</p>
+
+  <p>A <code>select</code> element whose <code data-x="attr-select-multiple">multiple</code>
+  attribute is absent, and whose <span data-x="concept-select-size">display size</span> is greater
+  than 1, is expected to render as a single-select list box.</p>
+
+  <p>When the element renders as a list box, it is expected to render as an
+  <span>'inline-block'</span> box whose <span>'height'</span> is the height necessary to contain as
+  many rows for items as given by the element's <span data-x="concept-select-size">display
+  size</span>, or four rows if the attribute is absent, and whose <span>'width'</span> is the
+  <span>width of the <code>select</code>'s labels</span> plus the width of a scrollbar.</p>
+
+  <p>A <code>select</code> element whose <code data-x="attr-select-multiple">multiple</code>
+  attribute is absent, and whose <span data-x="concept-select-size">display size</span> is 1, is
+  expected to render as a one-line drop down box whose width is the <span>width of the
+  <code>select</code>'s labels</span>.</p>
+
+  <p>In either case (list box or drop-down box), the element's items are expected to be the
+  element's <span data-x="concept-select-option-list">list of options</span>, with the element's
+  <code>optgroup</code> element <span data-x="concept-tree-child">children</span> providing headers
+  for groups of options where applicable.</p>
+
+  <p>An <code>optgroup</code> element is expected to be rendered by displaying the element's <code
+  data-x="attr-optgroup-label">label</code> attribute.</p>
+
+  <p>An <code>option</code> element is expected to be rendered by displaying the element's <span
+  data-x="concept-option-label">label</span>, indented under its <code>optgroup</code> element if it
+  has one.</p>
+
+  <p>The <dfn>width of the <code>select</code>'s labels</dfn> is the wider of the width necessary to
+  render the widest <code>optgroup</code>, and the width necessary to render the widest
+  <code>option</code> element in the element's <span data-x="concept-select-option-list">list of
+  options</span> (including its indent, if any).</p>
+
+  <p>If a <code>select</code> element contains a <span>placeholder label option</span>, the user
+  agent is expected to render that <code>option</code> in a manner that conveys that it is a label,
+  rather than a valid option of the control. This can include preventing the <span>placeholder label
+  option</span> from being explicitly selected by the user. When the <span>placeholder label
+  option</span>'s <span data-x="concept-option-selectedness">selectedness</span> is true, the control
+  is expected to be displayed in a fashion that indicates that no valid option is currently
+  selected.</p>
+
+  <p>User agents are expected to render the labels in a <code>select</code> in such a manner that
+  any alignment remains consistent whether the label is being displayed as part of the page or in a
+  menu control.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

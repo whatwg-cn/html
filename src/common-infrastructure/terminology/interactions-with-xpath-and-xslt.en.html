@@ -1,0 +1,110 @@
+<h4>Interactions with XPath and XSLT</h4>
+
+  <p id="xpath-1.0-processors">Implementations of XPath 1.0 that operate on <span>HTML
+  documents</span> parsed or created in the manners described in this specification (e.g. as part of
+  the <code data-x="">document.evaluate()</code> API) must act as if the following edit was applied
+  to the XPath 1.0 specification.</p>
+
+  <p>First, remove this paragraph:</p>
+
+  <blockquote cite="https://www.w3.org/TR/1999/REC-xpath-19991116/#node-tests">
+
+   <p>A <a href="https://www.w3.org/TR/REC-xml-names/#NT-QName">QName</a> in the node test is expanded
+   into an <a href="https://www.w3.org/TR/1999/REC-xpath-19991116/#dt-expanded-name">expanded-name</a>
+   using the namespace declarations from the expression context. This is the same way expansion is
+   done for element type names in start and end-tags except that the default namespace declared with
+   <code data-x="">xmlns</code> is not used: if the <a
+   href="https://www.w3.org/TR/REC-xml-names/#NT-QName">QName</a> does not have a prefix, then the
+   namespace URI is null (this is the same way attribute names are expanded). It is an error if the
+   <a href="https://www.w3.org/TR/REC-xml-names/#NT-QName">QName</a> has a prefix for which there is
+   no namespace declaration in the expression context.</p>
+
+  </blockquote>
+
+  <p>Then, insert in its place the following:</p>
+
+  <blockquote cite="https://www.w3.org/Bugs/Public/show_bug.cgi?id=7059#c37">
+
+   <p>A QName in the node test is expanded into an expanded-name using the namespace declarations
+   from the expression context. If the QName has a prefix, then there must be a<!-- added 2009-10-27
+   - https://www.w3.org/Bugs/Public/show_bug.cgi?id=8062 --> namespace declaration for this prefix in
+   the expression context, and the corresponding<!-- typo fixed 2009-10-27 -
+   https://www.w3.org/Bugs/Public/show_bug.cgi?id=8063 --> namespace URI is the one that is
+   associated with this prefix. It is an error if the QName has a prefix for which there is no
+   namespace declaration in the expression context. </p>
+
+   <p>If the QName has no prefix and the principal node type of the axis is element, then the
+   default element namespace is used. Otherwise if the QName has no prefix, the namespace URI is
+   null. The default element namespace is a member of the context for the XPath expression. The
+   value of the default element namespace when executing an XPath expression through the DOM3 XPath
+   API is determined in the following way:</p>
+
+   <ol>
+
+    <li>If the context node is from an HTML DOM, the default element namespace is
+    "http://www.w3.org/1999/xhtml".</li>
+
+    <li>Otherwise, the default element namespace URI is null.</li>
+
+   </ol>
+
+   <p class="note">This is equivalent to adding the default element namespace feature of XPath 2.0
+   to XPath 1.0, and using the HTML namespace as the default element namespace for HTML documents.
+   It is motivated by the desire to have implementations be compatible with legacy HTML content
+   while still supporting the changes that this specification introduces to HTML regarding the
+   namespace used for HTML elements, and by the desire to use XPath 1.0 rather than XPath 2.0.</p>
+
+  </blockquote>
+
+  <p class="note">This change is a <span>willful violation</span> of the XPath 1.0 specification,
+  motivated by desire to have implementations be compatible with legacy content while still
+  supporting the changes that this specification introduces to HTML regarding which namespace is
+  used for HTML elements. <ref spec=XPATH10></p> <!-- note: version matters for
+  this ref -->
+
+  <hr>
+
+  <p id="dom-based-xslt-1.0-processors">XSLT 1.0 processors outputting to a DOM when the output
+  method is "html" (either explicitly or via the defaulting rule in XSLT 1.0) are affected as
+  follows:</p>
+
+  <p>If the transformation program outputs an element in no namespace, the processor must, prior to
+  constructing the corresponding DOM element node, change the namespace of the element to the
+  <span>HTML namespace</span>, <span data-x="converted to ASCII lowercase">ASCII-lowercase</span> the
+  element's local name, and <span data-x="converted to ASCII lowercase">ASCII-lowercase</span> the
+  names of any non-namespaced attributes on the element.</p>
+
+  <p class="note">This requirement is a <span>willful violation</span> of the XSLT 1.0
+  specification, required because this specification changes the namespaces and case-sensitivity
+  rules of HTML in a manner that would otherwise be incompatible with DOM-based XSLT
+  transformations. (Processors that serialize the output are unaffected.) <ref spec=XSLT10></p> <!--
+  note: version matters for this ref -->
+
+  <hr>
+
+  <p>This specification does not specify precisely how XSLT processing interacts with the <span>HTML
+  parser</span> infrastructure (for example, whether an XSLT processor acts as if it puts any
+  elements into a <span>stack of open elements</span>). However, XSLT processors must <span>stop
+  parsing</span> if they successfully complete, and must set the <span>current document
+  readiness</span> first to "<code data-x="">interactive</code>"<!-- this synchronously fires an
+  event --> and then to "<code data-x="">complete</code>"<!-- this also synchronously fires an event
+  --> if they are aborted.</p>
+
+  <hr>
+
+  <p>This specification does not specify how XSLT interacts with the <span
+  data-x="navigate">navigation</span> algorithm, how it fits in with the <span>event loop</span>, nor
+  how error pages are to be handled (e.g. whether XSLT errors are to replace an incremental XSLT
+  output, or are rendered inline, etc).</p>
+
+  <p class="note">There are also additional non-normative comments regarding the interaction of XSLT
+  and HTML <a href="#scriptTagXSLT">in the <code>script</code> element section</a>, and of
+  XSLT, XPath, and HTML <a href="#template-XSLT-XPath">in the <code>template</code> element
+  section</a>.</p>
+
+  </div>
+
+
+
+
+  

@@ -1,0 +1,230 @@
+<h4>Spelling and grammar checking</h4>
+
+  <div w-nodev>
+
+  <p>User agents can support the checking of spelling and grammar of editable text, either in form
+  controls (such as the value of <code>textarea</code> elements), or in elements in an <span>editing
+  host</span> (e.g. using <code data-x="attr-contenteditable">contenteditable</code>).</p>
+
+  <p>For each element, user agents must establish a <dfn data-x="concept-spellcheck-default">default
+  behavior</dfn>, either through defaults or through preferences expressed by the user. There are
+  three possible default behaviors for each element:</p>
+
+  <dl>
+
+   <dt><dfn data-x="concept-spellcheck-default-true">true-by-default</dfn>
+
+   <dd>The element will be checked for spelling and grammar if its contents are editable and
+   spellchecking is not explicitly disabled through the <code
+   data-x="attr-spellcheck">spellcheck</code> attribute.
+
+   <dt><dfn data-x="concept-spellcheck-default-false">false-by-default</dfn>
+
+   <dd>The element will never be checked for spelling and grammar unless spellchecking is
+   explicitly enabled through the <code data-x="attr-spellcheck">spellcheck</code> attribute.
+
+   <dt><dfn data-x="concept-spellcheck-default-inherit">inherit-by-default</dfn>
+
+   <dd>The element's default behavior is the same as its parent element's. Elements that have no
+   parent element cannot have this as their default behavior.
+
+  </dl>
+
+  <hr>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-spellcheck">spellcheck</code></dfn> attribute is an <span>enumerated
+  attribute</span> whose keywords are the empty string, <code data-x="">true</code> and <code
+  data-x="">false</code>. The empty string and the <code data-x="">true</code> keyword map to the
+  <i>true</i> state. The <code data-x="">false</code> keyword maps to the <i>false</i> state. In
+  addition, there is a third state, the <i>default</i> state, which is the <i data-x="missing value default">missing value default</i> (and the <i data-x="invalid value default">invalid value default</i>).</p>
+
+  <p class="note">The <i>true</i> state indicates that the element is to have its spelling and
+  grammar checked. The <i>default</i> state indicates that the element is to act according to a
+  default behavior, possibly based on the parent element's own <code
+  data-x="attr-spellcheck">spellcheck</code> state, as defined below. The <i>false</i> state
+  indicates that the element is not to be checked.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-spellcheck">spellcheck</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns true if the element is to have its spelling and grammar checked; otherwise, returns
+    false.</p>
+
+    <p>Can be set, to override the default and set the <code
+    data-x="attr-spellcheck">spellcheck</code> content attribute.</p>
+
+   </dd>
+
+
+   <dt><var>element</var> . <code subdfn data-x="dom-forceSpellCheck">forceSpellCheck</code>()</dt>
+
+   <dd>
+
+    <p>Forces the user agent to report spelling and grammar errors on the element (if checking is
+    enabled), even if the user has never focused the element. (If the method is not invoked, user
+    agents can hide errors in text that wasn't just entered by the user.)</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-spellcheck">spellcheck</code></dfn> IDL attribute, on getting, must
+  return true if the element's <code data-x="attr-spellcheck">spellcheck</code> content attribute is
+  in the <i>true</i> state, or if the element's <code data-x="attr-spellcheck">spellcheck</code>
+  content attribute is in the <i>default</i> state and the element's <span
+  data-x="concept-spellcheck-default">default behavior</span> is <span
+  data-x="concept-spellcheck-default-true">true-by-default</span>, or if the element's <code
+  data-x="attr-spellcheck">spellcheck</code> content attribute is in the <i>default</i> state and the
+  element's <span data-x="concept-spellcheck-default">default behavior</span> is <span
+  data-x="concept-spellcheck-default-inherit">inherit-by-default</span> and the element's parent
+  element's <code data-x="dom-spellcheck">spellcheck</code> IDL attribute would return true;
+  otherwise, if none of those conditions applies, then the attribute must instead return false.</p>
+
+  <p class="note">The <code data-x="dom-spellcheck">spellcheck</code> IDL attribute is not affected
+  by user preferences that override the <code data-x="attr-spellcheck">spellcheck</code> content
+  attribute, and therefore might not reflect the actual spellchecking state.</p>
+
+  <p>On setting, if the new value is true, then the element's <code
+  data-x="attr-spellcheck">spellcheck</code> content attribute must be set to the literal string
+  "<code data-x="">true</code>", otherwise it must be set to the literal string "<code
+  data-x="">false</code>".
+
+  <hr>
+
+  <p>User agents must only consider the following pieces of text as checkable for the purposes of
+  this feature:</p>
+
+  <ul>
+
+   <li>The <span data-x="concept-fe-value">value</span> of <code>input</code> elements whose <code
+   data-x="attr-input-type">type</code> attributes are in the <span
+   data-x="attr-input-type-text">Text</span>, <span data-x="attr-input-type-search">Search</span>,
+   <span data-x="attr-input-type-url">URL</span>, or <span
+   data-x="attr-input-type-email">E-mail</span> states and that are <i
+   data-x="concept-fe-mutable">mutable</i> (i.e. that do not have the <code
+   data-x="attr-input-readonly">readonly</code> attribute specified and that are not <span
+   data-x="concept-fe-disabled">disabled</span>).</li>
+
+   <li>The <span data-x="concept-fe-value">value</span> of <code>textarea</code> elements that do not
+   have a <code data-x="attr-textarea-readonly">readonly</code> attribute and that are not <span
+   data-x="concept-fe-disabled">disabled</span>.</li>
+
+   <li>Text in <code>Text</code> nodes that are children of <span data-x="editing host">editing
+   hosts</span> or <span>editable</span> elements.</li>
+
+   <li>Text in attributes of <span>editable</span> elements.</li>
+
+  </ul>
+
+  <p>For text that is part of a <code>Text</code> node, the element with which the text is
+  associated is the element that is the immediate parent of the first character of the word,
+  sentence, or other piece of text. For text in attributes, it is the attribute's element. For the
+  values of <code>input</code> and <code>textarea</code> elements, it is the element itself.</p>
+
+  <p>To determine if a word, sentence, or other piece of text in an applicable element (as defined
+  above) is to have spelling- and grammar-checking enabled, the UA must use the following
+  algorithm:</p>
+
+  <ol>
+
+   <!-- user override -->
+
+   <li>If the user has disabled the checking for this text, then the checking is disabled.</li>
+
+   <li>Otherwise, if the user has forced the checking for this text to always be enabled, then the
+   checking is enabled.</li>
+
+   <!-- content attribute: on, off -->
+
+   <li>Otherwise, if the element with which the text is associated has a <code
+   data-x="attr-spellcheck">spellcheck</code> content attribute, then: if that attribute is in the
+   <i>true</i> state, then checking is enabled; otherwise, if that attribute is in the <i>false</i>
+   state, then checking is disabled.</li>
+
+   <!-- inherit, if there is one to inherit from -->
+
+   <li>Otherwise, if there is an ancestor element with a <code
+   data-x="attr-spellcheck">spellcheck</code> content attribute that is not in the <i>default</i>
+   state, then: if the nearest such ancestor's <code data-x="attr-spellcheck">spellcheck</code>
+   content attribute is in the <i>true</i> state, then checking is enabled; otherwise, checking is
+   disabled.</li>
+
+   <!-- default -->
+
+   <li>Otherwise, if the element's <span data-x="concept-spellcheck-default">default behavior</span>
+   is <span data-x="concept-spellcheck-default-true">true-by-default</span>, then checking is
+   enabled.</li>
+
+   <li>Otherwise, if the element's <span data-x="concept-spellcheck-default">default behavior</span>
+   is <span data-x="concept-spellcheck-default-false">false-by-default</span>, then checking is
+   disabled.</li>
+
+   <!-- default inheritance -->
+
+   <li>Otherwise, if the element's parent element has <em>its</em> checking enabled, then checking
+   is enabled.</li>
+
+   <li>Otherwise, checking is disabled.</li>
+
+  </ol>
+
+  <p>If the checking is enabled for a word/sentence/text, the user agent should indicate spelling
+  and grammar errors in that text. User agents should take into account the other semantics given in
+  the document when suggesting spelling and grammar corrections. User agents may use the language of
+  the element to determine what spelling and grammar rules to use, or may use the user's preferred
+  language settings. UAs should use <code>input</code> element attributes such as <code
+  data-x="attr-input-pattern">pattern</code> to ensure that the resulting value is valid, where
+  possible.</p>
+
+  <p>If checking is disabled, the user agent should not indicate spelling or grammar errors for that
+  text.</p>
+
+  <p>Even when checking is enabled, user agents may opt to not report spelling or grammar errors in
+  text that the user agent deems the user has no interest in having checked (e.g. text that was
+  already present when the page was loaded, or that the user did not type, or text in controls that
+  the user has not focused, or in parts of e-mail addresses that the user agent is not confident
+  were misspelt). The <dfn><code data-x="dom-forceSpellCheck">forceSpellCheck()</code></dfn> method,
+  when invoked on an element, must override this behavior, forcing the user agent to consider all
+  spelling and grammar errors in text in that element for which checking is enabled to be of
+  interest to the user.</p>
+
+  <div class="example">
+
+   <p>The element with ID "a" in the following example would be the one used to determine if the
+   word "Hello" is checked for spelling errors. In this example, it would not be.</p>
+
+   <pre>&lt;div contenteditable="true">
+ &lt;span spellcheck="false" id="a">Hell&lt;/span>&lt;em>o!&lt;/em>
+&lt;/div></pre>
+
+   <p>The element with ID "b" in the following example would have checking enabled (the leading
+   space character in the attribute's value on the <code>input</code> element causes the attribute
+   to be ignored, so the ancestor's value is used instead, regardless of the default).</p>
+
+   <pre class="bad">&lt;p spellcheck="true">
+ &lt;label>Name: &lt;input spellcheck=" false" id="b">&lt;/label>
+&lt;/p></pre>
+
+  </div>
+
+  </div>
+
+  <p class="note">This specification does not define the user interface for spelling and grammar
+  checkers. A user agent could offer on-demand checking, could perform continuous checking while the
+  checking is enabled, or could use other interfaces.</p>
+
+
+  

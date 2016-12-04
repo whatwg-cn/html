@@ -1,0 +1,27 @@
+<h5><dfn>Tag open state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+0021 EXCLAMATION MARK (!)</dt>
+   <dd>Switch to the <span>markup declaration open state</span>.</dd>
+
+   <dt>U+002F SOLIDUS (/)</dt>
+   <dd>Switch to the <span>end tag open state</span>.</dd>
+
+   <dt><span data-x="ASCII letters">ASCII letter</span></dt>
+   <dd>Create a new start tag token, set its tag name to the empty string. <span>Reconsume</span> in
+   the <span>tag name state</span>.
+
+   <dt>U+003F QUESTION MARK (?)</dt>
+   <dd><span>Parse error</span>. Create a comment token whose data is the empty string.
+   <span>Reconsume</span> in the <span>bogus comment state</span>.</dd>
+
+   <dt>Anything else</dt>
+   <dd><span>Parse error</span>. Emit a U+003C LESS-THAN SIGN character token.
+   <span>Reconsume</span> in the <span>data state</span>.</dd>
+
+  </dl>
+
+  

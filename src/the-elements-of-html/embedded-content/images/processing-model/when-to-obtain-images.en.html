@@ -1,0 +1,22 @@
+<h6>When to obtain images</h6>
+
+  <p>In a <span>browsing context</span> where <span data-x="concept-bc-noscript">scripting is
+  disabled</span>, user agents may obtain images immediately or on demand. In a <span>browsing
+  context</span> where <span data-x="concept-bc-noscript">scripting is enabled</span>, user agents
+  must obtain images immediately.</p>
+
+  <p>A user agent that obtains images immediately must synchronously
+  <span>update the image data</span> of an <code>img</code> element,
+  with the <i>restart animation</i> flag set if so stated,
+  whenever that element is created or has experienced <span>relevant mutations</span>.</p>
+
+  <p>A user agent that obtains images on demand must <span>update the image data</span> of an
+  <code>img</code> element whenever it needs the image data (i.e. on demand),
+  but only if the <code>img</code> element is in the
+  <span data-x="img-none">unavailable</span> state. When an <code>img</code> element
+  has experienced <span>relevant mutations</span>, if the user
+  agent only obtains images on demand, the <code>img</code> element must return to the <span
+  data-x="img-none">unavailable</span> state.</p>
+
+
+  

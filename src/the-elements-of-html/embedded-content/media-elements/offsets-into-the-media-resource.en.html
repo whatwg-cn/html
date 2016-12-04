@@ -1,0 +1,257 @@
+<h5>Offsets into the media resource</h5>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-duration">duration</code></dt>
+
+   <dd>
+
+    <p>Returns the length of the <span>media resource</span>, in seconds, assuming that the start of
+    the <span>media resource</span> is at time zero.</p>
+
+    <p>Returns NaN if the duration isn't available.</p>
+
+    <p>Returns Infinity for unbounded streams.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-currentTime">currentTime</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the <span>official playback position</span>, in seconds.</p>
+
+    <p>Can be set, to seek to the given time.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>A <span>media resource</span> has a <dfn>media timeline</dfn> that maps times (in seconds) to
+  positions in the <span>media resource</span>. The origin of a timeline is its earliest defined
+  position. The duration of a timeline is its last defined position.</p>
+
+  <p><dfn id="defineTimeline" data-x="establish the media timeline">Establishing the media
+  timeline</dfn>: If the <span>media resource</span> somehow specifies an explicit timeline whose
+  origin is not negative (i.e. gives each frame a specific time offset and gives the first frame a
+  zero or positive offset), then the <span>media timeline</span> should be that timeline. (Whether
+  the <span>media resource</span> can specify a timeline or not depends on the <span data-x="media
+  resource">media resource's</span> format.) If the <span>media resource</span> specifies an
+  explicit start time <em>and date</em>, then that time and date should be considered the zero point
+  in the <span>media timeline</span>; the <span>timeline offset</span> will be the time and date,
+  exposed using the <code data-x="dom-media-getStartDate">getStartDate()</code> method.</p>
+
+  <p>If the <span>media resource</span> has a discontinuous timeline, the user agent must extend the
+  timeline used at the start of the resource across the entire resource, so that the <span>media
+  timeline</span> of the <span>media resource</span> increases linearly starting from the
+  <span>earliest possible position</span> (as defined below), even if the underlying <span>media
+  data</span> has out-of-order or even overlapping time codes.</p>
+
+  <p class="example">For example, if two clips have been concatenated into one video file, but the
+  video format exposes the original times for the two clips, the video data might expose a timeline
+  that goes, say, 00:15..00:29 and then 00:05..00:38. However, the user agent would not expose those
+  times; it would instead expose the times as 00:15..00:29 and 00:29..01:02, as a single video.</p>
+
+  <p>In the rare case of a <span>media resource</span> that does not have an explicit timeline, the
+  zero time on the <span>media timeline</span> should correspond to the first frame of the
+  <span>media resource</span>. In the even rarer case of a <span>media resource</span> with no
+  explicit timings of any kind, not even frame durations, the user agent must itself determine the
+  time for each frame in a user-agent-defined manner.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p class="note">An example of a file format with no explicit timeline but with explicit frame
+  durations is the Animated GIF format. An example of a file format with no explicit timings at all
+  is the JPEG-push format (<code>multipart/x-mixed-replace</code> with JPEG frames, often
+  used as the format for MJPEG streams).</p>
+
+  <p>If, in the case of a resource with no timing information, the user agent will nonetheless be
+  able to seek to an earlier point than the first frame originally provided by the server, then the
+  zero time should correspond to the earliest seekable time of the <span>media resource</span>;
+  otherwise, it should correspond to the first frame received from the server (the point in the
+  <span>media resource</span> at which the user agent began receiving the stream).</p>
+
+  <p class="note">At the time of writing, there is no known format that lacks explicit frame time
+  offsets yet still supports seeking to a frame before the first frame sent by the server.</p>
+
+  <div class="example">
+
+   <p>Consider a stream from a TV broadcaster, which begins streaming on a sunny Friday afternoon in
+   October, and always sends connecting user agents the media data on the same media timeline, with
+   its zero time set to the start of this stream. Months later, user agents connecting to this
+   stream will find that the first frame they receive has a time with millions of seconds. The <code
+   data-x="dom-media-getStartDate">getStartDate()</code> method would always return the date that the
+   broadcast started; this would allow controllers to display real times in their scrubber (e.g.
+   "2:30pm") rather than a time relative to when the broadcast began ("8 months, 4 hours, 12
+   minutes, and 23 seconds").</p>
+
+   <p>Consider a stream that carries a video with several concatenated fragments, broadcast by a
+   server that does not allow user agents to request specific times but instead just streams the
+   video data in a predetermined order, with the first frame delivered always being identified as
+   the frame with time zero. If a user agent connects to this stream and receives fragments defined
+   as covering timestamps 2010-03-20 23:15:00 UTC to 2010-03-21 00:05:00 UTC and 2010-02-12 14:25:00
+   UTC to 2010-02-12 14:35:00 UTC, it would expose this with a <span>media timeline</span> starting
+   at 0s and extending to 3,600s (one hour). Assuming the streaming server disconnected at the end
+   of the second clip, the <code data-x="dom-media-duration">duration</code> attribute would then
+   return 3,600. The <code data-x="dom-media-getStartDate">getStartDate()</code> method would return a
+   <code>Date</code> object with a time corresponding to 2010-03-20 23:15:00 UTC. However, if a
+   different user agent connected five minutes later, <em>it</em> would (presumably) receive
+   fragments covering timestamps 2010-03-20 23:20:00 UTC to 2010-03-21 00:05:00 UTC and 2010-02-12
+   14:25:00 UTC to 2010-02-12 14:35:00 UTC, and would expose this with a <span>media timeline</span>
+   starting at 0s and extending to 3,300s (fifty five minutes). In this case, the <code
+   data-x="dom-media-getStartDate">getStartDate()</code> method would return a <code>Date</code> object
+   with a time corresponding to 2010-03-20 23:20:00 UTC.</p>
+
+   <p>In both of these examples, the <code data-x="dom-media-seekable">seekable</code> attribute
+   would give the ranges that the controller would want to actually display in its UI; typically, if
+   the servers don't support seeking to arbitrary times, this would be the range of time from the
+   moment the user agent connected to the stream up to the latest frame that the user agent has
+   obtained; however, if the user agent starts discarding earlier information, the actual range
+   might be shorter.</p>
+
+  </div>
+
+  <p>In any case, the user agent must ensure that the <span>earliest possible position</span> (as
+  defined below) using the established <span>media timeline</span>, is greater than or equal to
+  zero.</p>
+
+  <p>The <span>media timeline</span> also has an associated clock. Which clock is used is user-agent
+  defined, and may be <span>media resource</span>-dependent, but it should approximate the user's
+  wall clock.</p>
+
+  <p><span data-x="media element">Media elements</span> have a <dfn>current playback position</dfn>,
+  which must initially (i.e. in the absence of <span>media data</span>) be zero seconds. The
+  <span>current playback position</span> is a time on the <span>media timeline</span>.</p>
+
+  <p><span data-x="media element">Media elements</span> also have an <dfn>official playback
+  position</dfn>, which must initially be set to zero seconds. The <span>official playback
+  position</span> is an approximation of the <span>current playback position</span> that is kept
+  stable while scripts are running.</p>
+
+  <p><span data-x="media element">Media elements</span> also have a <dfn>default playback start
+  position</dfn>, which must initially be set to zero seconds. This time is used to allow the
+  element to be seeked even before the media is loaded.</p>
+
+  <p>Each <span>media element</span> has a <dfn>show poster flag</dfn>. When a <span>media
+  element</span> is created, this flag must be set to true. This flag is used to control when the
+  user agent is to show a poster frame for a <code>video</code> element instead of showing the video
+  contents.</p>
+
+  <p>The <dfn><code data-x="dom-media-currentTime">currentTime</code></dfn> attribute must, on
+  getting, return the <span>media element</span>'s <span>default playback start position</span>,
+  unless that is zero, in which case it must return the element's <span>official playback
+  position</span>. The returned value must be expressed in seconds. On setting, if the <span>media
+  element</span>'s <code data-x="dom-media-readyState">readyState</code> is <code
+  data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, then it must set the <span>media
+  element</span>'s <span>default playback start position</span> to the new value; otherwise, it must
+  set the <span>official playback position</span> to the new value and then <span
+  data-x="dom-media-seek">seek</span> to the new value. The new value must be interpreted as being in
+  seconds.</p>
+
+  <p>If the <span>media resource</span> is a streaming resource, then the user agent might be unable
+  to obtain certain parts of the resource after it has expired from its buffer. Similarly, some
+  <span data-x="media resource">media resources</span> might have a <span>media timeline</span> that
+  doesn't start at zero. The <dfn>earliest possible position</dfn> is the earliest position in the
+  stream or resource that the user agent can ever obtain again. It is also a time on the <span>media
+  timeline</span>.</p>
+
+  <p class="note">The <span>earliest possible position</span> is not explicitly exposed in the API;
+  it corresponds to the start time of the first range in the <code
+  data-x="dom-media-seekable">seekable</code> attribute's <code>TimeRanges</code> object, if any, or
+  the <span>current playback position</span> otherwise.</p>
+
+  <p>When the <span>earliest possible position</span> changes, then: if the <span>current playback
+  position</span> is before the <span>earliest possible position</span>, the user agent must <span
+  data-x="dom-media-seek">seek</span> to the <span>earliest possible position</span>; otherwise, if
+  the user agent has not fired a <code data-x="event-media-timeupdate">timeupdate</code> event at
+  the element in the past 15 to 250ms and is not still running event handlers for such an event,
+  then the user agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+  event</span> named <code data-x="event-media-timeupdate">timeupdate</code> at the element.</p>
+
+  <p class="note">Because of the above requirement and the requirement in the <span
+  data-x="concept-media-load-resource">resource fetch algorithm</span> that kicks in <a
+  href="#getting-media-metadata">when the metadata of the clip becomes known</a>, the <span>current
+  playback position</span> can never be less than the <span>earliest possible position</span>.</p>
+
+  <!-- see https://www.w3.org/Bugs/Public/show_bug.cgi?id=14492 -->
+  <!-- basically this is to handle very-long-running streams that use different video and audio
+       tracks per TV show -->
+
+  <p>If at any time the user agent learns that an audio or video track has ended and all <span>media
+  data</span> relating to that track corresponds to parts of the <span>media timeline</span> that
+  are <em>before</em> the <span>earliest possible position</span>, the user agent may <span>queue a
+  task</span> to run these steps:</p>
+
+  <ol>
+   <li><p>Remove the track from the <code data-x="dom-media-audioTracks">audioTracks</code>
+   attribute's <code>AudioTrackList</code> object or the <code
+   data-x="dom-media-videoTracks">videoTracks</code> attribute's <code>VideoTrackList</code> object
+   as appropriate.</p></li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-media-removetrack">removetrack</code> at the <span>media element</span>'s
+   aforementioned <code>AudioTrackList</code> or <code>VideoTrackList</code> object, using
+   <code>TrackEvent</code>, with the <code data-x="dom-TrackEvent-track">track</code> attribute
+   initialized to the <code>AudioTrack</code> or <code>VideoTrack</code> object representing the
+   track.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-media-duration">duration</code></dfn> attribute must return the time
+  of the end of the <span>media resource</span>, in seconds, on the <span>media timeline</span>. If
+  no <span>media data</span> is available, then the attributes must return the Not-a-Number (NaN)
+  value. If the <span>media resource</span> is not known to be bounded (e.g. streaming radio, or a
+  live event with no announced end time), then the attribute must return the positive Infinity
+  value.</p>
+
+  <p>The user agent must determine the duration of the <span>media resource</span> before playing
+  any part of the <span>media data</span> and before setting <code
+  data-x="dom-media-readyState">readyState</code> to a value equal to or greater than <code
+  data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code>, even if doing so requires fetching multiple
+  parts of the resource.</p>
+
+  <p id="durationChange">When the length of the <span>media resource</span> changes to a known value
+  (e.g. from being unknown to known, or from a previously established length to a new length) the
+  user agent must <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+  event</span> named <code data-x="event-media-durationchange">durationchange</code> at the
+  <span>media element</span>. (The event is not fired when the duration is reset as part of loading
+  a new media resource.) If the duration is changed such that the <span>current playback
+  position</span> ends up being greater than the time of the end of the <span>media resource</span>,
+  then the user agent must also <span data-x="dom-media-seek">seek</span> to the time of the end of
+  the <span>media resource</span>.</p>
+
+  <p class="example">If an "infinite" stream ends for some reason, then the duration would change
+  from positive Infinity to the time of the last frame or sample in the stream, and the <code
+  data-x="event-media-durationchange">durationchange</code> event would be fired. Similarly, if the
+  user agent initially estimated the <span>media resource</span>'s duration instead of determining
+  it precisely, and later revises the estimate based on new information, then the duration would
+  change and the <code data-x="event-media-durationchange">durationchange</code> event would be
+  fired.</p>
+
+  <p>Some video files also have an explicit date and time corresponding to the zero time in the
+  <span>media timeline</span>, known as the <dfn>timeline offset</dfn>. Initially, the
+  <span>timeline offset</span> must be set to Not-a-Number (NaN).</p>
+
+  <p>The <dfn><code data-x="dom-media-getStartDate">getStartDate()</code></dfn> method must return <span
+  data-x="create a Date object">a new <code>Date</code> object</span> representing the current
+  <span>timeline offset</span>.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-media-loop">loop</code></dfn> attribute is a <span>boolean
+  attribute</span> that, if specified, indicates that the <span>media element</span> is to seek back
+  to the start of the <span>media resource</span> upon reaching the end.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-loop">loop</code></dfn> IDL attribute must <span>reflect</span>
+  the content attribute of the same name.</p>
+
+  </div>
+
+
+
+  

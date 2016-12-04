@@ -1,0 +1,21 @@
+<h4 id="windowproxy-delete">[[Delete]] ( <var>P</var> )</h4>
+
+  <ol>
+   <li><p>Let <var>W</var> be the value of the
+   [[<span data-x="concept-windowproxy-window">Window</span>]] internal slot of
+   <b>this</b>.</p></li>
+
+   <li>
+    <p>If <span>IsPlatformObjectSameOrigin</span>(<var>W</var>) is true, then:
+
+    <ol>
+     <li><p>If <var>P</var> is an <span>array index property name</span>, then return
+     false.</p></li>
+
+     <li><p>Return ? <span>OrdinaryDelete</span>(<var>W</var>, <var>P</var>).</p></li>
+    </ol>
+
+   <li><p>Throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+  </ol>
+
+  

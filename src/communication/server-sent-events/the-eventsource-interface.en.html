@@ -1,0 +1,155 @@
+<h4>The <code>EventSource</code> interface</h4>
+
+  <pre class="idl">[<span data-x="dom-EventSource">Constructor</span>(USVString url, optional <span>EventSourceInit</span> eventSourceInitDict), Exposed=(Window,Worker)]
+interface <dfn>EventSource</dfn> : <span>EventTarget</span> {
+  readonly attribute USVString <span data-x="dom-EventSource-url">url</span>;
+  readonly attribute boolean <span data-x="dom-EventSource-withCredentials">withCredentials</span>;
+
+  // ready state
+  const unsigned short <span data-x="dom-EventSource-CONNECTING">CONNECTING</span> = 0;
+  const unsigned short <span data-x="dom-EventSource-OPEN">OPEN</span> = 1;
+  const unsigned short <span data-x="dom-EventSource-CLOSED">CLOSED</span> = 2;
+  readonly attribute unsigned short <span data-x="dom-EventSource-readyState">readyState</span>;
+
+  // networking
+  attribute <span>EventHandler</span> <span data-x="handler-EventSource-onopen">onopen</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-EventSource-onmessage">onmessage</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-EventSource-onerror">onerror</span>;
+  void <span data-x="dom-EventSource-close">close</span>();
+};
+
+dictionary <dfn>EventSourceInit</dfn> {
+  boolean <dfn data-x="dom-EventSourceInit-withCredentials">withCredentials</dfn> = false;
+};</pre>
+
+  <p>Each <code>EventSource</code> object has the following associated with it:</p>
+
+  <ul>
+   <li><p>A <dfn data-x="concept-EventSource-url" data-for="EventSource">url</dfn> (a <span>URL
+   record</span>). Set during construction.</p></li>
+
+   <li><p>A <dfn data-x="concept-event-stream-request">request</dfn>. This must initially be
+   null.</p></li>
+
+   <li><p>A <dfn data-x="concept-event-stream-reconnection-time">reconnection time</dfn>, in
+   milliseconds. This must initially be a user-agent-defined value, probably in the region of a few
+   seconds.</p></li>
+
+   <li><p>A <dfn data-x="concept-event-stream-last-event-id">last event ID string</dfn>. This must
+   initially be the empty string.</p></li>
+  </ul>
+
+  <p>Apart from <span data-x="concept-EventSource-url">url</span> these are not currently exposed on
+  the <code>EventSource</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-EventSource">EventSource(<var>url</var>,
+  <var>eventSourceInitDict</var>)</code></dfn> constructor, when invoked, must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>ev</var> be a new <code>EventSource</code> object.</p></li>
+
+   <li><p>Let <var>settings</var> be <var>ev</var>'s <span>relevant settings object</span>.
+
+   <li><p>Let <var>urlRecord</var> be the result of <span data-x="URL parser">parsing</span>
+   <var>url</var> with <var>settings</var>'s <span>API base URL</span> and <var>settings</var>'s
+   <span>API URL character encoding</span>.</p></li>
+
+   <li><p>If <var>urlRecord</var> is failure, then throw a <span>"<code>SyntaxError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li><p>Set <var>ev</var>'s <span data-x="concept-EventSource-url">url</span> to
+   <var>urlRecord</var>.</p>
+
+   <li><p>Let <var>corsAttributeState</var> be <span
+   data-x="attr-crossorigin-anonymous">Anonymous</span>.</p></li>
+
+   <li><p>If the value of <var>eventSourceInitDict</var>'s <code
+   data-x="dom-EventSourceInit-withCredentials">withCredentials</code> member is true, then set
+   <var>corsAttributeState</var> to <span data-x="attr-crossorigin-use-credentials">Use
+   Credentials</span> and set <var>ev</var>'s <code
+   data-x="dom-EventSource-withCredentials">withCredentials</code> attribute to true.</p></li>
+
+   <li><p>Let <var>request</var> be the result of <span
+   data-x="create a potential-CORS request">creating a potential-CORS request</span> given
+   <var>urlRecord</var>, the empty string, and <var>corsAttributeState</var>, and with the
+   <i>same-origin fallback flag</i> set.</p></li>
+
+   <li><p>Set <var>request</var>'s <span data-x="concept-request-client">client</span> to
+   <var>settings</var>.</p></li>
+
+   <li><p>User agents may <span data-x="concept-header-list-set">set</span> `<code
+   data-x="http-accept">Accept</code>`/`<code>text/event-stream</code>` in <var>request</var>'s
+   <span data-x="concept-request-header-list">header list</span>.</p></li>
+
+   <li><p>Set <var>request</var>'s <span data-x="concept-request-cache-mode">cache mode</span> to
+   "<code data-x="">no-store</code>".</p></li>
+
+   <li><p>Set <var>ev</var>'s <span data-x="concept-event-stream-request">request</span> to
+   <var>request</var>.</p></li>
+
+   <li><p>Return <var>ev</var>, but continue these steps <span>in parallel</span>.</p></li>
+
+   <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-EventSource-url">url</code></dfn> attribute's getter must return the
+  <span data-x="concept-url-serializer">serialization</span> of this <code>EventSource</code>
+  object's <span data-x="concept-EventSource-url">url</span>.</p>
+
+  <p>The <dfn><code data-x="dom-EventSource-withCredentials">withCredentials</code></dfn> attribute
+  must return the value to which it was last initialized. When the object is created, it must be
+  initialized to false.</p>
+
+  <p>The <dfn><code data-x="dom-EventSource-readyState">readyState</code></dfn> attribute represents
+  the state of the connection. It can have the following values:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="dom-EventSource-CONNECTING">CONNECTING</code></dfn> (numeric value 0)</dt>
+
+   <dd>The connection has not yet been established, or it was closed and the user agent is
+   reconnecting.</dd>
+
+   <dt><dfn><code data-x="dom-EventSource-OPEN">OPEN</code></dfn> (numeric value 1)</dt>
+
+   <dd>The user agent has an open connection and is dispatching events as it receives them.</dd>
+
+   <dt><dfn><code data-x="dom-EventSource-CLOSED">CLOSED</code></dfn> (numeric value 2)</dt>
+
+   <dd>The connection is not open, and the user agent is not trying to reconnect. Either there was a
+   fatal error or the <code data-x="dom-EventSource-close">close()</code> method was invoked.</dd>
+
+  </dl>
+
+  <p>When the object is created its <code data-x="dom-EventSource-readyState">readyState</code> must
+  be set to <code data-x="dom-EventSource-CONNECTING">CONNECTING</code> (0). The rules given below
+  for handling the connection define when the value changes.</p>
+
+  <p>The <dfn><code data-x="dom-EventSource-close">close()</code></dfn> method must abort any
+  instances of the <span data-x="concept-fetch">fetch</span> algorithm started for this
+  <code>EventSource</code> object, and must set the <code
+  data-x="dom-EventSource-readyState">readyState</code> attribute to <code
+  data-x="dom-EventSource-CLOSED">CLOSED</code>.</p> <!-- this also causes all the message events to
+  stop firing, even if they were queued before close() was called -->
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event
+  handler IDL attributes</span>, by all objects implementing the <code>EventSource</code>
+  interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-EventSource-onopen">onopen</code></dfn> <td> <code data-x="event-open">open</code>
+    <tr><td><dfn><code data-x="handler-EventSource-onmessage">onmessage</code></dfn> <td> <code data-x="event-message">message</code>
+    <tr><td><dfn><code data-x="handler-EventSource-onerror">onerror</code></dfn> <td> <code data-x="event-error">error</code>
+  </table>
+
+  <hr>
+
+
+  

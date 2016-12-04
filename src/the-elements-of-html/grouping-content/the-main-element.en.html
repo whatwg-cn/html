@@ -1,0 +1,73 @@
+<h4>The <dfn><code>main</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>main</code> element can be used as a container for the dominant contents of another
+  element. It <span>represents</span> its children.</p>
+
+  <p class="note">The <code>main</code> element is distinct from the <code>section</code> and
+  <code>article</code> elements in that the <code>main</code> element does not contribute to the
+  document <span>outline</span>.</p>
+
+  <p class="note">There is no restriction as to the number of <code>main</code> elements in a
+  document. Indeed, there are many cases where it would make sense to have multiple
+  <code>main</code> elements. For example, a page with multiple <code>article</code> elements might
+  need to indicate the dominant contents of each such element.</p>
+
+  <div class="example">
+
+   <p>In this example, the author has used a presentation where each component of the page is
+   rendered in a box. To wrap the main content of the page (as opposed to the header, the footer,
+   the navigation bar, and a sidebar), the <code>main</code> element is used.</p>
+
+   <pre>&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;title>RPG System 17&lt;/title>
+&lt;style>
+ header, nav, aside, main, footer {
+   margin: 0.5em; border: thin solid; padding: 0.5em;
+   background: #EFF; color: black; box-shadow: 0 0 0.25em #033;
+ }
+ h1, h2, p { margin: 0; }
+ nav, main { float: left; }
+ aside { float: right; }
+ footer { clear: both; }
+&lt;/style>
+&lt;header>
+ &lt;h1>System Eighteen&lt;/h1>
+&lt;/header>
+&lt;nav>
+ &lt;a href="../16/">&larr; System 17&lt;/a>
+ &lt;a href="../18/">RPXIX &rarr;&lt;/a>
+&lt;/nav>
+&lt;aside>
+ &lt;p>This system has no HP mechanic, so there's no healing.
+&lt;/aside>
+&lt;main>
+ &lt;h2>Character creation&lt;/h2>
+ &lt;p>Attributes (magic, strength, agility) are purchased at the cost of one point per level.&lt;/p>
+ &lt;h2>Rolls&lt;/h2>
+ &lt;p>Each encounter, roll the dice for all your skills. If you roll more than the opponent, you win.&lt;/p>
+&lt;/main>
+&lt;footer>
+ &lt;p>Copyright &copy; 2013
+&lt;/footer>
+&lt;/html></pre>
+
+  </div>
+
+
+
+  

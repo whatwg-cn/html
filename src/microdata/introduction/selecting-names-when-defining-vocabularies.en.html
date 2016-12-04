@@ -1,0 +1,81 @@
+<h4>Selecting names when defining vocabularies</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Using microdata means using a vocabulary. For some purposes, an ad-hoc vocabulary is adequate.
+  For others, a vocabulary will need to be designed. Where possible, authors are encouraged to
+  re-use existing vocabularies, as this makes content re-use easier.</p>
+
+  <p>When designing new vocabularies, identifiers can be created either using <span
+  data-x="URL">URLs</span>, or, for properties, as plain words (with no dots or colons). For URLs,
+  conflicts with other vocabularies can be avoided by only using identifiers that correspond to
+  pages that the author has control over.</p>
+
+  <div class="example">
+
+   <p>For instance, if Jon and Adam both write content at <code
+   data-x="">example.com</code>, at <code
+   data-x="">https://example.com/~jon/...</code> and <code
+   data-x="">https://example.com/~adam/...</code> respectively, then
+   they could select identifiers of the form
+   "https://example.com/~jon/name" and "https://example.com/~adam/name"
+   respectively.</p>
+
+  </div>
+
+  <p>Properties whose names are just plain words can only be used within the context of the types
+  for which they are intended; properties named using URLs can be reused in items of any type. If an
+  item has no type, and is not part of another item, then if its properties have names that are just
+  plain words, they are not intended to be globally unique, and are instead only intended for
+  limited use. Generally speaking, authors are encouraged to use either properties with globally
+  unique names (URLs) or ensure that their items are typed.</p>
+
+  <div class="example">
+
+   <p>Here, an item is an "https://example.org/animals#cat", and most of the properties have names
+   that are words defined in the context of that type. There are also a few additional properties
+   whose names come from other vocabularies.</p>
+
+<pre>&lt;section itemscope itemtype="https://example.org/animals#cat">
+ &lt;h1 itemprop="name https://example.com/fn">Hedral&lt;/h1>
+ &lt;p itemprop="desc">Hedral is a male american domestic
+ shorthair, with a fluffy &lt;span
+ itemprop="https://example.com/color">black&lt;/span> fur with &lt;span
+ itemprop="https://example.com/color">white&lt;/span> paws and belly.&lt;/p>
+ &lt;img itemprop="img" src="hedral.jpeg" alt="" title="Hedral, age 18 months">
+&lt;/section></pre>
+
+   <p>This example has one item with the type "https://example.org/animals#cat" and the following
+   properties:</p>
+
+   <table>
+    <thead>
+     <tr>
+      <td>Property
+      <td>Value
+    <tbody>
+     <tr>
+      <td>name
+      <td>Hedral
+     <tr>
+      <td>https://example.com/fn
+      <td>Hedral
+     <tr>
+      <td>desc
+      <td>Hedral is a male american domestic shorthair, with a fluffy black fur with white paws and belly.
+     <tr>
+      <td>https://example.com/color
+      <td>black
+     <tr>
+      <td>https://example.com/color
+      <td>white
+     <tr>
+      <td>img
+      <td>.../hedral.jpeg
+   </table>
+
+  </div>
+
+
+
+  

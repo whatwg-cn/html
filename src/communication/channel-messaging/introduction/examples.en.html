@@ -1,0 +1,65 @@
+<h5>Examples</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <div class="example">
+
+   <p>In this example, two JavaScript libraries are connected to each other using
+   <code>MessagePort</code>s. This allows the libraries to later be hosted in different frames, or
+   in <code>Worker</code> objects, without any change to the APIs.</p>
+
+   <pre>&lt;script src="contacts.js">&lt;/script> &lt;!-- exposes a contacts object -->
+&lt;script src="compose-mail.js">&lt;/script> &lt;!-- exposes a composer object -->
+&lt;script>
+ var channel = new MessageChannel();
+ composer.addContactsProvider(channel.port1);
+ contacts.registerConsumer(channel.port2);
+&lt;/script></pre>
+
+   <p>Here's what the "addContactsProvider()" function's implementation could look like:</p>
+
+   <pre>function addContactsProvider(port) {
+  port.onmessage = function (event) {
+    switch (event.data.messageType) {
+      'search-result': handleSearchResult(event.data.results); break;
+      'search-done': handleSearchDone(); break;
+      'search-error': handleSearchError(event.data.message); break;
+      // ...
+    }
+  };
+};</pre>
+
+   <p>Alternatively, it could be implemented as follows:</p>
+
+   <pre>function addContactsProvider(port) {
+  port.addEventListener('message', function (event) {
+    if (event.data.messageType == 'search-result')
+      handleSearchResult(event.data.results);
+  });
+  port.addEventListener('message', function (event) {
+    if (event.data.messageType == 'search-done')
+      handleSearchDone();
+  });
+  port.addEventListener('message', function (event) {
+    if (event.data.messageType == 'search-error')
+      handleSearchError(event.data.message);
+  });
+  // ...
+  port.start();
+};</pre>
+
+   <p>The key difference is that when using <code
+   data-x="dom-EventTarget-addEventListener">addEventListener()</code>, the <code
+   data-x="dom-MessagePort-start">start()</code> method must also be invoked. When using <code
+   data-x="handler-MessagePort-onmessage">onmessage</code>, the call to <code
+   data-x="dom-MessagePort-start">start()</code> is implied.</p>
+
+   <p>The <code data-x="dom-MessagePort-start">start()</code> method, whether called explicitly or
+   implicitly (by setting <code data-x="handler-MessagePort-onmessage">onmessage</code>), starts the
+   flow of messages: messages posted on message ports are initially paused, so that they don't get
+   dropped on the floor before the script has had a chance to set up its handlers.</p>
+
+  </div>
+
+
+  

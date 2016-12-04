@@ -1,0 +1,94 @@
+<h5>Constraint validation</h5>
+
+  <p>When the user agent is required to <dfn>statically validate the constraints</dfn> of
+  <code>form</code> element <var>form</var>, it must run the following steps, which return
+  either a <i>positive</i> result (all the controls in the form are valid) or a <i>negative</i>
+  result (there are invalid controls) along with a (possibly empty) list of elements that are
+  invalid and for which no script has claimed responsibility:</p>
+
+  <ol>
+
+   <li><p>Let <var>controls</var> be a list of all the <span
+   data-x="category-submit">submittable elements</span> whose <span>form owner</span> is <var>form</var>, in <span>tree order</span>.</p></li>
+
+   <li><p>Let <var>invalid controls</var> be an initially empty list of elements.</p></li>
+
+   <li>
+
+    <p>For each element <var>field</var> in <var>controls</var>, in <span>tree
+    order</span>, run the following substeps:</p>
+
+    <ol>
+
+     <li><p>If <var>field</var> is not a <span>candidate for constraint validation</span>,
+     then move on to the next element.</p></li>
+
+     <li><p>Otherwise, if <var>field</var> <span data-x="concept-fv-valid">satisfies its
+     constraints</span>, then move on to the next element.</p></li>
+
+     <li><p>Otherwise, add <var>field</var> to <var>invalid
+     controls</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If <var>invalid controls</var> is empty, then return a <i>positive</i> result and
+   abort these steps.</p></li>
+
+   <li><p>Let <var>unhandled invalid controls</var> be an initially empty list of
+   elements.</p></li>
+
+   <li>
+
+    <p>For each element <var>field</var> in <var>invalid controls</var>, if any,
+    in <span>tree order</span>, run the following substeps:</p>
+
+    <ol>
+     <li><p>Let <var>notCanceled</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-invalid">invalid</code> at <var>field</var>, with the
+     <code data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+     <li><p>If <var>notCanceled</var> is true, then add <var>field</var> to <var>unhandled invalid
+     controls</var>.</p></li>
+    </ol>
+
+   </li>
+
+   <li><p>Return a <i>negative</i> result with the list of elements in the <var>unhandled
+   invalid controls</var> list.</p></li>
+
+  </ol>
+
+  <p>If a user agent is to <dfn>interactively validate the constraints</dfn> of <code>form</code>
+  element <var>form</var>, then the user agent must run the following steps:</p>
+
+  <ol>
+
+   <li><p><span>Statically validate the constraints</span> of <var>form</var>, and let
+   <var>unhandled invalid controls</var> be the list of elements returned if the result was
+   <i>negative</i>.</p></li>
+
+   <li><p>If the result was <i>positive</i>, then return that result and abort these steps.</p></li>
+
+   <li><p>Report the problems with the constraints of at least one of the elements given in
+   <var>unhandled invalid controls</var> to the user. User agents may focus one of those elements in
+   the process, by running the <span>focusing steps</span> for that element, and may change the
+   scrolling position of the document, or perform some other action that brings the element to the
+   user's attention. User agents may report more than one constraint violation. User agents may
+   coalesce related constraint violation reports if appropriate (e.g. if multiple radio buttons in a
+   <span data-x="radio button group">group</span> are marked as required, only one error need be
+   reported). If one of the controls is not <span>being rendered</span> (e.g. it has the <code
+   data-x="attr-hidden">hidden</code> attribute set) then user agents may report a script
+   error.</p></li>
+
+   <li><p>Return a <i>negative</i> result.</p></li>
+
+  </ol>
+
+  </div>
+
+
+
+<!--TOPIC:DOM APIs-->
+  

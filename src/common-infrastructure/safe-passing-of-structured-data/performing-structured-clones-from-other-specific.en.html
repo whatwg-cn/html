@@ -1,0 +1,40 @@
+<h4>Performing structured clones from other specifications</h4>
+
+  <p>Other specifications may use the <span>StructuredClone</span>,
+  <span>StructuredCloneWithTransfer</span>, <span>IsTransferable</span>, and <span
+  data-x="transfer-abstract-op">Transfer</span> abstract operations.</p>
+
+  <p>In general, call sites may pass in Web IDL values instead of JavaScript values; this is to be
+  understood to perform an implicit <span data-x="concept-idl-convert">conversion</span> to the
+  JavaScript value before invoking these algorithms.</p>
+
+  <p>Call sites that are not invoked as a result of author code synchronously calling into a user
+  agent method must take care to properly <span>prepare to run script</span> and <span>prepare to
+  run a callback</span> before invoking these abstract operations, if they are being performed on
+  arbitrary objects. This is necessary because the <span>StructuredClone</span> operation can invoke
+  author-defined accessors as part of its final deep-cloning steps, and these accessors could call
+  into operations that rely on the <span data-x="concept-entry-everything">entry</span> and <span
+  data-x="concept-incumbent-everything">incumbent</span> concepts being properly set up.</p>
+
+  <p class="example"><code data-x="dom-window-postMessage">postMessage</code> performs
+  <span>StructuredCloneWithTransfer</span> on its arguments, but is careful to do so immediately,
+  inside the synchronous portion of its algorithm. Thus it is able to use the structured cloning
+  algorithms without needing to <span>prepare to run script</span> and <span>prepare to run a
+  callback</span>.</p>
+
+  <p class="example"><span data-x="url parser">Parsing</span> URLs can happen at a variety of times
+  that are not the synchronous result of author code. However, the URL parser only applies
+  <span>StructuredClone</span> to <code>Blob</code> objects, so it is not in danger of running
+  author code with incorrect <span data-x="concept-entry-everything">entry</span> and <span
+  data-x="concept-incumbent-everything">incumbent</span> values, and thus it too does not need to
+  perform these preparation steps.</p>
+
+  <p class="example">In contrast, a hypothetical API that used <span>StructuredClone</span> to
+  serialize some author-supplied object periodically, directly from a <span
+  data-x="concept-task">task</span> on the <span>event loop</span>, would need to ensure it performs
+  the appropriate preparations before calling into the structured clone algorithms. As of this time,
+  we know of no such APIs on the platform; usually it is simpler to perform the clone ahead of time,
+  as a synchronous consequence of author code, like <code
+  data-x="dom-window-postMessage">postMessage</code>.</p>
+
+  

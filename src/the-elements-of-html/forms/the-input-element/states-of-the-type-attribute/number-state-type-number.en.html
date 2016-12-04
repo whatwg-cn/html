@@ -1,0 +1,167 @@
+<h6><dfn id="number-state" data-x="attr-input-type-number">Number</dfn> state (<code data-x="">type=number</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-number">Number</span> state, the rules in this section apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> a control for setting the element's
+  <span data-x="concept-fe-value">value</span> to a string representing a number.</p>
+
+  <div w-nodev>
+
+  <p>If the element is <i data-x="concept-fe-mutable">mutable</i>, the user agent should allow the
+  user to change the number represented by its <span data-x="concept-fe-value">value</span>, as
+  obtained from applying the <span>rules for parsing floating-point number values</span> to it. User
+  agents must not allow the user to set the <span data-x="concept-fe-value">value</span> to a
+  non-empty string that is not a <span>valid floating-point number</span>. If the user agent
+  provides a user interface for selecting a number, then the <span
+  data-x="concept-fe-value">value</span> must be set to the <span data-x="best representation of the
+  number as a floating-point number">best representation of the number representing the user's
+  selection as a floating-point number</span>. User agents should allow the user to set the <span
+  data-x="concept-fe-value">value</span> to the empty string.</p>
+
+  <p><strong>Constraint validation</strong>: While the user interface describes input that the user
+  agent cannot convert to a <span>valid floating-point number</span>, the control is <span>suffering
+  from bad input</span>.</p>
+
+  </div>
+
+  <p class="note">This specification does not define what user interface user agents are to use;
+  user agent vendors are encouraged to consider what would best serve their users' needs. For
+  example, a user agent in Persian or Arabic markets might support Persian and Arabic numeric input
+  (converting it to the format required for submission as described above). Similarly, a user agent
+  designed for Romans might display the value in Roman numerals rather than in decimal; or (more
+  realistically) a user agent designed for the French market might display the value with
+  apostrophes between thousands and commas before the decimals, and allow the user to enter a value
+  in that manner, internally converting it to the submission format described above.</p>
+
+  <p>The <code data-x="attr-input-value">value</code> attribute, if specified and not empty, must
+  have a value that is a <span>valid floating-point number</span>.</p> <!-- ok to set out-of-range
+  value, we never know when we might have to represent bogus input -->
+
+  <div w-nodev>
+
+  <p><strong>The <span>value sanitization algorithm</span> is as follows</strong>: If the <span
+  data-x="concept-fe-value">value</span> of the element is not a <span>valid floating-point
+  number</span>, then set it to the empty string instead.</p>
+
+  </div>
+
+  <p>The <code data-x="attr-input-min">min</code> attribute, if specified, must have a value that is
+  a <span>valid floating-point number</span>. The <code data-x="attr-input-max">max</code> attribute,
+  if specified, must have a value that is a <span>valid floating-point number</span>.</p>
+
+  <p><span w-nodev>The <span data-x="concept-input-step-scale">step scale factor</span> is
+  1.</span> The <span data-x="concept-input-step-default">default step</span> is 1 (allowing only
+  integers to be selected by the user, unless the <span data-x="concept-input-min-zero">step
+  base</span> has a non-integer value).</p>
+
+  <div w-nodev>
+
+  <p>When the element is <span>suffering from a step mismatch</span>, the user agent may round the
+  element's <span data-x="concept-fe-value">value</span> to the nearest number for which the element
+  would not <span data-x="suffering from a step mismatch">suffer from a step mismatch</span>. If
+  there are two such numbers, user agents are encouraged to pick the one nearest positive
+  infinity.</p>
+
+  <p><strong>The <span data-x="concept-input-value-string-number">algorithm to convert a string to a
+  number</span>, given a string <var>input</var>, is as follows</strong>: If applying the
+  <span>rules for parsing floating-point number values</span> to <var>input</var> results
+  in an error, then return an error; otherwise, return the resulting number.</p>
+
+  <p><strong>The <span data-x="concept-input-value-number-string">algorithm to convert a number to a
+  string</span>, given a number <var>input</var>, is as follows</strong>: Return a
+  <span>valid floating-point number</span> that represents <var>input</var>.</p>
+
+  </div>
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content attributes, IDL attributes, and
+   methods <span data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code data-x="attr-input-list">list</code>,
+   <code data-x="attr-input-max">max</code>,
+   <code data-x="attr-input-min">min</code>,
+   <code data-x="attr-input-placeholder">placeholder</code>,
+   <code data-x="attr-input-readonly">readonly</code>,
+   <code data-x="attr-input-required">required</code>, and
+   <code data-x="attr-input-step">step</code> content attributes;
+   <code data-x="dom-input-list">list</code>,
+   <code data-x="dom-input-value">value</code>, and
+   <code data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code data-x="dom-textarea/input-select">select()</code>,
+   <code data-x="dom-input-stepDown">stepDown()</code>, and
+   <code data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is in mode <span
+   data-x="dom-input-value-value">value</span>.</p>
+
+   <p>The <code data-x="event-input">input</code> and <code
+   data-x="event-change">change</code> events <span
+   data-x="concept-input-apply">apply</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-input-alt">alt</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fs-formaction">formaction</code>,
+   <code class="no-backref" data-x="attr-fs-formenctype">formenctype</code>,
+   <code class="no-backref" data-x="attr-fs-formmethod">formmethod</code>,
+   <code class="no-backref" data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code class="no-backref" data-x="attr-fs-formtarget">formtarget</code>,
+   <code class="no-backref" data-x="attr-dim-height">height</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-maxlength">maxlength</code>,
+   <code class="no-backref" data-x="attr-input-minlength">minlength</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-pattern">pattern</code>,
+   <code class="no-backref" data-x="attr-input-size">size</code>,
+   <code class="no-backref" data-x="attr-input-src">src</code>, and
+   <code class="no-backref" data-x="attr-dim-width">width</code>.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionDirection">selectionDirection</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code> IDL attributes;
+   <code class="no-backref" data-x="dom-textarea/input-setRangeText">setRangeText()</code>, and
+   <code class="no-backref" data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code> methods.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here is an example of using a numeric input control:</p>
+
+   <pre>&lt;label>How much do you want to charge? $&lt;input type=number min=0 step=0.01 name=price>&lt;/label></pre>
+
+   <p>As described above, a user agent might support numeric input in the user's local format,
+   converting it to the format required for submission as described above. This might include
+   handling grouping separators (as in "872,000,000,000") and various decimal separators (such as
+   "3,99" vs "3.99") or using local digits (such as those in Arabic, Devanagari, Persian, and
+   Thai).</p>
+
+  </div>
+
+  <p class="note">The <code data-x="">type=number</code> state is not appropriate for input that
+  happens to only consist of numbers but isn't strictly speaking a number. For example, it would be
+  inappropriate for credit card numbers or US postal codes. A simple way of determining whether to
+  use <code data-x="">type=number</code> is to consider whether it would make sense for the input
+  control to have a spinbox interface (e.g. with "up" and "down" arrows). Getting a credit card
+  number wrong by 1 in the last digit isn't a minor mistake, it's as wrong as getting every digit
+  incorrect. So it would not make sense for the user to select a credit card number using "up" and
+  "down" buttons. When a spinbox interface is not appropriate, <code data-x="">type=text</code> is
+  probably the right choice (possibly with a <code data-x="attr-input-pattern">pattern</code>
+  attribute).</p>
+
+
+
+  

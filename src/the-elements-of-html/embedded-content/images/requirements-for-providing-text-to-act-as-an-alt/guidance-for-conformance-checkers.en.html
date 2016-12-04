@@ -1,0 +1,45 @@
+<h6 id="guidance-for-conformance-checkers">Guidance for conformance checkers</h6>
+
+  <p>A conformance checker must report the lack of an <code data-x="attr-img-alt">alt</code>
+  attribute as an error unless one of the conditions listed below applies:</p>
+
+  <ul>
+
+   <!-- when editing this list, search for the two other occurrences of 'critical-no-alt' -->
+
+   <li><p>The <code>img</code> element is in a <code>figure</code> element that satisfies <a
+   href="#figcaption-as-alt-condition">the conditions described above</a>.</p></li>
+
+   <li><p>The <code>img</code> element has a <code data-x="attr-title">title</code> attribute with a
+   value that is not the empty string (also as <a href="#unknown-images">described
+   above</a>).</p></li>
+
+   <!-- the following are additional entries not included in the aforementioned list, as they apply
+   only to conformance checkers -->
+
+   <li><p>The conformance checker has been configured to assume that the document is an e-mail or
+   document intended for a specific person who is known to be able to view images.</p></li>
+
+   <li><p>The <code>img</code> element has a (non-conforming) <code
+   data-x="attr-img-generator-unable-to-provide-required-alt">generator-unable-to-provide-required-alt</code>
+   attribute whose value is the empty string. A conformance checker that is not reporting the lack
+   of an <code data-x="attr-img-alt">alt</code> attribute as an error must also not report the
+   presence of the empty <code
+   data-x="attr-img-generator-unable-to-provide-required-alt">generator-unable-to-provide-required-alt</code>
+   attribute as an error. (This case does not represent a case where the document is conforming,
+   only that the generator could not determine appropriate alternative text &mdash; validators are
+   not required to show an error in this case, because such an error might encourage markup
+   generators to include bogus alternative text purely in an attempt to silence validators.
+   Naturally, conformance checkers <em>may</em> report the lack of an <code
+   data-x="attr-img-alt">alt</code> attribute as an error even in the presence of the <code
+   data-x="attr-img-generator-unable-to-provide-required-alt">generator-unable-to-provide-required-alt</code>
+   attribute; for example, there could be a user option to report <em>all</em> conformance errors
+   even those that might be the more or less inevitable result of using a markup
+   generator.)</p></li>
+
+  </ul>
+
+  </div>
+
+
+  

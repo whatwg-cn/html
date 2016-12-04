@@ -1,0 +1,75 @@
+<h4>The worker's lifetime</h4>
+
+  <p>Workers communicate with other workers and with <span data-x="browsing context">browsing
+  contexts</span> through <span data-x="channel messaging">message channels</span> and their
+  <code>MessagePort</code> objects.</p>
+
+  <p>Each <code>WorkerGlobalScope</code> <var>worker global scope</var> has a list of
+  <dfn data-export="">the worker's ports</dfn>, which consists of all the <code>MessagePort</code>
+  objects that are entangled with another port and that have one (but only one) port owned by
+  <var>worker global scope</var>. This list includes <!--all the <code>MessagePort</code> objects
+  that are in events pending in the <code>WorkerGlobalScope</code> object's <span>event loop</span>,
+  as well as (commented out because in practice it makes no difference either way as far as I can
+  tell, and it would be hard to strictly implement since these ports might not yet be across the
+  thread boundary)--> the implicit <code>MessagePort</code> in the case of <span
+  data-x="DedicatedWorkerGlobalScope">dedicated workers</span>.</p>
+
+  <p>Each <code>WorkerGlobalScope</code> also has a list of <dfn data-export="">the worker's
+  workers</dfn>. Initially this list is empty; it is populated when the worker creates or obtains
+  further workers.</p>
+
+  <p>Finally, each <code>WorkerGlobalScope</code> also has a list of <dfn data-export="">the
+  worker's <code>Document</code>s</dfn>. Initially this list is empty; it is populated when the
+  worker is created.</p>
+
+  <p>Whenever a <code>Document</code> <var>d</var> is <dfn data-x="add a document to the
+  worker's Documents">added to the worker's <code>Document</code>s</dfn>, the user agent must, for
+  each worker <var>q</var> in the list of <span>the worker's workers</span> whose list of
+  <span>the worker's <code>Document</code>s</span> does not contain <var>d</var>, <span
+  data-x="add a document to the worker's Documents">add <var>d</var> to <var>q</var>'s <code>WorkerGlobalScope</code> owner's list of <span>the worker's
+  <code>Document</code>s</span></span>.</p> <!-- suggestions welcome on making this sentence into
+  understandable English -->
+
+  <p>Whenever a <code>Document</code> object is <span data-x="discard a Document">discarded</span>,
+  it must be removed from the list of <span>the worker's <code>Document</code>s</span> of each
+  worker whose list contains that <code>Document</code>.</p>
+
+  <p>Given an <span>environment settings object</span> <var>o</var> when creating or obtaining a
+  worker, the <dfn>list of relevant <code>Document</code> objects to add</dfn> depends on the type
+  of <span data-x="concept-settings-object-global">global object</span> specified by <var>o</var>.
+  If <var>o</var> specifies a <span data-x="concept-settings-object-global">global object</span>
+  that is a <code>WorkerGlobalScope</code> object (i.e. if we are creating a nested worker), then
+  the relevant <code>Document</code>s are the <span>the worker's <code>Document</code>s</span> of
+  the <span data-x="concept-settings-object-global">global object</span> specified by <var>o</var>.
+  Otherwise, <var>o</var> specifies a <span data-x="concept-settings-object-global">global
+  object</span> that is a <code>Window</code> object, and the relevant <code>Document</code> is just
+  the <span>responsible document</span> specified by <var>o</var>.</p>
+
+  <hr>
+
+  <p>A worker is said to be a <dfn>permissible worker</dfn> if its list of <span>the worker's
+  <code>Document</code>s</span> is not empty, or if its list has been empty for no more than a short
+  user-agent-defined timeout value, its <code>WorkerGlobalScope</code> is actually a
+  <code>SharedWorkerGlobalScope</code> object (i.e. the worker is a shared worker), and the user
+  agent has a <span>browsing context</span> whose <code>Document</code> is not <span>completely
+  loaded</span>.</p>
+
+  <p class="note">The second part of this definition allows a shared worker to survive for a short
+  time while a page is loading, in case that page is going to contact the shared worker again. This
+  can be used by user agents as a way to avoid the cost of restarting a shared worker used by a site
+  when the user is navigating from page to page within that site.</p>
+
+  <p>A worker is said to be an <dfn>active needed worker</dfn> if any of the <code>Document</code>
+  objects in <span>the worker's <code>Document</code>s</span> are <span>fully active</span>.</p>
+
+  <p>A worker is said to be a <dfn>protected worker</dfn> if it is an <span>active needed
+  worker</span> and either it has outstanding timers, database transactions, or network connections,
+  or its list of <span>the worker's ports</span> is not empty, or its <code>WorkerGlobalScope</code>
+  is actually a <code>SharedWorkerGlobalScope</code> object (i.e. the worker is a shared
+  worker).</p>
+
+  <p>A worker is said to be a <dfn>suspendable worker</dfn> if it is not an <span>active needed
+  worker</span> but it is a <span>permissible worker</span>.</p>
+
+
+  

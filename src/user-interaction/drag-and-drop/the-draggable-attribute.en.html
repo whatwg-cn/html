@@ -1,0 +1,66 @@
+<h4>The <dfn><code data-x="attr-draggable">draggable</code></dfn> attribute</h4>
+
+  <p>All <span>HTML elements</span> may have the <code data-x="attr-draggable">draggable</code>
+  content attribute set. The <code data-x="attr-draggable">draggable</code> attribute is an
+  <span>enumerated attribute</span>. It has three states. The first state is <i>true</i> and it has
+  the keyword <code data-x="">true</code>. The second state is <i>false</i> and it has the keyword
+  <code data-x="">false</code>. The third state is <i>auto</i>; it has no keywords but it is the
+  <i data-x="missing value default">missing value default</i>.</p>
+
+  <p>The <i>true</i> state means the element is draggable; the <i>false</i> state means that it is
+  not. The <i>auto</i> state uses the default behavior of the user agent.</p>
+
+  <p>An element with a <code data-x="attr-draggable">draggable</code> attribute should also have a
+  <code data-x="attr-title">title</code> attribute that names the element for the purpose of
+  non-visual interactions. <!-- "should", not "must", only because this is a relatively new
+  attribute and its design implications are not entirely obvious yet. For example, what happens if
+  you use an element with text as a drag source? Is that sufficiently clear for ATs? Indeed,
+  shouldn't the element generally be distinguishable anyway for it to be useful to drag? See also
+  the dropzone attribute. --></p>
+
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-draggable">draggable</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns true if the element is draggable; otherwise, returns false.</p>
+
+    <p>Can be set, to override the default and set the <code data-x="attr-draggable">draggable</code>
+    content attribute.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-draggable">draggable</code></dfn> IDL attribute, whose value depends
+  on the content attribute's in the way described below, controls whether or not the element is
+  draggable. Generally, only text selections are draggable, but elements whose <code
+  data-x="dom-draggable">draggable</code> IDL attribute is true become draggable as well.</p>
+
+  <p>If an element's <code data-x="attr-draggable">draggable</code> content attribute has the state
+  <i>true</i>, the <code data-x="dom-draggable">draggable</code> IDL attribute must return true.</p>
+
+  <p>Otherwise, if the element's <code data-x="attr-draggable">draggable</code> content attribute has
+  the state <i>false</i>, the <code data-x="dom-draggable">draggable</code> IDL attribute must return
+  false.</p>
+
+  <p>Otherwise, the element's <code data-x="attr-draggable">draggable</code> content attribute has
+  the state <i>auto</i>. If the element is an <code>img</code> element, an <code>object</code>
+  element that <span>represents</span> an image, or an <code>a</code> element with an <code
+  data-x="attr-hyperlink-href">href</code> content attribute, the <code
+  data-x="dom-draggable">draggable</code> IDL attribute must return true; otherwise, the <code
+  data-x="dom-draggable">draggable</code> IDL attribute must return false.</p>
+
+  <p>If the <code data-x="dom-draggable">draggable</code> IDL attribute is set to the value false,
+  the <code data-x="attr-draggable">draggable</code> content attribute must be set to the literal
+  value "<code data-x="">false</code>". If the <code data-x="dom-draggable">draggable</code> IDL
+  attribute is set to the value true, the <code data-x="attr-draggable">draggable</code> content
+  attribute must be set to the literal value "<code data-x="">true</code>".</p>
+
+  </div>
+
+
+  

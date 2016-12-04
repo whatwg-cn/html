@@ -1,0 +1,188 @@
+<h4>The <dfn><code>blockquote</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Sectioning root</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-blockquote-cite">cite</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLQuoteElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-quote-cite">cite</span>;
+};</pre>
+    <p class="note">The <code>HTMLQuoteElement</code> interface is
+    also used by the <code>q</code> element.</p>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>blockquote</code> element <span>represents</span> a section that is quoted from
+  another source.</p>
+
+  <p>Content inside a <code>blockquote</code> must be quoted from another source, whose address, if
+  it has one, may be cited in the <dfn><code data-x="attr-blockquote-cite">cite</code></dfn>
+  attribute.</p>
+
+  <p>If the <code data-x="attr-blockquote-cite">cite</code> attribute is present, it must be a
+  <span>valid URL potentially surrounded by spaces</span>. <span w-nodev>To obtain the
+  corresponding citation link, the value of the attribute must be <span data-x="parse a
+  url">parsed</span> relative to the element's <span>node document</span>.</span> User agents may
+  allow users to follow such citation links, but they are primarily intended for private use (e.g.,
+  by server-side scripts collecting statistics about a site's use of quotations), not for
+  readers.</p>
+
+  <p>The content of a <code>blockquote</code> may be abbreviated or may have context added in the
+  conventional manner for the text's language.</p>
+
+  <div class="example">
+
+   <p>For example, in English this is traditionally done using square brackets. Consider a page with
+   the sentence "Jane ate the cracker. She then said she liked apples and fish."; it could be quoted
+   as follows:</p>
+
+   <pre>&lt;blockquote>
+ &lt;p>[Jane] then said she liked [...] fish.&lt;/p>
+&lt;/blockquote></pre>
+
+  </div>
+
+  <p>Attribution for the quotation, if any, must be placed outside the <code>blockquote</code>
+  element.</p> <!-- Eventually someone is going to ask about quotes that are self-attributing, e.g.
+  someone quoting an e-mail with full headers... -->
+
+  <div class="example">
+
+   <p>For example, here the attribution is given in a paragraph after the quote:</p>
+
+   <pre>&lt;blockquote>
+ &lt;p>I contend that we are both atheists. I just believe in one fewer
+ god than you do. When you understand why you dismiss all the other
+ possible gods, you will understand why I dismiss yours.&lt;/p>
+&lt;/blockquote>
+&lt;p>&mdash; Stephen Roberts&lt;/p></pre>
+
+   <p>The other examples below show other ways of showing attribution.</p>
+
+  </div>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-quote-cite">cite</code></dfn> IDL attribute must <span>reflect</span>
+  the element's <code data-x="">cite</code> content attribute.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here a <code>blockquote</code> element is used in conjunction with a <code>figure</code>
+   element and its <code>figcaption</code> to clearly relate a quote to its attribution (which is
+   not part of the quote and therefore doesn't belong inside the <code>blockquote</code>
+   itself):</p>
+
+   <pre>&lt;figure>
+ &lt;blockquote>
+  &lt;p>The truth may be puzzling. It may take some work to grapple with.
+  It may be counterintuitive. It may contradict deeply held
+  prejudices. It may not be consonant with what we desperately want to
+  be true. But our preferences do not determine what's true. We have a
+  method, and that method helps us to reach not absolute truth, only
+  asymptotic approaches to the truth &mdash; never there, just closer
+  and closer, always finding vast new oceans of undiscovered
+  possibilities. Cleverly designed experiments are the key.&lt;/p>
+ &lt;/blockquote>
+ &lt;figcaption>Carl Sagan, in "&lt;cite>Wonder and Skepticism&lt;/cite>", from
+ the &lt;cite>Skeptical Inquirer&lt;/cite> Volume 19, Issue 1 (January-February
+ 1995)&lt;/figcaption>
+&lt;/figure></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>This next example shows the use of <code>cite</code> alongside <code>blockquote</code>:</p>
+
+   <pre>&lt;p>His next piece was the aptly named &lt;cite>Sonnet 130&lt;/cite>:&lt;/p>
+&lt;blockquote cite="https://quotes.example.org/s/sonnet130.html">
+  &lt;p>My mistress' eyes are nothing like the sun,&lt;br>
+  Coral is far more red, than her lips red,&lt;br>
+  ...</pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>This example shows how a forum post could use <code>blockquote</code> to show what post a user
+   is replying to. The <code>article</code> element is used for each post, to mark up the
+   threading.</p>
+
+   <pre>&lt;article>
+ &lt;h1>&lt;a href="https://bacon.example.com/?blog=109431">Bacon on a crowbar&lt;/a>&lt;/h1>
+ &lt;article>
+  &lt;header>&lt;strong>t3yw&lt;/strong> 12 points 1 hour ago&lt;/header>
+  &lt;p>I bet a narwhal would love that.&lt;/p>
+  &lt;footer>&lt;a href="?pid=29578">permalink&lt;/a>&lt;/footer>
+  &lt;article>
+   &lt;header>&lt;strong>greg&lt;/strong> 8 points 1 hour ago&lt;/header>
+   &lt;blockquote>&lt;p>I bet a narwhal would love that.&lt;/p>&lt;/blockquote>
+   &lt;p>Dude narwhals don't eat bacon.&lt;/p>
+   &lt;footer>&lt;a href="?pid=29579">permalink&lt;/a>&lt;/footer>
+   &lt;article>
+    &lt;header>&lt;strong>t3yw&lt;/strong> 15 points 1 hour ago&lt;/header>
+    &lt;blockquote>
+     &lt;blockquote>&lt;p>I bet a narwhal would love that.&lt;/p>&lt;/blockquote>
+     &lt;p>Dude narwhals don't eat bacon.&lt;/p>
+    &lt;/blockquote>
+    &lt;p>Next thing you'll be saying they don't get capes and wizard
+    hats either!&lt;/p>
+    &lt;footer>&lt;a href="?pid=29580">permalink&lt;/a>&lt;/footer>
+    &lt;article>
+     &lt;article>
+      &lt;header>&lt;strong>boing&lt;/strong> -5 points 1 hour ago&lt;/header>
+      &lt;p>narwhals are worse than ceiling cat&lt;/p>
+      &lt;footer>&lt;a href="?pid=29581">permalink&lt;/a>&lt;/footer>
+     &lt;/article>
+    &lt;/article>
+   &lt;/article>
+  &lt;/article>
+  &lt;article>
+   &lt;header>&lt;strong>fred&lt;/strong> 1 points 23 minutes ago&lt;/header>
+   &lt;blockquote>&lt;p>I bet a narwhal would love that.&lt;/p>&lt;/blockquote>
+   &lt;p>I bet they'd love to peel a banana too.&lt;/p>
+   &lt;footer>&lt;a href="?pid=29582">permalink&lt;/a>&lt;/footer>
+  &lt;/article>
+ &lt;/article>
+&lt;/article></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>This example shows the use of a <code>blockquote</code> for short snippets, demonstrating that
+   one does not have to use <code>p</code> elements inside <code>blockquote</code> elements:</p>
+
+   <pre>&lt;p>He began his list of "lessons" with the following:&lt;/p>
+&lt;blockquote>One should never assume that his side of
+the issue will be recognized, let alone that it will
+be conceded to have merits.&lt;/blockquote>
+&lt;p>He continued with a number of similar points, ending with:&lt;/p>
+&lt;blockquote>Finally, one should be prepared for the threat
+of breakdown in negotiations at any given moment and not
+be cowed by the possibility.&lt;/blockquote>
+&lt;p>We shall now discuss these points...</pre>
+
+  </div>
+
+  <p class="note"><a href="#conversations">Examples of how to represent a conversation</a> are shown
+  in a later section; it is not appropriate to use the <code>cite</code> and <code>blockquote</code>
+  elements for this purpose.</p>
+
+
+
+  

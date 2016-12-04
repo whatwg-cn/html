@@ -1,0 +1,21 @@
+<h5><dfn>Self-closing start tag state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+003E GREATER-THAN SIGN (&gt;)</dt>
+   <dd>Set the <i data-x="self-closing flag">self-closing flag</i> of the current tag token. Switch to the <span>data
+   state</span>. Emit the current tag token.</dd>
+
+   <dt>EOF</dt>
+   <dd><span>Parse error</span>. Emit an end-of-file token.</dd>
+
+   <dt>Anything else</dt>
+   <dd><span>Parse error</span>. <span>Reconsume</span> in the <span>before attribute name
+   state</span>.</dd>
+
+  </dl>
+
+
+  

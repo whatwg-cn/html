@@ -1,0 +1,36 @@
+<h5>A form control's value</h5>
+
+  <p>Most form controls have a <dfn data-x="concept-fe-value">value</dfn> and a <dfn
+  data-x="concept-fe-checked">checkedness</dfn>. (The latter is only used by <code>input</code>
+  elements.) These are used to describe how the user interacts with the control.</p>
+
+  <p>A control's <span data-x="concept-fe-value">value</span> is its internal state. As such, it
+  might not match the user's current input.</p>
+
+  <p class="example">For instance, if a user enters the word "<kbd>three</kbd>" into <span
+  data-x="attr-input-type-number">a numeric field</span> that expects digits, the user's input would
+  be the string "three" but the control's <span data-x="concept-fe-value">value</span> would remain
+  unchanged. Or, if a user enters the email address "<kbd>&nbsp;&nbsp;awesome@example.com</kbd>"
+  (with leading whitespace) into <span data-x="attr-input-type-email">an email field</span>, the
+  user's input would be the string "&nbsp;&nbsp;awesome@example.com" but the browser's UI for
+  email fields might translate that into a <span data-x="concept-fe-value">value</span> of "<code
+  data-x="">awesome@example.com</code>" (without the leading whitespace).</p>
+
+  <p>To define the behavior of constraint validation in the face of the <code>input</code>
+  element's <code data-x="attr-input-multiple">multiple</code> attribute, <code>input</code> elements
+  can also have separately defined <dfn data-x="concept-fe-values">value<em>s</em></dfn>.</p>
+
+  <p>To define the behavior of the <code data-x="attr-fe-maxlength">maxlength</code> and <code
+  data-x="attr-fe-minlength">minlength</code> attributes, as well as other APIs specific to the
+  <code>textarea</code> element, all form control with a <span
+  data-x="concept-fe-value">value</span> also have an algorithm for obtaining an <span
+  id="concept-textarea-api-value"></span><dfn data-x="concept-fe-api-value">API value</dfn>. By
+  default this algorithm is to simply return the control's <span
+  data-x="concept-fe-value">value</span>.</p>
+
+  <p>The <code>select</code> element does not have a <span data-x="concept-fe-value">value</span>;
+  the <span data-x="concept-option-selectedness">selectedness</span> of its <code>option</code>
+  elements is what is used instead.</p>
+
+
+  

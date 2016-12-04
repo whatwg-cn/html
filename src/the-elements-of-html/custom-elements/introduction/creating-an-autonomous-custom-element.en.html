@@ -1,0 +1,69 @@
+<h5 id="custom-elements-autonomous-example">Creating an autonomous custom element</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>For the purposes of illustrating how to create an <span>autonomous custom element</span>, let's
+  define a custom element that encapsulates rendering a small icon for a country flag. Our goal is
+  to be able to use it like so:</p>
+
+  <pre>&lt;flag-icon country="nl">&lt;/flag-icon></pre>
+
+  <p>To do this, we first declare a class for the custom element, extending
+  <code>HTMLElement</code>:</p>
+
+  <pre>class FlagIcon extends HTMLElement {
+  constructor() {
+    super();
+    this._countryCode = null;
+  }
+
+  static get observedAttributes() { return ["country"]; }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    // name will always be "country" due to observedAttributes
+    this._countryCode = newValue;
+    this._updateRendering();
+  }
+  connectedCallback() {
+    this._updateRendering();
+  }
+
+  get country() {
+    return this._countryCode;
+  }
+  set country(v) {
+    this.setAttribute("country", v);
+  }
+
+  _updateRendering() {
+    // Left as an exercise for the reader. But, you'll probably want to
+    // check this.ownerDocument.defaultView to see if we've been
+    // inserted into a document with a browsing context, and avoid
+    // doing any work if not.
+  }
+}</pre>
+
+  <p>We then need to use this class to define the element:</p>
+
+  <pre>customElements.define("flag-icon", FlagIcon);</pre>
+
+  <p>At this point, our above code will work! The parser, whenever it sees the <code
+  data-x="">flag-icon</code> tag, will construct a new instance of our <code
+  data-x="">FlagIcon</code> class, and tell our code about its new <code data-x="">country</code>
+  attribute, which we then use to set the element's internal state and update its rendering (when
+  appropriate).</p>
+
+  <p>You can also create <code data-x="">flag-icon</code> elements using the DOM API:</p>
+
+  <pre>const flagIcon = document.createElement("flag-icon")
+flagIcon.country = "jp"
+document.body.appendChild(flagIcon)</pre>
+
+  <p>Finally, we can also use the <span>custom element constructor</span> itself. That is, the above
+  code is equivalent to:</p>
+
+  <pre>const flagIcon = new FlagIcon()
+flagIcon.country = "jp"
+document.body.appendChild(flagIcon)</pre>
+
+  

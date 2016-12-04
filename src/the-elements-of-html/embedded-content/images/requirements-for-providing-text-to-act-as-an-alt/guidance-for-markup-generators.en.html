@@ -1,0 +1,46 @@
+<h6>Guidance for markup generators</h6>
+
+  <p>Markup generators (such as WYSIWYG authoring tools) should, wherever possible, obtain
+  alternative text from their users. However, it is recognized that in many cases, this will not be
+  possible.</p>
+
+  <p>For images that are the sole contents of links, markup generators should examine the link
+  target to determine the title of the target, or the URL of the target, and use information
+  obtained in this manner as the alternative text.</p>
+
+  <p>For images that have captions, markup generators should use the <code>figure</code> and
+  <code>figcaption</code> elements, or the <code data-x="attr-title">title</code> attribute, to
+  provide the image's caption.</p>
+
+  <p>As a last resort, implementors should either set the <code data-x="attr-img-alt">alt</code>
+  attribute to the empty string, under the assumption that the image is a purely decorative image
+  that doesn't add any information but is still specific to the surrounding content, or omit the
+  <code data-x="attr-img-alt">alt</code> attribute altogether, under the assumption that the image is
+  a key part of the content.</p>
+
+  <p>Markup generators may specify a <dfn><code data-x="attr-img-generator-unable-to-provide-required-alt">generator-unable-to-provide-required-alt</code></dfn>
+  attribute on <code>img</code> elements for which they have been unable to obtain alternative text
+  and for which they have therefore omitted the <code data-x="attr-img-alt">alt</code> attribute. The
+  value of this attribute must be the empty string. Documents containing such attributes are not
+  conforming, but conformance checkers will <a href="#guidance-for-conformance-checkers">silently
+  ignore</a> this error.</p>
+
+  <p class="note">This is intended to avoid markup generators from being pressured into replacing
+  the error of omitting the <code data-x="attr-img-alt">alt</code> attribute with the even more
+  egregious error of providing phony alternative text, because state-of-the-art automated
+  conformance checkers cannot distinguish phony alternative text from correct alternative text.</p>
+
+  <p>Markup generators should generally avoid using the image's own file name as the alternative
+  text. Similarly, markup generators should avoid generating alternative text from any content that
+  will be equally available to presentation user agents (e.g. Web browsers).</p>
+
+  <p class="note">This is because once a page is generated, it will typically not be updated,
+  whereas the browsers that later read the page can be updated by the user, therefore the browser is
+  likely to have more up-to-date and finely-tuned heuristics than the markup generator did when
+  generating the page.</p>
+
+  </div>
+
+  <div w-nodev>
+
+  

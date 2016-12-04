@@ -1,0 +1,104 @@
+<h5>Lists of dimensions</h5>
+
+  <!-- no definition of a type since no conforming feature uses this syntax (it's only used in
+  cols="" and rows="" on <frameset> elements -->
+
+  <p>The <dfn>rules for parsing a list of dimensions</dfn> are as follows. These rules return a list
+  of zero or more pairs consisting of a number and a unit, the unit being one of <i>percentage</i>,
+  <i>relative</i>, and <i>absolute</i>.</p>
+
+  <ol>
+
+   <li><p>Let <var>raw input</var> be the string being parsed.</p></li>
+
+   <li><p>If the last character in <var>raw input</var> is a U+002C COMMA character (,),
+   then remove that character from <var>raw input</var>.</p></li>
+
+   <li><p><span data-x="split a string on commas">Split the string <var>raw input</var> on
+   commas</span>. Let <var>raw tokens</var> be the resulting list of tokens.</p></li>
+
+   <li><p>Let <var>result</var> be an empty list of number/unit pairs.</p></li>
+
+   <li>
+
+    <p>For each token in <var>raw tokens</var>, run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>input</var> be the token.</p></li>
+
+     <li><p>Let <var>position</var> be a pointer into <var>input</var>,
+     initially pointing at the start of the string.</p></li>
+
+     <li><p>Let <var>value</var> be the number 0.</p></li>
+
+     <li><p>Let <var>unit</var> be <i>absolute</i>.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, set <var>unit</var> to <i>relative</i> and jump to the last substep.</p></li>
+
+     <li><p>If the character at <var>position</var> is an <span data-x="ASCII
+     digits">ASCII digit</span>, <span>collect a sequence of characters</span> that are <span>ASCII
+     digits</span>, interpret the resulting sequence as an integer in base ten, and increment <var>value</var> by that integer.</p></li>
+
+     <li>
+
+      <p>If the character at <var>position</var> is a U+002E FULL STOP character (.), run
+      these substeps:</p>
+
+      <ol>
+
+       <li><p><span>Collect a sequence of characters</span> consisting of <span data-x="space
+       character">space characters</span> and <span>ASCII digits</span>. Let <var>s</var>
+       be the resulting sequence.</p></li>
+
+       <li><p>Remove all <span data-x="space character">space characters</span> in <var>s</var>.</p></li>
+
+       <li>
+
+        <p>If <var>s</var> is not the empty string, run these subsubsteps:</p>
+
+        <ol>
+
+         <li><p>Let <var>length</var> be the number of characters in <var>s</var> (after the spaces were removed).</p></li>
+
+         <li><p>Let <var>fraction</var> be the result of interpreting <var>s</var> as a base-ten integer, and then dividing that number by <span
+         data-x="">10<sup><var>length</var></sup></span>.</li>
+
+         <li><p>Increment <var>value</var> by <var>fraction</var>.</p></li>
+
+        </ol>
+
+       </li>
+
+      </ol>
+
+     </li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+     <li>
+
+      <p>If the character at <var>position</var> is a U+0025 PERCENT SIGN character (%),
+      then set <var>unit</var> to <i>percentage</i>.</p>
+
+      <p>Otherwise, if the character at <var>position</var> is a U+002A ASTERISK character
+      (*), then set <var>unit</var> to <i>relative</i>.</p>
+
+     </li>
+
+     <!-- the remaining characters in /input/ are ignored -->
+
+     <li><p>Add an entry to <var>result</var> consisting of the number given by <var>value</var> and the unit given by <var>unit</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return the list <var>result</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

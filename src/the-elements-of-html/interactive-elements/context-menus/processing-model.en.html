@@ -1,0 +1,115 @@
+<h5 id="context-menu-processing-model"><span id="processing-model-4"></span>Processing model</h5>
+
+  <p>Each element has an <dfn>assigned context menu</dfn>, which can be null. If an element <var>A</var> has a <code data-x="attr-contextmenu">contextmenu</code> attribute, and there is
+  an element with the ID given by <var>A</var>'s <code
+  data-x="attr-contextmenu">contextmenu</code> attribute's value in <var>A</var>'s
+  <span>tree</span>, and the first such element in <span>tree order</span> is a <code>menu</code>
+  element whose <code data-x="attr-menu-type">type</code> attribute is in the <span data-x="popup
+  menu state">popup menu</span> state, then <var>A</var>'s <span>assigned context menu</span> is
+  that element. Otherwise, if <var>A</var> has a parent element, then <var>A</var>'s <span>assigned
+  context menu</span> is the <span>assigned context menu</span> of its parent element. Otherwise,
+  <var>A</var>'s <span>assigned context menu</span> is null.</p>
+
+  <p>When an element's context menu is requested (e.g. by the user right-clicking the element, or
+  pressing a context menu key), the user agent must apply the appropriate rules from the following
+  list:</p>
+
+  <dl class="switch">
+
+   <dt>If the user requested a context menu using a pointing device</dt>
+
+   <dd><p>The user agent must <span data-x="concept-event-fire">fire an event</span> named <code
+   data-x="event-contextmenu">contextmenu</code> at the element for which the menu was requested,
+   using <code>MouseEvent</code>, with the <code data-x="dom-Event-bubbles">bubbles</code> and <code
+   data-x="dom-Event-cancelable">cancelable</code> attributes initialized to true, and other
+   attributes initialized to the same values as the last <code>MouseEvent</code> user interaction
+   event that was fired as part of the gesture that was interpreted as a request for the context
+   menu.</p></dd>
+
+   <dt>Otherwise</dt>
+
+   <dd><p>The user agent must <span data-x="fire a synthetic mouse event">fire a synthetic mouse
+   event named <code data-x="event-contextmenu">contextmenu</code></span> at the element for which
+   the menu was requested.</p></dd>
+
+  </dl>
+
+  <p class="note">Typically, therefore, the firing of the <code
+  data-x="event-contextmenu">contextmenu</code> event will be the default action of a <code
+  data-x="event-mouseup">mouseup</code> or <code data-x="event-keyup">keyup</code> event. The exact
+  sequence of events is UA-dependent, as it will vary based on platform conventions.</p>
+
+  <p>The default action of the <code data-x="event-contextmenu">contextmenu</code> event depends on
+  whether or not the element for which the menu was requested has a non-null <span>assigned context
+  menu</span> when the event dispatch has completed, as follows.</p>
+
+  <p>If the <span>assigned context menu</span> of the element for which the menu was requested is
+  null, the default action must be for the user agent to show its default context menu, if it has
+  one.</p>
+
+  <p>Otherwise, let <var>subject</var> be the element for which the menu was requested, and let
+  <var>menu</var> be the <span>assigned context menu</span> of <var>target</var> immediately after
+  the <code data-x="event-contextmenu">contextmenu</code> event's dispatch has completed. The user
+  agent must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>build</var> be the result of <span data-x="concept-event-fire">firing an
+   event</span> named <code data-x="event-show">show</code> at <var>menu</var>, using
+   <code>RelatedEvent</code>, with the <code data-x="dom-Event-cancelable">cancelable</code>
+   attribute initialized to true and the <code
+   data-x="dom-RelatedEvent-relatedTarget">relatedTarget</code> attribute initialized to
+   <var>subject</var>.</p>
+   <!-- v2: include modifier key information -->
+
+   <li><p>If <var>build</var> is true, then <span data-x="build and show a menu">build and
+   show</span> the menu for <var>menu</var> with <var>subject</var> as the subject.</p></li>
+  </ol>
+
+  <p>The user agent may also provide access to its default context menu, if any, with the context
+  menu shown. For example, it could merge the menu items from the two menus together, or provide the
+  page's context menu as a submenu of the default menu. In general, user agents are encouraged to
+  de-emphasize their own contextual menu items, so as to give the author's context menu the
+  appearance of legitimacy &mdash; to allow documents to feel like "applications" rather than "mere
+  Web pages".</p>
+
+  <p>User agents may provide means for bypassing the context menu processing model, ensuring that
+  the user can always access the UA's default context menus. For example, the user agent could
+  handle right-clicks that have the Shift key depressed in such a way that it does not fire the
+  <code data-x="event-contextmenu">contextmenu</code> event and instead always shows the default
+  context menu.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-contextMenu">contextMenu</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-contextmenu">contextmenu</code> content attribute.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, an image of cats is given a context menu with four possible commands:</p>
+
+   <pre>&lt;img src="cats.jpeg" alt="Cats" contextmenu=catsmenu>
+&lt;menu type="context" id="catsmenu">
+ &lt;menuitem label="Pet the kittens" onclick="kittens.pet()">
+ &lt;menuitem label="Cuddle with the kittens" onclick="kittens.cuddle()">
+ &lt;menu label="Feed the kittens"><!-- note: contents of this submenu aren't visible in the pictures below -->
+  &lt;menuitem label="Fish" onclick="kittens.feed(fish)">
+  &lt;menuitem label="Chicken" onclick="kittens.feed(chicken)">
+ &lt;/menu>
+&lt;/menu></pre>
+
+   <p>When a user of a mouse-operated visual Web browser right-clicks on the image, the browser
+   might pop up a context menu like this:</p>
+
+   <p><img src="/images/contextmenu-collapsed.png" alt="A context menu, shown over a picture of cats, with four lines: the first two offering the menu items described in the markup above ('Pet the kittens' and 'Cuddle with the kittens'), the third giving a submenu labeled 'Feed the kittens', and the fourth, after a horizontal splitter, consisting of only a downwards-pointing disclosure triangle.">
+
+   <p>When the user clicks the disclosure triangle, such a user agent would expand the context menu
+   in place, to show the browser's own commands:</p>
+
+   <p><img src="/images/contextmenu-expanded.png" alt="This would result in the same basic interface, but with a longer menu; the disclosure triangle having been replaced by items such as 'View Image', 'Copy Image', 'Copy Image Location', and so forth.">
+
+  </div>
+
+
+  

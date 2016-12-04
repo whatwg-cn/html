@@ -1,0 +1,51 @@
+<h4>Introduction</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>In order to enable users to continue interacting with Web applications and documents even when
+  their network connection is unavailable &mdash; for instance, because they are traveling outside
+  of their ISP's coverage area &mdash; authors can provide a manifest which lists the files that are
+  needed for the Web application to work offline and which causes the user's browser to keep a copy
+  of the files for use offline.</p>
+
+  <p>To illustrate this, consider a simple clock applet consisting of an HTML page "<code
+  data-x="">clock1.html</code>", a CSS style sheet "<code data-x="">clock.css</code>", and a
+  JavaScript script "<code data-x="">clock.js</code>".</p>
+
+  <p>Before adding the manifest, these three files might look like this:</p>
+
+  <pre>EXAMPLE offline/clock/clock1.html</pre>
+  <pre>EXAMPLE offline/clock/clock.css</pre>
+  <pre>EXAMPLE offline/clock/clock.js</pre>
+
+  <p>If the user tries to open the "<code data-x="">clock1.html</code>" page while offline, though,
+  the user agent (unless it happens to have it still in the local cache) will fail with an
+  error.</p>
+
+  <p>The author can instead provide a manifest of the three files, say "<code
+  data-x="">clock.appcache</code>":</p>
+
+  <pre>EXAMPLE offline/clock/clock.appcache</pre>
+
+  <p>With a small change to the HTML file, the manifest (served as <code>text/cache-manifest</code>)
+  is linked to the application:</p>
+
+  <pre>EXAMPLE offline/clock/clock2.html</pre>
+
+  <p>Now, if the user goes to the page, the browser will cache the files and make them available
+  even when the user is offline.</p>
+
+  <p class="note">Authors are encouraged to include the main page in the manifest also, but in
+  practice the page that referenced the manifest is automatically cached even if it isn't explicitly
+  mentioned.</p>
+
+  <p class="note">With the exception of "no-store" directive, HTTP cache headers and restrictions on
+  caching pages served over TLS (encrypted, using <code data-x="https protocol">https:</code>) are
+  overridden by manifests. Thus, pages will not expire from an application cache before the user
+  agent has updated it, and even applications served over TLS can be made to work offline.</p>
+
+  <p><a href="/demos/offline/clock/clock2.html">View this example online</a>.</p>
+
+
+
+  

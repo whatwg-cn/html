@@ -1,0 +1,147 @@
+<h4 id="scroll-to-fragid"><dfn data-x="navigate-fragid">Navigating to a fragment</dfn></h4>
+
+  <p>When a user agent is supposed to navigate to a <span data-x="concept-url-fragment">fragment</span>, then the user agent must
+  run the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Remove all the entries in the <span>browsing context</span>'s <span>session history</span>
+    after the <span>current entry</span>. If the <span>current entry</span> is the last entry in the
+    session history, then no entries are removed.</p>
+
+    <p class="note">This <a href="#history-notes">doesn't necessarily have to affect</a> the user
+    agent's user interface.</p>
+
+   </li>
+
+   <li><p>Remove any <span data-x="concept-task">tasks</span> queued by the <span>history traversal
+   task source</span> that are associated with any <code>Document</code> objects in the
+   <span>top-level browsing context</span>'s <span>document family</span>.</p></li>
+
+   <li><p>Append a new entry at the end of the <code>History</code> object representing the new
+   resource and its <code>Document</code> object, related state, and <span>current entry</span>'s
+   <span>scroll restoration mode</span>. Its <span>URL</span> must be set to the address to which
+   the user agent was <span data-x="navigate">navigating</span>. The title must be left
+   unset.</p></li>
+
+   <li><p><span>Traverse the history</span> to the new entry, with the <i>non-blocking events</i> flag
+   set. This will <span>scroll to the fragment</span> given in what is now the document's <span
+   data-x="concept-document-url">URL</span>.</p></li>
+
+  </ol>
+
+  <p class="note">If the scrolling fails because the relevant <span data-x="concept-id">ID</span> has
+  not yet been parsed, then the original <span data-x="navigate">navigation</span> algorithm will
+  take care of the scrolling instead, as the last few steps of its <span>update the session history
+  with the new page</span> algorithm.</p>
+
+  <hr>
+
+  <p>When the user agent is required to <dfn
+  id="scroll-to-the-fragment-identifier">scroll to the fragment</dfn> and <span>the indicated part
+  of the document</span>, if any, is <span>being rendered</span>, the user agent must either change
+  the scrolling position of the document using the following algorithm, or perform some other action
+  such that <span>the indicated part of the document</span> is brought to the user's attention. If
+  there is no indicated part, or if the indicated part is not <span>being rendered</span>, then the
+  user agent must do nothing. The aforementioned algorithm is as follows:</p>
+
+  <ol>
+   <li><p>If there is no <span data-x="the indicated part of the document">indicated part of the
+   document</span>, set the <code>Document</code>'s <span>target element</span> to null.</p></li>
+
+   <li>
+    <p>If the <span data-x="the indicated part of the document">indicated part of the
+    document</span> is the top of the document, then:</p>
+
+    <ol>
+     <li><p>Set the <code>Document</code>'s <span>target element</span> to null.</p></li>
+
+     <li><p><span>Scroll to the beginning of the document</span> for the <code>Document</code>. <ref
+     spec=CSSOMVIEW></p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Otherwise:</p>
+
+    <ol>
+     <li><p>Let <var>target</var> be element that is <span>the indicated part of the
+     document</span>.</p></li>
+
+     <li><p>Set the <code>Document</code>'s <span>target element</span> to
+     <var>target</var>.</p></li>
+
+     <li><p>Use the <span>scroll an element into view</span> algorithm to scroll <var>target</var>
+     into view, with the <var>align to top flag</var> set. <ref spec=CSSOMVIEW></p></li>
+
+     <li><p>Run the <span>focusing steps</span> for <var>target</var>, with the
+     <code>Document</code>'s <span>viewport</span> as the <i>fallback target</i>.</p></li>
+
+     <li><p>Move the <span>sequential focus navigation starting point</span> to
+     <var>target</var>.</p>
+    </ol>
+   </li>
+  </ol>
+
+  <p><dfn>The indicated part of the document</dfn> is the one that the <span
+  data-x="concept-url-fragment">fragment</span>, if any, identifies. The semantics of the <span
+  data-x="concept-url-fragment">fragment</span> in terms of mapping it to a node is defined by the
+  specification that defines the <span>MIME type</span> used by the <code>Document</code> (for
+  example, the processing of <span data-x="concept-url-fragment">fragments</span> for <span
+  data-x="XML MIME type">XML MIME types</span> is the responsibility of RFC7303). <ref
+  spec=RFC7303></p>
+
+  <p>There is also a <dfn>target element</dfn> for each <code>Document</code>, which is used in
+  defining the <code data-x="selector-target">:target</code> pseudo-class and is updated by the
+  above algorithm. It is initially null.</p>
+
+  <p>For HTML documents (and <span data-x="HTML MIME type">HTML MIME types</span>), the following
+  processing model must be followed to determine what <span>the indicated part of the
+  document</span> is.</p>
+
+  <ol>
+
+   <li><p>Apply the <span>URL parser</span> algorithm to the <span>URL</span>, and let <var>fragid</var> be the <span data-x="concept-url-fragment">fragment</span> component of the
+   resulting <span>URL record</span>.</p></li><!-- parsing can't fail, since we checked earlier on
+   when navigating -->
+
+   <li><p>If <var>fragid</var> is the empty string, then <span>the indicated part of the
+   document</span> is the top of the document; stop the algorithm here.</p></li>
+
+   <li><p>Let <var>fragid bytes</var> be the result of <span data-x="percent
+   decode">percent-decoding</span> <var>fragid</var>.</p></li>
+
+   <li><p>Let <var>decoded fragid</var> be the result of running <span>UTF-8 decode without BOM or
+   fail</span> on <var>fragid bytes</var>. If <var>decoded fragid</var> is failure, jump to the step
+   labeled <i>no decoded fragid</i>.</p></li>
+
+   <li><p>If there is an element <span data-x="in a document tree">in the document tree</span> that
+   has an <span data-x="concept-id">ID</span> exactly equal to <var>decoded fragid</var>, then the
+   first such element in <span>tree order</span> is <span>the indicated part of the document</span>;
+   stop the algorithm here.</p></li>
+
+   <li><p><i>No decoded fragid</i>: If there is an <code>a</code> element <span data-x="in a
+   document tree">in the document tree</span> that has a <code data-x="attr-a-name">name</code>
+   attribute whose value is exactly equal to <var>fragid</var> (<em>not</em> <var>decoded
+   fragid</var>), then the first such element in <span>tree order</span> is <span>the indicated part
+   of the document</span>; stop the algorithm here.</p></li>
+
+   <li><p>If <var>fragid</var> is an <span>ASCII case-insensitive</span> match for the
+   string <code data-x="">top</code>, then <span>the indicated part of the document</span> is the top
+   of the document; stop the algorithm here.</p></li>
+
+   <li><p>Otherwise, there is no <span data-x="the indicated part of the document">indicated part of
+   the document</span>.</p></li>
+
+  </ol>
+
+  <p>The <span>task source</span> for the task mentioned in this section must be the <span>DOM
+  manipulation task source</span>.</p>
+
+  </div>
+
+
+
+  

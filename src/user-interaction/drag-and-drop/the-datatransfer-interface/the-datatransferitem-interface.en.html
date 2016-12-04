@@ -1,0 +1,218 @@
+<h5>The <code>DataTransferItem</code> interface</h5>
+
+  <p>Each <code>DataTransferItem</code> object is associated with a <code>DataTransfer</code>
+  object.</p>
+
+  <pre class="idl">interface <dfn>DataTransferItem</dfn> {
+  readonly attribute DOMString <span data-x="dom-DataTransferItem-kind">kind</span>;
+  readonly attribute DOMString <span data-x="dom-DataTransferItem-type">type</span>;
+  void <span data-x="dom-DataTransferItem-getAsString">getAsString</span>(<span>FunctionStringCallback</span>? _callback);<!--
+DND-v3:  <span>Blob</span> <span data-x="dom-DataTransferItem-getAsBlob">getAsBlob</span>();-->
+  <span>File</span>? <span data-x="dom-DataTransferItem-getAsFile">getAsFile</span>();<!--
+DND-v4:  void <span data-x="dom-DataTransferItem-getAsObject">getAsObject</span>(<span>FunctionObjectCallback</span> _callback);-->
+};
+
+callback <dfn>FunctionStringCallback</dfn> = void (DOMString data);<!--
+
+// DND-v4:
+callback <dfn>FunctionObjectCallback</dfn> = void (any data);--></pre>
+
+  <dl class="domintro">
+
+   <dt><var>item</var> . <code subdfn data-x="dom-DataTransferItem-kind">kind</code></dt>
+   <dd>
+
+    <p>Returns <span>the drag data item kind</span>, one of: "string",
+    <!-- DND-v3: "blob", --> "file"<!-- DND-v4: , "object" -->.</p>
+
+   </dd>
+
+   <dt><var>item</var> . <code subdfn data-x="dom-DataTransferItem-type">type</code></dt>
+   <dd>
+
+    <p>Returns <span>the drag data item type string</span>.</p>
+
+   </dd>
+
+   <dt><var>item</var> . <code subdfn data-x="dom-DataTransferItem-getAsString">getAsString</code>(<var>callback</var>)</dt>
+   <dd>
+
+    <p>Invokes the callback with the string data as the argument, if <span>the drag data item
+    kind</span> is <i>Plain Unicode string</i>.</p>
+
+   </dd>
+
+<!-- DND-v3:
+   <dt><var>file</var> = <var>item</var> . <code subdfn data-x="dom-DataTransferItem-getAsBlob">getAsBlob</code>()</dt>
+   <dd>
+
+    <p>Returns a <code>Blob</code> object, if <span>the drag data item kind</span> is <i>Blob</i> or <i>File</i>.</p>
+
+   </dd>
+-->
+
+   <dt><var>file</var> = <var>item</var> . <code subdfn data-x="dom-DataTransferItem-getAsFile">getAsFile</code>()</dt>
+   <dd>
+
+    <p>Returns a <code>File</code> object, if <span>the drag data item kind</span> is <i>File</i>.</p>
+
+   </dd>
+
+<!-- DND-v4:
+   <dt><var>file</var> = <var>item</var> . <code subdfn data-x="dom-DataTransferItem-getAsObject">getAsObject</code>()</dt>
+   <dd>
+
+    <p>Invokes the callback with the cloned object data as the argument, if <span>the drag data item
+    kind</span> is <i>Plain Unicode string</i> or <i>Object</i>.</p>
+
+   </dd>
+-->
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>While the <code>DataTransferItem</code> object's <code>DataTransfer</code> object is associated
+  with a <span>drag data store</span> and that <span>drag data store</span>'s <span>drag data store
+  item list</span> still contains the item that the <code>DataTransferItem</code> object represents,
+  the <code>DataTransferItem</code> object's <i>mode</i> is the same as the <span>drag data store
+  mode</span>. When the <code>DataTransferItem</code> object's <code>DataTransfer</code> object is
+  <em>not</em> associated with a <span>drag data store</span>, or if the item that the
+  <code>DataTransferItem</code> object represents has been removed from the relevant <span>drag data
+  store item list</span>, the <code>DataTransferItem</code> object's <i>mode</i> is the <i>disabled
+  mode</i>. The <span>drag data store</span> referenced in this section (which is used only when the
+  <code>DataTransferItem</code> object is not in the <i>disabled mode</i>) is the <span>drag data
+  store</span> with which the <code>DataTransferItem</code> object's <code>DataTransfer</code>
+  object is associated.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransferItem-kind">kind</code></dfn> attribute must return the
+  empty string if the <code>DataTransferItem</code> object is in the <i>disabled mode</i>; otherwise
+  it must return the string given in the cell from the second column of the following table from the
+  row whose cell in the first column contains <span>the drag data item kind</span> of the item
+  represented by the <code>DataTransferItem</code> object:</p>
+
+  <table>
+   <thead>
+    <tr> <th> Kind <th> String
+   <tbody>
+    <tr> <td> <i>Plain Unicode string</i> <td> "<code data-x="">string</code>"
+<!-- DND-v3:    <tr> <td> <i>Blob</i> <td> "<code data-x="">blob</code>"-->
+    <tr> <td> <i>File</i> <td> "<code data-x="">file</code>"
+<!-- DND-v4:    <tr> <td> <i>Object</i> <td> "<code data-x="">object</code>"-->
+  </table>
+
+  <p>The <dfn><code data-x="dom-DataTransferItem-type">type</code></dfn> attribute must return the
+  empty string if the <code>DataTransferItem</code> object is in the <i>disabled mode</i>; otherwise
+  it must return <span>the drag data item type string</span> of the item represented by the
+  <code>DataTransferItem</code> object.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransferItem-getAsString">getAsString(<var>callback</var>)</code></dfn> method must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <var>callback</var> is null, abort these steps.</p></li>
+
+   <li><p>If the <code>DataTransferItem</code> object is not in the <i
+   data-x="concept-dnd-rw">read/write mode</i> or the <i data-x="concept-dnd-ro">read-only mode</i>,
+   abort these steps. The callback is never invoked.</p></li>
+
+   <li><p>If <span>the drag data item kind</span> is not <i>Plain Unicode string</i>, abort these
+   steps. The callback is never invoked.</p></li>
+
+   <li><p>Otherwise, <span>queue a task</span> to invoke <var>callback</var>, passing the
+   actual data of the item represented by the <code>DataTransferItem</code> object as the
+   argument.</p></li>
+
+  </ol>
+
+<!--DND-v3:
+  <p>The <dfn><code data-x="dom-DataTransferItem-getAsBlob">getAsBlob()</code></dfn> method must run
+  the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransferItem</code> object is not in the <i
+   data-x="concept-dnd-rw">read/write mode</i> or the <i data-x="concept-dnd-ro">read-only mode</i>,
+   return null and abort these steps.</p></li>
+
+   <li>
+
+--><!--DND-v4:
+    <p>If <span>the drag data item kind</span> is <i>Object</i>, return null.</p></li>
+--><!--DND-v3:
+
+    <p>If <span>the drag data item kind</span> is <i>File</i>, then return a new <code>File</code>
+    object representing the actual data of the item represented by the <code>DataTransferItem</code>
+    object.</p>
+
+    <p>If <span>the drag data item kind</span> is <i>Unicode Data string</i>, then return a new
+    <code>Blob</code> object representing the actual data of the item represented by the
+    <code>DataTransferItem</code> object, with the <code data-x="dom-Blob-type">type</code> of the
+    <code>Blob</code> being <span>the drag data item type string</span> and with the binary data of
+    the <code>Blob</code> object being the Unicode string encoded as UTF-8. <ref spec=ENCODING></p>
+
+    <p>Otherwise, <span>the drag data item kind</span> is <i>Blob</i>; return a new
+    <code>Blob</code> object representing the actual data of the item represented by the
+    <code>DataTransferItem</code> object.</p>
+
+   </li>
+
+  </ol>
+-->
+
+  <p>The <dfn><code data-x="dom-DataTransferItem-getAsFile">getAsFile()</code></dfn>
+  method must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransferItem</code> object is not in the <i
+   data-x="concept-dnd-rw">read/write mode</i> or the <i data-x="concept-dnd-ro">read-only mode</i>,
+   return null and abort these steps.</p></li>
+
+   <li><p>If <span>the drag data item kind</span> is not <i>File</i>, then return null and abort
+   these steps.</p></li>
+
+   <li><p>Return a new <code>File</code> object representing the actual data of the item represented
+   by the <code>DataTransferItem</code> object.</p>
+
+  </ol>
+
+<!--DND-v4:
+  <p>The <dfn><code data-x="dom-DataTransferItem-getAsObject">getAsObject(<var>callback</var>)</code></dfn> method must run the following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransferItem</code> object is not in the <i
+   data-x="concept-dnd-rw">read/write mode</i> or the <i data-x="concept-dnd-ro">read-only mode</i>,
+   return null and abort these steps.</p></li>
+
+   <li>
+
+    <p>Let <var>data</var> be the actual data of the item represented by the
+    <code>DataTransferItem</code> object.</p>
+
+    <p>If <span>the drag data item kind</span> is <i>Unicode Data string</i>, then <var>data</var>
+    is a <code data-x="idl-DOMString">DOMString</code> containing the actual data.</p>
+
+    <p>If <span>the drag data item kind</span> is <i>Blob</i>, then <var>data</var> is a
+    <code>Blob</code> representing the actual data.</p>
+
+    <p>If <span>the drag data item kind</span> is <i>File</i>, then <var>data</var> is a
+    <code>File</code> representing the actual data.</p>
+
+    <p>If <span>the drag data item kind</span> is <i>Object</i>, then <var>data</var> is the object
+    that is the actual data.</p>
+
+   </li>
+
+   <li><span>Queue a task</span> to invoke <var>callback</var>, passing a <span>structured
+   clone</span> of <var>data</var> as the argument.</p></li>
+
+  </ol>
+-->
+
+  </div>
+
+
+
+  

@@ -1,0 +1,365 @@
+<h5>Form submission algorithm</h5>
+
+  <p>When a <code>form</code> element <var>form</var> is <dfn
+  data-x="concept-form-submit">submitted</dfn> from an element <var>submitter</var>
+  (typically a button), optionally with a <var>submitted from <code
+  data-x="dom-form-submit">submit()</code> method</var> flag set, the user agent must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>form document</var> be the <var>form</var>'s
+   <span>node document</span>.</p></li>
+
+   <li id="sandboxSubmitBlocked"><p>If <var>form document</var> is not <span>connected</span>, has
+   no associated <span data-x="concept-document-bc">browsing context</span>, or its <span>active
+   sandboxing flag set</span> has its <span>sandboxed forms browsing context flag</span> set, then
+   abort these steps without doing anything.</p></li>
+
+   <li><p>Let <var>form browsing context</var> be the <span data-x="concept-document-bc">browsing
+   context</span> of <var>form document</var>.</p></li>
+
+   <!-- lock (all the following steps are skipped if called from submit() - see unlock step below) -->
+
+   <li><p>If the <var>submitted from <code data-x="dom-form-submit">submit()</code>
+   method</var> flag is not set, and the <var>submitter</var> element's <span
+   data-x="concept-fs-novalidate">no-validate state</span> is false, then <span>interactively
+   validate the constraints</span> of <var>form</var> and examine the result: if the result
+   is negative (the constraint validation concluded that there were invalid fields and probably
+   informed the user of this) then <span data-x="concept-event-fire">fire an event</span> named
+   <code data-x="event-invalid">invalid</code> at the <var>form</var> element and then abort these
+   steps.</p></li>
+
+   <li>
+    <p>If the <var>submitted from <code data-x="dom-form-submit">submit()</code> method</var> flag
+    is not set, then:
+
+    <ol>
+     <li><p>Let <var>continue</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-submit">submit</code> at <var>form</var>, with the
+     <code data-x="dom-Event-bubbles">bubbles</code> attribute initialized to true and the <code
+     data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+     <li><p>If <var>continue</var> is false, then abort these steps.
+    </ol>
+
+   <!-- if you add any steps between the "lock" and "unlock" lines, make sure to update the step
+   immediately before the "lock" line -->
+
+   <!-- unlock -->
+
+   <li><p>Let <var>form data set</var> be the result of <span>constructing the form data
+   set</span> for <var>form</var> in the context of <var>submitter</var>.</p></li>
+
+   <li><p>Let <var>encoding</var> be the result of <span>picking an encoding for the
+   form</span>.</p>
+
+   <li><p>Let <var>action</var> be the <var>submitter</var> element's <span
+   data-x="concept-fs-action">action</span>.</p></li>
+
+   <li>
+
+    <p>If <var>action</var> is the empty string, let <var>action</var> be the <span
+    data-x="concept-document-url">URL</span> of the <var>form document</var>.</p>
+
+    <!-- Don't ask me why. But that's what IE does. It even treats action="" differently from
+    action=" " or action="#" (the latter two resolve to the base URL, the first one resolves to the
+    doc URL). And other browsers concur. It is even required, see e.g.
+      https://bugs.webkit.org/show_bug.cgi?id=7763
+      https://bugzilla.mozilla.org/show_bug.cgi?id=297761
+    -->
+
+   </li>
+
+   <li><p><span data-x="parse a url">Parse</span> the <span>URL</span> <var>action</var>, relative
+   to the <var>submitter</var> element's <span>node document</span>. If this fails, abort these
+   steps.</p></li>
+
+   <li><p>Let <var>parsed action</var> be the <span>resulting URL record</span>.</p></li>
+
+   <li><p>Let <var>scheme</var> be the <span data-x="concept-url-scheme">scheme</span> of
+   <var>parsed action</var>.</p></li>
+
+   <li><p>Let <var>enctype</var> be the <var>submitter</var> element's <span
+   data-x="concept-fs-enctype">enctype</span>.</p></li>
+
+   <li><p>Let <var>method</var> be the <var>submitter</var> element's <span
+   data-x="concept-fs-method">method</span>.</p></li>
+
+   <li><p>Let <var>target</var> be the <var>submitter</var> element's <span
+   data-x="concept-fs-target">target</span>.</p></li>
+
+   <li><p>If the user indicated a specific <span>browsing context</span> to use when submitting the
+   form, then let <var>target browsing context</var> be that <span>browsing context</span>.
+   Otherwise, apply <span>the rules for choosing a browsing context given a browsing context
+   name</span> using <var>target</var> as the name and <var>form browsing
+   context</var> as the context in which the algorithm is executed, and let <var>target
+   browsing context</var> be the resulting <span>browsing context</span>.</p></li>
+
+   <li><p>If <var>target browsing context</var> was created in the previous step, or,
+   alternatively, if the <var>form document</var> has not yet <span>completely
+   loaded</span> and the <var>submitted from <code data-x="dom-form-submit">submit()</code>
+   method</var> flag is set, then let <var>replace</var> be true. Otherwise, let it be
+   false.</p></li>
+
+   <li>
+
+    <p>If the value of <var>method</var> is <span
+    data-x="attr-fs-method-dialog">dialog</span> then jump to the <span data-x="submit-dialog">submit
+    dialog</span> steps.</p>
+
+    <p>Otherwise, select the appropriate row in the table below based on the value of <var>scheme</var> as given by the first cell of each row. Then, select the appropriate cell
+    on that row based on the value of <var>method</var> as given in the first cell of each
+    column. Then, jump to the steps named in that cell and defined below the table.</p>
+
+    <table>
+     <thead>
+     <tr>
+      <td>
+      <th> <span data-x="attr-fs-method-GET">GET</span>
+      <th> <span data-x="attr-fs-method-POST">POST</span>
+     <tbody>
+     <tr>
+      <th> <code data-x="">http</code>
+      <td> <span data-x="submit-mutate-action">Mutate action URL</span>
+      <td> <span data-x="submit-body">Submit as entity body</span>
+     <tr>
+      <th> <code data-x="">https</code>
+      <td> <span data-x="submit-mutate-action">Mutate action URL</span>
+      <td> <span data-x="submit-body">Submit as entity body</span>
+     <tr>
+      <th> <code data-x="">ftp</code>
+      <td> <span data-x="submit-get-action">Get action URL</span>
+      <td> <span data-x="submit-get-action">Get action URL</span>
+     <tr>
+      <th> <code data-x="">javascript</code>
+      <td> <span data-x="submit-get-action">Get action URL</span>
+      <td> <span data-x="submit-get-action">Get action URL</span>
+     <tr>
+      <th> <code data-x="">data</code>
+      <td> <span data-x="submit-mutate-action">Mutate action URL</span>
+      <td> <span data-x="submit-get-action">Get action URL</span>
+     <tr>
+      <th> <code data-x="">mailto</code>
+      <td> <span data-x="submit-mailto-headers">Mail with headers</span>
+      <td> <span data-x="submit-mailto-body">Mail as body</span>
+    </table>
+
+    <p>If <var>scheme</var> is not one of those listed in this table, then the behavior is
+    not defined by this specification. User agents should, in the absence of another specification
+    defining this, act in a manner analogous to that defined in this specification for similar
+    schemes.</p>
+
+    <p>Each <code>form</code> element has a <dfn>planned navigation</dfn>, which is either null or a
+    <span data-x="concept-task">task</span>; when the <code>form</code> is first created, its
+    <span>planned navigation</span> must be set to null. In the behaviors described below, when the
+    user agent is required to <dfn>plan to navigate</dfn> to a particular resource <var>destination</var>, it must run the following steps:</p>
+
+    <ol>
+
+     <li><p>If the <code>form</code> has a non-null <span>planned navigation</span>, remove it from
+     its <span>task queue</span>.</p></li>
+
+     <li>
+
+      <p>Let the <code>form</code>'s <span>planned navigation</span> be a new <span
+      data-x="concept-task">task</span> that consists of running the following steps:</p>
+
+      <ol>
+
+       <li><p>Let the <code>form</code>'s <span>planned navigation</span> be null.</p></li>
+
+       <li><p><span>Navigate</span><!--DONAV form--> <var>target browsing context</var> to
+       <var>destination</var>. If <var>replace</var> is true, then <var>target browsing
+       context</var> must be navigated with <span>replacement enabled</span>.</p>
+
+      </ol>
+
+      <p>For the purposes of this task, <var>target browsing context</var> and <var>replace</var> are the variables that were set up when the overall form submission
+      algorithm was run, with their values as they stood when this <span>planned navigation</span>
+      was <span data-x="queue a task">queued</span>.</p>
+
+     </li>
+
+     <li>
+
+      <p><span data-x="queue a task">Queue the task</span> that is the <code>form</code>'s new
+      <span>planned navigation</span>.</p>
+
+      <p>The <span>task source</span> for this task is the <span>DOM manipulation task
+      source</span>.</p>
+
+     </li>
+
+    </ol>
+
+    <p>The behaviors are as follows:</p>
+
+    <dl>
+
+     <dt><dfn data-x="submit-mutate-action">Mutate action URL</dfn>
+     <dd>
+
+      <p>Let <var>query</var> be the result of running the
+      <span><code>application/x-www-form-urlencoded</code> serializer</span> with <var>form data
+      set</var> and <var>encoding</var>.</p>
+
+      <p>Set <var>parsed action</var>'s <span data-x="concept-url-query">query</span>
+      component to <var>query</var>.</p>
+
+      <p><span>Plan to navigate</span> to <var>parsed action</var>.</p>
+
+     </dd>
+
+     <dt><dfn data-x="submit-body">Submit as entity body</dfn>
+     <dd>
+      <p>Switch on <var>enctype</var>:
+
+      <dl class="switch">
+       <dt><code data-x="attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</code></dt>
+
+       <dd>
+        <p>Let <var>body</var> be the result of running the
+        <span><code>application/x-www-form-urlencoded</code> serializer</span> with <var>form
+        data set</var> and <var>encoding</var>.</p>
+
+        <p>Set <var>body</var> to the result of <span data-x="UTF-8 encode">encoding</span>
+        <var>body</var>.</p>
+
+        <p>Let <var>MIME type</var> be "<code>application/x-www-form-urlencoded</code>".</p>
+       </dd>
+
+       <dt><code data-x="attr-fs-enctype-formdata">multipart/form-data</code></dt>
+
+       <dd>
+        <p>Let <var>body</var> be the result of running the <span><code
+        data-x="">multipart/form-data</code> encoding algorithm</span> with <var>form data set</var>
+        and <var>encoding</var>.</p>
+
+        <p>Let <var>MIME type</var> be the concatenation of the string "<code
+        data-x="">multipart/form-data;</code>", a U+0020 SPACE character, the string "<code
+        data-x="">boundary=</code>", and the <span><code data-x="">multipart/form-data</code>
+        boundary string</span> generated by the <span><code data-x="">multipart/form-data</code>
+        encoding algorithm</span>.</p>
+       </dd>
+
+       <dt><code data-x="attr-fs-enctype-text">text/plain</code></dt>
+
+       <dd>
+        <p>Let <var>body</var> be the result of running the <span><code data-x="">text/plain</code>
+        encoding algorithm</span> with <var>form data set</var> and <var>encoding</var>.</p>
+
+        <p>Set <var>body</var> to the result of <span data-x="encode">encoding</span>
+        <var>body</var> using <var>encoding</var>.</p>
+
+        <p>Let <var>MIME type</var> be "<code data-x="">text/plain</code>".</p>
+       </dd>
+      </dl>
+
+      <p><span>Plan to navigate</span> to a new <span data-x="concept-request">request</span> whose
+      <span data-x="concept-request-url">url</span> is <var>parsed action</var>, <span
+      data-x="concept-request-method">method</span> is <var>method</var>, <span
+      data-x="concept-request-header-list">header list</span> consists of `<code
+      data-x="">Content-Type</code>`/<var>MIME type</var>, and <span
+      data-x="concept-request-body">body</span> is <var>body</var>.</p>
+
+     </dd>
+
+     <dt><dfn data-x="submit-get-action">Get action URL</dfn>
+     <dd>
+
+      <p><span>Plan to navigate</span> to <var>parsed action</var>.</p>
+
+      <p class="note">The <var>form data set</var> is discarded.</p>
+
+     </dd>
+
+     <dt><dfn data-x="submit-mailto-headers">Mail with headers</dfn>
+     <dd>
+      <p>Let <var>headers</var> be the result of running the
+      <span><code>application/x-www-form-urlencoded</code> serializer</span> with <var>form data
+      set</var> and <var>encoding</var>.</p>
+
+      <p>Replace occurrences of U+002B PLUS SIGN characters (+) in <var>headers</var> with
+      the string "<code data-x="">%20</code>".</p>
+
+      <p>Set <var>parsed action</var>'s <span data-x="concept-url-query">query</span> to
+      <var>headers</var>.</p>
+
+      <p><span>Plan to navigate</span> to <var>parsed action</var>.</p>
+     </dd>
+
+     <dt><dfn data-x="submit-mailto-body">Mail as body</dfn>
+     <dd>
+      <p>Switch on <var>enctype</var>:
+
+      <dl class="switch">
+       <dt><code data-x="attr-fs-enctype-text">text/plain</code></dt>
+
+       <dd>
+        <p>Let <var>body</var> be the result of running the <span><code
+        data-x="">text/plain</code> encoding algorithm</span> with <var>form data set</var> and
+        <var>encoding</var>.</p>
+
+        <p>Set <var>body</var> to the result of concatenating the result of <span data-x="UTF-8
+        percent encode">UTF-8 percent encoding</span> each code point in <var>body</var>, using the
+        <span>default encode set</span>. <ref spec=URL></p>
+       </dd>
+
+       <dt>Otherwise</dt>
+
+       <dd><p>Let <var>body</var> be the result of running the
+       <span><code>application/x-www-form-urlencoded</code> serializer</span> with <var>form data
+       set</var> and <var>encoding</var>.</p></dd>
+      </dl>
+
+      <p>If <var>parsed action</var>'s <span data-x="concept-url-query">query</span> is null, then
+      set it to the empty string.
+
+      <p>If <var>parsed action</var>'s <span data-x="concept-url-query">query</span> is not the
+      empty string, then append a single U+0026 AMPERSAND character (&amp;) to it.
+
+      <p>Append "<code data-x="">body=</code>" to <var>parsed action</var>'s <span
+      data-x="concept-url-query">query</span>.</p>
+
+      <p>Append <var>body</var> to <var>parsed action</var>'s <span
+      data-x="concept-url-query">query</span>.</p>
+
+      <p><span>Plan to navigate</span> to <var>parsed action</var>.</p>
+     </dd>
+
+
+     <dt><dfn data-x="submit-dialog">Submit dialog</dfn>
+     <dd>
+
+      <p>Let <var>subject</var> be the nearest ancestor <code>dialog</code> element of <var>form</var>, if any.</p>
+
+      <p>If there isn't one, or if it does not have an <code data-x="attr-dialog-open">open</code>
+      attribute, do nothing. Otherwise, proceed as follows:</p>
+
+      <p>If <var>submitter</var> is an <code>input</code> element whose <code
+      data-x="attr-input-type">type</code> attribute is in the <span
+      data-x="attr-input-type-image">Image Button</span> state, then let <var>result</var>
+      be the string formed by concatenating the <span
+      data-x="concept-input-type-image-coordinate">selected coordinate</span>'s <var>x</var>-component, expressed as a base-ten number using <span>ASCII digits</span>, a
+      U+002C COMMA character (,), and the <span data-x="concept-input-type-image-coordinate">selected
+      coordinate</span>'s <var>y</var>-component, expressed in the same way as the <var>x</var>-component.</p>
+
+      <p>Otherwise, if <var>submitter</var> has a <span
+      data-x="concept-fe-value">value</span>, then let <var>result</var> be that <span
+      data-x="concept-fe-value">value</span>.</p>
+
+      <p>Otherwise, there is no <var>result</var>.</p>
+
+      <p>Then, <span>close the dialog</span> <var>subject</var>. If there is a <var>result</var>, let that be the return value.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+  </ol>
+
+
+  

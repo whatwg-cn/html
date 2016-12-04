@@ -1,0 +1,126 @@
+<h5>Navigating nested browsing contexts in the DOM</h5>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code subdfn data-x="dom-top">top</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>WindowProxy</code> for the <span>top-level browsing context</span>.</p>
+
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-parent">parent</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>WindowProxy</code> for the <span>parent browsing context</span>.</p>
+
+   </dd>
+
+   <dt><var>window</var> . <code subdfn data-x="dom-frameElement">frameElement</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>Element</code> for the <span>browsing context container</span>.</p>
+
+    <p>Returns null if there isn't one, and in cross-origin situations.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-top">top</code></dfn> IDL attribute, on getting, must run the
+  following algorithm:</p>
+
+  <ol>
+   <li><p>Let <var>windowProxy</var> be this <code>Window</code> object's <code>WindowProxy</code>
+   object.</p></li>
+
+   <li><p>If there is no <span>browsing context</span> with <var>windowProxy</var> as its
+   <code>WindowProxy</code> object, then return null.</p>
+
+   <li><p>Let <var>context</var> be that <span>browsing context</span>.</p></li>
+
+   <li><p>If <var>context</var> is a <span>top-level browsing context</span>, then return
+   <var>context</var>'s <code>WindowProxy</code> object.</p></li>
+
+   <li><p>Otherwise, <var>context</var> must have a <span>top-level browsing context</span> (i.e. an
+   <span>ancestor browsing context</span> with no <span>parent browsing context</span>). Return that
+   <span>top-level browsing context</span>'s <code>WindowProxy</code> object.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-parent">parent</code></dfn> IDL attribute, on getting, must run the
+  following algorithm:</p>
+
+  <ol>
+   <li><p>Let <var>windowProxy</var> be this <code>Window</code> object's <code>WindowProxy</code>
+   object.</p></li>
+
+   <li><p>If there is no <span>browsing context</span> with <var>windowProxy</var> as its
+   <code>WindowProxy</code> object, then return null.</p>
+
+   <li><p>Let <var>context</var> be that <span>browsing context</span>.</p></li>
+
+   <li><p>If <var>context</var> is a <span>child browsing context</span> of another <span>browsing
+   context</span> <var>parent</var>, then return <var>parent</var>'s <code>WindowProxy</code>
+   object.</p></li>
+
+   <li><p>Otherwise, <var>context</var> must be a <span>top-level browsing context</span>. Return
+   <var>context</var>'s <code>WindowProxy</code> object.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-frameElement">frameElement</code></dfn> IDL attribute, on getting,
+  must run the following algorithm:</p>
+
+  <ol>
+   <li><p>Let <var>windowProxy</var> be this <code>Window</code> object's <code>WindowProxy</code>
+   object.</p></li>
+
+   <li><p>If there is no <span>browsing context</span> with <var>windowProxy</var> as its
+   <code>WindowProxy</code> object, then return null.</p>
+
+   <li><p>Let <var>context</var> be that <span>browsing context</span>.</p></li>
+
+   <li><p>If <var>context</var> is not a <span>nested browsing context</span>, then return
+   null.</p></li>
+
+   <li><p>Let <var>container</var> be <var>context</var>'s <span>browsing context
+   container</span>.</p></li>
+
+   <li><p>If <var>container</var>'s <span>node document</span>'s <span>origin</span> is not
+   <span>same origin-domain</span> with the <span>current settings object</span>'s <span
+   data-x="concept-settings-object-origin">origin</span>, then return null.</p></li>
+
+   <li><p>Return <var>container</var>.</p></li>
+  </ol>
+
+  <div class="example">
+   <p>An example of when these IDL attributes can return null is as follows:</p>
+
+   <pre>&lt;!DOCTYPE html>
+&lt;iframe>&lt;/iframe>
+
+&lt;script>
+"use strict";
+const element = document.querySelector("iframe");
+const iframeWindow = element.contentWindow;
+element.remove();
+
+console.assert(iframeWindow.top === null);
+console.assert(iframeWindow.parent === null);
+console.assert(iframeWindow.frameElement === null);
+&lt;/script></pre>
+
+   <p>Here the <span>browsing context</span> corresponding to <code data-x="">iframeWindow</code>
+   was <span data-x="a browsing context is discarded">discarded</span> when <code
+   data-x="">element</code> was removed from the document.</p>
+  </div>
+
+  </div>
+
+
+
+  

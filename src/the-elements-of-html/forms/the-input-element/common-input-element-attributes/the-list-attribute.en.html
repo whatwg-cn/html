@@ -1,0 +1,185 @@
+<h6>The <code data-x="attr-input-list">list</code> attribute</h6>
+
+  <!-- if we add any more types of controls, the handling of multiple="" below needs refactoring -->
+
+  <p>The <dfn><code data-x="attr-input-list">list</code></dfn> attribute is used to identify an
+  element that lists predefined options suggested to the user.</p>
+
+  <p>If present, its value must be the <span data-x="concept-id">ID</span> of a <code>datalist</code>
+  element in the same <span>tree</span>.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn data-x="concept-input-list">suggestions source element</dfn> is the first element in
+  the <span>tree</span> in <span>tree order</span> to have an <span data-x="concept-id">ID</span>
+  equal to the value of the <code data-x="attr-input-list">list</code> attribute, if that element is
+  a <code>datalist</code> element. If there is no <code data-x="attr-input-list">list</code>
+  attribute, or if there is no element with that <span data-x="concept-id">ID</span>, or if the
+  first element with that <span data-x="concept-id">ID</span> is not a <code>datalist</code>
+  element, then there is no <span data-x="concept-input-list">suggestions source element</span>.</p>
+
+  <p>If there is a <span data-x="concept-input-list">suggestions source element</span>, then, when
+  the user agent is allowing the user to edit the <code>input</code> element's <span
+  data-x="concept-fe-value">value</span>, the user agent should offer the suggestions represented by
+  the <span data-x="concept-input-list">suggestions source element</span> to the user in a manner
+  suitable for the type of control used. If appropriate, the user agent should use the suggestion's
+  <span data-x="concept-option-label">label</span> and <span
+  data-x="concept-option-value">value</span> to identify the suggestion to the user.</p>
+
+  <p>User agents are encouraged to filter the suggestions represented by the <span
+  data-x="concept-input-list">suggestions source element</span> when the number of suggestions is
+  large, including only the most relevant ones (e.g. based on the user's input so far). No precise
+  threshold is defined, but capping the list at four to seven values is reasonable. If filtering
+  based on the user's input, user agents should use substring matching against both the suggestions'
+  <span data-x="concept-option-label">label</span> and <span
+  data-x="concept-option-value">value</span>.</p>
+
+  <div class="example">
+   <p>This text field allows you to choose a type of JavaScript function.</p>
+
+   <pre>&lt;input type="text" list="function-types">
+&lt;datalist id="function-types">
+  &lt;option value="function">function&lt;/option>
+  &lt;option value="async function">async function&lt;/option>
+  &lt;option value="function*">generator function&lt;/option>
+  &lt;option value="=>">arrow function&lt;/option>
+  &lt;option value="async =>">async arrow function&lt;/option>
+  &lt;option value="async function*">async generator function&lt;/option>
+&lt;/datalist></pre>
+
+   <p>For user agents that follow the above suggestions, both the <span
+   data-x="concept-option-label">label</span> and <span data-x="concept-option-value">value</span>
+   would be shown:</p>
+
+   <p><img src="/images/sample-datalist.svg" width="280" height="150" alt="A text box with a drop down button on the right hand side; with, below, a drop down box containing a list of the six values the left and the six labels on the right."></p>
+
+   <p>Then, typing "<kbd>arrow</kbd>" or "<kbd>=></kbd>" would filter the list to the entries with
+   labels "arrow function" and "async arrow function". Typing "<kbd>generator</kbd>" or
+   "<kbd>*</kbd>" would filter the list to the entries with labels "generator function" and "async
+   generator function".</p>
+  </div>
+
+  <p class="note">As always, user agents are free to make user interface decisions which are
+  appropriate for their particular requirements and for the user's particular circumstances. However,
+  this has historically been an area of confusion for implementers, web developers, and users alike,
+  so we've given some "should" suggestions above.</p>
+
+
+  <p>How user selections of suggestions are handled depends on whether the element is a control
+  accepting a single value only, or whether it accepts multiple values:</p>
+
+  <dl class="switch">
+
+   <dt>If the element does not have a <code data-x="attr-input-multiple">multiple</code> attribute
+   specified or if the <code data-x="attr-input-multiple">multiple</code> attribute <span data-x="do
+   not apply">does not apply</span></dt>
+
+   <dd>
+
+    <p>When the user selects a suggestion, the <code>input</code> element's <span
+    data-x="concept-fe-value">value</span> must be set to the selected suggestion's <span
+    data-x="concept-option-value">value</span>, as if the user had written that value themself.</p>
+
+   </dd>
+
+   <!-- multiple types where there's a potentially growing number of values -->
+   <dt>If the element's <code data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-email">Email</span> state and the element has a <code
+   data-x="attr-input-multiple">multiple</code> attribute specified<!--, and the <code
+   data-x="attr-input-multiple">multiple</code> attribute does <span
+   data-x="concept-input-apply">apply</span>--></dt>
+
+   <dd>
+
+    <p>When the user selects a suggestion, the user agent must either add a new entry to the
+    <code>input</code> element's <span data-x="concept-fe-values">values</span>, whose value
+    is the selected suggestion's <span data-x="concept-option-value">value</span>, or change an
+    existing entry in the <code>input</code> element's <span
+    data-x="concept-fe-values">values</span> to have the value given by the selected
+    suggestion's <span data-x="concept-option-value">value</span>, as if the user had themself added
+    an entry with that value, or edited an existing entry to be that value. Which behavior is to be
+    applied depends on the user interface in a user-agent-defined manner.</p>
+
+   </dd>
+
+  </dl>
+
+  <hr>
+
+  <p>If the <code data-x="attr-input-list">list</code> attribute <span data-x="do not apply">does not
+  apply</span>, there is no <span data-x="concept-input-list">suggestions source element</span>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>This URL field offers some suggestions.</p>
+
+   <pre>&lt;label>Homepage: &lt;input name=hp type=url list=hpurls>&lt;/label>
+&lt;datalist id=hpurls>
+ &lt;option value="https://www.google.com/" label="Google">
+ &lt;option value="https://www.reddit.com/" label="Reddit">
+&lt;/datalist></pre>
+
+   <p>Other URLs from the user's history might show also; this is up to the user agent.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>This example demonstrates how to design a form that uses the autocompletion list feature while
+   still degrading usefully in legacy user agents.</p>
+
+   <p>If the autocompletion list is merely an aid, and is not important to the content, then simply
+   using a <code>datalist</code> element with children <code>option</code> elements is enough. To
+   prevent the values from being rendered in legacy user agents, they need to be placed inside the
+   <code data-x="attr-option-value">value</code> attribute instead of inline.</p>
+
+   <pre>&lt;p&gt;
+ &lt;label&gt;
+  Enter a breed:
+  &lt;input type="text" name="breed" list="breeds"&gt;
+  &lt;datalist id="breeds"&gt;
+   &lt;option value="Abyssinian"&gt;
+   &lt;option value="Alpaca"&gt;
+   &lt;!-- ... --&gt;
+  &lt;/datalist&gt;
+ &lt;/label&gt;
+&lt;/p&gt;</pre>
+
+   <p>However, if the values need to be shown in legacy UAs, then fallback content can be placed
+   inside the <code>datalist</code> element, as follows:</p>
+
+   <pre>&lt;p&gt;
+ &lt;label&gt;
+  Enter a breed:
+  &lt;input type="text" name="breed" list="breeds"&gt;
+ &lt;/label&gt;
+ &lt;datalist id="breeds"&gt;
+  &lt;label&gt;
+   or select one from the list:
+   &lt;select name="breed"&gt;
+    &lt;option value=""&gt; (none selected)
+    &lt;option&gt;Abyssinian
+    &lt;option&gt;Alpaca
+    &lt;!-- ... --&gt;
+   &lt;/select&gt;
+  &lt;/label&gt;
+ &lt;/datalist&gt;
+&lt;/p&gt;
+</pre>
+
+   <p>The fallback content will only be shown in UAs that don't support <code>datalist</code>. The
+   options, on the other hand, will be detected by all UAs, even though they are not children of the
+   <code>datalist</code> element.</p>
+
+   <p>Note that if an <code>option</code> element used in a <code>datalist</code> is <code
+   data-x="attr-option-selected">selected</code>, it will be selected by default by legacy UAs
+   (because it affects the <code>select</code>), but it will not have any effect on the
+   <code>input</code> element in UAs that support <code>datalist</code>.</p>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,755 @@
+<h4>The <code>Location</code> interface</h4>
+
+  <p>Each <code>Window</code> object is associated with a unique instance of a <code>Location</code>
+  object, allocated when the <code>Window</code> object is created.</p>
+
+  <div w-nodev>
+
+  <p class="warning">The <code>Location</code> exotic object is defined through a mishmash of IDL,
+  invocation of JavaScript internal methods post-creation, and overridden JavaScript internal
+  methods. Coupled with its scary security policy, please take extra care while implementing
+  this excrescence.</p>
+
+  <p>To create a <code>Location</code> object, run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>location</var> be a new <code>Location</code> <span>platform
+   object</span>.</p></li>
+
+   <li><p>Perform ! <var>location</var>.[[DefineOwnProperty]]("<code data-x="">toString</code>", {
+   [[Value]]: <span>%ObjProto_toString%</span>,
+   [[Writable]]: false,
+   [[Enumerable]]: false,
+   [[Configurable]]: false }).</p></li>
+
+   <li><p>Perform ! <var>location</var>.[[DefineOwnProperty]]("<code data-x="">toJSON</code>", {
+   [[Value]]: undefined,
+   [[Writable]]: false,
+   [[Enumerable]]: false,
+   [[Configurable]]: false }).</p></li>
+
+   <li><p>Perform ! <var>location</var>.[[DefineOwnProperty]]("<code data-x="">valueOf</code>", {
+   [[Value]]: <span>%ObjProto_valueOf%</span>,
+   [[Writable]]: false,
+   [[Enumerable]]: false,
+   [[Configurable]]: false }).</p></li>
+
+   <li><p>Perform ! <var>location</var>.[[DefineOwnProperty]](<span>@@toPrimitive</span>, {
+   [[Value]]: undefined,
+   [[Writable]]: false,
+   [[Enumerable]]: false,
+   [[Configurable]]: false }).</p></li>
+
+   <li><p>Set the value of the [[<span>DefaultProperties</span>]] internal slot of
+   <var>location</var> to <var>location</var>.[[OwnPropertyKeys]]().</p></li>
+
+   <li><p>Return <var>location</var>.</p></li>
+  </ol>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-location">location</code> [ = <var>value</var> ]</dt>
+   <dt><var>window</var> . <code subdfn data-x="dom-location">location</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns a <code>Location</code> object with the current page's location.</p>
+
+    <p>Can be set, to navigate to another page.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <code>Document</code> object's <dfn><code
+  data-x="dom-document-location">location</code></dfn> attribute's getter must return this
+  <code>Document</code> object's <span data-x="concept-relevant-global">relevant global
+  object</span>'s <code>Location</code> object, if this <code>Document</code> object is <span>fully
+  active</span>, and null otherwise.</p>
+
+  <p>The <code>Window</code> object's <dfn><code data-x="dom-location">location</code></dfn>
+  attribute's getter must return this <code>Window</code> object's <code>Location</code> object.</p>
+
+  </div>
+
+  <p><code>Location</code> objects provide a representation of the <span
+  data-x="concept-document-url">URL</span> of the <span>active document</span> of their
+  <code>Document</code>'s <span data-x="concept-document-bc">browsing context</span>, and allow the
+  <span>current entry</span> of the <span>browsing context</span>'s session history to be changed,
+  by adding or replacing entries in the <code data-x="dom-history">history</code> object.</p>
+
+  <pre class="idl">interface <dfn>Location</dfn> {
+  [Unforgeable] stringifier attribute USVString <span data-x="dom-location-href">href</span>;
+  [Unforgeable] readonly attribute USVString <span data-x="dom-location-origin">origin</span>;
+  [Unforgeable] attribute USVString <span data-x="dom-location-protocol">protocol</span>;
+  [Unforgeable] attribute USVString <span data-x="dom-location-host">host</span>;
+  [Unforgeable] attribute USVString <span data-x="dom-location-hostname">hostname</span>;
+  [Unforgeable] attribute USVString <span data-x="dom-location-port">port</span>;
+  [Unforgeable] attribute USVString <span data-x="dom-location-pathname">pathname</span>;
+  [Unforgeable] attribute USVString <span data-x="dom-location-search">search</span>;
+  [Unforgeable] attribute USVString <span data-x="dom-location-hash">hash</span>;
+
+  [Unforgeable] void <span data-x="dom-location-assign">assign</span>(USVString url);
+  [Unforgeable] void <span data-x="dom-location-replace">replace</span>(USVString url);
+  [Unforgeable] void <span data-x="dom-location-reload">reload</span>();
+
+  [Unforgeable, SameObject] readonly attribute FrozenArray&lt;USVString&gt; <span data-x="dom-location-ancestorOrigins">ancestorOrigins</span>;
+};</pre>
+
+  <dl class="domintro">
+   <dt><var>location</var> . <code data-x="">toString()</code></dt>
+   <dt><var>location</var> . <code subdfn data-x="dom-location-href">href</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL.</p>
+    <p>Can be set, to navigate to the given URL.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-origin">origin</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's origin.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-protocol">protocol</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's scheme.</p>
+    <p>Can be set, to navigate to the same URL with a changed scheme.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-host">host</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's host and port (if different from the default
+    port for the scheme).</p>
+    <p>Can be set, to navigate to the same URL with a changed host and port.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-hostname">hostname</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's host.</p>
+    <p>Can be set, to navigate to the same URL with a changed host.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-port">port</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's port.</p>
+    <p>Can be set, to navigate to the same URL with a changed port.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-pathname">pathname</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's path.</p>
+    <p>Can be set, to navigate to the same URL with a changed path.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-search">search</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's query (includes leading "<code
+    data-x="">?</code>" if non-empty).</p>
+    <p>Can be set, to navigate to the same URL with a changed query (ignores leading "<code
+    data-x="">?</code>").</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-hash">hash</code></dt>
+   <dd>
+    <p>Returns the <code>Location</code> object's URL's fragment (includes leading "<code
+    data-x="">#</code>" if non-empty).</p>
+    <p>Can be set, to navigate to the same URL with a changed fragment (ignores leading "<code
+    data-x="">#</code>").</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-assign">assign</code>(<var>url</var>)</dt>
+   <dd>
+    <p>Navigates to the given URL.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-replace">replace</code>(<var>url</var>)</dt>
+   <dd>
+    <p>Removes the current page from the session history and navigates to the given URL.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-reload">reload</code>()</dt>
+
+   <dd>
+    <p>Reloads the current page.</p>
+   </dd>
+
+   <dt><var>location</var> . <code subdfn data-x="dom-location-ancestorOrigins">ancestorOrigins</code></dt>
+   <dd>
+    <p>Returns an array whose values are the origins of the ancestor <span data-x="browsing
+    context">browsing contexts</span>, from the <span>parent browsing context</span> to the
+    <span>top-level browsing context</span>.</p>
+   </dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>A <code>Location</code> object has an associated <dfn>relevant <code>Document</code></dfn>,
+  which is this <code>Location</code> object's associated <code>Document</code> object's <span
+  data-x="concept-document-bc">browsing context</span>'s <span>active document</span>.</p>
+
+  <p>A <code>Location</code> object has an associated <dfn data-x="concept-location-url">url</dfn>,
+  which is this <code>Location</code> object's <span>relevant <code>Document</code></span>'s <span
+  data-x="concept-document-url">URL</span>.</p>
+
+  <p>A <code>Location</code> object has an associated <dfn
+  data-x="concept-location-ancestor-origins-array">ancestor origins array</dfn>. When a
+  <code>Location</code> object is created, its <span
+  data-x="concept-location-ancestor-origins-array">ancestor origins array</span> must be set to a
+  <span>frozen array</span> created from the list of strings that the following steps would
+  produce:</p>
+
+  <ol>
+   <li><p>Let <var>output</var> be an empty ordered list of strings.</p></li>
+
+   <li><p>Let <var>current</var> be the <span data-x="concept-document-bc">browsing context</span>
+   of the <code>Document</code> with which this <code>Location</code> object is associated.</p></li>
+
+   <li><p><i>Loop</i>: If <var>current</var> has no <span>parent browsing context</span>, jump to
+   the step labeled <i>end</i>.</p></li>
+
+   <li><p>Let <var>current</var> be <var>current</var>'s <span>parent browsing
+   context</span>.</p></li>
+
+   <li><p>Append the <span data-x="Unicode serialization of an origin">Unicode serialization</span>
+   of <var>current</var>'s <span>active document</span>'s <span>origin</span> to <var>output</var>
+   as a new value.</p></li>
+
+   <li><p>Return to the step labeled <i>loop</i>.</p></li>
+
+   <li><p><i>End</i>: Return <var>output</var>.</p></li>
+  </ol>
+
+  <p>A <code>Location</code> object has an associated <dfn><code>Location</code>-object-setter
+  navigate</dfn> algorithm, which given a <var>url</var>, runs these steps:</p>
+
+  <ol>
+   <li>
+    <p>If any of the following conditions are met, let <var>replacement flag</var> be unset;
+    otherwise, let it be set:</p>
+
+    <ul class="brief">
+     <li>This <code>Location</code> object's <span>relevant <code>Document</code></span> has
+     <span>completely loaded</span>, or</li>
+
+     <li>In the <span data-x="concept-task">task</span> in which the algorithm is running, an
+     <span>activation behavior</span> is currently being processed whose <code
+     data-x="event-click">click</code> event's <code data-x="dom-Event-isTrusted">isTrusted</code>
+     attribute is true, or</li>
+
+     <li>In the <span data-x="concept-task">task</span> in which the algorithm is running, the event
+     listener for a <code data-x="event-click">click</code> event, whose <code
+     data-x="dom-Event-isTrusted">isTrusted</code> attribute is true, is being handled.</li>
+    </ul>
+   </li>
+
+   <li><p><span><code>Location</code>-object navigate</span>, given <var>url</var> and
+   <var>replacement flag</var>.</p></li>
+  </ol>
+
+  <p>To <dfn><code>Location</code>-object navigate</dfn>, given a <var>url</var> and
+  <var>replacement flag</var>, run these steps:</p>
+
+  <ol>
+   <li><p>The <span>source browsing context</span> is the <span>responsible browsing context</span>
+   specified by the <span>incumbent settings object</span>.</p></li>
+
+   <li>
+    <p><span>Navigate</span><!--DONAV location--> the <span>browsing context</span> to
+    <var>url</var>, with the <var><span>exceptions enabled flag</span></var> set. Rethrow any
+    exceptions.</p>
+
+    <p>If the <var>replacement flag</var> is set or the <span>browsing context</span>'s
+    <span>session history</span> contains only one <code>Document</code>, and that was the
+    <code>about:blank</code> <code>Document</code> created when the <span>browsing context</span>
+    was created, then the navigation must be done with <span>replacement enabled</span>.</p>
+    <!-- READ ME WHEN EDITING THIS: IE and Firefox only seem to treat it that way if the DOM is
+         still a virgin DOM; Safari doesn't check that. Thus this might need changing if testing
+         shows the IE/Firefox behavior is required here. -->
+   </li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-location-href">href</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Return this <code>Location</code> object's <span data-x="concept-location-url">url</span>,
+   <span data-x="concept-url-serializer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-href">href</code> attribute's setter must run these steps:</p>
+
+  <ol>
+   <li><p><span data-x="parse a url">Parse</span> the given value relative to the <span>entry
+   settings object</span>. If that failed, throw a <code>TypeError</code> exception.</p></li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to the <span>resulting URL
+   record</span>.</p></li>
+  </ol>
+
+  <p class="note">The <code data-x="dom-location-href">href</code> attribute setter intentionally
+  has no security check.</p>
+
+  <p>The <dfn><code data-x="dom-location-origin">origin</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Return the <span data-x="Unicode serialization of an origin">Unicode serialization</span>
+   of this <code>Location</code> object's <span data-x="concept-location-url">url</span>'s <span
+   data-x="concept-url-origin">origin</span>.</p></li>
+  </ol>
+
+  <p class="note no-backref">It returns the Unicode rather than the ASCII serialization for
+  compatibility with <code>MessageEvent</code>.</p>
+
+  <p>The <dfn><code data-x="dom-location-protocol">protocol</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Return this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>'s <span data-x="concept-url-scheme">scheme</span>,
+   followed by "<code data-x="">:</code>".</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-protocol">protocol</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>copyURL</var> be a copy of this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>Let <var>possibleFailure</var> be the result of <span data-x="basic url parser">basic URL
+   parsing</span> the given value, followed by "<code data-x="">:</code>", with <var>copyURL</var>
+   as <var>url</var> and <span>scheme start state</span> as <var>state override</var>.</p></li>
+
+   <li><p>If <var>possibleFailure</var> is failure, throw a <code>TypeError</code>
+   exception.</p></li>
+
+   <li><p>If <var>copyURL</var>'s <span data-x="concept-url-scheme">scheme</span> is not an
+   <span>HTTP(S) scheme</span>, then terminate these steps.</p></li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to <var>copyURL</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-location-host">host</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>url</var> be this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var>'s <span data-x="concept-url-host">host</span> is null, return the empty
+   string.</p></li>
+
+   <li><p>If <var>url</var>'s <span data-x="concept-url-port">port</span> is null, return
+   <var>url</var>'s <span data-x="concept-url-host">host</span>, <span  data-x="host
+   serializer">serialized</span>.</p></li>
+
+   <li><p>Return <var>url</var>'s <span data-x="concept-url-host">host</span>, <span data-x="host
+   serializer">serialized</span>, followed by "<code data-x="">:</code>" and <var>url</var>'s <span
+   data-x="concept-url-port">port</span>, <span data-x="serialize an
+   integer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-host">host</code> attribute's setter must run these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>copyURL</var> be a copy of this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If <var>copyURL</var>'s <span>cannot-be-a-base-URL flag</span> is set, terminate these
+   steps.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> the given value, with
+   <var>copyURL</var> as <var>url</var> and <span>host state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to <var>copyURL</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-location-hostname">hostname</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If this <code>Location</code> object's <span data-x="concept-location-url">url</span>'s
+   <span data-x="concept-url-host">host</span> is null, return the empty string.</p></li>
+
+   <li><p>Return this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>'s <span data-x="concept-url-host">host</span>, <span
+   data-x="host serializer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-hostname">hostname</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>copyURL</var> be a copy of this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If <var>copyURL</var>'s <span>cannot-be-a-base-URL flag</span> is set, terminate these
+   steps.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> the given value, with
+   <var>copyURL</var> as <var>url</var> and <span>hostname state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to <var>copyURL</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-location-port">port</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If this <code>Location</code> object's <span data-x="concept-location-url">url</span>'s
+   <span data-x="concept-url-port">port</span> is null, return the empty string.</p></li>
+
+   <li><p>Return this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>'s <span data-x="concept-url-port">port</span>, <span
+   data-x="serialize an integer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-port">port</code> attribute's setter must run these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>copyURL</var> be a copy of this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If <var>copyURL</var>'s <span data-x="concept-url-host">host</span> is null,
+   <var>copyURL</var>'s <span>cannot-be-a-base-URL flag</span> is set, or <var>copyURL</var>'s <span
+   data-x="concept-url-scheme">scheme</span> is "<code data-x="">file</code>", terminate these
+   steps.</p></li>
+
+   <li><p>If the given value is the empty string, then set <var>copyURL</var>'s <span
+   data-x="concept-url-port">port</span> to null.</p></li>
+
+   <li><p>Otherwise, <span data-x="basic url parser">basic URL parse</span> the given value, with
+   <var>copyURL</var> as <var>url</var> and <span>port state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to <var>copyURL</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-location-pathname">pathname</code></dfn> attribute's getter must
+  run these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>url</var> be this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If <var>url</var>'s <span>cannot-be-a-base-URL flag</span> is set, return the first string
+   in <var>url</var>'s <span data-x="concept-url-path">path</span>.</p></li>
+
+   <li><p>Return "<code data-x="">/</code>", followed by the strings in <var>url</var>'s <span
+   data-x="concept-url-path">path</span> (including empty strings), separated from each other by
+   "<code data-x="">/</code>".</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-pathname">pathname</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>copyURL</var> be a copy of this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If <var>copyURL</var>'s <span>cannot-be-a-base-URL flag</span> is set, terminate these
+   steps.</p></li>
+
+   <li><p>Set <var>copyURL</var>'s <span data-x="concept-url-path">path</span> to the empty
+   list.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> the given value, with
+   <var>copyURL</var> as <var>url</var> and <span>path start state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to <var>copyURL</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-location-search">search</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If this <code>Location</code> object's <span data-x="concept-location-url">url</span>'s
+   <span data-x="concept-url-query">query</span> is either null or the empty string, return the
+   empty string.</p></li>
+
+   <li><p>Return "<code data-x="">?</code>", followed by this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>'s <span
+   data-x="concept-url-query">query</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-search">search</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>copyURL</var> be a copy of this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If the given value is the empty string, set <var>copyURL</var>'s <span
+   data-x="concept-url-query">query</span> to null.
+
+   <li>
+    <p>Otherwise, run these substeps:</p>
+
+    <ol>
+     <li><p>Let <var>input</var> be the given value with a single leading "<code data-x="">?</code>"
+     removed, if any.</p></li>
+
+     <li><p>Set <var>copyURL</var>'s <span data-x="concept-url-query">query</span> to the empty
+     string.</p></li>
+
+     <li><p><span data-x="basic url parser">Basic URL parse</span> <var>input</var>, with
+     <var>copyURL</var> as <var>url</var> and <span>query state</span> as <var>state override</var>,
+     and the <span>relevant <code>Document</code></span>'s <span>document's character
+     encoding</span> as <var>encoding override</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to <var>copyURL</var>.</p></li>
+  </ol>
+
+  <p>The <dfn><code data-x="dom-location-hash">hash</code></dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>If this <code>Location</code> object's <span data-x="concept-location-url">url</span>'s
+   <span data-x="concept-url-fragment">fragment</span> is either null or the empty string, return
+   the empty string.</p></li>
+
+   <li><p>Return "<code data-x="">#</code>", followed by this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>'s <span
+   data-x="concept-url-fragment">fragment</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-location-hash">hash</code> attribute's setter must run these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>copyURL</var> be a copy of this <code>Location</code> object's <span
+   data-x="concept-location-url">url</span>.</p></li>
+
+   <li><p>If <var>copyURL</var>'s <span data-x="concept-url-scheme">scheme</span> is "<code
+   data-x="">javascript</code>", terminate these steps.</p></li>
+
+   <li><p>Let <var>input</var> be the given value with a single leading "<code data-x="">#</code>"
+   removed, if any.</p></li>
+
+   <li><p>Set <var>copyURL</var>'s <span data-x="concept-url-fragment">fragment</span> to the empty
+   string.</p></li>
+
+   <li><p><span data-x="basic url parser">Basic URL parse</span> <var>input</var>, with
+   <var>copyURL</var> as <var>url</var> and <span>fragment state</span> as <var>state
+   override</var>.</p></li>
+
+   <li><p><span><code>Location</code>-object-setter navigate</span> to <var>copyURL</var>.</p></li>
+  </ol>
+
+  <p class="note">Unlike the equivalent API for the <code>a</code> and <code>area</code> elements,
+  the <code data-x="dom-location-hash">hash</code> attribute's setter does not special case the
+  empty string to remain compatible with deployed scripts.</p>
+
+  <hr>
+
+  <p>When the <dfn><code data-x="dom-location-assign">assign(<var>url</var>)</code></dfn>
+  method is invoked, the user agent must run the following steps:
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p><span data-x="parse a url">Parse</span> <var>url</var> relative to the <span>entry
+   settings object</span>. If that failed, throw a <span>"<code>SyntaxError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li><p><span><code>Location</code>-object navigate</span> to the <span>resulting URL
+   record</span>.</p></li>
+
+  </ol>
+
+  <p>When the <dfn><code data-x="dom-location-replace">replace(<var>url</var>)</code></dfn>
+  method is invoked, the user agent must run the following steps:
+
+  <ol>
+
+   <li><p><span data-x="parse a url">Parse</span> <var>url</var> relative to the <span>entry
+   settings object</span>. If that failed, throw a <span>"<code>SyntaxError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li><p><span><code>Location</code>-object navigate</span> to the <span>resulting URL
+   record</span> with the <var>replacement flag</var> set.</p></li>
+
+  </ol>
+
+  <p class="note">The <code data-x="dom-location-replace">replace()</code> method intentionally has
+  no security check.</p>
+
+  <p>When the <dfn><code data-x="dom-location-reload">reload()</code></dfn> method is invoked, the
+  user agent must run the appropriate steps from the following list:</p>
+
+  <dl class="switch">
+   <dt>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span></dt>
+
+   <dd><p>Throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></dd>
+
+   <dt>If the currently executing <span data-x="concept-task">task</span> is the dispatch of a <code
+   data-x="event-resize">resize</code> event in response to the user resizing the <span>browsing
+   context</span></dt>
+
+   <dd><p>Repaint the <span>browsing context</span> and abort these steps.</p></dd> <!-- this
+   theoretically would have no effect but in practice can be useful to work around rendering bugs.
+   -->
+
+   <dt>If the <span>browsing context</span>'s <span>active document</span> is <span>an
+   <code>iframe</code> <code data-x="attr-iframe-srcdoc">srcdoc</code> document</span></dt>
+
+   <dd><p><span data-x="process the iframe attributes">Reprocess the <code>iframe</code>
+   attributes</span> of the <span>browsing context</span>'s <span>browsing context
+   container</span>.</p></dd>
+
+   <dt>If the <span>browsing context</span>'s <span>active document</span> has its <span>reload
+   override flag</span> set</dt>
+
+   <dd><p>Perform <span>an overridden reload</span>, with the <span>browsing context</span> being
+   navigated as the <span>responsible browsing context</span>. Rethrow any exceptions.</p></dd>
+   <!-- https://damowmow.com/playground/demos/sandbox/001.html -->
+
+   <dt>Otherwise</dt>
+
+   <dd><p><span>Navigate</span><!--DONAV location.reload()--> the <span>browsing context</span> to
+   this <code>Location</code> object's <span>relevant <code>Document</code></span>'s <span
+   data-x="concept-document-url">URL</span> to perform an <span>entry update</span> of the
+   <span>browsing context</span>'s <span>current entry</span>, with the <var><span>exceptions
+   enabled flag</span></var> set. The <span>source browsing context</span> must be the
+   <span>browsing context</span> being navigated. This is a <span>reload-triggered
+   navigation</span>. Rethrow any exceptions.</p></dd>
+
+   <!-- It appears that document.reload() always uses GET and does not, e.g., re-POST. Thus the
+   difference between using the document's URL here, and "the same resource as that Document" below
+   in the user-triggered reload section. -->
+
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=141 defends the source browsing context claim; submit, eval document.referrer, reload, eval document.referrer. -->
+
+  </dl>
+
+  <p>When a user requests that the <span>active document</span> of a <span>browsing context</span>
+  be reloaded through a user interface element, the user agent should <span>navigate</span><!--DONAV
+  user reload--> the <span>browsing context</span> to the same resource as that
+  <code>Document</code>, to perform an <span>entry update</span> of the <span>browsing
+  context</span>'s <span>current entry</span>. This is a <span>reload-triggered navigation</span>.
+  In the case of non-idempotent methods (e.g. HTTP POST), the user agent should prompt the user to
+  confirm the operation first, since otherwise transactions (e.g. purchases or database
+  modifications) could be repeated. User agents may allow the user to explicitly override any caches
+  when reloading. If <span>browsing context</span>'s <span>active document</span>'s <span>reload
+  override flag</span> is set, then the user agent may instead perform <span>an overridden
+  reload</span> rather than the navigation described in this paragraph (with the <span>browsing
+  context</span> being reloaded as the <span>source browsing context</span>).</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-location-ancestorOrigins">ancestorOrigins</code></dfn> attribute's
+  getter must run these steps:
+
+  <ol>
+   <li><p>If this <code>Location</code> object's <span>relevant <code>Document</code></span>'s
+   <span>origin</span> is not <span>same origin-domain</span> with the <span>entry settings
+   object</span>'s <span data-x="concept-settings-object-origin">origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Otherwise, return this <code>Location</code> object's <span
+   data-x="concept-location-ancestor-origins-array">ancestor origins array</span>.</p></li>
+  </ol>
+
+  <hr>
+
+  <p>As explained earlier, the <code>Location</code> exotic object requires additional logic beyond
+  IDL for security purposes. The internal slot and internal methods <code>Location</code> objects
+  must implement are defined below.</p>
+
+  <p>Every <code>Location</code> object has a [[<dfn>DefaultProperties</dfn>]] internal slot
+  representing its own properties at time of its creation.</p>
+
+  

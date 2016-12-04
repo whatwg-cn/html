@@ -1,0 +1,78 @@
+<h5 id="percentages-and-dimensions">Percentages and lengths</h5>
+
+  <p>The <dfn>rules for parsing dimension values</dfn> are as given in the following algorithm. When
+  invoked, the steps must be followed in the order given, aborting at the first step that returns a
+  value. This algorithm will return either a number greater than or equal to 0.0, or an error; if a
+  number is returned, then it is further categorized as either a percentage or a length.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially pointing at the
+   start of the string.</p></li>
+
+   <li><p><span>Skip whitespace</span>.</p></li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, return an error.</p></li>
+
+   <li><p>If the character indicated by <var>position</var> is a U+002B PLUS SIGN character (+),
+   advance <var>position</var> to the next character.</li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, return an error.</p></li>
+
+   <li><p>If the character indicated by <var>position</var> is not an <span data-x="ASCII
+   digits">ASCII digit</span>, then return an error.</p></li>
+
+   <!-- Ok. At this point we know we have a number. It might have trailing garbage which we'll
+   ignore, but it's a number, and we won't return an error. -->
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>, and
+   interpret the resulting sequence as a base-ten integer. Let <var>value</var> be that number.</li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, return <var>value</var> as a
+   length.</p></li>
+
+   <li>
+
+    <p>If the character indicated by <var>position</var> is a U+002E FULL STOP character (.):</p>
+
+    <ol>
+
+     <li><p>Advance <var>position</var> to the next character.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, or if the character
+     indicated by <var>position</var> is not an <span data-x="ASCII digits">ASCII digit</span>, then
+     return <var>value</var> as a length.</li>
+
+     <li><p>Let <var>divisor</var> have the value 1.</p></li>
+
+     <li><p><i>Fraction loop</i>: Multiply <var>divisor</var> by ten.</p></li>
+
+     <li>Add the value of the character indicated by <var>position</var>, interpreted as a base-ten
+     digit (0..9) and divided by <var>divisor</var>, to <var>value</var>.</li>
+
+     <li><p>Advance <var>position</var> to the next character.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, then return <var>value</var>
+     as a length.</li>
+
+     <li><p>If the character indicated by <var>position</var> is an <span data-x="ASCII
+     digits">ASCII digit</span>, return to the step labeled <i>fraction loop</i> in these
+     substeps.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, return <var>value</var> as a
+   length.</p></li>
+
+   <li><p>If the character indicated by <var>position</var> is a U+0025 PERCENT SIGN character (%),
+   return <var>value</var> as a percentage.</p></li>
+
+   <li><p>Return <var>value</var> as a length.</p></li>
+
+  </ol>
+
+  

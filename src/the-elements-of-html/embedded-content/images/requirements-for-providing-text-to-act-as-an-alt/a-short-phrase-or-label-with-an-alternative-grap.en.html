@@ -1,0 +1,118 @@
+<h6>A short phrase or label with an alternative graphical representation: icons, logos</h6>
+
+  <p>A document can contain information in iconic form. The icon is intended to help users of visual
+  browsers to recognize features at a glance.</p>
+
+  <p>In some cases, the icon is supplemental to a text label conveying the same meaning. In those
+  cases, the <code data-x="attr-img-alt">alt</code> attribute must be present but must be empty.</p>
+
+  <div class="example">
+
+   <p>Here the icons are next to text that conveys the same meaning, so they have an empty <code
+   data-x="attr-img-alt">alt</code> attribute:</p>
+
+   <pre>&lt;nav>
+ &lt;p>&lt;a href="/help/"><strong>&lt;img src="/icons/help.png" alt=""></strong> Help&lt;/a>&lt;/p>
+ &lt;p>&lt;a href="/configure/"><strong>&lt;img src="/icons/configuration.png" alt=""></strong>
+ Configuration Tools&lt;/a>&lt;/p>
+&lt;/nav></pre>
+
+  </div>
+
+  <p>In other cases, the icon has no text next to it describing what it means; the icon is supposed
+  to be self-explanatory. In those cases, an equivalent textual label must be given in the <code
+  data-x="attr-img-alt">alt</code> attribute.</p>
+
+  <div class="example">
+
+   <p>Here, posts on a news site are labeled with an icon indicating their topic.</p>
+
+   <pre>&lt;body>
+ &lt;article>
+  &lt;header>
+   &lt;h1>Ratatouille wins &lt;i>Best Movie of the Year&lt;/i> award&lt;/h1>
+   &lt;p><strong>&lt;img src="movies.png" alt="Movies"></strong>&lt;/p>
+  &lt;/header>
+  &lt;p>Pixar has won yet another &lt;i>Best Movie of the Year&lt;/i> award,
+  making this its 8th win in the last 12 years.&lt;/p>
+ &lt;/article>
+ &lt;article>
+  &lt;header>
+   &lt;h1>Latest TWiT episode is online&lt;/h1>
+   &lt;p><strong>&lt;img src="podcasts.png" alt="Podcasts"></strong>&lt;/p>
+  &lt;/header>
+  &lt;p>The latest TWiT episode has been posted, in which we hear
+  several tech news stories as well as learning much more about the
+  iPhone. This week, the panelists compare how reflective their
+  iPhones' Apple logos are.&lt;/p>
+ &lt;/article>
+&lt;/body></pre>
+
+  </div>
+
+  <p>Many pages include logos, insignia, flags, or emblems, which stand for a particular entity such
+  as a company, organization, project, band, software package, country, or some such.</p>
+
+  <p>If the logo is being used to represent the entity, e.g. as a page heading, the <code
+  data-x="attr-img-alt">alt</code> attribute must contain the name of the entity being represented by
+  the logo. The <code data-x="attr-img-alt">alt</code> attribute must <em>not</em> contain text like
+  the word "logo", as it is not the fact that it is a logo that is being conveyed, it's the entity
+  itself.</p>
+
+  <p>If the logo is being used next to the name of the entity that it represents, then the logo is
+  supplemental, and its <code data-x="attr-img-alt">alt</code> attribute must instead be empty.</p>
+
+  <p>If the logo is merely used as decorative material (as branding, or, for example, as a side
+  image in an article that mentions the entity to which the logo belongs), then the entry below on
+  purely decorative images applies. If the logo is actually being discussed, then it is being used
+  as a phrase or paragraph (the description of the logo) with an alternative graphical
+  representation (the logo itself), and the first entry above applies.</p>
+
+  <div class="example">
+
+   <p>In the following snippets, all four of the above cases are present. First, we see a logo used
+   to represent a company:</p>
+
+   <pre>&lt;h1><strong>&lt;img src="XYZ.gif" alt="The XYZ company"></strong>&lt;/h1></pre>
+
+   <p>Next, we see a paragraph which uses a logo right next to the company name, and so doesn't have
+   any alternative text:
+
+   <pre>&lt;article>
+ &lt;h2>News&lt;/h2>
+ &lt;p>We have recently been looking at buying the <strong>&lt;img src="alpha.gif"
+ alt=""> &Alpha;&Beta;&Gamma; company</strong>, a small Greek company
+ specializing in our type of product.&lt;/p></pre>
+
+   <p>In this third snippet, we have a logo being used in an aside, as part of the larger article
+   discussing the acquisition:</p>
+
+<pre> <strong>&lt;aside>&lt;p>&lt;img src="alpha-large.gif" alt="">&lt;/p>&lt;/aside></strong>
+ &lt;p>The &Alpha;&Beta;&Gamma; company has had a good quarter, and our
+ pie chart studies of their accounts suggest a much bigger blue slice
+ than its green and orange slices, which is always a good sign.&lt;/p>
+&lt;/article></pre>
+
+   <p>Finally, we have an opinion piece talking about a logo, and the logo is therefore described in
+   detail in the alternative text.</p>
+
+   <pre>&lt;p>Consider for a moment their logo:&lt;/p>
+
+<strong>&lt;p>&lt;img src="/images/logo" alt="It consists of a green circle with a
+green question mark centered inside it.">&lt;/p></strong>
+
+&lt;p>How unoriginal can you get? I mean, oooooh, a question mark, how
+&lt;em>revolutionary&lt;/em>, how utterly &lt;em>ground-breaking&lt;/em>, I'm
+sure everyone will rush to adopt those specifications now! They could
+at least have tried for some sort of, I don't know, sequence of
+rounded squares with varying shades of green and bold white outlines,
+at least that would look good on the cover of a blue book.&lt;/p></pre>
+
+   <p>This example shows how the alternative text should be written such that if the image isn't <i
+   data-x="img-available">available</i>, and the text is used instead, the text flows seamlessly into
+   the surrounding text, as if the image had never been there in the first place.</p>
+
+  </div>
+
+
+  

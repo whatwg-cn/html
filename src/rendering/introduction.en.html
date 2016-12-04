@@ -1,0 +1,37 @@
+<h3>Introduction</h3>
+
+  <p>In general, user agents are expected to support CSS, and many of the suggestions in this
+  section are expressed in CSS terms. User agents that use other presentation mechanisms can derive
+  their expected behavior by translating from the CSS rules given in this section.</p>
+
+  <p>In the absence of style-layer rules to the contrary (e.g. author style sheets), user agents are
+  expected to render an element so that it conveys to the user the meaning that the element
+  <span>represents</span>, as described by this specification.</p>
+
+  <p>The suggestions in this section generally assume a visual output medium with a resolution of
+  96dpi or greater, but HTML is intended to apply to multiple media (it is a
+  <i>media-independent</i> language). User agent implementors are encouraged to adapt the
+  suggestions in this section to their target media.</p>
+
+  <hr>
+
+  <p>An element is <dfn>being rendered</dfn> if it has any associated CSS layout boxes, SVG layout
+  boxes, or some equivalent in other styling languages.</p>
+
+  <p class="note">Just being off-screen does not mean the element is not <span>being
+  rendered</span>. The presence of the <code data-x="attr-hidden">hidden</code> attribute normally
+  means the element is not <span>being rendered</span>, though this might be overridden by the style
+  sheets.</p>
+
+  <hr>
+
+  <p>User agents that do not honor author-level CSS style sheets are nonetheless expected to act as
+  if they applied the CSS rules given in these sections in a manner consistent with this
+  specification and the relevant CSS and Unicode specifications. <ref spec=CSS> <ref spec=UNICODE> <ref spec=BIDI></p>
+
+  <p class="note">This is especially important for issues relating to the <span>'display'</span>,
+  <span>'unicode-bidi'</span>, and <span>'direction'</span> properties.</p>
+
+
+
+  

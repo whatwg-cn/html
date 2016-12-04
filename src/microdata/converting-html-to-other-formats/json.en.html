@@ -1,0 +1,191 @@
+<h4>JSON</h4>
+
+  <p>Given a list of nodes <var>nodes</var> in a <code>Document</code>, a user agent must
+  run the following algorithm to <dfn data-x="extracting JSON">extract the microdata from those nodes
+  into a JSON form</dfn>:</p>
+
+  <ol>
+
+   <li><p>Let <var>result</var> be an empty object.</p></li>
+
+   <li><p>Let <var>items</var> be an empty array.</p></li>
+
+   <li><p>For each <var>node</var> in <var>nodes</var>, check if the element is a
+   <span data-x="top-level microdata items">top-level microdata item</span>, and if it is then
+   <span>get the object</span> for that element and add it to <var>items</var>.</p></li>
+
+   <li><p>Add an entry to <var>result</var> called "<code data-x="">items</code>" whose
+   value is the array <var>items</var>.</p></li>
+
+   <li><p>Return the result of serializing <var>result</var> to JSON in the shortest
+   possible way (meaning no whitespace between tokens, no unnecessary zero digits in numbers, and
+   only using Unicode escapes in strings for characters that do not have a dedicated escape
+   sequence), and with a lowercase "<code data-x="">e</code>" used, when appropriate, in the
+   representation of any numbers. <ref spec=JSON></p></li>
+
+  </ol>
+
+  <p class="note">This algorithm returns an object with a single property that is an array, instead
+  of just returning an array, so that it is possible to extend the algorithm in the future if
+  necessary.</p>
+
+  <p>When the user agent is to <dfn>get the object</dfn> for an item <var>item</var>,
+  optionally with a list of elements <var>memory</var>, it must run the following
+  substeps:</p>
+
+  <ol>
+
+   <li><p>Let <var>result</var> be an empty object.</p></li>
+
+   <li><p>If no <var>memory</var> was passed to the algorithm, let <var>memory</var> be an empty list.</p></li>
+
+   <li><p>Add <var>item</var> to <var>memory</var>.</p></li>
+
+   <li><p>If the <var>item</var> has any <span>item types</span>, add an entry to <var>result</var> called "<code data-x="">type</code>" whose value is an array listing the
+   <span>item types</span> of <var>item</var>, in the order they were specified on the
+   <code data-x="attr-itemtype">itemtype</code> attribute.</p>
+
+   <li><p>If the <var>item</var> has a <span>global identifier</span>, add an entry to <var>result</var> called "<code data-x="">id</code>" whose value is the <span>global
+   identifier</span> of <var>item</var>.</p></li>
+
+   <li><p>Let <var>properties</var> be an empty object.</p></li>
+
+   <li>
+
+    <p>For each element <var>element</var> that has one or more <span>property names</span>
+    and is one of <span data-x="the properties of an item">the properties of the item</span> <var>item</var>, in the order those elements are given by the algorithm that returns
+    <span>the properties of an item</span>, run the following substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>value</var> be the <span data-x="concept-property-value">property
+     value</span> of <var>element</var>.</p></li>
+
+     <li><p>If <var>value</var> is an <span data-x="concept-item">item</span>, then: If <var>value</var> is in <var>memory</var>, then let <var>value</var> be
+     the string "<code data-x="">ERROR</code>". Otherwise, <span>get the object</span> for <var>value</var>, passing a copy of <var>memory</var>, and then replace <var>value</var> with the object returned from those steps.</p></li>
+
+     <li>
+
+      <p>For each name <var>name</var> in <var>element</var>'s <span>property
+      names</span>, run the following substeps:</p>
+
+      <ol>
+
+       <li><p>If there is no entry named <var>name</var> in <var>properties</var>,
+       then add an entry named <var>name</var> to <var>properties</var> whose
+       value is an empty array.</p></li>
+
+       <li><p>Append <var>value</var> to the entry named <var>name</var> in <var>properties</var>.</p></li>
+
+      </ol>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Add an entry to <var>result</var> called "<code data-x="">properties</code>" whose
+   value is the object <var>properties</var>.</p></li>
+
+   <li><p>Return <var>result</var>.</p></li>
+
+  </ol>
+
+  <div class="example">
+
+   <p>For example, take this markup:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+&lt;title>My Blog&lt;/title>
+&lt;article itemscope itemtype="http://schema.org/BlogPosting">
+ &lt;header>
+  &lt;h1 itemprop="headline">Progress report&lt;/h1>
+  &lt;p>&lt;time itemprop="datePublished" datetime="2013-08-29">today&lt;/time>&lt;/p>
+  &lt;link itemprop="url" href="?comments=0">
+ &lt;/header>
+ &lt;p>All in all, he's doing well with his swim lessons. The biggest thing was he had trouble
+ putting his head in, but we got it down.&lt;/p>
+ &lt;section>
+  &lt;h1>Comments&lt;/h1>
+  &lt;article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c1">
+   &lt;link itemprop="url" href="#c1">
+   &lt;footer>
+    &lt;p>Posted by: &lt;span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+     &lt;span itemprop="name">Greg&lt;/span>
+    &lt;/span>&lt;/p>
+    &lt;p>&lt;time itemprop="commentTime" datetime="2013-08-29">15 minutes ago&lt;/time>&lt;/p>
+   &lt;/footer>
+   &lt;p>Ha!&lt;/p>
+  &lt;/article>
+  &lt;article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c2">
+   &lt;link itemprop="url" href="#c2">
+   &lt;footer>
+    &lt;p>Posted by: &lt;span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+     &lt;span itemprop="name">Charlotte&lt;/span>
+    &lt;/span>&lt;/p>
+    &lt;p>&lt;time itemprop="commentTime" datetime="2013-08-29">5 minutes ago&lt;/time>&lt;/p>
+   &lt;/footer>
+   &lt;p>When you say "we got it down"...&lt;/p>
+  &lt;/article>
+ &lt;/section>
+&lt;/article></pre>
+
+   <p>It would be turned into the following JSON by the algorithm above (supposing that the page's
+   URL was <code data-x="">https://blog.example.com/progress-report</code>):</p>
+
+   <pre>{
+  "items": [
+    {
+      "type": [ "http://schema.org/BlogPosting" ],
+      "properties": {
+        "headline": [ "Progress report" ],
+        "datePublished": [ "2013-08-29" ],
+        "url": [ "https://blog.example.com/progress-report?comments=0" ],
+        "comment": [
+          {
+            "type": [ "http://schema.org/UserComments" ],
+            "properties": {
+              "url": [ "https://blog.example.com/progress-report#c1" ],
+              "creator": [
+                {
+                  "type": [ "http://schema.org/Person" ],
+                  "properties": {
+                    "name": [ "Greg" ]
+                  }
+                }
+              ],
+              "commentTime": [ "2013-08-29" ]
+            }
+          },
+          {
+            "type": [ "http://schema.org/UserComments" ],
+            "properties": {
+              "url": [ "https://blog.example.com/progress-report#c2" ],
+              "creator": [
+                {
+                  "type": [ "http://schema.org/Person" ],
+                  "properties": {
+                    "name": [ "Charlotte" ]
+                  }
+                }
+              ],
+              "commentTime": [ "2013-08-29" ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}</pre>
+
+  </div>
+
+  </div>
+
+
+
+<!--TOPIC:HTML-->
+
+  

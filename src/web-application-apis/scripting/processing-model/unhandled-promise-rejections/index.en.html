@@ -1,0 +1,66 @@
+<h5>Unhandled promise rejections</h5>
+
+  <p>In addition to synchronous <a href="#runtime-script-errors">runtime script errors</a>, scripts
+  may experience asynchronous promise rejections, tracked via the <code
+  data-x="event-unhandledrejection">unhandledrejection</code> and <code
+  data-x="event-rejectionhandled">rejectionhandled</code> events.</p>
+
+  <p>When the user agent is to <dfn>notify about rejected promises</dfn> on a given
+  <span>environment settings object</span> <var>settings object</var>, it must run these steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>list</var> be a copy of <var>settings object</var>'s <span>about-to-be-notified
+   rejected promises list</span>.</p></li>
+
+   <li><p>If <var>list</var> is empty, abort these steps.</p></li>
+
+   <li><p>Clear <var>settings object</var>'s <span>about-to-be-notified rejected promises
+   list</span>.</p></li>
+
+   <li>
+
+    <p><span>Queue a task</span> to run the following substep:</p>
+
+    <ol>
+
+     <li><p>For each promise <var>p</var> in <var>list</var>:</p>
+
+      <ol>
+
+       <li><p>If <var>p</var>'s [[PromiseIsHandled]] internal slot is true, continue to the next
+       iteration of the loop.</p></li>
+
+       <li><p>Let <var>notHandled</var> be the result of <span data-x="concept-event-fire">firing an
+       event</span> named <code data-x="event-unhandledrejection">unhandledrejection</code> at
+       <var>settings object</var>'s <span data-x="concept-settings-object-global">global
+       object</span>, using <code>PromiseRejectionEvent</code>, with the <code
+       data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true, the <code
+       data-x="dom-PromiseRejectionEvent-promise">promise</code> attribute initialized to
+       <var>p</var>, and the <code data-x="dom-PromiseRejectionEvent-reason">reason</code> attribute
+       initialized to the value of <var>p</var>'s [[PromiseResult]] internal slot.</p></li>
+
+       <li><p>If <var>notHandled</var> is false, then the promise rejection is <i
+       data-x="concept-promise-rejection-handled">handled</i>. Otherwise, the promise rejection is
+       <i data-x="concept-promise-rejection-nothandled">not handled</i>.</p></li>
+
+       <li><p>If <var>p</var>'s [[PromiseIsHandled]] internal slot is false, add <var>p</var> to
+       <var>settings object</var>'s <span>outstanding rejected promises weak set</span>.
+
+      </ol>
+     </li>
+    </ol>
+   </li>
+
+  </ol>
+
+  <p>This algorithm results in promise rejections being marked as <dfn
+  data-x="concept-promise-rejection-handled"><i>handled</i></dfn> or <dfn
+  data-x="concept-promise-rejection-nothandled"><i>not handled</i></dfn>. These concepts parallel
+  <i data-x="concept-error-handled">handled</i> and <i data-x="concept-error-nothandled">not
+  handled</i> script errors. If a rejection is still <i
+  data-x="concept-promise-rejection-nothandled">not handled</i> after this, then the rejection may
+  be reported to a developer console.</p>
+
+
+  

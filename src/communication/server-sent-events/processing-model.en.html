@@ -1,0 +1,139 @@
+<h4 id="sse-processing-model"><span id="processing-model-9"></span>Processing model</h4>
+
+  <p>The resource indicated in the argument to the <code data-x="dom-EventSource">EventSource</code>
+  constructor is fetched when the constructor is run.</p>
+
+  <p>As data is received, the <span data-x="concept-task">tasks</span> queued by the <span>networking
+  task source</span> to handle the data must act as follows.</p>
+
+  <p>HTTP 200 OK responses with a `<span>Content-Type</span>` header specifying the type
+  `<code>text/event-stream</code>`, ignoring any <span>MIME type</span> parameters, must be
+  processed line by line <a href="#event-stream-interpretation">as described below</a>.</p>
+
+  <p>When a successful response with a supported <span>MIME type</span> is received, such that the
+  user agent begins parsing the contents of the stream, the user agent must <span>announce the
+  connection</span>.</p>
+
+  <p>The <span data-x="concept-task">task</span> that the <span>networking task source</span> places
+  on the <span>task queue</span> once fetching for such a resource (with the correct <span>MIME
+  type</span>) has completed must cause the user agent to <span>reestablish the connection</span>
+  <span>in parallel</span>. This applies whether the connection is closed gracefully or unexpectedly
+  (but does not apply when fetching is canceled by the user agent, e.g., in response to <code
+  data-x="dom-window-stop">window.stop()</code>, since in those cases the final <span
+  data-x="concept-task">task</span> is actually discarded). It doesn't apply for the error
+  conditions listed below except where explicitly specified.</p>
+
+  <p>HTTP 200 OK responses that have a <span>Content-Type</span> specifying an unsupported type, or
+  that have no <span>Content-Type</span> at all, must cause the user agent to <span>fail the
+  connection</span>.</p> <!-- about:blank is defined as having no MIME type -->
+
+  <p id="event-source-network-errors-reconnect">Network errors that prevents the connection from
+  being established in the first place (e.g. DNS errors), should cause the user agent to
+  <span>reestablish the connection</span> <span>in parallel</span>, unless the user agent knows that
+  to be futile, in which case the user agent may <span>fail the connection</span>.</p>
+
+  <p id="event-source-fail-reasons">Any other HTTP response code not listed here, as well as the
+  cancelation of the fetch algorithm by the user agent (e.g. in response to <code
+  data-x="dom-window-stop">window.stop()</code> or the user canceling the network connection
+  manually) must cause the user agent to <span>fail the connection</span>.</p> <!-- including: HTTP
+  201 Created, 202 Accepted, 203 Non-Authoritative Information, 204 No Content, 205 Reset Content,
+  206 Partial Content, 300 Multiple Choices, 304 Not Modified, 400 Bad Request, 403 Forbidden, 404
+  Not Found, 405 Method Not Allowed, 406 Not Acceptable, 408 Request Timeout, 409 Conflict, 410
+  Gone, 411 Length Required, 412 Precondition Failed, 413 Request Entity Too Large, 414 Request-URI
+  Too Long, 415 Unsupported Media Type, 416 Requested Range Not Satisfiable, 417 Expectation Failed,
+  HTTP 500 Internal Server Error, 501 Not Implemented, 502 Bad Gateway, 503 Service Unavailable, and
+  504 Gateway Timeout responses, and 505 HTTP Version Not Supported responses --> <!-- mailto: is
+  defined as equivalent to HTTP 204 -->
+
+  <hr>
+
+  <p>When a user agent is to <dfn>announce the connection</dfn>, the user agent must <span>queue a
+  task</span> which, if the <code data-x="dom-EventSource-readyState">readyState</code> attribute is
+  set to a value other than <code data-x="dom-EventSource-CLOSED">CLOSED</code>, sets the <code
+  data-x="dom-EventSource-readyState">readyState</code> attribute to <code
+  data-x="dom-EventSource-OPEN">OPEN</code> and <span data-x="concept-event-fire">fires an
+  event</span> named <code data-x="event-open">open</code> at the <code>EventSource</code>
+  object.</p>
+
+  <p>When a user agent is to <dfn>reestablish the connection</dfn>, the user agent must run the
+  following steps. These steps are run <span>in parallel</span>, not as part of a <span
+  data-x="concept-task">task</span>. (The tasks that it queues, of course, are run like normal tasks
+  and not themselves <span>in parallel</span>.)</p>
+
+  <ol>
+
+   <li>
+
+    <p><span>Queue a task</span> to run the following steps:</p>
+
+    <ol>
+
+     <li><p>If the <code data-x="dom-EventSource-readyState">readyState</code> attribute is set to
+     <code data-x="dom-EventSource-CLOSED">CLOSED</code>, abort the task.</p></li>
+
+     <li><p>Set the <code data-x="dom-EventSource-readyState">readyState</code> attribute to <code
+     data-x="dom-EventSource-CONNECTING">CONNECTING</code>.</p></li>
+
+     <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+     data-x="event-error">error</code> at the <code>EventSource</code> object.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Wait a delay equal to the reconnection time of the event source.</li>
+
+   <li><p>Optionally, wait some more. In particular, if the previous attempt failed, then user
+   agents might introduce an exponential backoff delay to avoid overloading a potentially already
+   overloaded server. Alternatively, if the operating system has reported that there is no network
+   connectivity, user agents might wait for the operating system to announce that the network
+   connection has returned before retrying.</li>
+
+   <li><p>Wait until the aforementioned task has run, if it has not yet run.</p></li>
+
+   <li>
+
+    <p><span>Queue a task</span> to run the following steps:</p>
+
+    <ol>
+
+     <li><p>If the <code>EventSource</code> object's <code
+     data-x="dom-EventSource-readyState">readyState</code> attribute is not set to <code
+     data-x="dom-EventSource-CONNECTING">CONNECTING</code>, abort these steps.</p></li>
+
+     <li><p>Let <var>request</var> be the <code>EventSource</code> object's <span
+     data-x="concept-event-stream-request">request</span>.
+
+     <li><p>If the <code>EventSource</code> object's <span
+     data-x="concept-event-stream-last-event-id">last event ID string</span> is not the empty
+     string, <span data-x="concept-header-list-set">set</span> `<code
+     data-x="http-last-event-id">Last-Event-ID</code>`/<span
+     data-x="concept-event-stream-last-event-id">last event ID string</span>, encoded as UTF-8, in
+     <var>request</var>'s <span data-x="concept-request-header-list">header list</span>.</p></li>
+
+     <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var> and process the
+     response obtained in this fashion, if any, as described earlier in this section.</p></li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p>When a user agent is to <dfn>fail the connection</dfn>, the user agent must <span>queue a
+  task</span> which, if the <code data-x="dom-EventSource-readyState">readyState</code> attribute is
+  set to a value other than <code data-x="dom-EventSource-CLOSED">CLOSED</code>, sets the <code
+  data-x="dom-EventSource-readyState">readyState</code> attribute to <code
+  data-x="dom-EventSource-CLOSED">CLOSED</code> and <span data-x="concept-event-fire">fires an
+  event</span> named <code data-x="event-error">error</code> at the <code>EventSource</code> object.
+  <strong>Once the user agent has <span data-x="fail the connection">failed the connection</span>,
+  it does <em>not</em> attempt to reconnect!</strong></p>
+
+  <hr>
+
+  <p>The <span>task source</span> for any <span data-x="concept-task">tasks</span> that are <span
+  data-x="queue a task">queued</span> by <code>EventSource</code> objects is the <dfn>remote event
+  task source</dfn>.</p>
+
+
+  

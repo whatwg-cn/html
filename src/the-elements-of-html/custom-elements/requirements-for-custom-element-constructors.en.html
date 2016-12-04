@@ -1,0 +1,39 @@
+<h4 id="custom-element-conformance">Requirements for custom element constructors</h4>
+
+  <p>When authoring <span data-x="custom element constructor">custom element constructors</span>,
+  authors are bound by the following conformance requirements:</p>
+
+  <ul>
+   <li><p>A parameter-less call to <code data-x="">super()</code> must be the first statement in the
+   constructor body, to establish the correct prototype chain and <b>this</b> value before any
+   further code is run.</p></li>
+
+   <li><p>A <code data-x="">return</code> statement must not appear anywhere inside the constructor
+   body, unless it is a simple early-return (<code data-x="">return</code> or <code data-x="">return
+   this</code>).</p></li>
+
+   <li><p>The constructor must not use the <code data-x="dom-document-write">document.write()</code>
+   or <code data-x="dom-document-open">document.open()</code> methods.</p></li>
+
+   <li><p>The element's attributes and children must not be inspected, as in the non-<span
+   data-x="custom-element-upgrades">upgrade</span> case none will be present, and relying on
+   upgrades makes the element less usable.</p></li>
+
+   <li><p>The element must not gain any attributes or children, as this violates the expectations of
+   consumers who use the <code data-x="dom-Document-createElement">createElement</code> or <code
+   data-x="dom-Document-createElementNS">createElementNS</code> methods.</p></li>
+
+   <li><p>In general, work should be deferred to <code data-x="">connectedCallback</code> as much as
+   possible—especially work involving fetching resources or rendering. However, note that <code
+   data-x="">connectedCallback</code> can be called more than once, so any initialization work that
+   is truly one-time will need a guard to prevent it from running twice.</p></li>
+
+   <li><p>In general, the constructor should be used to set up initial state and default values, and
+   to set up event listeners and possibly a <span>shadow root</span>.</p></li>
+  </ul>
+
+  <p>Several of these requirements are checked during <span data-x="create an element">element
+  creation</span>, either directly or indirectly, and failing to follow them will result in a custom
+  element that cannot be instantiated by the parser or DOM APIs.</p>
+
+  

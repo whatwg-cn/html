@@ -1,0 +1,40 @@
+<h4 id="windowproxy-ownpropertykeys">[[OwnPropertyKeys]] ( )</h4>
+
+  <ol>
+   <li><p>Let <var>W</var> be the value of the
+   [[<span data-x="concept-windowproxy-window">Window</span>]] internal slot of
+   <b>this</b>.</p></li>
+
+   <li><p>Let <var>keys</var> be a new empty <span data-x="js-List">List</span>.</p></li>
+
+   <li><p>Let <var>maxProperties</var> be the <span>number of document-tree child browsing
+   contexts</span> of <var>W</var>.</p></li>
+
+   <li><p>Let <var>index</var> be 0.</p></li>
+
+   <li>
+    <p>Repeat while <var>index</var> &lt; <var>maxProperties</var>,
+
+    <ol>
+     <li><p>Add ! <span>ToString</span>(<var>index</var>) as the last element of
+     <var>keys</var>.</p></li>
+
+     <li><p>Increment <var>index</var> by 1.</p></li>
+    </ol>
+   </li>
+
+   <li><p>If <span>IsPlatformObjectSameOrigin</span>(<var>W</var>) is true, then return the
+   concatenation of <var>keys</var> and !
+   <span>OrdinaryOwnPropertyKeys</span>(<var>W</var>).</p></li>
+
+   <li><p>Return the concatenation of <var>keys</var> and !
+   <span>CrossOriginOwnPropertyKeys</span>(<var>W</var>).</p></li>
+  </ol>
+
+  </div>
+<!--TOPIC:HTML-->
+
+
+
+<!--TOPIC:Security-->
+  

@@ -1,0 +1,27 @@
+<h5><dfn id="comment">Comment state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+003C LESS-THAN SIGN (&lt;)</dt>
+   <dd>Append the <span>current input character</span> to the comment token's data. Switch to the
+   <span>comment less-than sign state</span>.</dd>
+
+   <dt>U+002D HYPHEN-MINUS (-)</dt>
+   <dd>Switch to the <span>comment end dash state</span>.</dd>
+
+   <dt>U+0000 NULL</dt>
+   <dd><span>Parse error</span>. Append a U+FFFD REPLACEMENT CHARACTER character to the comment
+   token's data.</dd>
+
+   <dt>EOF</dt>
+   <dd><span>Parse error</span>. Emit the comment token. Emit an end-of-file token.</dd>
+
+   <dt>Anything else</dt>
+   <dd>Append the <span>current input character</span> to the comment token's data.</dd>
+
+  </dl>
+
+
+  

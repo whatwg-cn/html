@@ -1,0 +1,37 @@
+<h5>Implementing the server-side processing for a form</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The exact details for writing a server-side processor are out of scope for this specification.
+  For the purposes of this introduction, we will assume that the script at <code
+  data-x="">https://pizza.example.com/order.cgi</code> is configured to accept submissions using the
+  <code data-x="attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</code> format,
+  expecting the following parameters sent in an HTTP POST body:</p>
+
+  <dl>
+
+   <dt><code data-x="">custname</code></dt>
+   <dd>Customer's name</dd>
+
+   <dt><code data-x="">custtel</code></dt>
+   <dd>Customer's telephone number</dd>
+
+   <dt><code data-x="">custemail</code></dt>
+   <dd>Customer's e-mail address</dd>
+
+   <dt><code data-x="">size</code></dt>
+   <dd>The pizza size, either <code data-x="">small</code>, <code data-x="">medium</code>, or <code data-x="">large</code></dd>
+
+   <dt><code data-x="">topping</code></dt>
+   <dd>A topping, specified once for each selected topping, with the allowed values being <code data-x="">bacon</code>, <code data-x="">cheese</code>, <code data-x="">onion</code>, and <code data-x="">mushroom</code></dd>
+
+   <dt><code data-x="">delivery</code></dt>
+   <dd>The requested delivery time</dd>
+
+   <dt><code data-x="">comments</code></dt>
+   <dd>The delivery instructions</dd>
+
+  </dl>
+
+
+  

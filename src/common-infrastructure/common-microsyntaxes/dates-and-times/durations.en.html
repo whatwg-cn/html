@@ -1,0 +1,391 @@
+<h5>Durations</h5>
+
+  <!-- if you add support for year and month durations, then search for MONTHS throughout the spec
+  (not just this section) for things that have to change -->
+
+  <p>A <dfn data-x="concept-duration">duration</dfn> consists of <!--MONTHS: either a number of
+  months or--> a number of seconds.</p>
+
+  <p class="note">Since months and seconds are not comparable (a month is not a precise number of
+  seconds, but is instead a period whose exact length depends on the precise day from which it is
+  measured) a <span data-x="concept-duration">duration</span> as defined in this specification cannot
+  <!--MONTHS: consist of a mixture of both--> include months (or years, which are equivalent to
+  twelve months). Only durations that describe a specific number of seconds can be described.</p>
+
+  <p>A string is a <dfn>valid duration string</dfn> representing a <span
+  data-x="concept-duration">duration</span> <var>t</var> if it consists of either of the
+  following:</p>
+
+  <ul>
+
+   <li>
+
+    <!-- The ISO format -->
+
+    <!-- NOTE: ISO durations also have a number of formats we do not
+         consider conforming:
+
+         - a "week" format (e.g. P4W). This one is actually supported
+           by the parser.
+
+         - P<date>T<time>, with or without hyphens
+
+         - All these formats, with commas instead of periods for the
+           seconds decimal
+
+    -->
+
+    <p>A literal U+0050 LATIN CAPITAL LETTER P character followed by one or more of the following
+    subcomponents, in the order given, where <!--the number of years, if any, multiplied by twelve,
+    plus the number of months, if any, equals the number of months in <var>t</var>, if the
+    duration is in months; or, if it is in seconds, -->the number of days, hours, minutes, and
+    seconds corresponds to the same number of seconds as in <var>t</var>:</p>
+
+    <ol>
+<!--MONTHS:
+     <li><p>One or more <span>ASCII digits</span> followed by a U+0059 LATIN CAPITAL LETTER Y
+     character, representing a number of years.</p></li>
+
+     <li><p>One or more <span>ASCII digits</span> followed by a U+004D LATIN CAPITAL LETTER M
+     character, representing a number of months.</p></li>
+-->
+
+     <li><p>One or more <span>ASCII digits</span> followed by a U+0044 LATIN CAPITAL LETTER D
+     character, representing a number of days.</p></li>
+
+     <li>
+
+      <p>A U+0054 LATIN CAPITAL LETTER T character followed by one or more of the following
+      subcomponents, in the order given:</p>
+
+      <ol>
+
+       <li><p>One or more <span>ASCII digits</span> followed by a U+0048 LATIN CAPITAL LETTER H
+       character, representing a number of hours.</p></li>
+
+       <li><p>One or more <span>ASCII digits</span> followed by a U+004D LATIN CAPITAL LETTER M
+       character, representing a number of minutes.</p></li>
+
+       <li>
+
+        <p>The following components:</p>
+
+        <ol>
+
+         <li><p>One or more <span>ASCII digits</span>, representing a number of seconds.</p></li>
+
+         <li><p>Optionally, a U+002E FULL STOP character (.) followed by one, two, or three
+         <span>ASCII digits</span>, representing a fraction of a second.</p></li>
+
+         <li><p>A U+0053 LATIN CAPITAL LETTER S character.</p></li>
+
+        </ol>
+
+       </li>
+
+      </ol>
+
+     </li>
+
+    </ol>
+
+    <p class="note">This, as with a number of other date- and time-related microsyntaxes defined in
+    this specification, is based on one of the formats defined in ISO 8601. <ref spec=ISO8601></p>
+
+   </li>
+
+   <li>
+
+    <p>One or more <span data-x="duration time component">duration time components</span>, each with
+    a different <span>duration time component scale</span>, in any order; the sum of the represented
+    seconds being equal to the number of seconds in <var>t</var>.</p>
+
+    <p>A <dfn>duration time component</dfn> is a string consisting of the following components:</p>
+
+    <ol>
+
+     <li><p>Zero or more <span data-x="space character">space characters</span>.</p></li>
+
+     <li><p>One or more <span>ASCII digits</span>, representing a number of time units, scaled by
+     the <span>duration time component scale</span> specified (see below) to represent a number of
+     seconds.</p></li>
+
+     <li><p>If the <span>duration time component scale</span> specified is 1 (i.e. the units are
+     seconds), then, optionally, a U+002E FULL STOP character (.) followed by one, two, or three
+     <span>ASCII digits</span>, representing a fraction of a second.</p></li>
+
+     <li><p>Zero or more <span data-x="space character">space characters</span>.</p></li>
+
+     <li>
+
+      <p>One of the following characters, representing the <dfn>duration time component scale</dfn>
+      of the time unit used in the numeric part of the <span>duration time component</span>:</p>
+
+      <dl>
+
+       <dt>U+0057 LATIN CAPITAL LETTER W character</dt>
+       <dt>U+0077 LATIN SMALL LETTER W character</dt>
+
+       <dd>Weeks. The scale is 604800.</dd>
+
+       <dt>U+0044 LATIN CAPITAL LETTER D character</dt>
+       <dt>U+0064 LATIN SMALL LETTER D character</dt>
+
+       <dd>Days. The scale is 86400.</dd>
+
+       <dt>U+0048 LATIN CAPITAL LETTER H character</dt>
+       <dt>U+0068 LATIN SMALL LETTER H character</dt>
+
+       <dd>Hours. The scale is 3600.</dd>
+
+       <dt>U+004D LATIN CAPITAL LETTER M character</dt>
+       <dt>U+006D LATIN SMALL LETTER M character</dt>
+
+       <dd>Minutes. The scale is 60.</dd>
+
+       <dt>U+0053 LATIN CAPITAL LETTER S character</dt>
+       <dt>U+0073 LATIN SMALL LETTER S character</dt>
+
+       <dd>Seconds. The scale is 1.</dd>
+
+      </dl>
+
+     </li>
+
+     <li><p>Zero or more <span data-x="space character">space
+     characters</span>.</p></li>
+
+    </ol>
+
+    <p class="note">This is not based on any of the formats in ISO 8601. It is intended to be a more
+    human-readable alternative to the ISO 8601 duration format.</p>
+
+   </li>
+
+  </ul>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a duration string</dfn> are as follows. This will return either a <span
+  data-x="concept-duration">duration</span> or nothing. If at any point the algorithm says that it
+  "fails", this means that it is aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <!--MONTHS: this algorithm actually already parses months adequately, though it would need
+   tweaking if we introduced a "mo" unit for the non-ISO variant. See other "MONTHS" annotations
+   below. -->
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p>Let <var>months</var>, <var>seconds</var>, and <var>component
+   count</var> all be zero.</p></li>
+
+   <li>
+
+    <p>Let <var>M-disambiguator</var> be <i>minutes</i>.</p>
+
+    <!--MONTHS: this note would change-->
+    <p class="note">This flag's other value is <i>months</i>. It is used to disambiguate the "M"
+    unit in ISO8601 durations, which use the same unit for months and minutes. Months are not
+    allowed, but are parsed for future compatibility and to avoid misinterpreting ISO8601 durations
+    that would be valid in other contexts.</p>
+
+   </li>
+
+   <li><p><span>Skip whitespace</span>.</p></li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, then
+   fail.</p></li>
+
+   <li><p>If the character in <var>input</var> pointed to by <var>position</var>
+   is a U+0050 LATIN CAPITAL LETTER P character, then advance <var>position</var> to the
+   next character, set <var>M-disambiguator</var> to <i>months</i>, and <span>skip
+   whitespace</span>.</p></li>
+
+   <li>
+
+    <p>Run the following substeps in a loop, until a step requiring the loop to be broken or the
+    entire algorithm to fail is reached:</p>
+
+    <ol>
+
+     <li><p>Let <var>units</var> be undefined. It will be assigned one of the following
+     values: <i>years</i>, <i>months</i>, <i>weeks</i>, <i>days</i>, <i>hours</i>, <i>minutes</i>,
+     and <i>seconds</i>.</p></li>
+
+     <li><p>Let <var>next character</var> be undefined. It is used to process characters
+     from the <var>input</var>.</p></li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, then break
+     the loop.</p></li>
+
+     <li><p>If the character in <var>input</var> pointed to by <var>position</var>
+     is a U+0054 LATIN CAPITAL LETTER T character, then advance <var>position</var> to the
+     next character, set <var>M-disambiguator</var> to <i>minutes</i>, <span>skip
+     whitespace</span>, and return to the top of the loop.</p></li>
+
+     <li><p>Set <var>next character</var> to the character in <var>input</var>
+     pointed to by <var>position</var>.</p></li>
+
+     <li>
+
+      <p>If <var>next character</var> is a U+002E FULL STOP character (.), then let <var>N</var> equal zero. (Do not advance <var>position</var>. That is taken care
+      of below.)</p>
+
+      <p>Otherwise, if <var>next character</var> is an <span data-x="ASCII digits">ASCII
+      digit</span>, then <span>collect a sequence of characters</span> that are <span>ASCII
+      digits</span>, interpret the resulting sequence as a base-ten integer, and let <var>N</var> be that number.</p>
+
+      <p>Otherwise <var>next character</var> is not part of a number; fail.</p>
+
+     </li>
+
+     <li><p>If <var>position</var> is past the end of <var>input</var>, then
+     fail.</p></li>
+
+     <li><p>Set <var>next character</var> to the character in <var>input</var>
+     pointed to by <var>position</var>, and this time advance <var>position</var>
+     to the next character. (If <var>next character</var> was a U+002E FULL STOP character
+     (.) before, it will still be that character this time.)</p></li>
+
+     <li>
+
+      <p>If <var>next character</var> is a U+002E FULL STOP character (.), then run these
+      substeps:</p>
+
+      <ol>
+
+       <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. Let
+       <var>s</var> be the resulting sequence.</p></li>
+
+       <li><p>If <var>s</var> is the empty string, then fail.</p></li>
+
+       <li><p>Let <var>length</var> be the number of characters in <var>s</var>.</p></li>
+
+       <li><p>Let <var>fraction</var> be the result of interpreting <var>s</var>
+       as a base-ten integer, and then dividing that number by <span data-x="">10<sup><var>length</var></sup></span>.</li>
+
+       <li><p>Increment <var>N</var> by <var>fraction</var>.</p></li>
+
+       <li><p><span>Skip whitespace</span>.</p></li>
+
+       <li><p>If <var>position</var> is past the end of <var>input</var>, then
+       fail.</p></li>
+
+       <li><p>Set <var>next character</var> to the character in <var>input</var>
+       pointed to by <var>position</var>, and advance <var>position</var> to the
+       next character.</p></li>
+
+       <li><p>If <var>next character</var> is neither a U+0053 LATIN CAPITAL LETTER S
+       character nor a U+0073 LATIN SMALL LETTER S character, then fail.</p></li>
+
+       <li><p>Set <var>units</var> to <i>seconds</i>.</p></li>
+
+      </ol>
+
+      <p>Otherwise, run these substeps:</p>
+
+      <ol>
+
+       <li><p>If <var>next character</var> is a <span>space character</span>, then
+       <span>skip whitespace</span>, set <var>next character</var> to the character in <var>input</var> pointed to by <var>position</var>, and advance <var>position</var> to the next character.</p></li>
+
+       <li>
+
+        <!--MONTHS: this would probably be where we would add more
+        logic to support a new unit like 'mo' -->
+
+        <p>If <var>next character</var> is a U+0059 LATIN CAPITAL LETTER Y character, or a
+        U+0079 LATIN SMALL LETTER Y character, set <var>units</var> to <i>years</i> and set
+        <var>M-disambiguator</var> to <i>months</i>.</p>
+
+        <p>If <var>next character</var> is a U+004D LATIN CAPITAL LETTER M character or a
+        U+006D LATIN SMALL LETTER M character, and <var>M-disambiguator</var> is
+        <i>months</i>, then set <var>units</var> to <i>months</i>.</p>
+
+        <p>If <var>next character</var> is a U+0057 LATIN CAPITAL LETTER W character or a
+        U+0077 LATIN SMALL LETTER W character, set <var>units</var> to <i>weeks</i> and set
+        <var>M-disambiguator</var> to <i>minutes</i>.</p>
+
+        <p>If <var>next character</var> is a U+0044 LATIN CAPITAL LETTER D character or a
+        U+0064 LATIN SMALL LETTER D character, set <var>units</var> to <i>days</i> and set
+        <var>M-disambiguator</var> to <i>minutes</i>.</p>
+
+        <p>If <var>next character</var> is a U+0048 LATIN CAPITAL LETTER H character or a
+        U+0068 LATIN SMALL LETTER H character, set <var>units</var> to <i>hours</i> and set
+        <var>M-disambiguator</var> to <i>minutes</i>.</p>
+
+        <p>If <var>next character</var> is a U+004D LATIN CAPITAL LETTER M character or a
+        U+006D LATIN SMALL LETTER M character, and <var>M-disambiguator</var> is
+        <i>minutes</i>, then set <var>units</var> to <i>minutes</i>.</p>
+
+        <p>If <var>next character</var> is a U+0053 LATIN CAPITAL LETTER S character or a
+        U+0073 LATIN SMALL LETTER S character, set <var>units</var> to <i>seconds</i> and
+        set <var>M-disambiguator</var> to <i>minutes</i>.</p>
+
+        <p>Otherwise if <var>next character</var> is none of the above characters, then
+        fail.</p>
+
+       </li>
+
+      </ol>
+
+     </li>
+
+     <li><p>Increment <var>component count</var>.</p></li>
+
+     <li><p>Let <var>multiplier</var> be 1.</p></li>
+
+     <li><p>If <var>units</var> is <i>years</i>, multiply <var>multiplier</var> by
+     12 and set <var>units</var> to <i>months</i>.</p></li>
+
+     <li>
+
+      <p>If <var>units</var> is <i>months</i>, add the product of <var>N</var> and
+      <var>multiplier</var> to <var>months</var>.</p>
+
+      <p>Otherwise, run these substeps:</p>
+
+      <ol>
+
+       <li><p>If <var>units</var> is <i>weeks</i>, multiply <var>multiplier</var>
+       by 7 and set <var>units</var> to <i>days</i>.</p></li>
+
+       <li><p>If <var>units</var> is <i>days</i>, multiply <var>multiplier</var>
+       by 24 and set <var>units</var> to <i>hours</i>.</p></li>
+
+       <li><p>If <var>units</var> is <i>hours</i>, multiply <var>multiplier</var>
+       by 60 and set <var>units</var> to <i>minutes</i>.</p></li>
+
+       <li><p>If <var>units</var> is <i>minutes</i>, multiply <var>multiplier</var> by 60 and set <var>units</var> to <i>seconds</i>.</p></li>
+
+       <li><p>Forcibly, <var>units</var> is now <i>seconds</i>. Add the product of <var>N</var> and <var>multiplier</var> to <var>seconds</var>.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p><span>Skip whitespace</span>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If <var>component count</var> is zero,
+   fail.</p></li>
+
+   <!--MONTHS: if we add month support this is where you'd return them-->
+   <li><p>If <var>months</var> is not zero, fail.</p></li>
+
+   <li><p>Return the <span data-x="concept-duration">duration</span> consisting of <var>seconds</var> seconds.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

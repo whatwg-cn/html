@@ -1,0 +1,30 @@
+<h4>Keywords and enumerated attributes</h4>
+
+  <p>Some attributes are defined as taking one of a finite set of keywords. Such attributes are
+  called <dfn data-x="enumerated attribute">enumerated attributes</dfn>. The keywords are each
+  defined to map to a particular <em>state</em> (several keywords might map to the same state, in
+  which case some of the keywords are synonyms of each other; additionally, some of the keywords can
+  be said to be non-conforming, and are only in the specification for historical reasons). In
+  addition, two default states can be given. The first is the <dfn><i>invalid value default</i></dfn>, the
+  second is the <dfn><i>missing value default</i></dfn>.</p>
+
+  <p>If an enumerated attribute is specified, the attribute's value must be an <span>ASCII
+  case-insensitive</span> match for one of the given keywords that are not said to be
+  non-conforming, with no leading or trailing whitespace.</p>
+
+  <p>When the attribute is specified, if its value is an <span>ASCII case-insensitive</span> match
+  for one of the given keywords then that keyword's state is the state that the attribute
+  represents. If the attribute value matches none of the given keywords, but the attribute has an
+  <i data-x="invalid value default">invalid value default</i>, then the attribute represents that state. Otherwise, if the
+  attribute value matches none of the keywords but there is a <i data-x="missing value default">missing value default</i> state
+  defined, then <em>that</em> is the state represented by the attribute. Otherwise, there is no
+  default, and invalid values mean that there is no state represented.</p>
+
+  <p>When the attribute is <em>not</em> specified, if there is a <i data-x="missing value default">missing value default</i> state
+  defined, then that is the state represented by the (missing) attribute. Otherwise, the absence of
+  the attribute means that there is no state represented.</p>
+
+  <p class="note">The empty string can be a valid keyword.</p>
+
+
+  

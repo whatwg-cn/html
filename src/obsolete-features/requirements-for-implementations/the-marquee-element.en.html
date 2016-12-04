@@ -1,0 +1,220 @@
+<h4 id="the-marquee-element">The <dfn><code>marquee</code></dfn> element</h4>
+
+  <p>The <code>marquee</code> element is a presentational element that animates content. CSS
+  transitions and animations are a more appropriate mechanism. <ref spec=CSSANIMATIONS> <ref spec=CSSTRANSITIONS></p>
+
+  <p>The <span>task source</span> for tasks mentioned in this section is the <span>DOM manipulation
+  task source</span>.</p>
+
+  <p>The <code>marquee</code> element must implement the <code>HTMLMarqueeElement</code>
+  interface.</p>
+
+  <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLMarqueeElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-marquee-behavior">behavior</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-marquee-bgColor">bgColor</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-marquee-direction">direction</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-marquee-height">height</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-marquee-hspace">hspace</span>;
+  [<span>CEReactions</span>] attribute long <span data-x="dom-marquee-loop">loop</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-marquee-scrollamount">scrollAmount</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-marquee-scrollDelay">scrollDelay</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-marquee-trueSpeed">trueSpeed</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-marquee-vspace">vspace</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-marquee-width">width</span>;
+
+  attribute <span>EventHandler</span> <span data-x="handler-marquee-onbounce">onbounce</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-marquee-onfinish">onfinish</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-marquee-onstart">onstart</span>;
+
+  void <span data-x="dom-marquee-start">start</span>();
+  void <span data-x="dom-marquee-stop">stop</span>();
+};</pre>
+
+  <p>A <code>marquee</code> element can be <dfn data-x="concept-marquee-on">turned on</dfn> or <dfn
+  data-x="concept-marquee-off">turned off</dfn>. When it is created, it is <span
+  data-x="concept-marquee-on">turned on</span>.</p>
+
+  <p>When the <dfn><code data-x="dom-marquee-start">start()</code></dfn> method is called, the
+  <code>marquee</code> element must be <span data-x="concept-marquee-on">turned on</span>.</p>
+
+  <p>When the <dfn><code data-x="dom-marquee-stop">stop()</code></dfn> method is called, the
+  <code>marquee</code> element must be <span data-x="concept-marquee-off">turned off</span>.</p>
+
+  <p>When a <code>marquee</code> element is created, the user agent must <span>queue a task</span>
+  to <span data-x="concept-event-fire">fire an event</span> named <code undefined
+  data-x="event-marquee-start">start</code> at the element.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-marquee-behavior">behavior</code></dfn> content attribute on
+  <code>marquee</code> elements is an <span>enumerated attribute</span> with the following keywords
+  (all non-conforming):</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th>Keyword
+     <th>State
+   <tbody>
+    <tr>
+     <td><code data-x="">scroll</code>
+     <td><dfn data-x="attr-marquee-behavior-scroll">scroll</dfn>
+    <tr>
+     <td><code data-x="">slide</code>
+     <td><dfn data-x="attr-marquee-behavior-slide">slide</dfn>
+    <tr>
+     <td><code data-x="">alternate</code>
+     <td><dfn data-x="attr-marquee-behavior-alternate">alternate</dfn>
+  </table>
+
+  <p>The <i data-x="missing value default">missing value default</i> is the <span
+  data-x="attr-marquee-behavior-scroll">scroll</span> state.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-marquee-direction">direction</code></dfn> content attribute on
+  <code>marquee</code> elements is an <span>enumerated attribute</span> with the following keywords
+  (all non-conforming):</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th>Keyword
+     <th>State
+   <tbody>
+    <tr>
+     <td><code data-x="">left</code>
+     <td><dfn data-x="attr-marquee-direction-left">left</dfn>
+    <tr>
+     <td><code data-x="">right</code>
+     <td><dfn data-x="attr-marquee-direction-right">right</dfn>
+    <tr>
+     <td><code data-x="">up</code>
+     <td><dfn data-x="attr-marquee-direction-up">up</dfn>
+    <tr>
+     <td><code data-x="">down</code>
+     <td><dfn data-x="attr-marquee-direction-down">down</dfn>
+  </table>
+
+  <p>The <i data-x="missing value default">missing value default</i> is the <span data-x="attr-marquee-direction-left">left</span>
+  state.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="attr-marquee-truespeed">truespeed</code></dfn> content attribute on
+  <code>marquee</code> elements is a <span>boolean attribute</span>.</p>
+
+  <hr>
+
+  <p>A <code>marquee</code> element has a <dfn>marquee scroll interval</dfn>, which is obtained as
+  follows:</p>
+
+  <ol>
+
+   <li><p>If the element has a <code undefined data-x="attr-marquee-scrolldelay">scrolldelay</code> attribute,
+   and parsing its value using the <span>rules for parsing non-negative integers</span> does not
+   return an error, then let <var>delay</var> be the parsed value. Otherwise, let <var>delay</var>
+   be 85.</p></li>
+
+   <li><p>If the element does not have a <code data-x="attr-marquee-truespeed">truespeed</code>
+   attribute, and the <var>delay</var> value is less than 60, then let <var>delay</var> be 60
+   instead.</p></li>
+
+   <li><p>The <span>marquee scroll interval</span> is <var>delay</var>, interpreted in
+   milliseconds.</p></li>
+
+  </ol>
+
+  <hr>
+
+  <p>A <code>marquee</code> element has a <dfn>marquee scroll distance</dfn>, which, if the element
+  has a <code undefined data-x="attr-marquee-scrollamount">scrollamount</code> attribute, and
+  parsing its value using the <span>rules for parsing non-negative integers</span> does not return
+  an error, is the parsed value interpreted in <span data-x="'px'">CSS pixels</span>, and otherwise
+  is 6 <span data-x="'px'">CSS pixels</span>.</p>
+
+  <hr>
+
+  <p>A <code>marquee</code> element has a <dfn>marquee loop count</dfn>, which, if the element has a
+  <dfn><code data-x="attr-marquee-loop">loop</code></dfn> attribute, and parsing its value using the <span>rules
+  for parsing integers</span> does not return an error or a number less than 1, is the parsed value,
+  and otherwise is &#x2212;1.</p>
+
+  <p>The <dfn><code data-x="dom-marquee-loop">loop</code></dfn> IDL attribute, on getting, must
+  return the element's <span>marquee loop count</span>; and on setting, if the new value is
+  different than the element's <span>marquee loop count</span> and either greater than zero or equal
+  to &#x2212;1, must set the element's <code data-x="attr-marquee-loop">loop</code> content attribute
+  (adding it if necessary) to the <span>valid integer</span> that represents the new value. (Other
+  values are ignored.)</p>
+
+  <p>A <code>marquee</code> element also has a <dfn>marquee current loop index</dfn>, which is zero
+  when the element is created.</p>
+
+  <p>The rendering layer will occasionally <dfn>increment the marquee current loop index</dfn>,
+  which must cause the following steps to be run:</p>
+
+  <ol>
+
+   <li><p>If the <span>marquee loop count</span> is &#x2212;1, then abort these steps.</p>
+
+   <li><p>Increment the <span>marquee current loop index</span> by one.</p></li>
+
+   <li>
+
+    <p>If the <span>marquee current loop index</span> is now equal to or greater than the element's
+    <span>marquee loop count</span>, <span data-x="concept-marquee-off">turn off</span> the
+    <code>marquee</code> element and <span>queue a task</span> to <span
+    data-x="concept-event-fire">fire an event</span> named <code undefined
+    data-x="event-marquee-finish">finish</code> at the <code>marquee</code> element.</p>
+
+    <p>Otherwise, if the <code data-x="attr-marquee-behavior">behavior</code> attribute is in the
+    <span data-x="attr-marquee-behavior-alternate">alternate</span> state, then <span>queue a
+    task</span> to <span data-x="concept-event-fire">fire an event</span> named <code undefined
+    data-x="event-marquee-bounce">bounce</code> at the <code>marquee</code> element.</p>
+
+    <p>Otherwise, <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+    event</span> named <code undefined data-x="event-marquee-start">start</code> at the
+    <code>marquee</code> element.</p>
+
+   </li>
+
+  </ol>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event handler content attributes</span> and <span>event handler IDL
+  attributes</span>, by <code>marquee</code> elements:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-marquee-onbounce">onbounce</code></dfn> <td> <code undefined data-x="event-marquee-bounce">bounce</code>
+    <tr><td><dfn><code data-x="handler-marquee-onfinish">onfinish</code></dfn> <td> <code undefined data-x="event-marquee-finish">finish</code>
+    <tr><td><dfn><code data-x="handler-marquee-onstart">onstart</code></dfn> <td> <code undefined data-x="event-marquee-start">start</code>
+  </table>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-marquee-behavior">behavior</code></dfn>, <dfn><code data-x="dom-marquee-direction">direction</code></dfn>, <dfn><code data-x="dom-marquee-height">height</code></dfn>, <dfn><code data-x="dom-marquee-hspace">hspace</code></dfn>, <dfn><code data-x="dom-marquee-vspace">vspace</code></dfn>, and <dfn><code data-x="dom-marquee-width">width</code></dfn> IDL attributes must <span>reflect</span> the
+  respective content attributes of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-marquee-bgColor">bgColor</code></dfn> IDL attribute must
+  <span>reflect</span> the <code undefined data-x="attr-marquee-bgcolor">bgcolor</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-marquee-scrollAmount">scrollAmount</code></dfn> IDL attribute must
+  <span>reflect</span> the <code undefined data-x="attr-marquee-scrollamount">scrollamount</code> content
+  attribute. The default value is 6.</p>
+
+  <p>The <dfn><code data-x="dom-marquee-scrollDelay">scrollDelay</code></dfn> IDL attribute must
+  <span>reflect</span> the <code undefined data-x="attr-marquee-scrolldelay">scrolldelay</code> content
+  attribute. The default value is 85.</p>
+
+  <p>The <dfn><code data-x="dom-marquee-trueSpeed">trueSpeed</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-marquee-truespeed">truespeed</code> content
+  attribute.</p>
+
+
+  

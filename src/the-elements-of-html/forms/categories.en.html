@@ -1,0 +1,115 @@
+<h4>Categories</h4>
+
+  <p>Mostly for historical reasons, elements in this section fall into several overlapping (but
+  subtly different) categories in addition to the usual ones like <span>flow content</span>,
+  <span>phrasing content</span>, and <span>interactive content</span>.</p>
+
+  <p>A number of the elements are <dfn data-x="form-associated element">form-associated
+  elements</dfn>, which means they can have a <span>form owner</span>.
+
+  <!-- when updating this also update the category index -->
+  <ul class="brief category-list">
+   <li><code>button</code></li>
+   <li><code>fieldset</code></li>
+   <li><code>input</code></li>
+   <li><code>keygen</code></li>
+   <li><code>object</code></li>
+   <li><code>output</code></li>
+   <li><code>select</code></li>
+   <li><code>textarea</code></li>
+   <li><code>img</code></li>
+  </ul>
+
+  <p>The <span data-x="form-associated element">form-associated elements</span> fall into several
+  subcategories:</p>
+
+  <dl>
+
+   <dt><dfn data-x="category-listed">Listed elements</dfn></dt>
+
+   <dd>
+
+    <p>Denotes elements that are listed in the <code
+    data-x="dom-form-elements"><var>form</var>.elements</code> and <code
+    data-x="dom-fieldset-elements"><var>fieldset</var>.elements</code> APIs. These elements also
+    have a <code data-x="attr-fae-form">form</code> content attribute, and a matching <code
+    data-x="dom-fae-form">form</code> IDL attribute, that allow authors to specify an explicit
+    <span>form owner</span>.</p>
+
+    <!-- when updating this also update the category index -->
+    <ul class="brief category-list">
+     <li><code>button</code></li>
+     <li><code>fieldset</code></li>
+     <li><code>input</code></li>
+     <li><code>keygen</code></li>
+     <li><code>object</code></li>
+     <li><code>output</code></li>
+     <li><code>select</code></li>
+     <li><code>textarea</code></li>
+    </ul>
+
+   </dd>
+
+   <dt><dfn data-x="category-submit">Submittable elements</dfn></dt>
+
+   <dd>
+
+    <p>Denotes elements that can be used for <a href="#constructing-form-data-set">constructing the
+    form data set</a> when a <code>form</code> element is <span
+    data-x="concept-form-submit">submitted</span>.</p>
+
+    <!-- when updating this also update the category index -->
+    <ul class="brief category-list">
+     <li><code>button</code></li>
+     <li><code>input</code></li>
+     <li><code>keygen</code></li>
+     <li><code>object</code></li>
+     <li><code>select</code></li>
+     <li><code>textarea</code></li>
+    </ul>
+
+    <p>Some <span data-x="category-submit">submittable elements</span> can be, depending on their
+    attributes, <dfn data-x="concept-button">buttons</dfn>. The prose below defines when an element
+    is a button. Some buttons are specifically <dfn data-x="concept-submit-button">submit
+    buttons</dfn>.</p>
+
+   </dd>
+
+   <dt><dfn data-x="category-reset">Resettable elements</dfn></dt>
+
+   <dd>
+
+    <p>Denotes elements that can be affected when a <code>form</code> element is <span
+    data-x="concept-form-reset">reset</span>.</p>
+
+    <!-- when updating this also update the category index -->
+    <ul class="brief category-list">
+     <li><code>input</code></li>
+     <li><code>keygen</code></li>
+     <li><code>output</code></li>
+     <li><code>select</code></li>
+     <li><code>textarea</code></li>
+    </ul>
+
+   </dd>
+
+  </dl>
+
+  <p>Some elements, not all of them <span data-x="form-associated element">form-associated</span>,
+  are categorized as <dfn data-x="category-label">labelable elements</dfn>. These are elements that
+  can be associated with a <code>label</code> element.
+
+  <!-- when updating this also update the category index -->
+  <ul class="brief category-list">
+   <li><code>button</code></li>
+   <li><code>input</code> (if the <code data-x="attr-input-type">type</code> attribute is <em>not</em> in the <span data-x="attr-input-type-hidden">Hidden</span> state)</li>
+   <li><code>keygen</code></li>
+   <li><code>meter</code></li>
+   <li><code>output</code></li>
+   <li><code>progress</code></li>
+   <li><code>select</code></li>
+   <li><code>textarea</code></li>
+  </ul>
+
+
+  

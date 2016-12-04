@@ -1,0 +1,453 @@
+<h6>Line styles</h6>
+
+  <dl class="domintro">
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-lineWidth">lineWidth</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-lineWidth">lineWidth</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current line width.</p>
+
+    <p>Can be set, to change the line width. Values that are not finite values greater than zero are
+    ignored.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-lineCap">lineCap</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-lineCap">lineCap</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current line cap style.</p>
+
+    <p>Can be set, to change the line cap style.</p>
+
+    <p>The possible line cap styles are "<code data-x="">butt</code>", "<code
+    data-x="">round</code>", and "<code data-x="">square</code>". Other values are ignored.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-lineJoin">lineJoin</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-lineJoin">lineJoin</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current line join style.</p>
+
+    <p>Can be set, to change the line join style.</p>
+
+    <p>The possible line join styles are "<code data-x="">bevel</code>", "<code
+    data-x="">round</code>", and "<code data-x="">miter</code>". Other values are ignored.</p>
+
+   </dd>
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-miterLimit">miterLimit</code> [ = <var>value</var> ]</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-miterLimit">miterLimit</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current miter limit ratio.</p>
+
+    <p>Can be set, to change the miter limit ratio. Values that are not finite values greater than
+    zero are ignored.</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-setLineDash">setLineDash</code>(<var>segments</var>)</dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-setLineDash">setLineDash</code>(<var>segments</var>)</dt>
+
+   <dd>
+
+    <p>Sets the current line dash pattern (as used when stroking). The argument is a list of
+    distances for which to alternately have the line on and the line off.</p>
+
+   </dd>
+
+
+   <dt><var>segments</var> = <var>context</var> . <code subdfn data-x="dom-context-2d-getLineDash">getLineDash</code>()</dt>
+   <dt><var>segments</var> = <var>styles</var> . <code data-x="dom-context-2d-getLineDash">getLineDash</code>()</dt>
+
+   <dd>
+
+    <p>Returns a copy of the current line dash pattern. The array returned will always have an even
+    number of entries (i.e. the pattern is normalized).</p>
+
+   </dd>
+
+
+   <dt><var>context</var> . <code subdfn data-x="dom-context-2d-lineDashOffset">lineDashOffset</code></dt>
+   <dt><var>styles</var> . <code data-x="dom-context-2d-lineDashOffset">lineDashOffset</code></dt>
+
+   <dd>
+
+    <p>Returns the phase offset (in the same units as the line dash pattern).</p>
+
+    <p>Can be set, to change the phase offset. Values that are not finite values are ignored.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Objects that implement the <code>CanvasPathDrawingStyles</code> interface have attributes and
+  methods (defined in this section) that control how lines are treated by the object.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-lineWidth">lineWidth</code></dfn> attribute gives the
+  width of lines, in coordinate space units. On getting, it must return the current value. On
+  setting, zero, negative, infinite, and NaN values must be ignored, leaving the value unchanged;
+  other values must change the current value to the new value.</p>
+
+  <p>When the object implementing the <code>CanvasPathDrawingStyles</code> interface is created, the
+  <code data-x="dom-context-2d-lineWidth">lineWidth</code> attribute must initially have the value
+  1.0.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-lineCap">lineCap</code></dfn> attribute defines the type
+  of endings that UAs will place on the end of lines. The three valid values are "<code
+  data-x="">butt</code>", "<code data-x="">round</code>", and "<code
+  data-x="">square</code>".</p>
+
+  <p>On getting, it must return the current value. On setting, the current value must be changed
+  to the new value.</p>
+
+  <p>When the object implementing the <code>CanvasPathDrawingStyles</code> interface is created, the
+  <code data-x="dom-context-2d-lineCap">lineCap</code> attribute must initially have the value
+  "<code data-x="">butt</code>".</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-context-2d-lineJoin">lineJoin</code></dfn> attribute defines the type
+  of corners that UAs will place where two lines meet. The three valid values are
+  "<code data-x="">bevel</code>", "<code data-x="">round</code>", and "<code data-x="">miter</code>".</p>
+
+  <p>On getting, it must return the current value. On setting, the current value must be changed
+  to the new value.</p>
+
+  <p>When the object implementing the <code>CanvasPathDrawingStyles</code> interface is created, the
+  <code data-x="dom-context-2d-lineJoin">lineJoin</code> attribute must initially have the value
+  "<code data-x="">miter</code>".</p>
+
+  <hr>
+
+  <p>When the <code data-x="dom-context-2d-lineJoin">lineJoin</code> attribute has the value "<code
+  data-x="">miter</code>", strokes use the miter limit ratio to decide how to render joins. The
+  miter limit ratio can be explicitly set using the <dfn><code
+  data-x="dom-context-2d-miterLimit">miterLimit</code></dfn> attribute. On getting, it must return
+  the current value. On setting, zero, negative, infinite, and NaN values must be ignored, leaving
+  the value unchanged; other values must change the current value to the new value.</p>
+  <!-- values less than 1.0 are equivalent to 1.0, since it's compared against a ratio that can't be
+       less than 1.0 -->
+
+  <p>When the object implementing the <code>CanvasPathDrawingStyles</code> interface is created, the
+  <code data-x="dom-context-2d-miterLimit">miterLimit</code> attribute must initially have the value
+  10.0.</p>
+
+  <hr>
+
+  <p>Each <code>CanvasPathDrawingStyles</code> object has a <dfn>dash list</dfn>, which is either
+  empty or consists of an even number of non-negative numbers. Initially, the <span>dash list</span>
+  must be empty.</p>
+
+  <p>The <dfn><code data-x="dom-context-2d-setLineDash">setLineDash()</code></dfn> method, when
+  invoked, must run these steps:</p>
+
+  <ol>
+
+   <li><p>Let <var>a</var> be the argument.</p></li>
+
+   <li><p>If any value in <var>a</var> is not finite (e.g. an Infinity or a NaN value), or
+   if any value is negative (less than zero), then abort these steps (without throwing an exception;
+   user agents could show a message on a developer console, though, as that would be helpful for
+   debugging).</p></li>
+
+   <li><p>If the number of elements in <var>a</var> is odd, then let <var>a</var>
+   be the concatenation of two copies of <var>a</var>.</p></li>
+
+   <li><p>Let the object's <span>dash list</span> be <var>a</var>.</p></li>
+
+  </ol>
+
+  <p>When the <dfn><code data-x="dom-context-2d-getLineDash">getLineDash()</code></dfn> method is
+  invoked, it must return a sequence whose values are the values of the object's <span>dash
+  list</span>, in the same order.</p>
+
+  <p>It is sometimes useful to change the "phase" of the dash pattern, e.g. to achieve a "marching
+  ants" effect. The phase can be set using the <dfn><code
+  data-x="dom-context-2d-lineDashOffset">lineDashOffset</code></dfn> attribute. On getting, it must
+  return the current value. On setting, infinite and NaN values must be ignored, leaving the value
+  unchanged; other values must change the current value to the new value.</p>
+
+  <p>When the object implementing the <code>CanvasPathDrawingStyles</code> interface is created, the
+  <code data-x="dom-context-2d-lineDashOffset">lineDashOffset</code> attribute must initially have
+  the value 0.0.</p>
+
+  <hr>
+
+  <p>When a user agent is to <dfn>trace a path</dfn>, given an object <var>style</var>
+  that implements the <code>CanvasPathDrawingStyles</code> interface, it must run the following
+  algorithm. This algorithm returns a new <span data-x="concept-path">path</span>.</p>
+
+  <ol>
+
+   <li><p>Let <var>path</var> be a copy of the path being traced.</p></li>
+
+   <!-- PATH SANITIZATION -->
+
+   <li><p>Prune all zero-length <span>line segments</span> from <var>path</var>.</p></li>
+
+   <li><p>Remove from <var>path</var> any subpaths containing no lines (i.e. subpaths with
+   just one point).</p></li>
+
+   <li><p>Replace each point in each subpath of <var>path</var> other than the first point
+   and the last point of each subpath by a <i>join</i> that joins the line leading to that point to
+   the line leading out of that point, such that the subpaths all consist of two points (a starting
+   point with a line leading out of it, and an ending point with a line leading into it), one or
+   more lines (connecting the points and the joins), and zero or more joins (each connecting one
+   line to another), connected together such that each subpath is a series of one or more lines with
+   a join between each one and a point on each end.</p></li>
+
+   <li><p>Add a straight closing line to each closed subpath in <var>path</var> connecting
+   the last point and the first point of that subpath; change the last point to a join (from the
+   previously last line to the newly added closing line), and change the first point to a join (from
+   the newly added closing line to the first line).</p>
+
+   <li><p>If the <var>styles</var> <span>dash list</span> is empty, then jump to the step
+   labeled <i>convert</i>.</p></li>
+
+   <!-- DASHING -->
+
+   <li><p>Let <var>pattern width</var> be the concatenation of all the entries of the <var>styles</var> <span>dash list</span>, in coordinate space units.</p>
+
+   <li><p>For each subpath <var>subpath</var> in <var>path</var>, run the
+   following substeps. These substeps mutate the subpaths in <var>path</var> <i>in
+   vivo</i>.</p>
+
+    <ol>
+
+     <li><p>Let <var>subpath width</var> be the length of all the lines of <var>subpath</var>, in coordinate space units.</p>
+
+     <li><p>Let <var>offset</var> be the value of the <var>styles</var> <code
+     data-x="dom-context-2d-lineDashOffset">lineDashOffset</code>, in coordinate space
+     units.</p></li>
+
+     <li>
+
+      <p>While <var>offset</var> is greater than <var>pattern width</var>,
+      decrement it by <var>pattern width</var>.</p>
+
+      <p>While <var>offset</var> is less than zero, increment it by <var>pattern
+      width</var>.</p>
+
+     </li>
+
+     <li><p>Define <var>L</var> to be a linear coordinate line defined along all lines in
+     <var>subpath</var>, such that the start of the first line in the subpath is defined
+     as coordinate 0, and the end of the last line in the subpath is defined as coordinate <var>subpath width</var>.</p></li>
+
+     <li><p>Let <var>position</var> be zero minus <var>offset</var>.</p></li>
+
+     <li><p>Let <var>index</var> be 0.</p></li>
+
+     <li><p>Let <var>current state</var> be <i>off</i> (the other states being <i>on</i>
+     and <i>zero-on</i>).</p></li>
+
+     <li><p><i>Dash on</i>: Let <var>segment length</var> be
+     the value of the <var>styles</var> <span>dash
+     list</span>'s <var>index</var>th entry.</p></li>
+
+     <li><p>Increment <var>position</var> by <var>segment length</var>.</p></li>
+
+     <li><p>If <var>position</var> is greater than <var>subpath width</var>,
+     then end these substeps for this subpath and start them again for the next subpath; if there
+     are no more subpaths, then jump to the step labeled <i>convert</i> instead.</p></li>
+
+     <li><p>If <var>segment length</var> is non-zero, then let <var>current state</var> be
+     <i>on</i>.</p></li>
+
+     <li><p>Increment <var>index</var> by one.</p></li>
+
+     <li><p><i>Dash off<!-- labeled for consistency only --></i>: Let <var>segment
+     length</var> be the value of the <var>styles</var> <span>dash list</span>'s <var>index</var>th entry.</p></li>
+
+     <li><p>Let <var>start</var> be the offset <var>position</var> on <var>L</var>.</p></li>
+
+     <li><p>Increment <var>position</var> by <var>segment length</var>.</p></li>
+
+     <li><p>If <var>position</var> is less than zero, then jump to the step labeled
+     <i>post-cut</i>.</p></li> <!-- start and end both before zero -->
+
+     <li><p>If <var>start</var> is less than zero, then let <var>start</var> be
+     zero.</p></li> <!-- end will be (at or) after zero -->
+
+     <li><p>If <var>position</var> is greater than <var>subpath width</var>,
+     then let <var>end</var> be the offset <var>subpath width</var> on <var>L</var>. Otherwise, let <var>end</var> be the offset <var>position</var> on <var>L</var>.</p></li>
+
+     <li>
+
+      <p>Jump to the first appropriate step:</p>
+
+      <dl class="switch">
+
+       <dt>If <var>segment length</var> is zero and <var>current state</var> is
+       <i>off</i></dt>
+
+       <dd>
+
+        <p>Do nothing, just continue to the next step.</p>
+
+       </dd>
+
+
+       <dt>If <var>current state</var> is <i>off</i></dt>
+
+       <dd>
+
+        <p>Cut the line on which <var>end</var> finds itself short at <var>end</var> and place a point there, cutting the subpath that it was in in two;
+        remove all line segments, joins, points, and subpaths that are between <var>start</var> and <var>end</var>; and finally place a single point at <var>start</var> with no lines connecting to it.</p>
+
+        <p>The point has a <i>directionality</i> for the purposes of drawing line caps (see below).
+        The directionality is the direction that the original line had at that point (i.e. when <var>L</var> was defined above).</p>
+
+       </dd>
+
+
+       <dt>Otherwise</dt>
+
+       <dd>
+
+        <p>Cut the line on which <var>start</var> finds itself into two at <var>start</var> and place a point there, cutting the subpath that it was in in two, and
+        similarly cut the line on which <var>end</var> finds itself short at <var>end</var> and place a point there, cutting the subpath that <em>it</em> was in in
+        two, and then remove all line segments, joins, points, and subpaths that are between <var>start</var> and <var>end</var>.</p>
+
+        <p>If <var>start</var> and <var>end</var> are the same point, then this
+        results in just the line being cut in two and two points being inserted there, with nothing
+        being removed, unless a join also happens to be at that point, in which case the join must
+        be removed.</p>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li><p><i>Post-cut</i>: If <var>position</var> is greater than <var>subpath width</var>, then jump to the step labeled <i>convert</i>.</p></li>
+
+     <li><p>If <var>segment length</var> is greater than zero, then let
+     <var>positioned-at-on-dash</var> be false.</p></li>
+
+     <li><p>Increment <var>index</var> by one. If it is equal to the number of entries in
+     the <var>styles</var> <span>dash list</span>, then let <var>index</var> be
+     0.</p></li>
+
+     <li><p>Return to the step labeled <i>dash on</i>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <!-- STROKING -->
+
+   <li>
+
+    <p><i>Convert</i>: This is the step that converts the path to a new path that represents its
+    stroke.</p>
+
+    <p>Create a new <span data-x="concept-path">path</span> that describes the edge of the areas
+    that would be covered if a straight line of length equal to the <var>styles</var>
+    <code data-x="dom-context-2d-lineWidth">lineWidth</code> was swept along each subpath in <var>path</var> while being kept at an angle such that the line is orthogonal to the path
+    being swept, replacing each point with the end cap necessary to satisfy the <var>styles</var> <code data-x="dom-context-2d-lineCap">lineCap</code> attribute as
+    described previously and elaborated below, and replacing each join with the join necessary to
+    satisfy the <var>styles</var> <code data-x="dom-context-2d-lineJoin">lineJoin</code>
+    type, as defined below.</p>
+
+    <p><strong>Caps</strong>: Each point has a flat edge perpendicular to the direction of the line
+    coming out of it. This is them augmented according to the value of the <var>styles</var> <code data-x="dom-context-2d-lineCap">lineCap</code>. The "<code
+    data-x="">butt</code>" value means that no additional line cap is added. The "<code
+    data-x="">round</code>" value means that a semi-circle with the diameter equal to the <var>styles</var> <code data-x="dom-context-2d-lineWidth">lineWidth</code> width must
+    additionally be placed on to the line coming out of each point. The "<code
+    data-x="">square</code>" value means that a rectangle with the length of the <var>styles</var> <code data-x="dom-context-2d-lineWidth">lineWidth</code> width and the
+    width of half the <var>styles</var> <code
+    data-x="dom-context-2d-lineWidth">lineWidth</code> width, placed flat against the edge
+    perpendicular to the direction of the line coming out of the point, must be added at each
+    point.</p>
+
+    <p>Points with no lines coming out of them must have two caps placed back-to-back as if it was
+    really two points connected to each other by an infinitesimally short straight line in the
+    direction of the point's <i>directionality</i> (as defined above).</p>
+
+    <p><strong>Joins</strong>: In addition to the point where a join occurs, two additional points
+    are relevant to each join, one for each line: the two corners found half the line width away
+    from the join point, one perpendicular to each line, each on the side furthest from the other
+    line.</p>
+
+    <p>A triangle connecting these two opposite corners with a straight line, with the third point
+    of the triangle being the join point, must be added at all joins. The <code
+    data-x="dom-context-2d-lineJoin">lineJoin</code> attribute controls whether anything else is
+    rendered. The three aforementioned values have the following meanings:</p>
+
+    <p>The "<code data-x="">bevel</code>" value means that this is all that is rendered at
+    joins.</p>
+
+    <p>The "<code data-x="">round</code>" value means that an arc connecting the two aforementioned
+    corners of the join, abutting (and not overlapping) the aforementioned triangle, with the
+    diameter equal to the line width and the origin at the point of the join, must be added at
+    joins.</p>
+
+    <p>The "<code data-x="">miter</code>" value means that a second triangle must (if it can given
+    the miter length) be added at the join, with one line being the line between the two
+    aforementioned corners, abutting the first triangle, and the other two being continuations of
+    the outside edges of the two joining lines, as long as required to intersect without going over
+    the miter length.</p>
+
+    <p>The miter length is the distance from the point where the join occurs to the intersection of
+    the line edges on the outside of the join. The miter limit ratio is the maximum allowed ratio of
+    the miter length to half the line width. If the miter length would cause the miter limit ratio
+    (as set by the <var>style</var> <code
+    data-x="dom-context-2d-miterLimit">miterLimit</code> attribute) to be exceeded, then this second
+    triangle must not be added.</p> <!-- the actual ratio can't possibly be less than 1.0 -->
+
+<!-- here's a nice demo of the miter:
+  c.clearRect(0, 0, 640, 480);
+  c.beginPath();
+
+  c.moveTo((new Date()/100) % 600, 100);
+  c.lineTo(300, 300);
+  c.lineTo(500, 300);
+
+  c.lineWidth = 50;
+  c.miterLimit = 10000;
+  c.strokeStyle = 'silver'
+  c.stroke();
+
+  c.miterLimit = 0.0001;
+  c.strokeStyle = 'black'
+  c.stroke();
+
+  c.lineWidth = 1;
+  c.strokeStyle = 'red'
+  c.stroke();
+-->
+
+    <p>The subpaths in the newly created path must be oriented such that for any point, the number
+    of times a half-infinite straight line drawn from that point crosses a subpath is even if and
+    only if the number of times a half-infinite straight line drawn from that same point crosses a
+    subpath going in one direction is equal to the number of times it crosses a subpath going in the
+    other direction.</p>
+
+   </li>
+
+   <li><p>Return the newly created path.</p></li>
+
+  </ol>
+
+<!--v6: Another request has been for hairline width lines, that remain hairline width with
+transform. ack Shaun Morris. -->
+
+  </div>
+
+
+  

@@ -1,0 +1,37 @@
+<h5>The <code>StorageEvent</code> interface</h5>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>StorageEventInit</span> eventInitDict)]
+interface <dfn>StorageEvent</dfn> : <span>Event</span> {
+  readonly attribute DOMString? <span data-x="dom-StorageEvent-key">key</span>;
+  readonly attribute DOMString? <span data-x="dom-StorageEvent-oldValue">oldValue</span>;
+  readonly attribute DOMString? <span data-x="dom-StorageEvent-newValue">newValue</span>;
+  readonly attribute USVString <span data-x="dom-StorageEvent-url">url</span>;
+  readonly attribute <span>Storage</span>? <span data-x="dom-StorageEvent-storageArea">storageArea</span>;
+};
+
+dictionary <dfn>StorageEventInit</dfn> : <span>EventInit</span> {
+  DOMString? key = null;
+  DOMString? oldValue = null;
+  DOMString? newValue = null;
+  USVString url = "";
+  <span>Storage</span>? storageArea = null;
+};</pre>
+
+  <p>The <dfn><code data-x="dom-StorageEvent-key">key</code></dfn> attribute must return the value
+  it was initialized to. It represents the key being changed.</p>
+
+  <p>The <dfn><code data-x="dom-StorageEvent-oldValue">oldValue</code></dfn> attribute must return
+  the value it was initialized to. It represents the old value of the key being changed.</p>
+
+  <p>The <dfn><code data-x="dom-StorageEvent-newValue">newValue</code></dfn> attribute must return
+  the value it was initialized to. It represents the new value of the key being changed.</p>
+
+  <p>The <dfn><code data-x="dom-StorageEvent-url">url</code></dfn> attribute must return the value
+  it was initialized to. It represents the <span>URL</span> of the document whose key changed.</p>
+
+  <p>The <dfn><code data-x="dom-StorageEvent-storageArea">storageArea</code></dfn> attribute must
+  return the value it was initialized to. It represents the <code>Storage</code> object that was
+  affected.</p>
+
+
+  

@@ -1,0 +1,145 @@
+<h4>Nested browsing contexts</h4>
+
+  <p>Certain elements (for example, <code>iframe</code> elements) can instantiate further <span
+  data-x="browsing context">browsing contexts</span>. These elements are called <dfn
+  data-x="browsing context container" data-export="" data-lt="browsing context container">browsing
+  context containers</dfn>.</p>
+
+  <p>Each <span>browsing context container</span> has a <dfn data-export="">nested browsing
+  context</dfn>, which is either a <span>browsing context</span> or null.</p>
+
+  <p>If a <span>browsing context</span> is the <span>nested browsing context</span> of a
+  <span>browsing context container</span>, then the browsing context is said to be <dfn
+  data-x="browsing context nested through" data-export="">nested through</dfn> the <span>browsing
+  context container</span>'s <span>node document</span>.</p>
+
+  <p>A <span>browsing context</span> <var>child</var> is said to be a <dfn data-export="">child
+  browsing context</dfn> of another <span>browsing context</span> <var>parent</var>, if all of the
+  following conditions hold:</p>
+
+  <ul>
+   <li><p><var>child</var> is a <span>nested browsing context</span> of a <span>browsing context
+   container</span> <var>element</var></p></li>
+
+   <li><p><var>element</var> is <span>connected</span></p></li>
+
+   <li><p><var>element</var>'s <span>shadow-including root</span>'s <span
+   data-x="concept-document-bc">browsing context</span> is <var>parent</var></p></li>
+  </ul>
+
+  <p>A <span>browsing context</span> <var>child</var> is then a <dfn>document-tree child browsing
+  context</dfn> of <var>parent</var> if it is a <span>child browsing context</span> and its
+  <span>browsing context container</span> is not just <span>connected</span>, but also <span>in a
+  document tree</span>.</p>
+
+  <p>A <span>browsing context</span> <var>child</var> may have a <dfn data-export="">parent browsing
+  context</dfn>. This is the unique <span>browsing context</span> that has <var>child</var> as a
+  <span>child browsing context</span>, if any such browsing context exists. Otherwise, the
+  <span>browsing context</span> has no <span>parent browsing context</span>.</p>
+
+  <p>A <span>browsing context</span> <var>A</var> is said to be an <dfn data-x="ancestor browsing
+  context" data-export="" data-lt="ancestor browsing context">ancestor</dfn> of a browsing context
+  <var>B</var> if there exists a browsing context <var>A'</var> that is a <span>child browsing
+  context</span> of <var>A</var> and that is itself an <span data-x="ancestor browsing
+  context">ancestor</span> of <var>B</var>, or if the browsing context <var>A</var> is the
+  <span>parent browsing context</span> of <var>B</var>.</p>
+
+  <p>A <span>browsing context</span> that is not a <span>nested browsing context</span> has no
+  <span>parent browsing context</span>, and is the <dfn data-export="">top-level browsing
+  context</dfn> of all the browsing contexts for which it is an <span>ancestor browsing
+  context</span>.</p>
+
+  <p>The transitive closure of <span data-x="parent browsing context">parent browsing contexts</span>
+  for a <span>browsing context</span> that is a <span>nested browsing context</span> gives the list
+  of <span data-x="ancestor browsing context">ancestor browsing contexts</span>.</p>
+
+  <p>The <dfn>list of the descendant browsing contexts</dfn> of a <code>Document</code> <var>d</var>
+  is the (ordered) list returned by the following algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>list</var> be an empty list.</p></li>
+
+   <li>
+
+    <p>For each <span>child browsing context</span> of <var>d</var> that is <span data-x="browsing
+    context nested through">nested through</span> an element that is <span data-x="in a document">in
+    the <code>Document</code></span> <var>d</var>, in the <span>tree order</span> of the elements
+    nesting those <span data-x="browsing context">browsing contexts</span>, run these substeps:</p>
+
+    <ol>
+
+     <li><p>Append that <span>child browsing context</span> to the list <var>list</var>.</p>
+
+     <li><p>Append the <span>list of the descendant browsing contexts</span> of the <span>active
+     document</span> of that <span>child browsing context</span> to the list <var>list</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return the constructed <var>list</var>.</p></li>
+
+  </ol>
+
+  <p>A <code>Document</code> is said to be <dfn data-export="" data-dfn-for="Document">fully
+  active</dfn> when it has a <span data-x="concept-document-bc">browsing context</span> and it is
+  the <span>active document</span> of that <span>browsing context</span>, and either its browsing
+  context is a <span>top-level browsing context</span>, or it has a <span>parent browsing
+  context</span> and the <code>Document</code> <span data-x="browsing context nested
+  through">through which</span> it is <span data-x="nested browsing context">nested</span> is itself
+  <span>fully active</span>.</p>
+
+  <p>Because they are associated with an element, <span data-x="child browsing context">child
+  browsing contexts</span> are always tied to a specific <code>Document</code> in their <span>parent
+  browsing context</span>. User agents must not allow the user to interact with <span data-x="child
+  browsing context">child browsing contexts</span> of elements that are in <code>Document</code>s
+  that are not themselves <span>fully active</span>.</p>
+
+  <p>A <span>browsing context</span> that is a <span>nested browsing context</span> can be put into
+  a <dfn>delaying <code data-x="event-load">load</code> events mode</dfn>. This is used when it is
+  <span data-x="navigate">navigated</span>, to <span>delay the load event</span> of its
+  <span>browsing context container</span> before the new <code>Document</code> is created.</p>
+
+<!--(There's no current way for this to happen, since removing an iframe from a document discards its browsing context)
+  <p class="note">A <span>nested browsing context</span> can in some cases be taken out of its
+  <span>parent browsing context</span> (e.g. if an <code>iframe</code> element is removed from its
+  <code>Document</code>). In such a situation, the <span>nested browsing context</span> has no
+  <span>parent browsing context</span>, but it still has the same <span>browsing context
+  container</span> and is still <span data-x="browsing context nested through">nested through</span>
+  that element's <span>node document</span>. Such a <span>nested browsing context</span> is <em>not</em>
+  a <span>top-level browsing context</span>, and cannot contain <code>Document</code>s that are
+  <span>fully active</span>. Furthermore, if a <span>browsing context container</span> (such as an
+  <code>iframe</code>) is moved to another <code>Document</code>, then the <span>parent browsing
+  context</span> of its <span>nested browsing context</span> will change.</p>
+-->
+
+  <p>The <dfn>document family</dfn> of a <span>browsing context</span> consists of the union of all
+  the <code>Document</code> objects in that <span>browsing context</span>'s <span>session
+  history</span> and the <span data-x="document family">document families</span> of all those
+  <code>Document</code> objects. The <span>document family</span> of a <code>Document</code> object
+  consists of the union of all the <span data-x="document family">document families</span> of the
+  <span data-x="browsing context">browsing contexts</span> that are <span data-x="browsing context
+  nested through">nested through</span> the <code>Document</code> object.</p>
+
+  <p>The <dfn data-x="concept-bcc-content-document">content document</dfn> of a <span>browsing
+  context container</span> <var>container</var> is the result of the following algorithm:</p>
+
+  <ol>
+   <li><p>If <var>container</var>'s <span>nested browsing context</span> is null, then return
+   null.</p></li>
+
+   <li><p>Let <var>context</var> be <var>container</var>'s <span>nested browsing
+   context</span>.</p></li>
+
+   <li><p>Let <var>document</var> be <var>context</var>'s <span>active document</span>.</p></li>
+
+   <li><p>If <var>document</var>'s <span>origin</span> and the <span
+   data-x="concept-settings-object-origin">origin</span> specified by the <span>current settings
+   object</span> are not <span>same origin-domain</span>, then return null.</p></li>
+
+   <li><p>Return <var>document</var>.</p></li>
+  </ol>
+
+
+  

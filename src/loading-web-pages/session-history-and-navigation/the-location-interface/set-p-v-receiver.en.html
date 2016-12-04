@@ -1,0 +1,11 @@
+<h5 id="location-set">[[Set]] ( <var>P</var>, <var>V</var>, <var>Receiver</var> )</h5>
+
+  <ol>
+   <li><p>If <span>IsPlatformObjectSameOrigin</span>(<b>this</b>) is true, then return ?
+   <span>OrdinarySet</span>(<b>this</b>, <var>P</var>, <var>Receiver</var>).</p></li>
+
+   <li><p>Return ? <span>CrossOriginSet</span>(<b>this</b>, <var>P</var>, <var>V</var>,
+   <var>Receiver</var>).</p></li>
+  </ol>
+
+  

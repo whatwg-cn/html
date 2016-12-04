@@ -1,0 +1,187 @@
+<h4>The <dfn><code>fieldset</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Sectioning root</span>.</dd>
+   <dd><span data-x="category-listed">Listed</span> <span>form-associated element</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Optionally a <code>legend</code> element, followed by <span>flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-fieldset-disabled">disabled</code></dd>
+   <dd><code data-x="attr-fae-form">form</code></dd>
+   <dd><code data-x="attr-fe-name">name</code> <!-- variant --> </dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLFieldSetElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-fieldset-disabled">disabled</span>;
+  readonly attribute <span>HTMLFormElement</span>? <span data-x="dom-fae-form">form</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-fe-name">name</span>;
+
+  readonly attribute DOMString <span data-x="dom-fieldset-type">type</span>;
+
+  [SameObject] readonly attribute <span>HTMLCollection</span> <span data-x="dom-fieldset-elements">elements</span>;
+
+  readonly attribute boolean <span data-x="dom-cva-willValidate">willValidate</span>;
+  [SameObject] readonly attribute <span>ValidityState</span> <span data-x="dom-cva-validity">validity</span>;
+  readonly attribute DOMString <span data-x="dom-cva-validationMessage">validationMessage</span>;
+  boolean <span data-x="dom-cva-checkValidity">checkValidity</span>();
+  boolean <span data-x="dom-cva-reportValidity">reportValidity</span>();
+  void <span data-x="dom-cva-setCustomValidity">setCustomValidity</span>(DOMString error);
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>fieldset</code> element <span>represents</span> a set of form controls optionally
+  grouped under a common name.</p>
+
+  <p>The name of the group is given by the first <code>legend</code> element that is a child of the
+  <code>fieldset</code> element, if any. The remainder of the descendants form the group.</p>
+
+  <p>The <dfn><code data-x="attr-fieldset-disabled">disabled</code></dfn> attribute, when specified,
+  causes all the form control descendants of the <code>fieldset</code> element, excluding those that
+  are descendants of the <code>fieldset</code> element's first <code>legend</code> element child, if
+  any, to be <span data-x="concept-fe-disabled">disabled</span>.</p>
+
+  <p>A <code>fieldset</code> element is a <dfn data-x="concept-fieldset-disabled">disabled
+  fieldset</dfn> if it matches any of the following conditions:</p>
+
+  <ul>
+
+   <li>Its <code data-x="attr-fieldset-disabled">disabled</code> attribute is specified
+
+   <li>It is a descendant of another <code>fieldset</code> element whose <code
+   data-x="attr-fieldset-disabled">disabled</code> attribute is specified, and is <em>not</em> a
+   descendant of that <code>fieldset</code> element's first <code>legend</code> element child, if
+   any.</li>
+
+  </ul>
+
+  <p>The <code data-x="attr-fae-form">form</code> attribute is used to explicitly associate the
+  <code>fieldset</code> element with its <span>form owner</span>. The <code
+  data-x="attr-fe-name">name</code> attribute represents the element's name.</p>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>fieldset</var> . <code subdfn data-x="dom-fieldset-type">type</code></dt>
+
+   <dd>
+
+    <p>Returns the string "fieldset".</p>
+
+   </dd>
+
+   <dt><var>fieldset</var> . <code subdfn data-x="dom-fieldset-elements">elements</code></dt>
+
+   <dd>
+
+    <p>Returns an <code>HTMLCollection</code> of the form controls in the element.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-fieldset-disabled">disabled</code></dfn> IDL attribute must
+  <span>reflect</span> the content attribute of the same name.</p>
+
+  <p>The <dfn><code data-x="dom-fieldset-type">type</code></dfn> IDL attribute must return the string
+  "<code data-x="">fieldset</code>".</p>
+
+  <p>The <dfn><code data-x="dom-fieldset-elements">elements</code></dfn> IDL attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>fieldset</code> element, whose filter
+  matches <span data-x="category-listed">listed elements</span>.</p>
+
+  <p>The <code data-x="dom-cva-willValidate">willValidate</code>, <code
+  data-x="dom-cva-validity">validity</code>, and <code
+  data-x="dom-cva-validationMessage">validationMessage</code> attributes, and the <code
+  data-x="dom-cva-checkValidity">checkValidity()</code>, <code
+  data-x="dom-cva-reportValidity">reportValidity()</code>, and <code
+  data-x="dom-cva-setCustomValidity">setCustomValidity()</code> methods, are part of the
+  <span>constraint validation API</span>. The <code data-x="dom-fae-form">form</code> and <code
+  data-x="dom-fe-name">name</code> IDL attributes are part of the element's forms API.</p>
+
+  </div>
+<!--TOPIC:HTML-->
+
+  <div class="example">
+
+   <p>This example shows a <code>fieldset</code> element being used to group a set of related
+   controls:</p>
+
+   <pre>&lt;fieldset>
+ &lt;legend>Display&lt;/legend>
+ &lt;p>&lt;label>&lt;input type=radio name=c value=0 checked> Black on White&lt;/label>
+ &lt;p>&lt;label>&lt;input type=radio name=c value=1> White on Black&lt;/label>
+ &lt;p>&lt;label>&lt;input type=checkbox name=g> Use grayscale&lt;/label>
+ &lt;p>&lt;label>Enhance contrast &lt;input type=range name=e list=contrast min=0 max=100 value=0 step=1>&lt;/label>
+ &lt;datalist id=contrast>
+  &lt;option label=Normal value=0>
+  &lt;option label=Maximum value=100>
+ &lt;/datalist>
+&lt;/fieldset></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following snippet shows a fieldset with a checkbox in the legend that controls whether or
+   not the fieldset is enabled. The contents of the fieldset consist of two required text controls
+   and an optional year/month control.</p>
+
+   <pre>&lt;fieldset name="clubfields" disabled>
+ &lt;legend> &lt;label>
+  &lt;input type=checkbox name=club onchange="form.clubfields.disabled = !checked">
+  Use Club Card
+ &lt;/label> &lt;/legend>
+ &lt;p>&lt;label>Name on card: &lt;input name=clubname required>&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Card number: &lt;input name=clubnum required pattern="[-0-9]+">&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Expiry date: &lt;input name=clubexp type=month>&lt;/label>&lt;/p>
+&lt;/fieldset></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>You can also nest <code>fieldset</code> elements. Here is an example expanding on the previous
+   one that does so:</p>
+
+   <pre>&lt;fieldset name="clubfields" disabled>
+ &lt;legend> &lt;label>
+  &lt;input type=checkbox name=club onchange="form.clubfields.disabled = !checked">
+  Use Club Card
+ &lt;/label> &lt;/legend>
+ &lt;p>&lt;label>Name on card: &lt;input name=clubname required>&lt;/label>&lt;/p>
+ &lt;fieldset name="numfields">
+  &lt;legend> &lt;label>
+   &lt;input type=radio checked name=clubtype onchange="form.numfields.disabled = !checked">
+   My card has numbers on it
+  &lt;/label> &lt;/legend>
+  &lt;p>&lt;label>Card number: &lt;input name=clubnum required pattern="[-0-9]+">&lt;/label>&lt;/p>
+ &lt;/fieldset>
+ &lt;fieldset name="letfields" disabled>
+  &lt;legend> &lt;label>
+   &lt;input type=radio name=clubtype onchange="form.letfields.disabled = !checked">
+   My card has letters on it
+  &lt;/label> &lt;/legend>
+  &lt;p>&lt;label>Card code: &lt;input name=clublet required pattern="[A-Za-z]+">&lt;/label>&lt;/p>
+ &lt;/fieldset>
+&lt;/fieldset></pre>
+
+   <p>In this example, if the outer "Use Club Card" checkbox is not checked, everything inside the
+   outer <code>fieldset</code>, including the two radio buttons in the legends of the two nested
+   <code>fieldset</code>s, will be disabled. However, if the checkbox is checked, then the radio
+   buttons will both be enabled and will let you select which of the two inner
+   <code>fieldset</code>s is to be enabled.</p>
+
+  </div>
+
+
+  

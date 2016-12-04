@@ -1,0 +1,20 @@
+<h5><dfn>Comment less-than sign state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+0021 EXCLAMATION MARK (!)</dt>
+   <dd>Append the <span>current input character</span> to the comment token's data. Switch to the
+   <span>comment less-than sign bang state</span>.</dd>
+
+   <dt>U+003C LESS-THAN SIGN (&lt;)</dt>
+   <dd>Append the <span>current input character</span> to the comment token's data.</dd>
+
+   <dt>Anything else</dt>
+   <dd><span>Reconsume</span> in the <span>comment state</span>.</dd>
+
+  </dl>
+
+
+  

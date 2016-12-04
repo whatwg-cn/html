@@ -1,0 +1,905 @@
+<h4>Downloading or updating an application cache</h4>
+
+  <p>When the user agent is required (by other parts of this specification) to start the
+  <dfn>application cache download process</dfn> for an <span>absolute URL</span> purported to
+  identify a <span data-x="concept-appcache-manifest">manifest</span>, or for an <span>application
+  cache group</span>, potentially given a particular <span>cache host</span>, and potentially given
+  a <span data-x="concept-appcache-master">master</span> resource, the user agent must run the steps
+  below. These steps are always run <span>in parallel</span> with the <span>event loop</span>
+  <span data-x="concept-task">tasks</span>.</p>
+
+  <p>Some of these steps have requirements that only apply if the user agent <dfn>shows caching
+  progress</dfn>. Support for this is optional. Caching progress UI could consist of a progress bar
+  or message panel in the user agent's interface, or an overlay, or something else. Certain events
+  fired during the <span>application cache download process</span> allow the script to override the
+  display of such an interface. (Such events are delayed until after the <code
+  data-x="event-load">load</code> event has fired.)
+
+  The goal of this is to allow Web applications to provide more
+  seamless update mechanisms, hiding from the user the mechanics of the application cache mechanism.
+  User agents may display user interfaces independent of this, but are encouraged to not show
+  prominent update progress notifications for applications that cancel the relevant events.</p>
+
+  <p>The <span>application cache download process</span> steps are as follows:
+
+  <ol>
+
+   <li><p>Optionally, wait until the permission to start the <span>application cache download
+   process</span> has been obtained from the user and until the user agent is confident that the
+   network is available. This could include doing nothing until the user explicitly opts-in to
+   caching the site, or could involve prompting the user for permission. The algorithm might never
+   get past this point. (This step is particularly intended to be used by user agents running on
+   severely space-constrained devices or in highly privacy-sensitive environments).</p></li>
+
+   <li>
+
+    <p>Atomically, so as to avoid race conditions, perform the following substeps:</p>
+
+    <ol>
+
+     <li>
+
+      <p>Pick the appropriate substeps:</p>
+
+      <dl class="switch">
+
+       <dt>If these steps were invoked with an <span>absolute URL</span> purported to identify a
+       <span data-x="concept-appcache-manifest">manifest</span></dt>
+
+       <dd>
+
+        <p>Let <var>manifest URL</var> be that <span>absolute URL</span>.</p>
+
+        <p>If there is no <span>application cache group</span> identified by <var>manifest
+        URL</var>, then create a new <span>application cache group</span> identified by <var>manifest URL</var>. Initially, it has no <span data-x="application
+        cache">application caches</span>. One will be created later in this algorithm.</p>
+
+       </dd>
+
+
+       <dt>If these steps were invoked with an <span>application cache group</span></dt>
+
+       <dd>
+
+        <p>Let <var>manifest URL</var> be the <span>absolute URL</span> of the <span
+        data-x="concept-appcache-manifest">manifest</span> used to identify the <span>application
+        cache group</span> to be updated.</p>
+
+        <p>If that <span>application cache group</span> is <span
+        data-x="concept-appcache-obsolete">obsolete</span>, then abort this instance of the
+        <span>application cache download process</span>. This can happen if another instance of this
+        algorithm found the manifest to be 404 or 410 while this algorithm was waiting in the first
+        step above.</p>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li><p>Let <var>cache group</var> be the <span>application cache group</span>
+     identified by <var>manifest URL</var>.</p></li>
+
+     <li><p>If these steps were invoked with a <span data-x="concept-appcache-master">master</span>
+     resource, then add the resource, along with the resource's <code>Document</code>, to <var>cache group</var>'s <span data-x="concept-appcache-pending-masters">list of pending
+     master entries</span>.</p></li>
+
+     <li>
+      <p>If these steps were invoked with a <span>cache host</span>, and the <span
+      data-x="concept-appcache-status">status</span> of <var>cache group</var> is
+      <i>checking</i> or <i>downloading</i>, then <span>queue a post-load task</span> to run these
+      steps:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-checking">checking</code> at the
+       <code>ApplicationCache</code> singleton of that <span>cache host</span>, with the <code
+       data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       user agent is checking to see if it can download the application.</p></li>
+      </ol>
+     </li>
+
+     <li>
+      <p>If these steps were invoked with a <span>cache host</span>, and the <span
+      data-x="concept-appcache-status">status</span> of <var>cache group</var> is
+      <i>downloading</i>, then also <span>queue a post-load task</span> to run these steps:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-downloading">downloading</code> at the
+       <code>ApplicationCache</code> singleton of that <span>cache host</span>, with the <code
+       data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user the
+       application is being downloaded.</p></li>
+      </ol>
+     </li>
+
+     <li><p>If the <span data-x="concept-appcache-status">status</span> of the <var>cache
+     group</var> is either <i>checking</i> or <i>downloading</i>, then abort this instance of the
+     <span>application cache download process</span>, as an update is already in progress.</p></li>
+
+     <li><p>Set the <span data-x="concept-appcache-status">status</span> of <var>cache
+     group</var> to <i>checking</i>.</p>
+
+     <li>
+      <p>For each <span>cache host</span> associated with an <span>application cache</span> in
+      <var>cache group</var>, <span>queue a post-load task</span> run these steps:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-checking">checking</code> at the
+       <code>ApplicationCache</code> singleton of the <span>cache host</span>, with the <code
+       data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       user agent is checking for the availability of updates.</p></li>
+      </ol>
+     </li>
+    </ol>
+
+    <p class="note">The remainder of the steps run <span>in parallel</span>.</p>
+
+    <p>If <var>cache group</var> already has an <span>application cache</span> in it, then
+    this is an <dfn data-x="concept-appcache-upgrade">upgrade attempt</dfn>. Otherwise, this is a
+    <dfn data-x="concept-appcache-cache">cache attempt</dfn>.</p>
+
+   </li>
+
+   <li>
+    <p>If this is a <span data-x="concept-appcache-cache">cache attempt</span>, then this algorithm
+    was invoked with a <span>cache host</span>; <span>queue a post-load task</span> to run these
+    steps:</p>
+
+    <ol>
+     <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-appcache-checking">checking</code> at the
+     <code>ApplicationCache</code> singleton of that <span>cache host</span>, with the <code
+     data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+     <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+     progress</span>, then display some sort of user interface indicating to the user that the user
+     agent is checking for the availability of updates.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is <var>manifest URL</var>, <span
+   data-x="concept-request-client">client</span> is null, <span
+   data-x="concept-request-destination">destination</span> is the empty string,
+   <span>omit-<code>Origin</code>-header flag</span> is set, <span
+   data-x="concept-request-referrer">referrer</span> is "<code data-x="">no-referrer</code>",
+   <span>synchronous flag</span> is set, <span data-x="concept-request-credentials-mode">credentials
+   mode</span> is "<code data-x="">include</code>", and whose <span>use-URL-credentials
+   flag</span> is set.</p></li>
+
+   <li>
+
+    <!--FETCH--><p><i>Fetching the manifest</i>: Let <var>manifest</var> be the result of <span
+    data-x="concept-fetch">fetching</span> <var>request</var>. HTTP caching semantics should be
+    honored for this request.<!--TODO: unclear if we still need this last sentence--></p>
+
+    <p>Parse <var>manifest</var>'s <span data-x="concept-response-body">body</span> according to the
+    <span data-x="parse a manifest">rules for parsing manifests</span>, obtaining a list of
+    <span data-x="concept-appcache-explicit">explicit entries</span>, <span
+    data-x="concept-appcache-fallback">fallback entries</span> and the <span
+    data-x="concept-appcache-fallback-ns">fallback namespaces</span> that map to them, entries for
+    the <span data-x="concept-appcache-onlinesafelist">online safelist</span>, and values for the
+    <span data-x="concept-appcache-onlinesafelist-wildcard">online safelist wildcard flag</span>
+    and the <span data-x="concept-appcache-mode">cache mode flag</span>.</p>
+
+    <p class="note">The <span>MIME type</span> of the resource is ignored &mdash; it is assumed to
+    be <code>text/cache-manifest</code>. In the future, if new manifest formats are supported, the
+    different types will probably be distinguished on the basis of the file signatures (for the
+    current format, that is the "<code data-x="">CACHE&nbsp;MANIFEST</code>" string at the top of the
+    file).</p>
+
+   </li>
+
+   <li>
+
+    <p>If <i>fetching the manifest</i> fails due to a 404 or 410 response status, then run these
+    substeps:</p>
+
+    <ol>
+
+     <li><p>Mark <var>cache group</var> as <span
+     data-x="concept-appcache-obsolete">obsolete</span>. This <var>cache group</var> no
+     longer exists for any purpose other than the processing of <code>Document</code> objects
+     already associated with an <span>application cache</span> in the <var>cache
+     group</var>.</p></li>
+
+     <li><p>Let <var>task list</var> be an empty list of <span
+     data-x="concept-task">tasks</span>.</p>
+
+     <li>
+      <p>For each <span>cache host</span> associated with an <span>application cache</span> in
+      <var>cache group</var>, create a <span data-x="concept-task">task</span> to run these
+      steps and append it to <var>task list</var>:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-obsolete">obsolete</code> at the
+       <code>ApplicationCache</code> singleton of the <span>cache host</span>, with the <code
+       data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       application is no longer available for offline use.</p></li>
+      </ol>
+     </li>
+
+     <li>
+      <p>For each entry in <var>cache group</var>'s <span
+      data-x="concept-appcache-pending-masters">list of pending master entries</span>, create a
+      <span data-x="concept-task">task</span> to run these steps and append it to <var>task
+      list</var>:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-error">error</code> (not <code
+       data-x="event-appcache-obsolete">obsolete</code>!) at the <code>ApplicationCache</code>
+       singleton of the <code>Document</code> for this entry, if there still is one, with the <code
+       data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       user agent failed to save the application for offline use.</p></li>
+      </ol>
+     </li>
+
+     <li><p>If <var>cache group</var> has an <span>application cache</span> whose <span
+     data-x="concept-appcache-completeness">completeness flag</span> is <i>incomplete</i>, then
+     discard that <span>application cache</span>.</p>
+
+     <li><p>If appropriate, remove any user interface indicating that an update for this cache is in
+     progress.</p></li>
+
+     <li><p>Let the <span data-x="concept-appcache-status">status</span> of <var>cache
+     group</var> be <i>idle</i>.</p></li>
+
+     <li><p>For each <span data-x="concept-task">task</span> in <var>task list</var>, <span
+     data-x="queue a post-load task">queue that task as a post-load task</span>.</p></li>
+
+     <li><p>Abort the <span>application cache download process</span>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, if <i>fetching the manifest</i> fails in some other way (e.g. the server returns
+    another 4xx or 5xx response, or there is a DNS error, or the connection times out, or the user
+    cancels the download, or the parser for manifests fails when checking the magic signature), or
+    if the server returned a redirect, then run the <span>cache failure steps</span>. <ref
+    spec=HTTP></p>
+
+   </li>
+
+   <li>
+
+    <p>If this is an <span data-x="concept-appcache-upgrade">upgrade attempt</span> and the newly
+    downloaded <var>manifest</var> is byte-for-byte identical to the manifest found in the
+    <span data-x="concept-appcache-newer">newest</span> <span>application cache</span> in <var>cache
+    group</var>, or the response status is <code data-x="">304</code>, then run these substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>cache</var> be the <span data-x="concept-appcache-newer">newest</span>
+     <span>application cache</span> in <var>cache group</var>.</p></li>
+
+     <li><p>Let <var>task list</var> be an empty list of <span
+     data-x="concept-task">tasks</span>.</p>
+
+     <li>
+
+      <p>For each entry in <var>cache group</var>'s <span
+      data-x="concept-appcache-pending-masters">list of pending master entries</span>, wait for the
+      resource for this entry to have either completely downloaded or failed.</p>
+
+      <p>If the download failed (e.g. the server returns a 4xx or 5xx response, or there is a DNS
+      error, the connection times out, or the user cancels the download), or if the resource is
+      labeled with the "no-store" cache directive, then create a <span
+      data-x="concept-task">task</span> to run these steps and append it to <var>task
+      list</var>:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-error">error</code> at the
+       <code>ApplicationCache</code> singleton of the <code>Document</code> for this entry, if there
+       still is one, with the <code data-x="dom-Event-cancelable">cancelable</code> attribute
+       initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       user agent failed to save the application for offline use.</p></li>
+      </ol>
+
+      <p>Otherwise, associate the <code>Document</code> for this entry with <var>cache</var>; store the resource for this entry in <var>cache</var>, if it
+      isn't already there, and categorize its entry as a <span
+      data-x="concept-appcache-master">master entry</span>. If applying the <span>URL parser</span>
+      algorithm to the resource's <span>URL</span> results in a <span>URL record</span> that has a
+      non-null <span data-x="concept-url-fragment">fragment</span> component, the <span>URL</span>
+      used for the entry in <var>cache</var> must instead be the <span>absolute URL</span>
+      obtained from applying the <span data-x="concept-url-serializer">URL serializer</span>
+      algorithm to the <span>URL record</span> with the <i>exclude fragment flag</i> set
+      (application caches never include <span data-x="concept-url-fragment">fragments</span>).</p>
+
+     </li>
+
+     <li>
+      <p>For each <span>cache host</span> associated with an <span>application cache</span> in
+      <var>cache group</var>, create a <span data-x="concept-task">task</span> to run these steps
+      and append it to <var>task list</var>:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-noupdate">noupdate</code> at the
+       <code>ApplicationCache</code> singleton of the <span>cache host</span>, with the <code
+       data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       application is up to date.</p></li>
+      </ol>
+     </li>
+
+     <li><p>Empty <var>cache group</var>'s <span
+     data-x="concept-appcache-pending-masters">list of pending master entries</span>.</p></li>
+
+     <li><p>If appropriate, remove any user interface indicating that an update for this cache is in
+     progress.</p></li>
+
+     <li><p>Let the <span data-x="concept-appcache-status">status</span> of <var>cache
+     group</var> be <i>idle</i>.</p></li>
+
+     <li><p>For each <span data-x="concept-task">task</span> in <var>task list</var>, <span
+     data-x="queue a post-load task">queue that task as a post-load task</span>.</p></li>
+
+     <li><p>Abort the <span>application cache download process</span>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Let <var>new cache</var> be a newly created <span>application cache</span> in
+   <var>cache group</var>. Set its <span data-x="concept-appcache-completeness">completeness
+   flag</span> to <i>incomplete</i>.</p></li>
+
+   <li><p>For each entry in <var>cache group</var>'s <span
+   data-x="concept-appcache-pending-masters">list of pending master entries</span>, associate the
+   <code>Document</code> for this entry with <var>new cache</var>.</p></li>
+
+   <li><p>Set the <span data-x="concept-appcache-status">status</span> of <var>cache
+   group</var> to <i>downloading</i>.</p></li>
+
+   <li>
+    <p>For each <span>cache host</span> associated with an <span>application cache</span> in
+    <var>cache group</var>, <span>queue a post-load task</span> to run these steps:</p>
+
+    <ol>
+     <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-appcache-downloading">downloading</code> at the
+     <code>ApplicationCache</code> singleton of the <span>cache host</span>, with the <code
+     data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+     <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+     progress</span>, then display some sort of user interface indicating to the user that a new
+     version is being downloaded.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Let <var>file list</var> be an empty list of URLs with flags.</p></li>
+
+   <li><p>Add all the URLs in the list of <span data-x="concept-appcache-explicit">explicit
+   entries</span> obtained by parsing <var>manifest</var> to <var>file list</var>,
+   each flagged with "explicit entry".</p></li>
+
+   <li><p>Add all the URLs in the list of <span data-x="concept-appcache-fallback">fallback
+   entries</span> obtained by parsing <var>manifest</var> to <var>file list</var>,
+   each flagged with "fallback entry".</p></li>
+
+   <li><p>If this is an <span data-x="concept-appcache-upgrade">upgrade attempt</span>, then add all
+   the URLs of <span data-x="concept-appcache-master">master entries</span> in the <span
+   data-x="concept-appcache-newer">newest</span> <span>application cache</span> in <var>cache group</var> whose <span data-x="concept-appcache-completeness">completeness
+   flag</span> is <i>complete</i> to <var>file list</var>, each flagged with "master
+   entry".</p></li>
+
+   <li><p>If any URL is in <var>file list</var> more than once, then merge the entries into
+   one entry for that URL, that entry having all the flags that the original entries had.</p></li>
+
+   <li>
+
+    <p>For each URL in <var>file list</var>, run the following steps. These steps may be
+    run in parallel for two or more of the URLs at a time. If, while running these steps, the
+    <code>ApplicationCache</code> object's <code data-x="dom-appcache-abort">abort()</code> method
+    <span data-x="send a signal">sends a signal</span> to this instance of the <span>application
+    cache download process</span> algorithm, then run the <span>cache failure steps</span>
+    instead.</p>
+
+    <ol>
+
+     <li>
+
+      <p>If the resource URL being processed was flagged as neither an "explicit entry" nor or a
+      "fallback entry", then the user agent may skip this URL.</p>
+
+      <p class="note">This is intended to allow user agents to expire resources not listed in the
+      manifest from the cache. Generally, implementors are urged to use an approach that expires
+      lesser-used resources first.</p>
+
+     </li>
+
+     <li>
+      <p>For each <span>cache host</span> associated with an <span>application cache</span> in
+      <var>cache group</var>, <span>queue a progress post-load task</span> to run these steps:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-progress">progress</code> at the
+       <code>ApplicationCache</code> singleton of the <span>cache host</span>, using
+       <code>ProgressEvent</code>, with the <code data-x="dom-Event-cancelable">cancelable</code>
+       attribute initialized to true, the <code
+       data-x="dom-ProgressEvent-lengthComputable">lengthComputable</code> attribute initialized to
+       true, the <code data-x="dom-ProgressEvent-total">total</code> attribute initialized to the
+       number of files in <var>file list</var>, and the <code
+       data-x="dom-ProgressEvent-loaded">loaded</code> attribute initialized to the number of files
+       in <var>file list</var> that have been either downloaded or skipped so far. <ref
+       spec=XHR></p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that a file
+       is being downloaded in preparation for updating the application.</p></li>
+      </ol>
+     </li>
+
+     <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+     <span data-x="concept-request-url">url</span> is URL, <span
+     data-x="concept-request-client">client</span> is null, <span
+     data-x="concept-request-destination">destination</span> is the empty string,
+     <span data-x="concept-request-origin">origin</span> is
+     <var>manifest URL</var>'s <span>origin</span>, <span
+     data-x="concept-request-referrer">referrer</span> is "<code data-x="">no-referrer</code>",
+     <span>synchronous flag</span> is set, <span
+     data-x="concept-request-credentials-mode">credentials mode</span> is "<code
+     data-x="">include</code>", <span>use-URL-credentials flag</span> is set, and <span
+     data-x="concept-request-redirect-mode">redirect mode</span> is "<code
+     data-x="">manual</code>".</p></li>
+
+     <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>. If this is an
+     <span data-x="concept-appcache-upgrade">upgrade attempt</span>, then use the <span
+     data-x="concept-appcache-newer">newest</span> <span>application cache</span> in <var>cache
+     group</var> as an HTTP cache, and honor HTTP caching semantics (such as expiration, ETags, and
+     so forth) with respect to that cache. User agents may also have other caches in place that are
+     also honored.</p></li>
+
+     <li>
+
+      <p>If the previous step fails (e.g. the server returns a 4xx or 5xx response, or there is a
+      DNS error, or the connection times out, or the user cancels the download), or if the server
+      returned a redirect, or if the resource is labeled with the "no-store" cache directive, then
+      run the first appropriate step from the following list: <ref spec=HTTP></p>
+
+      <dl class="switch">
+
+       <dt>If the URL being processed was flagged as an "explicit entry" or a "fallback entry"</dt>
+
+       <dd>
+
+        <p>If these steps are being run in parallel for any other URLs in <var>file
+        list</var>, then abort these steps for those other URLs. Run the <span>cache failure
+        steps</span>.</p>
+
+        <p class="note">Redirects are fatal because they are either indicative of a network problem
+        (e.g. a captive portal); or would allow resources to be added to the cache under URLs that
+        differ from any URL that the networking model will allow access to, leaving orphan entries;
+        or would allow resources to be stored under URLs different than their true URLs. All of
+        these situations are bad.</p>
+
+       </dd>
+
+       <dt>If the error was a 404 or 410 HTTP response</dt>
+
+       <dt>If the resource was labeled with the "no-store" cache directive</dt>
+
+       <dd>
+
+        <p>Skip this resource. It is dropped from the cache.</p>
+
+       </dd>
+
+       <dt>Otherwise</dt>
+
+       <dd>
+
+        <p>Copy the resource and its metadata from the <span
+        data-x="concept-appcache-newer">newest</span> <span>application cache</span> in <var>cache group</var> whose <span data-x="concept-appcache-completeness">completeness
+        flag</span> is <i>complete</i>, and act as if that was the fetched resource, ignoring the
+        resource obtained from the network.</p>
+
+       </dd>
+
+      </dl>
+
+      <p>User agents may warn the user of these errors as an aid to development.</p>
+
+      <p class="note">These rules make errors for resources listed in the manifest fatal, while
+      making it possible for other resources to be removed from caches when they are removed from
+      the server, without errors, and making non-manifest resources survive server-side errors.</p>
+
+      <p class="note">Except for the "no-store" directive, HTTP caching rules that would cause a
+      file to be expired or otherwise not cached are ignored for the purposes of the
+      <span>application cache download process</span>.</p>
+
+     </li>
+
+     <li>
+
+      <p>Otherwise, the fetching succeeded. Store the resource in the <var>new
+      cache</var>.</p>
+
+      <p>If the user agent is not able to store the resource (e.g. because of quota restrictions),
+      the user agent may prompt the user or try to resolve the problem in some other manner (e.g.
+      automatically pruning content in other caches). If the problem cannot be resolved, the user
+      agent must run the <span>cache failure steps</span>.</p>
+
+     </li>
+
+     <li><p>If the URL being processed was flagged as an "explicit entry" in <var>file
+     list</var>, then categorize the entry as an <span data-x="concept-appcache-explicit">explicit
+     entry</span>.</p></li>
+
+     <li><p>If the URL being processed was flagged as a "fallback entry" in <var>file
+     list</var>, then categorize the entry as a <span data-x="concept-appcache-fallback">fallback
+     entry</span>.</p></li>
+
+     <li><p>If the URL being processed was flagged as an "master entry" in <var>file
+     list</var>, then categorize the entry as a <span data-x="concept-appcache-master">master
+     entry</span>.</p></li>
+
+     <li><p>As an optimization, if the resource is an HTML or XML file whose <span>document
+     element</span> is an <code>html</code> element with a <code
+     data-x="attr-html-manifest">manifest</code> attribute whose value doesn't match the manifest
+     URL of the application cache being processed, then the user agent should mark the entry as
+     being <span data-x="concept-appcache-foreign">foreign</span>.</p>
+
+    </ol>
+
+   </li>
+
+   <li>
+    <p>For each <span>cache host</span> associated with an <span>application cache</span> in
+    <var>cache group</var>, <span>queue a progress post-load task</span> to run these steps:</p>
+
+    <ol>
+     <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing an
+     event </span> named <code data-x="event-appcache-progress">progress</code> at the
+     <code>ApplicationCache</code> singleton of the <span>cache host</span>, using
+     <code>ProgressEvent</code>, with the <code data-x="dom-Event-cancelable">cancelable</code>
+     attribute initialized to true, the <code
+     data-x="dom-ProgressEvent-lengthComputable">lengthComputable</code> attribute initialized to
+     true, and the <code data-x="dom-ProgressEvent-total">total</code> and <code
+     data-x="dom-ProgressEvent-loaded">loaded</code> attributes initialized to the number of files
+     in <var>file list</var>. <ref spec=XHR></p></li>
+
+     <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+     progress</span>, then display some sort of user interface indicating to the user that all the
+     files have been downloaded. </p></li>
+    </ol>
+   </li>
+
+   <li><p>Store the list of <span data-x="concept-appcache-fallback-ns">fallback namespaces</span>,
+   and the URLs of the <span data-x="concept-appcache-fallback">fallback entries</span> that they map
+   to, in <var>new cache</var>.</p></li>
+
+   <li><p>Store the URLs that form the new <span data-x="concept-appcache-onlinesafelist">online
+   safelist</span> in <var>new cache</var>.</p></li>
+
+   <li><p>Store the value of the new <span data-x="concept-appcache-onlinesafelist-wildcard">online
+   safelist wildcard flag</span> in <var>new cache</var>.</p></li>
+
+   <li><p>Store the value of the new <span data-x="concept-appcache-mode">cache mode flag</span> in
+   <var>new cache</var>.</p></li>
+
+   <li>
+
+    <p>For each entry in <var>cache group</var>'s <span
+    data-x="concept-appcache-pending-masters">list of pending master entries</span>, wait for the
+    resource for this entry to have either completely downloaded or failed.</p>
+
+    <p>If the download failed (e.g. the server returns a 4xx or 5xx response, or there is a DNS
+    error, the connection times out, or the user cancels the download), or if the resource is
+    labeled with the "no-store" cache directive, then run these substeps:</p>
+
+    <ol>
+
+     <li><p>Unassociate the <code>Document</code> for this entry from <var>new
+     cache</var>.</p></li>
+
+     <li>
+      <p><span>Queue a post-load task</span> to run these steps:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-error">error</code> at the
+       <code>ApplicationCache</code> singleton of the <code>Document</code> for this entry, if there
+       still is one, with the <code data-x="dom-Event-cancelable">cancelable</code> attribute
+       initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       user agent failed to save the application for offline use.</p></li>
+      </ol>
+     </li>
+
+     <li>
+
+      <p>If this is a <span data-x="concept-appcache-cache">cache attempt</span> and this entry is
+      the last entry in <var>cache group</var>'s <span
+      data-x="concept-appcache-pending-masters">list of pending master entries</span>, then run these
+      further substeps:</p>
+
+      <ol>
+
+       <li><p>Discard <var>cache group</var> and its only <span>application cache</span>,
+       <var>new cache</var>.</p>
+
+       <li><p>If appropriate, remove any user interface indicating that an update for this cache is
+       in progress.</p></li>
+
+       <li><p>Abort the <span>application cache download process</span>.</p></li>
+
+      </ol>
+
+     </li>
+
+     <li><p>Otherwise, remove this entry from <var>cache group</var>'s <span
+     data-x="concept-appcache-pending-masters">list of pending master entries</span>.</p></li>
+
+    </ol>
+
+    <p>Otherwise, store the resource for this entry in <var>new cache</var>, if it isn't
+    already there, and categorize its entry as a <span data-x="concept-appcache-master">master
+    entry</span>.</p>
+
+   </li>
+
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is <var>manifest URL</var>, <span
+   data-x="concept-request-client">client</span> is null, <span
+   data-x="concept-request-destination">destination</span> is the empty string,
+   <span data-x="concept-request-referrer">referrer</span> is "<code data-x="">no-referrer</code>",
+   <span>synchronous flag</span> is set, <span data-x="concept-request-credentials-mode">credentials
+   mode</span> is "<code data-x="">include</code>", and whose <span>use-URL-credentials
+   flag</span> is set.</p></li>
+
+   <li>
+
+    <!--FETCH--><p>Let <var>second manifest</var> be the result of <span
+    data-x="concept-fetch">fetching</span> <var>request</var>. HTTP caching semantics should again
+    be honored for this request.</p>
+
+    <p class="note">Since caching can be honored, authors are encouraged to avoid setting the cache
+    headers on the manifest in such a way that the user agent would simply not contact the network
+    for this second request; otherwise, the user agent would not notice if the cache had changed
+    during the cache update process.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the previous step failed for any reason, or if the fetching attempt involved a redirect,
+    or if <var>second manifest</var> and <var>manifest</var> are not byte-for-byte
+    identical, then schedule a rerun of the entire algorithm with the same parameters after a short
+    delay, and run the <span>cache failure steps</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, store <var>manifest</var> in <var>new cache</var>, if it's not
+    there already, and categorize its entry as <span data-x="concept-appcache-manifest">the
+    manifest</span>.</p>
+
+   </li>
+
+   <li><p>Set the <span data-x="concept-appcache-completeness">completeness flag</span> of <var>new cache</var> to <i>complete</i>.</p></li>
+
+   <li><p>Let <var>task list</var> be an empty list of <span
+   data-x="concept-task">tasks</span>.</p>
+
+   <li>
+
+    <p>If this is a <span data-x="concept-appcache-cache">cache attempt</span>, then for each
+    <span>cache host</span> associated with an <span>application cache</span> in <var>cache
+    group</var>, create a <span data-x="concept-task">task</span> to run these steps and append it
+    to <var>task list</var>:
+
+    <ol>
+     <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-appcache-cached">cached</code> at the
+     <code>ApplicationCache</code> singleton of the <span>cache host</span>, with the <code
+     data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+     <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+     progress</span>, then display some sort of user interface indicating to the user that the
+     application has been cached and that they can now use it offline.</p></li>
+    </ol>
+
+    <p>Otherwise, it is an <span data-x="concept-appcache-upgrade">upgrade attempt</span>. For each
+    <span>cache host</span> associated with an <span>application cache</span> in <var>cache
+    group</var>, create a <span data-x="concept-task">task</span> to run these steps and append it
+    to <var>task list</var>:</p>
+
+    <ol>
+     <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-appcache-updateready">updateready</code> at the
+     <code>ApplicationCache</code> singleton of the <span>cache host</span>, with the <code
+     data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+     <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+     progress</span>, then display some sort of user interface indicating to the user that a new
+     version is available and that they can activate it by reloading the page.</p></li>
+    </ol>
+
+   </li>
+
+   <li><p>If appropriate, remove any user interface indicating that an update for this cache is in
+   progress.</p></li>
+
+   <li><p>Set the <span data-x="concept-appcache-status">update status</span> of <var>cache
+   group</var> to <i>idle</i>.</p></li>
+
+   <li><p>For each <span data-x="concept-task">task</span> in <var>task list</var>, <span
+   data-x="queue a post-load task">queue that task as a post-load task</span>.</p></li>
+
+  </ol>
+
+  <p>The <dfn>cache failure steps</dfn> are as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>task list</var> be an empty list of <span
+   data-x="concept-task">tasks</span>.</p>
+
+   <li>
+
+    <p>For each entry in <var>cache group</var>'s <span
+    data-x="concept-appcache-pending-masters">list of pending master entries</span>, run the
+    following further substeps. These steps may be run in parallel for two or more entries at a
+    time.</p>
+
+    <ol>
+
+     <li><p>Wait for the resource for this entry to have either completely downloaded or failed.</p>
+
+     <li><p>Unassociate the <code>Document</code> for this entry from its <span>application
+     cache</span>, if it has one.</p></li>
+
+     <li>
+      <p>Create a <span data-x="concept-task">task</span> to run these steps and append it to
+      <var>task list</var>:</p>
+
+      <ol>
+       <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing
+       an event</span> named <code data-x="event-appcache-error">error</code> at the
+       <code>ApplicationCache</code> singleton of the <code>Document</code> for this entry, if there
+       still is one, with the <code data-x="dom-Event-cancelable">cancelable</code> attribute
+       initialized to true.</p></li>
+
+       <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+       progress</span>, then display some sort of user interface indicating to the user that the
+       user agent failed to save the application for offline use.</p></li>
+      </ol>
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+    <p>For each <span>cache host</span> still associated with an <span>application cache</span> in
+    <var>cache group</var>, create a <span data-x="concept-task">task</span> to run these steps and
+    append it to <var>task list</var>:</p>
+
+    <ol>
+     <li><p>Let <var>showProgress</var> be the result of <span data-x="concept-event-fire">firing an
+     event</span> named <code data-x="event-appcache-error">error</code> at the
+     <code>ApplicationCache</code> singleton of the <span>cache host</span>, with the <code
+     data-x="dom-Event-cancelable">cancelable</code> attribute initialized to true.</p></li>
+
+     <li><p>If <var>showProgress</var> is true and the user agent <span>shows caching
+     progress</span>, then display some sort of user interface indicating to the user that the user
+     agent failed to save the application for offline use.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Empty <var>cache group</var>'s <span
+   data-x="concept-appcache-pending-masters">list of pending master entries</span>.</p></li>
+
+   <li><p>If <var>cache group</var> has an <span>application cache</span> whose <span
+   data-x="concept-appcache-completeness">completeness flag</span> is <i>incomplete</i>, then discard
+   that <span>application cache</span>.</p>
+
+   <li><p>If appropriate, remove any user interface indicating that an update for this cache is in
+   progress.</p></li>
+
+   <li><p>Let the <span data-x="concept-appcache-status">status</span> of <var>cache
+   group</var> be <i>idle</i>.</p></li>
+
+   <li><p>If this was a <span data-x="concept-appcache-cache">cache attempt</span>, discard <var>cache group</var> altogether.</p>
+
+   <li><p>For each <span data-x="concept-task">task</span> in <var>task list</var>, <span
+   data-x="queue a post-load task">queue that task as a post-load task</span>.</p></li>
+
+   <li><p>Abort the <span>application cache download process</span>.</p></li>
+
+  </ol>
+
+  <p>Attempts to fetch resources as part of the <span>application cache download process</span> may
+  be done with cache-defeating semantics, to avoid problems with stale or inconsistent intermediary
+  caches.</p>
+
+  <hr>
+
+  <p>User agents may invoke the <span>application cache download process</span>, in the background,
+  for any <span>application cache group</span>, at any time (with no <span>cache host</span>). This
+  allows user agents to keep caches primed and to update caches even before the user visits a
+  site.</p>
+
+  <hr>
+
+  <p>Each <code>Document</code> has a list of <dfn>pending application cache download process
+  tasks</dfn> that is used to delay events fired by the algorithm above until the document's <code
+  data-x="event-load">load</code> event has fired. When the <code>Document</code> is created, the
+  list must be empty.</p>
+
+  <p>When the steps above say to <dfn>queue a post-load task</dfn> <var>task</var>, where
+  <var>task</var> is a <span data-x="concept-task">task</span> that dispatches an event on a
+  target <code>ApplicationCache</code> object <var>target</var>, the user agent must run
+  the appropriate steps from the following list:</p>
+
+  <dl>
+
+   <dt>If <var>target</var>'s <span>node document</span> is
+   <span>ready for post-load tasks</span></dt>
+
+   <dd><p><span data-x="queue a task">Queue</span> the task <var>task</var>.</p></dd>
+
+   <dt>Otherwise</dt>
+
+   <dd><p>Add <var>task</var> to <var>target</var>'s <span>node document</span>'s list
+   of <span>pending application cache download process tasks</span>.</p></dd>
+
+  </dl>
+
+  <p>When the steps above say to <dfn>queue a progress post-load task</dfn> <var>task</var>, where
+  <var>task</var> is a <span data-x="concept-task">task</span> that dispatches an event on a
+  target <code>ApplicationCache</code> object <var>target</var>, the user agent must run
+  the following steps:</p>
+
+  <ol>
+
+   <li><p>If there is a <var>task</var> in <var>target</var>'s <span>node document</span>'s list
+   of <span>pending application cache download process tasks</span> that is labeled as a
+   <i>progress task</i>, then remove that task from the list.</p></li>
+
+   <li><p>Label <var>task</var> as a <i>progress task</i>.</p></li>
+
+   <li><p><span>Queue a post-load task</span> <var>task</var>.</p></li>
+
+  </ol>
+
+  <p>The <span>task source</span> for these <span data-x="concept-task">tasks</span> is the
+  <span>networking task source</span>.</p>
+
+
+
+
+  

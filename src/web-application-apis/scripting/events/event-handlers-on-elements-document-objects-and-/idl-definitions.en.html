@@ -1,0 +1,97 @@
+<h6>IDL definitions</h6>
+
+  <pre class="idl">[NoInterfaceObject]
+interface <dfn>GlobalEventHandlers</dfn> {
+  attribute <span>EventHandler</span> <span data-x="handler-onabort">onabort</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onauxclick">onauxclick</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onblur">onblur</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oncancel">oncancel</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oncanplay">oncanplay</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oncanplaythrough">oncanplaythrough</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onchange">onchange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onclick">onclick</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onclose">onclose</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oncontextmenu">oncontextmenu</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oncuechange">oncuechange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondblclick">ondblclick</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondrag">ondrag</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondragend">ondragend</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondragenter">ondragenter</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondragexit">ondragexit</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondragleave">ondragleave</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondragover">ondragover</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondragstart">ondragstart</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondrop">ondrop</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ondurationchange">ondurationchange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onemptied">onemptied</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onended">onended</span>;
+  attribute <span>OnErrorEventHandler</span> <span data-x="handler-onerror">onerror</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onfocus">onfocus</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oninput">oninput</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oninvalid">oninvalid</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onkeydown">onkeydown</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onkeypress">onkeypress</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onkeyup">onkeyup</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onload">onload</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onloadeddata">onloadeddata</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onloadedmetadata">onloadedmetadata</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onloadend">onloadend</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onloadstart">onloadstart</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onmousedown">onmousedown</span>;
+  [LenientThis] attribute <span>EventHandler</span> <span data-x="handler-onmouseenter">onmouseenter</span>;
+  [LenientThis] attribute <span>EventHandler</span> <span data-x="handler-onmouseleave">onmouseleave</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onmousemove">onmousemove</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onmouseout">onmouseout</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onmouseover">onmouseover</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onmouseup">onmouseup</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onwheel">onwheel</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onpause">onpause</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onplay">onplay</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onplaying">onplaying</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onprogress">onprogress</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onratechange">onratechange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onreset">onreset</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onresize">onresize</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onscroll">onscroll</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onseeked">onseeked</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onseeking">onseeking</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onselect">onselect</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onshow">onshow</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onstalled">onstalled</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onsubmit">onsubmit</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onsuspend">onsuspend</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ontimeupdate">ontimeupdate</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-ontoggle">ontoggle</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onvolumechange">onvolumechange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onwaiting">onwaiting</span>;
+};
+
+[NoInterfaceObject]
+interface <dfn>WindowEventHandlers</dfn> {
+  attribute <span>EventHandler</span> <span data-x="handler-window-onafterprint">onafterprint</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onbeforeprint">onbeforeprint</span>;
+  attribute <span>OnBeforeUnloadEventHandler</span> <span data-x="handler-window-onbeforeunload">onbeforeunload</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onhashchange">onhashchange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onlanguagechange">onlanguagechange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onmessage">onmessage</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onoffline">onoffline</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-ononline">ononline</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onpagehide">onpagehide</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onpageshow">onpageshow</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onpopstate">onpopstate</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onrejectionhandled">onrejectionhandled</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onstorage">onstorage</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onunhandledrejection">onunhandledrejection</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-window-onunload">onunload</span>;
+};
+
+[NoInterfaceObject]
+interface <dfn>DocumentAndElementEventHandlers</dfn> {
+  attribute <span>EventHandler</span> <span data-x="handler-oncopy">oncopy</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-oncut">oncut</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-onpaste">onpaste</span>;
+};</pre>
+
+  <div w-nodev>
+
+  

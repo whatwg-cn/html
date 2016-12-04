@@ -1,0 +1,34 @@
+<h4>CDATA sections</h4>
+
+  <p><dfn data-x="syntax-cdata">CDATA sections</dfn> must consist of the following components, in
+  this order:</p>
+
+  <ol>
+
+   <li>The string "<code data-x="">&lt;![CDATA[</code>".</li>
+
+   <li>Optionally, <span data-x="syntax-text">text</span>, with the additional restriction that the
+   text must not contain the string "<code data-x="">]]></code>".</li>
+
+   <li>The string "<code data-x="">]]></code>".</li>
+
+  </ol>
+
+  <div class="example">
+
+   <p>CDATA sections can only be used in foreign content (MathML or SVG). In this example, a CDATA
+   section is used to escape the contents of a <span>MathML <code>ms</code></span> element:</p>
+
+   <pre>&lt;p>You can add a string to a number, but this stringifies the number:&lt;/p>
+&lt;math>
+ &lt;ms>&lt;![CDATA[x&lt;y]]>&lt;/ms>
+ &lt;mo>+&lt;/mo>
+ &lt;mn>3&lt;/mn>
+ &lt;mo>=&lt;/mo>
+ &lt;ms>&lt;![CDATA[x&lt;y3]]>&lt;/ms>
+&lt;/math></pre>
+
+  </div>
+
+
+  

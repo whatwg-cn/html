@@ -1,0 +1,24 @@
+<h5><dfn>Comment end bang state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+002D HYPHEN-MINUS (-)</dt>
+   <dd>Append two U+002D HYPHEN-MINUS characters (-) and a U+0021 EXCLAMATION MARK character (!) to
+   the comment token's data. Switch to the <span>comment end dash state</span>.</dd>
+
+   <dt>U+003E GREATER-THAN SIGN (&gt;)</dt>
+   <dd><span>Parse error</span>. Switch to the <span>data state</span>. Emit the comment token.</dd>
+
+   <dt>EOF</dt>
+   <dd><span>Parse error</span>. Emit the comment token. Emit an end-of-file token.</dd>
+
+   <dt>Anything else</dt>
+   <dd>Append two U+002D HYPHEN-MINUS characters (-) and a U+0021 EXCLAMATION MARK character (!) to
+   the comment token's data. <span>Reconsume</span> in the <span>comment state</span>.</dd>
+
+  </dl>
+
+
+  

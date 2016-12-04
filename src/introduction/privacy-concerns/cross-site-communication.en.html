@@ -1,0 +1,18 @@
+<h4 id="fingerprint-postMessage">Cross-site communication</h4>
+
+  <p>The <code data-x="dom-window-postMessage">postMessage()</code> API provides a mechanism by
+  which two sites can communicate directly. At first glance, this might appear to open a new way by
+  which the problems described above can occur. However, in practice, multiple mechanisms exist by
+  which two sites can communicate that predate this API: a site embedding another can send data via
+  an <code>iframe</code> element's dimensions; a site can use a cross-site image request with a
+  unique identifier known to the server to initiate a server-side data exchange; or indeed the
+  fingerprinting techniques described above can be used by two sites to uniquely identify a visitor
+  such that information can then be exchanged on the server side.</p>
+
+  <p>Fundamentally, users that do not trust a site to treat their information with respect have to
+  avoid visiting that site at all.</p>
+
+
+
+
+  

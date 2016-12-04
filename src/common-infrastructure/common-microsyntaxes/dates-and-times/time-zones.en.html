@@ -1,0 +1,164 @@
+<h5>Time zones</h5>
+
+  <p>A <dfn data-x="concept-timezone">time-zone offset</dfn> consists of a signed number of hours and
+  minutes.</p>
+
+  <p>A string is a <dfn>valid time-zone offset string</dfn> representing a time-zone offset if it
+  consists of either:</p>
+
+
+  <ul>
+
+   <li><p>A U+005A LATIN CAPITAL LETTER Z character (Z), allowed only if the time zone is
+   UTC</p></li>
+
+   <li>
+
+    <p>Or, the following components, in the given order:</p>
+
+    <ol>
+
+     <li>Either a U+002B PLUS SIGN character (+) or, if the time-zone offset is not zero, a U+002D
+     HYPHEN-MINUS character (-), representing the sign of the time-zone offset</li>
+     <!-- the -00:00 offset is disallowed because RFC3339 gives it a special semantic -->
+
+     <li>Two <span>ASCII digits</span>, representing the hours component <var>hour</var> of
+     the time-zone offset, in the range 0&nbsp;&le;&nbsp;<var>hour</var>&nbsp;&le;&nbsp;23</li>
+
+     <li>Optionally, a U+003A COLON character (:)</li>
+
+     <li>Two <span>ASCII digits</span>, representing the minutes component <var>minute</var> of the time-zone offset, in the range 0&nbsp;&le;&nbsp;<var>minute</var>&nbsp;&le;&nbsp;59</li>
+
+    </ol>
+
+   </li>
+
+  </ul>
+
+  <p class="note">This format allows for time-zone offsets from -23:59 to +23:59. Right now, in
+  practice, the range of offsets of actual time zones is -12:00 to +14:00, and the minutes component
+  of offsets of actual time zones is always either 00, 30, or 45. There is no guarantee that this
+  will remain so forever, however, since time zones are used as political footballs and are thus
+  subject to very whimsical policy decisions.</p>
+
+  <p class="note">See also the usage notes and examples in the <span data-x="concept-datetime">global
+  date and time</span> section below for details on using time-zone offsets with historical times
+  that predate the formation of formal time zones.</p>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a time-zone offset string</dfn> are as follows. This will return either
+  a time-zone offset, or nothing. If at any point the algorithm says that it "fails", this means
+  that it is aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Parse a time-zone offset component</span> to obtain <var>timezone<sub>hours</sub></var> and <var>timezone<sub>minutes</sub></var>. If this
+   returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Return the time-zone offset that is <var>timezone<sub>hours</sub></var>
+   hours and <var>timezone<sub>minutes</sub></var> minutes from UTC.</p></li>
+
+  </ol>
+
+  <p>The rules to <dfn>parse a time-zone offset component</dfn>, given an <var>input</var>
+  string and a <var>position</var>, are as follows. This will return either time-zone hours
+  and time-zone minutes, or nothing. If at any point the algorithm says that it "fails", this means
+  that it is aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the character at <var>position</var> is a U+005A LATIN CAPITAL LETTER Z character
+    (Z), then:</p>
+
+    <ol>
+
+     <li><p>Let <var>timezone<sub>hours</sub></var> be 0.</p></li>
+
+     <li><p>Let <var>timezone<sub>minutes</sub></var> be 0.</p></li>
+
+     <li><p>Advance <var>position</var> to the next character in <var>input</var>.</p></li>
+
+    </ol>
+
+    <p>Otherwise, if the character at <var>position</var> is either a U+002B PLUS SIGN (+)
+    or a U+002D HYPHEN-MINUS (-), then:</p>
+
+    <ol>
+
+     <li><p>If the character at <var>position</var> is a U+002B PLUS SIGN (+), let <var>sign</var> be "positive". Otherwise, it's a U+002D HYPHEN-MINUS (-); let <var>sign</var> be "negative".</p></li>
+
+     <li><p>Advance <var>position</var> to the next character in <var>input</var>.</p></li>
+
+     <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. Let
+     <var>s</var> be the collected sequence.</p></li>
+
+     <li>
+
+      <p>If <var>s</var> is exactly two characters long, then run these substeps:</p>
+
+      <ol>
+
+       <li><p>Interpret <var>s</var> as a base-ten integer. Let that number be the <var>timezone<sub>hours</sub></var>.</p></li>
+
+       <li><p>If <var>position</var> is beyond the end of <var>input</var> or if
+       the character at <var>position</var> is not a U+003A COLON character, then fail.
+       Otherwise, move <var>position</var> forwards one character.</p></li>
+
+       <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If
+       the collected sequence is not exactly two characters long, then fail. Otherwise, interpret
+       the resulting sequence as a base-ten integer. Let that number be the <var>timezone<sub>minutes</sub></var>.</p></li>
+
+      </ol>
+
+      <p>If <var>s</var> is exactly four characters long, then run these substeps:</p>
+
+      <ol>
+
+       <li><p>Interpret the first two characters of <var>s</var> as a base-ten integer. Let
+       that number be the <var>timezone<sub>hours</sub></var>.</p></li>
+
+       <li><p>Interpret the last two characters of <var>s</var> as a base-ten integer. Let
+       that number be the <var>timezone<sub>minutes</sub></var>.</p></li>
+
+      </ol>
+
+      <p>Otherwise, fail.</p>
+
+     </li>
+
+     <li>If <var>timezone<sub>hours</sub></var> is not a number in the range
+     0&nbsp;&le;&nbsp;<var>timezone<sub>hours</sub></var>&nbsp;&le;&nbsp;23, then
+     fail.</li>
+
+     <li>If <var>sign</var> is "negative", then negate <var>timezone<sub>hours</sub></var>.</li>
+
+     <li>If <var>timezone<sub>minutes</sub></var> is not a number in the range
+     0&nbsp;&le;&nbsp;<var>timezone<sub>minutes</sub></var>&nbsp;&le;&nbsp;59,
+     then fail.</li>
+
+     <li>If <var>sign</var> is "negative", then negate <var>timezone<sub>minutes</sub></var>.</li>
+
+    </ol>
+
+    <p>Otherwise, fail.</p>
+
+   </li>
+
+   <li><p>Return <var>timezone<sub>hours</sub></var> and <var>timezone<sub>minutes</sub></var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

@@ -1,0 +1,49 @@
+<h3><dfn><code data-x="scheme-web">web+</code> scheme prefix</dfn></h3>
+
+  <p>This section describes a convention for use with the IANA URI scheme registry. It does not
+  itself register a specific scheme. <ref spec=RFC7595></p>
+
+  <dl>
+   <dt>Scheme name:</dt>
+   <dd>
+    Schemes starting with the four characters "<code
+    data-x="">web+</code>" followed by one or more letters in the range
+    <code data-x="">a</code>-<code data-x="">z</code>.
+   </dd>
+   <dt>Status:</dt>
+   <dd>Permanent</dd>
+   <dt>Scheme syntax:</dt>
+   <dd>Scheme-specific.</dd>
+   <dt>Scheme semantics:</dt>
+   <dd>Scheme-specific.</dd>
+   <dt>Encoding considerations:</dt>
+   <dd>All "<code data-x="">web+</code>" schemes should use UTF-8 encodings where relevant.</dd>
+   <dt>Applications/protocols that use this scheme name:</dt>
+   <dd>Scheme-specific.</dd>
+   <dt>Interoperability considerations:</dt>
+   <dd>The scheme is expected to be used in the context of Web applications.</dd>
+<!--ADD-TOPIC:Security-->
+   <dt>Security considerations:</dt>
+   <dd>
+
+    Any Web page is able to register a handler for all "<code data-x="">web+</code>" schemes. As
+    such, these schemes must not be used for features intended to be core platform features (e.g.
+    network transfer protocols like HTTP or FTP). Similarly, such schemes must not store
+    confidential information in their URLs, such as usernames, passwords, personal information, or
+    confidential project names.
+
+   </dd>
+<!--REMOVE-TOPIC:Security-->
+   <dt>Contact:</dt>
+   <dd>Ian Hickson &lt;ian@hixie.ch></dd>
+   <dt>Change controller:</dt>
+   <dd>Ian Hickson &lt;ian@hixie.ch></dd>
+   <dt>References:</dt>
+   <dd>
+    <cite>Custom scheme and content handlers</cite>, HTML Living Standard:
+    <a href="#custom-handlers">https://html.spec.whatwg.org/#custom-handlers</a>
+   </dd>
+  </dl>
+
+
+  

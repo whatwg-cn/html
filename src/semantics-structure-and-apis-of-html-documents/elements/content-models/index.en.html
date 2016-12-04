@@ -1,0 +1,55 @@
+<h4><dfn>Content models</dfn></h4>
+
+  <p>Each element defined in this specification has a content model: a description of the element's
+  expected <span data-x="concept-html-contents">contents</span>. An <span data-x="HTML elements">HTML
+  element</span> must have contents that match the requirements described in the element's content
+  model. The <dfn data-x="concept-html-contents">contents</dfn> of an element are its children in the
+  DOM.</p>
+
+  <p>The <span data-x="space character">space characters</span> are always allowed between elements.
+  User agents represent these characters between elements in the source markup as <code>Text</code>
+  nodes in the DOM.<!-- not a conf criteria since the parser now requires this --> Empty
+  <code>Text</code> nodes and <code>Text</code> nodes consisting of just sequences of those
+  characters are considered <dfn>inter-element whitespace</dfn>.</p>
+
+  <p><span>Inter-element whitespace</span>, comment nodes, and processing instruction nodes must be
+  ignored when establishing whether an element's contents match the element's content model or not,
+  and must be ignored when following algorithms that define document and element semantics.</p>
+
+  <p class="note">Thus, an element <var>A</var> is said to be <i>preceded or followed</i>
+  by a second element <var>B</var> if <var>A</var> and <var>B</var> have
+  the same parent node and there are no other element nodes or <code>Text</code> nodes (other than
+  <span>inter-element whitespace</span>) between them. Similarly, a node is the <i>only child</i> of
+  an element if that element contains no other nodes other than <span>inter-element
+  whitespace</span>, comment nodes, and processing instruction nodes.</p>
+
+  <p>Authors must not use <span>HTML elements</span> anywhere except where they are explicitly
+  allowed, as defined for each element, or as explicitly required by other specifications. For XML
+  compound documents, these contexts could be inside elements from other namespaces, if those
+  elements are defined as providing the relevant contexts.</p>
+
+  <div class="example">
+   <p>For example, the Atom specification defines a <code data-x="">content</code> element. When its
+   <code data-x="">type</code> attribute has the value <code data-x="">xhtml</code>, the Atom
+   specification requires that it contain a single HTML <code>div</code> element. Thus, a
+   <code>div</code> element is allowed in that context, even though this is not explicitly
+   normatively stated by this specification. <ref spec=ATOM></p>
+  </div>
+
+  <p>In addition, <span>HTML elements</span> may be orphan nodes (i.e. without a parent node).</p>
+
+  <div class="example">
+
+   <p>For example, creating a <code>td</code> element and storing it in a global variable in a
+   script is conforming, even though <code>td</code> elements are otherwise only supposed to be used
+   inside <code>tr</code> elements.</p>
+
+   <pre>var data = {
+  name: "Banana",
+  cell: document.createElement('td'),
+};</pre>
+
+  </div>
+
+
+  

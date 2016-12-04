@@ -1,0 +1,16 @@
+<h4 id="windowproxy-set">[[Set]] ( <var>P</var>, <var>V</var>, <var>Receiver</var> )</h4>
+
+  <ol>
+   <li><p>Let <var>W</var> be the value of the
+   [[<span data-x="concept-windowproxy-window">Window</span>]] internal slot of
+   <b>this</b>.</p></li>
+
+   <li><p>If <span>IsPlatformObjectSameOrigin</span>(<var>W</var>) is true, then return ?
+   <span>OrdinarySet</span>(<var>W</var>, <b>this</b>, <var>Receiver</var>).</p></li>
+   <!-- https://github.com/tc39/ecma262/issues/394 -->
+
+   <li><p>Return ? <span>CrossOriginSet</span>(<b>this</b>, <var>P</var>, <var>V</var>,
+   <var>Receiver</var>).</p></li>
+  </ol>
+
+  

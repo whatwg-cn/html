@@ -1,0 +1,359 @@
+<h5>Sample outlines</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <div class="example">
+
+   <p>The following document shows a straight-forward application of the <span>outline</span>
+   algorithm. First, here is the document, which is a book with very short chapters and
+   subsections:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang=en>
+&lt;title>The Tax Book (all in one page)&lt;/title>
+&lt;h1>The Tax Book&lt;/h1>
+&lt;h2>Earning money&lt;/h2>
+&lt;p>Earning money is good.&lt;/p>
+&lt;h3>Getting a job&lt;/h3>
+&lt;p>To earn money you typically need a job.&lt;/p>
+&lt;h2>Spending money&lt;/h2>
+&lt;p>Spending is what money is mainly used for.&lt;/p>
+&lt;h3>Cheap things&lt;/h3>
+&lt;p>Buying cheap things often not cost-effective.&lt;/p>
+&lt;h3>Expensive things&lt;/h3>
+&lt;p>The most expensive thing is often not the most cost-effective either.&lt;/p>
+&lt;h2>Investing money&lt;/h2>
+&lt;p>You can lend your money to other people.&lt;/p>
+&lt;h2>Losing money&lt;/h2>
+&lt;p>If you spend money or invest money, sooner or later you will lose money.
+&lt;h3>Poor judgement&lt;/h3>
+&lt;p>Usually if you lose money it's because you made a mistake.&lt;/p></pre>
+
+   <p>This book would form the following outline:</p>
+
+   <ol class="brief">
+    <li> The Tax Book
+     <ol class="brief">
+      <li> Earning money
+       <ol class="brief">
+        <li> Getting a job
+       </ol>
+      <li> Spending money
+       <ol class="brief">
+        <li> Cheap things
+        <li> Expensive things
+       </ol>
+      <li> Investing money
+      <li> Losing money
+       <ol class="brief">
+        <li> Poor judgement
+       </ol>
+     </ol>
+   </ol>
+
+   <p>Notice that the <code>title</code> element does not participate in the outline.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here is a similar document, but this time using <code>section</code> elements to get the same
+   effect:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang=en>
+&lt;title>The Tax Book (all in one page)&lt;/title>
+&lt;h1>The Tax Book&lt;/h1>
+&lt;section>
+ &lt;h1>Earning money&lt;/h1>
+ &lt;p>Earning money is good.&lt;/p>
+ &lt;section>
+  &lt;h1>Getting a job&lt;/h1>
+  &lt;p>To earn money you typically need a job.&lt;/p>
+ &lt;/section>
+&lt;/section>
+&lt;section>
+ &lt;h1>Spending money&lt;/h1>
+ &lt;p>Spending is what money is mainly used for.&lt;/p>
+ &lt;section>
+  &lt;h1>Cheap things&lt;/h1>
+  &lt;p>Buying cheap things often not cost-effective.&lt;/p>
+ &lt;/section>
+ &lt;section>
+  &lt;h1>Expensive things&lt;/h1>
+  &lt;p>The most expensive thing is often not the most cost-effective either.&lt;/p>
+ &lt;/section>
+&lt;/section>
+&lt;section>
+ &lt;h1>Investing money&lt;/h1>
+ &lt;p>You can lend your money to other people.&lt;/p>
+&lt;/section>
+&lt;section>
+ &lt;h1>Losing money&lt;/h1>
+ &lt;p>If you spend money or invest money, sooner or later you will lose money.
+ &lt;section>
+  &lt;h1>Poor judgement&lt;/h1>
+  &lt;p>Usually if you lose money it's because you made a mistake.&lt;/p>
+ &lt;/section>
+&lt;/section></pre>
+
+   <p>This book would form the same outline:</p>
+
+   <ol class="brief">
+    <li> The Tax Book
+     <ol class="brief">
+      <li> Earning money
+       <ol class="brief">
+        <li> Getting a job
+       </ol>
+      <li> Spending money
+       <ol class="brief">
+        <li> Cheap things
+        <li> Expensive things
+       </ol>
+      <li> Investing money
+      <li> Losing money
+       <ol class="brief">
+        <li> Poor judgement
+       </ol>
+     </ol>
+   </ol>
+
+  </div>
+
+  <div class="example">
+
+   <p>A document can contain multiple top-level headings:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang=en>
+&lt;title>Alphabetic Fruit&lt;/title>
+&lt;h1>Apples&lt;/h1>
+&lt;p>Pomaceous.&lt;/p>
+&lt;h1>Bananas&lt;/h1>
+&lt;p>Edible.&lt;/p>
+&lt;h1>Carambola&lt;/h1>
+&lt;p>Star.&lt;/p></pre>
+
+   <p>This would form the following simple outline consisting of three top-level sections:</p>
+
+   <ol class="brief">
+    <li> Apples
+    <li> Bananas
+    <li> Carambola
+   </ol>
+
+   <p>Effectively, the <code>body</code> element is split into three.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Mixing both the <code>h1</code>&ndash;<code>h6</code> model and the
+   <code>section</code>/<code>h1</code> model can lead to some unintuitive results.</p>
+
+   <p>Consider for example the following, which is just the previous example but with the contents
+   of the (implied) <code>body</code> wrapped in a <code>section</code>:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang=en>
+&lt;title>Alphabetic Fruit&lt;/title>
+&lt;section>
+ &lt;h1>Apples&lt;/h1>
+ &lt;p>Pomaceous.&lt;/p>
+ &lt;h1>Bananas&lt;/h1>
+ &lt;p>Edible.&lt;/p>
+ &lt;h1>Carambola&lt;/h1>
+ &lt;p>Star.&lt;/p>
+&lt;/section></pre>
+
+   <p>The resulting outline would be:</p>
+
+   <ol class="brief">
+    <li> <i>(untitled page)</i>
+     <ol class="brief">
+      <li> Apples
+      <li> Bananas
+      <li> Carambola
+     </ol>
+   </ol>
+
+   <p>This result is described as <i>unintuitive</i> because it results in three subsections even
+   though there's only one <code>section</code> element. Effectively, the <code>section</code> is
+   split into three, just like the implied <code>body</code> element in the previous example.</p>
+
+   <p>(In this example, "<i>(untitled page)</i>" is the implied heading for the <code>body</code>
+   element, since it has no explicit heading.)</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Headings never rise above other sections. Thus, in the following example, the first
+   <code>h1</code> does not actually describe the page header; it describes the header for the
+   second half of the page:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang=en>
+&lt;title>Feathers on The Site of Encyclopedic Knowledge&lt;/title>
+&lt;section>
+ &lt;h1>A plea from our caretakers&lt;/h1>
+ &lt;p>Please, we beg of you, send help! We're stuck in the server room!&lt;/p>
+&lt;/section>
+&lt;h1>Feathers&lt;/h1>
+&lt;p>Epidermal growths.&lt;/p>
+</pre>
+
+   <p>The resulting outline would be:</p>
+
+   <ol class="brief">
+    <li> <i>(untitled page)</i>
+     <ol class="brief">
+      <li> A plea from our caretakers
+     </ol>
+    <li> Feathers
+   </ol>
+
+  </div>
+
+  <div class="example">
+
+   <p>Thus, when an <code>article</code> element starts with a <code>nav</code> block and only later
+   has its heading, the result is that the <code>nav</code> block is not part of the same section as
+   the rest of the <code>article</code> in the outline. For instance, take this document:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+&lt;title>We're adopting a child! &mdash; Ray's blog&lt;/title>
+&lt;h1>Ray's blog&lt;/h1>
+&lt;article>
+ &lt;header>
+  &lt;nav>
+   &lt;a href="?t=-1d">Yesterday&lt;/a>;
+   &lt;a href="?t=-7d">Last week&lt;/a>;
+   &lt;a href="?t=-1m">Last month&lt;/a>
+  &lt;/nav>
+  &lt;h1>We're adopting a child!&lt;/h1>
+ &lt;/header>
+ &lt;main>
+  &lt;p>As of today, Janine and I have signed the papers to become
+  the proud parents of baby Diane! We've been looking forward to
+  this day for weeks.&lt;/p>
+ &lt;/main>
+&lt;/article>
+&lt;/html></pre>
+
+   <p>The resulting outline would be:</p>
+
+   <ol class="brief">
+    <li> Ray's blog
+     <ol class="brief">
+      <li> <i>Untitled article</i>
+       <ol class="brief">
+        <li> <i>Untitled navigation section</i>
+       </ol>
+      <li> We're adopting a child!
+     </ol>
+   </ol>
+
+   <p>Also worthy of note in this example is that the <code>header</code> and <code>main</code>
+   elements have no effect whatsoever on the document outline.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The <code>hgroup</code> element can be used for subheadings. For example:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+&lt;title>Chronotype: CS Student&lt;/title>
+&lt;hgroup>
+ &lt;h1> The morning &lt;/h1>
+ &lt;h2> 06:00 to 12:00 &lt;/h2>
+&lt;/hgroup>
+&lt;p>We sleep.&lt;/p>
+&lt;hgroup>
+ &lt;h1> The afternoon &lt;/h1>
+ &lt;h2> 12:00 to 18:00 &lt;/h2>
+&lt;/hgroup>
+&lt;p>We study.&lt;/p>
+&lt;hgroup>
+ &lt;h2>Additional Commentary&lt;/h2>
+ &lt;h3>Because not all this is necessarily true&lt;/h3>
+ &lt;h6>Ok it's almost certainly not true&lt;/h6>
+&lt;/hgroup>
+&lt;p>Yeah we probably play, rather than study.&lt;/p>
+&lt;hgroup>
+ &lt;h1> The evening &lt;/h1>
+ &lt;h2> 18:00 to 00:00 &lt;/h2>
+&lt;/hgroup>
+&lt;p>We play.&lt;/p>
+&lt;hgroup>
+ &lt;h1> The night &lt;/h1>
+ &lt;h2> 00:00 to 06:00 &lt;/h2>
+&lt;/hgroup>
+&lt;p>We play some more.&lt;/p>
+&lt;/html></pre>
+
+   <p>The resulting outline would be:</p>
+
+   <ol class="brief">
+    <li> The morning <small>06:00 to 12:00</small>
+    <li> The afternoon <small>12:00 to 18:00</small>
+     <ol class="brief">
+      <li> Additional Commentary <small>Because not all this is necessarily true <small>Ok it's almost certainly not true</small></small>
+     </ol>
+    <li> The evening <small>18:00 to 00:00</small>
+    <li> The night <small>00:00 to 06:00</small>
+   </ol>
+
+   <p>Exactly how this is represented by user agents, as most interface issues, is left as a matter
+   of implementation preference, but the key part is that the <code>hgroup</code>'s descendant
+   <code>h1</code>&ndash;<code>h6</code> elements are what form the element's heading. Thus, the
+   following would be equally valid:</p>
+
+   <ol class="brief">
+    <li> The morning &mdash; 06:00 to 12:00
+    <li> The afternoon &mdash; 12:00 to 18:00
+     <ol class="brief">
+      <li> Additional Commentary &mdash; Because not all this is necessarily true &mdash; Ok it's almost certainly not true
+     </ol>
+    <li> The evening &mdash; 18:00 to 00:00
+    <li> The night &mdash; 00:00 to 06:00
+   </ol>
+
+   <p>But so would the following:</p>
+
+   <ol class="brief">
+    <li> The morning
+    <li> The afternoon
+     <ol class="brief">
+      <li> Additional Commentary
+     </ol>
+    <li> The evening
+    <li> The night
+   </ol>
+
+   <p>The following would also be valid, though maybe less practical in most contexts:</p>
+
+   <ol class="brief">
+    <li> <p>The morning
+         <p> 06:00 to 12:00
+    <li> <p>The afternoon
+         <p> 12:00 to 18:00
+     <ol class="brief">
+      <li> <p> Additional Commentary
+           <p> Because not all this is necessarily true
+           <p> Ok it's almost certainly not true
+     </ol>
+    <li> <p>The evening
+         <p> 18:00 to 00:00
+    <li> <p>The night
+         <p> 00:00 to 06:00
+   </ol>
+
+  </div>
+
+
+  

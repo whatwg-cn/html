@@ -1,0 +1,92 @@
+<h5>The <code>WorkerGlobalScope</code> common interface</h5>
+
+  <pre class="idl">[Exposed=Worker] <!-- not sure we really need that, but... -->
+interface <dfn>WorkerGlobalScope</dfn> : <span>EventTarget</span> {
+  readonly attribute <span>WorkerGlobalScope</span> <span data-x="dom-WorkerGlobalScope-self">self</span>;
+  readonly attribute <span>WorkerLocation</span> <span data-x="dom-WorkerGlobalScope-location">location</span>;
+  readonly attribute <span>WorkerNavigator</span> <span data-x="dom-worker-navigator">navigator</span>;
+  void <span data-x="dom-WorkerGlobalScope-importScripts">importScripts</span>(USVString... urls);
+
+  attribute <span>OnErrorEventHandler</span> <span data-x="handler-WorkerGlobalScope-onerror">onerror</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-WorkerGlobalScope-onlanguagechange">onlanguagechange</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-WorkerGlobalScope-onoffline">onoffline</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-WorkerGlobalScope-ononline">ononline</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-WorkerGlobalScope-onrejectionhandled">onrejectionhandled</span>;
+  attribute <span>EventHandler</span> <span data-x="handler-WorkerGlobalScope-onunhandledrejection">onunhandledrejection</span>;
+};</pre>
+
+  <p>A <code>WorkerGlobalScope</code> object has an associated <dfn data-export=""
+  data-dfn-for="WorkerGlobalScope" data-x="concept-WorkerGlobalScope-type">type</dfn> ("<code
+  data-x="">classic</code>" or "<code data-x="">module</code>"). It is set during creation.
+
+  <p>A <code>WorkerGlobalScope</code> object has an associated <dfn data-export=""
+  data-dfn-for="WorkerGlobalScope" data-x="concept-WorkerGlobalScope-url">url</dfn> (null or a
+  <span>URL</span>). It is initially null.
+
+  <p>A <code>WorkerGlobalScope</code> object has an associated <dfn data-export=""
+  data-dfn-for="WorkerGlobalScope" data-x="concept-WorkerGlobalScope-https-state">HTTPS state</dfn>
+  (an <span>HTTPS state value</span>). It is initially "<code data-x="">none</code>".
+
+  <p>A <code>WorkerGlobalScope</code> object has an associated <dfn data-export=""
+  data-dfn-for="WorkerGlobalScope" data-x="concept-WorkerGlobalScope-referrer-policy">referrer
+  policy</dfn> (a <span>referrer policy</span>). It is initially the empty string.
+
+  <p>A <code>WorkerGlobalScope</code> object has an associated <dfn data-export=""
+  data-dfn-for="WorkerGlobalScope" data-x="concept-WorkerGlobalScope-csp-list">CSP list</dfn>. It is
+  initially an empty list.
+
+  <p>A <code>WorkerGlobalScope</code> object has an associated <dfn data-export=""
+  data-dfn-for="WorkerGlobalScope" data-x="concept-WorkerGlobalScope-module-map">module map</dfn>.
+  It is a <span>module map</span>, initially empty.</p>
+
+  <dl class="domintro">
+   <dt><var>workerGlobal</var> . <code subdfn data-x="dom-WorkerGlobalScope-self">self</code></dt>
+   <dd>Returns <var>workerGlobal</var>.</dd>
+
+   <dt><var>workerGlobal</var> . <code subdfn data-x="dom-WorkerGlobalScope-location">location</code></dt>
+   <dd>Returns <var>workerGlobal</var>'s <code>WorkerLocation</code> object.</dd>
+
+   <dt><var>workerGlobal</var> . <code subdfn data-x="dom-worker-navigator">navigator</code></dt>
+   <dd>Returns <var>workerGlobal</var>'s <code>WorkerNavigator</code> object.</dd>
+
+   <dt><var>workerGlobal</var> . <code subdfn data-x="dom-WorkerGlobalScope-importScripts">importScripts</code>(<var>urls</var>...)</dt>
+   <dd>Fetches each <span>URL</span> in <var>urls</var>, executes them one-by-one in the order they
+   are passed, and then returns (or throws if something went amiss).</dd>
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-WorkerGlobalScope-self">self</code></dfn> attribute must return the
+  <code>WorkerGlobalScope</code> object itself.</p>
+
+  <p>The <dfn><code data-x="dom-WorkerGlobalScope-location">location</code></dfn> attribute must
+  return the <code>WorkerLocation</code> object whose associated <span
+  data-x="concept-WorkerLocation-WorkerGlobalScope"><code>WorkerGlobalScope</code> object</span> is
+  the <code>WorkerGlobalScope</code> object.</p>
+
+  <p class="note">While the <code>WorkerLocation</code> object is created after the
+  <code>WorkerGlobalScope</code> object, this is not problematic as it cannot be observed from
+  script.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The following are the <span>event handlers</span> (and their corresponding <span data-x="event
+  handler event type">event handler event types</span>) that must be supported, as <span>event handler IDL attributes</span>,
+  by objects implementing the <code>WorkerGlobalScope</code> interface:</p>
+
+  <table>
+   <thead>
+    <tr><th><span data-x="event handlers">Event handler</span> <th><span>Event handler event type</span>
+   <tbody>
+    <tr><td><dfn><code data-x="handler-WorkerGlobalScope-onerror">onerror</code></dfn> <td> <code data-x="event-error">error</code>
+    <tr><td><dfn><code data-x="handler-WorkerGlobalScope-onlanguagechange">onlanguagechange</code></dfn> <td> <code data-x="event-languagechange">languagechange</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-WorkerGlobalScope-onoffline">onoffline</code></dfn> <td> <code data-x="event-offline">offline</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-WorkerGlobalScope-ononline">ononline</code></dfn> <td> <code data-x="event-online">online</code> <!-- new -->
+    <tr><td><dfn><code data-x="handler-WorkerGlobalScope-onrejectionhandled">onrejectionhandled</code></dfn> <td> <code data-x="event-rejectionhandled">rejectionhandled</code>
+    <tr><td><dfn><code data-x="handler-WorkerGlobalScope-onunhandledrejection">onunhandledrejection</code></dfn> <td> <code data-x="event-unhandledrejection">unhandledrejection</code>
+  </table>
+
+
+  

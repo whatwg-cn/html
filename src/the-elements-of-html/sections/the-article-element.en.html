@@ -1,0 +1,144 @@
+<h4>The <dfn><code>article</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Sectioning content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>flow content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>article</code> element <span>represents</span> a complete, or self-contained,
+  composition in a document, page, application, or site and that is, in principle, independently
+  distributable or reusable, e.g. in syndication. This could be a forum post, a magazine or
+  newspaper article, a blog entry, a user-submitted comment, an interactive widget or gadget, or any
+  other independent item of content.</p>
+
+  <!-- for context regarding "site", see http://krijnhoetmer.nl/irc-logs/whatwg/20130306#l-152 -->
+
+  <p>When <code>article</code> elements are nested, the inner <code>article</code> elements
+  represent articles that are in principle related to the contents of the outer article. For
+  instance, a blog entry on a site that accepts user-submitted comments could represent the comments
+  as <code>article</code> elements nested within the <code>article</code> element for the blog
+  entry.</p>
+
+  <p>Author information associated with an <code>article</code> element (q.v. the
+  <code>address</code> element) does not apply to nested <code>article</code> elements.</p>
+
+  <p class="note">When used specifically with content to be redistributed in syndication, the
+  <code>article</code> element is similar in purpose to the <code data-x="">entry</code> element in
+  Atom. <ref spec=ATOM></p>
+
+  <p class="note">The schema.org microdata vocabulary can be used to provide the publication date
+  for an <code>article</code> element, using one of the CreativeWork subtypes.</p>
+
+  <p>When the main content of the page (i.e. excluding footers, headers, navigation blocks, and
+  sidebars) is all one single self-contained composition, that content may be marked with an
+  <code>article</code>, but it is technically redundant in that case (since it's self-evident that
+  the page is a single composition, as it is a single document).</p>
+
+  <div id="article-example" class="example">
+
+   <p>This example shows a blog post using the <code>article</code> element, with some schema.org
+   annotations:</p>
+
+   <pre>&lt;article itemscope itemtype="http://schema.org/BlogPosting">
+ &lt;header>
+  &lt;h1 itemprop="headline">The Very First Rule of Life&lt;/h1>
+  &lt;p>&lt;time itemprop="datePublished" datetime="2009-10-09">3 days ago&lt;/time>&lt;/p>
+  &lt;link itemprop="url" href="?comments=0">
+ &lt;/header>
+ &lt;p>If there's a microphone anywhere near you, assume it's hot and
+ sending whatever you're saying to the world. Seriously.&lt;/p>
+ &lt;p><em>...</em>&lt;/p>
+ &lt;footer>
+  &lt;a itemprop="discussionUrl" href="?comments=1">Show comments...&lt;/a>
+ &lt;/footer>
+&lt;/article></pre>
+
+   <p>Here is that same blog post, but showing some of the comments:</p>
+
+   <pre>&lt;article itemscope itemtype="http://schema.org/BlogPosting">
+ &lt;header>
+  &lt;h1 itemprop="headline">The Very First Rule of Life&lt;/h1>
+  &lt;p>&lt;time itemprop="datePublished" datetime="2009-10-09">3 days ago&lt;/time>&lt;/p>
+  &lt;link itemprop="url" href="?comments=0">
+ &lt;/header>
+ &lt;p>If there's a microphone anywhere near you, assume it's hot and
+ sending whatever you're saying to the world. Seriously.&lt;/p>
+ &lt;p><em>...</em>&lt;/p>
+ &lt;section>
+  &lt;h1>Comments&lt;/h1>
+  &lt;article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c1">
+   &lt;link itemprop="url" href="#c1">
+   &lt;footer>
+    &lt;p>Posted by: &lt;span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+     &lt;span itemprop="name">George Washington&lt;/span>
+    &lt;/span>&lt;/p>
+    &lt;p>&lt;time itemprop="commentTime" datetime="2009-10-10">15 minutes ago&lt;/time>&lt;/p>
+   &lt;/footer>
+   &lt;p>Yeah! Especially when talking about your lobbyist friends!&lt;/p>
+  &lt;/article>
+  &lt;article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c2">
+   &lt;link itemprop="url" href="#c2">
+   &lt;footer>
+    &lt;p>Posted by: &lt;span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+     &lt;span itemprop="name">George Hammond&lt;/span>
+    &lt;/span>&lt;/p>
+    &lt;p>&lt;time itemprop="commentTime" datetime="2009-10-10">5 minutes ago&lt;/time>&lt;/p>
+   &lt;/footer>
+   &lt;p>Hey, you have the same first name as me.&lt;/p>
+  &lt;/article>
+ &lt;/section>
+&lt;/article></pre>
+
+   <p>Notice the use of <code>footer</code> to give the information for each comment (such as who
+   wrote it and when): the <code>footer</code> element <em>can</em> appear at the start of its
+   section when appropriate, such as in this case. (Using <code>header</code> in this case wouldn't
+   be wrong either; it's mostly a matter of authoring preference.)</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>In this example, <code>article</code> elements are used to host widgets on a portal page. The
+   widgets are implemented as <span data-x="customized built-in element">customized built-in
+   elements</span> in order to get specific styling and scripted behavior.</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang=en>
+&lt;title>eHome Portal&lt;/title>
+&lt;script src="/scripts/widgets.css">
+&lt;link rel=stylesheet href="/styles/main.css">
+&lt;article is="stock-widget">
+ &lt;h1>Stocks&lt;/h1>
+ &lt;table>
+  &lt;thead> &lt;tr> &lt;th> Stock &lt;th> Value &lt;th> Delta
+  &lt;tbody> &lt;template> &lt;tr> &lt;td> &lt;td> &lt;td> &lt;/template>
+ &lt;/table>
+ &lt;p> &lt;input type=button value="Refresh" onclick="this.parentElement.refresh()">
+&lt;/article>
+&lt;article is="news-widget">
+ &lt;h1>News&lt;/h1>
+ &lt;ul>
+  &lt;template>
+   &lt;li>
+    &lt;p>&lt;img> &lt;strong>&lt;/strong>
+    &lt;p>
+  &lt;/template>
+ &lt;/ul>
+ &lt;p> &lt;input type=button value="Refresh" onclick="this.parentElement.refresh()">
+&lt;/article></pre>
+
+  </div>
+
+
+
+  

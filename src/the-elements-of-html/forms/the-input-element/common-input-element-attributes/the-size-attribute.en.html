@@ -1,0 +1,23 @@
+<h6>The <code data-x="attr-input-size">size</code> attribute</h6>
+
+  <p>The <dfn><code data-x="attr-input-size">size</code></dfn> attribute gives the number of
+  characters that, in a visual rendering, the user agent is to allow the user to see while editing
+  the element's <span data-x="concept-fe-value">value</span>.</p>
+
+  <p>The <code data-x="attr-input-size">size</code> attribute, if specified, must have a value that
+  is a <span>valid non-negative integer</span> greater than zero.</p>
+
+  <div w-nodev>
+
+  <p>If the attribute is present, then its value must be parsed using the <span>rules for parsing
+  non-negative integers</span>, and if the result is a number greater than zero, then the user agent
+  should ensure that at least that many characters are visible.</p>
+
+  <p>The <code data-x="dom-input-size">size</code> IDL attribute is <span>limited to only
+  non-negative numbers greater than zero</span> and has a default value of 20.</p>
+
+  </div>
+
+
+
+  

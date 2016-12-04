@@ -1,0 +1,205 @@
+<h5>The <code>DataTransferItemList</code> interface</h5>
+
+  <p>Each <code>DataTransfer</code> object is associated with a <code>DataTransferItemList</code>
+  object.</p>
+
+  <pre class="idl">interface <dfn>DataTransferItemList</dfn> {
+  readonly attribute unsigned long <span data-x="dom-DataTransferItemList-length">length</span>;
+  <a href="#dom-datatransferitemlist-item">getter</a> <span>DataTransferItem</span> (unsigned long index);
+  <span>DataTransferItem</span>? <span data-x="dom-DataTransferItemList-add">add</span>(DOMString data, DOMString type);<!--
+DND-v3:  <span>DataTransferItem</span>? <span data-x="dom-DataTransferItemList-add">add</span>(<span>Blob</span> data);-->
+  <span>DataTransferItem</span>? <span data-x="dom-DataTransferItemList-add">add</span>(<span>File</span> data);<!--
+DND-v4:  <span>DataTransferItem</span>? <span data-x="dom-DataTransferItemList-add">add</span>(any data, DOMString type);--><!--
+DND-v5:  <span>DataTransferItem</span>? <span data-x="dom-DataTransferItemList-add">add</span>(<span>DataTransferPromise</span> data);-->
+  void <span data-x="dom-DataTransferItemList-remove">remove</span>(unsigned long index);
+  void <span data-x="dom-DataTransferItemList-clear">clear</span>();
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>items</var> . <code subdfn data-x="dom-DataTransferItemList-length">length</code></dt>
+
+   <dd><p>Returns the number of items in the <span>drag data store</span>.</p></dd>
+
+
+   <dt><var>items</var>[<var>index</var>]</dt>
+
+   <dd>
+
+    <p>Returns the <code>DataTransferItem</code> object representing the <var>index</var>th
+    entry in the <span>drag data store</span>.</p>
+
+   </dd>
+
+
+   <dt><var>items</var> . <code subdfn data-x="dom-DataTransferItemList-remove">remove</code>(<var>index</var>)</dt>
+
+   <dd>
+
+    <p>Removes the <var>index</var>th entry in the <span>drag data store</span>.</p>
+
+   </dd>
+
+
+   <dt><var>items</var> . <code subdfn data-x="dom-DataTransferItemList-clear">clear</code>()</dt>
+
+   <dd>
+
+    <p>Removes all the entries in the <span>drag data store</span>.</p>
+
+   </dd>
+
+
+   <dt><var>items</var> . <code subdfn data-x="dom-DataTransferItemList-add">add</code>(<var>data</var>)</dt>
+   <dt><var>items</var> . <code data-x="dom-DataTransferItemList-add">add</code>(<var>data</var>, <var>type</var>)</dt>
+
+   <dd>
+
+    <p>Adds a new entry for the given data to the <span>drag data store</span>. If the data is plain
+    text <!-- DND-v4: or an object --> then a <var>type</var> string has to be provided
+    also.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>While the <code>DataTransferItemList</code> object's <code>DataTransfer</code> object is
+  associated with a <span>drag data store</span>, the <code>DataTransferItemList</code> object's
+  <i>mode</i> is the same as the <span>drag data store mode</span>. When the
+  <code>DataTransferItemList</code> object's <code>DataTransfer</code> object is <em>not</em>
+  associated with a <span>drag data store</span>, the <code>DataTransferItemList</code> object's
+  <i>mode</i> is the <i>disabled mode</i>. The <span>drag data store</span> referenced in this
+  section (which is used only when the <code>DataTransferItemList</code> object is not in the
+  <i>disabled mode</i>) is the <span>drag data store</span> with which the
+  <code>DataTransferItemList</code> object's <code>DataTransfer</code> object is associated.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransferItemList-length">length</code></dfn> attribute must
+  return zero if the object is in the <i>disabled mode</i>; otherwise it must return the number of
+  items in the <span>drag data store item list</span>.</p>
+
+  <p>When a <code>DataTransferItemList</code> object is not in the <i>disabled mode</i>, its
+  <span>supported property indices</span> are the numbers in the range
+
+    <span data-x="">0 .. <var>n</var>-1</span>,
+
+  where <var>n</var> is the number of items in the <span>drag data store item
+  list</span>.</p>
+
+  <p id="dom-datatransferitemlist-item">To <span>determine the value of an indexed property</span>
+  <var>i</var> of a <code>DataTransferItemList</code> object, the user agent must return a
+  <code>DataTransferItem</code> object representing the <var>i</var>th item in the
+  <span>drag data store</span>. The same object must be returned each time a particular item is
+  obtained from this <code>DataTransferItemList</code> object. The <code>DataTransferItem</code>
+  object must be associated with the same <code>DataTransfer</code> object as the
+  <code>DataTransferItemList</code> object when it is first created.</p>
+
+  <p>The <dfn><code data-x="dom-DataTransferItemList-add">add()</code></dfn> method must run the
+  following steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransferItemList</code> object is not in the <i
+   data-x="concept-dnd-rw">read/write mode</i>, return null and abort these steps.</p></li>
+
+   <li>
+
+    <p>Jump to the appropriate set of steps from the following list:</p>
+
+    <dl class="switch">
+
+     <dt>If the first argument to the method is a string</dt>
+
+     <dd>
+
+      <p>If there is already an item in the <span>drag data store item list</span> whose <span
+      data-x="the drag data item kind">kind</span> is <i>Plain Unicode string</i> and whose <span
+      data-x="the drag data item type string">type string</span> is equal to the value of the
+      method's second argument, <span>converted to ASCII lowercase</span>, then throw a
+      <span>"<code>NotSupportedError</code>"</span> <code>DOMException</code> and abort these
+      steps.</p>
+
+      <p>Otherwise, add an item to the <span>drag data store item list</span> whose <span data-x="the
+      drag data item kind">kind</span> is <i>Plain Unicode string</i>, whose <span data-x="the drag
+      data item type string">type string</span> is equal to the value of the method's second
+      argument, <span>converted to ASCII lowercase</span>, and whose data is the string given by the
+      method's first argument.</p>
+
+     </dd>
+
+<!--DND-v3:
+     <dt>If the first argument to the method is a <code>Blob</code></dt>
+
+     <dd>
+
+      <p>Add an item to the <span>drag data store item list</span> whose <span data-x="the drag data
+      item kind">kind</span> is <i>Blob</i>, whose <span data-x="the drag data item type string">type
+      string</span> is the <code data-x="dom-Blob-type">type</code> of the <code>Blob</code>,
+      <span>converted to ASCII lowercase</span>, and whose data is the same as the
+      <code>Blob</code>'s data.</p>
+
+     </dd>
+-->
+
+     <dt>If the first argument to the method is a <code>File</code></dt>
+
+     <dd>
+
+      <p>Add an item to the <span>drag data store item list</span> whose <span data-x="the drag data
+      item kind">kind</span> is <i>File</i>, whose <span data-x="the drag data item type string">type
+      string</span> is the <code data-x="dom-Blob-type">type</code> of the <code>File</code>,
+      <span>converted to ASCII lowercase</span>, and whose data is the same as the
+      <code>File</code>'s data.</p>
+
+     </dd>
+
+<!--DND-v4: (might want to prevent duplicates like for strings; see above)
+[make sure that the cloning happens before any side-effects can happen]
+     <dt>Otherwise
+
+     <dd>
+
+      <p>Add an item to the <span>drag data store item list</span> whose <span data-x="the drag data
+      item kind">kind</span> is <i>Object</i>, whose <span data-x="the drag data item type
+      string">type string</span> is equal to the value of the method's second argument,
+      <span>converted to ASCII lowercase</span>, and whose data is a <span>structured clone</span>
+      of the method's first argument. If creating the clone throws an exception, then throw that
+      exception and abort these steps.</p>
+
+     </dd>
+-->
+
+    </dl>
+
+   </li>
+
+   <li><p><a href="#dom-datatransferitemlist-item">Determine the value of the indexed property</a>
+   corresponding to the newly added item, and return that value (a newly created
+   <code>DataTransferItem</code> object).</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-DataTransferItemList-remove">remove()</code></dfn> method, when
+  invoked with the argument <var>i</var>, must run these steps:</p>
+
+  <ol>
+
+   <li><p>If the <code>DataTransferItemList</code> object is not in the <i
+   data-x="concept-dnd-rw">read/write mode</i>, throw an
+   <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>Remove the <var>i</var>th item from the <span>drag data store</span>.</p></li>
+
+  </ol>
+
+  <p>The <dfn><code data-x="dom-DataTransferItemList-clear">clear</code></dfn> method, if the
+  <code>DataTransferItemList</code> object is in the <i data-x="concept-dnd-rw">read/write mode</i>,
+  must remove all the items from the <span>drag data store</span>. Otherwise, it must do
+  nothing.</p>
+
+  </div>
+
+
+  

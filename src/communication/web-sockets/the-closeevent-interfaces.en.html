@@ -1,0 +1,29 @@
+<h4>The <code>CloseEvent</code> interfaces</h4>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>CloseEventInit</span> eventInitDict), Exposed=(Window,Worker)]
+interface <dfn>CloseEvent</dfn> : <span>Event</span> {
+  readonly attribute boolean <span data-x="dom-CloseEvent-wasClean">wasClean</span>;
+  readonly attribute unsigned short <span data-x="dom-CloseEvent-code">code</span>;
+  readonly attribute USVString <span data-x="dom-CloseEvent-reason">reason</span>;
+};
+
+dictionary <dfn>CloseEventInit</dfn> : <span>EventInit</span> {
+  boolean wasClean = false;
+  unsigned short code = 0;
+  USVString reason = "";
+};</pre>
+
+  <p>The <dfn><code data-x="dom-CloseEvent-wasClean">wasClean</code></dfn> attribute must return the
+  value it was initialized to. It represents whether the connection closed cleanly or not.</p>
+
+  <p>The <dfn><code data-x="dom-CloseEvent-code">code</code></dfn> attribute must return the value
+  it was initialized to. It represents the WebSocket connection close code provided by the
+  server.</p>
+
+  <p>The <dfn><code data-x="dom-CloseEvent-reason">reason</code></dfn> attribute must return the
+  value it was initialized to. It represents the WebSocket connection close reason provided by the
+  server.</p>
+
+
+
+  

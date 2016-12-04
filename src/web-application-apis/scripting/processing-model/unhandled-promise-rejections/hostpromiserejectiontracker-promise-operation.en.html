@@ -1,0 +1,54 @@
+<h6 id="the-hostpromiserejectiontracker-implementation"><dfn>HostPromiseRejectionTracker</dfn>(<var>promise</var>, <var>operation</var>)</h6>
+
+  <p>JavaScript contains an implementation-defined <span
+  data-x="js-HostPromiseRejectionTracker">HostPromiseRejectionTracker</span>(<var>promise</var>,
+  <var>operation</var>) abstract operation. User agents must use the following implementation:
+  <ref spec=JAVASCRIPT></p>
+
+  <ol>
+
+   <li><p>Let <var>script</var> be the <span>running script</span>.</p></li>
+
+   <li><p>If <var>script</var> has <span>muted errors</span>, terminate these steps.</p></li>
+
+   <li><p>Let <var>settings object</var> be <var>script</var>'s <span>settings object</span>.</p>
+   </li>
+
+   <li>
+    <p>If <var>operation</var> is <code data-x="">"reject"</code>,
+
+    <ol>
+     <li><p>Add <var>promise</var> to <var>settings object</var>'s <span>about-to-be-notified
+     rejected promises list</span>.</p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p>If <var>operation</var> is <code data-x="">"handle"</code>,
+
+    <ol>
+
+     <li><p>If <var>settings object</var>'s <span>about-to-be-notified rejected promises
+     list</span> contains <var>promise</var>, remove <var>promise</var> from that list and abort
+     these steps.</p></li>
+
+     <li><p>If <var>settings object</var>'s <span>outstanding rejected promises weak set</span>
+     does not contain <var>promise</var>, abort these steps.</p></li>
+
+     <li><p>Remove <var>promise</var> from <var>settings object</var>'s <span>outstanding rejected
+     promises weak set</span>.</p></li>
+
+     <li><p><span>Queue a task</span> to <span data-x="concept-event-fire">fire an event</span>
+     named <code data-x="event-rejectionhandled">rejectionhandled</code> at <var>settings
+     object</var>'s <span data-x="concept-settings-object-global">global object</span>, using
+     <code>PromiseRejectionEvent</code>, with the <code
+     data-x="dom-PromiseRejectionEvent-promise">promise</code> attribute initialized to
+     <var>promise</var>, and the <code data-x="dom-PromiseRejectionEvent-reason">reason</code>
+     attribute initialized to the value of <var>promise</var>'s [[PromiseResult]] internal
+     slot.</p></li>
+
+    </ol>
+   </li>
+  </ol>
+
+  

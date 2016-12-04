@@ -1,0 +1,55 @@
+<h5>Other pragma directives</h5>
+
+  <p><dfn data-x="concept-http-equiv-extensions">Extensions to the predefined set of pragma
+  directives</dfn> may, under certain conditions, be registered in the <a
+  href="https://wiki.whatwg.org/wiki/PragmaExtensions">WHATWG Wiki PragmaExtensions page</a>. <ref spec=WHATWGWIKI></p>
+
+  <p>Such extensions must use a name that is identical to an HTTP header registered in the Permanent
+  Message Header Field Registry, and must have behavior identical to that described for the HTTP
+  header. <ref spec=IANAPERMHEADERS></p>
+
+  <p>Pragma directives corresponding to headers describing metadata, or not requiring specific user
+  agent processing, must not be registered; instead, use <span
+  data-x="concept-meta-extensions">metadata names</span>. Pragma directives corresponding to headers
+  that affect the HTTP processing model (e.g. caching) must not be registered, as they would result
+  in HTTP-level behavior being different for user agents that implement HTML than for user agents
+  that do not.</p>
+
+  <p>Anyone is free to edit the WHATWG Wiki PragmaExtensions page at any time to add a pragma
+  directive satisfying these conditions. Such registrations must specify the following
+  information:</p>
+
+  <dl>
+
+   <dt>Keyword</dt>
+
+   <dd><p>The actual name being defined. The name must match a previously-registered HTTP name with
+   the same requirements.</p></dd>
+
+
+   <dt>Brief description</dt>
+
+   <dd><p>A short non-normative description of the purpose of the pragma directive.</p></dd>
+
+
+   <dt>Specification</dt>
+
+   <dd>A link to the specification defining the corresponding HTTP header.</dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>Conformance checkers must use the information given on the WHATWG Wiki PragmaExtensions page to
+  establish if a value is allowed or not: values defined in this specification or listed on the
+  aforementioned page must be accepted, whereas values not listed in either this specification or on
+  the aforementioned page must be rejected as invalid. Conformance checkers may cache this
+  information (e.g. for performance reasons or to avoid the use of unreliable network
+  connectivity).</p>
+
+  </div>
+
+
+
+
+  

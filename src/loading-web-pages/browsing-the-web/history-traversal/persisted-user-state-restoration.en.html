@@ -1,0 +1,38 @@
+<h5>Persisted user state restoration</h5>
+  <div w-nodev>
+
+  <p>When the user agent is to <dfn>restore persisted user state</dfn> from a history entry, it must
+  run the following steps immediately:</p>
+
+  <ol>
+
+   <li><p>If the entry has a <span>scroll restoration mode</span>, let <var>scrollRestoration</var>
+   be that. Otherwise let <var>scrollRestoration</var> be "<code
+   data-x="dom-ScrollRestoration-auto">auto</code>"</p></li>
+
+   <li><p>If <var>scrollRestoration</var> is "<code
+   data-x="dom-ScrollRestoration-manual">manual</code>" the user agent should not restore the scroll
+   position for the <code>Document</code> or any of its scrollable regions, with the exception of
+   any nested browsing contexts whose scroll restoration is controlled by their own history entry's
+   <span>scroll restoration mode</span>, otherwise, it may do so.</p></li>
+
+   <li><p>Optionally, update other aspects of the document and its rendering, for instance values of
+   form fields, that the user agent had previously recorded.</p></li>
+
+  </ol>
+  </div>
+
+  <!-- see similar paragraphs in the textarea and input sections -->
+  <p class="note">This can even include updating the <code data-x="attr-dir">dir</code> attribute
+  of <code>textarea</code> elements or <code>input</code> elements whose <code
+  data-x="attr-input-type">type</code> attribute is in either the <span
+  data-x="attr-input-type-text">Text</span> state or the <span
+  data-x="attr-input-type-search">Search</span> state, if the persisted state includes the
+  directionality of user input in such controls.</p>
+
+  <p class="note">Not restoring the scroll position by user agent does not imply that the scroll
+  position will be left at any particular value (e.g., (0,0)). The actual scroll position depends on
+  the navigation type and the user agent's particular caching strategy. So web applications should
+  not assume any particular scroll position but rather should set it to what they want it to be.</p>
+
+  

@@ -1,0 +1,281 @@
+<h6>Parsing a srcset attribute</h6>
+
+  <p>When asked to <dfn>parse a srcset attribute</dfn> from an element, parse the value of the
+  element's <span>srcset attribute</span> as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the value passed to this algorithm.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>,
+   initially pointing at the start of the string.</p></li>
+
+   <li><p>Let <var>candidates</var> be an initially empty <span>source set</span>.</p></li>
+
+   <li><p><i>Splitting loop</i>: <span>Collect a sequence of characters</span>
+   that are <span data-x="space character">space characters</span> or U+002C COMMA characters.
+   If any U+002C COMMA characters were collected, that is a <span data-x="concept-microsyntax-parse-error">parse error</span>.</p></li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>,
+   return <var>candidates</var> and abort these steps.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are not
+   <span data-x="space character">space characters</span>, and let that be <var>url</var>.</p></li>
+
+   <li><p>Let <var>descriptors</var> be a new empty list.</p></li>
+
+   <li>
+
+    <p>If <var>url</var> ends with a U+002C COMMA character (,),
+    follow these substeps:</p>
+
+    <ol>
+
+     <li><p>Remove all trailing U+002C COMMA characters from <var>url</var>.
+     If this removed more than one character,
+     that is a <span data-x="concept-microsyntax-parse-error">parse error</span>.</p></li>
+
+    </ol>
+
+    <p>Otherwise, follow these substeps:</p>
+
+    <ol>
+
+     <li><p><i>Descriptor tokenizer</i>: <span>Skip whitespace</span></p></li>
+
+     <li><p>Let <var>current descriptor</var> be the empty string.</p></li>
+
+     <li><p>Let <var>state</var> be <i>in descriptor</i>.</p></li>
+
+     <li>
+
+      <p>Let <var>c</var> be the character at <var>position</var>.
+      Do the following depending on the value of <var>state</var>.
+      For the purpose of this step, "EOF" is a special character representing
+      that <var>position</var> is past the end of <var>input</var>.</p>
+
+      <dl class="switch">
+
+       <dt><i>In descriptor</i></dt>
+
+       <dd>
+
+        <p>Do the following, depending on the value of <var>c</var>:</p>
+
+        <dl class="switch">
+
+         <dt><span>Space character</span></dt>
+
+         <dd><p>If <var>current descriptor</var> is not empty,
+         append <var>current descriptor</var> to <var>descriptors</var>
+         and let <var>current descriptor</var> be the empty string.
+         Set <var>state</var> to <i>after descriptor</i>.</p></dd>
+
+         <dt>U+002C COMMA (,)</dt>
+
+         <dd><p>Advance <var>position</var> to the next character in <var>input</var>.
+         If <var>current descriptor</var> is not empty,
+         append <var>current descriptor</var> to <var>descriptors</var>.
+         Jump to the step labeled <i>descriptor parser</i>.</p></dd>
+
+         <dt>U+0028 LEFT PARENTHESIS (()</dt>
+
+         <dd><p>Append <var>c</var> to <var>current descriptor</var>.
+         Set <var>state</var> to <i>in parens</i>.</p></dd>
+
+         <dt>EOF</dt>
+
+         <dd><p>If <var>current descriptor</var> is not empty,
+         append <var>current descriptor</var> to <var>descriptors</var>.
+         Jump to the step labeled <i>descriptor parser</i>.</p></dd>
+
+         <dt>Anything else</dt>
+
+         <dd><p>Append <var>c</var> to <var>current descriptor</var>.</p></dd>
+
+        </dl>
+
+       </dd>
+
+       <dt><i>In parens</i></dt>
+
+       <dd>
+
+        <p>Do the following, depending on the value of <var>c</var>:</p>
+
+        <dl class="switch">
+
+         <dt>U+0029 RIGHT PARENTHESIS ())</dt>
+
+         <dd><p>Append <var>c</var> to <var>current descriptor</var>.
+         Set <var>state</var> to <i>in descriptor</i>.</p></dd>
+
+         <dt>EOF</dt>
+
+         <dd><p>Append <var>current descriptor</var> to <var>descriptors</var>.
+         Jump to the step labeled <i>descriptor parser</i>.</p></dd>
+
+         <dt>Anything else</dt>
+
+         <dd><p>Append <var>c</var> to <var>current descriptor</var>.</p></dd>
+
+        </dl>
+
+       </dd>
+
+       <dt><i>After descriptor</i></dt>
+
+       <dd>
+
+        <p>Do the following, depending on the value of <var>c</var>:</p>
+
+        <dl class="switch">
+
+         <dt><span>Space character</span></dt>
+
+         <dd><p>Stay in this state.</p></dd>
+
+         <dt>EOF</dt>
+
+         <dd><p>Jump to the step labeled <i>descriptor parser</i>.</p></dd>
+
+         <dt>Anything else</dt>
+
+         <dd><p>Set <var>state</var> to <i>in descriptor</i>.
+         Set <var>position</var> to the <em>previous</em> character in <var>input</var>.</p></dd>
+
+        </dl>
+
+       </dd>
+
+      </dl>
+
+      <p>Advance <var>position</var> to the next character in <var>input</var>.
+      Repeat this substep.</p>
+
+      <p class="note">In order to be compatible with future additions,
+      this algorithm supports multiple descriptors and descriptors with parens.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p><i>Descriptor parser</i>: Let <var>error</var> be <i>no</i>.</p></li>
+
+   <li><p>Let <var>width</var> be <i>absent</i>.</p></li>
+
+   <li><p>Let <var>density</var> be <i>absent</i>.</p></li>
+
+   <li><p>Let <var>future-compat-h</var> be <i>absent</i>.</p></li>
+
+   <li>
+
+    <p>For each descriptor in <var>descriptors</var>,
+    run the appropriate set of steps from the following list:</p>
+
+    <dl class=switch>
+
+     <dt>If the descriptor consists of a <span>valid non-negative integer</span>
+     followed by a U+0077 LATIN SMALL LETTER W character</dt>
+
+     <dd>
+
+      <ol>
+
+       <li>
+
+        <p>If the user agent does not support the <code data-x="attr-img-sizes">sizes</code> attribute,
+        let <var>error</var> be <i>yes</i>.</p>
+
+        <p class="note">A conforming user agent will support the <code data-x="attr-img-sizes">sizes</code> attribute.
+        However, user agents typically implement and ship features in an incremental manner in practice.</p>
+
+       </li>
+
+       <li><p>If <var>width</var> and <var>density</var>
+       are not both <i>absent</i>,
+       then let <var>error</var> be <i>yes</i>.</p></li>
+
+       <li><p>Apply the <span>rules for parsing non-negative integers</span> to the descriptor.
+       If the result is zero, let <var>error</var> be <i>yes</i>.
+       Otherwise, let <var>width</var> be the result.</p></li>
+
+      </ol>
+
+     </dd>
+
+     <dt>If the descriptor consists of a <span>valid floating-point number</span>
+     followed by a U+0078 LATIN SMALL LETTER X character</dt>
+
+     <dd>
+
+      <ol>
+
+       <li><p>If <var>width</var>, <var>density</var> and <var>future-compat-h</var>
+       are not all <i>absent</i>,
+       then let <var>error</var> be <i>yes</i>.</p></li>
+
+       <li>
+
+        <p>Apply the <span>rules for parsing floating-point number values</span> to the descriptor.
+        If the result is less than zero, let <var>error</var> be <i>yes</i>.
+        Otherwise, let <var>density</var> be the result.</p>
+
+        <p class="note">If <var>density</var> is zero,
+        the <span>intrinsic dimensions</span> will be infinite.
+        User agents are expected to have limits in how big images can be rendered,
+        which is allowed by the <a href="#hardwareLimitations">hardware limitations</a> clause.</p>
+
+       </li>
+
+      </ol>
+
+     </dd>
+
+     <dt>If the descriptor consists of a <span>valid non-negative integer</span>
+     followed by a U+0068 LATIN SMALL LETTER H character</dt>
+
+     <dd>
+
+      <p>This is a <span data-x="concept-microsyntax-parse-error">parse error</span>.</p>
+
+      <ol>
+
+       <li><p>If <var>future-compat-h</var> and <var>density</var>
+       are not both <i>absent</i>,
+       then let <var>error</var> be <i>yes</i>.</p></li>
+
+       <li><p>Apply the <span>rules for parsing non-negative integers</span> to the descriptor.
+       If the result is zero, let <var>error</var> be <i>yes</i>.
+       Otherwise, let <var>future-compat-h</var> be the result.</p></li>
+
+      </ol>
+
+     </dd>
+
+     <dt>Anything else</dt>
+
+     <dd><p>Let <var>error</var> be <i>yes</i>.</p></dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>If <var>future-compat-h</var> is not <i>absent</i> and <var>width</var> is <i>absent</i>,
+   let <var>error</var> be <i>yes</i>.</p></li>
+
+   <li><p>If <var>error</var> is still <i>no</i>,
+   then append a new <span>image source</span> to <var>candidates</var>
+   whose URL is <var>url</var>,
+   associated with a width <var>width</var> if not <i>absent</i>
+   and a pixel density <var>density</var> if not <i>absent</i>.
+   Otherwise, there is a <span data-x="concept-microsyntax-parse-error">parse error</span>.</p></li>
+
+   <li><p>Return to the step labeled <i>splitting loop</i>.</p></li>
+
+  </ol>
+
+
+  

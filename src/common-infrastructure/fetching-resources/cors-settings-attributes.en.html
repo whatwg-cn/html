@@ -1,0 +1,38 @@
+<h4>CORS settings attributes</h4>
+
+  <p>A <dfn>CORS settings attribute</dfn> is an <span>enumerated attribute</span>. The following
+  table lists the keywords and states for the attribute &mdash; the keywords in the left column map
+  to the states in the cell in the second column on the same row as the keyword.</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th> Keyword
+     <th> State
+     <th> Brief description
+   <tbody>
+    <tr>
+     <td><dfn><code data-x="attr-crossorigin-anonymous-keyword">anonymous</code></dfn>
+     <td><dfn data-x="attr-crossorigin-anonymous">Anonymous</dfn>
+     <td><span data-x="concept-request">Requests</span> for the element will have their <span
+     data-x="concept-request-mode">mode</span> set to "<code data-x="">cors</code>" and their <span
+     data-x="concept-request-credentials-mode">credentials mode</span> set to "<code
+     data-x="">same-origin</code>".
+    <tr>
+     <td><dfn><code data-x="attr-crossorigin-use-credentials-keyword">use-credentials</code></dfn>
+     <td><dfn data-x="attr-crossorigin-use-credentials">Use Credentials</dfn>
+     <td><span data-x="concept-request">Requests</span> for the element will have their <span
+     data-x="concept-request-mode">mode</span> set to "<code data-x="">cors</code>" and their <span
+     data-x="concept-request-credentials-mode">credentials mode</span> set to "<code
+     data-x="">include</code>".
+  </table>
+
+  <p>The empty string is also a valid keyword, and maps to the <span
+  data-x="attr-crossorigin-anonymous">Anonymous</span> state. The attribute's <i data-x="invalid value default">invalid value default</i> is the <span data-x="attr-crossorigin-anonymous">Anonymous</span> state. For the
+  purposes of <span data-x="reflect">reflection</span>, the canonical case for the <span
+  data-x="attr-crossorigin-anonymous">Anonymous</span> state is the <code
+  data-x="attr-crossorigin-anonymous-keyword">anonymous</code> keyword. The <i data-x="missing value default">missing value default</i>, used when the attribute is omitted, is the <dfn data-x="attr-crossorigin-none">No
+  CORS</dfn> state.</p>
+
+
+  

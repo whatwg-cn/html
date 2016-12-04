@@ -1,0 +1,149 @@
+<h6>Sourcing in-band text tracks</h6>
+
+  <p>A <dfn>media-resource-specific text track</dfn> is a <span>text track</span> that corresponds
+  to data found in the <span>media resource</span>.</p>
+
+
+  <div w-nodev>
+
+  <p>Rules for processing and rendering such data are defined by the relevant specifications, e.g.
+  the specification of the video format if the <span>media resource</span> is a video. Details for
+  some legacy formats can be found in the <cite>Sourcing In-band Media Resource Tracks from Media
+  Containers into HTML</cite> specification. <ref spec=INBAND></p>
+
+  <p>When a <span>media resource</span> contains data that the user agent recognizes and supports as
+  being equivalent to a <span>text track</span>, the user agent <a
+  href="#found-a-media-resource-specific-timed-track">runs</a> the <dfn>steps to expose a
+  media-resource-specific text track</dfn> with the relevant data, as follows.</p>
+
+  <!-- this runs synchronously from a fetch task -->
+
+  <ol>
+
+   <li><p>Associate the relevant data with a new <span>text track</span> and its corresponding new
+   <code>TextTrack</code> object. The <span>text track</span> is a <span>media-resource-specific
+   text track</span>.</p></li>
+
+   <li><p>Set the new <span>text track</span>'s <span data-x="text track kind">kind</span>, <span
+   data-x="text track label">label</span>, and <span data-x="text track language">language</span>
+   based on the semantics of the relevant data, as defined by the relevant specification. If there
+   is no label in that data, then the <span data-x="text track label">label</span> must be set to the
+   empty string.</p></li>
+
+   <li><p>Associate the <span>text track list of cues</span> with the <span>rules for updating the
+   text track rendering</span> appropriate for the format in question.</p>
+
+   <li>
+
+    <p>If the new <span>text track</span>'s <span data-x="text track kind">kind</span> is <code
+    data-x="dom-TextTrack-kind-metadata">metadata</code>, then set the <span>text track in-band
+    metadata track dispatch type</span> as follows, based on the type of the <span>media
+    resource</span>:</p>
+
+    <dl class="switch">
+
+     <dt>If the <span>media resource</span> is an Ogg file</dt>
+
+     <dd>The <span>text track in-band metadata track dispatch type</span> must be set to the value
+     of the Name header field. <ref spec=OGGSKELETONHEADERS></dd>
+
+     <dt>If the <span>media resource</span> is a WebM file</dt>
+
+     <dd>The <span>text track in-band metadata track dispatch type</span> must be set to the value
+     of the <code data-x="">CodecID</code> element. <ref spec=WEBMCG></dd>
+
+     <dt>If the <span>media resource</span> is an MPEG-2 file</dt>
+
+     <dd>Let <var>stream type</var> be the value of the "stream_type" field describing the
+     text track's type in the file's program map section, interpreted as an 8-bit unsigned integer.
+     Let <var>length</var> be the value of the "ES_info_length" field for the track in the
+     same part of the program map section, interpreted as an integer as defined by the MPEG-2
+     specification. Let <var>descriptor bytes</var> be the <var>length</var> bytes
+     following the "ES_info_length" field. The <span>text track in-band metadata track dispatch
+     type</span> must be set to the concatenation of the <var>stream type</var> byte and
+     the zero or more <var>descriptor bytes</var> bytes, expressed in hexadecimal using
+     <span>uppercase ASCII hex digits</span>. <ref spec=MPEG2>
+
+     </dd>
+
+     <dt>If the <span>media resource</span> is an MPEG-4 file</dt>
+
+     <dd>Let the
+     first <code data-x="">stsd</code> box of the
+     first <code data-x="">stbl</code> box of the
+     first <code data-x="">minf</code> box of the
+     first <code data-x="">mdia</code> box of the
+     <span>text track</span>'s <code data-x="">trak</code> box in the
+     first <code data-x="">moov</code> box
+     of the file be the <i>stsd box</i>, if any.
+
+     If the file has no <i>stsd box</i>, or if the <i>stsd box</i> has neither a <code
+     data-x="">mett</code> box nor a <code data-x="">metx</code> box, then the <span>text track
+     in-band metadata track dispatch type</span> must be set to the empty string.
+
+     Otherwise, if the <i>stsd box</i> has a <code data-x="">mett</code> box then the <span>text
+     track in-band metadata track dispatch type</span> must be set to the concatenation of the
+     string "<code data-x="">mett</code>", a U+0020 SPACE character, and the value of the first <code
+     data-x="">mime_format</code> field of the first <code data-x="">mett</code> box of the <i>stsd
+     box</i>, or the empty string if that field is absent in that box.
+
+     Otherwise, if the <i>stsd box</i> has no <code data-x="">mett</code> box but has a <code
+     data-x="">metx</code> box then the <span>text track in-band metadata track dispatch type</span>
+     must be set to the concatenation of the string "<code data-x="">metx</code>", a U+0020 SPACE
+     character, and the value of the first <code data-x="">namespace</code> field of the first <code
+     data-x="">metx</code> box of the <i>stsd box</i>, or the empty string if that field is absent in
+     that box.
+
+     <ref spec=MPEG4>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Populate the new <span>text track</span>'s <span data-x="text track list of cues">list of
+   cues</span> with the cues parsed so far, following the <span>guidelines for exposing
+   cues</span>, and begin updating it dynamically as necessary.</p></li>
+
+   <li><p>Set the new <span>text track</span>'s <span data-x="text track readiness state">readiness
+   state</span> to <span data-x="text track loaded">loaded</span>.</p></li> <!-- otherwise, you'll
+   have to load the whole media file just to start playing the first frame... -->
+
+   <li><p>Set the new <span>text track</span>'s <span data-x="text track mode">mode</span> to the
+   mode consistent with the user's preferences and the requirements of the relevant specification
+   for the data.</p>
+
+    <p class="note">For instance, if there are no other active subtitles, and this is a forced
+    subtitle track (a subtitle track giving subtitles in the audio track's primary language, but
+    only for audio that is actually in another language), then those subtitles might be activated
+    here.</p>
+
+   </li> <!-- it's too late to apply the normal heuristic, so we don't bother -->
+
+   <li><p>Add the new <span>text track</span> to the <span>media element</span>'s <span>list of text
+   tracks</span>.</p></li>
+
+   <li><p><span data-x="concept-event-fire">Fire an event</span> named <code
+   data-x="event-media-addtrack">addtrack</code> at the <span>media element</span>'s <code
+   data-x="dom-media-textTracks">textTracks</code> attribute's <code>TextTrackList</code> object,
+   using <code>TrackEvent</code>, with the <code data-x="dom-TrackEvent-track">track</code>
+   attribute initialized to the <span>text track</span>'s <code>TextTrack</code> object.</p></li>
+
+  </ol>
+
+  <!-- removetrack: we don't currently ever remove an in-band text track, because it might have been
+  manipulated or might be about to be manipulated. If we made in-band text tracks readonly, we could
+  probably get away with cleaning them up when they fall into the time before the earliest possible
+  position and are known to be over and done with. -->
+
+  <!-- if, after in-band text tracks have been found, there's no out-of-band text tracks, then apply
+  user prefs? -->
+
+  </div>
+
+
+
+  <div w-nodev>
+
+  

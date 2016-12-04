@@ -1,0 +1,71 @@
+<h5 id="scriptingLanguages">Scripting languages</h5>
+
+  <p>A <dfn data-export="">JavaScript MIME type</dfn> is a <span>MIME type</span> string that is one
+  of the following and refers to JavaScript: <ref spec=JAVASCRIPT></p>
+
+  <ul class="brief">
+   <li><code>application/ecmascript</code>
+   <li><code>application/javascript</code>
+   <li><code>application/x-ecmascript</code>
+   <li><code>application/x-javascript</code>
+   <li><code>text/ecmascript</code>
+   <li><code>text/javascript</code>
+   <li><code>text/javascript1.0</code>
+   <li><code>text/javascript1.1</code>
+   <li><code>text/javascript1.2</code>
+   <li><code>text/javascript1.3</code>
+   <li><code>text/javascript1.4</code>
+   <li><code>text/javascript1.5</code>
+   <li><code>text/jscript</code>
+   <li><code>text/livescript</code>
+   <li><code>text/x-ecmascript</code>
+   <li><code>text/x-javascript</code>
+  </ul>
+
+  <p>User agents must recognize all <span data-x="JavaScript MIME type">JavaScript MIME
+  types</span>.</p>
+
+  <div w-nodev>
+
+  <p>User agents may support other <span data-x="MIME type">MIME types</span> for other languages,
+  but must not support other <span data-x="MIME type">MIME types</span> for the languages in the list
+  above. User agents are not required to support JavaScript. The processing model for languages
+  other than JavaScript is outside the scope of this specification.</p>
+
+  <p>The following <span data-x="MIME type">MIME types</span> (with or without parameters) must not
+  be interpreted as scripting languages:</p>
+
+  <ul class="brief">
+
+   <li><code>text/plain</code>
+   <li><code>text/xml</code>
+   <!--<li><code>text/html</code>-->
+   <li><code>application/octet-stream</code>
+   <li><code>application/xml</code>
+   <!--<li><code>application/xhtml+xml</code>-->
+   <!--<li><code>image/svg+xml</code>-->
+
+   <!-- the commented-out ones aren't listed here because they couldn't sanely be interpreted as a
+   scripting language anyway: they're defined to be something else. I just don't want this to
+   devolve into a list of every non-scripting type in existence. -->
+
+  </ul>
+
+  <p class="note">These types are explicitly listed here because they are poorly-defined types that
+  are nonetheless likely to be used as formats for data blocks, and it would be problematic if they
+  were suddenly to be interpreted as script by a user agent.</p>
+
+  <!-- a similar paragraph is also present in the <style> element section -->
+
+  <p>When examining types to determine if they represent supported languages, user agents must not
+  ignore MIME parameters. Types are to be compared including all parameters.</p> <!-- whether the
+  order of parameters matters is left undefined until such time as it matters; so far the only
+  relevant parameter was 'e4x', and it's gone for now -->
+
+  <p class="note">For example, types that include the <code data-x="">charset</code> parameter will
+  not be recognized as referencing any of the scripting languages listed above.</p>
+
+  </div>
+
+
+  

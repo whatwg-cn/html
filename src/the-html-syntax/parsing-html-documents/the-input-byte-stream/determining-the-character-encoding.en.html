@@ -1,0 +1,881 @@
+<h5>Determining the character encoding</h5>
+
+  <p>In some cases, it might be impractical to unambiguously determine the encoding before parsing
+  the document. Because of this, this specification provides for a two-pass mechanism with an
+  optional pre-scan. Implementations are allowed, as described below, to apply a simplified parsing
+  algorithm to whatever bytes they have available before beginning to parse the document. Then, the
+  real parser is started, using a tentative encoding derived from this pre-parse and other
+  out-of-band metadata. If, while the document is being loaded, the user agent discovers a character
+  encoding declaration that conflicts with this information, then the parser can get reinvoked to
+  perform a parse of the document with the real encoding.</p>
+
+  <p id="documentEncoding">User agents must use the following algorithm, called the <dfn>encoding
+  sniffing algorithm</dfn>, to determine the character encoding to use when decoding a document in
+  the first pass. This algorithm takes as input any out-of-band metadata available to the user agent
+  (e.g. the <span data-x="Content-Type">Content-Type metadata</span> of the document) and all the
+  bytes available so far, and returns a character encoding and a <span
+  data-x="concept-encoding-confidence">confidence</span> that is either <i>tentative</i> or
+  <i>certain</i>.</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the user has explicitly instructed the user agent to override the document's character
+    encoding with a specific encoding, optionally return that encoding with the <span
+    data-x="concept-encoding-confidence">confidence</span> <i>certain</i> and abort these steps.</p>
+
+    <p class="note">Typically, user agents remember such user requests across sessions, and in some
+    cases apply them to documents in <code>iframe</code>s as well.</p>
+
+   </li>
+
+   <li>
+
+    <p>The user agent may wait for more bytes of the resource to be available, either in this step
+    or at any later step in this algorithm. For instance, a user agent might wait 500ms or 1024
+    bytes, whichever came first. In general preparsing the source to find the encoding improves
+    performance, as it reduces the need to throw away the data structures used when parsing upon
+    finding the encoding information. However, if the user agent delays too long to obtain data to
+    determine the encoding, then the cost of the delay could outweigh any performance improvements
+    from the preparse.</p>
+
+    <p class="note">The authoring conformance requirements for character encoding declarations limit
+    them to only appearing <a href="#charset1024">in the first 1024 bytes</a>. User agents are
+    therefore encouraged to use the prescan algorithm below (as invoked by these steps) on the first
+    1024 bytes, but not to stall beyond that.</p>
+
+   </li>
+
+   <li><p>If the transport layer specifies a character encoding, and it is supported, return that
+   encoding with the <span data-x="concept-encoding-confidence">confidence</span> <i>certain</i>, and
+   abort these steps.</p></li>
+
+   <li>
+
+    <p>Optionally <span data-x="prescan a byte stream to determine its encoding">prescan the byte
+    stream to determine its encoding</span>. The <var>end condition</var> is that the user
+    agent decides that scanning further bytes would not be efficient. User agents are encouraged to
+    only prescan the first 1024 bytes. User agents may decide that scanning <em>any</em> bytes is
+    not efficient, in which case these substeps are entirely skipped.</p>
+
+    <p>The aforementioned algorithm either aborts unsuccessfully or returns a character encoding. If
+    it returns a character encoding, then this algorithm must be aborted, returning the same
+    encoding, with <span data-x="concept-encoding-confidence">confidence</span> <i>tentative</i>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <span>HTML parser</span> for which this algorithm is being run is associated with a
+    <code>Document</code> that is itself in a <span>nested browsing context</span>, run these
+    substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>new document</var> be the <code>Document</code> with which the
+     <span>HTML parser</span> is associated.</p></li>
+
+     <li><p>Let <var>parent document</var> be the <code>Document</code> <span
+     data-x="browsing context nested through">through which <var>new document</var> is
+     nested</span> (the <span>active document</span> of the <span>parent browsing context</span> of
+     <var>new document</var>).</p></li>
+
+     <li><p>If <var>parent document</var>'s <span>origin</span> is not the <span>same
+     origin</span> as <var>new document</var>'s <span>origin</span>, then abort these
+     substeps.</p></li>
+
+     <li><p>If <var>parent document</var>'s <span data-x="document's character
+     encoding">character encoding</span> is not an <span>ASCII-compatible encoding</span>, then
+     abort these substeps.</p></li>
+
+     <li><p>Return <var>parent document</var>'s <span data-x="document's character
+     encoding">character encoding</span>, with the <span
+     data-x="concept-encoding-confidence">confidence</span> <i>tentative</i>, and abort the
+     <span>encoding sniffing algorithm</span>'s steps.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Otherwise, if the user agent has information on the likely encoding for this page, e.g.
+   based on the encoding of the page when it was last visited, then return that encoding, with the
+   <span data-x="concept-encoding-confidence">confidence</span> <i>tentative</i>, and abort these
+   steps.</p></li>
+
+   <li>
+
+    <p>The user agent may attempt to autodetect the character encoding from applying frequency
+    analysis or other algorithms to the data stream. Such algorithms may use information about the
+    resource other than the resource's contents, including the address of the resource. If
+    autodetection succeeds in determining a character encoding, and that encoding is a supported
+    encoding, then return that encoding, with the <span
+    data-x="concept-encoding-confidence">confidence</span> <i>tentative</i>, and abort these steps.
+    <ref spec=UNIVCHARDET></p>
+
+    <p class="note">User agents are generally discouraged from attempting to autodetect encodings
+    for resources obtained over the network, since doing so involves inherently non-interoperable
+    heuristics. Attempting to detect encodings based on an HTML document's preamble is especially
+    tricky since HTML markup typically uses only ASCII characters, and HTML documents tend to begin
+    with a lot of markup rather than with text content.</p>
+
+    <p class="note">The UTF-8 encoding has a highly detectable bit pattern. Files from the local
+    file system that contain bytes with values greater than 0x7F which match the UTF-8 pattern are
+    very likely to be UTF-8, while documents with byte sequences that do not match it are very
+    likely not. When a user agent can examine the whole file, rather than just the preamble,
+    detecting for UTF-8 specifically can be especially effective. <ref spec=PPUTF8> <ref
+    spec=UTF8DET></p>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, return an implementation-defined or user-specified default character encoding,
+    with the <span data-x="concept-encoding-confidence">confidence</span> <i>tentative</i>.</p>
+
+    <p>In controlled environments or in environments where the encoding of documents can be
+    prescribed (for example, for user agents intended for dedicated use in new networks), the
+    comprehensive <code data-x="">UTF-8</code> encoding is suggested.</p>
+
+    <p>In other environments, the default encoding is typically dependent on the user's locale (an
+    approximation of the languages, and thus often encodings, of the pages that the user is likely
+    to frequent). The following table gives suggested defaults based on the user's locale, for
+    compatibility with legacy content. Locales are identified by BCP 47 language tags. <ref spec=BCP47> <ref spec=ENCODING></p>
+
+    <!-- based on three sources:
+          1. mozilla 1.9.1 localizations: http://mxr.mozilla.org/l10n-mozilla1.9.1/find?string=global%2Fintl.properties&tree=l10n-mozilla1.9.1&hint= (though this data was apparently misinterpreted in some cases)
+          2. windows vista encodings: http://msdn.microsoft.com/en-us/goglobal/bb896001
+          3. chrome encodings: https://code.google.com/p/chromium/codesearch#search/&q=IDS_DEFAULT_ENCODING
+         several assumptions were made in this process; amongst them:
+          - ISO-8859-1 and windows-1252 are the same (supported by encoding.spec.whatwg.org)
+          - ISO-8859-9 and windows-1254 are the same (supported by encoding.spec.whatwg.org)
+          - windows-31J and Shift_JIS are the same (supported by encoding.spec.whatwg.org)
+          - windows-932 is close enough to Shift_JIS to be treated as equivalent (supported by wikipedia)
+          - windows-936 is a basically a subset of GBK which is basically a subset of gb18030 (supported by wikipedia)
+          - windows-950 is basically the same as Big5 (supported by wikipedia)
+          - Firefox's UTF-8 defaults are all bogus
+    -->
+
+    <table>
+     <thead>
+      <tr>
+       <th colspan=2>Locale language
+       <th>Suggested default encoding
+     <tbody>
+
+      <!-- af, Afrikaans, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- am, Amharic, uses windows-1252: Firefox and Chrome agreed -->
+
+      <tr>
+       <td>ar
+       <td>Arabic
+       <td><span>windows-1256</span> <!-- Windows Vista and Chrome agreed -->
+
+      <!-- arn-CL, Mapudungun (Chile), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- az, Azeri, is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1254 -->
+
+      <!-- az-Cyrl-AZ, Azeri (Cyrillic, Azerbaijan), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+
+      <!-- ba-RU, Bashkir (Russia), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+      <!-- ba wasn't listed at all because none of the sources knew about it. However, further feedback has changed this: -->
+      <tr>
+       <td>ba
+       <td>Bashkir
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <!-- be, Belarusian, was not initially listed here because Windows Vista wanted windows-1251, Chrome wanted <none>, and Firefox wanted ISO-8859-5 -->
+      <!-- further feedback has changed this: -->
+      <tr>
+       <td>be
+       <td>Belarusian
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <!-- be-BY, Belarusian (Belarus), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+
+      <tr>
+       <td>bg
+       <td>Bulgarian
+       <td><span>windows-1251</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- bn, Bengali, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- br-FR, Breton (France), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- bs-Cyrl-BA, Bosnian (Cyrillic, Bosnia and Herzegovina), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+
+      <!-- bs-Latn-BA, Bosnian (Latin, Bosnia and Herzegovina), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <!-- ca, Catalan, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- co-FR, Corsican (France), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>cs
+       <td>Czech
+       <td><span>windows-1250</span> <!-- Windows Vista and Chrome agreed (but disagreed with Firefox, which reportedly agreed on Windows but thought the encoding should be ISO-8859-2 on Mac and Linux) -->
+
+      <!-- cy-GB, Welsh (United Kingdom), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- da, Danish, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- de, German, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- el, Greek, was not initially listed here because Windows Vista wanted windows-1253, Chrome wanted ISO-8859-7, and Firefox wanted ISO-8859-7 but looked liked it wanted windows-1252 -->
+      <!-- el-GR, Greek (Greece), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1253 -->
+      <!-- further feedback has changed this: -->
+      <tr>
+       <td>el
+       <td>Greek
+       <td><span>ISO-8859-7</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23090 -->
+
+      <!-- en, English, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- es, Spanish, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <tr>
+       <td>et
+       <td>Estonian
+       <td><span>windows-1257</span> <!-- Windows Vista and Chrome agreed -->
+
+      <!-- eu, Basque, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>fa
+       <td>Persian
+       <td><span>windows-1256</span> <!-- Windows Vista and Chrome agreed -->
+
+      <!-- fi, Finnish, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- fil, Filipino, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- fo, Faroese, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- fr, French, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- fy-NL, Frisian (Netherlands), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- ga-IE, Irish (Ireland), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- gl, Galician, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- gsw-FR, Alsatian (France), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- gu, Gujarati, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- ha-Latn-NG, Hausa (Latin, Nigeria), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>he
+       <td>Hebrew
+       <td><span>windows-1255</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- hi, Hindi, uses windows-1252: Firefox and Chrome agreed -->
+
+      <tr>
+       <td>hr
+       <td>Croatian
+       <td><span>windows-1250</span> <!-- Windows Vista and Chrome agreed -->
+
+      <tr>
+       <td>hu
+       <td>Hungarian
+       <td><span>ISO-8859-2</span> <!-- Chrome and Firefox agreed (but disagreed with Windows Vista, which thought the encoding should be windows-1250) -->
+
+      <!-- hu-HU, Hungarian (Hungary), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <!-- id, Indonesian, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- ig-NG, Igbo (Nigeria), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- is, Icelandic, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- it, Italian, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- iu-Latn-CA, Inuktitut (Latin, Canada), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>ja
+       <td>Japanese
+       <td><span>Shift_JIS</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- kk, Kazakh, was not initially listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+      <!-- further feedback has changed this: -->
+      <tr>
+       <td>kk
+       <td>Kazakh
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <!-- kl-GL, Greenlandic (Greenland), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- kn, Kannada, uses windows-1252: Firefox and Chrome agreed -->
+
+      <tr>
+       <td>ko
+       <td>Korean
+       <td><span>EUC-KR</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <tr>
+       <td>ku
+       <td>Kurdish
+       <td><span>windows-1254</span> <!-- Best guess -->
+
+      <!-- ky, Kyrgyz, was not initially listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+      <!-- further feedback has changed this: -->
+      <tr>
+       <td>ky
+       <td>Kyrgyz
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <!-- lb-LU, Luxembourgish (Luxembourg), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>lt
+       <td>Lithuanian
+       <td><span>windows-1257</span> <!-- Windows Vista, Chrome, and Windows Firefox agreed; Linux and Mac Firefox reportedly disagreed -->
+
+      <tr>
+       <td>lv
+       <td>Latvian
+       <td><span>windows-1257</span> <!-- Windows Vista and Chrome agreed (but disagreed with Firefox, which thought the encoding should be ISO-8859-13) -->
+
+      <!-- mk, Macedonian, was not initially listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+      <!-- further feedback has changed this: -->
+      <tr>
+       <td>mk
+       <td>Macedonian
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <!-- ml, Malayalam, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- mn, Mongolian, is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+
+      <!-- moh-CA, Mohawk (Mohawk), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- mr, Marathi, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- ms, Malay, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- nb, Norwegian Bokm&aring;l, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- nl, Dutch, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- nn-NO, Norwegian, Nynorsk (Norway), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- no, Norwegian, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- nso-ZA, Sesotho sa Leboa (South Africa), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- oc-FR, Occitan (France), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>pl
+       <td>Polish
+       <td><span>ISO-8859-2</span> <!-- Chrome and Firefox agreed (but disagreed with Windows Vista, which thought the encoding should be windows-1250) -->
+
+      <!-- pl-PL, Polish (Poland), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <!-- prs-AF, Dari (Afghanistan), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1256 -->
+
+      <!-- pt, Portuguese, uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- qut-GT, K'iche (Guatemala), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- quz-BO, Quechua (Bolivia), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- quz-EC, Quechua (Ecuador), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- quz-PE, Quechua (Peru), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- rm-CH, Romansh (Switzerland), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- ro, Romanian, is not listed here because Windows Vista wanted windows-1250, Chrome wanted ISO-8859-2, and Firefox wanted <none> -->
+
+      <!-- ro-RO, Romanian (Romania), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <tr>
+       <td>ru
+       <td>Russian
+       <td><span>windows-1251</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- rw-RW, Kinyarwanda (Rwanda), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- sah-RU, Yakut (Russia), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+      <!-- sah wasn't listed at all because none of the sources knew about it. However, further feedback has changed this: -->
+      <tr>
+       <td>sah
+       <td>Yakut
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <!-- se-FI, Sami, Northern (Finland), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- se-NO, Sami, Northern (Norway), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- se-SE, Sami, Northern (Sweden), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>sk
+       <td>Slovak
+       <td><span>windows-1250</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <tr>
+       <td>sl
+       <td>Slovenian
+       <td><span>ISO-8859-2</span> <!-- Chrome and Firefox agreed (but disagreed with Windows Vista, which thought the encoding should be windows-1250) -->
+
+      <!-- sl-SI, Slovenian (Slovenia), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <!-- sma-NO, Sami, Southern (Norway), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- sma-SE, Sami, Southern (Sweden), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- smj-NO, Sami, Lule (Norway), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- smj-SE, Sami, Lule (Sweden), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- smn-FI, Sami, Inari (Finland), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- sms-FI, Sami, Skolt (Finland), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- sq, Albanian, is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <tr>
+       <td>sr
+       <td>Serbian
+       <td><span>windows-1251</span> <!-- Windows Vista and Chrome agreed -->
+
+      <!-- sr-Latn-BA, Serbian (Latin, Bosnia and Herzegovina), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <!-- sr-Latn-SP, Serbian (Latin, Serbia), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <!-- sv, Swedish, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- sw, Kiswahili, uses windows-1252: Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- ta, Tamil, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- te, Telugu, uses windows-1252: Firefox and Chrome agreed -->
+
+      <!-- tg-Cyrl-TJ, Tajik (Cyrillic, Tajikistan), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+      <!-- tg wasn't listed at all because none of the sources knew about it. However, further feedback has changed this: -->
+      <tr>
+       <td>tg
+       <td>Tajik
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <tr>
+       <td>th
+       <td>Thai
+       <td><span>windows-874</span> <!-- Windows Vista, Chrome, and Firefox agree (though Firefox didn't always) -->
+
+      <!-- tk-TM, Turkmen (Turkmenistan), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1250 -->
+
+      <!-- tn-ZA, Setswana (South Africa), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>tr
+       <td>Turkish
+       <td><span>windows-1254</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- tt, Tatar, was not initially listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+      <!-- further feedback has changed this: -->
+      <tr>
+       <td>tt
+       <td>Tatar
+       <td><span>windows-1251</span> <!-- per https://www.w3.org/Bugs/Public/show_bug.cgi?id=23089 -->
+
+      <!-- tzm-Latn-DZ, Tamazight (Latin, Algeria), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- ug-CN, Uighur (PRC), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1256 -->
+
+      <tr>
+       <td>uk
+       <td>Ukrainian
+       <td><span>windows-1251</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- ur, Urdu, is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1256 -->
+
+      <!-- uz, Uzbek, is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1254 -->
+
+      <!-- uz-Cyrl-UZ, Uzbek (Cyrillic, Uzbekistan), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted windows-1251 -->
+
+      <tr>
+       <td>vi
+       <td>Vietnamese
+       <td><span>windows-1258</span> <!-- Windows Vista and Chrome agreed -->
+
+      <!-- wee-DE, Lower Sorbian (Germany), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- wen-DE, Upper Sorbian (Germany), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- wo-SN, Wolof (Senegal), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- xh-ZA, isiXhosa (South Africa), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <!-- yo-NG, Yoruba (Nigeria), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td>zh-CN
+       <td>Chinese (People's Republic of China)
+       <td><span>gb18030</span> <!-- Windows Vista, Chrome, and Firefox agreed -->
+
+      <!-- zh-HK, Chinese (Hong Kong S.A.R.), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted Big5 -->
+
+      <!-- zh-Hans, Chinese (Simplified), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted gb18030 -->
+
+      <!-- zh-Hant, Chinese (Traditional), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted Big5 -->
+
+      <!-- zh-MO, Chinese (Macao S.A.R.), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted Big5 -->
+
+      <!-- zh-SG, Chinese (Singapore), is not listed here because neither Chrome nor Firefox knew about it. For what it's worth, Windows Vista wanted gb18030 -->
+
+      <tr>
+       <td>zh-TW
+       <td>Chinese (Taiwan)
+       <td><span>Big5</span> <!-- Windows Vista, Chrome, and Firefox agreed (though Firefox didn't always) -->
+
+      <!-- zu-ZA, isiZulu (South Africa), uses windows-1252: Windows Vista and Firefox agreed -->
+
+      <tr>
+       <td colspan=2>All other locales
+       <td><span>windows-1252</span>
+
+    </table>
+
+    <p class="tablenote"><small>The contents of this table are derived from the intersection of
+    Windows, Chrome, and Firefox defaults.</small></p>
+
+   </li>
+
+  </ol>
+
+  <p>The <span>document's character encoding</span> must immediately be set to the value returned
+  from this algorithm, at the same time as the user agent uses the returned value to select the
+  decoder to use for the input byte stream.</p>
+
+  <hr>
+
+  <p>When an algorithm requires a user agent to <dfn data-export="">prescan a byte stream to
+  determine its encoding</dfn>, given some defined <var>end condition</var>, then it must run the
+  following steps. These steps either abort unsuccessfully or return a character encoding. If at any
+  point during these steps (including during instances of the <span
+  data-x="concept-get-attributes-when-sniffing">get an attribute</span> algorithm invoked by this
+  one) the user agent either runs out of bytes (meaning the <var>position</var> pointer
+  created in the first step below goes beyond the end of the byte stream obtained so far) or reaches
+  its <var>end condition</var>, then abort the <span>prescan a byte stream to determine its
+  encoding</span> algorithm unsuccessfully.</p>
+
+  <ol>
+
+   <li>
+
+    <p>Let <var>position</var> be a pointer to a byte in the input byte stream, initially
+    pointing at the first byte.</p>
+
+   </li>
+
+   <li>
+
+    <p><i>Loop</i>: If <var>position</var> points to:</p>
+
+    <dl class="switch">
+
+     <dt>A sequence of bytes starting with: 0x3C 0x21 0x2D 0x2D (ASCII '&lt;!--')</dt>
+     <dd>
+
+      <p>Advance the <var>position</var> pointer so that it points at the first 0x3E byte
+      which is preceded by two 0x2D bytes (i.e. at the end of an ASCII '-->' sequence) and comes
+      after the 0x3C byte that was found. (The two 0x2D bytes can be the same as those in the
+      '&lt;!--' sequence.)</p>
+
+     </dd>
+
+     <dt>A sequence of bytes starting with: 0x3C, 0x4D or 0x6D, 0x45 or 0x65, 0x54 or 0x74, 0x41 or 0x61, and one of 0x09, 0x0A, 0x0C, 0x0D, 0x20, 0x2F (case-insensitive ASCII '&lt;meta' followed by a space or slash)</dt>
+     <dd>
+
+      <ol>
+
+       <li><p>Advance the <var>position</var> pointer so that it points at the next 0x09,
+       0x0A, 0x0C, 0x0D, 0x20, or 0x2F byte (the one in sequence of characters matched
+       above).</p></li>
+
+       <li><p>Let <var>attribute list</var> be an empty list of strings.</p></li> <!-- so
+       long as we only care about http-equiv, content, and charset, this can be a 3-bit bitfield -->
+
+       <li><p>Let <var>got pragma</var> be false.</p></li>
+
+       <li><p>Let <var>need pragma</var> be null.</p></li>
+
+       <li><p>Let <var>charset</var> be the null value (which, for the purposes of this
+       algorithm, is distinct from an unrecognized encoding or the empty string).</p></li>
+
+       <li><p><i>Attributes</i>: <span data-x="concept-get-attributes-when-sniffing">Get an
+       attribute</span> and its value. If no attribute was sniffed, then jump to the
+       <i>processing</i> step below.</p></li>
+
+       <li><p>If the attribute's name is already in <var>attribute list</var>, then return
+       to the step labeled <i>attributes</i>.</p>
+
+       <li><p>Add the attribute's name to <var>attribute list</var>.</p>
+
+       <li>
+
+        <p>Run the appropriate step from the following list, if one applies:</p>
+
+        <dl class="switch">
+
+         <dt>If the attribute's name is "<code data-x="">http-equiv</code>"</dt>
+
+         <dd><p>If the attribute's value is "<code data-x="">content-type</code>", then set <var>got pragma</var> to true.</p></dd>
+
+         <dt>If the attribute's name is "<code data-x="">content</code>"</dt>
+
+         <dd><p>Apply the <span>algorithm for extracting a character encoding from a
+         <code>meta</code> element</span>, giving the attribute's value as the string to parse. If a
+         character encoding is returned, and if <var>charset</var> is still set to null,
+         let <var>charset</var> be the encoding returned, and set <var>need
+         pragma</var> to true.</p></dd>
+
+         <dt>If the attribute's name is "<code data-x="">charset</code>"</dt>
+
+         <dd><p>Let <var>charset</var> be the result of <span>getting an encoding</span>
+         from the attribute's value, and set <var>need pragma</var> to false.</p></dd>
+
+        </dl>
+
+       </li>
+
+       <li><p>Return to the step labeled <i>attributes</i>.</p></li>
+
+       <li><p><i>Processing</i>: If <var>need pragma</var> is null, then jump to the step
+       below labeled <i>next byte</i>.</p></li>
+
+       <li><p>If <var>need pragma</var> is true but <var>got pragma</var> is
+       false, then jump to the step below labeled <i>next byte</i>.</p></li>
+
+       <li><p>If <var>charset</var> is failure, then jump to the step below labeled <i>next
+       byte</i>.</p></li>
+
+       <!-- the next two steps are redundant with steps in the 'change the encoding' algorithm -->
+
+       <li><p>If <var>charset</var> is a <span>UTF-16 encoding</span>, then set <var>charset</var>
+       to <span>UTF-8</span>.
+
+       <li><p>If <var>charset</var> is <span>x-user-defined</span>, then set <var>charset</var> to
+       <span>windows-1252</span>.</p></li>
+
+       <li><p>Abort the <span>prescan a byte stream to determine its encoding</span> algorithm,
+       returning the encoding given by <var>charset</var>.</p></li>
+
+      </ol>
+
+     </dd>
+
+     <dt>A sequence of bytes starting with a 0x3C byte (ASCII &lt;), optionally a 0x2F byte (ASCII /), and finally a byte in the range 0x41-0x5A or 0x61-0x7A (an ASCII letter)</dt>
+     <dd>
+
+      <ol>
+
+       <li><p>Advance the <var>position</var> pointer so that it points at the next 0x09
+       (ASCII TAB), 0x0A (ASCII LF), 0x0C (ASCII FF), 0x0D (ASCII CR), 0x20 (ASCII space), or 0x3E
+       (ASCII >) byte.</p></li>
+
+       <li><p>Repeatedly <span data-x="concept-get-attributes-when-sniffing">get an attribute</span>
+       until no further attributes can be found, then jump to the step below labeled <i>next
+       byte</i>.</p></li>
+
+      </ol>
+
+     </dd>
+
+     <dt>A sequence of bytes starting with: 0x3C 0x21 (ASCII '&lt;!')</dt>
+     <dt>A sequence of bytes starting with: 0x3C 0x2F (ASCII '&lt;/')</dt>
+     <dt>A sequence of bytes starting with: 0x3C 0x3F (ASCII '&lt;?')</dt>
+     <dd>
+
+      <p>Advance the <var>position</var> pointer so that it points at the first 0x3E byte
+      (ASCII >) that comes after the 0x3C byte that was found.</p>
+
+     </dd>
+
+     <dt>Any other byte</dt>
+     <dd>
+
+      <p>Do nothing with that byte.</p>
+
+     </dd>
+
+    </dl>
+
+   </li>
+
+   <li><i>Next byte</i>: Move <var>position</var> so it points at the next byte in the
+   input byte stream, and return to the step above labeled <i>loop</i>.</li>
+
+  </ol>
+
+  <p>When the <span>prescan a byte stream to determine its encoding</span> algorithm says to <dfn
+  data-x="concept-get-attributes-when-sniffing">get an attribute</dfn>, it means doing this:</p>
+
+  <ol>
+
+   <li><p>If the byte at <var>position</var> is one of 0x09 (ASCII TAB), 0x0A (ASCII LF),
+   0x0C (ASCII FF), 0x0D (ASCII CR), 0x20 (ASCII space), or 0x2F (ASCII /) then advance <var>position</var> to the next byte and redo this step.</p></li>
+
+   <li><p>If the byte at <var>position</var> is 0x3E (ASCII >), then abort the <span
+   data-x="concept-get-attributes-when-sniffing">get an attribute</span> algorithm. There isn't
+   one.</p></li>
+
+   <li><p>Otherwise, the byte at <var>position</var> is the start of the attribute name.
+   Let <var>attribute name</var> and <var>attribute value</var> be the empty
+   string.</p></li>
+
+   <li><p>Process the byte at <var>position</var> as follows:</p>
+
+    <dl class="switch">
+
+     <dt>If it is 0x3D (ASCII =), and the <var>attribute name</var> is longer than the
+     empty string</dt>
+
+     <dd>Advance <var>position</var> to the next byte and jump to the step below labeled
+     <i>value</i>.</dd>
+
+     <dt>If it is 0x09 (ASCII TAB), 0x0A (ASCII LF), 0x0C (ASCII FF), 0x0D (ASCII CR), or 0x20
+     (ASCII space)</dt>
+
+     <dd>Jump to the step below labeled <i>spaces</i>.</dd>
+
+     <dt>If it is 0x2F (ASCII /) or 0x3E (ASCII >)</dt>
+
+     <dd>Abort the <span data-x="concept-get-attributes-when-sniffing">get an attribute</span>
+     algorithm. The attribute's name is the value of <var>attribute name</var>, its value
+     is the empty string.</dd>
+
+     <dt>If it is in the range 0x41 (ASCII A) to 0x5A (ASCII Z)</dt>
+
+     <dd>Append the Unicode character with code point <span data-x=""><var>b</var>+0x20</span> to <var>attribute name</var> (where <var>b</var>
+     is the value of the byte at <var>position</var>). (This converts the input to
+     lowercase.)</dd>
+
+     <dt>Anything else</dt>
+
+     <dd>Append the Unicode character with the same code point as the value of the byte at <var>position</var> to <var>attribute name</var>. (It doesn't actually matter how
+     bytes outside the ASCII range are handled here, since only ASCII characters can contribute to
+     the detection of a character encoding.)</dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Advance <var>position</var> to the next byte and return to the previous
+   step.</p></li>
+
+   <li><p><i>Spaces</i>: If the byte at <var>position</var> is one of 0x09 (ASCII TAB),
+   0x0A (ASCII LF), 0x0C (ASCII FF), 0x0D (ASCII CR), or 0x20 (ASCII space) then advance <var>position</var> to the next byte, then, repeat this step.</p></li>
+
+   <li><p>If the byte at <var>position</var> is <em>not</em> 0x3D (ASCII =), abort the
+   <span data-x="concept-get-attributes-when-sniffing">get an attribute</span> algorithm. The
+   attribute's name is the value of <var>attribute name</var>, its value is the empty
+   string.</p></li>
+
+   <li><p>Advance <var>position</var> past the 0x3D (ASCII =) byte.</p></li>
+
+   <li><p><i>Value</i>: If the byte at <var>position</var> is one of 0x09 (ASCII TAB), 0x0A
+   (ASCII LF), 0x0C (ASCII FF), 0x0D (ASCII CR), or 0x20 (ASCII space) then advance <var>position</var> to the next byte, then, repeat this step.</p></li>
+
+   <li><p>Process the byte at <var>position</var> as follows:</p>
+
+    <dl class="switch">
+
+     <dt>If it is 0x22 (ASCII ") or 0x27 (ASCII ')</dt>
+
+     <dd>
+
+      <ol>
+
+       <li>Let <var>b</var> be the value of the byte at <var>position</var>.</li>
+
+       <li><i>Quote loop</i>: Advance <var>position</var> to the next byte.</li>
+
+       <li>If the value of the byte at <var>position</var> is the value of <var>b</var>, then advance <var>position</var> to the next byte and abort the
+       "get an attribute" algorithm. The attribute's name is the value of <var>attribute
+       name</var>, and its value is the value of <var>attribute value</var>.</li>
+
+       <li>Otherwise, if the value of the byte at <var>position</var> is in the range 0x41
+       (ASCII A) to 0x5A (ASCII Z), then append a Unicode character to <var>attribute
+       value</var> whose code point is 0x20 more than the value of the byte at <var>position</var>.</li>
+
+       <li>Otherwise, append a Unicode character to <var>attribute value</var> whose code
+       point is the same as the value of the byte at <var>position</var>.</li>
+
+       <li>Return to the step above labeled <i>quote loop</i>.</li>
+
+      </ol>
+
+     </dd>
+
+     <dt>If it is 0x3E (ASCII >)</dt>
+
+     <dd>Abort the <span data-x="concept-get-attributes-when-sniffing">get an attribute</span>
+     algorithm. The attribute's name is the value of <var>attribute name</var>, its value
+     is the empty string.</dd>
+
+
+     <dt>If it is in the range 0x41 (ASCII A) to 0x5A (ASCII Z)</dt>
+
+     <dd>Append the Unicode character with code point <span data-x=""><var>b</var>+0x20</span> to <var>attribute value</var> (where <var>b</var> is the value of the byte at <var>position</var>). Advance <var>position</var> to the next byte.</dd>
+
+     <dt>Anything else</dt>
+
+     <dd>Append the Unicode character with the same code point as the value of the byte at <var>position</var> to <var>attribute value</var>. Advance <var>position</var> to the next byte.</dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Process the byte at <var>position</var> as
+   follows:</p>
+
+    <dl class="switch">
+
+     <dt>If it is 0x09 (ASCII TAB), 0x0A (ASCII LF), 0x0C (ASCII FF), 0x0D (ASCII CR), 0x20 (ASCII
+     space), or 0x3E (ASCII >)</dt>
+
+     <dd>Abort the <span data-x="concept-get-attributes-when-sniffing">get an attribute</span>
+     algorithm. The attribute's name is the value of <var>attribute name</var> and its
+     value is the value of <var>attribute value</var>.</dd>
+
+     <dt>If it is in the range 0x41 (ASCII A) to 0x5A (ASCII Z)</dt>
+
+     <dd>Append the Unicode character with code point <span data-x=""><var>b</var>+0x20</span> to <var>attribute value</var> (where <var>b</var> is the value of the byte at <var>position</var>).</dd>
+
+     <dt>Anything else</dt>
+
+     <dd>Append the Unicode character with the same code point as the value of the byte at <var>position</var> to <var>attribute value</var>.</dd>
+
+    </dl>
+
+   </li>
+
+   <li><p>Advance <var>position</var> to the next byte and return to the previous
+   step.</p></li>
+
+  </ol>
+
+  <p>For the sake of interoperability, user agents should not use a pre-scan algorithm that returns
+  different results than the one described above. (But, if you do, please at least let us know, so
+  that we can improve this algorithm and benefit everyone...)</p>
+
+<!--(removed this since the specs are being changed)
+  <p class="note">These algorithms are a <span>willful violation</span> of the HTTP specification,
+  which requires that the encoding be assumed to be ISO-8859-1 in the absence of a <span>character
+  encoding declaration</span> to the contrary, and of RFC 2046, which requires that the encoding be
+  assumed to be US-ASCII in the absence of a <span>character encoding declaration</span> to the
+  contrary. This specification's third approach is motivated by a desire to be maximally compatible
+  with legacy content. <ref spec=HTTP> <ref spec=RFC2046></p>
+-->
+
+
+
+  

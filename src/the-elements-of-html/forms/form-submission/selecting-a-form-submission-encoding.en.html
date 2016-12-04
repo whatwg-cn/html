@@ -1,0 +1,42 @@
+<h5>Selecting a form submission encoding</h5>
+
+  <p>If the user agent is to <dfn data-x="picking an encoding for the form">pick an encoding for a
+  form</dfn>, it must run the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>encoding</var> be the <span>document's character encoding</span>.</p></li>
+
+   <li>
+    <p>If the <code>form</code> element has an <code
+    data-x="attr-form-accept-charset">accept-charset</code> attribute, set <var>encoding</var> to
+    the return value of running these substeps:</p>
+
+    <ol>
+     <li><p>Let <var>input</var> be the value of the <code>form</code> element's <code
+     data-x="attr-form-accept-charset">accept-charset</code> attribute.</p></li>
+
+     <li><p>Let <var>candidate encoding labels</var> be the result of <span data-x="split a string
+     on spaces">splitting <var>input</var> on spaces</span>.</p></li>
+
+     <li><p>Let <var>candidate encodings</var> be an empty list of <span data-x="encoding">character
+     encodings</span>.</p></li>
+
+     <li><p>For each token in <var>candidate encoding labels</var> in turn (in the order in which
+     they were found in <var>input</var>), <span data-x="getting an encoding">get an encoding</span>
+     for the token and, if this does not result in failure, append the <span>encoding</span> to
+     <var>candidate encodings</var>.</p></li>
+
+     <li><p>If <var>candidate encodings</var> is empty, return <span>UTF-8</span>.</p></li>
+
+     <li><p>Return the first encoding in <var>candidate encodings</var>.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Return the result of <span data-x="get an output encoding">getting an output
+   encoding</span> from <var>encoding</var>.</p></li>
+  </ol>
+
+  </div>
+
+
+  

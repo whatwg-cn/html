@@ -1,0 +1,286 @@
+<h4>Browsing context names</h4>
+
+  <p>Browsing contexts can have a <dfn>browsing context name</dfn>. Unless stated otherwise, it is
+  the empty string.</p>
+
+  <p>A <dfn>valid browsing context name</dfn> is any string with at least one character that does
+  not start with a U+005F LOW LINE character. (Names starting with an underscore are reserved for
+  special keywords.)</p>
+
+  <p>A <dfn>valid browsing context name or keyword</dfn> is any string that is either a <span>valid
+  browsing context name</span> or that is an <span>ASCII case-insensitive</span> match for one of:
+  <code data-x="">_blank</code>, <code data-x="">_self</code>, <code data-x="">_parent</code>, or
+  <code data-x="">_top</code>.</p>
+
+  <p>These values have different meanings based on whether the page is sandboxed or not, as
+  summarized in the following (non-normative) table. In this table, "current" means the
+  <span>browsing context</span> that the link or script is in, "parent" means the <span>parent
+  browsing context</span> of the one the link or script is in, "top" means the <span>top-level
+  browsing context</span> of the one the link or script is in, "new" means a new <span>top-level
+  browsing context</span> or <span>auxiliary browsing context</span> is to be created, subject to
+  various user preferences and user agent policies, "none" means that nothing will happen, and
+  "maybe new" means the same as "new" if the "<code
+  data-x="attr-iframe-sandbox-allow-popups">allow-popups</code>" keyword is also specified on the
+  <code data-x="attr-iframe-sandbox">sandbox</code> attribute (or if the user overrode the
+  sandboxing), and the same as "none" otherwise.</p>
+
+  <table>
+   <thead>
+    <tr>
+     <th rowspan=2>Keyword
+     <th rowspan=2>Ordinary effect
+     <th colspan=2>Effect in an <code>iframe</code> with...
+    <tr>           <!-- nothing -->
+     <th><code data-x="">sandbox=""</code>
+     <th><code data-x="">sandbox="allow-top-navigation"</code>
+
+   <tbody>
+    <tr>
+     <td>none specified, for links and form submissions <!-- same as empty string -->
+     <td>current
+     <td>current
+     <td>current
+
+    <tr>
+     <td>empty string
+     <td>current
+     <td>current
+     <td>current
+
+    <tr>
+     <td><code data-x="">_blank</code>
+     <td>new
+     <td>maybe new
+     <td>maybe new
+
+    <tr>
+     <td><code data-x="">_self</code>
+     <td>current
+     <td>current
+     <td>current
+
+    <tr>
+     <td><code data-x="">_parent</code> if there isn't a parent
+     <td>current
+     <td>current
+     <td>current
+
+    <tr>
+     <td><code data-x="">_parent</code> if parent is also top
+     <td>parent/top
+     <td>none
+     <td>parent/top
+
+    <tr>
+     <td><code data-x="">_parent</code> if there is one and it's not top
+     <td>parent
+     <td>none
+     <td>none
+
+    <tr>
+     <td><code data-x="">_top</code> if top is current
+     <td>current
+     <td>current
+     <td>current
+
+    <tr>
+     <td><code data-x="">_top</code> if top is not current
+     <td>top
+     <td>none
+     <td>top
+
+    <tr>
+     <td>name that doesn't exist
+     <td>new
+     <td>maybe new
+     <td>maybe new
+
+    <tr>
+     <td>name that exists and is a descendant
+     <td>specified descendant
+     <td>specified descendant
+     <td>specified descendant
+
+    <tr>
+     <td>name that exists and is current
+     <td>current
+     <td>current
+     <td>current
+
+    <tr>
+     <td>name that exists and is an ancestor that is top
+     <td>specified ancestor
+     <td>none
+     <td>specified ancestor/top
+
+    <tr>
+     <td>name that exists and is an ancestor that is not top
+     <td>specified ancestor
+     <td>none
+     <td>none
+
+    <tr>
+     <td>other name that exists with common top
+     <td>specified
+     <td>none
+     <td>none
+
+    <tr>
+     <td>name that exists with different top, if <span data-x="familiar with">familiar</span> and <span>one permitted sandboxed navigator</span>
+     <td>specified
+     <td>specified
+     <td>specified
+
+    <tr>
+     <td>name that exists with different top, if <span data-x="familiar with">familiar</span> but not <span>one permitted sandboxed navigator</span>
+     <td>specified
+     <td>none
+     <td>none
+
+    <tr>
+     <td>name that exists with different top, not <span data-x="familiar with">familiar</span>
+     <td>new
+     <td>maybe new
+     <td>maybe new
+
+  </table>
+
+  <p class="tablenote"><small>Most of the restrictions on sandboxed browsing contexts are applied by
+  other algorithms, e.g. the <span data-x="navigate">navigation</span> algorithm, not <span>the rules
+  for choosing a browsing context given a browsing context name</span> given below.</small></p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p><dfn>The rules for choosing a browsing context given a browsing context name</dfn> are as
+  follows. The rules assume that they are being applied in the context of a <span>browsing
+  context</span>, as part of the execution of a <span data-x="concept-task">task</span>.</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the given browsing context name is the empty string or <code data-x="">_self</code>, then
+    the chosen browsing context must be the current one.</p>
+
+   </li>
+
+   <li><p>If the given browsing context name is <code data-x="">_parent</code>, then the chosen
+   browsing context must be the <span><em>parent</em> browsing context</span> of the current one,
+   unless there isn't one, in which case the chosen browsing context must be the current browsing
+   context.</p></li>
+
+   <li><p>If the given browsing context name is <code data-x="">_top</code>, then the chosen browsing
+   context must be the <span>top-level browsing context</span> of the current one, if there is one,
+   or else the current browsing context.</p></li>
+
+   <li>
+
+    <p>If the given browsing context name is not <code data-x="">_blank</code> and there exists a
+    browsing context whose <span data-x="browsing context name">name</span> is the same as the given
+    browsing context name, and the current browsing context is <span>familiar with</span> that
+    browsing context, and the user agent determines that the two browsing contexts are related
+    enough that it is ok if they reach each other, then that browsing context must be the chosen
+    one. If there are multiple matching browsing contexts, the user agent should select one in some
+    arbitrary consistent manner, such as the most recently opened, most recently focused, or more
+    closely related.</p>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, a new browsing context is being requested, and what happens depends on the user
+    agent's configuration and abilities &mdash; it is determined by the rules given for the first
+    applicable option from the following list:</p>
+
+    <dl class="switch">
+
+     <dt id="popup-blocker">If the algorithm is not <span>triggered by user activation</span> and
+     the user agent has been configured to not show popups (i.e. the user agent has a "popup
+     blocker" enabled)</dt>
+
+     <dd>
+
+      <p>There is no chosen browsing context. The user agent may inform the user that a popup has
+      been blocked.</p>
+
+     </dd>
+
+     <dt id="sandboxWindowOpen">If the current browsing context's <span>active document</span>'s
+     <span>active sandboxing flag set</span> has the <span>sandboxed auxiliary navigation browsing
+     context flag</span> set.</dt>
+
+     <dd>
+
+      <p>Typically, there is no chosen browsing context.</p>
+
+      <p>The user agent may offer to <span data-x="creating a new browsing context">create</span> a new <span>top-level browsing context</span> or reuse
+      an existing <span>top-level browsing context</span>. If the user picks one of those options,
+      then the designated browsing context must be the chosen one (the browsing context's name isn't
+      set to the given browsing context name). The default behavior (if the user agent doesn't
+      offer the option to the user, or if the user declines to allow a browsing context to be used)
+      must be that there must not be a chosen browsing context.</p>
+
+      <p class="warning">If this case occurs, it means that an author has explicitly sandboxed the
+      document that is trying to open a link.</p>
+
+     </dd>
+
+
+     <dt id="noopener">If the user agent has been configured such that in this instance it will
+     create a new browsing context:</dt>
+
+     <dd>
+      <p>A new <span>auxiliary browsing context</span> must be created, with the <span>opener
+      browsing context</span> being the current one. If the given browsing context name is not
+      <code data-x="">_blank</code>, then the new auxiliary browsing context's name must be the
+      given browsing context name (otherwise, it has no name). The chosen browsing context must be
+      this new browsing context.</p>
+
+      <p class="note">If the newly created <span>browsing context</span> is immediately <span
+      data-x="navigate">navigated</span>, then the navigation will be done with <span>replacement
+      enabled</span>.</p>
+     </dd>
+
+     <dt>If the user agent has been configured such that in this instance it will reuse the current
+     browsing context</dt>
+
+     <dd><p>The chosen browsing context is the current browsing context.</p></dd>
+
+
+     <dt>If the user agent has been configured such that in this instance it will not find a
+     browsing context</dt>
+
+     <dd><p>There must not be a chosen browsing context.</p></dd>
+
+    </dl>
+
+    <p>User agent implementors are encouraged to provide a way for users to configure the user agent
+    to always reuse the current browsing context.</p>
+
+    <p>If the chosen browsing context picked above, if any, is a new browsing context, then:</p>
+
+    <ol>
+     <li><p>Let <var>flagSet</var> be the current browsing context's <span>active document</span>'s
+     <span>active sandboxing flag set</span>.</p></li>
+
+     <li><p>If <var>flagSet</var>'s <span>sandboxed navigation browsing context flag</span> is set,
+     then the current browsing context must be set as the new browsing context's <span>one permitted
+     sandboxed navigator</span>.</p></li>
+
+     <li><p>If <var>flagSet</var>'s <span>sandbox propagates to auxiliary browsing contexts
+     flag</span> is set, then all the flags that are set in <var>flagSet</var> must be set in the
+     new browsing context's <span>popup sandboxing flag set</span>.</p></li>
+    </ol>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+  <div w-nodev>
+
+  

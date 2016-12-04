@@ -1,0 +1,322 @@
+<h3 id="timers">Timers</h3>
+
+  <p>The <code data-x="dom-setTimeout">setTimeout()</code> and <code
+  data-x="dom-setInterval">setInterval()</code> methods allow authors to schedule timer-based
+  callbacks.</p>
+
+  <dl class="domintro">
+
+   <dt><var>handle</var> = self . <code subdfn data-x="dom-setTimeout">setTimeout</code>( <var>handler</var> [, <var>timeout</var> [, <var>arguments</var>... ] ] )</dt>
+
+   <dd>
+
+    <p>Schedules a timeout to run <var>handler</var> after <var>timeout</var>
+    milliseconds. Any <var>arguments</var> are passed straight through to the <var>handler</var>.</p>
+
+   </dd>
+
+   <dt><var>handle</var> = self . <code data-x="dom-setTimeout">setTimeout</code>( <var>code</var> [, <var>timeout</var> ] )</dt>
+
+   <dd>
+
+    <p>Schedules a timeout to compile and run <var>code</var> after <var>timeout</var> milliseconds.</p>
+
+   </dd>
+
+   <dt>self . <code subdfn data-x="dom-clearTimeout">clearTimeout</code>( <var>handle</var> )</dt>
+   <!-- don't mention that the handle is optional, since if omitted, the method does nothing -->
+
+   <dd>
+
+    <p>Cancels the timeout set with <code data-x="dom-setTimeout">setTimeout()</code> or <code
+    data-x="dom-setInterval">setInterval()</code> identified by <var>handle</var>.</p>
+
+   </dd>
+
+   <dt><var>handle</var> = self . <code subdfn data-x="dom-setInterval">setInterval</code>( <var>handler</var> [, <var>timeout</var> [, <var>arguments</var>... ] ] )</dt>
+
+   <dd>
+
+    <p>Schedules a timeout to run <var>handler</var> every <var>timeout</var>
+    milliseconds. Any <var>arguments</var> are passed straight through to the <var>handler</var>.</p>
+
+   </dd>
+
+   <dt><var>handle</var> = self . <code data-x="dom-setInterval">setInterval</code>( <var>code</var> [, <var>timeout</var> ] )</dt>
+
+   <dd>
+
+    <p>Schedules a timeout to compile and run <var>code</var> every <var>timeout</var> milliseconds.</p>
+
+   </dd>
+
+   <dt>self . <code subdfn data-x="dom-clearInterval">clearInterval</code>( <var>handle</var> )</dt>
+   <!-- don't mention that the handle is optional, since if omitted, the method does nothing -->
+
+   <dd>
+
+    <p>Cancels the timeout set with <code data-x="dom-setInterval">setInterval()</code> or <code
+    data-x="dom-setTimeout">setTimeout()</code> identified by <var>handle</var>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p class="note">Timers can be nested; after five such nested timers, however, the interval is
+  forced to be at least four milliseconds.</p>
+
+  <p class="note">This API does not guarantee that timers will run exactly on schedule. Delays due
+  to CPU load, other tasks, etc, are to be expected.</p>
+
+  <div w-nodev>
+
+  <p>Objects that implement the <code>WindowOrWorkerGlobalScope</code> mixin have a <dfn
+  data-export="">list of active timers</dfn>. Each entry in this lists is identified by a number,
+  which must be unique within the list for the lifetime of the object that implements the
+  <code>WindowOrWorkerGlobalScope</code> mixin.</p>
+
+  <hr>
+
+  <p>The <dfn data-x="dom-setTimeout"><code
+  id="dom-windowtimers-setTimeout">setTimeout()</code></dfn> method must return the value returned
+  by the <span>timer initialization steps</span>, passing them the method's arguments, the object on
+  which the method for which the algorithm is running is implemented (a <code>Window</code> or
+  <code>WorkerGlobalScope</code> object) as the <var>method context</var>, and the <var>repeat</var>
+  flag set to false.</p>
+
+  <p>The <dfn data-x="dom-setInterval"><code
+  id="dom-windowtimers-setInterval">setInterval()</code></dfn> method must return the value returned
+  by the <span>timer initialization steps</span>, passing them the method's arguments, the object on
+  which the method for which the algorithm is running is implemented (a <code>Window</code> or
+  <code>WorkerGlobalScope</code> object) as the <var>method context</var>, and the <var>repeat</var>
+  flag set to true.</p>
+
+  <p>The <dfn data-x="dom-clearTimeout"><code
+  id="dom-windowtimers-clearTimeout">clearTimeout()</code></dfn> and <dfn
+  data-x="dom-clearInterval"><code id="dom-windowtimers-clearInterval">clearInterval()</code></dfn>
+  methods must clear the entry identified as <var>handle</var> from the <span>list of active
+  timers</span> of the <code>WindowOrWorkerGlobalScope</code> object on which the method was
+  invoked, if any, where <var>handle</var> is the argument passed to the method. (If
+  <var>handle</var> does not identify an entry in the <span>list of active timers</span> of the
+  <code>WindowOrWorkerGlobalScope</code> object on which the method was invoked, the method does
+  nothing.)</p>
+
+  <p class="note">Because <code data-x="dom-clearTimeout">clearTimeout()</code> and <code
+  data-x="dom-clearInterval">clearInterval()</code> clear entries from the same list, either method
+  can be used to clear timers created by <code data-x="dom-setTimeout">setTimeout()</code> or <code
+  data-x="dom-setInterval">setInterval()</code>.</p>
+
+  <hr>
+
+  <p>The <!--en-GB--><dfn id="timer-initialisation-steps">timer initialization steps</dfn>, which
+  are invoked with some method arguments, a <var>method context</var>, a <var>repeat</var> flag
+  which can be true or false, and optionally (and only if the <var>repeat</var> flag is true) a
+  <var>previous handle</var>, are as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>method context proxy</var> be <var>method context</var> if that
+   is a <code>WorkerGlobalScope</code> object, or else the <code>WindowProxy</code> that corresponds
+   to <var>method context</var>.</p></li>
+
+   <li><p>If <var>previous handle</var> was provided, let <var>handle</var> be
+   <var>previous handle</var>; otherwise, let <var>handle</var> be a
+   user-agent-defined integer that is greater than zero that will identify the timeout to be set by
+   this call in the <span>list of active timers</span>.</p></li>
+
+   <li><p>If <var>previous handle</var> was not provided, add an entry to the <span>list of
+   active timers</span> for <var>handle</var>.</p></li>
+
+   <li><p>Let <var>callerRealm</var> be the <span>current Realm Record</span>, and
+   <var>calleeRealm</var> be <var>method context</var>'s <span>JavaScript realm</span>.</p></li>
+
+   <li>
+
+    <p>Let <var>task</var> be a <span data-x="concept-task">task</span> that runs the
+    following substeps:</p>
+
+    <ol>
+
+     <li><p>If the entry for <var>handle</var> in the <span>list of active timers</span>
+     has been cleared, then abort this <span data-x="concept-task">task</span>'s substeps.</p></li>
+
+     <li>
+
+      <p>Run the appropriate set of steps from the following list:</p>
+
+      <dl class="switch">
+
+       <dt>If the first method argument is a <code data-x="idl-Function">Function</code></dt>
+
+       <dd>
+
+        <p><span data-x="es-invoking-callback-functions">Invoke</span> the <code data-x="idl-Function">Function</code>. Use the third and subsequent method
+        arguments (if any) as the arguments for invoking the <code
+        data-x="idl-Function">Function</code>. Use <var>method context proxy</var> as the
+        <span data-x="dfn-callback-this-value">callback this value</span>.</p>
+
+       </dd>
+
+       <dt>Otherwise</dt>
+
+       <dd>
+
+        <ol>
+         <li><p>Perform <span
+         data-x="the-hostensurecancompilestrings-implementation">HostEnsureCanCompileStrings</span>(<var>callerRealm</var>,
+         <var>calleeRealm</var>). If this throws an exception, <span>report the
+         exception</span>.</p></li>
+
+         <li><p>Let <var>script source</var> be the first method argument.</p></li>
+
+         <li><p>Let <var>settings object</var> be <var>method context</var>'s <span>environment
+         settings object</span>.</p></li>
+
+         <li><p>Let <var>script</var> be the result of <span>creating a classic script</span> using
+         <var>script source</var> and <var>settings object</var>.</p></li>
+
+         <li><p><span data-x="run a classic script">Run the classic script</span>
+         <var>script</var>.</p></li>
+
+        </ol>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li><p>If the <var>repeat</var> flag is true, then call <span>timer initialization
+     steps</span> again, passing them the same method arguments, the same <var>method
+     context</var>, with the <var>repeat</var> flag still set to true, and with the <var>previous handle</var> set to <var>handler</var>.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Let <var>timeout</var> be the second method argument.</p></li>
+
+   <li>
+    <p>If the currently running <span data-x="concept-task">task</span> is a task that was created
+    by this algorithm, then let <var>nesting level</var> be the <span
+    data-x="concept-task">task</span>'s <span>timer nesting level</span>. Otherwise, let
+    <var>nesting level</var> be zero.</p>
+
+    <p class="note">The task's <span>timer nesting level</span> is used both for nested calls to
+    <code data-x="dom-setTimeout">setTimeout()</code>, and for the repeating timers created by <code
+    data-x="dom-setInterval">setInterval()</code>. (Or, indeed, for any combination of the two.) In
+    other words, it represents nested invocations of this algorithm, not of a particular method.</p>
+   </li>
+
+   <li><p>If <var>nesting level</var> is greater than 5, and <var>timeout</var> is
+   less than 4, then increase <var>timeout</var> to 4.</p></li>
+
+   <li><p>Increment <var>nesting level</var> by one.</p></li>
+
+   <li><p>Let <var>task</var>'s <dfn>timer nesting level</dfn> be <var>nesting
+   level</var>.</p></li>
+
+   <li><p>Return <var>handle</var>, and then continue running this algorithm
+   <span>in parallel</span>.</p></li>
+
+   <li>
+
+    <p>If <var>method context</var> is a <code>Window</code> object, wait until the
+    <code>Document</code> associated with <var>method context</var> has been <span>fully
+    active</span> for a further <var>timeout</var> milliseconds (not necessarily
+    consecutively).</p>
+
+    <p>Otherwise, <var>method context</var> is a <code>WorkerGlobalScope</code> object;
+    wait until <var>timeout</var> milliseconds have passed with the worker not suspended
+    (not necessarily consecutively).</p>
+
+   </li>
+
+   <li>
+
+    <p>Wait until any invocations of this algorithm that had the same <var>method
+    context</var>, that started before this one, and whose <var>timeout</var> is equal to
+    or less than this one's, have completed.</p>
+
+    <p class="note">Argument conversion as defined by Web IDL (for example, invoking <code
+    data-x="">toString()</code> methods on objects passed as the first argument) happens in the
+    algorithms defined in Web IDL, before this algorithm is invoked.</p>
+
+    <div class="example">
+
+     <p>So for example, the following rather silly code will result in the log containing "<code
+     data-x="">ONE&nbsp;TWO&nbsp;</code>":</p>
+
+     <pre>var log = '';
+function logger(s) { log += s + ' '; }
+
+setTimeout({ toString: function () {
+  setTimeout("logger('ONE')", 100);
+  return "logger('TWO')";
+} }, 100);</pre>
+
+    </div>
+
+   </li>
+
+   <li>
+
+    <p>Optionally, wait a further user-agent defined length of time.</p>
+
+    <p class="note">This is intended to allow user agents to pad timeouts as needed to optimize the
+    power usage of the device. For example, some processors have a low-power mode where the
+    granularity of timers is reduced; on such platforms, user agents can slow timers down to fit
+    this schedule instead of requiring the processor to use the more accurate mode with its
+    associated higher power usage.</p>
+
+   </li>
+
+   <li>
+
+    <p><span data-x="queue a task">Queue</span> the <span data-x="concept-task">task</span> <var>task</var>.</p>
+
+    <p class="note">Once the task has been processed, if the <var>repeat</var> flag is
+    false, it is safe to remove the entry for <var>handle</var> from the <span>list of
+    active timers</span> (there is no way for the entry's existence to be detected past this point,
+    so it does not technically matter one way or the other).</p>
+
+   </li>
+
+  </ol>
+
+  <p>The <span>task source</span> for these <span data-x="concept-task">tasks</span> is the
+  <dfn>timer task source</dfn>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>To run tasks of several milliseconds back to back without any delay, while still yielding back
+   to the browser to avoid starving the user interface (and to avoid the browser killing the script
+   for hogging the CPU), simply queue the next timer before performing work:</p>
+
+   <pre>function doExpensiveWork() {
+  var done = false;
+  // ...
+  // this part of the function takes up to five milliseconds
+  // set done to true if we're done
+  // ...
+  return done;
+}
+
+function rescheduleWork() {
+  var handle = setTimeout(rescheduleWork, 0); // preschedule next iteration
+  if (doExpensiveWork())
+    clearTimeout(handle); // clear the timeout if we don't need it
+}
+
+function scheduleWork() {
+  setTimeout(rescheduleWork, 0);
+}
+
+scheduleWork(); // queues a task to do lots of work</pre>
+
+  </div>
+
+
+  

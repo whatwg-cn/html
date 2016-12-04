@@ -1,0 +1,67 @@
+<h4><dfn>Tokenization</dfn></h4>
+
+  <p>Implementations must act as if they used the following state machine to tokenize HTML. The
+  state machine must start in the <span>data state</span>. Most states consume a single character,
+  which may have various side-effects, and either switches the state machine to a new state to
+  <span>reconsume</span> the <span>current input character</span>, or switches it to a new state to
+  consume the <span data-x="next input character">next character</span>, or stays in the same state
+  to consume the next character. Some states have more complicated behavior and can consume several
+  characters before switching to another state. In some cases, the tokenizer state is also changed
+  by the tree construction stage.</p>
+
+  <p>When a state says to <dfn>reconsume</dfn> a matched character in a specified state, that means
+  to switch to that state, but when it attempts to consume the <span>next input character</span>,
+  provide it with the <span>current input character</span> instead.</p>
+
+  <p>The exact behavior of certain states depends on the <span>insertion mode</span> and the
+  <span>stack of open elements</span>. Certain states also use a <dfn><var data-x="temporary
+  buffer">temporary buffer</var></dfn> to track progress, and the <span>character reference
+  state</span> uses a <dfn><var data-x="return state">return state</var></dfn> to return to the
+  state it was invoked from.</p>
+
+  <p>The output of the tokenization step is a series of zero or more of the following tokens:
+  DOCTYPE, start tag, end tag, comment, character, end-of-file. DOCTYPE tokens have a name, a public
+  identifier, a system identifier, and a <dfn><i>force-quirks flag</i></dfn>. When a DOCTYPE token
+  is created, its name, public identifier, and system identifier must be marked as missing (which is
+  a distinct state from the empty string), and the <i data-x="force-quirks flag">force-quirks flag</i> must be set to
+  <i>off</i> (its other state is <i>on</i>). Start and end tag tokens have a tag name, a <dfn
+  data-x="self-closing flag">self-closing flag</dfn>, and a list of attributes, each of which has a
+  name and a value. When a start or end tag token is created, its <i data-x="self-closing
+  flag">self-closing flag</i> must be unset (its other state is that it be set), and its attributes
+  list must be empty. Comment and character tokens have data.</p>
+
+  <p>When a token is emitted, it must immediately be handled by the <span>tree construction</span>
+  stage. The tree construction stage can affect the state of the tokenization stage, and can insert
+  additional characters into the stream. (For example, the <code>script</code> element can result in
+  scripts executing and using the <span>dynamic markup insertion</span> APIs to insert characters
+  into the stream being tokenized.)</p>
+
+  <p class="note">Creating a token and emitting it are distinct actions. It is possible for a token
+  to be created but implicitly abandoned (never emitted), e.g. if the file ends unexpectedly while
+  processing the characters that are being parsed into a start tag token.</p>
+
+  <p>When a start tag token is emitted with its <i data-x="self-closing flag">self-closing flag</i> set, if the flag is not
+  <dfn data-x="acknowledge self-closing flag">acknowledged</dfn> when it is processed by the tree
+  construction stage, that is a <span>parse error</span>.</p>
+
+  <p>When an end tag token is emitted with attributes, that is a <span>parse error</span>.</p>
+
+  <p>When an end tag token is emitted with its <i data-x="self-closing flag">self-closing flag</i> set, that is a <span>parse
+  error</span>.</p>
+
+  <p>An <dfn>appropriate end tag token</dfn> is an end tag token whose tag name matches the tag name
+  of the last start tag to have been emitted from this tokenizer, if any. If no start tag has been
+  emitted from this tokenizer, then no end tag token is appropriate.</p>
+
+  <p id="check-parser-pause-flag">Before each step of the tokenizer, the user agent must first check
+  the <span>parser pause flag</span>. If it is true, then the tokenizer must abort the processing of
+  any nested invocations of the tokenizer, yielding control back to the caller.</p>
+
+  <p>The tokenizer state machine consists of the states defined in the following subsections.</p>
+
+
+  <!-- Order of the lists below is supposed to be non-error then error, by unicode, then EOF, ending
+  with "anything else" -->
+
+
+  

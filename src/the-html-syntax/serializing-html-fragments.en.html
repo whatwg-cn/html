@@ -1,0 +1,311 @@
+<h3 id="serialising-html-fragments">Serializing HTML fragments</h3>
+
+  <p>The following steps form the <!--en-GB--><dfn id="html-fragment-serialisation-algorithm"
+  data-export="">HTML fragment serialization algorithm</dfn>. The algorithm takes as input a DOM
+  <code>Element</code>, <code>Document</code>, or <code>DocumentFragment</code> referred to as
+  <var>the node</var>, and returns a string.</p>
+
+  <p class="note">This algorithm serializes the <em>children</em> of the node being serialized, not
+  the node itself.</p>
+
+  <ol>
+
+   <li><p>Let <var>s</var> be a string, and initialize it to the empty string.</p></li>
+
+   <li><p>If <var>the node</var> is a <code>template</code> element, then let <var>the node</var> instead be the <code>template</code> element's <span>template
+   contents</span> (a <code>DocumentFragment</code> node).</p></li>
+
+   <li>
+
+    <p>For each child node of <var>the node</var>, in <span>tree order</span>, run the
+    following steps:
+
+    <ol>
+
+     <li><p>Let <var>current node</var> be the child node being processed.</p></li>
+
+     <li>
+
+      <p>Append the appropriate string from the following list to <var>s</var>:</p>
+
+      <dl class="switch">
+
+       <dt>If <var>current node</var> is an <code data-x="">Element</code></dt>
+
+       <dd>
+
+        <p>If <var>current node</var> is an element in the <span>HTML namespace</span>, the
+        <span>MathML namespace</span>, or the <span>SVG namespace</span>, then let <var>tagname</var> be <var>current node</var>'s local name. Otherwise, let <var>tagname</var> be <var>current node</var>'s qualified name.</p>
+
+        <p>Append a U+003C LESS-THAN SIGN character (&lt;), followed by <var>tagname</var>.</p>
+
+        <p class="note">For <span>HTML elements</span> created by the <span>HTML parser</span> or
+        <code data-x="dom-Document-createElement">createElement()</code>, <var>tagname</var> will be
+        lowercase.</p>
+
+        <p>For each attribute that the element has, append a U+0020 SPACE character, the <span
+        data-x="attribute's serialized name">attribute's serialized name as described below</span>, a
+        U+003D EQUALS SIGN character (=), a U+0022 QUOTATION MARK character (&quot;), the
+        attribute's value, <span data-x="escaping a string">escaped as described below</span> in
+        <i>attribute mode</i>, and a second U+0022 QUOTATION MARK character (&quot;).</p>
+
+        <p>An <!--en-GB--><dfn id="attribute's-serialised-name">attribute's serialized name</dfn>
+        for the purposes of the previous paragraph must be determined as follows:</p>
+
+        <dl class="switch">
+
+         <dt>If the attribute has no namespace</dt>
+
+         <dd>
+
+          <p>The attribute's serialized name is the attribute's local name.</p>
+
+          <p class="note">For attributes on <span>HTML elements</span> set by the <span>HTML
+          parser</span> or by <code data-x="">Element.setAttribute()</code>, the local name will be
+          lowercase.</p>
+
+         </dd>
+
+
+         <dt>If the attribute is in the <span>XML namespace</span></dt>
+
+         <dd><p>The attribute's serialized name is the string "<code data-x="">xml:</code>" followed
+         by the attribute's local name.</p></dd>
+
+
+         <dt>If the attribute is in the <span>XMLNS namespace</span> and the attribute's local name
+         is <code data-x="">xmlns</code></dt>
+
+         <dd><p>The attribute's serialized name is the string "<code
+         data-x="">xmlns</code>".</p></dd>
+
+
+         <dt>If the attribute is in the <span>XMLNS namespace</span> and the attribute's local name
+         is not <code data-x="">xmlns</code></dt>
+
+         <dd><p>The attribute's serialized name is the string "<code data-x="">xmlns:</code>"
+         followed by the attribute's local name.</p></dd>
+
+
+         <dt>If the attribute is in the <span>XLink namespace</span></dt>
+
+         <dd><p>The attribute's serialized name is the string "<code data-x="">xlink:</code>"
+         followed by the attribute's local name.</p></dd>
+
+
+         <dt>If the attribute is in some other namespace</dt>
+
+         <dd><p>The attribute's serialized name is the attribute's qualified name.</p></dd>
+
+        </dl>
+
+        <p>While the exact order of attributes is UA-defined, and may depend on factors such as the
+        order that the attributes were given in the original markup, the sort order must be stable,
+        such that consecutive invocations of this algorithm serialize an element's attributes in the
+        same order.</p>
+
+        <p>Append a U+003E GREATER-THAN SIGN character (&gt;).</p>
+
+        <p>If <var>current node</var> is an <code>area</code>, <code>base</code>,
+        <code>basefont</code>, <code>bgsound</code>, <code>br</code>, <code>col</code>,
+        <code>embed</code>, <code>frame</code>, <code>hr</code>, <code>img</code>,
+        <code>input</code>, <code>keygen</code>, <code>link</code>, <code>meta</code>,
+        <code>param</code>, <code>source</code>, <code>track</code> or <code>wbr</code> element,
+        then continue on to the next child node at this point.</p>
+        <!-- VOIDLIST superset -->
+        <!-- also, i guess: image, but we don't list it because we don't consider it an "element",
+        more a "macro", and thus we should never serialize it -->
+
+        <p>Append the value of running the <span>HTML fragment serialization algorithm</span> on the
+        <var>current node</var> element (thus recursing into this algorithm for that
+        element), followed by a U+003C LESS-THAN SIGN character (&lt;), a U+002F SOLIDUS character
+        (/), <var>tagname</var> again, and finally a U+003E GREATER-THAN SIGN character
+        (&gt;).</p>
+
+       </dd>
+
+
+       <dt>If <var>current node</var> is a <code data-x="">Text</code> node</dt>
+
+       <dd>
+
+        <p>If the parent of <var>current node</var> is a <code>style</code>,
+        <code>script</code>, <code>xmp</code>, <code>iframe</code>, <code>noembed</code>,
+        <code>noframes</code>, or <code>plaintext</code> element, or if the parent of <var>current node</var> is a <code>noscript</code> element and <span
+        data-x="concept-n-script">scripting is enabled</span> for the node, then append the value of
+        <var>current node</var>'s <code data-x="">data</code> IDL attribute literally.</p>
+
+        <p>Otherwise, append the value of <var>current node</var>'s <code
+        data-x="">data</code> IDL attribute, <span data-x="escaping a string">escaped as described
+        below</span>.</p>
+
+       </dd>
+
+
+       <dt>If <var>current node</var> is a <code data-x="">Comment</code></dt>
+
+       <dd>
+
+        <p>Append the literal string "<code data-x="">&lt;!--</code>" (U+003C LESS-THAN SIGN, U+0021
+        EXCLAMATION MARK, U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS), followed by the value of <var>current node</var>'s <code data-x="">data</code> IDL attribute, followed by the
+        literal string "<code data-x="">--&gt;</code>" (U+002D HYPHEN-MINUS, U+002D HYPHEN-MINUS,
+        U+003E GREATER-THAN SIGN).</p>
+
+       </dd>
+
+
+       <dt>If <var>current node</var> is a <code data-x="">ProcessingInstruction</code></dt>
+
+       <dd>
+
+        <p>Append the literal string "<code data-x="">&lt;?</code>" (U+003C LESS-THAN SIGN, U+003F
+        QUESTION MARK), followed by the value of <var>current node</var>'s <code
+        data-x="">target</code> IDL attribute, followed by a single U+0020 SPACE character, followed
+        by the value of <var>current node</var>'s <code data-x="">data</code> IDL
+        attribute, followed by a single U+003E GREATER-THAN SIGN character (>).</p>
+
+       </dd>
+
+
+       <dt>If <var>current node</var> is a <code data-x="">DocumentType</code></dt>
+
+       <dd>
+
+        <p>Append the literal string "<code data-x="">&lt;!DOCTYPE</code>" (U+003C LESS-THAN SIGN, U+0021
+        EXCLAMATION MARK, U+0044 LATIN CAPITAL LETTER D, U+004F LATIN CAPITAL LETTER O, U+0043 LATIN
+        CAPITAL LETTER C, U+0054 LATIN CAPITAL LETTER T, U+0059 LATIN CAPITAL LETTER Y, U+0050 LATIN
+        CAPITAL LETTER P, U+0045 LATIN CAPITAL LETTER E), followed by a space (U+0020 SPACE),
+        followed by the value of <var>current node</var>'s <code data-x="">name</code> IDL
+        attribute, followed by the literal string "<code data-x="">&gt;</code>" (U+003E GREATER-THAN SIGN).</p>
+
+       </dd>
+
+
+      </dl>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li><p>The result of the algorithm is the string <var>s</var>.</p></li>
+
+  </ol>
+
+  <p class="warning">It is possible that the output of this algorithm, if parsed with an <span>HTML
+  parser</span>, will not return the original tree structure. Tree structures that do not roundtrip
+  a serialize and reparse step can also be produced by the <span>HTML parser</span> itself, although
+  such cases are typically non-conforming.</p>
+
+  <div class="example">
+
+   <p>For instance, if a <code>textarea</code> element to which a <code data-x="">Comment</code>
+   node has been appended is serialized and the output is then reparsed, the comment will end up
+   being displayed in the text control. Similarly, if, as a result of DOM manipulation, an element
+   contains a comment that contains the literal string "<code data-x="">--&gt;</code>", then when
+   the result of serializing the element is parsed, the comment will be truncated at that point and
+   the rest of the comment will be interpreted as markup. More examples would be making a
+   <code>script</code> element contain a <code>Text</code> node with the text string "<code
+   data-x="">&lt;/script></code>", or having a <code>p</code> element that contains a
+   <code>ul</code> element (as the <code>ul</code> element's <span data-x="syntax-start-tag">start
+   tag</span> would imply the end tag for the <code>p</code>).</p>
+
+   <p>This can enable cross-site scripting attacks. An example of this would be a page that lets the
+   user enter some font family names that are then inserted into a CSS <code>style</code> block via
+   the DOM and which then uses the <code data-x="dom-innerHTML">innerHTML</code> IDL attribute to get
+   the HTML serialization of that <code>style</code> element: if the user enters
+   "<code data-x="">&lt;/style>&lt;script>attack&lt;/script></code>" as a font family name, <code
+   data-x="dom-innerHTML">innerHTML</code> will return markup that, if parsed in a different context,
+   would contain a <code>script</code> node, even though no <code>script</code> node existed in the
+   original DOM.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>For example, consider the following markup:</p>
+
+   <pre>&lt;form id="outer">&lt;div>&lt;/form>&lt;form id="inner">&lt;input></pre>
+
+   <p>This will be parsed into:</p>
+
+   <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>form</code> <span class="t2" data-x=""><code class="attribute name" data-x="attr-id">id</code>="<code class="attribute value" data-x="">outer</code>"</span><ul><li class="t1"><code>div</code><ul><li class="t1"><code>form</code> <span class="t2" data-x=""><code class="attribute name" data-x="attr-id">id</code>="<code class="attribute value" data-x="">inner</code>"</span><ul><li class="t1"><code>input</code></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+   <p>The <code>input</code> element will be associated with the inner <code>form</code> element.
+   Now, if this tree structure is serialized and reparsed, the <code data-x="">&lt;form
+   id="inner"></code> start tag will be ignored, and so the <code>input</code> element will be
+   associated with the outer <code>form</code> element instead.</p>
+
+   <pre>&lt;html>&lt;head>&lt;/head>&lt;body>&lt;form id="outer">&lt;div><mark>&lt;form id="inner"></mark>&lt;input>&lt;/form>&lt;/div>&lt;/form>&lt;/body>&lt;/html></pre>
+
+   <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>form</code> <span class="t2" data-x=""><code class="attribute name" data-x="attr-id">id</code>="<code class="attribute value" data-x="">outer</code>"</span><ul><li class="t1"><code>div</code><ul><li class="t1"><code>input</code></li></ul></li></ul></li></ul></li></ul></li></ul>
+
+  </div>
+
+  <div class="example">
+
+   <p>As another example, consider the following markup:</p>
+
+   <pre>&lt;a>&lt;table>&lt;a></pre>
+
+   <p>This will be parsed into:</p>
+
+   <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>a</code><ul><li class="t1"><code>a</code></li><li class="t1"><code>table</code></li></ul></li></ul></li></ul></li></ul>
+
+   <p>That is, the <code>a</code> elements are nested, because the second <code>a</code> element is
+   <span data-x="foster parent">foster parented</span>. After a serialize-reparse roundtrip, the
+   <code>a</code> elements and the <code>table</code> element would all be siblings, because the
+   second <code data-x="">&lt;a></code> start tag implicitly closes the first <code>a</code>
+   element.</p>
+
+   <pre>&lt;html>&lt;head>&lt;/head>&lt;body>&lt;a><mark>&lt;a></mark>&lt;/a>&lt;table>&lt;/table>&lt;/a>&lt;/body>&lt;/html></pre>
+
+   <ul class="domTree"><li class="t1"><code>html</code><ul><li class="t1"><code>head</code></li><li class="t1"><code>body</code><ul><li class="t1"><code>a</code></li><li class="t1"><code>a</code></li><li class="t1"><code>table</code></li></ul></li></ul></li></ul>
+
+  </div>
+
+  <p>For historical reasons, this algorithm does not round-trip an initial U+000A LINE FEED (LF)
+  character in <code>pre</code>, <code>textarea</code>, or <code>listing</code> elements, even
+  though (in the first two cases) the markup being round-tripped can be conforming. The <span>HTML
+  parser</span> will drop such a character during parsing, but this algorithm does <em>not</em>
+  serialize an extra U+000A LINE FEED (LF) character.</p>
+  <!-- https://github.com/whatwg/html/issues/944 -->
+
+  <div class="example">
+   <p>For example, consider the following markup:</p>
+
+   <pre>&lt;pre>
+
+Hello.&lt;/pre></pre>
+
+   <p>When this document is first parsed, the <code>pre</code> element's <span>child text
+   content</span> starts with a single newline character. After a serialize-reparse roundtrip, the
+   <code>pre</code> element's <span>child text content</span> is simply "<code
+   data-x="">Hello.</code>".</p>
+  </div>
+
+  <p><dfn id="escapingString">Escaping a string</dfn> (for the purposes of the algorithm above)
+  consists of running the following steps:</p>
+
+  <ol>
+
+   <li><p>Replace any occurrence of the "<code data-x="">&amp;</code>" character by the string "<code
+   data-x="">&amp;amp;</code>".</p></li>
+
+   <li><p>Replace any occurrences of the U+00A0 NO-BREAK SPACE character by the string "<code
+   data-x="">&amp;nbsp;</code>".</p></li>
+
+   <li><p>If the algorithm was invoked in the <i>attribute mode</i>, replace any occurrences of the
+   "<code data-x="">&quot;</code>" character by the string "<code
+   data-x="">&amp;quot;</code>".</p></li>
+
+   <li><p>If the algorithm was <em>not</em> invoked in the <i>attribute mode</i>, replace any
+   occurrences of the "<code data-x="">&lt;</code>" character by the string "<code
+   data-x="">&amp;lt;</code>", and any occurrences of the "<code data-x="">&gt;</code>" character by
+   the string "<code data-x="">&amp;gt;</code>".</p></li>
+
+  </ol>
+
+
+  

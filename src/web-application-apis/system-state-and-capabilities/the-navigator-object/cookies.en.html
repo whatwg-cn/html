@@ -1,0 +1,30 @@
+<h5>Cookies</h5>
+
+  <pre class="idl">[NoInterfaceObject]
+interface <dfn>NavigatorCookies</dfn> {
+  readonly attribute boolean <span data-x="dom-navigator-cookieEnabled">cookieEnabled</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-cookieEnabled">cookieEnabled</code></dt>
+
+   <dd>
+
+    <p>Returns false if setting a cookie will be ignored, and true otherwise.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+   <p>The <dfn><code data-x="dom-navigator-cookieEnabled">cookieEnabled</code></dfn> attribute must
+   return true if the user agent attempts to handle cookies according to the cookie specification,
+   and false if it ignores cookie change requests. <ref spec=COOKIES></p>
+
+  </div>
+
+
+
+  

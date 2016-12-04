@@ -1,0 +1,26 @@
+<h4>Resources</h4>
+
+  <p>The specification uses the term <dfn data-x="">supported</dfn> when referring to whether a user
+  agent has an implementation capable of decoding the semantics of an external resource. A format or
+  type is said to be <i>supported</i> if the implementation can process an external resource of that
+  format or type without critical aspects of the resource being ignored. Whether a specific resource
+  is <i>supported</i> can depend on what features of the resource's format are in use.</p>
+
+  <p class="example">For example, a PNG image would be considered to be in a supported format if its
+  pixel data could be decoded and rendered, even if, unbeknownst to the implementation, the image
+  also contained animation data.</p>
+
+  <p class="example">An MPEG-4 video file would not be considered to be in a supported format if the
+  compression format used was not supported, even if the implementation could determine the
+  dimensions of the movie from the file's metadata.</p>
+
+  <p>What some specifications, in particular the HTTP specification, refer to as a
+  <i>representation</i> is referred to in this specification as a <dfn data-x="">resource</dfn>.
+  <ref spec=HTTP></p>
+
+  <p>A resource's <dfn>critical subresources</dfn> are those that the resource needs to have
+  available to be correctly processed. Which resources are considered critical or not is defined by
+  the specification that defines the resource's format.</p>
+
+
+  

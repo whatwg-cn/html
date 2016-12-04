@@ -1,0 +1,67 @@
+<h4>The <dfn><code>dfn</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>, but there must be no <code>dfn</code> element descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd>Also, the <code data-x="attr-dfn-title">title</code> attribute <span data-x="attr-dfn-title">has special semantics</span> on this element.</dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>dfn</code> element <span>represents</span> the defining instance of a term. The <span
+  data-x="paragraph">paragraph</span>, <span data-x="dl">description list group</span>, or <span
+  data-x="sectioning content">section</span> that is the nearest ancestor of the <code>dfn</code>
+  element must also contain the definition(s) for the <span data-x="defining term">term</span> given
+  by the <code>dfn</code> element.</p>
+
+  <p><dfn>Defining term</dfn>: If the <code>dfn</code> element has a <dfn><code data-x="attr-dfn-title">title</code></dfn> attribute, then the exact value of that attribute
+  is the term being defined. Otherwise, if it contains exactly one element child node and no child
+  <code>Text</code> nodes, and that child element is an <code>abbr</code> element with a <code
+  data-x="attr-abbr-title">title</code> attribute, then the exact value of <em>that</em> attribute is
+  the term being defined. Otherwise, it is the exact <code>textContent</code> of the
+  <code>dfn</code> element that gives the term being defined.</p>
+
+  <!-- note that this means <dfn>x \n x</dfn> won't match <span>x x</span> -->
+
+  <p>If the <code data-x="attr-dfn-title">title</code> attribute of the <code>dfn</code> element is
+  present, then it must contain only the term being defined.</p>
+
+  <p class="note">The <code data-x="attr-title">title</code> attribute of ancestor elements does not
+  affect <code>dfn</code> elements.</p>
+
+  <p>An <code>a</code> element that links to a <code>dfn</code> element represents an instance of
+  the term defined by the <code>dfn</code> element.</p>
+
+  <div class="example">
+
+   <p>In the following fragment, the term "Garage Door Opener" is first defined in the first
+   paragraph, then used in the second. In both cases, its abbreviation is what is actually
+   displayed.</p>
+
+   <pre>&lt;p>The <strong>&lt;dfn>&lt;abbr title="Garage Door Opener">GDO&lt;/abbr>&lt;/dfn></strong>
+is a device that allows off-world teams to open the iris.&lt;/p>
+&lt;!-- ... later in the document: -->
+&lt;p>Teal'c activated his <strong>&lt;abbr title="Garage Door Opener">GDO&lt;/abbr></strong>
+and so Hammond ordered the iris to be opened.&lt;/p></pre>
+
+   <p>With the addition of an <code>a</code> element, the reference can be made explicit:</p>
+
+   <pre>&lt;p>The &lt;dfn <strong>id=gdo</strong>>&lt;abbr title="Garage Door Opener">GDO&lt;/abbr>&lt;/dfn>
+is a device that allows off-world teams to open the iris.&lt;/p>
+&lt;!-- ... later in the document: -->
+&lt;p>Teal'c activated his <strong>&lt;a href=#gdo></strong>&lt;abbr title="Garage Door Opener">GDO&lt;/abbr><strong>&lt;/a></strong>
+and so Hammond ordered the iris to be opened.&lt;/p></pre>
+
+  </div>
+
+
+
+  

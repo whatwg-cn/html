@@ -1,0 +1,1056 @@
+<h4>vCard</h4>
+
+  <p>An item with the <span data-x="item types">item type</span> <dfn><code data-x="md-vcard">http://microformats.org/profile/hcard</code></dfn> represents a person's or
+  organization's contact information.</p>
+
+  <p>This vocabulary does not <span>support global identifiers for items</span>.</p>
+
+  <p>The following are the type's <span data-x="defined property name">defined property names</span>.
+  They are based on the vocabulary defined in the vCard 4.0 specification and its extensions, where
+  more information on how to interpret the values can be found. <ref spec=RFC6350></p>
+
+  <dl>
+
+   <dt><dfn><code data-x="md-vcard-kind">kind</code></dfn></dt>
+
+   <dd>
+
+    <p>Describes what kind of contact the item represents.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text that, when compared in a
+    <span>case-sensitive</span> manner, is equal to one of the <span>kind strings</span>.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-kind">kind</code> may be present within
+    each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <!-- XML not included since there's no good way to do it here -->
+   <!-- Note: vCard->microdata->vCard doesn't count as "propagating vCards" according to Tantek, so
+        we're not non-conforming when we drop it, despite vCard's requirement -->
+
+
+   <dt><dfn><code data-x="md-vcard-fn">fn</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the formatted text corresponding to the name of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Exactly one property with the name <code data-x="md-vcard-fn">fn</code> must be present within
+    each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-n">n</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the structured name of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span
+    data-x="concept-item">item</span> with zero or more of each of the <code
+    data-x="md-vcard-n-family-name">family-name</code>, <code
+    data-x="md-vcard-n-given-name">given-name</code>, <code
+    data-x="md-vcard-n-additional-name">additional-name</code>, <code
+    data-x="md-vcard-n-honorific-prefix">honorific-prefix</code>, and <code
+    data-x="md-vcard-n-honorific-suffix">honorific-suffix</code> properties.</p>
+
+    <p>Exactly one property with the name <code data-x="md-vcard-n">n</code> must be present within
+    each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-n-family-name">family-name</code></dfn> (inside <code data-x="md-vcard-n">n</code>)</dt>
+
+   <dd>
+
+    <p>Gives the family name of the person, or the full name of the organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-n-family-name">family-name</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of the <code data-x="md-vcard-n">n</code> property of
+    an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-n-given-name">given-name</code></dfn> (inside <code data-x="md-vcard-n">n</code>)</dt>
+
+   <dd>
+
+    <p>Gives the given-name of the person.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-n-given-name">given-name</code>
+    may be present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of the <code data-x="md-vcard-n">n</code> property of
+    an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-n-additional-name">additional-name</code></dfn> (inside <code data-x="md-vcard-n">n</code>)</dt>
+
+   <dd>
+
+    <p>Gives the any additional names of the person.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-n-additional-name">additional-name</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of the <code data-x="md-vcard-n">n</code> property of
+    an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-n-honorific-prefix">honorific-prefix</code></dfn> (inside <code data-x="md-vcard-n">n</code>)</dt>
+
+   <dd>
+
+    <p>Gives the honorific prefix of the person.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-n-honorific-prefix">honorific-prefix</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of the <code data-x="md-vcard-n">n</code> property of
+    an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-n-honorific-suffix">honorific-suffix</code></dfn> (inside <code data-x="md-vcard-n">n</code>)</dt>
+
+   <dd>
+
+    <p>Gives the honorific suffix of the person.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-n-honorific-suffix">honorific-suffix</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of the <code data-x="md-vcard-n">n</code> property of
+    an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-nickname">nickname</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the nickname of the person or organization.</p>
+
+    <!-- copied from vCard -->
+    <p class="note">The nickname is the descriptive name given instead of or in addition to the one
+    belonging to a person, place, or thing. It can also be used to specify a familiar form of a
+    proper name specified by the <code data-x="md-vcard-fn">fn</code> or <code
+    data-x="md-vcard-n">n</code> properties.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-nickname">nickname</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-photo">photo</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a photograph of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-photo">photo</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-bday">bday</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the birth date of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be a <span>valid date
+    string</span>.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-bday">bday</code> may be present within
+    each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-anniversary">anniversary</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the birth date of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be a <span>valid date
+    string</span>.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-anniversary">anniversary</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-sex">sex</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the biological sex of the person.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be one of
+    <code data-x="">F</code>, meaning "female",
+    <code data-x="">M</code>, meaning "male",
+    <code data-x="">N</code>, meaning "none or not applicable",
+    <code data-x="">O</code>, meaning "other", or
+    <code data-x="">U</code>, meaning "unknown".</p>
+
+    <p>A single property with the name <code data-x="md-vcard-sex">sex</code> may be present within
+    each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-gender-identity">gender-identity</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the gender identity of the person.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-gender-identity">gender-identity</code>
+    may be present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-adr">adr</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the delivery address of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span
+    data-x="concept-item">item</span> with zero or more <code data-x="md-vcard-adr-type">type</code>,
+    <code data-x="md-vcard-adr-post-office-box">post-office-box</code>, <code
+    data-x="md-vcard-adr-extended-address">extended-address</code>, and <code
+    data-x="md-vcard-adr-street-address">street-address</code> properties, and optionally a <code
+    data-x="md-vcard-adr-locality">locality</code> property, optionally a <code
+    data-x="md-vcard-adr-region">region</code> property, optionally a <code
+    data-x="md-vcard-adr-postal-code">postal-code</code> property, and optionally a <code
+    data-x="md-vcard-adr-country-name">country-name</code> property.</p>
+
+    <p>If no <code data-x="md-vcard-adr-type">type</code> properties are present within an <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>, then the <span data-x="address
+    type strings">address type string</span> <code data-x="md-vcard-type-adr-work">work</code> is
+    implied.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-adr">adr</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-type">type</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives the type of delivery address.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text that, when compared in a
+    <span>case-sensitive</span> manner, is equal to one of the <span>address type
+    strings</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-adr-type">type</code> may be
+    present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>, but within each such <code
+    data-x="md-vcard-adr">adr</code> property <span data-x="concept-item">item</span> there must only
+    be one <code data-x="md-vcard-adr-type">type</code> property per distinct value.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-post-office-box">post-office-box</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives the post office box component of the delivery address of the person or
+    organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-adr-post-office-box">post-office-box</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+    <p class="note">The vCard specification urges authors not to use this field.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-extended-address">extended-address</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives an additional component of the delivery address of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-adr-extended-address">extended-address</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+    <p class="note">The vCard specification urges authors not to use this field.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-street-address">street-address</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives the street address component of the delivery address of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-adr-street-address">street-address</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-locality">locality</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives the locality component (e.g. city) of the delivery address of the person or
+    organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-adr-locality">locality</code> may be
+    present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-region">region</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives the region component (e.g. state or province) of the delivery address of the person or
+    organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-adr-region">region</code> may be
+    present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-postal-code">postal-code</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives the postal code component of the delivery address of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-adr-postal-code">postal-code</code> may
+    be present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-adr-country-name">country-name</code></dfn> (inside <code data-x="md-vcard-adr">adr</code>)</dt>
+
+   <dd>
+
+    <p>Gives the country name component of the delivery address of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-adr-country-name">country-name</code>
+    may be present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-adr">adr</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-tel">tel</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the telephone number of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be either text that can be
+    interpreted as a telephone number as defined in the CCITT specifications E.163 and X.121, or an
+    <span data-x="concept-item">item</span> with zero or more <code
+    data-x="md-vcard-tel-type">type</code> properties and exactly one <code
+    data-x="md-vcard-tel-value">value</code> property. <ref spec=E163> <ref spec=X121></p>
+
+    <p>If no <code data-x="md-vcard-tel-type">type</code> properties are present within an <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of a <code data-x="md-vcard-tel">tel</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>, or if the <span
+    data-x="concept-property-value">value</span> of such a <code data-x="md-vcard-tel">tel</code>
+    property is text, then the <span data-x="telephone type strings">telephone type string</span>
+    <code data-x="md-vcard-type-tel-voice">voice</code> is implied.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-tel">tel</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-tel-type">type</code></dfn> (inside <code data-x="md-vcard-tel">tel</code>)</dt>
+
+   <dd>
+
+    <p>Gives the type of telephone number.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text that, when compared in a
+    <span>case-sensitive</span> manner, is equal to one of the <span>telephone type
+    strings</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-tel-type">type</code> may be
+    present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of a <code data-x="md-vcard-tel">tel</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>, but within each such <code
+    data-x="md-vcard-tel">tel</code> property <span data-x="concept-item">item</span> there must only
+    be one <code data-x="md-vcard-tel-type">type</code> property per distinct value.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-tel-value">value</code></dfn> (inside <code data-x="md-vcard-tel">tel</code>)</dt>
+
+   <dd>
+
+    <p>Gives the actual telephone number of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text that can be interpreted as
+    a telephone number as defined in the CCITT specifications E.163 and X.121. <ref spec=E163> <ref spec=X121></p>
+
+    <p>Exactly one property with the name <code data-x="md-vcard-tel-value">value</code> must be
+    present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of a <code data-x="md-vcard-tel">tel</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-email">email</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the e-mail address of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-email">email</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-impp">impp</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a <span>URL</span> for instant messaging and presence protocol communications with the
+    person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-impp">impp</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-lang">lang</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a language understood by the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be a valid BCP 47 language tag. <ref spec=BCP47>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-lang">lang</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-tz">tz</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the time zone of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text and must match the
+    following syntax:</p>
+
+    <ol>
+
+     <li>Either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character (-).</li>
+
+     <li>A <span>valid non-negative integer</span> that is exactly two digits long and that
+     represents a number in the range 00..23.</li>
+
+     <li>A U+003A COLON character (:).</li>
+
+     <li>A <span>valid non-negative integer</span> that is exactly two digits long and that
+     represents a number in the range 00..59.</li>
+
+    </ol>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-tz">tz</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-geo">geo</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the geographical position of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text and must match the
+    following syntax:</p>
+
+    <ol>
+
+     <li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+     (-).</li>
+
+     <li>One or more <span>ASCII digits</span>.</li>
+
+     <li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <span>ASCII
+     digits</span>.</li>
+
+     <li>A U+003B SEMICOLON character (;).</li>
+
+     <li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+     (-).</li>
+
+     <li>One or more <span>ASCII digits</span>.</li>
+
+     <li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <span>ASCII
+     digits</span>.</li>
+
+    </ol>
+
+    <p>The optional components marked with an asterisk (*) should be included, and should have six
+    digits each.</p>
+
+    <!-- copied from vCard -->
+    <p class="note">The value specifies latitude and longitude, in that order (i.e., "LAT LON"
+    ordering), in decimal degrees. The longitude represents the location east and west of the prime
+    meridian as a positive or negative real number, respectively. The latitude represents the
+    location north and south of the equator as a positive or negative real number, respectively.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-geo">geo</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-title">title</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the job title, functional position or function of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-title">title</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-role">role</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the role, occupation, or business category of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-role">role</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-logo">logo</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the logo of the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-logo">logo</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-agent">agent</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the contact information of another person who will act on behalf of the person or
+    organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be either an <span
+    data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>, or an <span>absolute URL</span>,
+    or text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-agent">agent</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-org">org</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the name and units of the organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be either text or an <span
+    data-x="concept-item">item</span> with one <code
+    data-x="md-vcard-org-organization-name">organization-name</code> property and zero or more <code
+    data-x="md-vcard-org-organization-unit">organization-unit</code> properties.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-org">org</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-org-organization-name">organization-name</code></dfn> (inside <code data-x="md-vcard-org">org</code>)</dt>
+
+   <dd>
+
+    <p>Gives the name of the organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Exactly one property with the name <code
+    data-x="md-vcard-org-organization-name">organization-name</code> must be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of an <code data-x="md-vcard-org">org</code> property
+    of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-org-organization-unit">organization-unit</code></dfn> (inside <code data-x="md-vcard-org">org</code>)</dt>
+
+   <dd>
+
+    <p>Gives the name of the organization unit.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code
+    data-x="md-vcard-org-organization-unit">organization-unit</code> may be present within the <span
+    data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of the <code data-x="md-vcard-org">org</code>
+    property of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-member">member</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a <span>URL</span> that represents a member of the group.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-member">member</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code> if the <span
+    data-x="concept-item">item</span> also has a property with the name <code
+    data-x="md-vcard-kind">kind</code> whose value is "<code
+    data-x="md-vcard-kind-group">group</code>".</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-related">related</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a relationship to another entity.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span
+    data-x="concept-item">item</span> with one <code data-x="md-vcard-related-url">url</code>
+    property and one <code data-x="md-vcard-related-rel">rel</code> properties.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-related">related</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-related-url">url</code></dfn> (inside <code data-x="md-vcard-related">related</code>)</dt>
+
+   <dd>
+
+    <p>Gives the <span>URL</span> for the related entity.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Exactly one property with the name <code data-x="md-vcard-related-url">url</code> must be
+    present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of a <code data-x="md-vcard-related">related</code>
+    property of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-related-rel">rel</code></dfn> (inside <code data-x="md-vcard-related">related</code>)</dt>
+
+   <dd>
+
+    <p>Gives the relationship between the entity and the related entity.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text that, when compared in a
+    <span>case-sensitive</span> manner, is equal to one of the <span>relationship
+    strings</span>.</p>
+
+    <p>Exactly one property with the name <code data-x="md-vcard-related-rel">rel</code> must be
+    present within the <span data-x="concept-item">item</span> that forms the <span
+    data-x="concept-property-value">value</span> of a <code data-x="md-vcard-related">related</code>
+    property of an <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-categories">categories</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the name of a category or tag that the person or organization could be classified
+    as.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-categories">categories</code>
+    may be present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-note">note</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives supplemental information or a comment about the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-note">note</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <!-- PRODID not included -->
+
+
+   <dt><dfn><code data-x="md-vcard-rev">rev</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives the revision date and time of the contact information.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text that is a <span>valid
+    global date and time string</span>.</p>
+
+    <!-- copied from vCard -->
+    <p class="note">The value distinguishes the current revision of the information for other
+    renditions of the information.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-rev">rev</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-sound">sound</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a sound file relating to the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-sound">sound</code> may be
+    present within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <dt><dfn><code data-x="md-vcard-uid">uid</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a globally unique identifier corresponding to the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be text.</p>
+
+    <p>A single property with the name <code data-x="md-vcard-uid">uid</code> may be present within
+    each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <!-- CLIENTPIDMAP not included since the global parameters are not included -->
+
+
+   <dt><dfn><code data-x="md-vcard-url">url</code></dfn></dt>
+
+   <dd>
+
+    <p>Gives a <span>URL</span> relating to the person or organization.</p>
+
+    <p>The <span data-x="concept-property-value">value</span> must be an <span>absolute
+    URL</span>.</p>
+
+    <p>Any number of properties with the name <code data-x="md-vcard-url">url</code> may be present
+    within each <span data-x="concept-item">item</span> with the type <code
+    data-x="md-vcard">http://microformats.org/profile/hcard</code>.</p>
+
+   </dd>
+
+
+   <!-- VERSION not included - always 4.0 -->
+
+   <!-- KEY not included - no way to include binary data at this time -->
+
+   <!-- FBURL, CALADRURI, CALURI not included - unclear how calendars would be exposed on the web -->
+
+  </dl>
+
+  <p>The <dfn>kind strings</dfn> are:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="md-vcard-kind-individual">individual</code></dfn></dt>
+   <dd>
+    <p>Indicates a single entity (e.g. a person).</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-kind-group">group</code></dfn></dt>
+   <dd>
+    <p>Indicates multiple entities (e.g. a mailing list).</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-kind-org">org</code></dfn></dt>
+   <dd>
+    <p>Indicates a single entity that is not a person (e.g. a company).</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-kind-location">location</code></dfn></dt>
+   <dd>
+    <p>Indicates a geographical place (e.g. an office building).</p>
+   </dd>
+
+   <!-- update this when https://www.iana.org/assignments/vcard-elements/vcard-elements.xml#property-values is updated -->
+
+  </dl>
+
+  <p>The <dfn>address type strings</dfn> are:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="md-vcard-type-adr-home">home</code></dfn></dt>
+   <dd>
+    <p>Indicates a delivery address for a residence.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-adr-work">work</code></dfn></dt>
+   <dd>
+    <p>Indicates a delivery address for a place of work.</p>
+   </dd>
+
+  </dl>
+
+  <p>The <dfn>telephone type strings</dfn> are:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-home">home</code></dfn></dt>
+   <dd>
+    <p>Indicates a residential number.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-work">work</code></dfn></dt>
+   <dd>
+    <p>Indicates a telephone number for a place of work.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-text">text</code></dfn></dt>
+   <dd>
+    <p>Indicates that the telephone number supports text messages (SMS).</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-voice">voice</code></dfn></dt>
+   <dd>
+    <p>Indicates a voice telephone number.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-fax">fax</code></dfn></dt>
+   <dd>
+    <p>Indicates a facsimile telephone number.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-cell">cell</code></dfn></dt>
+   <dd>
+    <p>Indicates a cellular telephone number.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-video">video</code></dfn></dt>
+   <dd>
+    <p>Indicates a video conferencing telephone number.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-pager">pager</code></dfn></dt>
+   <dd>
+    <p>Indicates a paging device telephone number.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-type-tel-textphone">textphone</code></dfn></dt>
+   <dd>
+    <p>Indicates a telecommunication device for people with hearing or speech difficulties.</p>
+   </dd>
+
+  </dl>
+
+  <p>The <dfn>relationship strings</dfn> are:</p>
+
+  <dl>
+
+   <dt><dfn><code data-x="md-vcard-rel-emergency">emergency</code></dfn></dt>
+   <dd>
+    <p>An emergency contact.</p>
+   </dd>
+
+   <dt><dfn><code data-x="md-vcard-rel-agent">agent</code></dfn></dt>
+   <dd>
+    <p>Another entity that acts on behalf of this entity.</p>
+   </dd>
+
+   <dt><dfn data-x="md-vcard-rel-contact">contact</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-acquaintance">acquaintance</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-friend">friend</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-met">met</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-co-worker">worker</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-colleague">colleague</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-co-resident">resident</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-neighbor">neighbor</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-child">child</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-parent">parent</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-sibling">sibling</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-spouse">spouse</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-kin">kin</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-muse">muse</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-crush">crush</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-date">date</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-sweetheart">sweetheart</dfn></dt>
+   <dt><dfn data-x="md-vcard-rel-me">me</dfn></dt>
+   <dd>
+    <p>Has the meaning defined in XFN. <ref spec=XFN></p>
+   </dd>
+
+   <!-- update this when https://www.iana.org/assignments/vcard-elements/vcard-elements.xml#parameter-values is updated -->
+  </dl>
+
+
+  

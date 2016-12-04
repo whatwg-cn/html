@@ -1,0 +1,70 @@
+<h6>The <code data-x="attr-input-placeholder">placeholder</code> attribute</h6>
+
+  <!-- substantially similar text in the <textarea> section -->
+
+  <p>The <dfn><code data-x="attr-input-placeholder">placeholder</code></dfn> attribute represents a
+  <em>short</em> hint (a word or short phrase) intended to aid the user with data entry when the
+  control has no value. A hint could be a sample value or a brief description of the expected
+  format. The attribute, if specified, must have a value that contains no U+000A LINE FEED (LF) or
+  U+000D CARRIAGE RETURN (CR) characters.</p>
+
+  <p>The <code data-x="attr-input-placeholder">placeholder</code> attribute should not be used as an
+  alternative to a <code>label</code>. For a longer hint or other advisory text, the <code
+  data-x="attr-title">title</code> attribute is more appropriate.</p>
+
+  <p class="note">These mechanisms are very similar but subtly different: the hint given by the
+  control's <code>label</code> is shown at all times; the short hint given in the <code
+  data-x="attr-input-placeholder">placeholder</code> attribute is shown before the user enters a
+  value; and the hint in the <code data-x="attr-title">title</code> attribute is shown when the user
+  requests further help.</p>
+
+  <div w-nodev>
+
+  <p>User agents should present this hint to the user, after having <span data-x="strip line
+  breaks">stripped line breaks</span> from it, when the element's <span
+  data-x="concept-fe-value">value</span> is the empty string, especially if the control is not <span>focused</span>.</p>
+
+  <p>If a user agent normally doesn't show this hint to the user when the control is
+  <span>focused</span>, then the user agent should nonetheless show the hint for the control if it
+  was focused as a result of the <code data-x="attr-fe-autofocus">autofocus</code> attribute, since
+  in that case the user will not have had an opportunity to examine the control before focusing
+  it.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here is an example of a mail configuration user interface that uses the <code
+   data-x="attr-input-placeholder">placeholder</code> attribute:</p>
+
+   <pre>&lt;fieldset>
+ &lt;legend>Mail Account&lt;/legend>
+ &lt;p>&lt;label>Name: &lt;input type="text" name="fullname" placeholder="John Ratzenberger">&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Address: &lt;input type="email" name="address" placeholder="john@example.net">&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Password: &lt;input type="password" name="password">&lt;/label>&lt;/p>
+ &lt;p>&lt;label>Description: &lt;input type="text" name="desc" placeholder="My Email Account">&lt;/label>&lt;/p>
+&lt;/fieldset></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>In situations where the control's content has one directionality but the placeholder needs to
+   have a different directionality, Unicode's bidirectional-algorithm formatting characters can be
+   used in the attribute value:</p>
+
+   <pre>&lt;input name=t1 type=tel placeholder="<strong>&amp;#x202B;</strong>&#x2009;<bdo dir=rtl>&#1585;&#1602;&#1605;&nbsp;&#1575;&#1604;&#1607;&#1575;&#1578;&#1601;&nbsp;1</bdo>&#x2009;<strong>&amp;#x202E;</strong>">
+&lt;input name=t2 type=tel placeholder="<strong>&amp;#x202B;</strong>&#x2009;<bdo dir=rtl>&#1585;&#1602;&#1605;&nbsp;&#1575;&#1604;&#1607;&#1575;&#1578;&#1601;&nbsp;2</bdo>&#x2009;<strong>&amp;#x202E;</strong>"></pre>
+
+   <p>For slightly more clarity, here's the same example using numeric character references instead of inline Arabic:</p>
+
+   <pre>&lt;input name=t1 type=tel placeholder="<strong>&amp;#x202B;</strong>&amp;#1585;&amp;#1602;&amp;#1605;&nbsp;&amp;#1575;&amp;#1604;&amp;#1607;&amp;#1575;&amp;#1578;&amp;#1601;&nbsp;1<strong>&amp;#x202E;</strong>">
+&lt;input name=t2 type=tel placeholder="<strong>&amp;#x202B;</strong>&amp;#1585;&amp;#1602;&amp;#1605;&nbsp;&amp;#1575;&amp;#1604;&amp;#1607;&amp;#1575;&amp;#1578;&amp;#1601;&nbsp;2<strong>&amp;#x202E;</strong>"></pre>
+
+  </div>
+
+
+
+<!--TOPIC:DOM APIs-->
+
+  

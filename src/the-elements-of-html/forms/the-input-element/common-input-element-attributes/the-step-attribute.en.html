@@ -1,0 +1,103 @@
+<h6>The <code data-x="attr-input-step">step</code> attribute</h6>
+
+  <!-- if more numeric control types start supporting multiple="", this will need to be refactored -->
+
+  <p>The <dfn><code data-x="attr-input-step">step</code></dfn> attribute indicates the granularity
+  that is expected (and required) of the <span data-x="concept-fe-value">value</span> or <span
+  data-x="concept-fe-values">values</span>, by limiting the allowed values. <span w-nodev>The
+  section that defines the <code data-x="attr-input-type">type</code> attribute's current state also
+  defines the <dfn data-x="concept-input-step-default">default step</dfn>, the <dfn
+  data-x="concept-input-step-scale">step scale factor</dfn>, and in some cases the <dfn
+  data-x="concept-input-step-default-base">default step base</dfn>, which are used in processing the
+  attribute as described below.</span></p>
+
+  <p>The <code data-x="attr-input-step">step</code> attribute, if specified, must either have a
+  value that is a <span>valid floating-point number</span> that <span data-x="rules for parsing
+  floating-point number values">parses</span> to a number that is greater than zero, or must have a
+  value that is an <span>ASCII case-insensitive</span> match for the string "<code
+  data-x="">any</code>".</p>
+
+  <div w-nodev>
+
+  <p>The attribute provides the <dfn data-x="concept-input-step">allowed value step</dfn> for the
+  element, as follows:</p>
+
+  <ol>
+
+   <li>If the attribute is absent, then the <span data-x="concept-input-step">allowed value
+   step</span> is the <span data-x="concept-input-step-default">default step</span> multiplied by the
+   <span data-x="concept-input-step-scale">step scale factor</span>.</li>
+
+   <li>Otherwise, if the attribute's value is an <span>ASCII case-insensitive</span> match for the
+   string "<code data-x="">any</code>", then there is no <span data-x="concept-input-step">allowed
+   value step</span>.</li>
+
+   <li>Otherwise, if the <span>rules for parsing floating-point number values</span>, when they are
+   applied to the attribute's value, return an error, zero, or a number less than zero, then the
+   <span data-x="concept-input-step">allowed value step</span> is the <span
+   data-x="concept-input-step-default">default step</span> multiplied by the <span
+   data-x="concept-input-step-scale">step scale factor</span>.</li>
+
+   <li>Otherwise, the <span data-x="concept-input-step">allowed value step</span> is the number
+   returned by the <span>rules for parsing floating-point number values</span> when they are applied
+   to the attribute's value, multiplied by the <span data-x="concept-input-step-scale">step scale
+   factor</span>.</li>
+
+  </ol>
+
+  <p>The <dfn data-x="concept-input-min-zero">step base</dfn> is the value returned by the following
+  algorithm:</p>
+
+  <ol>
+
+   <li><p>If the element has a <code data-x="attr-input-min">min</code> content attribute, and the
+   result of applying the <span data-x="concept-input-value-string-number">algorithm to convert a
+   string to a number</span> to the value of the <code data-x="attr-input-min">min</code> content
+   attribute is not an error, then return that result and abort these steps.</p></li>
+
+   <li><p>If the element has a <code data-x="attr-input-value">value</code> content attribute, and
+   the result of applying the <span data-x="concept-input-value-string-number">algorithm to convert
+   a string to a number</span> to the value of the <code data-x="attr-input-value">value</code>
+   content attribute is not an error, then return that result and abort these steps.</p></li>
+
+   <li><p>If a <span data-x="concept-input-step-default-base">default step base</span> is defined for
+   this element given its <code data-x="attr-input-type">type</code> attribute's state, then return
+   it and abort these steps.</p>
+
+   <li><p>Return zero.</p></li>
+
+  </ol>
+
+  <p><strong>Constraint validation</strong>: When the element has an <span
+  data-x="concept-input-step">allowed value step</span>, and the result of applying the <span
+  data-x="concept-input-value-string-number">algorithm to convert a string to a number</span> to
+  the string given by the element's <span data-x="concept-fe-value">value</span> is a number, and
+  that number subtracted from the <span data-x="concept-input-min-zero">step base</span> is not an
+  integral multiple of the <span data-x="concept-input-step">allowed value step</span>, the
+  element is <span>suffering from a step mismatch</span>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following range control only accepts values in the range 0..1, and allows 256 steps in
+   that range:</p>
+
+   <pre>&lt;input name=opacity type=range min=0 max=1 step=0.00392156863></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>The following control allows any time in the day to be selected, with any accuracy (e.g.
+   thousandth-of-a-second accuracy or more):</p>
+
+   <pre>&lt;input name=favtime type=time step=any></pre>
+
+   <p>Normally, time controls are limited to an accuracy of one minute.</p>
+
+  </div>
+
+
+
+  

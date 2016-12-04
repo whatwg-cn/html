@@ -1,0 +1,17 @@
+<h5><dfn>Comment less-than sign bang dash dash state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+003E GREATER-THAN SIGN (&gt;)</dt>
+   <dt>EOF</dt>
+   <dd><span>Reconsume</span> in the <span>comment end state</span>.</dd>
+
+   <dt>Anything else</dt>
+   <dd><span>Parse error</span>. <span>Reconsume</span> in the <span>comment end state</span>.</dd>
+
+  </dl>
+
+
+  

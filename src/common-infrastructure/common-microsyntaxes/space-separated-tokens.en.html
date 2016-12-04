@@ -1,0 +1,64 @@
+<h4>Space-separated tokens</h4>
+
+  <p>A <dfn>set of space-separated tokens</dfn> is a string containing zero or more words (known as
+  tokens) separated by one or more <span data-x="space character">space characters</span>, where
+  words consist of any string of one or more characters, none of which are <span data-x="space
+  character">space characters</span>.</p>
+
+  <p>A string containing a <span>set of space-separated tokens</span> may have leading or trailing
+  <span data-x="space character">space characters</span>.</p>
+
+  <p>An <dfn>unordered set of unique space-separated tokens</dfn> is a <span>set of space-separated
+  tokens</span> where none of the tokens are duplicated.</p>
+
+  <p>An <dfn>ordered set of unique space-separated tokens</dfn> is a <span>set of space-separated
+  tokens</span> where none of the tokens are duplicated but where the order of the tokens is
+  meaningful.</p>
+
+  <p><span data-x="set of space-separated tokens">Sets of space-separated tokens</span> sometimes
+  have a defined set of allowed values. When a set of allowed values is defined, the tokens must all
+  be from that list of allowed values; other values are non-conforming. If no such set of allowed
+  values is provided, then all values are conforming.</p>
+
+  <p class="note">How tokens in a <span>set of space-separated tokens</span> are to be compared
+  (e.g. case-sensitively or not) is defined on a per-set basis.</p>
+
+  <div w-nodev>
+
+  <p>When a user agent has to <dfn data-export="">split a string on spaces</dfn>, it must use the
+  following algorithm:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p>Let <var>tokens</var> be an ordered list of tokens, initially empty.</p></li>
+
+   <li><p><span>Skip whitespace</span></p></li>
+
+   <li><p>While <var>position</var> is not past the end of <var>input</var>:</p>
+
+    <ol>
+
+     <li><p><span>Collect a sequence of characters</span> that are not <span data-x="space
+     character">space characters</span>.</p></li>
+
+     <li><p>Append the string collected in the previous step to <var>tokens</var>.</p></li>
+
+     <li><p><span>Skip whitespace</span></p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return <var>tokens</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

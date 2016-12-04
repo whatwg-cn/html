@@ -1,0 +1,570 @@
+<h5>Forming a table</h5>
+
+  <p>To determine which elements correspond to which slots in a <span
+  data-x="concept-table">table</span> associated with a <code>table</code> element, to determine the
+  dimensions of the table (<var>x<sub>width</sub></var> and <var>y<sub>height</sub></var>), and to determine if there are any <span data-x="table model
+  error">table model errors</span>, user agents must use the following algorithm:</p>
+
+  <ol>
+
+   <li>
+    <p>Let <var>x<sub>width</sub></var> be zero.</p>
+   </li>
+
+   <li>
+    <p>Let <var>y<sub>height</sub></var> be zero.</p>
+   </li>
+
+   <li>
+
+    <p>Let <var>pending <code>tfoot</code> elements</var> be a list of <code>tfoot</code>
+    elements, initially empty.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>the table</var> be the <span data-x="concept-table">table</span> represented
+    by the <code>table</code> element. The <var>x<sub>width</sub></var> and <var>y<sub>height</sub></var> variables give <var>the table</var>'s
+    dimensions. <var>The table</var> is initially empty.</p>
+
+   </li>
+
+   <li>
+
+    <!-- this step is here just so that we can be sure to have a first element in the next step, so
+    that we can set up the "advance" exception-handling thingy below; otherwise it'd be more
+    complicated. it's not a perf optimization per se. -->
+
+    <p>If the <code>table</code> element has no children elements, then return <var>the
+    table</var> (which will be empty), and abort these steps.</p>
+
+   </li>
+
+   <li>
+
+    <p>Associate the first <code>caption</code> element child of the <code>table</code> element with
+    <var>the table</var>. If there are no such children, then it has no associated
+    <code>caption</code> element.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let the <var>current element</var> be the first element child of the
+    <code>table</code> element.</p>
+
+    <p>If a step in this algorithm ever requires the <var>current element</var> to be <dfn
+    data-x="concept-table-advance">advanced to the next child of the <code>table</code></dfn> when
+    there is no such next child, then the user agent must jump to the step labeled <i>end</i>, near
+    the end of this algorithm.</p>
+
+   </li>
+
+   <li>
+
+    <p>While the <var>current element</var> is not one of the following elements, <span
+    data-x="concept-table-advance">advance</span> the <var>current element</var> to the next
+    child of the <code>table</code>:</p>
+
+    <ul class="brief">
+     <li><code>colgroup</code></li>
+     <li><code>thead</code></li>
+     <li><code>tbody</code></li>
+     <li><code>tfoot</code></li>
+     <li><code>tr</code></li>
+    </ul>
+
+   </li>
+
+   <li>
+
+    <p>If the <var>current element</var> is a <code>colgroup</code>, follow these
+    substeps:</p>
+
+    <ol>
+
+     <li>
+
+      <p><i>Column groups</i>: Process the <var>current element</var> according to the
+      appropriate case below:</p>
+
+      <dl class="switch">
+
+       <dt>If the <var>current element</var> has any <code>col</code> element children</dt>
+
+       <dd>
+
+        <p>Follow these steps:</p>
+
+        <ol>
+
+         <li>
+
+          <p>Let <var>x<sub>start</sub></var> have the value of <span
+          data-x=""><var>x<sub>width</sub></var></span>.</p>
+
+         </li>
+
+         <li>
+
+          <p>Let the <var>current column</var> be the first <code>col</code> element child
+          of the <code>colgroup</code> element.</p>
+
+         </li>
+
+         <li>
+
+          <p><i>Columns</i>: If the <var>current column</var> <code>col</code> element has
+          a <code data-x="attr-col-span">span</code> attribute, then parse its value using the
+          <span>rules for parsing non-negative integers</span>.</p>
+
+          <p>If the result of parsing the value is not an error or zero, then let <var>span</var> be that value.</p>
+
+          <p>Otherwise, if the <code>col</code> element has no <code
+          data-x="attr-col-span">span</code> attribute, or if trying to parse the attribute's value
+          resulted in an error or zero, then let <var>span</var> be 1.</p>
+
+         </li>
+
+         <li>
+
+          <p>Increase <var>x<sub>width</sub></var> by <var>span</var>.</p>
+
+         </li>
+
+         <li>
+
+          <p>Let the last <var>span</var> <span data-x="concept-column">columns</span> in
+          <var>the table</var> correspond to the <var>current column</var>
+          <code>col</code> element.</p>
+
+         </li>
+
+         <li>
+
+          <p>If <var>current column</var> is not the last <code>col</code> element child of
+          the <code>colgroup</code> element, then let the <var>current column</var> be the
+          next <code>col</code> element child of the <code>colgroup</code> element, and return to
+          the step labeled <i>columns</i>.</p>
+
+         </li>
+
+         <li>
+
+          <p>Let all the last <span data-x="concept-column">columns</span> in <var>the
+          table</var> from <span data-x="">x=<var>x<sub>start</sub></var></span> to
+          <span data-x="">x=<var>x<sub>width</sub></var>-1</span> form a new <span
+          data-x="concept-column-group">column group</span>, anchored at the slot (<var>x<sub>start</sub></var>, 0), with width <span data-x=""><var>x<sub>width</sub></var>-<var>x<sub>start</sub></var></span>, corresponding to the <code>colgroup</code> element.</p>
+
+         </li>
+
+        </ol>
+
+       </dd>
+
+
+       <dt>If the <var>current element</var> has no <code>col</code> element children</dt>
+
+       <dd>
+
+        <ol>
+
+         <li>
+
+          <p>If the <code>colgroup</code> element has a <code data-x="attr-colgroup-span">span</code>
+ attribute, then parse its value using the <span>rules for parsing non-negative
+          integers</span>.</p>
+
+          <p>If the result of parsing the value is not an error or zero, then let <var>span</var> be that value.</p>
+
+          <p>Otherwise, if the <code>colgroup</code> element has no <code
+          data-x="attr-colgroup-span">span</code> attribute, or if trying to parse the attribute's
+          value resulted in an error or zero, then let <var>span</var> be 1.</p>
+
+         </li>
+
+         <li>
+
+          <p>Increase <var>x<sub>width</sub></var> by <var>span</var>.</p>
+
+         </li>
+
+         <li>
+
+          <p>Let the last <var>span</var> <span data-x="concept-column">columns</span> in
+          <var>the table</var> form a new <span data-x="concept-column-group">column
+          group</span>, anchored at the slot (<span data-x=""><var>x<sub>width</sub></var>-<var>span</var></span>, 0), with width <var>span</var>, corresponding to the <code>colgroup</code> element.</p>
+
+         </li>
+
+        </ol>
+
+       </dd>
+
+      </dl>
+
+     </li>
+
+     <li>
+
+      <p><span data-x="concept-table-advance">Advance</span> the <var>current element</var>
+      to the next child of the <code>table</code>.</p>
+
+     </li>
+
+     <li>
+
+      <p>While the <var>current element</var> is not one of the following elements, <span
+      data-x="concept-table-advance">advance</span> the <var>current element</var> to the
+      next child of the <code>table</code>:</p>
+
+      <ul class="brief">
+       <li><code>colgroup</code></li>
+       <li><code>thead</code></li>
+       <li><code>tbody</code></li>
+       <li><code>tfoot</code></li>
+       <li><code>tr</code></li>
+      </ul>
+
+     </li>
+
+     <li>
+
+      <p>If the <var>current element</var> is a <code>colgroup</code> element, jump to the
+      step labeled <i>column groups</i> above.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>y<sub>current</sub></var> be zero.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let the <var>list of downward-growing cells</var> be an empty list.</p>
+
+   </li>
+
+   <li>
+
+    <p><i>Rows</i>: While the <var>current element</var> is not one of the following
+    elements, <span data-x="concept-table-advance">advance</span> the <var>current
+    element</var> to the next child of the <code>table</code>:</p>
+
+    <ul class="brief">
+     <li><code>thead</code></li>
+     <li><code>tbody</code></li>
+     <li><code>tfoot</code></li>
+     <li><code>tr</code></li>
+    </ul>
+
+   </li>
+
+   <li>
+
+    <p>If the <var>current element</var> is a <code>tr</code>, then run the <span>algorithm
+    for processing rows</span>, <span data-x="concept-table-advance">advance</span> the <var>current element</var> to the next child of the <code>table</code>, and return to the
+    step labeled <i>rows</i>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Run the <span>algorithm for ending a row group</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <var>current element</var> is a <code>tfoot</code>, then add that element to
+    the list of <var>pending <code>tfoot</code> elements</var>, <span
+    data-x="concept-table-advance">advance</span> the <var>current element</var> to the next
+    child of the <code>table</code>, and return to the step labeled <i>rows</i>.</p>
+
+   </li>
+
+   <li>
+
+    <p>The <var>current element</var> is either a <code>thead</code> or a
+    <code>tbody</code>.</p>
+
+    <p>Run the <span>algorithm for processing row groups</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p><span data-x="concept-table-advance">Advance</span> the <var>current element</var> to
+    the next child of the <code>table</code>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Return to the step labeled <i>rows</i>.</p>
+
+   </li>
+
+   <li>
+
+    <p><i>End</i>: For each <code>tfoot</code> element in the list of <var>pending
+    <code>tfoot</code> elements</var>, in <span>tree order</span>, run the <span>algorithm for processing row
+    groups</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If there exists a <span data-x="concept-row">row</span> or <span
+    data-x="concept-column">column</span> in <var>the table</var> containing only <span
+    data-x="concept-slots">slots</span> that do not have a <span data-x="concept-cell">cell</span>
+    anchored to them, then this is a <span>table model error</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Return <var>the table</var>.</p>
+
+   </li>
+
+  </ol>
+
+  <p>The <dfn>algorithm for processing row groups</dfn>, which is invoked by the set of steps above
+  for processing <code>thead</code>, <code>tbody</code>, and <code>tfoot</code> elements, is:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Let <var>y<sub>start</sub></var> have the value of <var>y<sub>height</sub></var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>For each <code>tr</code> element that is a child of the element being processed, in tree
+    order, run the <span>algorithm for processing rows</span>.</p>
+
+   </li>
+
+   <li>
+
+    <!-- if we added any rows, make them part of a row group -->
+    <p>If <span data-x=""><var>y<sub>height</sub></var>&nbsp;&gt;&nbsp;<var>y<sub>start</sub></var></span>, then let all the last <span
+    data-x="concept-row">rows</span> in <var>the table</var> from <span data-x="">y=<var>y<sub>start</sub></var></span> to <span data-x="">y=<var>y<sub>height</sub></var>-1</span> form a new <span data-x="concept-row-group">row
+    group</span>, anchored at the slot with coordinate (0, <var>y<sub>start</sub></var>), with height <span data-x=""><var>y<sub>height</sub></var>-<var>y<sub>start</sub></var></span>, corresponding
+    to the element being processed.</p>
+
+   </li>
+
+   <li>
+
+    <p>Run the <span>algorithm for ending a row group</span>.</p>
+
+   </li>
+
+  </ol>
+
+  <p>The <dfn>algorithm for ending a row group</dfn>, which is invoked by the set of steps above
+  when starting and ending a block of rows, is:</p>
+
+  <ol>
+
+   <li>
+
+    <p>While <var>y<sub>current</sub></var> is less than <var>y<sub>height</sub></var>, follow these steps:</p>
+
+    <ol>
+
+     <li>
+
+      <p>Run the <span>algorithm for growing downward-growing cells</span>.</p>
+
+     </li>
+
+     <li>
+
+      <p>Increase <var>y<sub>current</sub></var> by 1.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li>
+
+    <p>Empty the <var>list of downward-growing cells</var>.</p>
+
+   </li>
+
+  </ol>
+
+
+  <p>The <dfn>algorithm for processing rows</dfn>, which is invoked by the set of steps above for
+  processing <code>tr</code> elements, is:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If <var>y<sub>height</sub></var> is equal to <var>y<sub>current</sub></var>, then increase <var>y<sub>height</sub></var> by
+    1. (<var>y<sub>current</sub></var> is never <em>greater</em> than <var>y<sub>height</sub></var>.)</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>x<sub>current</sub></var> be 0.</p>
+
+   </li>
+
+   <li>
+
+    <p>Run the <span>algorithm for growing downward-growing cells</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <code>tr</code> element being processed has no <code>td</code> or <code>th</code>
+    element children, then increase <var>y<sub>current</sub></var> by 1, abort
+    this set of steps, and return to the algorithm above.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>current cell</var> be the first <code>td</code> or <code>th</code> element child
+    in the <code>tr</code> element being processed.</p>
+
+   </li>
+
+   <li>
+
+    <p><i>Cells</i>: While <var>x<sub>current</sub></var> is less than <var>x<sub>width</sub></var> and the slot with coordinate (<var>x<sub>current</sub></var>, <var>y<sub>current</sub></var>) already has a
+    cell assigned to it, increase <var>x<sub>current</sub></var> by 1.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>x<sub>current</sub></var> is equal to <var>x<sub>width</sub></var>, increase <var>x<sub>width</sub></var> by 1. (<var>x<sub>current</sub></var> is never <em>greater</em> than <var>x<sub>width</sub></var>.)</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <var>current cell</var> has a <code data-x="attr-tdth-colspan">colspan</code>
+    attribute, then <span data-x="rules for parsing non-negative integers">parse that attribute's
+    value</span>, and let <var>colspan</var> be the result.</p>
+
+    <p>If parsing that value failed, or returned zero, or if the attribute is absent, then let <var>colspan</var> be 1, instead.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <var>current cell</var> has a <code data-x="attr-tdth-rowspan">rowspan</code>
+    attribute, then <span data-x="rules for parsing non-negative integers">parse that attribute's
+    value</span>, and let <var>rowspan</var> be the result.</p>
+
+    <p>If parsing that value failed or if the attribute is absent, then let <var>rowspan</var> be 1, instead.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>rowspan</var> is zero and the <code>table</code> element's
+    <span>node document</span> is not set to <span>quirks mode</span>, then let <var>cell grows
+    downward</var> be true, and set <var>rowspan</var> to 1. Otherwise, let <var>cell grows downward</var> be false.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <span data-x=""><var>x<sub>width</sub></var>&nbsp;&lt;&nbsp;<var>x<sub>current</sub></var>+<var>colspan</var></span>, then let <var>x<sub>width</sub></var> be <span data-x=""><var>x<sub>current</sub></var>+<var>colspan</var></span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <span data-x=""><var>y<sub>height</sub></var>&nbsp;&lt;&nbsp;<var>y<sub>current</sub></var>+<var>rowspan</var></span>, then let <var>y<sub>height</sub></var> be <span data-x=""><var>y<sub>current</sub></var>+<var>rowspan</var></span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let the slots with coordinates (<var>x</var>, <var>y</var>) such that <span
+    data-x=""><var>x<sub>current</sub></var>&nbsp;&le;&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>x<sub>current</sub></var>+<var>colspan</var></span> and <span data-x=""><var>y<sub>current</sub></var>&nbsp;&le;&nbsp;<var>y</var>&nbsp;&lt;&nbsp;<var>y<sub>current</sub></var>+<var>rowspan</var></span> be covered by a
+    new <span data-x="concept-cell">cell</span> <var>c</var>, anchored at (<var>x<sub>current</sub></var>, <var>y<sub>current</sub></var>),
+    which has width <var>colspan</var> and height <var>rowspan</var>,
+    corresponding to the <var>current cell</var> element.</p>
+
+    <p>If the <var>current cell</var> element is a <code>th</code> element, let this new
+    cell <var>c</var> be a header cell; otherwise, let it be a data cell.</p>
+
+    <p>To establish which header cells apply to the <var>current cell</var> element, use
+    the <span>algorithm for assigning header cells</span> described in the next section.</p>
+
+    <p>If any of the slots involved already had a <span data-x="concept-cell">cell</span> covering
+    them, then this is a <span>table model error</span>. Those slots now have two cells
+    overlapping.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>cell grows downward</var> is true, then add the tuple {<var>c</var>, <var>x<sub>current</sub></var>, <var>colspan</var>}
+    to the <var>list of downward-growing cells</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Increase <var>x<sub>current</sub></var> by <var>colspan</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>current cell</var> is the last <code>td</code> or <code>th</code> element child in
+    the <code>tr</code> element being processed, then increase <var>y<sub>current</sub></var> by 1, abort this set of steps, and return to the algorithm
+    above.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>current cell</var> be the next <code>td</code> or <code>th</code> element child
+    in the <code>tr</code> element being processed.</p>
+
+   </li>
+
+   <li>
+
+    <p>Return to the step labeled <i>cells</i>.</p>
+
+   </li>
+
+  </ol>
+
+
+  <p>When the algorithms above require the user agent to run the <dfn>algorithm for growing
+  downward-growing cells</dfn>, the user agent must, for each {<var>cell</var>, <var>cell<sub>x</sub></var>, <var>width</var>} tuple in the <var>list of downward-growing cells</var>, if any, extend the <span
+  data-x="concept-cell">cell</span> <var>cell</var> so that it also covers the slots with
+  coordinates (<var>x</var>, <var>y<sub>current</sub></var>), where <span
+  data-x=""><var>cell<sub>x</sub></var>&nbsp;&le;&nbsp;<var>x</var>&nbsp;&lt;&nbsp;<var>cell<sub>x</sub></var>+<var>width</var></span>.</p>
+
+
+
+
+  

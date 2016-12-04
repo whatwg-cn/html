@@ -1,0 +1,22 @@
+<h5><dfn>Markup declaration open state</dfn></h5>
+
+  <p>If the next two characters are both U+002D HYPHEN-MINUS characters (-), consume those two
+  characters, create a comment token whose data is the empty string, and switch to the <span>comment
+  start state</span>.</p>
+
+  <p>Otherwise, if the next seven characters are an <span>ASCII case-insensitive</span> match for
+  the word "DOCTYPE", then consume those characters and switch to the <span>DOCTYPE
+  state</span>.</p>
+
+  <p>Otherwise, if there is an <span>adjusted current node</span> and it is not an element in the
+  <span>HTML namespace</span> and the next seven characters are a <span>case-sensitive</span> match
+  for the string "[CDATA[" (the five uppercase letters "CDATA" with a U+005B LEFT SQUARE BRACKET
+  character before and after), then consume those characters and switch to the <span>CDATA section
+  state</span>.</p>
+
+  <p>Otherwise, this is a <span>parse error</span>. Create a comment token whose data is the empty
+  string. Switch to the <span>bogus comment state</span> (don't consume anything in the current
+  state).</p>
+
+
+  

@@ -1,0 +1,145 @@
+<h4><dfn data-x="custom-element-upgrades">Upgrades</dfn></h4>
+
+  <p>To <dfn data-x="concept-upgrade-an-element" data-export="">upgrade an element</dfn>, given as
+  input a <span>custom element definition</span> <var>definition</var> and an element
+  <var>element</var>, run the following steps:</p>
+
+  <ol>
+   <li>
+    <p>If <var>element</var> is <span data-x="concept-element-custom">custom</span>, abort these
+    steps.</p>
+
+    <div class="example">
+     <p>This can occur due to reentrant invocation of this algorithm, as in the following
+     example:</p>
+
+     <pre>&lt;!DOCTYPE html>
+&lt;x-foo id="a">&lt;/x-foo>
+&lt;x-foo id="b">&lt;/x-foo>
+
+&lt;script>
+// Defining enqueues upgrade reactions for both "a" and "b"
+customElements.define("x-foo", class extends HTMLElement {
+  constructor() {
+    super();
+
+    const b = document.querySelector("#b");
+    b.remove();
+
+    // While this constructor is running for "a", "b" is still
+    // undefined, and so inserting it into the document will enqueue a
+    // second upgrade reaction for "b" in addition to the one enqueued
+    // by defining x-foo.
+    document.body.appendChild(b);
+  }
+})
+&lt;/script></pre>
+
+     <p>This step will thus bail out the algorithm early when <span
+     data-x="concept-upgrade-an-element">upgrade an element</span> is invoked
+     with "<code data-x="">b</code>" a second time.</p>
+    </div>
+   </li>
+
+   <li><p>If <var>element</var>'s <span>custom element state</span> is "<code
+   data-x="">failed</code>", then abort these steps.</p></li>
+
+   <li><p>For each <var>attribute</var> in <var>element</var>'s <span>attribute list</span>, in
+   order, <span>enqueue a custom element callback reaction</span> with <var>element</var>, callback
+   name "<code data-x="">attributeChangedCallback</code>", and an argument list containing
+   <var>attribute</var>'s local name, null, <var>attribute</var>'s value, and <var>attribute</var>'s
+   namespace.</p></li>
+
+   <li><p>If <var>element</var> is <span>connected</span>, then <span>enqueue a custom element
+   callback reaction</span> with <var>element</var>, callback name "<code
+   data-x="">connectedCallback</code>", and an empty argument list.</p></li>
+
+   <li><p>Add <var>element</var> to the end of <var>definition</var>'s <span
+   data-x="concept-custom-element-definition-construction-stack">construction stack</span>.</p></li>
+
+   <li><p>Let <var>C</var> be <var>definition</var>'s <span
+   data-x="concept-custom-element-definition-constructor">constructor</span>.</p></li>
+
+   <li>
+    <p>Run the following substeps while catching any exceptions:</p>
+
+    <ol>
+     <li>
+      <p>Let <var>constructResult</var> be <span>Construct</span>(<var>C</var>).</p>
+
+      <p class="note">If <var>C</var> <a href="#custom-element-conformance">non-conformantly</a>
+      uses an API decorated with the <code data-x="CEReactions">[CEReactions]</code> extended
+      attribute, then the reactions enqueued at the beginning of this algorithm will execute during
+      this step, before <var>C</var> finishes and control returns to this algorithm. Otherwise, they
+      will execute after <var>C</var> and the rest of the upgrade process finishes.</p>
+     </li>
+
+     <li>
+      <p>If <span>SameValue</span>(<var>constructResult</var>, <var>element</var>) is false,
+      then throw an <span>"<code>InvalidStateError</code>"</span> <code>DOMException</code>.</p>
+
+      <p class="note">This can occur if <var>C</var> constructs another instance of the same custom
+      element before calling <code data-x="">super()</code>, or if <var>C</var> uses JavaScript's
+      <code data-x="">return</code>-override feature to return an arbitrary object from the
+      constructor.</p>
+     </li>
+    </ol>
+
+    <p>Then, perform the following substep, regardless of whether the above steps threw an exception
+    or not:</p>
+
+    <ol>
+     <li>
+      <p>Remove the last entry from the end of <var>definition</var>'s <span
+      data-x="concept-custom-element-definition-construction-stack">construction stack</span>.</p>
+
+      <div class="note">
+       <p>Assuming <var>C</var> calls <code data-x="">super()</code> (as it will if it is <a
+       href="#custom-element-conformance">conformant</a>), and that the call succeeds, this will be
+       the <span data-x="concept-already-constructed-marker"><i>already
+       constructed</i> marker</span> that replaced the <var>element</var> we pushed at the beginning
+       of this algorithm. (The <a href="#html-element-constructors">HTML element constructor</a>
+       carries out this replacement.)</p>
+
+       <p>If <var>C</var> does not call <code data-x="">super()</code> (i.e. it is not <a
+       href="#custom-element-conformance">conformant</a>), or if any step in the <a
+       href="#html-element-constructors">HTML element constructor</a> throws, then this entry will
+       still be <var>element</var>.</p>
+      </div>
+     </li>
+    </ol>
+
+    <p>Finally, if the above steps threw an exception, then:</p>
+
+    <ol>
+     <li><p>Set <var>element</var>'s <span>custom element state</span> to "<code
+     data-x="">failed</code>".</p></li>
+
+     <li><p>Empty <var>element</var>'s <span>custom element reaction queue</span>.</p>
+
+     <li><p>Rethrow the exception, and terminate this algorithm.</p></li>
+    </ol>
+   </li>
+
+   <li><p>Set <var>element</var>'s <span>custom element state</span> to "<code
+   data-x="">custom</code>".</p></li>
+
+   <li><p>Set <var>element</var>'s <span data-x="concept-element-custom-element-definition">custom
+   element definition</span> to <var>definition</var>.</p></li>
+  </ol>
+
+  <p>To <dfn data-x="concept-try-upgrade" data-export="">try to upgrade an element</dfn>, given as
+  input an element <var>element</var>, run the following steps:</p>
+
+  <ol>
+   <li><p>Let <var>definition</var> be the result of <span data-x="look up a custom element
+   definition">looking up a custom element definition</span> given <var>element</var>'s <span>node
+   document</span>, <var>element</var>'s namespace, <var>element</var>'s local name, and
+   <var>element</var>'s <span data-x="concept-element-is-value"><code data-x="">is</code>
+   value</span>.</p></li>
+
+   <li><p>If <var>definition</var> is not null, then <span>enqueue a custom element upgrade
+   reaction</span> given <var>element</var> and <var>definition</var>.</p></li>
+  </ol>
+
+  

@@ -1,0 +1,80 @@
+<h4>Terminology</h4>
+
+  <p>A <span>URL</span> is a <dfn>valid URL</dfn> if it conforms to the authoring conformance
+  requirements in the WHATWG URL standard. <ref spec=URL></p>
+
+  <p>A string is a <dfn>valid non-empty URL</dfn> if it is a <span>valid URL</span> but it is not
+  the empty string.</p>
+
+  <p>A string is a <dfn>valid URL potentially surrounded by spaces</dfn> if, after <span
+  data-x="strip leading and trailing whitespace">stripping leading and trailing whitespace</span>
+  from it, it is a <span>valid URL</span>.</p>
+
+  <p>A string is a <dfn>valid non-empty URL potentially surrounded by spaces</dfn> if, after <span
+  data-x="strip leading and trailing whitespace">stripping leading and trailing whitespace</span>
+  from it, it is a <span>valid non-empty URL</span>.</p>
+
+  <p>This specification defines the URL <dfn><code>about:legacy-compat</code></dfn> as a reserved,
+  though unresolvable, <code data-x="about protocol">about:</code> URL, for use in <span
+  data-x="syntax-doctype">DOCTYPE</span>s in <span>HTML documents</span> when needed for
+  compatibility with XML tools. <ref spec=ABOUT></p>
+
+  <p>This specification defines the URL <dfn><code>about:html-kind</code></dfn> as a reserved,
+  though unresolvable, <code data-x="about protocol">about:</code> URL, that is used as an
+  identifier for kinds of media tracks. <ref spec=ABOUT></p>
+
+  <p>This specification defines the URL <dfn><code>about:srcdoc</code></dfn> as a reserved, though
+  unresolvable, <code data-x="about protocol">about:</code> URL, that is used as the <span
+  data-x="concept-document-url">URL</span> of <span data-x="an iframe srcdoc
+  document"><code>iframe</code> <code data-x="attr-iframe-srcdoc">srcdoc</code> documents</span>.
+  <ref spec=ABOUT></p>
+
+  <p>The <dfn>fallback base URL</dfn> of a <code>Document</code> object <var>document</var> is the
+  <span>URL record</span> obtained by running these substeps:</p>
+
+  <ol>
+   <li><p>If <var>document</var> is <span>an <code>iframe</code> <code
+   data-x="attr-iframe-srcdoc">srcdoc</code> document</span>, then return the <span>document base
+   URL</span> of <var>document</var>'s <span data-x="concept-document-bc">browsing context</span>'s
+   <span>browsing context container</span>'s <span>node document</span>.</p></li>
+
+   <li>
+
+    <!-- https://www.hixie.ch/tests/adhoc/html/navigation/javascript-url/ -->
+
+    <!-- this should be tested in the case of a browsing context that was navigated to about:blank
+    after having been elsewhere, as opposed to the about:blank used at the time of the browsing
+    context's creation. -->
+
+    <p>If <var>document</var>'s <span data-x="concept-document-url">URL</span> is
+    <code>about:blank</code>, and <var>document</var>'s <span data-x="concept-document-bc">browsing
+    context</span> has a <span>creator browsing context</span>, then return the <span>creator base
+    URL</span>.</p>
+
+   </li>
+
+   <!-- https://www.hixie.ch/tests/adhoc/dom/level0/history/pushState/001/ -->
+
+   <li><p>Return <var>document</var>'s <span data-x="concept-document-url">URL</span>.</p></li>
+  </ol>
+
+  <p>The <dfn data-export="">document base URL</dfn> of a <code>Document</code> object is the
+  <span>absolute URL</span> obtained by running these substeps:</p>
+
+  <ol>
+
+   <li><p>If there is no <code>base</code> element that has an <code
+   data-x="attr-base-href">href</code> attribute in the <code>Document</code>, then the
+   <span>document base URL</span> is the <code>Document</code>'s <span>fallback base URL</span>;
+   abort these steps.</p></li>
+
+   <li><p>Otherwise, the <span>document base URL</span> is the <span>frozen base URL</span> of the
+   first <code>base</code> element in the <code>Document</code> that has an <code
+   data-x="attr-base-href">href</code> attribute, in <span>tree order</span>.</p></li>
+
+  </ol>
+
+
+  <div w-nodev>
+
+  

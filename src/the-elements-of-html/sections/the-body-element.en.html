@@ -1,0 +1,101 @@
+<h4 id="the-body-element">The <dfn><code>body</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Sectioning root</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>As the second element in an <code>html</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="handler-window-onafterprint">onafterprint</code></dd>
+   <dd><code data-x="handler-window-onbeforeprint">onbeforeprint</code></dd>
+   <dd><code data-x="handler-window-onbeforeunload">onbeforeunload</code></dd>
+   <dd><code data-x="handler-window-onhashchange">onhashchange</code></dd>
+   <dd><code data-x="handler-window-onlanguagechange">onlanguagechange</code></dd>
+   <dd><code data-x="handler-window-onmessage">onmessage</code></dd>
+   <dd><code data-x="handler-window-onoffline">onoffline</code></dd>
+   <dd><code data-x="handler-window-ononline">ononline</code></dd>
+   <dd><code data-x="handler-window-onpagehide">onpagehide</code></dd>
+   <dd><code data-x="handler-window-onpageshow">onpageshow</code></dd>
+   <dd><code data-x="handler-window-onpopstate">onpopstate</code></dd>
+   <dd><code data-x="handler-window-onrejectionhandled">onrejectionhandled</code></dd>
+   <dd><code data-x="handler-window-onstorage">onstorage</code></dd>
+   <dd><code data-x="handler-window-onunhandledrejection">onunhandledrejection</code></dd>
+   <dd><code data-x="handler-window-onunload">onunload</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLBodyElement</dfn> : <span>HTMLElement</span> {};
+
+<span>HTMLBodyElement</span> implements <span>WindowEventHandlers</span>;</pre>
+</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>body</code> element <span>represents</span> the main content of the document.</p>
+
+  <p>In conforming documents, there is only one <code>body</code> element. The <code
+  data-x="dom-document-body">document.body</code> IDL attribute provides scripts with easy access to
+  a document's <code>body</code> element.</p>
+
+  <div w-nodev>
+
+  <p class="note">Some DOM operations (for example, parts of the <span>drag and drop</span> model)
+  are defined in terms of "<span>the body element</span>". This refers to a particular element in
+  the DOM, as per the definition of the term, and not any arbitrary <code>body</code> element.</p>
+
+  </div>
+
+  <p>The <code>body</code> element exposes as <span>event handler content attributes</span> a number
+  of the <span>event handlers</span> of the <code>Window</code> object. It also mirrors their
+  <span>event handler IDL attributes</span>.</p>
+
+  <p>The <code data-x="handler-onblur">onblur</code>, <code data-x="handler-onerror">onerror</code>,
+  <code data-x="handler-onfocus">onfocus</code>, <code data-x="handler-onload">onload</code>, <code
+  data-x="handler-onresize">onresize</code>, and <code data-x="handler-onscroll">onscroll</code>
+  <span>event handlers</span> of the <code>Window</code> object, exposed on the <code>body</code>
+  element, replace the generic <span>event handlers</span> with the same names normally supported by
+  <span>HTML elements</span>.</p>
+
+  <p class="example">Thus, for example, a bubbling <code data-x="event-error">error</code> event
+  dispatched on a child of <span>the body element</span> of a <code>Document</code> would first
+  trigger the <code data-x="handler-onerror">onerror</code> <span>event handler content
+  attributes</span> of that element, then that of the root <code>html</code> element, and only
+  <em>then</em> would it trigger the <code data-x="handler-onerror">onerror</code> <span
+  data-x="event handler content attributes">event handler content attribute</span> on the
+  <code>body</code> element. This is because the event would bubble from the target, to the
+  <code>body</code>, to the <code>html</code>, to the <code>Document</code>, to the
+  <code>Window</code>, and the <span data-x="event handlers">event handler</span> on the
+  <code>body</code> is watching the <code>Window</code> not the <code>body</code>. A regular event
+  listener attached to the <code>body</code> using <code data-x="">addEventListener()</code>,
+  however, would be run when the event bubbled through the <code>body</code> and not when it reaches
+  the <code>Window</code> object.</p>
+
+  <div class="example">
+
+   <p>This page updates an indicator to show whether or not the user is online:</p>
+
+   <pre>&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+ &lt;head>
+  &lt;title>Online or offline?&lt;/title>
+  &lt;script>
+   function update(online) {
+     document.getElementById('status').textContent =
+       online ? 'Online' : 'Offline';
+   }
+  &lt;/script>
+ &lt;/head>
+ &lt;body ononline="update(true)"
+       onoffline="update(false)"
+       onload="update(navigator.onLine)">
+  &lt;p>You are: &lt;span id="status">(Unknown)&lt;/span>&lt;/p>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+
+  

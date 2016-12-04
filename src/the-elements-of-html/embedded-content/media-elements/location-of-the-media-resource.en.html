@@ -1,0 +1,92 @@
+<h5>Location of the media resource</h5>
+
+  <p>The <dfn><code data-x="attr-media-src">src</code></dfn> content attribute on <span data-x="media
+  element">media elements</span> gives the <span>URL</span> of the media resource (video, audio) to
+  show. The attribute, if present, must contain a <span>valid non-empty URL potentially surrounded
+  by spaces</span>.</p>
+
+  <p>If the <code data-x="attr-itemprop">itemprop</code> attribute is specified on the <span>media
+  element</span>, then the <code data-x="attr-media-src">src</code> attribute must also be
+  specified.</p>
+
+  <p>The <dfn><code data-x="attr-media-crossorigin">crossorigin</code></dfn> content attribute on
+  <span data-x="media element">media elements</span> is a <span>CORS settings attribute</span>.</p>
+
+  <div w-nodev>
+
+  <p id="concept-media-load-algorithm-at-creation">If a <span>media element</span> is created with a
+  <code data-x="attr-media-src">src</code> attribute, the user agent must <span>immediately</span> invoke the
+  <span>media element</span>'s <span data-x="concept-media-load-algorithm">resource selection
+  algorithm</span>.</p>
+
+  <p>If a <code data-x="attr-media-src">src</code> attribute of a <span>media element</span> is set
+  or changed, the user agent must invoke the <span>media element</span>'s <span>media element load
+  algorithm</span>. (<em>Removing</em> the <code data-x="attr-media-src">src</code> attribute does
+  not do this, even if there are <code>source</code> elements present.)</p>
+
+  <p>The <dfn><code data-x="dom-media-src">src</code></dfn> IDL attribute on <span data-x="media
+  element">media elements</span> must <span>reflect</span> the content attribute of the same
+  name.</p>
+
+  <p>The <dfn><code data-x="dom-media-crossOrigin">crossOrigin</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-media-crossorigin">crossorigin</code> content attribute.</p>
+
+  </div>
+
+  <p>A <dfn>media provider object</dfn> is an object that can represent a <span>media
+  resource</span>, separate from a <span>URL</span>. <code>MediaStream</code> objects,
+  <code>MediaSource</code> objects, and <code>Blob</code> objects are all <span data-x="media
+  provider object">media provider objects</span>.</p>
+
+  <div w-nodev>
+
+  <p>Each <span>media element</span> can have an <dfn>assigned media provider object</dfn>, which is a
+  <span>media provider object</span>. When a <span>media element</span> is created, it has no
+  <span>assigned media provider object</span>.</p>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>media</var> . <code data-x="dom-media-srcObject">srcObject</code> [ = <var>source</var> ]</dt>
+
+   <dd>
+
+    <p>Allows the <span>media element</span> to be assigned a <span>media provider object</span>.</p>
+
+   </dd>
+
+   <dt><var>media</var> . <code subdfn data-x="dom-media-currentSrc">currentSrc</code></dt>
+
+   <dd>
+
+    <p>Returns the <span>URL</span> of the current <span>media resource</span>, if any.</p>
+
+    <p>Returns the empty string when there is no <span>media resource</span>, or it doesn't have a
+    <span>URL</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-media-currentSrc">currentSrc</code></dfn> IDL attribute must initially be set to
+  the empty string. Its value is changed by the <span data-x="concept-media-load-algorithm">resource
+  selection algorithm</span> defined below.</p>
+
+  <p>The <dfn><code data-x="dom-media-srcObject">srcObject</code></dfn> IDL attribute, on getting,
+  must return the element's <span>assigned media provider object</span>, if any, or null otherwise.
+  On setting, it must set the element's <span>assigned media provider object</span> to the new
+  value, and then invoke the element's <span>media element load algorithm</span>.</p>
+
+  </div>
+
+  <p class="note">There are three ways to specify a <span>media resource</span>: the <code
+  data-x="dom-media-srcObject">srcObject</code> IDL attribute, the <code
+  data-x="attr-media-src">src</code> content attribute, and <code>source</code> elements. The IDL
+  attribute takes priority, followed by the content attribute, followed by the elements.</p>
+
+
+
+  

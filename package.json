@@ -1,0 +1,29 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "description": "HTML标准(简体中文), https://whatwg-cn.github.io/html/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whatwg-cn/html.git"
+  },
+  "keywords": [
+    "w3c",
+    "whatwg",
+    "html",
+    "chinese",
+    "translation"
+  ],
+  "author": "whatwgcn",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/whatwg-cn/html/issues"
+  },
+  "homepage": "https://github.com/whatwg-cn/html#readme",
+  "dependencies": {
+    "mkpath": "^1.0.0"
+  }
+}

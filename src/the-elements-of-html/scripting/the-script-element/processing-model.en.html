@@ -1,0 +1,703 @@
+<h5 id="script-processing-model">Processing model</h5>
+
+  <p>A <code>script</code> element has several associated pieces of state.</p>
+
+  <p>The first is a flag indicating whether or not the script block has been <dfn>"already
+  started"</dfn>. Initially, <code>script</code> elements must have this flag unset (script blocks,
+  when created, are not "already started"). The <span data-x="concept-node-clone-ext">cloning
+  steps</span> for <code>script</code> elements must set the "already started" flag on the copy if
+  it is set on the element being cloned.</p>
+
+  <p>The second is a flag indicating whether the element was <dfn
+  data-export="" data-dfn-type="dfn" data-dfn-for="script">"parser-inserted"</dfn>. Initially,
+  <code>script</code> elements must have this flag unset. It is set by the <span>HTML parser</span>
+  and the <span>XML parser</span> on <code>script</code> elements they insert and affects the
+  processing of those elements.</p>
+
+  <p>The third is a flag indicating whether the element will be <dfn>"non-blocking"</dfn>.
+  Initially, <code>script</code> elements must have this flag set. It is unset by the <span>HTML
+  parser</span> and the <span>XML parser</span> on <code>script</code> elements they insert. In
+  addition, whenever a <code>script</code> element whose <span>"non-blocking"</span> flag is set
+  has an <code data-x="attr-script-async">async</code> content attribute added, the element's
+  <span>"non-blocking"</span> flag must be unset.</p> <!-- there's no need to unset it when the
+  attribute is removed since you can't have the attribute and the flag set at once. -->
+
+  <p>The fourth is a flag indicating whether or not the script block is <dfn>"ready to be
+  parser-executed"</dfn>. Initially, <code>script</code> elements must have this flag unset (script
+  blocks, when created, are not "ready to be parser-executed"). This flag is used only for elements
+  that are also <span>"parser-inserted"</span>, to let the parser know when to execute the
+  script.</p>
+
+  <p>The fifth is <dfn data-x="concept-script-type">the script's type</dfn>, which is either "<code
+  data-x="">classic</code>" or "<code data-x="">module</code>". It is determined when the script is
+  <span data-x="prepare a script">prepared</span>, based on the <code
+  data-x="attr-script-type">type</code> attribute of the element at that time.</p>
+
+  <p>The sixth is a flag indicating whether or not the script is <dfn
+  data-x="concept-script-external">from an external file</dfn>. It is determined when the script is
+  <span data-x="prepare a script">prepared</span>, based on the <code
+  data-x="attr-script-src">src</code> attribute of the element at that time.</p>
+
+  <p>Finally, a <code>script</code> element has <dfn data-x="concept-script-script"
+  data-export="">the script's script</dfn>, which is a <span data-x="concept-script">script</span>
+  resulting from <span data-x="prepare a script">preparing</span> the element. This is set
+  asynchronously after the classic script or module tree is fetched. Once it is set, either to a
+  <span data-x="concept-script">script</span> in the case of success or to null in the case of
+  failure, the fetching algorithms will note that <dfn>the script is ready</dfn>, which can trigger
+  other actions. <!-- similar text in various places --> The user agent must <span>delay the load
+  event</span> of the element's <span>node document</span> until <span>the script is
+  ready</span>.</p>
+
+  <hr>
+
+  <p>When a <code>script</code> element that is not marked as being <span>"parser-inserted"</span>
+  experiences one of the events listed in the following list, the user agent must
+  <span>immediately</span> <span data-x="prepare a script">prepare</span> the <code>script</code>
+  element:</p>
+
+  <ul>
+
+   <li>The <code>script</code> element <span>becomes connected</span>.</li>
+
+   <li>The <code>script</code> element is <span>connected</span> and a node or document fragment is
+   <span data-x="nodes are inserted">inserted</span> into the <code>script</code> element, after any
+   <code>script</code> elements <span data-x="nodes are inserted">inserted</span> at that time.</li>
+
+   <li>The <code>script</code> element is <span>connected</span> and has a <code
+   data-x="attr-script-src">src</code> attribute set where previously the element had no such
+   attribute.</li>
+
+  </ul>
+
+  <p>To <dfn data-x="prepare a script" data-export="">prepare a script</dfn>, the user agent must
+  act as follows:</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the <code>script</code> element is marked as having <span>"already started"</span>, then
+    abort these steps at this point. The script is not executed.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the element has its <span>"parser-inserted"</span> flag set, then set <var>was-parser-inserted</var> to true and unset the element's
+    <span>"parser-inserted"</span> flag. Otherwise, set <var>was-parser-inserted</var> to
+    false.</p>
+
+    <p class="note">This is done so that if parser-inserted <code>script</code> elements fail to run
+    when the parser tries to run them, e.g. because they are empty or specify an unsupported
+    scripting language, another script can later mutate them and cause them to run again.</p>
+
+    <!-- q.v. https://hsivonen.com/test/moz/script-setting-src-on-parser-inserted-script.html -->
+
+   </li>
+
+   <li>
+
+    <p>If <var>was-parser-inserted</var> is true and the element does not have an <code
+    data-x="attr-script-async">async</code> attribute, then set the element's
+    <span>"non-blocking"</span> flag to true.</p>
+
+    <p class="note">This is done so that if a parser-inserted <code>script</code> element fails to
+    run when the parser tries to run it, but it is later executed after a script dynamically updates
+    it, it will execute in a non-blocking fashion even if the <code data-x="attr-script-async">async</code>
+    attribute isn't set.</p>
+
+   </li>
+
+   <li id="script-processing-empty">
+
+    <p>If the element has no <code data-x="attr-script-src">src</code> attribute, and its child
+    nodes, if any, consist only of comment nodes and empty <code>Text</code> nodes, then abort
+    these steps at this point. The script is not executed.</p>
+
+   </li>
+
+   <li><p>If the element is not <span>connected</span>, then abort these steps. The script is not
+   executed.</p></li>
+
+   <li id="script-processing-prepare">
+
+    <p>If either:</p>
+
+    <ul class="brief">
+
+     <li>the <code>script</code> element has a <code data-x="attr-script-type">type</code> attribute
+     and its value is the empty string, or</li>
+
+     <li>the <code>script</code> element has no <code data-x="attr-script-type">type</code> attribute
+     but it has a <code data-x="attr-script-language">language</code> attribute and <em>that</em>
+     attribute's value is the empty string, or</li>
+
+     <li>the <code>script</code> element has neither a <code data-x="attr-script-type">type</code>
+     attribute nor a <code data-x="attr-script-language">language</code> attribute, then</li>
+
+    </ul>
+
+    <p>...let <var>the script block's type string</var> for this <code>script</code> element be
+    "<code data-x="">text/javascript</code>".</p>
+
+    <p>Otherwise, if the <code>script</code> element has a <code
+    data-x="attr-script-type">type</code> attribute, let <var>the script block's type string</var>
+    for this <code>script</code> element be the value of that attribute with any leading or
+    trailing sequences of <span data-x="space character">space characters</span> removed.</p> <!--
+    <span>Strip leading and trailing whitespace</span> from... -->
+
+    <p>Otherwise, the element has a non-empty <code data-x="attr-script-language">language</code>
+    attribute; let <var>the script block's type string</var> for this <code>script</code> element
+    be the concatenation of the string "<code data-x="">text/</code>" followed by the value of the
+    <code data-x="attr-script-language">language</code> attribute.</p>
+    <!-- user agents already support, e.g., type="text/javascript1.3", so we don't have to support
+    that separately. -->
+
+    <p class="note">The <code data-x="attr-script-language">language</code> attribute is never
+    conforming, and is always ignored if there is a <code data-x="attr-script-type">type</code>
+    attribute present.</p>
+
+    <p>Determine <span data-x="concept-script-type">the script's type</span> as follows:</p>
+
+    <ul>
+
+     <li>If <var>the script block's type string</var> is an <span>ASCII case-insensitive</span>
+     match for any <span>JavaScript MIME type</span>, <span data-x="concept-script-type">the
+     script's type</span> is "<code data-x="">classic</code>".</li>
+
+     <li>If <var>the script block's type string</var> is an <span>ASCII case-insensitive</span>
+     match for the string "<code data-x="">module</code>", <span data-x="concept-script-type">the
+     script's type</span> is "<code data-x="">module</code>".</li>
+
+     <li>If neither of the above conditions are true, then abort these steps at this point. No
+     script is executed.</li>
+
+    </ul>
+
+   </li>
+
+   <li>
+
+    <p>If <var>was-parser-inserted</var> is true, then flag the element as
+    <span>"parser-inserted"</span> again, and set the element's <span>"non-blocking"</span> flag to
+    false.</p>
+
+   </li>
+
+   <li id="script-processing-start">
+
+    <p>Set the element's <span>"already started"</span> flag.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the element is flagged as <span>"parser-inserted"</span>, but the element's
+    <span>node document</span> is not the <code>Document</code> of the parser that created the
+    element, then abort these steps.</p>
+
+   </li>
+
+   <li id="script-processing-noscript">
+
+    <p>If <span data-x="concept-n-noscript">scripting is disabled</span> for the <code>script</code>
+    element, then abort these steps at this point. The script is not executed.</p>
+
+    <p class="note">The definition of <span data-x="concept-n-noscript">scripting is disabled</span>
+    means that, amongst others, the following scripts will not execute: scripts in
+    <code>XMLHttpRequest</code>'s <code data-x="dom-XMLHttpRequest-responseXML">responseXML</code>
+    documents, scripts in <code>DOMParser</code>-created documents, scripts in documents created by
+    <code>XSLTProcessor</code>'s <code
+    data-x="dom-XSLTProcessor-transformToDocument">transformToDocument</code> feature, and scripts
+    that are first inserted by a script into a <code>Document</code> that was created using the
+    <code data-x="dom-DOMImplementation-createDocument">createDocument()</code> API. <ref spec=XHR>
+    <ref spec=DOMPARSING> <ref spec=XSLTP> <ref spec=DOM></p>
+
+
+   </li>
+
+   <li id="script-processing-csp"><p>If the <code>script</code> element does not have a <code
+   data-x="attr-script-src">src</code> content attribute, and the <span>Should element's inline
+   behavior be blocked by Content Security Policy?</span> algorithm returns "<code
+   data-x="">Blocked</code>" when executed upon the <code>script</code> element, "<code
+   data-x="">script</code>", and the <code>script</code> element's <span>child text content</span>,
+   then abort these steps. The script is not executed. <ref spec="CSP"></p></li>
+
+   <li id="script-processing-for">
+
+    <p>If the <code>script</code> element has an <code data-x="attr-script-event">event</code>
+    attribute and a <code data-x="attr-script-for">for</code> attribute, and <span
+    data-x="concept-script-type">the script's type</span> is "<code data-x="">classic</code>", then
+    run these substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>for</var> be the value of the <code data-x="attr-script-for">for</code>
+     attribute.</p></li>
+
+     <li><p>Let <var>event</var> be the value of the <code
+     data-x="attr-script-event">event</code> attribute.</p></li>
+
+     <li><p><span>Strip leading and trailing whitespace</span> from <var>event</var> and
+     <var>for</var>.</p></li>
+
+     <li><p>If <var>for</var> is not an <span>ASCII case-insensitive</span> match for the
+     string "<code data-x="">window</code>", then abort these steps at this point. The script is
+     not executed.</p></li>
+
+     <li><p>If <var>event</var> is not an <span>ASCII case-insensitive</span> match for
+     either the string "<code data-x="">onload</code>" or the string "<code
+     data-x="">onload()</code>", then abort these steps at this point. The script is not
+     executed.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li id="script-processing-encoding">
+
+    <p>If the <code>script</code> element has a <code data-x="attr-script-charset">charset</code>
+    attribute, then let <var>encoding</var> be the result of <span>getting an encoding</span> from
+    the value of the <code data-x="attr-script-charset">charset</code> attribute.</p>
+
+    <p>If the <code>script</code> element does not have a <code
+    data-x="attr-script-charset">charset</code> attribute, or if <span>getting an encoding</span>
+    failed, let <var>encoding</var> be the same as <span data-x="document's character encoding">the
+    encoding</span> of the <code>script</code> element's <span>node document</span>.</p>
+
+    <p class="note">If <span data-x="concept-script-type">the script's type</span> is "<code
+    data-x="">module</code>", this encoding will be ignored.</p>
+
+   </li>
+
+   <li><p>Let <var>CORS setting</var> be the current state of the element's <code
+   data-x="attr-script-crossorigin">crossorigin</code> content attribute.</p></li>
+
+   <li>
+    <p>Let <var>module script credentials mode</var> be determined by switching on <var>CORS
+    setting</var>:</p>
+
+    <dl class="switch">
+     <dt><span data-x="attr-crossorigin-none">No CORS</span></dt>
+     <dd>"<code data-x="">omit</code>"</dd>
+
+     <dt><span data-x="attr-crossorigin-anonymous">Anonymous</span></dt>
+     <dd>"<code data-x="">same-origin</code>"</dd>
+
+     <dt><span data-x="attr-crossorigin-none">Use Credentials</span></dt>
+     <dd>"<code data-x="">include</code>"</dd>
+    </dl>
+   </li>
+
+   <li>
+
+    <p>If the <code>script</code> element has a <code data-x="attr-script-nonce">nonce</code>
+    attribute, then let <var>cryptographic nonce</var> be that attribute's value.</p>
+
+    <p>Otherwise, let <var>cryptographic nonce</var> be the empty string.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the <code>script</code> element has an <code
+    data-x="attr-script-integrity">integrity</code> attribute, then let <var>integrity
+    metadata</var> be that attribute's value.</p>
+
+    <p>Otherwise, let <var>integrity metadata</var> be the empty string.</p>
+
+   </li>
+
+   <li><p>Let <var>parser state</var> be "<code data-x="">parser-inserted</code>" if the
+   <code>script</code> element has been flagged as <span>"parser-inserted"</span>, and
+   "<code data-x="">not parser-inserted</code>" otherwise.</p></li>
+
+   <li><p>Let <var>settings</var> be the element's <span>node document</span>'s
+   <code>Window</code> object's <span>environment settings object</span>.</p></li>
+
+   <li id="script-processing-src-prepare">
+
+    <p>If the element has a <code data-x="attr-script-src">src</code> content attribute, run these
+    substeps:</p>
+
+    <ol>
+
+     <li><p>Let <var>src</var> be the value of the element's <code
+     data-x="attr-script-src">src</code> attribute.</p></li>
+
+     <li><p>If <var>src</var> is the empty string, <span>queue a task</span> to <span
+     data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+     at the element, and abort these steps.</p></li>
+
+     <li><p>Set the element's <span data-x="concept-script-external">from an external file</span>
+     flag.</p></li>
+
+     <li><p><span data-x="parse a url">Parse</span> <var>src</var> relative to the element's
+     <span>node document</span>.</p></li>
+
+     <li><p>If the previous step failed, <span>queue a task</span> to <span
+     data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+     at the element, and abort these steps. Otherwise, let <var>url</var> be the <span>resulting URL
+     record</span>.</p></li>
+
+     <li>
+      <p>Switch on <span data-x="concept-script-type">the script's type</span>:</p>
+
+      <dl class="switch">
+       <dt>"<code data-x="">classic</code>"</dt>
+       <dd>
+        <p><span>Fetch a classic script</span> given <var>url</var>, <var>settings</var>,
+        <var>cryptographic nonce</var>, <var>integrity metadata</var>, <var>parser state</var>,
+        <var>CORS setting</var>, and <var>encoding</var>.</p>
+       </dd>
+
+       <dt>"<code data-x="">module</code>"</dt>
+       <dd>
+        <p><span>Fetch a module script graph</span> given <var>url</var>, <var>settings</var>,
+        "<code data-x="">script</code>", <var>cryptographic nonce</var>, <var>parser state</var>,
+        and <var>module script credentials mode</var>.</p>
+       </dd>
+      </dl>
+
+      <p>When the chosen algorithm asynchronously completes, set <span
+      data-x="concept-script-script">the script's script</span> to the result. At that time,
+      <span>the script is ready</span>.</p>
+
+      <p>For performance reasons, user agents may start fetching the classic script or module tree
+      (as defined above) as soon as the <code data-x="attr-script-src">src</code> attribute is set,
+      instead, in the hope that the element will be inserted into the document (and that the <code
+      data-x="attr-script-crossorigin">crossorigin</code> attribute won't change value in the
+      meantime). Either way, once the element is <span data-x="node is inserted into a
+      document">inserted into the document</span>, the load must have started as described in this
+      step. If the UA performs such prefetching, but the element is never inserted in the document,
+      or the <code data-x="attr-script-src">src</code> attribute is dynamically changed,<!-- or the
+      base URL is dynamically changed,--> or the <code
+      data-x="attr-script-crossorigin">crossorigin</code> attribute is dynamically changed, then the
+      user agent will not execute the script so obtained, and the fetching process will have been
+      effectively wasted.</p>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+   <li id="establish-script-block-source">
+
+    <p>If the element does not have a <code data-x="attr-script-src">src</code> content attribute,
+    run these substeps:</p>
+
+    <ol>
+     <li><p>Let <var>source text</var> be the value of the <code
+     data-x="dom-script-text">text</code> IDL attribute.</p></li>
+
+     <li>
+      <p>Switch on <span data-x="concept-script-type">the script's type</span>:</p>
+
+      <dl class="switch">
+       <dt>"<code data-x="">classic</code>"</dt>
+       <dd>
+        <ol>
+         <li><p>Let <var>script</var> be the result of <span>creating a classic script</span> using
+         <var>source text</var> and <var>settings</var>.</p></li>
+
+         <li><p>Set <span data-x="concept-script-script">the script's script</span> to
+         <var>script</var>.</p></li>
+
+         <li><p><span>The script is ready</span>.</p></li>
+        </ol>
+       </dd>
+
+       <dt>"<code data-x="">module</code>"</dt>
+       <dd>
+        <ol>
+         <li><p>Let <var>base URL</var> be the <code>script</code> element's <span>node
+         document</span>'s <span>document base URL</span>.</p></li>
+
+         <li><p>Let <var>script</var> be the result of <span>creating a module script</span> using
+         <var>source text</var>, <var>settings</var>, <var>base URL</var>, <var>cryptographic
+         nonce</var>, <var>parser state</var>, and <var>module script credentials
+         mode</var>.</p></li>
+
+         <li><p>If this returns null, set <span data-x="concept-script-script">the script's
+         script</span> to null and abort these substeps; <span>the script is ready</span>.</p></li>
+
+         <li><p><span data-x="fetch the descendants of a module script">Fetch the
+         descendants</span> of <var>script</var> (using an empty ancestor list). When this
+         asynchronously completes, set <span data-x="concept-script-script">the script's
+         script</span> to the result. At that time, <span>the script is ready</span>.</p></li>
+        </ol>
+       </dd>
+      </dl>
+     </li>
+    </ol>
+   </li>
+
+   <!-- at this point if the element is "parser-inserted" then we know it is not "non-blocking". -->
+
+   <li>
+
+    <p>Then, follow the first of the following options that describes the situation:</p>
+
+    <dl class="switch">
+
+     <dt id="script-processing-defer">If <span data-x="concept-script-type">the script's
+     type</span> is "<code data-x="">classic</code>", and the element has a <code
+     data-x="attr-script-src">src</code> attribute, and the element has a <code
+     data-x="attr-script-defer">defer</code> attribute, and the element has been flagged as
+     <span>"parser-inserted"</span>, and the element does not have an <code
+     data-x="attr-script-async">async</code> attribute</dt>
+
+     <dt id="script-processing-module-noasync-parser-inserted">If <span
+     data-x="concept-script-type">the script's type</span> is "<code data-x="">module</code>", and
+     the element has been flagged as <span>"parser-inserted"</span>, and the element does not have
+     an <code data-x="attr-script-async">async</code> attribute</dt>
+
+     <dd>
+
+      <p>Add the element to the end of the <dfn>list of scripts that will execute when the document
+      has finished parsing</dfn> associated with the <code>Document</code> of the parser that
+      created the element.</p>
+
+      <p>When <span>the script is ready</span>, set the element's <span>"ready to be
+      parser-executed"</span> flag. The parser will handle executing the script.</p>
+
+     </dd>
+
+     <dt id="script-processing-parser-inserted">If <span data-x="concept-script-type">the script's
+     type</span> is "<code data-x="">classic</code>", and the element has a <code
+     data-x="attr-script-src">src</code> attribute, and the element has been flagged as
+     <span>"parser-inserted"</span>, and the element does not have an <code
+     data-x="attr-script-async">async</code> attribute</dt>
+
+     <dd>
+
+      <p>The element is the <span>pending parsing-blocking script</span> of the
+      <code>Document</code> of the parser that created the element. (There can only be one such
+      script per <code>Document</code> at a time.)</p>
+
+      <p>When <span>the script is ready</span>, set the element's <span>"ready to be
+      parser-executed"</span> flag. The parser will handle executing the script.</p>
+
+     </dd>
+
+     <dt id="script-processing-src-sync">If <span data-x="concept-script-type">the script's
+     type</span> is "<code data-x="">classic</code>", and the element has a <code
+     data-x="attr-script-src">src</code> attribute, and the element does not have an <code
+     data-x="attr-script-async">async</code> attribute, and the element does not have the
+     <span>"non-blocking"</span> flag set</dt>
+
+     <dt id="script-processing-module-noasync">If <span data-x="concept-script-type">the script's
+     type</span> is "<code data-x="">module</code>", and the element does not have an <code
+     data-x="attr-script-async">async</code> attribute, and the element does not have the
+     <span>"non-blocking"</span> flag set</dt>
+
+     <dd>
+
+      <p>Add the element to the end of the <dfn>list of scripts that will execute in order as soon
+      as possible</dfn> associated with the <span>node document</span> of the <code>script</code>
+      element at the time the <span>prepare a script</span> algorithm started.</p>
+
+      <p>When <span>the script is ready</span>, run the following steps:</p>
+
+      <ol>
+
+       <li><p>If the element is not now the first element in the <span>list of scripts that will
+       execute in order as soon as possible</span> to which it was added above, then mark the
+       element as ready but abort these steps without executing the script yet.</p></li>
+
+       <li><p><i>Execution</i>: <span>Execute the script block</span> corresponding to the first
+       script element in this <span>list of scripts that will execute in order as soon as
+       possible</span>.</p></li>
+
+       <li><p>Remove the first element from this <span>list of scripts that will execute in order as
+       soon as possible</span>.</p></li>
+
+       <li><p>If this <span>list of scripts that will execute in order as soon as possible</span> is
+       still not empty and the first entry has already been marked as ready, then jump back to the
+       step labeled <i>execution</i>.</p></li>
+
+      </ol>
+
+     </dd>
+
+
+     <dt id="script-processing-src">If <span data-x="concept-script-type">the script's type</span>
+     is "<code data-x="">classic</code>", and the element has a <code
+     data-x="attr-script-src">src</code> attribute</dt>
+
+     <dt id="script-processing-module-async">If <span data-x="concept-script-type">the script's
+     type</span> is "<code data-x="">module</code>"</dt>
+
+     <dd>
+
+      <p>The element must be added to the <dfn>set of scripts that will execute as soon as
+      possible</dfn> of the <span>node document</span> of the <code>script</code> element at the
+      time the <span>prepare a script</span> algorithm started.</p>
+
+      <p>When <span>the script is ready</span>, <span>execute the script block</span> and then
+      remove the element from the <span>set of scripts that will execute as soon as
+      possible</span>.</p>
+
+     </dd>
+
+
+
+     <dt id="script-processing-style-delayed">If the element does not have a <code
+     data-x="attr-script-src">src</code> attribute, and the element has been flagged as
+     <span>"parser-inserted"</span>, and either the parser that created the <code>script</code> is
+     an <span>XML parser</span> or it's an <span>HTML parser</span> whose <span>script nesting
+     level</span> is not greater than one, and the <code>Document</code> of the <span>HTML
+     parser</span> or <span>XML parser</span> that created the <code>script</code> element <span>has
+     a style sheet that is blocking scripts</span></dt>
+
+     <dd>
+
+      <p>The element is the <span>pending parsing-blocking script</span> of the
+      <code>Document</code> of the parser that created the element. (There can only be one such
+      script per <code>Document</code> at a time.)</p>
+
+      <p>Set the element's <span>"ready to be parser-executed"</span> flag. The parser will handle
+      executing the script.</p>
+
+     </dd>
+
+
+     <dt id="script-processing-inline">Otherwise</dt>
+
+     <dd><span>Immediately</span> <span>execute the script block</span>, even if other scripts are
+     already executing.</dd>
+
+    </dl>
+
+   </li>
+
+  </ol>
+
+  <p>The <dfn>pending parsing-blocking script</dfn> of a <code>Document</code> is used by the
+  <code>Document</code>'s parser(s).</p>
+
+  <p class="note">If a <code>script</code> element that blocks a parser gets moved to another
+  <code>Document</code> before it would normally have stopped blocking that parser, it nonetheless
+  continues blocking that parser until the condition that causes it to be blocking the parser no
+  longer applies (e.g. if the script is a <span>pending parsing-blocking script</span> because there
+  was <span>a style sheet that is blocking scripts</span> when it was parsed, but then the script is
+  moved to another <code>Document</code> before the style sheet loads, the script still blocks the
+  parser until the style sheets are all loaded, at which time the script executes and the parser is
+  unblocked).</p>
+
+  <!-- also (and this would be worth testing): the way the spec is written, if you do not have a
+  style sheet that is blocking scripts, then you parse a <script src>, then while waiting for the
+  script to load you insert an external style sheet, the script will delay until the sheet is
+  loaded, because there's just a binary "are style sheets blocking scripts" state, things aren't
+  defined in terms of which style sheets are blocking which scripts -->
+
+  <p>When the user agent is required to <dfn data-x="execute the script block">execute a script
+  block</dfn>, it must run the following steps.</p>
+
+  <ol>
+
+   <li>
+
+    <p>If the element is flagged as <span>"parser-inserted"</span>, but the element's
+    <span>node document</span> is not the <code>Document</code> of the parser that created the element,
+    then abort these steps.</p>
+
+   </li>
+
+   <li>
+
+    <p>If <span data-x="concept-script-script">the script's script</span> is null, <span
+    data-x="concept-event-fire">fire an event</span> named <code data-x="event-error">error</code>
+    at the element, and abort these steps.</p>
+
+   </li>
+
+   <!-- SCRIPT EXEC -->
+
+   <li>
+
+    <p>If the script is <span data-x="concept-script-external">from an external file</span>, or
+    <span data-x="concept-script-type">the script's type</span> is "<code data-x="">module</code>",
+    then increment the <span>ignore-destructive-writes counter</span> of the <code>script</code>
+    element's <span>node document</span>. Let <var>neutralized doc</var> be that
+    <code>Document</code>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Let <var>old script element</var> be the value to which the <code>script</code>
+    element's <span>node document</span>'s <code
+    data-x="dom-document-currentScript">currentScript</code> object was most recently
+    set.</p>
+
+   </li>
+
+   <li>
+
+    <p>Switch on <span data-x="concept-script-type">the script's type</span>:</p>
+
+    <dl class="switch">
+     <dt>"<code data-x="">classic</code>"</dt>
+     <dd>
+      <ol>
+       <li>
+        <p>If the <code>script</code> element's <span>root</span> is <em>not</em> a <span>shadow
+        root</span>, then set the <code>script</code> element's <span>node document</span>'s <code
+        data-x="dom-document-currentScript">currentScript</code> attribute to the
+        <code>script</code> element. Otherwise, set it to null.</p>
+
+        <p class="note">This does not use the <span>in a document tree</span> check, as the
+        <code>script</code> element could have been removed from the document prior to execution,
+        and in that scenario <code data-x="dom-document-currentScript">currentScript</code> still
+        needs to point to it.</p>
+       </li>
+
+       <li><p><span data-x="run a classic script">Run the classic script</span> given by <span
+       data-x="concept-script-script">the script's script</span>.</p></li>
+      </ol>
+     </dd>
+
+     <dt>"<code data-x="">module</code>"</dt>
+     <dd>
+      <ol>
+       <li><p>Set the <code>script</code> element's <span>node document</span>'s <code
+       data-x="dom-document-currentScript">currentScript</code> attribute to null.</p></li>
+
+       <li><p><span data-x="run a module script">Run the module script</span> given by <span
+       data-x="concept-script-script">the script's script</span>.</p></li>
+      </ol>
+     </dd>
+    </dl>
+
+   </li>
+
+   <li>
+
+    <p>Set the <code>script</code> element's <span>node document</span>'s <code
+    data-x="dom-document-currentScript">currentScript</code> attribute to <var>old script
+    element</var>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Decrement the <span>ignore-destructive-writes counter</span> of <var>neutralized doc</var>, if it was incremented in the earlier step.</p>
+
+   </li>
+
+   <li>
+
+    <p>If the script is <span data-x="concept-script-external">from an external file</span>, then
+    <span data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-load">load</code> at the <code>script</code> element.</p>
+
+   </li>
+
+  </ol>
+
+  </div>
+
+
+  

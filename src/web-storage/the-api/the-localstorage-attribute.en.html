@@ -1,0 +1,65 @@
+<h4>The <code data-x="dom-localStorage">localStorage</code> attribute</h4>
+
+  <pre class="idl">[NoInterfaceObject]
+interface <dfn>WindowLocalStorage</dfn> {
+  readonly attribute <span>Storage</span> <span data-x="dom-localStorage">localStorage</span>;
+};
+<span>Window</span> implements <span>WindowLocalStorage</span>;</pre>
+
+  <p>The <dfn><code data-x="dom-localStorage">localStorage</code></dfn> object provides a
+  <code>Storage</code> object for an <span>origin</span>.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  <p>User agents must have a set of local storage areas, one for each <span>origin</span>.</p>
+
+  <p>User agents should expire data from the local storage areas only for security reasons or when
+  requested to do so by the user. User agents should always avoid deleting data while a script that
+  could access that data is running.</p>
+
+  <p>When the <code data-x="dom-localStorage">localStorage</code> attribute is accessed, the user
+  agent must run the following steps, which are known as the
+  <!--en-GB--><dfn id="storage-object-initialisation-steps"><code>Storage</code> object
+  initialization steps</dfn>:</p> <!-- these steps are named because marcos uses them from another
+  spec -->
+
+  <ol>
+
+   <li><p>The user agent may throw a <span>"<code>SecurityError</code>"</span>
+   <code>DOMException</code> and abort these steps instead of returning a <code>Storage</code>
+   object if the request violates a policy decisions (e.g. if the user agent is configured to not
+   allow the page to persist data).</p></li>
+
+   <li><p>If the <code>Document</code>'s <span>origin</span> is an <span
+   data-x="concept-origin-opaque">opaque origin</span>, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>Check to see if the user agent has allocated a local storage area for the
+   <span>origin</span> of the <code>Document</code> of the <code>Window</code> object on which the
+   attribute was accessed. If it has not, create a new storage area for that
+   <span>origin</span>.</p></li>
+
+   <li><p>Return the <code>Storage</code> object associated with that origin's local storage area.
+   Each <code>Document</code> object must have a separate object for its <code>Window</code>'s <code
+   data-x="dom-localStorage">localStorage</code> attribute.</p>
+
+  </ol>
+
+  <p id="localStorageEvent">When the <code data-x="dom-Storage-setItem">setItem()</code>, <code
+  data-x="dom-Storage-removeItem">removeItem()</code>, and <code
+  data-x="dom-Storage-clear">clear()</code> methods are called on a <code>Storage</code> object <var>x</var> that is associated with a local storage area, if the methods did not throw an
+  exception or "do nothing" as defined above, then for every <code>Document</code> object whose
+  <code>Window</code> object's <code data-x="dom-localStorage">localStorage</code> attribute's
+  <code>Storage</code> object is associated with the same storage area, other than <var>x</var>, <span>send a storage notification</span>.
+
+  <p class="warning">The <code data-x="dom-localStorage">localStorage</code> attribute provides
+  access to shared state. This specification does not define the interaction with other browsing
+  contexts in a multiprocess user agent, and authors are encouraged to assume that there is no
+  locking mechanism. A site could, for instance, try to read the value of a key, increment its
+  value, then write it back out, using the new value as a unique identifier for the session; if the
+  site does this twice in two different browser windows at the same time, it might end up using the
+  same "unique" identifier for both sessions, with potentially disastrous effects.</p>
+
+
+  

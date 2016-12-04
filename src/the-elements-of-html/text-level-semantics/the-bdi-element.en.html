@@ -1,0 +1,62 @@
+<h4>The <dfn><code>bdi</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>phrasing content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Phrasing content</span>.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd>Also, the <code data-x="attr-dir">dir</code> global attribute has special semantics on this element.</dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>bdi</code> element <span>represents</span> a span of text that is to be isolated from
+  its surroundings for the purposes of bidirectional text formatting. <ref spec=BIDI></p>
+
+  <p class="note">The <code data-x="attr-dir">dir</code> global attribute defaults to <code
+  data-x="attr-dir-auto">auto</code> on this element (it never inherits from the parent element like
+  with other elements).</p>
+
+  <div w-nodev>
+
+  <p class="note">This element <a href="#bidireq">has rendering requirements involving the
+  bidirectional algorithm</a>.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>This element is especially useful when embedding user-generated content with an unknown
+   directionality.</p>
+
+   <p>In this example, usernames are shown along with the number of posts that the user has
+   submitted. If the <code>bdi</code> element were not used, the username of the Arabic user would
+   end up confusing the text (the bidirectional algorithm would put the colon and the number "3"
+   next to the word "User" rather than next to the word "posts").</p>
+
+   <pre>&lt;ul>
+ &lt;li>User &lt;bdi>jcranmer&lt;/bdi>: 12 posts.
+ &lt;li>User &lt;bdi>hober&lt;/bdi>: 5 posts.
+ &lt;li>User &lt;bdi><bdo dir=rtl>&#x625;&#x64a;&#x627;&#x646;</bdo>&lt;/bdi>: 3 posts.
+&lt;/ul></pre>
+
+   <figure>
+    <img src="/images/sample-bdi.png" alt="">
+    <figcaption>When using the <code>bdi</code> element, the username acts as expected.</figcaption>
+   </figure>
+
+   <figure>
+    <img src="/images/sample-not-bdi.png" alt="">
+    <figcaption>If the <code>bdi</code> element were to be replaced by a <code>b</code> element, the username would confuse the bidirectional algorithm and the third bullet would end up saying "User 3 :", followed by the Arabic name (right-to-left), followed by "posts" and a period.</figcaption>
+   </figure>
+
+  </div>
+
+
+  

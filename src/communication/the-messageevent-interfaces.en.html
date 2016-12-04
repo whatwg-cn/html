@@ -1,0 +1,121 @@
+<h3>The <code>MessageEvent</code> interfaces</h3>
+
+  <p>Messages in <span>server-sent events</span>, <span>Web sockets</span>, <span>cross-document
+  messaging</span>, <span>channel messaging</span>, and <span>broadcast channels</span> use the
+  <code>MessageEvent</code> interface for their <code data-x="event-message">message</code>
+  events:</p>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>MessageEventInit</span> eventInitDict), Exposed=(Window,Worker)]
+interface <dfn>MessageEvent</dfn> : <span>Event</span> {
+  readonly attribute any <span data-x="dom-MessageEvent-data">data</span>;
+  readonly attribute USVString <span data-x="dom-MessageEvent-origin">origin</span>;
+  readonly attribute DOMString <span data-x="dom-MessageEvent-lastEventId">lastEventId</span>;
+  readonly attribute <span>MessageEventSource</span>? <span data-x="dom-MessageEvent-source">source</span>;
+  readonly attribute FrozenArray&lt;<span>MessagePort</span>&gt; <span data-x="dom-MessageEvent-ports">ports</span>;
+
+  void <span data-x="dom-MessageEvent-initMessageEvent">initMessageEvent</span>(DOMString type, boolean bubbles, boolean cancelable, any data, USVString origin, DOMString lastEventId, <span>MessageEventSource</span>? source, sequence&lt;<span>MessagePort</span>&gt; ports);
+};
+
+dictionary <dfn>MessageEventInit</dfn> : <span>EventInit</span> {
+  any data = null;
+  USVString origin = "";
+  DOMString lastEventId = "";
+  <span>MessageEventSource</span>? source = null;
+  sequence&lt;<span>MessagePort</span>&gt; ports = [];
+};
+
+typedef (<span>WindowProxy</span> or <span>MessagePort</span> or <span>ServiceWorker</span>) <dfn>MessageEventSource</dfn>;</pre>
+
+  <dl class="domintro">
+
+   <dt><var>event</var> . <code subdfn data-x="dom-MessageEvent-data">data</code></dt>
+
+   <dd>
+
+    <p>Returns the data of the message.</p>
+
+   </dd>
+
+   <dt><var>event</var> . <code subdfn data-x="dom-MessageEvent-origin">origin</code></dt>
+
+   <dd>
+
+    <p>Returns the origin of the message, for <span>server-sent events</span> and
+    <span>cross-document messaging</span>.</p>
+
+   </dd>
+
+   <dt><var>event</var> . <code subdfn data-x="dom-MessageEvent-lastEventId">lastEventId</code></dt>
+
+   <dd>
+
+    <p>Returns the <span data-x="concept-event-stream-last-event-id">last event ID string</span>, for
+    <span>server-sent events</span>.</p>
+
+   </dd>
+
+   <dt><var>event</var> . <code subdfn data-x="dom-MessageEvent-source">source</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>WindowProxy</code> of the source window, for <span>cross-document
+    messaging</span>, and the <code>MessagePort</code> being attached, in the <code
+    data-x="event-WorkerGlobalScope-connect">connect</code> event fired at
+    <code>SharedWorkerGlobalScope</code> objects.</p>
+
+   </dd>
+
+   <dt><var>event</var> . <code subdfn data-x="dom-MessageEvent-ports">ports</code></dt>
+
+   <dd>
+
+    <p>Returns the <code>MessagePort</code> array sent with the message, for <span>cross-document
+    messaging</span> and <span>channel messaging</span>.</p>
+
+   </dd>
+
+   <!-- initMessageEvent is deprecated -->
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-MessageEvent-data">data</code></dfn> attribute must return the value
+  it was initialized to. It represents the message being sent.</p>
+
+  <p>The <dfn><code data-x="dom-MessageEvent-origin">origin</code></dfn> attribute must return the
+  value it was initialized to. It represents, in <span>server-sent events</span> and
+  <span>cross-document messaging</span>, the <span>origin</span> of the document that sent the
+  message (typically the scheme, hostname, and port of the document, but not its path or <span
+  data-x="concept-url-fragment">fragment</span>).</p>
+
+  <p>The <dfn><code data-x="dom-MessageEvent-lastEventId">lastEventId</code></dfn> attribute must
+  return the value it was initialized to. It represents, in <span>server-sent events</span>, the
+  <span data-x="concept-event-stream-last-event-id">last event ID string</span> of the event
+  source.</p>
+
+  <p>The <dfn><code data-x="dom-MessageEvent-source">source</code></dfn> attribute must return the
+  value it was initialized to. It represents, in <span>cross-document messaging</span>, the
+  <code>WindowProxy</code> of the <span>browsing context</span> of the <code>Window</code> object
+  from which the message came; and in the <code
+  data-x="event-WorkerGlobalScope-connect">connect</code> events used by <span
+  data-x="SharedWorkerGlobalScope">shared workers</span>, the newly connecting
+  <code>MessagePort</code>.</p>
+
+  <p>The <dfn><code data-x="dom-MessageEvent-ports">ports</code></dfn> attribute must return the
+  value it was initialized to. It represents, in <span>cross-document messaging</span> and
+  <span>channel messaging</span>, the <code>MessagePort</code> array being sent.</p>
+
+  <!-- handwave this one since it's deprecated anyway... let me know if there's interop issues -->
+  <p>The <dfn><code data-x="dom-MessageEvent-initMessageEvent">initMessageEvent()</code></dfn>
+  method must initialize the event in a manner analogous to the similarly-named <code
+  data-x="dom-Event-initEvent">initEvent()</code> method. <ref spec=DOM></p>
+
+  </div>
+
+  <p class="note">Various APIs (e.g., <code>WebSocket</code>, <code>EventSource</code>) use the
+  <code>MessageEvent</code> interface for their <code data-x="event-message">message</code> event
+  without using the <code>MessagePort</code> API.</p>
+
+
+  

@@ -1,0 +1,81 @@
+<h5>The <code data-x="attr-title">title</code> attribute</h5>
+
+  <p>The <dfn><code data-x="attr-title">title</code></dfn> attribute <span>represents</span> advisory
+  information for the element, such as would be appropriate for a tooltip. On a link, this could be
+  the title or a description of the target resource; on an image, it could be the image credit or a
+  description of the image; on a paragraph, it could be a footnote or commentary on the text; on a
+  citation, it could be further information about the source; on <span>interactive content</span>,
+  it could be a label for, or instructions for, use of the element; and so forth. The value is
+  text.</p>
+
+  <!-- search for title-warning if modifying this paragraph -->
+  <p class="note">Relying on the <code data-x="attr-title">title</code> attribute is currently
+  discouraged as many user agents do not expose the attribute in an accessible manner as required by
+  this specification (e.g. requiring a pointing device such as a mouse to cause a tooltip to appear,
+  which excludes keyboard-only users and touch-only users, such as anyone with a modern phone or
+  tablet).</p>
+
+  <p>If this attribute is omitted from an element, then it implies that the <code
+  data-x="attr-title">title</code> attribute of the nearest ancestor <span data-x="HTML elements">HTML
+  element</span> with a <code data-x="attr-title">title</code> attribute set is also relevant to this
+  element. Setting the attribute overrides this, explicitly stating that the advisory information of
+  any ancestors is not relevant to this element. Setting the attribute to the empty string indicates
+  that the element has no advisory information.</p>
+
+  <p>If the <code data-x="attr-title">title</code> attribute's value contains U+000A LINE FEED (LF)
+  characters, the content is split into multiple lines. Each U+000A LINE FEED (LF) character
+  represents a line break.</p>
+
+  <div class="example">
+
+   <p>Caution is advised with respect to the use of newlines in <code
+   data-x="attr-title">title</code> attributes.</p>
+
+   <p>For instance, the following snippet actually defines an abbreviation's expansion <em>with a
+   line break in it</em>:</p>
+
+   <pre class="bad">&lt;p>My logs show that there was some interest in &lt;abbr title="Hypertext
+Transport Protocol">HTTP&lt;/abbr> today.&lt;/p></pre> <!-- DO NOT REWRAP THIS LINE -->
+
+  </div>
+
+  <p>Some elements, such as <code>link</code>, <code>abbr</code>, and <code>input</code>, define
+  additional semantics for the <code data-x="attr-title">title</code> attribute beyond the semantics
+  described above.</p> <!-- the other two are <code>style</code> and <code>dfn</code> -->
+
+  <div w-nodev>
+
+  <p>The <dfn>advisory information</dfn> of an element is the value that the following algorithm
+  returns, with the algorithm being aborted once a value is returned. When the algorithm returns the
+  empty string, then there is no advisory information.</p>
+
+  <ol>
+
+   <li><p>If the element is a <code>link</code>, <code>style</code>, <code>dfn</code>,
+   <code>abbr</code>, or <code>menuitem</code> element, then: if the element has a <code
+   data-x="">title</code> attribute, <!-- not attr-title --> return the value of that attribute,
+   otherwise, return the empty string.</p></li> <!-- note: <code>input</code> doesn't do this -->
+
+   <li><p>Otherwise, if the element has a <code data-x="attr-title">title</code> attribute, then
+   return its value.</p></li>
+
+   <li><p>Otherwise, if the element has a parent element, then return the parent element's
+   <span>advisory information</span>.</p></li>
+
+   <li><p>Otherwise, return the empty string.</p></li>
+
+  </ol>
+
+  <p>User agents should inform the user when elements have <span>advisory information</span>,
+  otherwise the information would not be discoverable.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-title">title</code></dfn> IDL attribute must <span>reflect</span> the
+  <code data-x="attr-title">title</code> content attribute.</p>
+
+  </div>
+
+
+
+  

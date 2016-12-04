@@ -1,0 +1,29 @@
+<h5><dfn>DOCTYPE public identifier (double-quoted) state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+0022 QUOTATION MARK (&quot;)</dt>
+   <dd>Switch to the <span>after DOCTYPE public identifier state</span>.</dd>
+
+   <dt>U+0000 NULL</dt>
+   <dd><span>Parse error</span>. Append a U+FFFD REPLACEMENT CHARACTER character to the current
+   DOCTYPE token's public identifier.</dd>
+
+   <dt>U+003E GREATER-THAN SIGN (&gt;)</dt>
+   <dd><span>Parse error</span>. Set the DOCTYPE token's <i data-x="force-quirks flag">force-quirks flag</i> to <i>on</i>.
+   Switch to the <span>data state</span>. Emit that DOCTYPE token.</dd>
+
+   <dt>EOF</dt>
+   <dd><span>Parse error</span>. Set the DOCTYPE token's <i data-x="force-quirks flag">force-quirks
+   flag</i> to <i>on</i>. Emit that DOCTYPE token. Emit an end-of-file token.</dd>
+
+   <dt>Anything else</dt>
+   <dd>Append the <span>current input character</span> to the current DOCTYPE token's public
+   identifier.</dd>
+
+  </dl>
+
+
+  

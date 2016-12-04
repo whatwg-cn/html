@@ -1,0 +1,133 @@
+<h5>Times</h5>
+
+  <p>A <dfn data-x="concept-time">time</dfn> consists of a specific time with no time-zone
+  information, consisting of an hour, a minute, a second, and a fraction of a second.</p>
+
+  <p>A string is a <dfn>valid time string</dfn> representing an hour <var>hour</var>, a
+  minute <var>minute</var>, and a second <var>second</var> if it consists of the
+  following components in the given order:</p>
+
+  <ol>
+
+   <li>Two <span>ASCII digits</span>, representing <var>hour</var>, in the range
+   0&nbsp;&le;&nbsp;<var>hour</var>&nbsp;&le;&nbsp;23</li>
+
+   <li>A U+003A COLON character (:)</li>
+
+   <li>Two <span>ASCII digits</span>, representing <var>minute</var>, in the range
+   0&nbsp;&le;&nbsp;<var>minute</var>&nbsp;&le;&nbsp;59</li>
+
+   <li>If <var>second</var> is non-zero, or optionally if <var>second</var> is
+   zero:
+
+    <ol>
+
+     <li>A U+003A COLON character (:)</li>
+
+     <li>Two <span>ASCII digits</span>, representing the integer part of <var>second</var>,
+     in the range 0&nbsp;&le;&nbsp;<var>s</var>&nbsp;&le;&nbsp;59</li>
+
+     <li>If <var>second</var> is not an integer, or optionally if <var>second</var> is an integer:
+
+      <ol>
+
+       <li>A 002E FULL STOP character (.)</li>
+
+       <li>One, two, or three <span>ASCII digits</span>, representing the fractional part of <var>second</var></li>
+
+      </ol>
+
+     </li>
+
+    </ol>
+
+   </li>
+
+  </ol>
+
+  <p class="note">The <var>second</var> component cannot be 60 or 61; leap seconds cannot
+  be represented.</p>
+
+  <div w-nodev>
+
+  <p>The rules to <dfn>parse a time string</dfn> are as follows. This will return either a time, or
+  nothing. If at any point the algorithm says that it "fails", this means that it is aborted at that
+  point and returns nothing.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially
+   pointing at the start of the string.</p></li>
+
+   <li><p><span>Parse a time component</span> to obtain <var>hour</var>, <var>minute</var>, and <var>second</var>. If this returns nothing, then fail.</p>
+
+   <li><p>If <var>position</var> is <em>not</em> beyond the end of <var>input</var>, then fail.</p></li>
+
+   <li><p>Let <var>time</var> be the time with hour <var>hour</var>, minute <var>minute</var>, and second <var>second</var>.</p></li>
+
+   <li><p>Return <var>time</var>.</p></li>
+
+  </ol>
+
+  <p>The rules to <dfn>parse a time component</dfn>, given an <var>input</var> string and a
+  <var>position</var>, are as follows. This will return either an hour, a minute, and a
+  second, or nothing. If at any point the algorithm says that it "fails", this means that it is
+  aborted at that point and returns nothing.</p>
+
+  <ol>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not exactly two characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>hour</var>.</p></li>
+
+   <li>If <var>hour</var> is not a number in the range 0&nbsp;&le;&nbsp;<var>hour</var>&nbsp;&le;&nbsp;23, then fail.</li>
+
+   <li><p>If <var>position</var> is beyond the end of <var>input</var> or if the
+   character at <var>position</var> is not a U+003A COLON character, then fail. Otherwise,
+   move <var>position</var> forwards one character.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>. If the
+   collected sequence is not exactly two characters long, then fail. Otherwise, interpret the
+   resulting sequence as a base-ten integer. Let that number be the <var>minute</var>.</p></li>
+
+   <li>If <var>minute</var> is not a number in the range 0&nbsp;&le;&nbsp;<var>minute</var>&nbsp;&le;&nbsp;59, then fail.</li>
+
+   <li><p>Let <var>second</var> be 0.</p></li>
+
+   <li>
+
+    <p>If <var>position</var> is not beyond the end of <var>input</var> and the
+    character at <var>position</var> is a U+003A COLON, then run these substeps:</p>
+
+    <ol>
+
+     <li><p>Advance <var>position</var> to the next character in <var>input</var>.</p></li>
+
+     <li><p>If <var>position</var> is beyond the end of <var>input</var>, or at
+     the last character in <var>input</var>, or if the next <em>two</em> characters in <var>input</var> starting at <var>position</var> are not both <span>ASCII
+     digits</span>, then fail.</p></li>
+
+     <li><p><span>Collect a sequence of characters</span> that are either <span>ASCII digits</span>
+     or U+002E FULL STOP characters. If the collected sequence is three characters long, or if it is
+     longer than three characters long and the third character is not a U+002E FULL STOP character,
+     or if it has more than one U+002E FULL STOP character, then fail. Otherwise, interpret the
+     resulting sequence as a base-ten number (possibly with a fractional part). Set
+     <var>second</var> to that number.</p></li>
+
+     <li><p>If <var>second</var> is not a number in the range
+     0&nbsp;&le;&nbsp;<var>second</var>&nbsp;&lt;&nbsp;60, then fail.</p></li>
+
+    </ol>
+
+   </li>
+
+   <li><p>Return <var>hour</var>, <var>minute</var>, and <var>second</var>.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

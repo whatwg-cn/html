@@ -1,0 +1,39 @@
+<h4>Monkey patch for <code>Blob</code> and <code>FileList</code> objects</h4>
+
+  <p class="&#x0058;&#x0058;&#x0058;">This monkey patch will be removed in due course. See <a
+  href="https://github.com/w3c/FileAPI/issues/32">w3c/FileAPI issue 32</a>.</p>
+
+  <p><code>Blob</code> objects are <span>cloneable objects</span>.</p>
+
+  <p>Each <code>Blob</code> object's [[<span>Clone</span>]] internal method, given
+  <var>targetRealm</var> and ignoring <var>memory</var>, must run these steps:</p>
+
+  <ol>
+   <li><p>If <b>this</b> is <span data-x="concept-blob-closed">closed</span>, then throw a
+   <span>"<code>DataCloneError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Return a new instance of <b>this</b> in <var>targetRealm</var>, corresponding to the
+   same underlying data.</p></li>
+  </ol>
+
+  <p><code>FileList</code> objects are <span>cloneable objects</span>.</p>
+
+  <p>Each <code>FileList</code> object's [[<span>Clone</span>]] internal method, given
+  <var>targetRealm</var> and <var>memory</var>, must run these steps:</p>
+
+  <ol>
+   <li><p>Let <var>output</var> be a new <code>FileList</code> object in
+   <var>targetRealm</var>.</p></li>
+
+   <li><p>For each <var>file</var> in <b>this</b>, add ?
+   <span>StructuredClone</span>(<var>file</var>, <var>targetRealm</var>, <var>memory</var>) to the
+   end of the list of <code>File</code> objects of <var>output</var>.</p></li>
+
+   <li><p>Return <var>output</var>.</p></li>
+  </ol>
+
+  </div>
+
+
+<!--TOPIC:DOM APIs-->
+  

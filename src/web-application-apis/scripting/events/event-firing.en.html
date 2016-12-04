@@ -1,0 +1,47 @@
+<h5>Event firing</h5>
+
+  <p>Certain operations and methods are defined as firing events on elements. For example, the <code
+  data-x="dom-click">click()</code> method on the <code>HTMLElement</code> interface is defined as
+  firing a <code data-x="event-click">click</code> event on the element. <ref spec=UIEVENTS></p>
+
+  <p><dfn data-x="fire a synthetic mouse event">Firing a synthetic mouse event named
+  <var>e</var></dfn> at <var>target</var>, with an optional <var>not trusted flag</var>, means
+  running these steps:</p>
+
+  <ol>
+   <li><p>Let <var>event</var> be the result of <span>creating an event</span> using
+   <code>MouseEvent</code>.</p></li>
+
+   <li><p>Initialize <var>event</var>'s <code data-x="dom-Event-type">type</code> attribute to
+   <var>e</var>.</p></li>
+
+   <li><p>Initialize <var>event</var>'s <code data-x="dom-Event-bubbles">bubbles</code> and <code
+   data-x="dom-Event-cancelable">cancelable</code> attributes to true.</p></li>
+
+   <li><p>If the <var>not trusted flag</var> is set, initialize <var>event</var>'s <code
+   data-x="dom-Event-isTrusted">isTrusted</code> attribute to false.</p></li>
+
+   <li><p>Initialize <var>event</var>'s <code data-x="">ctrlKey</code>, <code
+   data-x="">shiftKey</code>, <code data-x="">altKey</code>, and <code data-x="">metaKey</code>
+   attributes according to the current state of the key input device, if any (false for any keys
+   that are not available).</p></li>
+
+   <li><p>Initialize <var>event</var>'s <code data-x="dom-UIEvent-view">view</code> attribute to
+   <var>target</var>'s <span>node document</span>'s <code>Window</code> object, if any, and null
+   otherwise.</p></li>
+
+   <li><p><var>event</var>'s <code data-x="">getModifierState()</code> method is to return values
+   appropriately describing the current state of the key input device.</p></li>
+
+   <li><p>Return the result of <span data-x="concept-event-dispatch">dispatching</span>
+   <var>event</var> at <var>target</var>.</p></li>
+  </ol>
+
+  <p><dfn data-x="fire a click event">Firing a <code data-x="event-click">click</code> event</dfn>
+  at <var>target</var> means <span data-x="fire a synthetic mouse event">firing a synthetic mouse
+  event named <code data-x="event-click">click</code></span> at <var>target</var>.</p>
+
+  </div>
+
+
+  

@@ -1,0 +1,306 @@
+<h5>The <dfn><code data-x="attr-dir">dir</code></dfn> attribute</h5>
+
+  <p>The <code data-x="attr-dir">dir</code> attribute specifies the element's text directionality.
+  The attribute is an <span>enumerated attribute</span> with the following keywords and states:</p>
+
+  <dl>
+
+   <dt>The <dfn><code data-x="attr-dir-ltr">ltr</code></dfn> keyword, which maps to the <dfn data-x="attr-dir-ltr-state">ltr</dfn> state</dt>
+
+   <dd>
+
+    <p>Indicates that the contents of the element are explicitly directionally isolated
+    left-to-right text.</p>
+
+   </dd>
+
+   <dt>The <dfn><code data-x="attr-dir-rtl">rtl</code></dfn> keyword, which maps to the <dfn data-x="attr-dir-rtl-state">rtl</dfn> state</dt>
+
+   <dd>
+
+    <p>Indicates that the contents of the element are explicitly directionally isolated
+    right-to-left text.</p>
+
+   </dd>
+
+   <dt>The <dfn><code data-x="attr-dir-auto">auto</code></dfn> keyword, which maps to the <dfn data-x="attr-dir-auto-state">auto</dfn> state</dt>
+
+   <dd>
+
+    <p>Indicates that the contents of the element are explicitly directionally isolated text, but
+    that the direction is to be determined programmatically using the contents of the element (as
+    described below).</p>
+
+    <p class="note">The heuristic used by this state is very crude (it just looks at the first
+    character with a strong directionality, in a manner analogous to the Paragraph Level
+    determination in the bidirectional algorithm). Authors are urged to only use this value as a
+    last resort when the direction of the text is truly unknown and no better server-side heuristic
+    can be applied. <ref spec=BIDI></p>
+
+    <p class="note">For <code>textarea</code> and <code>pre</code> elements, the heuristic is
+    applied on a per-paragraph level.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>The attribute has no <i data-x="invalid value default">invalid value default</i> and no <i data-x="missing value default">missing value default</i>.</p>
+
+  <hr>
+
+  <p><dfn>The directionality</dfn> of an element (any element, not just an <span data-x="HTML
+  elements">HTML element</span>) is either '<dfn data-x="concept-ltr">ltr</dfn>' or '<dfn
+  data-x="concept-rtl">rtl</dfn>', and is determined as per the first appropriate set of steps from
+  the following list:</p>
+
+  <dl class="switch">
+
+
+   <dt>If the element's <code data-x="attr-dir">dir</code> attribute is in the <span
+   data-x="attr-dir-ltr-state">ltr</span> state</dt>
+
+   <dt>If the element is a <span>document element</span> and the <code data-x="attr-dir">dir</code>
+   attribute is not in a defined state (i.e. it is not present or has an invalid value)</dt>
+
+   <dt>If the element is an <code>input</code> element whose <code
+   data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-tel">Telephone</span> state, and the <code data-x="attr-dir">dir</code>
+   attribute is not in a defined state (i.e. it is not present or has an invalid value)</dt>
+
+   <dd><p><span>The directionality</span> of the element is '<span
+   data-x="concept-ltr">ltr</span>'.</p></dd>
+
+
+   <dt>If the element's <code data-x="attr-dir">dir</code> attribute is in the <span
+   data-x="attr-dir-rtl-state">rtl</span> state</dt>
+
+   <dd><p><span>The directionality</span> of the element is '<span
+   data-x="concept-rtl">rtl</span>'.</p></dd>
+
+   <dt>If the element is an <code>input</code> element whose <code
+   data-x="attr-input-type">type</code> attribute is in the <span
+   data-x="attr-input-type-text">Text</span>, <span data-x="attr-input-type-search">Search</span>,
+   <span data-x="attr-input-type-tel">Telephone</span>, <span
+   data-x="attr-input-type-url">URL</span>, or <span data-x="attr-input-type-email">E-mail</span>
+   state, and the <code data-x="attr-dir">dir</code> attribute is in the <span
+   data-x="attr-dir-auto-state">auto</span> state</dt>
+
+   <dt>If the element is a <code>textarea</code> element and the <code data-x="attr-dir">dir</code>
+   attribute is in the <span data-x="attr-dir-auto-state">auto</span> state</dt>
+
+   <dd>
+
+    <p>If the element's <span data-x="concept-fe-value">value</span> contains a character of
+    bidirectional character type AL or R, and there is no character of bidirectional character type
+    L anywhere before it in the element's <span data-x="concept-fe-value">value</span>, then
+    <span>the directionality</span> of the element is '<span data-x="concept-rtl">rtl</span>'. <ref spec=BIDI></p>
+
+    <p>Otherwise, if the element's <span data-x="concept-fe-value">value</span> is not the empty
+    string, or if the element is a <span>document element</span>, <span>the directionality</span> of
+    the element is '<span data-x="concept-ltr">ltr</span>'.</p>
+
+    <p>Otherwise, <span>the directionality</span> of the element is the same as the element's parent
+    element's <span data-x="the directionality">directionality</span>.</p>
+
+   </dd>
+
+
+
+   <dt>If the element's <code data-x="attr-dir">dir</code> attribute is in the <span
+   data-x="attr-dir-auto-state">auto</span> state</dt>
+
+   <dt>If the element is a <code>bdi</code> element and the <code data-x="attr-dir">dir</code>
+   attribute is not in a defined state (i.e. it is not present or has an invalid value)</dt>
+
+   <dd>
+
+    <p>Find the first character in <span>tree order</span> that matches the following criteria:</p>
+
+    <ul>
+
+     <li><p>The character is from a <code>Text</code> node that is a descendant of the element whose
+     <span data-x="the directionality">directionality</span> is being determined.</p></li>
+
+     <li><p>The character is of bidirectional character type L, AL, or R. <ref spec=BIDI></li>
+
+     <li>
+
+      <p>The character is not in a <code>Text</code> node that has an ancestor element that is a
+      descendant of the element whose <span data-x="the directionality">directionality</span> is
+      being determined and that is either:</p>
+
+      <ul class="brief">
+       <li>A <code>bdi</code> element.
+       <li>A <code>script</code> element.
+       <li>A <code>style</code> element.
+       <li>A <code>textarea</code> element.
+       <li>An element with a <code data-x="attr-dir">dir</code> attribute in a defined state.
+      </ul>
+
+     </li>
+
+    </ul>
+
+    <p>If such a character is found and it is of bidirectional character type AL or R, <span>the
+    directionality</span> of the element is '<span data-x="concept-rtl">rtl</span>'.</p>
+
+    <p>If such a character is found and it is of bidirectional character type L, <span>the
+    directionality</span> of the element is '<span data-x="concept-ltr">ltr</span>'.</p>
+
+    <p>Otherwise, if the element is a <span>document element</span>, <span>the directionality</span>
+    of the element is '<span data-x="concept-ltr">ltr</span>'.</p>
+
+    <p>Otherwise, <span>the directionality</span> of the element is the same as the element's parent
+    element's <span data-x="the directionality">directionality</span>.</p>
+
+   </dd>
+
+
+   <dt>If the element has a parent element and the <code data-x="attr-dir">dir</code> attribute is
+   not in a defined state (i.e. it is not present or has an invalid value)</dt>
+
+   <dd><p><span>The directionality</span> of the element is the same as the element's parent
+   element's <span data-x="the directionality">directionality</span>.</p></dd>
+
+
+  </dl>
+
+  <p class="note">Since the <code data-x="attr-dir">dir</code> attribute is only defined for
+  <span>HTML elements</span>, it cannot be present on elements from other namespaces. Thus, elements
+  from other namespaces always just inherit their <span data-x="the
+  directionality">directionality</span> from their parent element, or, if they don't have one,
+  default to '<span data-x="concept-ltr">ltr</span>'.</p>
+
+  <div w-nodev>
+
+  <p class="note">This attribute <a href="#bidireq">has rendering requirements involving the
+  bidirectional algorithm</a>.</p>
+
+  </div>
+
+  <hr>
+
+  <p>The <dfn data-x="directionality of the attribute">directionality of an attribute</dfn> of an
+  <span data-x="HTML elements">HTML element</span>, which is used when the text of that attribute is
+  to be included in the rendering in some manner, is determined as per the first appropriate set of
+  steps from the following list:</p>
+
+  <dl class="switch">
+
+   <dt>If the attribute is a <span>directionality-capable attribute</span> and the element's <code
+   data-x="attr-dir">dir</code> attribute is in the <span data-x="attr-dir-auto-state">auto</span>
+   state</dt>
+
+   <dd>
+
+    <p>Find the first character (in logical order) of the attribute's value that is of bidirectional
+    character type L, AL, or R. <ref spec=BIDI></p>
+
+    <p>If such a character is found and it is of bidirectional character type AL or R, the
+    <span>directionality of the attribute</span> is '<span data-x="concept-rtl">rtl</span>'.</p>
+
+    <p>Otherwise, the <span>directionality of the attribute</span> is '<span
+    data-x="concept-ltr">ltr</span>'.</p>
+
+   </dd>
+
+   <dt>Otherwise</dt>
+
+   <dd>The <span>directionality of the attribute</span> is the same as <span data-x="the
+   directionality">the element's directionality</span>.</dd>
+
+  </dl>
+
+  <p>The following attributes are <dfn data-x="directionality-capable
+  attribute">directionality-capable attributes</dfn>:</p>
+
+  <ul class="brief">
+   <li><code data-x="attr-th-abbr">abbr</code> on <code>th</code> elements</li>
+   <li><code data-x="">alt</code> on <code data-x="attr-area-alt">area</code>,
+                                    <code data-x="attr-img-alt">img</code>, and
+                                    <code data-x="attr-input-alt">input</code> elements</li>
+   <li><code data-x="attr-meta-content">content</code> on <code>meta</code> elements, if the <code data-x="attr-meta-name">name</code> attribute specifies a metadata name whose value is primarily intended to be human-readable rather than machine-readable</li>
+   <li><code data-x="">label</code> on <code data-x="attr-menuitem-label">menuitem</code>,
+                                      <code data-x="attr-menu-label">menu</code>,
+                                      <code data-x="attr-optgroup-label">optgroup</code>,
+                                      <code data-x="attr-option-label">option</code>, and
+                                      <code data-x="attr-track-label">track</code> elements</li>
+   <li><code data-x="">placeholder</code> on <code data-x="attr-input-placeholder">input</code> and
+                                            <code data-x="attr-textarea-placeholder">textarea</code> elements</li>
+   <li><code data-x="attr-title">title</code> on all <span>HTML elements</span></li>
+  </ul>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-dir">dir</code> [ = <var>value</var> ]</dt>
+   <dd>
+    <p>Returns <span>the <code>html</code> element</span>'s <code data-x="attr-dir">dir</code> attribute's value, if any.</p>
+    <p>Can be set, to either "<code data-x="">ltr</code>", "<code data-x="">rtl</code>", or "<code data-x="">auto</code>" to replace <span>the <code>html</code> element</span>'s <code data-x="attr-dir">dir</code> attribute's value.</p>
+    <p>If there is no <span data-x="the html element"><code>html</code> element</span>, returns the empty string and ignores new values.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-dir">dir</code></dfn> IDL attribute on an element must
+  <span>reflect</span> the <code data-x="attr-dir">dir</code> content attribute of that element,
+  <span>limited to only known values</span>.</p>
+
+  <p>The <dfn><code data-x="dom-document-dir">dir</code></dfn> IDL attribute on <code>Document</code>
+  objects must <span>reflect</span> the <code data-x="attr-dir">dir</code> content attribute of
+  <span>the <code>html</code> element</span>, if any, <span>limited to only known values</span>. If
+  there is no such element, then the attribute must return the empty string and do nothing on
+  setting.</p>
+
+  </div>
+
+  <p class="note">Authors are strongly encouraged to use the <code data-x="attr-dir">dir</code>
+  attribute to indicate text direction rather than using CSS, since that way their documents will
+  continue to render correctly even in the absence of CSS (e.g. as interpreted by search
+  engines).</p>
+
+  <div class="example">
+
+   <p>This markup fragment is of an IM conversation.</p>
+
+   <pre>&lt;p dir=auto class="u1">&lt;b>&lt;bdi>Student&lt;/bdi>:&lt;/b> How do you write "What's your name?" in Arabic?&lt;/p>
+&lt;p dir=auto class="u2">&lt;b>&lt;bdi>Teacher&lt;/bdi>:&lt;/b> &#x645;&#x627; &#x627;&#x633;&#x645;&#x643;&#x61f;&lt;/p>
+&lt;p dir=auto class="u1">&lt;b>&lt;bdi>Student&lt;/bdi>:&lt;/b> Thanks.&lt;/p>
+&lt;p dir=auto class="u2">&lt;b>&lt;bdi>Teacher&lt;/bdi>:&lt;/b> That's written "&#x634;&#x643;&#x631;&#x64b;&#x627;".&lt;/p>
+&lt;p dir=auto class="u2">&lt;b>&lt;bdi>Teacher&lt;/bdi>:&lt;/b> Do you know how to write "Please"?&lt;/p>
+&lt;p dir=auto class="u1">&lt;b>&lt;bdi>Student&lt;/bdi>:&lt;/b> "&#x645;&#x646; &#x641;&#x636;&#x644;&#x643;", right?&lt;/p></pre>
+
+<!--
+<!DOCTYPE html>
+<style>
+ div { border: groove #FFFF99; padding: 0.25em; width: 22em; background: #FFFFEE; color: black; }
+ p { margin: 0.25em 0; font: 1em/1 InaiMathi; color: purple; }
+ .u1 { color: teal; }
+</style>
+<div>
+<p dir=ltr class="u1"><b><bdi>Student</bdi>:</b> How do you write "What's your name?" in Arabic?</p>
+<p dir=rtl class="u2"><b><bdi>Teacher</bdi>:</b> &#x645;&#x627; &#x627;&#x633;&#x645;&#x643;&#x61f;</p>
+<p dir=ltr class="u1"><b><bdi>Student</bdi>:</b> Thanks.</p>
+<p dir=ltr class="u2"><b><bdi>Teacher</bdi>:</b> That's written "&#x634;&#x643;&#x631;&#x64b;&#x627;".</p>
+<p dir=ltr class="u2"><b><bdi>Teacher</bdi>:</b> Do you know how to write "Please"?</p>
+<p dir=rtl class="u1"><b><bdi>Student</bdi>:</b> "&#x645;&#x646; &#x641;&#x636;&#x644;&#x643;", right?</p>
+-->
+
+   <p>Given a suitable style sheet and the default alignment styles for the <code>p</code> element,
+   namely to align the text to the <i>start edge</i> of the paragraph, the resulting rendering could
+   be as follows:</p>
+
+   <p><img src="/images/im.png" alt="Each paragraph rendered as a separate block, with the paragraphs left-aligned except the second paragraph and the last one, which would  be right aligned, with the usernames ('Student' and 'Teacher' in this example) flush right, with a colon to their left, and the text first to the left of that." width=366 height=157></p>
+
+   <p>As noted earlier, the <code data-x="attr-dir-auto">auto</code> value is not a panacea. The
+   final paragraph in this example is misinterpreted as being right-to-left text, since it begins
+   with an Arabic character, which causes the "right?" to be to the left of the Arabic text.</p>
+
+  </div>
+
+
+
+  

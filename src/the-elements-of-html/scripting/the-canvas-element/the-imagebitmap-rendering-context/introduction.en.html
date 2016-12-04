@@ -1,0 +1,30 @@
+<h6>Introduction</h6>
+
+  <p><code>ImageBitmapRenderingContext</code> is a performance-oriented interface that provides a
+  low overhead method for displaying the contents of <code>ImageBitmap</code> objects. It uses
+  transfer semantics to reduce overall memory consumption. It also streamlines performance by
+  avoiding intermediate compositing, unlike the <code
+  data-x="dom-context-2d-drawImage">drawImage()</code> method of
+  <code>CanvasRenderingContext2D</code>.</p>
+
+  <p>Using an <code>img</code> element as an intermediate for getting an image resource into a
+  canvas, for example, would result in two copies of the decoded image existing in memory at the
+  same time: the <code>img</code> element's copy, and the one in the canvas's backing store. This
+  memory cost can be prohibitive when dealing with extremely large images. This can be avoided by
+  using <code>ImageBitmapRenderingContext</code>.</p>
+
+  <div class="example">
+   <p>Using <code>ImageBitmapRenderingContext</code>, here is how to transcode an image to the JPEG
+   format in a memory- and CPU-efficient way:</p>
+
+   <pre>createImageBitmap(inputImageBlob).then(image => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('bitmaprenderer');
+  context.transferFromImageBitmap(image);
+
+  canvas.toBlob(outputJPEGBlob => {
+    // Do something with outputJPEGBlob.
+  }, 'image/jpeg');
+});</pre>
+  </div>
+  

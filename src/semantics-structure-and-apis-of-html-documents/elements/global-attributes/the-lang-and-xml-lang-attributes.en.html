@@ -1,0 +1,110 @@
+<h5>The <code data-x="attr-lang">lang</code> and <code data-x="attr-xml-lang">xml:lang</code> attributes</h5>
+
+  <p>The <dfn><code data-x="attr-lang">lang</code></dfn> attribute (in no namespace) specifies the
+  primary language for the element's contents and for any of the element's attributes that contain
+  text. Its value must be a valid BCP 47 language tag, or the empty string. Setting the attribute to
+  the empty string indicates that the primary language is unknown<!-- UA conformance requirements
+  for this are below -->. <ref spec=BCP47></p>
+
+  <p>The <dfn data-x="attr-xml-lang"><code data-x="">lang</code></dfn> attribute in the <span>XML
+  namespace</span> is defined in XML. <ref spec=XML></p>
+
+  <p>If these attributes are omitted from an element, then the language of this element is the same
+  as the language of its parent element, if any.</p>
+
+  <p>The <code data-x="attr-lang">lang</code> attribute in no namespace may be used on any <span
+  data-x="HTML elements">HTML element</span>.</p>
+
+  <p>The <span data-x="attr-xml-lang"><code data-x="">lang</code> attribute in the <span>XML
+  namespace</span></span> may be used on <span>HTML elements</span> in <span>XML documents</span>,
+  as well as elements in other namespaces if the relevant specifications allow it (in particular,
+  MathML and SVG allow <span data-x="attr-xml-lang"><code data-x="">lang</code> attributes in the
+  <span>XML namespace</span></span> to be specified on their elements). If both the <code
+  data-x="attr-lang">lang</code> attribute in no namespace and the <span data-x="attr-xml-lang"><code
+  data-x="">lang</code> attribute in the <span>XML namespace</span></span> are specified on the same
+  element, they must have exactly the same value when compared in an <span>ASCII
+  case-insensitive</span> manner.</p>
+
+  <p>Authors must not use the <span data-x="attr-xml-lang"><code data-x="">lang</code> attribute in
+  the <span>XML namespace</span></span> on <span>HTML elements</span> in <span>HTML
+  documents</span>. To ease migration to and from XML, authors may specify an attribute in no
+  namespace with no prefix and with the literal localname "<code data-x="">xml:lang</code>" on
+  <span>HTML elements</span> in <span>HTML documents</span>, but such attributes must only be
+  specified if a <code data-x="attr-lang">lang</code> attribute in no namespace is also specified,
+  and both attributes must have the same value when compared in an <span>ASCII
+  case-insensitive</span> manner.</p>
+
+  <p class="note">The attribute in no namespace with no prefix and with the literal localname "<code
+  data-x="">xml:lang</code>" has no effect on language processing.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>To determine the <dfn>language</dfn> of a node, user agents must look at the nearest ancestor
+  element (including the element itself if the node is an element) that has a <span
+  data-x="attr-xml-lang"><code data-x="">lang</code> attribute in the <span>XML
+  namespace</span></span> set or is an <span data-x="HTML elements">HTML element</span> and has a
+  <code data-x="attr-lang">lang</code> in no namespace attribute set. That attribute specifies the
+  language of the node (regardless of its value).</p>
+
+  <p>If both the <code data-x="attr-lang">lang</code> attribute in no namespace and the <span
+  data-x="attr-xml-lang"><code data-x="">lang</code> attribute in the <span>XML
+  namespace</span></span> are set on an element, user agents must use the <span
+  data-x="attr-xml-lang"><code data-x="">lang</code> attribute in the <span>XML
+  namespace</span></span>, and the <code data-x="attr-lang">lang</code> attribute in no namespace
+  must be <span data-x="ignore">ignored</span> for the purposes of determining the element's
+  language.</p>
+
+  <p>If node's <span data-x="inclusive ancestor">inclusive ancestors</span> do not have either
+  attribute set, but there is a <span>pragma-set default language</span> set, then that is the
+  language of the node. If there is no <span>pragma-set default language</span> set, then language
+  information from a higher-level protocol (such as HTTP), if any, must be used as the final
+  fallback language instead. In the absence of any such language information, and in cases where the
+  higher-level protocol reports multiple languages, the language of the node is unknown, and the
+  corresponding language tag is the empty string.</p>
+
+  <p>If the resulting value is not a recognized language tag, then it must be treated as an unknown
+  language having the given language tag, distinct from all other languages. For the purposes of
+  round-tripping or communicating with other services that expect language tags, user agents should
+  pass unknown language tags through unmodified, and tagged as being BCP 47 language tags, so that
+  subsequent services do not interpret the data as another type of language description. <ref spec=BCP47></p>
+
+  <p class="example">Thus, for instance, an element with <code data-x="">lang="xyzzy"</code> would be
+  matched by the selector <code data-x="">:lang(xyzzy)</code> (e.g. in CSS), but it would not be
+  matched by <code data-x="">:lang(abcde)</code>, even though both are equally invalid. Similarly, if
+  a Web browser and screen reader working in unison communicated about the language of the element,
+  the browser would tell the screen reader that the language was "xyzzy", even if it knew it was
+  invalid, just in case the screen reader actually supported a language with that tag after all.
+  Even if the screen reader supported both BCP 47 and another syntax for encoding language names,
+  and in that other syntax the string "xyzzy" was a way to denote the Belarusian language, it would
+  be <em>incorrect</em> for the screen reader to then start treating text as Belarusian, because
+  "xyzzy" is not how Belarusian is described in BCP 47 codes (BCP 47 uses the code "be" for
+  Belarusian).</p>
+
+  <p>If the resulting value is the empty string, then it must be interpreted as meaning that the
+  language of the node is explicitly unknown.</p>
+
+  <hr>
+
+  <p>User agents may use the element's language to determine proper processing or rendering (e.g. in
+  the selection of appropriate fonts or pronunciations, for dictionary selection, or for the user
+  interfaces of form controls such as date pickers). <!--User agents must not use the element's
+  language to determine text directionality. (commented out because text directionality is a
+  rendering-level concern.)--></p>
+
+  <!-- Date pickers would use the language information for determining the language of months, for
+  example. They should use the page's _locale_ to figure out the format itself, not the language.
+  There's currently no way to determine the page's locale except by guessing from the charset and
+  language... -->
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-lang">lang</code></dfn> IDL attribute must <span>reflect</span> the
+  <code data-x="attr-lang">lang</code> content attribute in no namespace.</p>
+
+  </div>
+
+
+
+  

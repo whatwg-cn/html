@@ -1,0 +1,537 @@
+<h5 id="fetching-scripts">Fetching scripts</h5>
+
+  <p>This section introduces a number of algorithms for fetching scripts, taking various necessary
+  inputs and resulting in <span data-x="classic script">classic</span> or <span data-x="module
+  script">module scripts</span>.</p>
+
+  <p>The algorithms below can be customized by optionally supplying a custom <dfn
+  data-x="fetching-scripts-perform-fetch" data-export="" data-dfn-for="fetching scripts">perform the
+  fetch</dfn> hook, which takes a <span data-x="concept-request">request</span> and an <dfn
+  data-export="" data-dfn-for="fetching scripts"><var data-x="fetching-scripts-is-top-level">is
+  top-level</var></dfn> flag. The algorithm must complete with a <span
+  data-x="concept-response">response</span> (which may be a <span>network error</span>), either
+  synchronously (when using <span>fetch a classic worker-imported script</span>) or asynchronously
+  (otherwise). The <var data-x="fetching-scripts-is-top-level">is top-level</var> flag will be set
+  for all <span>classic script</span> fetches, and for the initial fetch when <span data-x="fetch a
+  module script graph">fetching a module script graph</span> or <span data-x="fetch a module worker
+  script graph">fetching a module worker script graph</span>, but not for the fetches resulting from
+  <code data-x="">import</code> statements encountered throughout the graph.</p>
+
+  <div class="note">
+   <p>By default, not supplying the <span data-x="fetching-scripts-perform-fetch">perform the
+   fetch</span> will cause the below algorithms to simply <span data-x="concept-fetch">fetch</span>
+   the given <span data-x="concept-request">request</span>, with algorithm-specific customizations
+   to the <span data-x="concept-request">request</span> and validations of the resulting <span
+   data-x="concept-response">response</span>.</p>
+
+   <p>To layer your own customizations on top of these algorithm-specific ones, supply a <span
+   data-x="fetching-scripts-perform-fetch">perform the fetch</span> hook that modifies the given
+   <span data-x="concept-request">request</span>, <span data-x="concept-fetch">fetches</span> it,
+   and then performs specific validations of the resulting <span
+   data-x="concept-response">response</span> (completing with a <span>network error</span> if the
+   validations fail).</p>
+
+   <p>The hook can also be used to perform more subtle customizations, such as keeping a cache of
+   <span data-x="concept-response">responses</span> and avoiding performing a <span
+   data-x="concept-fetch">fetch</span> at all.</p>
+  </div>
+
+  <p class="note"><cite>Service Workers</cite> is an example of a specification that runs these
+  algorithms with its own options for the hook. <ref spec=SW></p>
+
+  <p>To <dfn data-export="">fetch a classic script</dfn> given a <var>url</var>, a <var>settings
+  object</var>, a <var>cryptographic nonce</var>, an <var>integrity metadata</var>, a <var>parser
+  state</var>, a <var>CORS setting</var>, and a <var>character encoding</var>, run these steps. The
+  algorithm will asynchronously complete with either null (on failure) or a new <span>classic
+  script</span> (on success).</p>
+
+  <ol>
+   <li><p>Let <var>request</var> be the result of <span data-x="create a potential-CORS
+   request">creating a potential-CORS request</span> given <var>url</var>, "<code
+   data-x="">script</code>", and <var>CORS setting</var>.</p></li>
+
+   <li><p>Set <var>request</var>'s <span data-x="concept-request-client">client</span> to
+   <var>settings object</var>, its <span data-x="concept-request-type">type</span> to "<code
+   data-x="">script</code>", its <span data-x="concept-request-nonce-metadata">cryptographic nonce
+   metadata</span> to <var>cryptographic nonce</var>, its <span
+   data-x="concept-request-integrity-metadata">integrity metadata</span> to <var>integrity
+   metadata</var> and its <span data-x="concept-request-parser-metadata">parser metadata</span> to
+   <var>parser state</var>.</p></li>
+
+   <!--FETCH-->
+   <li>
+    <p>If the caller specified custom steps to <span data-x="fetching-scripts-perform-fetch">perform
+    the fetch</span>, perform them on <var>request</var>, with the <var
+    data-x="fetching-scripts-is-top-level">is top-level</var> flag set. Return from this algorithm,
+    and when the custom <span data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps
+    complete with <span data-x="concept-response">response</span> <var>response</var>, run the
+    remaining steps.</p>
+
+    <p>Otherwise, <span data-x="concept-fetch">fetch</span> <var>request</var>. Return from this
+    algorithm, and run the remaining steps as part of the fetch's <span>process response</span> for
+    the <span data-x="concept-response">response</span> <var>response</var>.</p>
+
+    <p class="note"><var>response</var> can be either <span>CORS-same-origin</span> or
+    <span>CORS-cross-origin</span>. This only affects how error reporting happens.</p>
+   </li>
+
+   <li><p>Let <var>response</var> be <var>response</var>'s <span>unsafe response</span>.</p></li>
+
+   <li><p>If <var>response</var>'s <span data-x="concept-response-type">type</span> is "<code
+   data-x="">error</code>", or <var>response</var>'s <span
+   data-x="concept-response-status">status</span> is not an <span>ok status</span>, asynchronously
+   complete this algorithm with null, and abort these steps.</p></li>
+
+   <li><p>If <var>response</var>'s <span data-x="Content-Type">Content Type metadata</span>, if
+   any, specifies a character encoding, and the user agent supports that encoding, then set
+   <var>character encoding</var> to that encoding (ignoring the passed-in value).</p></li>
+
+   <li>
+    <p>Let <var>source text</var> be the result of <span data-x="decode">decoding</span>
+    <var>response</var>'s <span data-x="concept-response-body">body</span> to Unicode, using
+    <var>character encoding</var> as the fallback encoding.</p>
+
+    <p class="note">The <span>decode</span> algorithm overrides <var>character encoding</var> if
+    the file contains a BOM.</p>
+   </li>
+
+   <li>
+    <p>Let <var>script</var> be the result of <span>creating a classic script</span> using
+    <var>source text</var> and <var>settings object</var>.</p>
+
+    <p>If <var>response</var> was <span>CORS-cross-origin</span>, then pass the <var>muted
+    errors</var> flag to the <span data-x="creating a classic script">create a classic
+    script</span> algorithm as well.</p>
+   </li>
+
+   <li>Asynchronously complete this algorithm with <var>script</var>.</li>
+  </ol>
+
+  <p>To <dfn data-export="">fetch a classic worker script</dfn> given a <var>url</var>, a <var>fetch
+  client settings object</var>, a <var>destination</var>, and a <var>script settings object</var>,
+  run these steps. The algorithm will asynchronously complete with either null (on failure) or a new
+  <span>classic script</span> (on success).</p>
+
+  <ol>
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose <span
+   data-x="concept-request-url">url</span> is <var>url</var>, <span
+   data-x="concept-request-client">client</span> is <var>fetch client settings object</var>, <span
+   data-x="concept-request-type">type</span> is "<code data-x="">script</code>", <span
+   data-x="concept-request-destination">destination</span> is <var>destination</var>, <span
+   data-x="concept-request-mode">mode</span> is "<code data-x="">same-origin</code>", <span
+   data-x="concept-request-credentials-mode">credentials mode</span> is "<code
+   data-x="">same-origin</code>", <span data-x="concept-request-parser-metadata">parser
+   metadata</span> is "<code data-x="">not parser-inserted</code>", and whose
+   <span>use-URL-credentials flag</span> is set.</p></li>
+
+   <!--FETCH-->
+   <li>
+    <p>If the caller specified custom steps to <span data-x="fetching-scripts-perform-fetch">perform
+    the fetch</span>, perform them on <var>request</var>, with the <var
+    data-x="fetching-scripts-is-top-level">is top-level</var> flag set. Return from this algorithm,
+    and when the custom <span data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps
+    complete with <span data-x="concept-response">response</span> <var>response</var>, run the
+    remaining steps.</p>
+
+    <p>Otherwise, <span data-x="concept-fetch">fetch</span> <var>request</var>. Return from this
+    algorithm, and run the remaining steps as part of the fetch's <span>process response</span> for
+    the <span data-x="concept-response">response</span> <var>response</var>.</p>
+   </li>
+
+   <li><p>Let <var>response</var> be <var>response</var>'s <span>unsafe response</span>.</p></li>
+
+   <li><p>If <var>response</var>'s <span data-x="concept-response-type">type</span> is "<code
+   data-x="">error</code>", or <var>response</var>'s <span
+   data-x="concept-response-status">status</span> is not an <span>ok status</span>, asynchronously
+   complete this algorithm with null, and abort these steps.</p></li>
+
+   <li><p>Let <var>source text</var> be the result of <span data-x="UTF-8 decode">UTF-8
+   decoding</span> <var>response</var>'s <span data-x="concept-response-body">body</span>.</p></li>
+
+   <li><p>Let <var>script</var> be the result of <span>creating a classic script</span> using
+   <var>source text</var> and <var>script settings object</var>.</p></li>
+
+   <li>Asynchronously complete this algorithm with <var>script</var>.</li>
+  </ol>
+
+  <p>To <dfn data-export="">fetch a classic worker-imported script</dfn> given a <var>url</var> and
+  a <var>settings object</var>, run these steps. The algorithm will synchronously complete with a
+  <span>classic script</span> on success, or throw an exception on failure.</p>
+
+  <ol>
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose <span
+   data-x="concept-request-url">url</span> is <var>url</var>, <span
+   data-x="concept-request-client">client</span> is <var>settings object</var>, <span
+   data-x="concept-request-type">type</span> is "<code data-x="">script</code>", <span
+   data-x="concept-request-destination">destination</span> is "<var>script</var>", <span
+   data-x="concept-request-parser-metadata">parser metadata</span> is "<code data-x="">not
+   parser-inserted</code>", <span>synchronous flag</span> is set, and whose
+   <span>use-URL-credentials flag</span> is set.</p></li>
+
+   <li>
+    <p>If the caller specified custom steps to <span data-x="fetching-scripts-perform-fetch">perform
+    the fetch</span>, perform them on <var>request</var>, with the <var
+    data-x="fetching-scripts-is-top-level">is top-level</var> flag set. Let <var>response</var> be
+    the result.</p>
+
+    <p>Otherwise, <span data-x="concept-fetch">fetch</span> <var>request</var>, and let
+    <var>response</var> be the result.</p>
+
+    <p class="note">Unlike other algorithms in this section, the fetching process is synchronous
+    here. Thus any <span data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps must
+    also finish their work synchronously.</p>
+   </li>
+
+   <li><p>Let <var>response</var> be <var>response</var>'s <span>unsafe response</span>.</p></li>
+
+   <li><p>If <var>response</var>'s <span data-x="concept-response-type">type</span> is "<code
+   data-x="">error</code>", or <var>response</var>'s <span
+   data-x="concept-response-status">status</span> is not an <span>ok status</span>, throw a
+   <span>"<code>NetworkError</code>"</span> <code>DOMException</code> and abort these
+   steps.</p></li>
+
+   <li><p>Let <var>source text</var> be the result of <span data-x="UTF-8 decode">UTF-8
+   decoding</span> <var>response</var>'s <span data-x="concept-response-body">body</span>.</p></li>
+
+   <li>
+    <p>Let <var>script</var> be the result of <span>creating a classic script</span> using
+    <var>source text</var> and <var>settings object</var>.</p>
+
+    <p>If <var>response</var> was <span>CORS-cross-origin</span>, then pass the <var>muted
+    errors</var> flag to the <span data-x="creating a classic script">create a classic
+    script</span> algorithm as well.</p>
+   </li>
+
+   <li><p>Return <var>script</var>.</p></li>
+  </ol>
+
+  <p>To <dfn data-export="" id="fetch-a-module-script-tree">fetch a module script graph</dfn> given
+  a <var>url</var>, a <var>settings object</var>, a <var>destination</var>, a <var>cryptographic
+  nonce</var>, a <var>parser state</var>, and a <var>credentials mode</var>, run these steps. The
+  algorithm will asynchronously complete with either null (on failure) or a <span>module
+  script</span> (on success).</p>
+
+  <ol>
+   <li><p>Perform the <span>internal module script graph fetching procedure</span> given
+   <var>url</var>, <var>settings object</var>, <var>destination</var>, <var>cryptographic
+   nonce</var>, <var>parser state</var>, <var>credentials mode</var>, <var>settings object</var>, a
+   new empty list, "<code data-x="">client</code>", and with the <var>top-level module fetch
+   flag</var> set. If the caller of this algorithm specified custom <span
+   data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps, pass those along as
+   well.</p>
+
+   <li><p>When the <span>internal module script graph fetching procedure</span> asynchronously
+   completes with <var>result</var>, asynchronously complete this algorithm with
+   <var>result</var>.</p></li>
+  </ol>
+
+  <p>To <dfn data-export="" id="fetch-a-module-worker-script-tree">fetch a module worker script
+  graph</dfn> given a <var>url</var>, a <var>fetch client settings object</var>, a
+  <var>destination</var>, a <var>credentials mode</var>, and a <var>module map settings
+  object</var>, run these steps. The algorithm will asynchronously complete with either null (on
+  failure) or a <span>module script</span> (on success).</p>
+
+  <ol>
+   <li><p>Perform the <span>internal module script graph fetching procedure</span> given
+   <var>url</var>, <var>fetch client settings object</var>, <var>destination</var>, the empty
+   string, "<code data-x="">not parser-inserted</code>", <var>credentials mode</var>, <var>module
+   map settings object</var>, a new empty list, "<code data-x="">client</code>", and with the
+   <var>top-level module fetch flag</var> set. If the caller of this algorithm specified custom
+   <span data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps, pass those along as
+   well.</p>
+
+   <li><p>When the <span>internal module script graph fetching procedure</span> asynchronously
+   completes with <var>result</var>, asynchronously complete this algorithm with
+   <var>result</var>.</p></li>
+  </ol>
+
+  <hr>
+
+  <p>The following algorithms are meant for internal use by this specification only as part of <span
+  data-x="fetch a module script graph">fetching a module script graph</span> or <span data-x="prepare
+  a script">preparing a script</span>, and should not be used directly by other specifications.</p>
+
+  <p>To perform the <dfn>internal module script graph fetching procedure</dfn> given a
+  <var>url</var>, a <var>fetch client settings object</var>, a <var>destination</var>, a
+  <var>cryptographic nonce</var>, a <var>parser state</var>, a <var>credentials mode</var>, a
+  <var>module map settings object</var>, an <var>ancestor list</var>, a <var>referrer</var>, and a
+  <var>top-level module fetch</var> flag, perform these steps. The algorithm will asynchronously
+  complete with either null (on failure) or a <span>module script</span> (on success).</p>
+
+  <ol>
+   <li><p><span>Fetch a single module script</span> given <var>url</var>, <var>fetch client settings
+   object</var>, <var>destination</var>, <var>cryptographic nonce</var>, <var>parser state</var>,
+   <var>credentials mode</var>, <var>module map settings object</var>, <var>referrer</var>, and the
+   <var>top-level module fetch</var> flag. If the caller of this algorithm specified custom <span
+   data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps, pass those along while
+   <span data-x="fetch a single module script">fetching a single module script</span>.</p>
+
+   <li><p>Return from this algorithm, and run the following steps when <span data-x="fetch a single
+   module script">fetching a single module script</span> asynchronously completes with
+   <var>result</var>:</p></li>
+
+   <li><p>If <var>result</var> is null, asynchronously complete this algorithm with null and abort
+   these steps.</p></li>
+
+   <li><p>Otherwise, <var>result</var> is a <span>module script</span>. <span data-x="fetch the
+   descendants of a module script">Fetch the descendants</span> of <var>result</var> given
+   <var>destination</var> and an ancestor list obtained by appending <var>url</var> to <var>ancestor
+   list</var>. Wait for <span data-x="fetch the descendants of a module script">fetching the
+   descendants of a module script</span> to asynchronously complete with <var>descendants
+   result</var> before proceeding to the next step.</p></li>
+
+   <li><p>Let <var>record</var> be <var>result</var>'s <span
+   data-x="concept-module-script-module-record">module record</span>.</p>
+
+   <li>
+    <p>Let <var>instantiationStatus</var> be <var>record</var>.<span
+    data-x="js-ModuleDeclarationInstantiation">ModuleDeclarationInstantiation</span>().</p>
+
+    <p class="note">This step will recursively call <span
+    data-x="js-ModuleDeclarationInstantiation">ModuleDeclarationInstantiation</span> all of the
+    module's uninstantiated dependencies.</p>
+   </li>
+
+   <li>
+    <p>For each <span>module script</span> <var>script</var> in <var>result</var>'s
+    <span>uninstantiated inclusive descendant module scripts</span>, perform the following
+    steps:</p>
+
+    <ol>
+     <li><p>If <var>instantiationStatus</var> is an abrupt completion, then set <var>script</var>'s
+     <span data-x="concept-module-script-instantiation-state">instantiation state</span> to "<code
+     data-x="">errored</code>", its <span
+     data-x="concept-module-script-instantiation-error">instantiation error</span> to
+     <var>instantiationStatus</var>.[[Value]], and its <span
+     data-x="concept-module-script-module-record">module record</span> to null.</p></li>
+
+     <li><p>Otherwise, set <var>script</var>'s <span
+     data-x="concept-module-script-instantiation-state">instantiation state</span> to "<code
+     data-x="">instantiated</code>".</p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p>Asynchronously complete this algorithm with <var>descendants result</var>.</p>
+
+    <p class="note">It is intentional that we complete with <var>descendants result</var> here, and
+    not <var>result</var>, as this allows us to propagate error signals to the caller.</p>
+   </li>
+  </ol>
+
+  <p>In the above algorithm, a <span>module script</span> <var>script</var>'s <dfn>uninstantiated
+  inclusive descendant module scripts</dfn> is a <span>set</span> of <span
+  data-x="module script">module scripts</span> determined as follows:</p>
+
+  <ol>
+   <li><p>Let <var>moduleMap</var> be <var>script</var>'s <span>settings object</span>'s
+   <span data-x="concept-settings-object-module-map">module map</span>.</p></li>
+
+   <li><p>Let <var>stack</var> be the <span>stack</span> « <var>script</var> ».</p></li>
+
+   <li><p>Let <var>inclusive descendants</var> be an empty <span>set</span>.</p></li>
+
+   <li>
+    <p>While <var>stack</var> <span data-x="list is empty">is not empty</span>:</p>
+
+    <ol>
+     <li><p>Let <var>current</var> the result of <span data-x="stack pop">popping</span> from
+     <var>stack</var>.</p></li>
+
+     <li>
+      <p>If <var>inclusive descendants</var> and <var>stack</var> both do not <span
+      data-x="list contains">contain</span> <var>current</var>, then:</p>
+
+      <ol>
+       <li><p><span data-x="list append">Append</span> <var>current</var> to
+       <var>inclusive descendants</var>.</p></li>
+
+       <li><p>Let <var>child specifiers</var> be the value of <var>current</var>'s <span
+       data-x="concept-module-script-module-record">module record</span>'s [[RequestedModules]]
+       internal slot.</p></li>
+
+       <li><p>Let <var>child URLs</var> be the <span>list</span> obtained by calling
+       <span>resolve a module specifier</span> once for each item of <var>child specifiers</var>,
+       given <var>current</var> and that item. Omit any failures.</p></li>
+
+       <li><p>Let <var>child modules</var> be the <span>list</span> obtained by <span
+       data-x="map get">getting each value</span> in <var>moduleMap</var> whose key is given by an
+       item of <var>child URLs</var>.</p></li>
+
+       <li><p><span data-x="list iterate">For each</span> <var>s</var> in <var>child modules</var>
+       that is not <span data-x="list contains">contained by</span> <var>inclusive
+       descendants</var>, <span data-x="stack push">push</span> <var>s</var> onto
+       <var>stack</var>.</p></li>
+      </ol>
+     </li>
+    </ol>
+   </li>
+
+   <li><p>Return a <span>set</span> containing all items of <var>inclusive descendants</var> whose
+   <span data-x="concept-module-script-instantiation-state">instantiation state</span> is "<code
+   data-x="">uninstantiated</code>".</p></li>
+  </ol>
+
+  <p class="note">The above algorithm gives a depth-first search of the module dependency graph. The
+  main interesting part is in how the "edges" of this graph are determined. The actual search
+  implementation is not important; any other technique for exploring the graph will suffice, given
+  that the output is a <span>set</span> only used for membership testing and whose order is thus not
+  important.</p>
+
+  <p>To <dfn>fetch a single module script</dfn>, given a <var>url</var>, a <var>fetch client
+  settings object</var>, a <var>destination</var>, a <var>cryptographic nonce</var>, a <var>parser
+  state</var>, a <var>credentials mode</var>, a <var>module map settings object</var>, a
+  <var>referrer</var>, and a <var>top-level module fetch</var> flag, run these steps. The algorithm
+  will asynchronously complete with either null (on failure) or a <span>module script</span> (on
+  success).</p>
+
+  <ol>
+   <li><p>Let <var>moduleMap</var> be <var>module map settings object</var>'s <span
+   data-x="concept-settings-object-module-map">module map</span>.</p></li>
+
+   <li><p>If <var>moduleMap</var>[<var>url</var>] is "<code data-x="">fetching</code>", wait
+   (<span>in parallel</span>) until that entry's value changes, then proceed to the next
+   step.</p></li>
+
+   <li><p>If <var>moduleMap</var>[<var>url</var>] <span data-x="map exists">exists</span>,
+   asynchronously complete this algorithm with <var>moduleMap</var>[<var>url</var>], and abort these
+   steps.</p></li>
+
+   <li><p><span data-x="map set">Set</span> <var>moduleMap</var>[<var>url</var>] to "<code
+   data-x="">fetching</code>".</p>
+
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is <var>url</var>, <span
+   data-x="concept-request-destination">destination</span> is <var>destination</var>, <span
+   data-x="concept-request-type">type</span> is "<code data-x="">script</code>", <span
+   data-x="concept-request-mode">mode</span> is "<code data-x="">cors</code>", <span
+   data-x="concept-request-credentials-mode">credentials mode</span> is <var>credentials
+   mode</var>, <span data-x="concept-request-nonce-metadata">cryptographic nonce metadata</span> is
+   <var>cryptographic nonce</var>, <span data-x="concept-request-parser-metadata">parser
+   metadata</span> is <var>parser state</var>, <span
+   data-x="concept-request-referrer">referrer</span> is <var>referrer</var>, and <span
+   data-x="concept-request-client">client</span> is <var>fetch client settings
+   object</var>.</p></li>
+
+   <!--FETCH-->
+   <li>
+    <p>If the caller specified custom steps to <span data-x="fetching-scripts-perform-fetch">perform
+    the fetch</span>, perform them on <var>request</var>, setting the <var
+    data-x="fetching-scripts-is-top-level">is top-level</var> flag if the <var>top-level module
+    fetch</var> flag is set. Return from this algorithm, and when the custom <span
+    data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps complete with <span
+    data-x="concept-response">response</span> <var>response</var>, run the remaining steps.</p>
+
+    <p>Otherwise, <span data-x="concept-fetch">fetch</span> <var>request</var>. Return from this
+    algorithm, and run the remaining steps as part of the fetch's <span>process response</span> for
+    the <span data-x="concept-response">response</span> <var>response</var>.</p>
+
+    <p class="note"><var>response</var> is always <span>CORS-same-origin</span>.</p>
+   </li>
+
+   <li>
+    <p>If any of the following conditions are met, <span data-x="map set">set</span>
+    <var>moduleMap</var>[<var>url</var>] to null, asynchronously complete this algorithm with null,
+    and abort these steps:</p>
+
+    <ul class="compact">
+     <li><p><var>response</var>'s <span data-x="concept-response-type">type</span> is "<code
+     data-x="">error</code>"</p></li>
+
+     <li><p><var>response</var>'s <span data-x="concept-response-status">status</span> is not an
+     <span>ok status</span></p></li>
+
+     <li>
+      <p>The result of <span data-x="extract a MIME type">extracting a MIME type</span> from
+      <var>response</var>'s <span data-x="concept-response-header-list">header list</span>
+      (ignoring parameters) is not a <span>JavaScript MIME type</span></p>
+
+      <p class="note">For historical reasons, <span data-x="fetch a classic script">fetching a
+      classic script</span> does not include MIME type checking. In contrast, module scripts will
+      fail to load if they are not of a correct MIME type.</p>
+     </li>
+    </ul>
+   </li>
+
+   <li><p>Let <var>source text</var> be the result of <span data-x="UTF-8 decode">UTF-8
+   decoding</span> <var>response</var>'s <span data-x="concept-response-body">body</span>.</p></li>
+
+   <li><p>Let <var>module script</var> be the result of <span>creating a module script</span> given
+   <var>source text</var>, <var>module map settings object</var>, <var>response</var>'s <span
+   data-x="concept-response-url">url</span>, <var>cryptographic
+   nonce</var>, <var>parser state</var>, and <var>credentials mode</var>.</p></li>
+
+   <li>
+    <p><span data-x="map set">Set</span> <var>moduleMap</var>[<var>url</var>] to <var>module
+    script</var>, and asynchronously complete this algorithm with <var>module script</var>.</p>
+
+    <p class="note">It is intentional that the <span>module map</span> is keyed by the <span
+    data-x="concept-request-url">request URL</span>, whereas the <span
+    data-x="concept-module-script-base-url">base URL</span> for the <span>module script</span> is
+    set to the <span data-x="concept-response-url">response URL</span>. The former is used to
+    deduplicate fetches, while the latter is used for URL resolution.</p>
+   </li>
+  </ol>
+
+  <p>To <dfn>fetch the descendants of a module script</dfn> <var>module script</var>, given a
+  <var>destination</var> and an <var>ancestor list</var>, run these steps. The algorithm will
+  asynchronously complete with either null (on failure) or with <var>module script</var> (on
+  success).</p>
+
+  <ol>
+   <li><p>Let <var>record</var> be <var>module script</var>'s <span
+   data-x="concept-module-script-module-record">module record</span>.</p></li>
+
+   <li><p>If <var>record</var>.[[RequestedModules]] <span data-x="list is empty">is empty</span>,
+   asynchronously complete this algorithm with <var>module script</var>.</p></li>
+
+   <li><p>Let <var>urls</var> be a new empty <span>list</span>.</p></li>
+
+   <li>
+    <p><span data-x="list iterate">For each</span> string <var>requested</var> of
+    <var>record</var>.[[RequestedModules]],</p>
+
+    <ol>
+     <li><p>Let <var>url</var> be the result of <span data-x="resolve a module specifier">resolving
+     a module specifier</span> given <var>module script</var> and <var>requested</var>.</p></li>
+
+     <li>
+      <p>If the result is error:</p>
+
+      <ol>
+       <li><p>Let <var>error</var> be a new <code>TypeError</code> exception.</p></li>
+
+       <li><p><span>Report the exception</span> <var>error</var> for <var>module
+       script</var>.</p></li>
+
+       <li><p>Abort this algorithm, and asynchronously complete it with null.</p></li>
+      </ol>
+     </li>
+
+     <li><p>Otherwise, if <var>ancestor list</var> does not <span
+     data-x="list contains">contain</span> <var>url</var>, <span data-x="list append">append</span>
+     <var>url</var> to <var>urls</var>.</p></li>
+    </ol>
+   </li>
+
+   <li>
+    <p><span data-x="list iterate">For each</span> <var>url</var> in <var>urls</var>, perform the
+    <span>internal module script graph fetching procedure</span> given <var>url</var>, <var>module
+    script</var>'s <span data-x="concept-module-script-credentials-mode">credentials mode</span>,
+    <var>module script</var>'s <span data-x="concept-module-script-nonce">cryptographic
+    nonce</span>, <var>module script</var>'s <span data-x="concept-module-script-parser">parser
+    state</span>, <var>destination</var>, <var>module script</var>'s <span>settings object</span>,
+    <var>module script</var>'s <span>settings object</span>, <var>ancestor list</var>, <var>module
+    script</var>'s <span data-x="concept-module-script-base-url">base URL</span>, and with the
+    <var>top-level module fetch</var> flag unset. If the caller of this algorithm specified custom
+    <span data-x="fetching-scripts-perform-fetch">perform the fetch</span> steps, pass those along
+    while performing the <span>internal module script graph fetching procedure</span>.</p>
+
+    <p>Wait for all of the <span>internal module script graph fetching procedure</span> invocations
+    to asynchronously complete. If any of them asynchronously complete with null, then
+    asynchronously complete this algorithm with null. Otherwise, asynchronously complete this
+    algorithm with <var>module script</var>.</p>
+   </li>
+  </ol>
+
+  

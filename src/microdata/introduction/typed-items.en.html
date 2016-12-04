@@ -1,0 +1,47 @@
+<h4>Typed items</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The examples in the previous section show how information could be marked up on a page that
+  doesn't expect its microdata to be re-used. Microdata is most useful, though, when it is used in
+  contexts where other authors and readers are able to cooperate to make new uses of the markup.</p>
+
+  <p>For this purpose, it is necessary to give each <span data-x="concept-item">item</span> a type,
+  such as "https://example.com/person", or "https://example.org/cat", or
+  "https://band.example.net/". Types are identified as <span data-x="URL">URLs</span>.</p>
+
+  <p>The type for an <span data-x="concept-item">item</span> is given as the value of an <code
+  data-x="attr-itemtype">itemtype</code> attribute on the same element as the <code
+  data-x="attr-itemscope">itemscope</code> attribute.</p>
+
+  <div class="example">
+
+   <p>Here, the item's type is "https://example.org/animals#cat":</p>
+
+<pre>&lt;section itemscope itemtype="https://example.org/animals#cat">
+ &lt;h1 itemprop="name">Hedral&lt;/h1>
+ &lt;p itemprop="desc">Hedral is a male american domestic
+ shorthair, with a fluffy black fur with white paws and belly.&lt;/p>
+ &lt;img itemprop="img" src="hedral.jpeg" alt="" title="Hedral, age 18 months">
+&lt;/section></pre>
+
+   <p>In this example the "https://example.org/animals#cat" item has three properties, a "name"
+   ("Hedral"), a "desc" ("Hedral is..."), and an "img" ("hedral.jpeg").</p>
+
+  </div>
+
+  <p>The type gives the context for the properties, thus selecting a vocabulary: a property named
+  "class" given for an item with the type "https://census.example/person" might refer to the economic
+  class of an individual, while a property named "class" given for an item with the type
+  "https://example.com/school/teacher" might refer to the classroom a teacher has been assigned.
+  Several types can share a vocabulary. For example, the types "<code
+  data-x="">https://example.org/people/teacher</code>" and "<code
+  data-x="">https://example.org/people/engineer</code>" could be defined to use the same vocabulary
+  (though maybe some properties would not be especially useful in both cases, e.g. maybe the "<code
+  data-x="">https://example.org/people/engineer</code>" type might not typically be used with the
+  "<code data-x="">classroom</code>" property). Multiple types defined to use the same vocabulary can
+  be given for a single item by listing the URLs as a space-separated list in the attribute' value.
+  An item cannot be given two types if they do not use the same vocabulary, however.</p>
+
+
+  

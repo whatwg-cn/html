@@ -1,0 +1,32 @@
+<h4>The <code>details</code> and <code>summary</code> elements</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+summary {
+  display: list-item;
+  counter-increment: list-item 0;
+  list-style: disclosure-closed inside;
+}
+details[open] > summary {
+  list-style-type: disclosure-open;
+}</pre>
+
+  <p>The <code>details</code> element is expected to render as a <span>block box</span>. The
+  element's shadow tree is expected to take the element's first <span
+  data-x="concept-tree-child">child</span> <code>summary</code> element, if any, and place it in a
+  first <span>block box</span> container, and then take the element's remaining descendants, if any,
+  and place them in a second <span>block box</span> container.</p>
+
+  <p>The first container is expected to allow the user to request the details be shown or
+  hidden.</p>
+
+  <p>The second container is expected to be removed from the rendering when the <code>details</code>
+  element does not have an <code data-x="attr-details-open">open</code> attribute.</p>
+
+  <!-- https://mail.gnome.org/archives/usability/2006-June/msg00015.html -->
+
+  </div>
+
+  <div w-nodev>
+
+  

@@ -1,0 +1,124 @@
+<h4 id="contenteditable">Making document regions editable: The <code
+  data-x="attr-contenteditable">contenteditable</code> content attribute</h4>
+
+  <pre class="idl">[NoInterfaceObject]
+interface <dfn>ElementContentEditable</dfn> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-contentEditable">contentEditable</span>;
+  readonly attribute boolean <span data-x="dom-isContentEditable">isContentEditable</span>;
+};</pre>
+
+  <p>The <dfn><code data-x="attr-contenteditable">contenteditable</code></dfn> content attribute is an
+  <span>enumerated attribute</span> whose keywords are the empty string, <code data-x="">true</code>,
+  and <code data-x="">false</code>. The empty string and the <code data-x="">true</code> keyword map
+  to the <i>true</i> state. The <code data-x="">false</code> keyword maps to the <i>false</i> state.
+  In addition, there is a third state, the <i>inherit</i> state, which is the <i data-x="missing value default">missing value default</i> (and the <i data-x="invalid value default">invalid value default</i>).</p>
+
+  <p>The <i>true</i> state indicates that the element is editable. The <i>inherit</i> state
+  indicates that the element is editable if its parent is. The <i>false</i> state indicates that the
+  element is not editable.</p>
+
+  <div class="example">
+   <p>For example, consider a page that has a <code>form</code> and a <code>textarea</code> to
+   publish a new article, where the user is expected to write the article using HTML:</p>
+
+   <pre>&lt;form method=POST>
+ &lt;fieldset>
+  &lt;legend>New article&lt;/legend>
+  &lt;textarea name=article>&amp;lt;p>Hello world.&amp;lt;/p>&lt;/textarea>
+ &lt;/fieldset>
+ &lt;p>&lt;button>Publish&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+   <p>When scripting is enabled, the <code>textarea</code> element could be replaced with a rich
+   text control instead, using the <code data-x="attr-contenteditable">contenteditable</code>
+   attribute:</p>
+
+   <pre>&lt;form method=POST>
+ &lt;fieldset>
+  &lt;legend>New article&lt;/legend>
+  &lt;textarea id=textarea name=article>&amp;lt;p>Hello world.&amp;lt;/p>&lt;/textarea>
+  &lt;div id=div style="white-space: pre-wrap" hidden>&lt;p>Hello world.&lt;/p>&lt;/div>
+  &lt;script>
+   let textarea = document.getElementById("textarea");
+   let div = document.getElementById("div");
+   textarea.hidden = true;
+   div.hidden = false;
+   div.contentEditable = "true";
+   div.oninput = (e) => {
+     textarea.value = div.innerHTML;
+   };
+  &lt;/script>
+ &lt;/fieldset>
+ &lt;p>&lt;button>Publish&lt;/button>&lt;/p>
+&lt;/form></pre>
+
+   <p>Features to enable, e.g., inserting links, can be implemented using the <code
+   data-x="dom-document-execCommand">document.execCommand()</code> API, or using
+   <code>Selection</code> APIs and other DOM APIs. <ref spec=EXECCOMMAND> <ref spec=SELECTION> <ref
+   spec=DOM></p>
+  </div>
+
+  <div class="example">
+   <p>The <code data-x="attr-contenteditable">contenteditable</code> attribute can also be used to
+   great effect:</p>
+
+   <pre>&lt;!doctype html>
+&lt;html lang=en>
+&lt;title>Live CSS editing!&lt;/title>
+&lt;style style=white-space:pre contenteditable>
+html { margin:.2em; font-size:2em; color:lime; background:purple }
+head, title, style { display:block }
+body { display:none }
+&lt;/style></pre>
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>element</var> . <code subdfn data-x="dom-contentEditable">contentEditable</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>Returns "<code data-x="">true</code>", "<code data-x="">false</code>", or "<code
+    data-x="">inherit</code>", based on the state of the <code
+    data-x="attr-contenteditable">contenteditable</code> attribute.</p>
+
+    <p>Can be set, to change that state.</p>
+
+    <p>Throws a <span>"<code>SyntaxError</code>"</span> <code>DOMException</code> if the new value
+    isn't one of those strings.</p>
+
+   </dd>
+
+   <dt><var>element</var> . <code subdfn data-x="dom-isContentEditable">isContentEditable</code></dt>
+
+   <dd>
+
+    <p>Returns true if the element is editable; otherwise, returns false.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-contentEditable">contentEditable</code></dfn> IDL attribute, on
+  getting, must return the string "<code data-x="">true</code>" if the content attribute is set to
+  the true state, "<code data-x="">false</code>" if the content attribute is set to the false state,
+  and "<code data-x="">inherit</code>" otherwise. On setting, if the new value is an <span>ASCII
+  case-insensitive</span> match for the string "<code data-x="">inherit</code>" then the content
+  attribute must be removed, if the new value is an <span>ASCII case-insensitive</span> match for
+  the string "<code data-x="">true</code>" then the content attribute must be set to the string
+  "<code data-x="">true</code>", if the new value is an <span>ASCII case-insensitive</span> match for
+  the string "<code data-x="">false</code>" then the content attribute must be set to the string
+  "<code data-x="">false</code>", and otherwise the attribute setter must throw a
+  <span>"<code>SyntaxError</code>"</span> <code>DOMException</code>.</p>
+
+  <p>The <dfn><code data-x="dom-isContentEditable">isContentEditable</code></dfn> IDL attribute, on
+  getting, must return true if the element is either an <span>editing host</span> or
+  <span>editable</span>, and false otherwise.</p>
+
+  </div>
+
+
+
+  

@@ -1,0 +1,177 @@
+<h6 id="parsing-main-inselect">The "<dfn data-x="insertion mode: in select">in select</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in select">in
+  select</span>" <span>insertion mode</span>, the user agent must handle the token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>A character token that is U+0000 NULL</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>Any other character token</dt>
+   <dd>
+
+    <p><span data-x="insert a character">Insert the token's character</span>.</p>
+
+   </dd>
+
+   <dt>A comment token</dt>
+   <dd>
+    <p><span>Insert a comment</span>.</p>
+   </dd>
+
+   <dt>A DOCTYPE token</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>A start tag whose tag name is "html"</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "option"</dt>
+   <dd>
+
+    <!-- fake </option> (maybe) -->
+    <p>If the <span>current node</span> is an <code>option</code> element, pop that node from the
+    <span>stack of open elements</span>.</p>
+    <!-- end of fake </option> -->
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "optgroup"</dt>
+   <dd>
+
+    <!-- fake </option> (maybe) -->
+    <p>If the <span>current node</span> is an <code>option</code> element, pop that node from the
+    <span>stack of open elements</span>.</p>
+    <!-- end of fake </option> -->
+
+    <!-- fake </optgroup> (maybe) -->
+    <p>If the <span>current node</span> is an <code>optgroup</code> element, pop that node from the
+    <span>stack of open elements</span>.</p>
+    <!-- end of fake </optgroup> -->
+
+    <p><span>Insert an HTML element</span> for the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "optgroup"</dt>
+   <dd>
+
+    <!-- fake </option> (maybe) -->
+    <p>First, if the <span>current node</span> is an <code>option</code> element, and the node
+    immediately before it in the <span>stack of open elements</span> is an <code>optgroup</code>
+    element, then pop the <span>current node</span> from the <span>stack of open
+    elements</span>.</p>
+    <!-- end of fake </option> -->
+
+    <p>If the <span>current node</span> is an <code>optgroup</code> element, then pop that node from
+    the <span>stack of open elements</span>. Otherwise, this is a <span>parse error</span>; ignore
+    the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "option"</dt>
+   <dd>
+
+    <p>If the <span>current node</span> is an <code>option</code> element, then pop that node from
+    the <span>stack of open elements</span>. Otherwise, this is a <span>parse error</span>; ignore
+    the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is "select"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in select
+    scope">have a <code>select</code> element in select scope</span>, this is a <span>parse
+    error</span>; ignore the token. (<span>fragment case</span>)</p>
+
+    <p>Otherwise:</p>
+
+    <p>Pop elements from the <span>stack of open elements</span> until a <code>select</code> element
+    has been popped from the stack.</p>
+
+    <p><span>Reset the insertion mode appropriately</span>.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is "select"</dt>
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <!-- fake </select> -->
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in select
+    scope">have a <code>select</code> element in select scope</span>, ignore the token.
+    (<span>fragment case</span>)</p>
+
+    <p>Otherwise:</p>
+
+    <p>Pop elements from the <span>stack of open elements</span> until a <code>select</code> element
+    has been popped from the stack.</p>
+
+    <p><span>Reset the insertion mode appropriately</span>.</p>
+    <!-- end of fake </select> -->
+
+    <p class="note">It just gets treated like an end tag.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "input", "keygen", "textarea"</dt>
+   <dd>
+
+    <p><span>Parse error</span>.</p>
+
+    <!-- fake </select> -->
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in select
+    scope">have a <code>select</code> element in select scope</span>, ignore the token.
+    (<span>fragment case</span>)</p>
+
+    <p>Otherwise:</p>
+
+    <p>Pop elements from the <span>stack of open elements</span> until a <code>select</code> element
+    has been popped from the stack.</p>
+
+    <p><span>Reset the insertion mode appropriately</span>.</p>
+    <!-- end of fake </select> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "script", "template"</dt>
+   <dt>An end tag whose tag name is "template"</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    head">in head</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>An end-of-file token</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+  </dl>
+
+
+  

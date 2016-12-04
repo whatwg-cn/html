@@ -1,0 +1,283 @@
+<h4 data-dfn-type="element" data-lt="style">The <dfn><code>style</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Metadata content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>metadata content</span> is expected.</dd>
+   <dd>In a <code>noscript</code> element that is a child of a <code>head</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>Depends on the value of the <code data-x="attr-style-type">type</code> attribute, but must match requirements described in prose below.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-style-media">media</code></dd>
+   <dd><code data-x="attr-style-nonce">nonce</code></dd>
+   <dd><code data-x="attr-style-type">type</code></dd>
+   <dd>Also, the <code data-x="attr-style-title">title</code> attribute <span data-x="attr-style-title">has special semantics</span> on this element.</dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+<pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLStyleElement</dfn> : <span>HTMLElement</span> {
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-style-media">media</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-style-nonce">nonce</span>;
+  [<span>CEReactions</span>] attribute DOMString <span data-x="dom-style-type">type</span>;
+};
+<span>HTMLStyleElement</span> implements <span>LinkStyle</span>;</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>style</code> element allows authors to embed style information in their documents.
+  The <code>style</code> element is one of several inputs to the styling processing
+  model. The element does not <span data-x="represents">represent</span> content for the
+  user.</p>
+
+  <p>The <dfn><code data-x="attr-style-type">type</code></dfn> attribute gives the styling language.
+  If the attribute is present, its value must be a <span>valid MIME type</span> that designates a
+  styling language. The <code data-x="">charset</code> parameter must not be specified. The default
+  value for the <code data-x="attr-style-type">type</code> attribute, which is used if the attribute
+  is absent, is "<code data-x="">text/css</code>". <ref spec=RFC2318></p>
+
+  <div w-nodev>
+
+  <!-- similar paragraph is also present in the <script> element section --> <p>When examining types
+  to determine if they support the language, user agents must not ignore unknown MIME parameters
+  &mdash; types with unknown parameters must be assumed to be unsupported. The <code
+  data-x="">charset</code> parameter must be treated as an unknown parameter for the purpose of
+  comparing <span data-x="MIME type">MIME types</span> here.</p>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-style-media">media</code></dfn> attribute says which media the
+  styles apply to. The value must be a <span>valid media query list</span>. <span w-nodev>The user
+  agent must apply the styles when the <code data-x="attr-style-media">media</code> attribute's
+  value <span>matches the environment</span> and the other relevant conditions apply, and must not
+  apply them otherwise.</span></p><!-- note similar text in <link> element section -->
+
+  <div w-nodev>
+
+  <p class="note">The styles might be further limited in scope, e.g. in CSS with the use of <code
+  data-x="">@media</code> blocks. This specification does not override such further restrictions or
+  requirements.</p><!-- note similar text in <link> element section -->
+
+  </div>
+
+  <p id="style-default-media">The default, if the <code data-x="attr-style-media">media</code>
+  attribute is omitted, is "<code data-x="">all</code>", meaning that by default styles apply to all
+  media.</p>
+
+  <p>The <dfn><code data-x="attr-style-nonce">nonce</code></dfn> attribute represents a
+  cryptographic nonce ("number used once") which can be used by <cite>Content Security Policy</cite>
+  to determine whether or not the style specified by an element will be applied to the document. The
+  value is text. <ref spec="CSP"></p>
+
+  <p id="title-on-style">The <dfn><code data-x="attr-style-title">title</code></dfn> attribute on
+  <code>style</code> elements defines <span data-x="CSS style sheet set">CSS style sheet
+  sets</span>. If the <code>style</code> element has no <code data-x="attr-style-title">title</code>
+  attribute, then it has no title; the <code data-x="attr-title">title</code> attribute of ancestors
+  does not apply to the <code>style</code> element. If the <code>style</code> element is not
+  <span>in a document tree</span>, then the <code data-x="attr-style-title">title</code> attribute
+  is ignored. <ref spec=CSSOM></p>
+
+  <p class="note">The <code data-x="attr-style-title">title</code> attribute on <code>style</code>
+  elements, like the <code data-x="attr-link-title">title</code> attribute on <code>link</code>
+  elements, differs from the global <code data-x="attr-title">title</code> attribute in that a
+  <code>style</code> block without a title does not inherit the title of the parent element: it
+  merely has no title.</p>
+
+  <p>The <code>textContent</code> of a <code>style</code> element must match the <code
+  data-x="">style</code> production in the following ABNF, the character set for which is Unicode. <ref spec=ABNF></p>
+
+  <pre>style         = no-c-start *( c-start no-c-end c-end no-c-start )
+no-c-start    = &lt; any string that doesn't contain a substring that matches c-start >
+c-start       = "&lt;!--"
+no-c-end      = &lt; any string that doesn't contain a substring that matches c-end >
+c-end         = "-->"</pre>
+
+  <!-- Unmatched comment-like syntax is invalid on a temporary basis,
+       waiting for IE, WebKit, and Opera to fix their parsing bug
+       whereby such comments trigger a weird escape in which </style>
+       is ignored. Otherwise, parsing behavior in those browsers
+       could differ substantially from the parsing behavior of HTML5.
+       Once everyone follows the HTML5 spec, we can drop this
+       requirement.
+  -->
+
+  <hr>
+
+  <div w-nodev>
+
+  <p>The user agent must run the <dfn data-export="">update a <code>style</code> block</dfn>
+  algorithm that applies for the style sheet language specified by the <code>style</code>
+  element's <code data-x="attr-style-type">type</code> attribute, passing it the element's
+  <dfn>style data</dfn>, whenever one of the following conditions occur:</p>
+  <!-- note that a browsing context isn't needed:
+       https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2739 -->
+
+  <ul>
+   <li>The element is popped off the <span>stack of open elements</span> of an <span>HTML
+   parser</span> or <span>XML parser</span>.
+
+   <li>The element is not on the <span>stack of open elements</span> of an <span>HTML parser</span>
+   or <span>XML parser</span>, and it <span>becomes connected</span> or <span data-x="becomes
+   disconnected">disconnected</span>.
+
+   <li>The element is not on the <span>stack of open elements</span> of an <span>HTML parser</span>
+   or <span>XML parser</span>, and one of its child nodes is modified by a script.
+  </ul>
+
+  <p>For styling languages that consist of pure text (as opposed to XML), a <code>style</code>
+  element's <span>style data</span> is the <span>child text content</span> of the <code>style</code>
+  element. For XML-based styling languages, the <span>style data</span> consists of all the child
+  nodes of the <code>style</code> element.</p>
+
+  <p>The <span>update a <code>style</code> block</span> algorithm for CSS (<code>text/css</code>) is
+  as follows:</p>
+
+  <ol>
+
+   <li><p>Let <var>element</var> be the <code>style</code> element.</p></li>
+
+   <li><p>If <var>element</var> has an <span>associated CSS style sheet</span>, <span
+   data-x="remove a CSS style sheet">remove the CSS style sheet</span> in question.</p></li>
+
+   <li><p>If <var>element</var>'s <span>root</span> is neither a <span>shadow root</span> nor a
+   <span>document</span>, then abort these steps.</p></li>
+   <!-- https://software.hixie.ch/utilities/js/live-dom-viewer/?saved=2740
+        Also, per https://github.com/w3c/webcomponents/issues/56 stylesheets should work in
+        disconnected shadow trees. -->
+
+   <li><p>If the <span>Should element's inline behavior be blocked by Content Security
+   Policy?</span> algorithm returns "<code data-x="">Blocked</code>" when executed upon the
+   <code>style</code> element, "<code data-x="">style</code>", and the <code>style</code>
+   element's <code>style data</code>, then abort these steps. <ref spec="CSP"></p></li>
+
+   <li>
+
+    <p><span>Create a CSS style sheet</span> with the following properties:</p>
+
+    <dl>
+
+     <dt><span data-x="concept-css-style-sheet-type">type</span></dt>
+     <dd><p><code data-x="">text/css</code></p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-owner-node">owner node</span></dt>
+     <dd><p><var>element</var></p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-media">media</span></dt>
+
+     <dd>
+
+      <p>The <code data-x="attr-style-media">media</code> attribute of <var>element</var>.</p>
+
+      <p class="note">This is a reference to the (possibly absent at this time) attribute, rather
+      than a copy of the attribute's current value. The CSSOM specification defines what happens
+      when the attribute is dynamically set, changed, or removed.</p>
+
+     </dd>
+
+     <dt><span data-x="concept-css-style-sheet-title">title</span></dt>
+
+     <dd>
+
+      <p>The <code data-x="attr-style-title">title</code> attribute of <var>element</var>, if
+      <var>element</var> is <span>in a document tree</span>, or the empty string otherwise.</p>
+
+      <p class="note">Again, this is a <em>reference</em> to the attribute.</p>
+
+     </dd>
+
+     <dt><span data-x="concept-css-style-sheet-alternate-flag">alternate flag</span></dt>
+     <dd><p>Unset.</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-origin-clean-flag">origin-clean flag</span></dt>
+     <dd><p>Set.</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-location">location</span></dt>
+     <dt><span data-x="concept-css-style-sheet-parent-CSS-style-sheet">parent CSS style sheet</span></dt>
+     <dt><span data-x="concept-css-style-sheet-owner-CSS-rule">owner CSS rule</span></dt>
+     <dd><p>null</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-disabeld-flag">disabled flag</span></dt>
+     <dd><p>Left at its default value.</p></dd>
+
+     <dt><span data-x="concept-css-style-sheet-CSS-rules">CSS rules</span></dt>
+     <dd><p>Left uninitialized.</p></dd>
+
+    </dl>
+
+    <!-- <p>All <span data-x="URL">URLs</span> found by the styling language's processor must be
+    <span data-x="parse a url">parsed</span>, relative to the element's node document (or as defined
+    by the styling language), when the processor is invoked.</p>--><!-- so dynamic changes to the
+    base URL don't affect the CSS -->
+
+   </li>
+
+  </ol>
+
+  <p>This specification does not define any other styling language's <i data-x="update a style
+  block">update a <code>style</code> block</i> algorithm.</p>
+
+  <!-- the next few paragraph are similar to text in the <link> section -->
+  <p>Once the attempts to obtain the style sheet's <span>critical subresources</span>, if any, are
+  complete, or, if the style sheet has no <span>critical subresources</span>, once the style sheet
+  has been parsed and processed, the user agent must, if the loads were successful or there were
+  none, <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named
+  <code data-x="event-load">load</code> at the <code>style</code> element, or, if one of the style
+  sheet's <span>critical subresources</span> failed to completely load for any reason (e.g. DNS
+  error, HTTP 404 response, a connection being prematurely closed, unsupported Content-Type),
+  <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-error">error</code> at the <code>style</code> element. Non-network errors in
+  processing the style sheet or its subresources (e.g. CSS parse errors, PNG decoding errors) are
+  not failures for the purposes of this paragraph.</p>
+
+  <p>The <span>task source</span> for these <span data-x="concept-task">tasks</span> is the <span>DOM
+  manipulation task source</span>.</p>
+
+  <p>The element must <span>delay the load event</span> of the element's <span>node document</span> until all the
+  attempts to obtain the style sheet's <span>critical subresources</span>, if any, are complete.</p>
+
+  </div>
+
+  <p class="note">This specification does not specify a style system, but CSS is expected to be
+  supported by most Web browsers. <ref spec=CSS></p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-style-media">media</code></dfn>, <dfn><code
+  data-x="dom-style-nonce">nonce</code></dfn>, and <dfn><code
+  data-x="dom-style-type">type</code></dfn> IDL attributes must <span>reflect</span> the respective
+  content attributes of the same name.</p>
+
+  </div>
+
+  <p>The <code>LinkStyle</code> interface is also implemented by this element. <ref spec=CSSOM></p>
+
+  <div class="example">
+
+   <p>The following document has its stress emphasis styled as bright red text rather than italics
+   text, while leaving titles of works and Latin words in their default italics. It shows how using
+   appropriate elements enables easier restyling of documents.</p>
+
+   <pre>&lt;!DOCTYPE html>
+&lt;html lang="en-US">
+ &lt;head>
+  &lt;title>My favorite book&lt;/title>
+  &lt;style>
+   body { color: black; background: white; }
+   em { font-style: normal; color: red; }
+  &lt;/style>
+ &lt;/head>
+ &lt;body>
+  &lt;p>My &lt;em>favorite&lt;/em> book of all time has &lt;em>got&lt;/em> to be
+  &lt;cite>A Cat's Life&lt;/cite>. It is a book by P. Rahmel that talks
+  about the &lt;i lang="la">Felis Catus&lt;/i> in modern human society.&lt;/p>
+ &lt;/body>
+&lt;/html></pre>
+
+  </div>
+
+
+
+  <div w-nodev>
+
+  

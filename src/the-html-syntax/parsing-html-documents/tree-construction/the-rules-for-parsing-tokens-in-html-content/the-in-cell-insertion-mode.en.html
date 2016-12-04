@@ -1,0 +1,103 @@
+<h6 id="parsing-main-intd">The "<dfn data-x="insertion mode: in cell">in cell</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in cell">in cell</span>" <span>insertion mode</span>, the user agent must handle the token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>An end tag whose tag name is one of: "td", "th"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have an element in table scope</span> that is an <span data-x="HTML elements">HTML
+    element</span> with the same tag name as that of the token, then this is a <span>parse
+    error</span>; ignore the token.</p>
+
+    <p>Otherwise:</p>
+
+    <p><span>Generate implied end tags</span>.</p>
+
+    <p>Now, if the <span>current node</span> is not an <span data-x="HTML elements">HTML
+    element</span> with the same tag name as the token, then this is a <span>parse error</span>.</p>
+
+    <p>Pop elements from the <span>stack of open elements</span> stack until an <span data-x="HTML
+    elements">HTML element</span> with the same tag name as the token has been popped from the
+    stack.</p>
+
+    <p><span>Clear the list of active formatting elements up to the last marker</span>.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in row">in
+    row</span>".</p> <!-- current node here will be a <tr> normally; but could be <html> in the
+    fragment case, or <template> in the template case -->
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "caption", "col",
+   "colgroup", "tbody", "td", "tfoot", "th", "thead", "tr"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does <em>not</em> <span data-x="has an element in
+    table scope">have a <code>td</code> or <code>th</code> element in table scope</span>, then this
+    is a <span>parse error</span>; ignore the token. (<span>fragment case</span>)</p>
+
+    <p>Otherwise, <span>close the cell</span> (see below) and reprocess the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "body", "caption",
+   "col", "colgroup", "html"</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "table", "tbody",
+   "tfoot", "thead", "tr"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have an element in table scope</span> that is an <span data-x="HTML elements">HTML
+    element</span> with the same tag name as that of the token, then this is a <span>parse
+    error</span>; ignore the token.</p>
+
+    <p>Otherwise, <span>close the cell</span> (see below) and reprocess the token.</p>
+
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>Where the steps above say to <dfn>close the cell</dfn>, they mean to run the following
+  algorithm:</p>
+
+  <ol>
+
+   <!-- fake </td> or </th> -->
+   <li><p><span>Generate implied end tags</span>.</p></li>
+
+   <li><p>If the <span>current node</span> is not now a <code>td</code> element or a <code>th</code>
+   element, then this is a <span>parse error</span>.</p></li>
+
+   <li><p>Pop elements from the <span>stack of open elements</span> stack until a <code>td</code>
+   element or a <code>th</code> element has been popped from the stack.</p></li>
+
+   <li><p><span>Clear the list of active formatting elements up to the last marker</span>.</p></li>
+
+   <li><p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in row">in
+   row</span>".</p></li> <!-- current node here will be a <tr> normally; but could be <html> in the
+   fragment case, or <template> in the template case -->
+   <!-- end of fake </td> or </th> -->
+
+  </ol>
+
+  <p class="note">The <span>stack of open elements</span> cannot have both a <code>td</code> and a
+  <code>th</code> element <span data-x="has an element in table scope">in table scope</span> at the
+  same time, nor can it have neither when the <span>close the cell</span> algorithm is invoked.</p>
+
+
+  

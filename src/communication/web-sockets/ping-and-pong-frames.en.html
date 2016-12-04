@@ -1,0 +1,17 @@
+<h4>Ping and Pong frames</h4>
+
+  <p>The WebSocket protocol specification defines Ping and Pong frames that can be used for
+  keep-alive, heart-beats, network status probing, latency instrumentation, and so forth. These are
+  not currently exposed in the API.</p>
+
+  <p>User agents may send ping and unsolicited pong frames as desired, for example in an attempt to
+  maintain local network NAT mappings, to detect failed connections, or to display latency metrics
+  to the user. User agents must not use pings or unsolicited pongs to aid the server; it is assumed
+  that servers will solicit pongs whenever appropriate for the server's needs.</p>
+
+  <!-- v2: we'll probably add a way to make the client send pings and automatically terminate the
+  connection if they don't get a pong within an author-provided timeout; see
+  https://www.w3.org/Bugs/Public/show_bug.cgi?id=17264 -->
+
+
+  

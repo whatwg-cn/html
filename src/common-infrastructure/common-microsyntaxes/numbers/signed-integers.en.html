@@ -1,0 +1,77 @@
+<h5>Signed integers</h5>
+
+  <p>A string is a <dfn>valid integer</dfn> if it consists of one or more <span>ASCII digits</span>,
+  optionally prefixed with a U+002D HYPHEN-MINUS character (-).</p>
+
+  <p>A <span>valid integer</span> without a U+002D HYPHEN-MINUS (-) prefix represents the number
+  that is represented in base ten by that string of digits. A <span>valid integer</span>
+  <em>with</em> a U+002D HYPHEN-MINUS (-) prefix represents the number represented in base ten by
+  the string of digits that follows the U+002D HYPHEN-MINUS, subtracted from zero.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn>rules for parsing integers</dfn> are as given in the following algorithm. When
+  invoked, the steps must be followed in the order given, aborting at the first step that returns a
+  value. This algorithm will return either an integer or an error.</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the string being parsed.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially pointing at the
+   start of the string.</p></li>
+
+   <li><p>Let <var>sign</var> have the value "positive".</p></li>
+
+   <li><p><span>Skip whitespace</span>.</p></li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, return an error.</p></li>
+
+   <li>
+
+    <p>If the character indicated by <var>position</var> (the first character) is a U+002D
+    HYPHEN-MINUS character (-):</p>
+
+    <ol>
+
+     <li>Let <var>sign</var> be "negative".</li>
+
+     <li>Advance <var>position</var> to the next character.</li>
+
+     <li>If <var>position</var> is past the end of <var>input</var>, return an error.</li>
+
+    </ol>
+
+    <p>Otherwise, if the character indicated by <var>position</var> (the first character) is a
+    U+002B PLUS SIGN character (+):</p>
+
+    <ol>
+
+     <li>Advance <var>position</var> to the next character. (The "<code data-x="">+</code>" is
+     ignored, but it is not conforming.)</li>
+
+     <li>If <var>position</var> is past the end of <var>input</var>, return an error.</li>
+
+    </ol>
+
+   </li>
+
+   <li><p>If the character indicated by <var>position</var> is not an <span data-x="ASCII
+   digits">ASCII digit</span>, then return an error.</p></li>
+
+   <!-- Ok. At this point we know we have a number. It might have trailing garbage which we'll
+   ignore, but it's a number, and we won't return an error. -->
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>, and
+   interpret the resulting sequence as a base-ten integer. Let <var>value</var> be that
+   integer.</p></li>
+
+   <li><p>If <var>sign</var> is "positive", return <var>value</var>, otherwise return the result of
+   subtracting <var>value</var> from zero.</p></li>
+
+  </ol>
+
+  </div>
+
+
+  

@@ -1,0 +1,36 @@
+<h5><dfn>Character reference end state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>.</p>
+
+  <p>Check the <var data-x="return state">return state</var>:</p>
+
+  <dl class="switch">
+
+    <dt><span>Attribute value (double-quoted) state</span></dt>
+    <dt><span>Attribute value (single-quoted) state</span></dt>
+    <dt><span>Attribute value (unquoted) state</span></dt>
+
+    <dd>Append each character in the <var data-x="temporary buffer">temporary buffer</var> (in the
+    order they were added to the buffer) to the current attribute's value.</dd>
+
+    <dt>Anything else</dt>
+
+    <dd>For each of the characters in the <var data-x="temporary buffer">temporary buffer</var> (in
+    the order they were added to the buffer), emit the character as a character token.</dd>
+
+  </dl>
+
+  <p><span>Reconsume</span> in the <var data-x="return state">return state</var>.</p>
+
+  </div>
+
+
+  <div w-nodev>
+
+  <!-- v2: One thing that this doesn't define is handling deeply nested documents. There are
+  compatibility requirements around that: you can't throw away the elements altogether, consider Tux
+  made only with opening <font> elements, one per character. Seems that the best thing to do is to
+  close some formatting elements from the middle of the stack when you hit a limit, or something.
+  -->
+
+  

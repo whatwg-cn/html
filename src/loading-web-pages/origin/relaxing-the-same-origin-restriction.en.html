@@ -1,0 +1,114 @@
+<h4>Relaxing the same-origin restriction</h4>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-domain">domain</code> [ = <var>domain</var> ]</dt>
+
+   <dd>
+
+    <p>Returns the current domain used for security checks.</p>
+
+    <p>Can be set to a value that removes subdomains, to change the <span>origin</span>'s <span
+    data-x="concept-origin-domain">domain</span> to allow pages on other subdomains of the same
+    domain (if they do the same thing) to access each other. (Can't be set in sandboxed
+    <code>iframe</code>s.)</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-domain">domain</code></dfn> attribute's getter must run
+  these steps:</p>
+
+  <ol>
+   <li><p>If this <code>Document</code> object does not have a <span
+   data-x="concept-document-bc">browsing context</span>, then return the empty string.
+
+   <li><p>Let <var>effectiveDomain</var> be this <code>Document</code>'s <span>origin</span>'s <span
+   data-x="concept-origin-effective-domain">effective domain</span>.
+
+   <li><p>If <var>effectiveDomain</var> is an <span data-x="concept-origin-opaque">opaque
+   origin</span>, then return the empty string.</p></li>
+
+   <li><p>Return <var>effectiveDomain</var>, <span data-x="host
+   serializer">serialized</span>.</p></li>
+  </ol>
+
+  <p>The <code data-x="dom-document-domain">domain</code> attribute's setter must run these
+  steps:</p>
+
+  <ol>
+   <li><p>If this <code>Document</code> object has no <span data-x="concept-document-bc">browsing
+   context</span>, then throw a <span>"<code>SecurityError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li><p>If this <code>Document</code> object's <span>active sandboxing flag set</span> has its
+   <span>sandboxed <code data-x="dom-document-domain">document.domain</code> browsing context
+   flag</span> set, then throw a <span>"<code>SecurityError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li><p>If the given value is the empty string, then throw a
+   <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>host</var> be the result of <span data-x="host parser">parsing</span> the given
+   value.</p></li>
+
+   <li><p>If <var>host</var> is failure, then throw a <span>"<code>SecurityError</code>"</span>
+   <code>DOMException</code>.</p></li>
+
+   <li><p>Let <var>effectiveDomain</var> be this <code>Document</code> object's
+   <span>origin</span>'s <span data-x="concept-origin-effective-domain">effective
+   domain</span>.</p></li>
+
+   <li>
+    <p>If <var>host</var> is <em>not</em> <span data-x="host equals">equal</span> to
+    <var>effectiveDomain</var>, then run these substeps:</p>
+
+    <ol>
+     <li>
+      <p>If <var>host</var> or <var>effectiveDomain</var> is not a <span
+      data-x="concept-domain">domain</span>, then throw a <span>"<code>SecurityError</code>"</span>
+      <code>DOMException</code>.</p>
+
+      <p class="note">This is meant to exclude <span data-x="concept-host">hosts</span> that are an
+      <span>IPv4 address</span> or an <span>IPv6 address</span>.</p>
+     </li>
+
+     <li><p>If <var>host</var>, prefixed by a U+002E FULL STOP (.), does not exactly match the end
+     of <var>effectiveDomain</var>, then throw a <span>"<code>SecurityError</code>"</span>
+     <code>DOMException</code>.</p></li>
+
+     <li>
+      <p>If <var>host</var> matches a suffix in the Public Suffix List, or, if <var>host</var>,
+      prefixed by a U+002E FULL STOP (.), matches the end of a suffix in the Public Suffix List,
+      then throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>. <ref
+      spec=PSL></p>
+
+      <p>Suffixes must be compared after applying the <span>host parser</span> algorithm.</p>
+     </li>
+    </ol>
+   </li>
+
+   <li><p>Set this <code>Document</code> object's <span>origin</span>'s <span
+   data-x="concept-origin-domain">domain</span> to <var>host</var>.</p></li>
+  </ol>
+
+  </div>
+
+  <p class="note">The <code data-x="dom-document-domain">document.domain</code> attribute is used to
+  enable pages on different hosts of a domain to access each other's DOMs.</p>
+
+  <p class="warning">Do not use the <code data-x="dom-document-domain">document.domain</code>
+  attribute when using shared hosting. If an untrusted third party is able to host an HTTP server at
+  the same IP address but on a different port, then the same-origin protection that normally
+  protects two different sites on the same host will fail, as the ports are ignored when comparing
+  origins after the <code data-x="dom-document-domain">document.domain</code> attribute has been
+  used.</p>
+
+
+
+<!--TOPIC:HTML-->
+
+  

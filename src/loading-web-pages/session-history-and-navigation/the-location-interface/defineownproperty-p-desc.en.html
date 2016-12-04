@@ -1,0 +1,19 @@
+<h5 id="location-defineownproperty">[[DefineOwnProperty]] ( <var>P</var>, <var>Desc</var> )</h5>
+
+  <ol>
+   <li>
+    <p>If <span>IsPlatformObjectSameOrigin</span>(<b>this</b>) is true, then:</p>
+
+    <ol>
+     <li><p>If the value of the [[<span>DefaultProperties</span>]] internal slot of <b>this</b>
+     contains <var>P</var>, then return false.</p></li>
+
+     <li><p>Return ? <span>OrdinaryDefineOwnProperty</span>(<b>this</b>, <var>P</var>,
+     <var>Desc</var>).</p></li>
+    </ol>
+   </li>
+
+   <li><p>Throw a <span>"<code>SecurityError</code>"</span> <code>DOMException</code>.</p></li>
+  </ol>
+
+  

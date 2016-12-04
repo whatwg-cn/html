@@ -1,0 +1,68 @@
+<h6>Best practices</h6>
+
+  <p>When a canvas is interactive, authors should include focusable elements in the element's
+  fallback content corresponding to each focusable part of the canvas, as in the <a
+  href="#drawCustomFocusRingExample">example above</a>.</p>
+
+  <p>When rendering focus rings, to ensure that focus rings have the appearance of native focus
+  rings, authors should use the <code
+  data-x="dom-context-2d-drawFocusIfNeeded">drawFocusIfNeeded()</code> method, passing it the
+  element for which a ring is being drawn. This method only draws the focus ring if the element is
+  <span>focused</span>, so that it can simply be called whenever drawing the element, without
+  checking whether the element is focused or not first.</p>
+
+  <p>In addition to drawing focus rings, authors should use the <code
+  data-x="dom-context-2d-scrollPathIntoView">scrollPathIntoView()</code> method when an element in
+  the canvas is focused, to make sure it is visible on the screen (if applicable).</p>
+
+  <p id="no-text-editing-in-canvas-please">Authors should avoid implementing text editing controls
+  using the <code>canvas</code> element. Doing so has a large number of disadvantages:</p>
+
+  <ul>
+
+   <li>Mouse placement of the caret has to be reimplemented.</li>
+
+   <li>Keyboard movement of the caret has to be reimplemented (possibly across lines, for multiline
+   text input).</li>
+
+   <li>Scrolling of the text control has to be implemented (horizontally for long lines, vertically
+   for multiline input).</li>
+
+   <li>Native features such as copy-and-paste have to be reimplemented.</li>
+
+   <li>Native features such as spell-checking have to be reimplemented.</li>
+
+   <li>Native features such as drag-and-drop have to be reimplemented.</li>
+
+   <li>Native features such as page-wide text search have to be reimplemented.</li>
+
+   <li>Native features specific to the user, for example custom text services, have to be
+   reimplemented. This is close to impossible since each user might have different services
+   installed, and there is an unbounded set of possible such services.</li>
+
+   <li>Bidirectional text editing has to be reimplemented.</li>
+
+   <li>For multiline text editing, line wrapping has to be implemented for all relevant
+   languages.</li>
+
+   <li>Text selection has to be reimplemented.</li>
+
+   <li>Dragging of bidirectional text selections has to be reimplemented.</li>
+
+   <li>Platform-native keyboard shortcuts have to be reimplemented.</li>
+
+   <li>Platform-native input method editors (IMEs) have to be reimplemented.</li>
+
+   <li>Undo and redo functionality has to be reimplemented.</li>
+
+   <li>Accessibility features such as magnification following the caret or selection have to be
+   reimplemented.</li>
+
+  </ul>
+
+  <p>This is a huge amount of work, and authors are most strongly encouraged to avoid doing any of
+  it by instead using the <code>input</code> element, the <code>textarea</code> element, or the
+  <code data-x="attr-contenteditable">contenteditable</code> attribute.</p>
+
+
+  

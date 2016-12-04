@@ -1,0 +1,202 @@
+<h4>Phrasing content</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+cite, dfn, em, i, var { font-style: italic; }
+b, strong { font-weight: bolder; }
+code, kbd, samp, tt { font-family: monospace; }
+big { font-size: larger; }
+small { font-size: smaller; }
+
+sub { vertical-align: sub; }
+sup { vertical-align: super; }
+sub, sup { line-height: normal; font-size: smaller; }
+
+ruby { display: ruby; }
+rt { display: ruby-text; }
+
+:link { color: #0000EE; }
+:visited { color: #551A8B; }
+:link:active, :visited:active { color: #FF0000; }
+:link, :visited { text-decoration: underline; cursor: pointer; }
+a:link[rel~=help i], a:visited[rel~=help i],
+area:link[rel~=help i], area:visited[rel~=help i] { cursor: help; }
+
+:focus { outline: auto; }
+
+mark { background: yellow; color: black; } /* this color is just a suggestion and can be changed based on implementation feedback */
+
+abbr[title], acronym[title] { text-decoration: dotted underline; }<!-- CSS3 https://drafts.csswg.org/css3-text/#text-decoration-style -->
+ins, u { text-decoration: underline; }
+del, s, strike { text-decoration: line-through; }
+
+q::before { content: open-quote; }
+q::after { content: close-quote; }
+
+<span data-x="" id="br-wbr-content">br { display-outside: newline; } /* <a href="#bidi-rendering">this also has bidi implications</a> */
+nobr { white-space: nowrap; }
+wbr { display-outside: break-opportunity; } /* <a href="#bidi-rendering">this also has bidi implications</a> */
+nobr wbr { white-space: normal; }</span></pre>
+
+  <p>The following rules are also expected to apply, as
+  <span>presentational hints</span>:</p>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+br[clear=left i] { clear: left; }
+br[clear=right i] { clear: right; }
+br[clear=all i], br[clear=both i] { clear: both; }</pre>
+
+  <p>For the purposes of the CSS ruby model, runs of children of <code>ruby</code> elements that are
+  not <code>rt</code> or <code>rp</code> elements are expected to be wrapped in anonymous boxes
+  whose <span>'display'</span> property has the value <span>'ruby-base'</span>. <ref
+  spec=CSSRUBY></p>
+
+  <p>When a particular part of a ruby has more than one annotation, the annotations should be
+  distributed on both sides of the base text so as to minimize the stacking of ruby annotations on
+  one side.</p>
+
+  <p class="note">When it becomes possible to do so, the preceding requirement will be updated to be
+  expressed in terms of CSS ruby. (Currently, CSS ruby does not handle nested <code>ruby</code>
+  elements or multiple sequential <code>rt</code> elements, which is how this semantic is
+  expressed.)</p>
+
+  <p>User agents that do not support correct ruby rendering are expected to render parentheses
+  around the text of <code>rt</code> elements in the absence of <code>rp</code> elements.</p>
+
+  <hr>
+
+  <p>User agents are expected to support the <span>'clear'</span> property on inline elements (in
+  order to render <code>br</code> elements with <code data-x="attr-br-clear">clear</code>
+  attributes) in the manner described in the non-normative note to this effect in the CSS
+  specification.</p> <!-- section 9.5.2 of CSS2.1 -->
+
+  <p>The initial value for the <span>'color'</span> property is expected to be black. The initial
+  value for the <span>'background-color'</span> property is expected to be 'transparent'. The
+  canvas's background is expected to be white.</p>
+
+  <hr>
+
+  <p>When a <code>font</code> element has a <code data-x="attr-font-color" undefined>color</code>
+  attribute, its value is expected to be parsed using the <span>rules for parsing a legacy color
+  value</span>, and if that does not return an error, the user agent is expected to treat the
+  attribute as a <span data-x="presentational hints">presentational hint</span> setting the
+  element's <span>'color'</span> property to the resulting color.</p>
+
+  <p id="the-font-element-text-decoration-color-quirk">The <code>font</code> element is expected to
+  override the color of any text decoration that spans the text of the element to the
+  <span>used value</span> of the element's <span>'color'</span> property.</p>
+
+  <p>When a <code>font</code> element has a <code data-x="attr-font-face" undefined>face</code>
+  attribute, the user agent is expected to treat the attribute as a <span data-x="presentational
+  hints">presentational hint</span> setting the element's <span>'font-family'</span> property to the
+  attribute's value.</p>
+
+  <!-- (Apparently only IE supports this?) (Note: if you add this back, make sure to define which of
+  'size' vs 'pointsize' wins.)
+
+  <p>When a <code>font</code> element has a <code data-x="attr-font-pointsize"
+  undefined>pointsize</code> attribute, the user agent is expected to parse that attribute's value
+  using the <span>rules for parsing non-negative integers</span>, and if this doesn't generate an
+  error, then the user agent is expected to use the parsed value as a <em>point</em> length for a
+  <span data-x="presentational hints">presentational hint</span> for the <span>'font-size'</span>
+  property on the element.</p>
+  -->
+
+  <p>When a <code>font</code> element has a <code data-x="attr-font-size" undefined>size</code>
+  attribute, the user agent is expected to use the following steps, known as the <dfn>rules for
+  parsing a legacy font size</dfn>, to treat the attribute as a <span data-x="presentational
+  hints">presentational hint</span> setting the element's <span>'font-size'</span> property:</p>
+
+  <ol>
+
+   <li><p>Let <var>input</var> be the attribute's value.</p></li>
+
+   <li><p>Let <var>position</var> be a pointer into <var>input</var>, initially pointing at the
+   start of the string.</p></li>
+
+   <li><p><span>Skip whitespace</span>.</p></li>
+
+   <li><p>If <var>position</var> is past the end of <var>input</var>, there is no <span
+   data-x="presentational hints">presentational hint</span>. Abort these steps.</p></li>
+
+   <li><p>If the character at <var>position</var> is a U+002B PLUS SIGN character (+), then let
+   <var>mode</var> be <i>relative-plus</i>, and advance <var>position</var> to the next character.
+   Otherwise, if the character at <var>position</var> is a U+002D HYPHEN-MINUS character (-), then
+   let <var>mode</var> be <i>relative-minus</i>, and advance <var>position</var> to the next
+   character. Otherwise, let <var>mode</var> be <i>absolute</i>.</p></li>
+
+   <li><p><span>Collect a sequence of characters</span> that are <span>ASCII digits</span>, and let
+   the resulting sequence be <var>digits</var>.</p></li>
+
+   <li><p>If <var>digits</var> is the empty string, there is no <span data-x="presentational
+   hints">presentational hint</span>. Abort these steps.</p></li>
+
+   <li><p>Interpret <var>digits</var> as a base-ten integer. Let <var>value</var> be the resulting
+   number.</p></li>
+
+   <li>
+
+    <!-- basefont support would go here, but we removed it -->
+
+    <p>If <var>mode</var> is <i>relative-plus</i>, then increment <var>value</var> by 3. If
+    <var>mode</var> is <i>relative-minus</i>, then let <var>value</var> be the result of subtracting
+    <var>value</var> from 3.</p>
+
+   </li>
+
+   <li><p>If <var>value</var> is greater than 7, let it be 7.</p></li>
+
+   <li><p>If <var>value</var> is less than 1, let it be 1.</p></li>
+
+   <li>
+
+    <p>Set <span>'font-size'</span> to the keyword corresponding to the value of <var>value</var>
+    according to the following table:</p>
+
+    <table>
+     <thead>
+      <tr>
+       <th><var>value</var>
+       <th><span>'font-size'</span> keyword
+       <th>Notes
+     <tbody>
+      <tr>
+       <td>1
+       <td>'x-small'
+       <td>
+      <tr>
+       <td>2
+       <td>'small'
+       <td>
+      <tr>
+       <td>3
+       <td>'medium'
+       <td>
+      <tr>
+       <td>4
+       <td>'large'
+       <td>
+      <tr>
+       <td>5
+       <td>'x-large'
+       <td>
+      <tr>
+       <td>6
+       <td>'xx-large'
+       <td>
+      <tr>
+       <td>7
+       <td>'x<!---->xx-large'
+       <td><i>see below</i>
+    </table>
+
+    <p class="tablenote"><small>The 'x<!---->xx-large' value is a non-CSS value used here to
+    indicate a font size 50% larger than 'xx-large'.</small></p>
+
+   </li>
+
+  </ol>
+
+
+  

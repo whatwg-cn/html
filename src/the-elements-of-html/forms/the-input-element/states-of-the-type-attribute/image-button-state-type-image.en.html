@@ -1,0 +1,279 @@
+<h6><dfn data-x="attr-input-type-image">Image Button</dfn> state (<code data-x="">type=image</code>)</h6>
+
+  <div w-nodev>
+
+  <p>When an <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+  the <span data-x="attr-input-type-image">Image Button</span> state, the rules in this section
+  apply.</p>
+
+  </div>
+
+  <p>The <code>input</code> element <span>represents</span> either an image from which a user can
+  select a coordinate and submit the form, or alternatively a button from which the user can submit
+  the form. The element is a <span data-x="concept-button">button</span>, specifically a <span
+  data-x="concept-submit-button">submit button</span>.</p>
+
+  <p class="note">The coordinate is sent to the server <span data-x="constructing the form data
+  set">during form submission</span> by sending two entries for the element, derived from the name
+  of the control but with "<code data-x="">.x</code>" and "<code data-x="">.y</code>" appended to the
+  name with the <var>x</var> and <var>y</var> components of the coordinate
+  respectively.</p>
+
+  <hr>
+
+  <p>The image is given by the <dfn><code data-x="attr-input-src">src</code></dfn> attribute. The
+  <code data-x="attr-input-src">src</code> attribute must be present, and must contain a <span>valid
+  non-empty URL potentially surrounded by spaces</span> referencing a non-interactive, optionally
+  animated, image resource that is neither paged nor scripted.</p>
+
+  <div w-nodev>
+
+  <p>When any of the these events occur
+
+  <ul>
+
+   <li>the <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is
+   first set to the <span data-x="attr-input-type-image">Image Button</span> state (possibly when
+   the element is first created), and the <code data-x="attr-input-src">src</code> attribute is
+   present</li>
+
+   <li>the <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is
+   changed back to the <span data-x="attr-input-type-image">Image Button</span> state, and the <code
+   data-x="attr-input-src">src</code> attribute is present, and its value has changed since the last
+   time the <code data-x="attr-input-type">type</code> attribute was in the <span
+   data-x="attr-input-type-image">Image Button</span> state</li>
+
+   <li>the <code>input</code> element's <code data-x="attr-input-type">type</code> attribute is in
+   the <span data-x="attr-input-type-image">Image Button</span> state, and the <code
+   data-x="attr-input-src">src</code> attribute is set or changed</li>
+
+  </ul> <!-- Note how this does NOT happen when the base URL changes. -->
+
+  <p>then unless the user agent cannot support images, or its support for images has been disabled,
+  or the user agent only fetches images on demand, or the <code data-x="attr-input-src">src</code>
+  attribute's value is the empty string, the user agent must <span
+  data-x="parse a url">parse</span> the value of the <code data-x="attr-input-src">src</code>
+  attribute value, relative to the element's <span>node document</span>, and if that is successful,
+  run these substeps:</p>
+
+  <ol>
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is the <span>resulting URL record</span>,
+   <span data-x="concept-request-client">client</span> is the element's <span>node document</span>'s
+   <span>relevant settings object</span>, <span data-x="concept-request-type">type</span> is "<code
+   data-x="">image</code>", <span data-x="concept-request-destination">destination</span> is "<code
+   data-x="">image</code>", <span>omit-<code>Origin</code>-header flag</span> is set, <span
+   data-x="concept-request-credentials-mode">credentials mode</span> is "<code
+   data-x="">include</code>", and whose <span>use-URL-credentials flag</span> is set.</p></li>
+
+   <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>.</p></li>
+  </ol>
+
+  <!-- same text in <img> section and similar text elsewhere -->
+  <p>Fetching the image must <span>delay the load event</span> of the element's <span>node document</span> until the
+  <span data-x="concept-task">task</span> that is <span data-x="queue a task">queued</span> by the
+  <span>networking task source</span> once the resource has been fetched (defined below) has been
+  run.</p>
+
+  <p>If the image was successfully obtained, with no network errors, and the image's type is a
+  supported image type, and the image is a valid image of that type, then the image is said to be
+  <dfn data-x="input-img-available"><i>available</i></dfn>. If this is true before the image is
+  completely downloaded, each <span data-x="concept-task">task</span> that is <span data-x="queue a
+  task">queued</span> by the <span>networking task source</span> while the image is being fetched
+  must update the presentation of the image appropriately.</p>
+
+  <p>The user agent should apply the <span data-x="Content-Type sniffing: image">image sniffing
+  rules</span> to determine the type of the image, with the image's <span
+  data-x="Content-Type">associated Content-Type headers</span> giving the <var>official
+  type</var>. If these rules are not applied, then the type of the image must be the type given by
+  the image's <span data-x="Content-Type">associated Content-Type headers</span>.</p>
+
+  <p>User agents must not support non-image resources with the <code>input</code> element. User
+  agents must not run executable code embedded in the image resource. User agents must only display
+  the first page of a multipage resource. User agents must not allow the resource to act in an
+  interactive fashion, but should honor any animation in the resource.</p>
+
+  <p>The <span data-x="concept-task">task</span> that is <span data-x="queue a task">queued</span>
+  by the <span>networking task source</span> once the resource has been fetched, must, if the
+  download was successful and the image is <i data-x="input-img-available">available</i>,
+  <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-load">load</code> at the <code>input</code> element; and otherwise, if the fetching
+  process fails without a response from the remote server, or completes but the image is not a valid
+  or supported image, <span>queue a task</span> to <span data-x="concept-event-fire">fire an
+  event</span> named <code data-x="event-error">error</code> on the <code>input</code> element.</p>
+
+  <hr>
+
+  </div>
+
+  <p>The <dfn><code data-x="attr-input-alt">alt</code></dfn> attribute provides the textual label for
+  the button for users and user agents who cannot use the image. The <code
+  data-x="attr-input-alt">alt</code> attribute must be present, and must contain a non-empty string
+  giving the label that would be appropriate for an equivalent button if the image was
+  unavailable.</p>
+
+  <p>The <code>input</code> element supports <span>dimension attributes</span>.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>If the <code data-x="attr-input-src">src</code> attribute is set, and the image is <i
+  data-x="input-img-available">available</i> and the user agent is configured to display that image,
+  then: The element <span>represents</span> a control for selecting a <span
+  data-x="concept-input-type-image-coordinate">coordinate</span> from the image specified by the
+  <code data-x="attr-input-src">src</code> attribute; if the element is <i
+  data-x="concept-fe-mutable">mutable</i>, the user agent should allow the user to select this <span
+  data-x="concept-input-type-image-coordinate">coordinate</span>, and the element's <span>input
+  activation behavior</span> is as follows: if the element has a <span>form owner</span>, and the
+  element's <span>node document</span> is <span>fully active</span>, take the user's selected <span
+  data-x="concept-input-type-image-coordinate">coordinate</span>, and <span
+  data-x="concept-form-submit">submit</span> the <code>input</code> element's <span>form owner</span>
+  from the <code>input</code> element. If the user activates the control without explicitly
+  selecting a coordinate, then the coordinate (0,0) must be assumed.</p>
+
+  <p>Otherwise, the element <span>represents</span> a submit button whose label is given by the
+  value of the <code data-x="attr-input-alt">alt</code> attribute; the element's <span>input
+  activation behavior</span> is as follows: if the element has a <span>form owner</span>, and the
+  element's <span>node document</span> is <span>fully active</span>, set the <span
+  data-x="concept-input-type-image-coordinate">selected coordinate</span> to (0,0), and <span
+  data-x="concept-form-submit">submit</span> the <code>input</code> element's <span>form
+  owner</span> from the <code>input</code> element.</p>
+
+  <p>In either case, if the element has no <span>form owner</span> or the element's <span>node
+  document</span> is not <span>fully active</span>, then its <span>input activation behavior</span>
+  must be to do nothing..</p>
+
+  <p>The <dfn data-x="concept-input-type-image-coordinate">selected coordinate</dfn> must consist of
+  an <var>x</var>-component and a <var>y</var>-component. The coordinates
+  represent the position relative to the edge of the image, with the coordinate space having the
+  positive <var>x</var> direction to the right, and the positive <var>y</var>
+  direction downwards.</p>
+
+  <p>The <var>x</var>-component must be a <span>valid integer</span> representing a number
+  <var>x</var> in the range <span data-x="">&#x2212;(<var>border<sub>left</sub></var>+<var>padding<sub>left</sub></var>) &le; <var>x</var> &le; <var>width</var>+<var>border<sub>right</sub></var>+<var>padding<sub>right</sub></var></span>, where <var>width</var> is the rendered width of the image, <var>border<sub>left</sub></var> is the width of the border on the left of the image, <var>padding<sub>left</sub></var> is the width of the padding on the left of the
+  image, <var>border<sub>right</sub></var> is the width of the border on the right
+  of the image, and <var>padding<sub>right</sub></var> is the width of the padding
+  on the right of the image, with all dimensions given in <span data-x="'px'">CSS pixels</span>.</p>
+
+  <p>The <var>y</var>-component must be a <span>valid integer</span> representing a number
+  <var>y</var> in the range <span data-x="">&#x2212;(<var>border<sub>top</sub></var>+<var>padding<sub>top</sub></var>) &le; <var>y</var> &le; <var>height</var>+<var>border<sub>bottom</sub></var>+<var>padding<sub>bottom</sub></var></span>, where
+  <var>height</var> is the rendered height of the image, <var>border<sub>top</sub></var> is the width of the border above the image, <var>padding<sub>top</sub></var> is the width of the padding above the image, <var>border<sub>bottom</sub></var> is the width of the border below the image, and <var>padding<sub>bottom</sub></var> is the width of the padding below the image, with
+  all dimensions given in <span data-x="'px'">CSS pixels</span>.</p>
+
+  <p>Where a border or padding is missing, its width is zero <span data-x="'px'">CSS
+  pixels</span>.</p>
+
+  <hr>
+
+  </div>
+
+  <p>The <code data-x="attr-fs-formaction">formaction</code>, <code
+  data-x="attr-fs-formenctype">formenctype</code>, <code
+  data-x="attr-fs-formmethod">formmethod</code>, <code
+  data-x="attr-fs-formnovalidate">formnovalidate</code>, and <code
+  data-x="attr-fs-formtarget">formtarget</code> attributes are <span>attributes for form
+  submission</span>.</p>
+
+<!--TOPIC:DOM APIs-->
+  <dl class="domintro">
+
+   <dt><var>image</var> . <code subdfn data-x="dom-input-width">width</code> [ = <var>value</var> ]</dt>
+   <dt><var>image</var> . <code subdfn data-x="dom-input-height">height</code> [ = <var>value</var> ]</dt>
+
+   <dd>
+
+    <p>These attributes return the actual rendered dimensions of the image, or zero if the
+    dimensions are not known.</p>
+
+    <p>They can be set, to change the corresponding content attributes.</p>
+
+   </dd>
+
+  </dl>
+<!--TOPIC:HTML-->
+
+  <div class="bookkeeping">
+
+   <p>The following common <code>input</code> element content attributes and IDL attributes <span
+   data-x="concept-input-apply">apply</span> to the element:
+   <code data-x="attr-input-alt">alt</code>,
+   <code data-x="attr-fs-formaction">formaction</code>,
+   <code data-x="attr-fs-formenctype">formenctype</code>,
+   <code data-x="attr-fs-formmethod">formmethod</code>,
+   <code data-x="attr-fs-formnovalidate">formnovalidate</code>,
+   <code data-x="attr-fs-formtarget">formtarget</code>,
+   <code data-x="attr-dim-height">height</code>,
+   <code data-x="attr-input-src">src</code>, and
+   <code data-x="attr-dim-width">width</code> content attributes;
+   <code data-x="dom-input-value">value</code> IDL attribute.</p>
+
+   <p>The <code data-x="dom-input-value">value</code> IDL attribute is in mode <span
+   data-x="dom-input-value-default">default</span>.</p>
+
+   <p>The following content attributes must not be specified and <span>do not apply</span> to the
+   element:
+   <code class="no-backref" data-x="attr-input-accept">accept</code>,
+   <code class="no-backref" data-x="attr-fe-autocomplete">autocomplete</code>,
+   <code class="no-backref" data-x="attr-input-checked">checked</code>,
+   <code class="no-backref" data-x="attr-fe-dirname">dirname</code>,
+   <code class="no-backref" data-x="attr-fe-inputmode">inputmode</code>,
+   <code class="no-backref" data-x="attr-input-list">list</code>,
+   <code class="no-backref" data-x="attr-input-max">max</code>,
+   <code class="no-backref" data-x="attr-input-maxlength">maxlength</code>,
+   <code class="no-backref" data-x="attr-input-min">min</code>,
+   <code class="no-backref" data-x="attr-input-minlength">minlength</code>,
+   <code class="no-backref" data-x="attr-input-multiple">multiple</code>,
+   <code class="no-backref" data-x="attr-input-pattern">pattern</code>,
+   <code class="no-backref" data-x="attr-input-placeholder">placeholder</code>,
+   <code class="no-backref" data-x="attr-input-readonly">readonly</code>,
+   <code class="no-backref" data-x="attr-input-required">required</code>,
+   <code class="no-backref" data-x="attr-input-size">size</code>, and
+   <code class="no-backref" data-x="attr-input-step">step</code>.</p>
+
+   <p>The element's <code data-x="attr-input-value">value</code> attribute must be omitted.</p>
+
+   <p>The following IDL attributes and methods <span>do not apply</span> to the element:
+   <code class="no-backref" data-x="dom-input-checked">checked</code>,
+   <code class="no-backref" data-x="dom-input-files">files</code>,
+   <code class="no-backref" data-x="dom-input-list">list</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionStart">selectionStart</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionEnd">selectionEnd</code>,
+   <code class="no-backref" data-x="dom-textarea/input-selectionDirection">selectionDirection</code>,
+   <code class="no-backref" data-x="dom-input-valueAsDate">valueAsDate</code>, and
+   <code class="no-backref" data-x="dom-input-valueAsNumber">valueAsNumber</code> IDL attributes;
+   <code class="no-backref" data-x="dom-textarea/input-select">select()</code>,
+   <code class="no-backref" data-x="dom-textarea/input-setRangeText">setRangeText()</code>,
+   <code class="no-backref" data-x="dom-textarea/input-setSelectionRange">setSelectionRange()</code>,
+   <code class="no-backref" data-x="dom-input-stepDown">stepDown()</code>, and
+   <code class="no-backref" data-x="dom-input-stepUp">stepUp()</code> methods.</p>
+
+   <p>The <code class="no-backref" data-x="event-input">input</code> and <code
+   class="no-backref" data-x="event-change">change</code> events <span>do not apply</span>.</p>
+
+  </div>
+
+  <p class="note">Many aspects of this state's behavior are similar to the behavior of the
+  <code>img</code> element. Readers are encouraged to read that section, where many of the same
+  requirements are described in more detail.</p>
+
+  <div class="example">
+
+   <p>Take the following form:</p>
+
+   <pre>&lt;form action="process.cgi">
+ &lt;input type=image src=map.png name=where alt="Show location list">
+&lt;/form></pre>
+
+   <p>If the user clicked on the image at coordinate (127,40) then the URL used to submit the form
+   would be "<code data-x="">process.cgi?where.x=127&amp;where.y=40</code>".</p>
+
+   <p>(In this example, it's assumed that for users who don't see the map, and who instead just see
+   a button labeled "Show location list", clicking the button will cause the server to show a list
+   of locations to pick from instead of the map.)</p>
+
+  </div>
+
+
+
+  

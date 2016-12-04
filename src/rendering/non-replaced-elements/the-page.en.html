@@ -1,0 +1,131 @@
+<h4>The page</h4>
+
+  <pre class="css">@namespace url(http://www.w3.org/1999/xhtml);
+
+html, body { display: block; }</pre>
+
+
+  <!-- body { margin: 8px; } -->
+
+  <p>For each property in the table below, given a <code>body</code> element, the first attribute
+  that exists <span>maps to the pixel length property</span> on the <code>body</code> element. If
+  none of the attributes for a property are found, or if the value of the attribute that was found
+  cannot be parsed successfully, then a default value of 8px is expected to be used for that
+  property instead.</p>
+  <table>
+   <thead>
+    <tr>
+     <th>Property
+     <th>Source
+   <tbody>
+    <tr>
+     <td rowspan="3"><span>'margin-top'</span>
+     <td><code>body</code> element's <code data-x="attr-body-marginheight">marginheight</code> attribute
+    <tr>
+     <td>The <code>body</code> element's <span>container frame element</span>'s <code data-x="attr-iframe-marginheight">marginheight</code> attribute
+    <tr>
+     <td><code>body</code> element's <code data-x="attr-body-topmargin">topmargin</code> attribute
+   <tbody>
+    <tr>
+     <td rowspan="3"><span>'margin-right'</span>
+     <td><code>body</code> element's <code data-x="attr-body-marginwidth">marginwidth</code> attribute
+    <tr>
+     <td>The <code>body</code> element's <span>container frame element</span>'s <code data-x="attr-iframe-marginwidth">marginwidth</code> attribute
+    <tr>
+     <td><code>body</code> element's <code data-x="attr-body-rightmargin">rightmargin</code> attribute
+   <tbody>
+    <tr>
+     <td rowspan="3"><span>'margin-bottom'</span>
+     <td><code>body</code> element's <code data-x="attr-body-marginheight">marginheight</code> attribute
+    <tr>
+     <td>The <code>body</code> element's <span>container frame element</span>'s <code data-x="attr-iframe-marginheight">marginheight</code> attribute
+    <tr>
+     <td><code>body</code> element's <code data-x="attr-body-bottommargin">bottommargin</code> attribute
+   <tbody>
+    <tr>
+     <td rowspan="3"><span>'margin-left'</span>
+     <td><code>body</code> element's <code data-x="attr-body-marginwidth">marginwidth</code> attribute
+    <tr>
+     <td>The <code>body</code> element's <span>container frame element</span>'s <code data-x="attr-iframe-marginwidth">marginwidth</code> attribute
+    <tr>
+     <td><code>body</code> element's <code data-x="attr-body-leftmargin">leftmargin</code> attribute
+  </table>
+
+  <p>If the <code>body</code> element's <span>node document</span>'s <span
+  data-x="concept-document-bc">browsing context</span> is a <span>nested browsing context</span>,
+  and the <span>browsing context container</span> of that <span>nested browsing context</span> is a
+  <code>frame</code> or <code>iframe</code> element, then the <dfn>container frame element</dfn> of
+  the <code>body</code> element is that <code>frame</code> or <code>iframe</code> element.
+  Otherwise, there is no <span>container frame element</span>.</p>
+
+  <p class="warning">The above requirements imply that a page can change the margins of another page
+  (including one from another <span>origin</span>) using, for example, an <code>iframe</code>. This
+  is potentially a security risk, as it might in some cases allow an attack to contrive a situation
+  in which a page is rendered not as the author intended, possibly for the purposes of phishing or
+  otherwise misleading the user.</p>
+
+  <hr>
+
+  <p>If a <code>Document</code> is in a <span>nested browsing context</span>, it is expected to be
+  positioned and sized to fit inside the <span>content box</span> of its <span>browsing context
+  container</span>. If a <span>browsing context</span>'s <span>browsing context container</span> is
+  not <span>being rendered</span>, the <span>browsing context</span> is expected to have a
+  <span>viewport</span> with zero width and zero height.</p>
+
+  <p>If the <code>Document</code> is in a <span>nested browsing context</span>, and the
+  <span>browsing context container</span> of that <span>nested browsing context</span> is a
+  <code>frame</code> or <code>iframe</code> element, and that element has a <code
+  data-x="">scrolling</code> attribute, and that attribute's value is an <span>ASCII
+  case-insensitive</span> match for the string "<code data-x="">off</code>", "<code
+  data-x="">noscroll</code>", or "<code data-x="">no</code>", then the user agent is expected to
+  prevent any scroll bars from being shown for the <span>viewport</span> of the
+  <span>nested browsing context</span>, regardless of the <span>'overflow'</span> property that
+  applies to that <span>viewport</span>.</p>
+
+  <hr>
+
+  <p>When a <code>body</code> element has a <code data-x="attr-background">background</code>
+  attribute set to a non-empty value, the new value is expected to be <span data-x="parse a
+  url">parsed</span> relative to the element's <span>node document</span>, and if this is
+  successful, the user agent is expected to treat the attribute as a <span data-x="presentational
+  hints">presentational hint</span> setting the element's <span>'background-image'</span> property
+  to the <span>resulting URL string</span>.</p>
+
+  <p>When a <code>body</code> element has a <code data-x="attr-body-bgcolor">bgcolor</code>
+  attribute set, the new value is expected to be parsed using the <span>rules for parsing a legacy
+  color value</span>, and if that does not return an error, the user agent is expected to treat the
+  attribute as a <span data-x="presentational hints">presentational hint</span> setting the
+  element's <span>'background-color'</span> property to the resulting color.</p>
+
+  <p>When a <code>body</code> element has a <code data-x="attr-body-text">text</code> attribute, its
+  value is expected to be parsed using the <span>rules for parsing a legacy color value</span>, and
+  if that does not return an error, the user agent is expected to treat the attribute as a <span
+  data-x="presentational hints">presentational hint</span> setting the element's
+  <span>'color'</span> property to the resulting color.</p>
+
+  <p>When a <code>body</code> element has a <code data-x="attr-body-link">link</code> attribute, its
+  value is expected to be parsed using the <span>rules for parsing a legacy color value</span>, and
+  if that does not return an error, the user agent is expected to treat the attribute as a <span
+  data-x="presentational hints">presentational hint</span> setting the <span>'color'</span> property
+  of any element in the <code>Document</code> matching the <code data-x="selector-link">:link</code>
+  <span>pseudo-class</span> to the resulting color.</p>
+
+  <p>When a <code>body</code> element has a <code data-x="attr-body-vlink">vlink</code> attribute,
+  its value is expected to be parsed using the <span>rules for parsing a legacy color value</span>,
+  and if that does not return an error, the user agent is expected to treat the attribute as a <span
+  data-x="presentational hints">presentational hint</span> setting the <span>'color'</span> property
+  of any element in the <code>Document</code> matching the <code
+  data-x="selector-visited">:visited</code> <span>pseudo-class</span> to the resulting color.</p>
+
+  <p>When a <code>body</code> element has an <code data-x="attr-body-alink">alink</code> attribute,
+  its value is expected to be parsed using the <span>rules for parsing a legacy color value</span>,
+  and if that does not return an error, the user agent is expected to treat the attribute as a <span
+  data-x="presentational hints">presentational hint</span> setting the <span>'color'</span> property
+  of any element in the <code>Document</code> matching the
+  <code data-x="selector-active">:active</code> <span>pseudo-class</span> and either the <code
+  data-x="selector-link">:link</code> <span>pseudo-class</span> or the <code
+  data-x="selector-visited">:visited</code> <span>pseudo-class</span> to the resulting color.</p>
+
+
+
+  

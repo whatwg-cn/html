@@ -1,0 +1,37 @@
+<h5>The <code>RelatedEvent</code> interfaces</h5>
+
+  <pre class="idl">[Constructor(DOMString type, optional <span>RelatedEventInit</span> eventInitDict)]
+interface <dfn>RelatedEvent</dfn> : <span>Event</span> {
+  readonly attribute <span>EventTarget</span>? <span data-x="dom-RelatedEvent-relatedTarget">relatedTarget</span>;
+};
+
+dictionary <dfn>RelatedEventInit</dfn> : <span>EventInit</span> {
+  <span>EventTarget</span>? relatedTarget = null;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>event</var> . <code subdfn data-x="dom-RelatedEvent-relatedTarget">relatedTarget</code></dt>
+
+   <dd>
+
+    <p>Returns the other event target involved in this event. For example, when a <code
+    data-x="event-show">show</code> event fires on a <code>menu</code> element, the other event
+    target involved in the event would be the element for which the menu is being shown.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-RelatedEvent-relatedTarget">relatedTarget</code></dfn> attribute
+  must return the value it was initialized to. It represents the other event target that is related
+  to the event.</p>
+
+  </div>
+
+
+
+
+  

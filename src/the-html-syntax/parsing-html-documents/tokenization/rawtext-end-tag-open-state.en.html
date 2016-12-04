@@ -1,0 +1,19 @@
+<h5><dfn>RAWTEXT end tag open state</dfn></h5>
+  <!-- identical to the RCDATA (and Script data) end tag open state, except s/RCDATA/RAWTEXT/g -->
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt><span data-x="ASCII letters">ASCII letter</span></dt>
+   <dd>Create a new end tag token, set its tag name to the empty string. <span>Reconsume</span> in
+   the <span>RAWTEXT end tag name state</span>.
+
+   <dt>Anything else</dt>
+   <dd>Emit a U+003C LESS-THAN SIGN character token and a U+002F SOLIDUS character token.
+   <span>Reconsume</span> in the <span>RAWTEXT state</span>.</dd>
+
+  </dl>
+
+
+  

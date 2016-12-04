@@ -1,0 +1,43 @@
+<h4 id="resolving-urls">Parsing URLs</h4>
+
+  <p>Parsing a URL is the process of taking a <span>URL string</span> and obtaining the <span>URL
+  record</span> that it implies. While this process is defined in the WHATWG URL standard, the HTML
+  standard defines a wrapper for convenience. <ref spec=URL></p>
+
+  <p class="note">This wrapper is only useful when the character encoding for the URL parser has to
+  match that of the document or environment settings object for legacy reasons. When that is not the
+  case the <span>URL parser</span> can be used directly.</p>
+
+  <p id="resolve-a-url">To <dfn>parse a URL</dfn> <var>url</var>, relative to either a
+  <var>document</var> or <var>environment settings object</var>, the user agent must use the
+  following steps. Parsing a URL either results in failure or a <span>resulting URL string</span>
+  and <span>resulting URL record</span>.</p>
+
+  <ol>
+   <li><p>Let <var>encoding</var> be <var>document</var>'s <span data-x="document's character
+   encoding">character encoding</span>, if <var>document</var> was given, and <var>environment
+   settings object</var>'s <span>API URL character encoding</span> otherwise.</p></li>
+
+   <li><p>Let <var>baseURL</var> be <var>document</var>'s <span data-x="document base URL">base
+   URL</span>, if <var>document</var> was given, and <var>environment settings object</var>'s
+   <span>API base URL</span> otherwise.</p></li>
+
+   <li><p>Let <var>urlRecord</var> be the result of applying the <span>URL parser</span> to
+   <var>url</var>, with <var>baseURL</var> and <var>encoding</var>.</p></li>
+
+   <li><p>If <var>urlRecord</var> is failure, then abort these steps with an error.</p></li>
+
+   <li><p>Let <var>urlString</var> be the result of applying the <span
+   data-x="concept-url-serializer">URL serializer</span> to <var>urlRecord</var>.</p></li>
+
+   <li><p>Return <var>urlString</var> as the <dfn>resulting URL string</dfn> and
+   <var>urlRecord</var> as the <dfn>resulting URL record</dfn>.</p></li>
+  </ol>
+
+  </div>
+
+
+
+  <div w-nodev>
+
+  

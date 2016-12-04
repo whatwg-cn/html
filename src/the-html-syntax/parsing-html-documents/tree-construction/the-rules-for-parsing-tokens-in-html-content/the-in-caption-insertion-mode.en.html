@@ -1,0 +1,78 @@
+<h6 id="parsing-main-incaption">The "<dfn data-x="insertion mode: in caption">in caption</dfn>" insertion mode</h6>
+
+  <p>When the user agent is to apply the rules for the "<span data-x="insertion mode: in caption">in
+  caption</span>" <span>insertion mode</span>, the user agent must handle the token as follows:</p>
+
+  <dl class="switch">
+
+   <dt>An end tag whose tag name is "caption"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have a <code>caption</code> element in table scope</span>, this is a <span>parse
+    error</span>; ignore the token. (<span>fragment case</span>)</p>
+
+    <p>Otherwise:</p>
+
+    <p><span>Generate implied end tags</span>.</p>
+
+    <p>Now, if the <span>current node</span> is not a <code>caption</code> element, then this is a
+    <span>parse error</span>.</p>
+
+    <p>Pop elements from this stack until a <code>caption</code> element has been popped from the
+    stack.</p>
+
+    <p><span>Clear the list of active formatting elements up to the last marker</span>.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in table">in
+    table</span>".</p>
+
+   </dd>
+
+   <dt>A start tag whose tag name is one of: "caption", "col", "colgroup", "tbody", "td", "tfoot",
+   "th", "thead", "tr"</dt> <dt>An end tag whose tag name is "table"</dt>
+   <dd>
+
+    <p>If the <span>stack of open elements</span> does not <span data-x="has an element in table
+    scope">have a <code>caption</code> element in table scope</span>, this is a <span>parse
+    error</span>; ignore the token. (<span>fragment case</span>)</p>
+
+    <p>Otherwise:</p>
+
+    <!-- fake </caption> -->
+    <p><span>Generate implied end tags</span>.</p>
+
+    <p>Now, if the <span>current node</span> is not a <code>caption</code> element, then this is a
+    <span>parse error</span>.</p>
+
+    <p>Pop elements from this stack until a <code>caption</code> element has been popped from the
+    stack.</p>
+
+    <p><span>Clear the list of active formatting elements up to the last marker</span>.</p>
+
+    <p>Switch the <span>insertion mode</span> to "<span data-x="insertion mode: in table">in
+    table</span>".</p>
+    <!-- end of fake </caption> -->
+
+    <p>Reprocess the token.</p>
+
+   </dd>
+
+   <dt>An end tag whose tag name is one of: "body", "col", "colgroup", "html", "tbody", "td",
+   "tfoot", "th", "thead", "tr"</dt>
+   <dd>
+    <p><span>Parse error</span>. Ignore the token.</p>
+   </dd>
+
+   <dt>Anything else</dt>
+   <dd>
+
+    <p>Process the token <span>using the rules for</span> the "<span data-x="insertion mode: in
+    body">in body</span>" <span>insertion mode</span>.</p>
+
+   </dd>
+
+  </dl>
+
+
+  

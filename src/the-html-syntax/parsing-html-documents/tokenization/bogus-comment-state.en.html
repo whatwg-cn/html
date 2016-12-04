@@ -1,0 +1,22 @@
+<h5><dfn>Bogus comment state</dfn></h5>
+
+  <p>Consume the <span>next input character</span>:</p>
+
+  <dl class="switch">
+
+   <dt>U+003E GREATER-THAN SIGN (&gt;)</dt>
+   <dd>Switch to the <span>data state</span>. Emit the comment token.</dd>
+
+   <dt>EOF</dt>
+   <dd>Emit the comment. Emit an end-of-file token.</dd>
+
+   <dt>U+0000 NULL</dt>
+   <dd>Append a U+FFFD REPLACEMENT CHARACTER character to the comment token's data.</dd>
+
+   <dt>Anything else</dt>
+   <dd>Append the <span>current input character</span> to the comment token's data.</dd>
+
+  </dl>
+
+
+  

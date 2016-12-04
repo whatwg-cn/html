@@ -1,0 +1,447 @@
+<h4><dfn>DOM tree accessors</dfn></h4>
+
+  <p><dfn>The <code>html</code> element</dfn> of a document is its <span>document element</span>,
+  if it's an <code>html</code> element, and null otherwise.</p>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-head">head</code></dt>
+   <dd>
+    <p>Returns <span>the <code>head</code> element</span>.</p>
+   </dd>
+
+  </dl>
+
+  <p><dfn>The <code>head</code> element</dfn> of a document is the first <code>head</code> element
+  that is a child of <span>the <code>html</code> element</span>, if there is one, or null
+  otherwise.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-head">head</code></dfn> attribute, on getting, must return
+  <span>the <code>head</code> element</span> of the document (a <code>head</code> element or
+  null).</p>
+
+  </div>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-title">title</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns the document's title, as given by <span>the <code>title</code> element</span> for
+    HTML and as given by the <span>SVG <code>title</code></span> element for SVG.</p>
+
+    <p>Can be set, to update the document's title. If there is no appropriate element to update, the
+    new value is ignored.</p>
+
+   </dd>
+
+  </dl>
+
+  <p><dfn>The <code>title</code> element</dfn> of a document is the first <code>title</code> element
+  in the document (in <span>tree order</span>), if there is one, or null otherwise.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn id="document.title" data-x="dom-document-title"><code>title</code></dfn> attribute
+  must, on getting, run the following algorithm:</p>
+
+  <ol>
+
+   <li><p>If the <span>document element</span> is an <span>SVG <code>svg</code></span> element, then
+   let <var>value</var> be the <span>child text content</span> of the first <span>SVG
+   <code>title</code></span> element that is a child of the <span>document element</span>.</p></li>
+
+   <li><p>Otherwise, let <var>value</var> be the <span>child text content</span> of <span>the
+   <code>title</code> element</span>, or the empty string if <span>the <code>title</code>
+   element</span> is null.</p></li>
+
+   <li><p><span>Strip and collapse whitespace</span> in <var>value</var>.</p></li>
+
+   <li><p>Return <var>value</var>.</p></li>
+
+  </ol>
+
+  <p>On setting, the steps corresponding to the first matching condition in the following list must
+  be run:</p>
+
+  <dl class="switch">
+
+   <dt>If the <span>document element</span> is an <span>SVG <code>svg</code></span> element</dt>
+
+   <dd>
+
+    <ol>
+
+     <li><p>If there is an <span>SVG <code>title</code></span> element that is a child of the
+     <span>document element</span>, let <var>element</var> be the first such element.</p></li>
+
+     <li>
+      <p>Otherwise:</p>
+
+      <ol>
+       <li><p>Let <var>element</var> be the result of <span data-x="create an element">creating an
+       element</span> given the <span>document element</span>'s <span>node document</span>, <code
+       data-x="SVG title">title</code>, and the <span>SVG namespace</span>.</p>
+
+       <li><p>Insert <var>element</var> as the first child of the <span>document
+       element</span>.</p></li>
+      </ol>
+     </li>
+
+     <li><p>Act as if the <code>textContent</code> IDL attribute of <var>element</var> was
+     set to the new value being assigned.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <dt>If the <span>document element</span> is in the <span>HTML namespace</span></dt>
+
+   <dd>
+
+    <ol>
+
+     <li><p>If <span>the <code>title</code> element</span> is null and <span>the <code>head</code>
+     element</span> is null, then abort these steps.</p></li>
+
+     <li><p>If <span>the <code>title</code> element</span> is non-null, let <var>element</var> be
+     <span>the <code>title</code> element</span>.</p></li>
+
+     <li>
+      <p>Otherwise:</p>
+
+      <ol>
+       <li><p>Let <var>element</var> be the result of <span data-x="create an element">creating an
+       element</span> given the <span>document element</span>'s <span>node document</span>,
+       <code>title</code>, and the <span>HTML namespace</span>.</p>
+
+       <li><p><span data-x="concept-node-append">Append</span> <var>element</var> to <span>the
+       <code>head</code> element</span>.</p></li>
+      </ol>
+     </li>
+
+     <li><p>Act as if the <code>textContent</code> IDL attribute of <var>element</var> was
+     set to the new value being assigned.</p></li>
+
+    </ol>
+
+   </dd>
+
+   <dt>Otherwise</dt>
+
+   <dd>
+
+    <p>Do nothing.</p>
+
+   </dd>
+
+  </dl>
+
+  </div>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-body">body</code> [ = <var>value</var> ]</dt>
+   <dd>
+
+    <p>Returns <span>the body element</span>.</p>
+
+    <p>Can be set, to replace <span>the body element</span>.</p>
+
+    <p>If the new value is not a <code>body</code> or <code>frameset</code> element, this will throw
+    a <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p><dfn>The body element</dfn> of a document is the first child of <span>the <code>html</code>
+  element</span> that is either a <code>body</code> element or a <code>frameset</code> element. If
+  there is no such element, it is null.</p>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-body">body</code></dfn> attribute, on getting, must return
+  <span>the body element</span> of the document (either a <code>body</code> element, a
+  <code>frameset</code> element, or null). On setting, the following algorithm must be run:</p>
+
+  <ol>
+
+   <!-- if changes are requested:
+    http://searchfox.org/mozilla-central/source/dom/html/nsHTMLDocument.cpp
+    search for ::GetBody ::SetBody
+    https://trac.webkit.org/browser/trunk/Source/WebCore/html/HTMLDocument.cpp
+    search for ::setBody
+    https://trac.webkit.org/browser/trunk/Source/WebCore/dom/Document.cpp
+    search for ::body
+   -->
+
+   <li>If the new value is not a <code>body</code> or <code>frameset</code> element, then throw a
+   <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code> and abort these
+   steps.</li>
+
+   <li>Otherwise, if the new value is the same as <span>the body element</span>, do nothing. Abort
+   these steps.</li>
+
+   <li>Otherwise, if <span>the body element</span> is not null, then <span
+   data-x="concept-node-replace">replace</span> <span>the body element</span> with the new value
+   within <span>the body element</span>'s parent and abort these steps.</li>
+
+   <li>Otherwise, if there is no <span>document element</span>, throw a
+   <span>"<code>HierarchyRequestError</code>"</span> <code>DOMException</code> and abort these
+   steps.</li>
+
+   <li>Otherwise, <span>the body element</span> is null, but there's a
+   <span>document element</span>. <span data-x="concept-node-append">Append</span> the new value to
+   the <span>document element</span>.</li>
+
+  </ol>
+
+  </div>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-images">images</code></dt>
+   <dd>
+    <p>Returns an <code>HTMLCollection</code> of the <code>img</code> elements in the <code>Document</code>.</p>
+   </dd>
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-embeds">embeds</code></dt>
+   <dt><var>document</var> . <code subdfn data-x="dom-document-plugins">plugins</code></dt>
+   <dd>
+    <p>Return an <code>HTMLCollection</code> of the <code>embed</code> elements in the <code>Document</code>.</p>
+   </dd>
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-links">links</code></dt>
+   <dd>
+    <p>Returns an <code>HTMLCollection</code> of the <code>a</code> and <code>area</code> elements
+    in the <code>Document</code> that have <code data-x="attr-hyperlink-href">href</code>
+    attributes.</p>
+   </dd>
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-forms">forms</code></dt>
+   <dd>
+    <p>Return an <code>HTMLCollection</code> of the <code>form</code> elements in the <code>Document</code>.</p>
+   </dd>
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-scripts">scripts</code></dt>
+   <dd>
+    <p>Return an <code>HTMLCollection</code> of the <code>script</code> elements in the <code>Document</code>.</p>
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <!-- these all return the same object each time because of a rule in the collection section -->
+
+  <p>The <dfn><code data-x="dom-document-images">images</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>Document</code> node, whose filter matches only
+  <code>img</code> elements.</p>
+
+  <p>The <dfn><code data-x="dom-document-embeds">embeds</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>Document</code> node, whose filter matches only
+  <code>embed</code> elements.</p>
+
+  <p>The <dfn><code data-x="dom-document-plugins">plugins</code></dfn> attribute must return the
+  same object as that returned by the <code data-x="dom-document-embeds">embeds</code>
+  attribute.</p>
+
+  <p>The <dfn><code data-x="dom-document-links">links</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>Document</code> node, whose filter matches only
+  <code>a</code> elements with <code data-x="attr-hyperlink-href">href</code> attributes and
+  <code>area</code> elements with <code data-x="attr-hyperlink-href">href</code> attributes.</p>
+
+  <p>The <dfn><code data-x="dom-document-forms">forms</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>Document</code> node, whose filter matches only
+  <code>form</code> elements.</p>
+
+  <p>The <dfn><code data-x="dom-document-scripts">scripts</code></dfn> attribute must return an
+  <code>HTMLCollection</code> rooted at the <code>Document</code> node, whose filter matches only
+  <code>script</code> elements.</p>
+
+  <hr>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>collection</var> = <var>document</var> . <code subdfn data-x="dom-document-getElementsByName">getElementsByName</code>(<var>name</var>)</dt>
+   <dd>
+
+    <p>Returns a <code>NodeList</code> of elements in the <code>Document</code> that have a <code
+    data-x="">name</code> attribute with the value <var>name</var>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-getElementsByName">getElementsByName(<var>name</var>)</code></dfn> method takes a string <var>name</var>, and must
+  return a <span>live</span> <code>NodeList</code> containing all the <span>HTML elements</span> in
+  that document that have a <code data-x="">name</code> attribute whose value is equal to the <var>name</var> argument (in a <span>case-sensitive</span> manner), in <span>tree
+  order</span>. When the method is invoked on a <code>Document</code> object again with the same
+  argument, the user agent may return the same as the object returned by the earlier call. In other
+  cases, a new <code>NodeList</code> object must be returned.</p>
+
+  </div>
+
+  <hr>
+
+  <dl class="domintro">
+
+   <dt><var>document</var> . <code subdfn data-x="dom-document-currentScript">currentScript</code></dt>
+   <dd>
+
+    <p>Returns the <code>script</code> element, or the <span>SVG <code>script</code></span> element,
+    that is currently executing, as long as the element represents a <span>classic script</span>.
+    In the case of reentrant script execution, returns the one that most recently started executing
+    amongst those that have not yet finished executing.</p>
+
+    <p>Returns null if the <code>Document</code> is not currently executing a <code>script</code>
+    or <span>SVG <code>script</code></span> element (e.g., because the running script is an event
+    handler, or a timeout), or if the currently executing <code>script</code> or <span>SVG
+    <code>script</code></span> element represents a <span>module script</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn><code data-x="dom-document-currentScript">currentScript</code></dfn> attribute, on
+  getting, must return the value to which it was most recently set. When the <code>Document</code>
+  is created, the <code data-x="dom-document-currentScript">currentScript</code> must be
+  initialized to null.</p>
+
+  </div>
+
+  <p class="note">This API has fallen out of favor in the implementor and standards community, as
+  it globally exposes <code>script</code> or <span>SVG <code>script</code></span> elements. As such,
+  it is not available in newer contexts, such as when running <span data-x="module script">module
+  scripts</span> or when running scripts in a <span>shadow tree</span>. We are looking into creating
+  a new solution for identifying the running script in such contexts, which does not make it
+  globally available: see issue <a href="https://github.com/whatwg/html/issues/1013">#1013</a>.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p id="dom-document-namedItem-which">The <code>Document</code> interface <span data-x="support
+  named properties">supports named properties</span>. The <span>supported property names</span> of a
+  <code>Document</code> object <var>document</var> at any moment consist of the following, in
+  <span>tree order</span> according to the element that contributed them, ignoring later duplicates,
+  and with values from <code data-x="attr-id">id</code> attributes coming before values from <code
+  data-x="">name</code> attributes when the same element contributes both:</p>
+
+  <ul>
+   <li><p>the value of the <code data-x="">name</code> content attribute for all <code>applet</code>,
+   <span>exposed</span> <code>embed</code>, <code>form</code>, <code>iframe</code>,
+   <code>img</code>, and <span>exposed</span> <code>object</code> elements that have a non-empty
+   <code data-x="">name</code> content attribute and are <span>in a document tree</span> with
+   <var>document</var> as their <span>root</span>;<p></li>
+
+   <li><p>the value of the <code data-x="attr-id">id</code> content attribute for all
+   <code>applet</code> and <span>exposed</span> <code>object</code> elements that have a non-empty
+   <code data-x="attr-id">id</code> content attribute and are <span>in a document tree</span> with
+   <var>document</var> as their <span>root</span>; and</p></li>
+
+   <li><p>the value of the <code data-x="attr-id">id</code> content attribute for all
+   <code>img</code> elements that have both a non-empty <code data-x="attr-id">id</code> content
+   attribute and a non-empty <code data-x="">name</code> content attribute, and are <span>in a
+   document tree</span> with <var>document</var> as their <span>root</span>.</p></li>
+  </ul>
+
+  <p id="dom-document-nameditem">To <span>determine the value of a named property</span>
+  <var>name</var> for a <code>Document</code>, the user agent must return the value obtained using
+  the following steps:</p>
+
+  <ol>
+
+   <li>
+
+    <p>Let <var>elements</var> be the list of <span data-x="dom-document-namedItem-filter">named
+    elements</span> with the name <var>name</var> that are <span>in a document tree</span> with the
+    <code>Document</code> as their <span>root</span>.</p>
+
+    <p class="note">There will be at least one such element, by definition.<!-- (If there wasn't,
+    then this algorithm wouldn't have been invoked by Web IDL.) --></p>
+
+   </li>
+
+   <li>
+
+    <p>If <var>elements</var> has only one element, and that element is an <code>iframe</code>
+    element, and that <code>iframe</code> element's <span>nested browsing context</span> is not
+    null, then return the <code>WindowProxy</code> object of the element's <span>nested browsing
+    context</span>.</p>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise, if <var>elements</var> has only one element, return that element.</p>
+
+   </li>
+
+   <li>
+
+    <p>Otherwise return an <code>HTMLCollection</code> rooted at the <code>Document</code> node,
+    whose filter matches only <span data-x="dom-document-namedItem-filter">named elements</span> with
+    the name <var>name</var>.</p> <!-- the same one each time is returned, because of the
+    rule under collections -->
+
+   </li>
+
+  <!--
+  Note that this named getter overrides built-in properties, as in:
+     https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C!DOCTYPE%20html%3E%0D%0A...%3Ciframe%20name%3Dbody%3E%3C%2Fiframe%3E%3Cscript%3Ew(document.body)%3C%2Fscript%3E
+  This is what the "OverrideBuiltins" bit means in the IDL.
+  -->
+
+  </ol>
+
+  <p><dfn data-x="dom-document-nameditem-filter">Named elements</dfn> with the name <var>name</var>, for the purposes of the above algorithm, are those that are either:</p>
+
+  <ul>
+
+   <li><code>applet</code>, <span>exposed</span> <code>embed</code>, <code>form</code>,
+   <code>iframe</code>, <code>img</code>, or <span>exposed</span> <code>object</code> elements that
+   have a <code data-x="">name</code> content attribute whose value is <var>name</var>, or</li>
+
+   <li><code>applet</code> or <span>exposed</span> <code>object</code> elements that have an <code
+   data-x="attr-id">id</code> content attribute whose value is <var>name</var>, or</li>
+
+   <li><code>img</code> elements that have an <code data-x="attr-id">id</code> content attribute
+   whose value is <var>name</var>, and that have a non-empty <code data-x="">name</code>
+   content attribute present also.</li>
+
+  </ul>
+
+  <p>An <code>embed</code> or <code>object</code> element is said to be <dfn>exposed</dfn> if it has
+  no <span>exposed</span> <code>object</code> ancestor, and, for <code>object</code> elements, is
+  additionally either not showing its <span>fallback content</span> or has no <code>object</code> or
+  <code>embed</code> descendants.</p>
+
+  </div>
+
+  <hr>
+
+  <p class="note">The <code data-x="dom-document-dir">dir</code> attribute on the
+  <code>Document</code> interface is defined along with the <code data-x="attr-dir">dir</code>
+  content attribute.</p>
+
+
+
+  

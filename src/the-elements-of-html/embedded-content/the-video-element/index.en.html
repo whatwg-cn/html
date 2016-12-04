@@ -1,0 +1,375 @@
+<h4 id="the-video-element">The <dfn id="video"><code>video</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd><span>Flow content</span>.</dd>
+   <dd><span>Phrasing content</span>.</dd>
+   <dd><span>Embedded content</span>.</dd>
+   <dd>If the element has a <code data-x="attr-media-controls">controls</code> attribute: <span>Interactive content</span>.</dd>
+   <dd><span>Palpable content</span>.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Where <span>embedded content</span> is expected.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd>If the element has a <code data-x="attr-media-src">src</code> attribute:
+ zero or more <code>track</code> elements, then
+ <span>transparent</span>, but with no <span>media element</span> descendants.</dd>
+   <dd>If the element does not have a <code data-x="attr-media-src">src</code> attribute: zero or more <code>source</code> elements, then
+ zero or more <code>track</code> elements, then
+ <span>transparent</span>, but with no <span>media element</span> descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dd><code data-x="attr-media-src">src</code></dd>
+   <dd><code data-x="attr-media-crossorigin">crossorigin</code></dd>
+   <dd><code data-x="attr-video-poster">poster</code></dd>
+   <dd><code data-x="attr-media-preload">preload</code></dd>
+   <dd><code data-x="attr-media-autoplay">autoplay</code></dd>
+   <dd><code data-x="attr-video-playsinline">playsinline</code></dd>
+   <dd><code data-x="attr-media-loop">loop</code></dd>
+   <dd><code data-x="attr-media-muted">muted</code></dd>
+   <dd><code data-x="attr-media-controls">controls</code></dd>
+   <dd><code data-x="attr-dim-width">width</code></dd>
+   <dd><code data-x="attr-dim-height">height</code></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>
+    <pre class="idl">[<span>HTMLConstructor</span>]
+interface <dfn>HTMLVideoElement</dfn> : <span>HTMLMediaElement</span> {
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-dim-width">width</span>;
+  [<span>CEReactions</span>] attribute unsigned long <span data-x="dom-dim-height">height</span>;
+  readonly attribute unsigned long <span data-x="dom-video-videoWidth">videoWidth</span>;
+  readonly attribute unsigned long <span data-x="dom-video-videoHeight">videoHeight</span>;
+  [<span>CEReactions</span>] attribute USVString <span data-x="dom-video-poster">poster</span>;
+  [<span>CEReactions</span>] attribute boolean <span data-x="dom-video-playsInline">playsInline</span>;
+};</pre>
+   </dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>A <code>video</code> element is used for playing videos or movies, and audio files with
+  captions.</p>
+
+  <p>Content may be provided inside the <code>video</code> element<span w-nodev>. User agents
+  should not show this content to the user</span>; it is intended for older Web browsers which do
+  not support <code>video</code>, so that legacy video plugins can be tried, or to show text to the
+  users of these older browsers informing them of how to access the video contents.</p>
+
+  <p class="note">In particular, this content is not intended to address accessibility concerns. To
+  make video content accessible to the partially sighted, the blind, the hard-of-hearing, the deaf,
+  and those with other physical or cognitive disabilities, a variety of features are available.
+  Captions can be provided, either embedded in the video stream or as external files using the
+  <code>track</code> element. Sign-language tracks can be embedded in the video stream. Audio
+  descriptions can be embedded in the video stream or in text form using a <span>WebVTT file</span>
+  referenced using the <code>track</code> element and synthesized into speech by the user agent.
+  WebVTT can also be used to provide chapter titles. For users who would rather not use a media
+  element at all, transcripts or other textual alternatives can be provided by simply linking to
+  them in the prose near the <code>video</code> element. <ref spec=WEBVTT></p>
+
+  <p>The <code>video</code> element is a <span>media element</span> whose <span>media data</span> is
+  ostensibly video data, possibly with associated audio data.</p>
+
+  <p>The <code data-x="attr-media-src">src</code>, <code data-x="attr-media-preload">preload</code>,
+  <code data-x="attr-media-autoplay">autoplay</code>, <code data-x="attr-media-loop">loop</code>,
+  <code data-x="attr-media-muted">muted</code>, and <code
+  data-x="attr-media-controls">controls</code> attributes are <span data-x="media element
+  attributes">the attributes common to all media elements</span>.</p>
+
+  <p>The <dfn><code data-x="attr-video-poster">poster</code></dfn> attribute gives the
+  <span>URL</span> of an image file that the user agent can show while no video data is available.
+  The attribute, if present, must contain a <span>valid non-empty URL potentially surrounded by
+  spaces</span>.</p>
+
+  <div w-nodev>
+
+  <p>If the specified resource is to be used, then, when the element is created or when the <code
+  data-x="attr-video-poster">poster</code> attribute is set, changed, or removed, the user agent must
+  run the following steps to determine the element's <dfn>poster frame</dfn> (regardless of the
+  value of the element's <span>show poster flag</span>):</p> <!-- thus it is unaffected by changes
+  to the base URL. -->
+
+  <ol>
+
+   <li><p>If there is an existing instance of this algorithm running for this <code>video</code>
+   element, abort that instance of this algorithm without changing the <span>poster
+   frame</span>.</p></li>
+
+   <li><p>If the <code data-x="attr-video-poster">poster</code> attribute's value is the empty string
+   or if the attribute is absent, then there is no <span>poster frame</span>; abort these
+   steps.</p></li>
+
+   <li><p><span data-x="parse a url">Parse</span> the <code
+   data-x="attr-video-poster">poster</code> attribute's value relative to the element's <span>node
+   document</span>. If this fails, then there is no <span>poster frame</span>; abort these
+   steps.</p></li>
+
+   <li><p>Let <var>request</var> be a new <span data-x="concept-request">request</span> whose
+   <span data-x="concept-request-url">url</span> is the <span>resulting URL record</span>,
+   <span data-x="concept-request-client">client</span> is the element's <span>node document</span>'s
+   <code>Window</code> object's <span>environment settings object</span>, <span
+   data-x="concept-request-type">type</span> is "<code data-x="">image</code>", <span
+   data-x="concept-request-destination">destination</span> is "<code data-x="">image</code>",
+   <span data-x="concept-request-credentials-mode">credentials mode</span> is "<code
+   data-x="">include</code>", and whose <span>use-URL-credentials flag</span> is set.
+
+   <!--FETCH--><li><p><span data-x="concept-fetch">Fetch</span> <var>request</var>. This must
+   <span>delay the load event</span> of the element's <span>node document</span>.</p></li>
+
+   <!-- could define how to sniff for an image here -->
+
+   <li><p>If an image is thus obtained, the <span>poster frame</span> is that image. Otherwise,
+   there is no <span>poster frame</span>.</p></li>
+
+  </ol>
+
+  </div>
+
+  <p class="note">The image given by the <code data-x="attr-video-poster">poster</code> attribute,
+  the <i data-x="poster frame">poster frame</i>, is intended to be a representative frame of the
+  video (typically one of the first non-blank frames) that gives the user an idea of what the video
+  is like.</p>
+
+
+  <p>The <dfn><code data-x="attr-video-playsinline">playsinline</code></dfn> is a <span>boolean
+  attribute</span>. If present, it serves as a hint to the user agent that the video ought to be
+  displayed "inline" in the document by default, constrained to the element's playback area, instead
+  of being displayed fullscreen or in an independent resizable window.</p>
+
+  <p class="note">The absence of the <code data-x="attr-video-playsinline">playsinline</code> does
+  not imply that the video will display fullscreen by default. Indeed, most user agents have chosen
+  to play all videos inline by default, and in such user agents the <code
+  data-x="attr-video-playsinline">playsinline</code> attribute has no effect.</p>
+
+  <div w-nodev>
+
+  <hr>
+
+  <p>A <code>video</code> element represents what is given for the first matching condition in the
+  list below:</p>
+
+  <dl class="switch">
+
+   <dt>When no video data is available (the element's <code
+   data-x="dom-media-readyState">readyState</code> attribute is either <code
+   data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, or <code
+   data-x="dom-media-HAVE_METADATA">HAVE_METADATA</code> but no video data has yet been obtained at
+   all, or the element's <code data-x="dom-media-readyState">readyState</code> attribute is any
+   subsequent value but the <span>media resource</span> does not have a video channel)</dt>
+
+   <dd>The <code>video</code> element <span>represents</span> its <span>poster frame</span>, if any,
+   or else transparent black with no <span>intrinsic dimensions</span>.</dd>
+
+   <dt>When the <code>video</code> element is <span data-x="dom-media-paused">paused</span>, the <span
+   data-x="current playback position">current playback position</span> is the first frame of video,
+   and the element's <span>show poster flag</span> is set</dt>
+
+   <dd>The <code>video</code> element <span>represents</span> its <span>poster frame</span>, if any,
+   or else the first frame of the video.</dd>
+
+   <dt>When the <code>video</code> element is <span data-x="dom-media-paused">paused</span>, and the
+   frame of video corresponding to the <span data-x="current playback position">current playback
+   position</span> is not available (e.g. because the video is seeking or buffering)</dt>
+
+   <dt>When the <code>video</code> element is neither <span>potentially playing</span> nor <span
+   data-x="dom-media-paused">paused</span> (e.g. when seeking or stalled)</dt>
+
+   <dd>The <code>video</code> element <span>represents</span> the last frame of the video to have
+   been rendered.</dd>
+
+   <dt>When the <code>video</code> element is <span data-x="dom-media-paused">paused</span></dt>
+
+   <dd>The <code>video</code> element <span>represents</span> the frame of video corresponding to
+   the <span data-x="current playback position">current playback position</span>.</dd>
+
+   <dt>Otherwise (the <code>video</code> element has a video channel and is <span>potentially
+   playing</span>)</dt>
+
+   <dd>The <code>video</code> element <span>represents</span> the frame of video at the continuously
+   increasing <span data-x="current playback position">"current" position</span>. When the
+   <span>current playback position</span> changes such that the last frame rendered is no longer the
+   frame corresponding to the <span>current playback position</span> in the video, the new frame
+   must be rendered.</dd>
+
+  </dl>
+
+  <p>Frames of video must be obtained from the video track that was <span
+  data-x="dom-VideoTrack-selected">selected</span> when the <span>event loop</span> last reached
+  <a href="#step1">step 1</a>.</p>
+
+  <p class="note">Which frame in a video stream corresponds to a particular playback position is
+  defined by the video stream's format.</p>
+
+  <p>The <code>video</code> element also <span>represents</span> any <span data-x="text track
+  cue">text track cues</span> whose <span>text track cue active flag</span> is set and whose
+  <span>text track</span> is in the <span data-x="text track showing">showing</span> mode, and any
+  audio from the <span>media resource</span>, at the <span>current playback position</span>.</p>
+
+  <p>Any audio associated with the <span>media resource</span> must, if played, be played
+  synchronized with the <span>current playback position</span>, at the element's <span>effective
+  media volume</span>. The user agent must play the audio from audio tracks that were <span
+  data-x="dom-AudioTrack-enabled">enabled</span> when the <span>event loop</span> last reached step
+  1.</p>
+
+  <p>In addition to the above, the user agent may provide messages to the user (such as "buffering",
+  "no video loaded", "error", or more detailed information) by overlaying text or icons on the video
+  or other areas of the element's playback area, or in another appropriate manner.</p>
+
+  <p>User agents that cannot render the video may instead make the element <span
+  data-x="represents">represent</span> a link to an external video playback utility or to the video
+  data itself.</p>
+
+  <p>When a <code>video</code> element's <span>media resource</span> has a video channel, the
+  element provides a <span>paint source</span> whose width is the <span>media resource</span>'s
+  <span data-x="concept-video-intrinsic-width">intrinsic width</span>, whose height is the
+  <span>media resource</span>'s <span data-x="concept-video-intrinsic-height">intrinsic
+  height</span>, and whose appearance is the frame of video corresponding to the <span
+  data-x="current playback position">current playback position</span>, if that is available, or else
+  (e.g. when the video is seeking or buffering) its previous appearance, if any, or else (e.g.
+  because the video is still loading the first frame) blackness.</p>
+
+  <hr>
+
+  </div>
+
+  <dl class="domintro">
+
+   <dt><var>video</var> . <code subdfn data-x="dom-video-videoWidth">videoWidth</code></dt>
+   <dt><var>video</var> . <code subdfn data-x="dom-video-videoHeight">videoHeight</code></dt>
+
+   <dd>
+
+    <p>These attributes return the intrinsic dimensions of the video,
+    or zero if the dimensions are not known.</p>
+
+   </dd>
+
+  </dl>
+
+  <div w-nodev>
+
+  <p>The <dfn data-x="concept-video-intrinsic-width">intrinsic width</dfn> and <dfn
+  data-x="concept-video-intrinsic-height">intrinsic height</dfn> of the <span>media resource</span>
+  are the dimensions of the resource in <span data-x="'px'">CSS pixels</span> after taking into
+  account the resource's dimensions, aspect ratio, clean aperture, resolution, and so forth, as
+  defined for the format used by the resource. If an anamorphic format does not define how to apply
+  the aspect ratio to the video data's dimensions to obtain the "correct" dimensions, then the user
+  agent must apply the ratio by increasing one dimension and leaving the other unchanged.</p>
+
+  <p>The <dfn><code data-x="dom-video-videoWidth">videoWidth</code></dfn> IDL attribute must return
+  the <span data-x="concept-video-intrinsic-width">intrinsic width</span> of the video in <span
+  data-x="'px'">CSS pixels</span>. The <dfn><code
+  data-x="dom-video-videoHeight">videoHeight</code></dfn> IDL attribute must return the <span
+  data-x="concept-video-intrinsic-height">intrinsic height</span> of the video in <span
+  data-x="'px'">CSS pixels</span>. If the element's <code
+  data-x="dom-media-readyState">readyState</code> attribute is <code
+  data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, then the attributes must return 0.</p>
+
+  <p id="dimUpdate">Whenever the <span data-x="concept-video-intrinsic-width">intrinsic width</span>
+  or <span data-x="concept-video-intrinsic-height">intrinsic height</span> of the video changes
+  (including, for example, because the <span data-x="dom-VideoTrack-selected">selected video
+  track</span> was changed), if the element's <code data-x="dom-media-readyState">readyState</code>
+  attribute is not <code data-x="dom-media-HAVE_NOTHING">HAVE_NOTHING</code>, the user agent must
+  <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+  data-x="event-media-resize">resize</code> at the <span>media element</span>.</p>
+
+  </div>
+
+  <p>The <code>video</code> element supports <span>dimension attributes</span>.</p>
+
+  <div w-nodev>
+
+  <p>In the absence of style rules to the contrary, video content should be rendered inside the
+  element's playback area such that the video content is shown centered in the playback area at the
+  largest possible size that fits completely within it, with the video content's aspect ratio being
+  preserved. Thus, if the aspect ratio of the playback area does not match the aspect ratio of the
+  video, the video will be shown letterboxed or pillarboxed. Areas of the element's playback area
+  that do not contain the video represent nothing.</p>
+
+  <p class="note">In user agents that implement CSS, the above requirement can be implemented by
+  using the <a href="#video-object-fit">style rule suggested in the rendering section</a>.</p>
+
+  <p>The <span>intrinsic width</span> of a <code>video</code> element's playback area is the
+  <span>intrinsic width</span> of the <span>poster frame</span>, if that is available and the
+  element currently <span>represents</span> its poster frame; otherwise, it is the <span
+  data-x="concept-video-intrinsic-width">intrinsic width</span> of the video resource, if that is
+  available; otherwise the <span>intrinsic width</span> is missing.</p>
+
+  <p>The <span>intrinsic height</span> of a <code>video</code> element's playback area is the
+  <span>intrinsic height</span> of the <span>poster frame</span>, if that is available and the
+  element currently <span>represents</span> its poster frame; otherwise it is the <span
+  data-x="concept-video-intrinsic-height">intrinsic height</span> of the video resource, if that is
+  available; otherwise the <span>intrinsic height</span> is missing.</p>
+
+  <p>The <span>default object size</span> is a width of 300 <span data-x="'px'">CSS pixels</span>
+  and a height of 150 <span data-x="'px'">CSS pixels</span>. <ref spec=CSSIMAGES></p>
+
+  <p>A <code>video</code> element is said to <dfn>intersect the viewport</dfn> when it is
+  <span>being rendered</span> and its associated CSS layout box intersects the
+  <span>viewport</span>.</p>
+
+  <hr>
+
+  <p>User agents should provide controls to enable or disable the display of closed captions, audio
+  description tracks, and other additional data associated with the video stream, though such
+  features should, again, not interfere with the page's normal rendering.</p>
+
+  <p>User agents may allow users to view the video content in manners more suitable to the user,
+  such as fullscreen or in an independent resizable window. User agents may even trigger such a
+  viewing mode by default upon playing a video, although they should not do so when the <code
+  data-x="attr-video-playsinline">playsinline</code> attribute is specified. As with the other user
+  interface features, controls to enable this should not interfere with the page's normal rendering
+  unless the user agent is <span data-x="expose a user interface to the user">exposing a user
+  interface</span>. In such an independent viewing mode, however, user agents may make full user
+  interfaces visible, even if the <code data-x="attr-media-controls">controls</code> attribute is
+  absent.</p>
+
+  <p>User agents may allow video playback to affect system features that could interfere with the
+  user's experience; for example, user agents could disable screensavers while video playback is in
+  progress.</p>
+
+  <hr>
+
+  <p>The <dfn><code data-x="dom-video-poster">poster</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-video-poster">poster</code> content attribute.</p>
+
+  <p>The <dfn><code data-x="dom-video-playsInline">playsInline</code></dfn> IDL attribute must
+  <span>reflect</span> the <code data-x="attr-video-playsinline">playsinline</code> content
+  attribute.</p>
+
+  </div>
+
+  <div class="example">
+
+   <p>This example shows how to detect when a video has failed to play correctly:</p>
+
+   <pre>&lt;script>
+ function failed(e) {
+   // video playback failed - show a message saying why
+   switch (e.target.error.code) {
+     case e.target.error.MEDIA_ERR_ABORTED:
+       alert('You aborted the video playback.');
+       break;
+     case e.target.error.MEDIA_ERR_NETWORK:
+       alert('A network error caused the video download to fail part-way.');
+       break;
+     case e.target.error.MEDIA_ERR_DECODE:
+       alert('The video playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+       break;
+     case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+       alert('The video could not be loaded, either because the server or network failed or because the format is not supported.');
+       break;
+     default:
+       alert('An unknown error occurred.');
+       break;
+   }
+ }
+&lt;/script>
+&lt;p>&lt;video src="tgif.vid" autoplay controls onerror="failed(event)">&lt;/video>&lt;/p>
+&lt;p>&lt;a href="tgif.vid">Download the video file&lt;/a>.&lt;/p></pre>
+
+  </div>
+
+
+
+
+  <!--CODECS
+
+  <div w-nodev>
+
+  

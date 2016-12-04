@@ -1,0 +1,224 @@
+<h5 id="image-map-processing-model"><span id="processing-model"></span>Processing model</h5>
+
+  <p>If an <code>img</code> element or an <code>object</code> element representing an image has a
+  <code data-x="attr-hyperlink-usemap">usemap</code> attribute specified, user agents must process it
+  as follows:</p>
+
+  <ol>
+
+   <li><p>Parse the attribute's value using the <span>rules for parsing a hash-name reference</span>
+   to a <code>map</code> element, with the element as the context node. This will return either an
+   element (the <var>map</var>) or null.</p></li>
+
+   <li><p>If that returned null, then abort these steps. The image is not associated with an image
+   map after all.</p></li>
+
+   <li><p>Otherwise, the user agent must collect all the <code>area</code> elements that are
+   descendants of the <var>map</var>. Let those be the <var>areas</var>.</p></li>
+
+  </ol>
+
+  <p>Having obtained the list of <code>area</code> elements that form the image map (the <var>areas</var>), interactive user agents must process the list in one of two ways.</p>
+
+  <p>If the user agent intends to show the text that the <code>img</code> element represents, then
+  it must use the following steps.</p>
+
+  <p class="note">In user agents that do not support images, or that have images disabled,
+  <code>object</code> elements cannot represent images, and thus this section never applies (the
+  <span>fallback content</span> is shown instead). The following steps therefore only apply to
+  <code>img</code> elements.</p>
+
+  <ol>
+
+   <li><p>Remove all the <code>area</code> elements in <var>areas</var> that have no <code
+   data-x="attr-hyperlink-href">href</code> attribute.</p></li>
+
+   <li><p>Remove all the <code>area</code> elements in <var>areas</var> that have no <code
+   data-x="attr-area-alt">alt</code> attribute, or whose <code data-x="attr-area-alt">alt</code>
+   attribute's value is the empty string, <em>if</em> there is another <code>area</code> element in
+   <var>areas</var> with the same value in the <code
+   data-x="attr-hyperlink-href">href</code> attribute and with a non-empty <code
+   data-x="attr-area-alt">alt</code> attribute.</li>
+
+   <li><p>Each remaining <code>area</code> element in <var>areas</var> represents a
+   <span>hyperlink</span>. Those hyperlinks should all be made available to the user in a manner
+   associated with the text of the <code>img</code>.</p>
+
+   <p>In this context, user agents may represent <code>area</code> and <code>img</code> elements
+   with no specified <code data-x="">alt</code> attributes, or whose <code data-x="">alt</code>
+   attributes are the empty string or some other non-visible text, in a user-agent-defined fashion
+   intended to indicate the lack of suitable author-provided text.</p></li>
+
+  </ol>
+
+  <p>If the user agent intends to show the image and allow interaction with the image to select
+  hyperlinks, then the image must be associated with a set of layered shapes, taken from the
+  <code>area</code> elements in <var>areas</var>, in reverse <span>tree order</span> (so the last
+  specified <code>area</code> element in the <var>map</var> is the bottom-most shape, and
+  the first element in the <var>map</var>, in <span>tree order</span>, is the top-most shape).</p>
+
+  <p>Each <code>area</code> element in <var>areas</var> must be processed as follows to
+  obtain a shape to layer onto the image:</p>
+
+  <ol>
+
+   <li><p>Find the state that the element's <code data-x="attr-area-shape">shape</code> attribute
+   represents.</p></li>
+
+   <li><p>Use the <span>rules for parsing a list of floating-point numbers</span> to parse the
+   element's <code data-x="attr-area-coords">coords</code> attribute, if it is present, and let the
+   result be the <var>coords</var> list. If the attribute is absent, let the <var>coords</var> list
+   be the empty list.</p></li>
+
+   <li>
+
+    <p>If the number of items in the <var>coords</var> list is less than the minimum number
+    given for the <code>area</code> element's current state, as per the following table, then the
+    shape is empty; abort these steps.</p>
+
+    <table>
+     <thead>
+      <tr>
+       <th>State
+       <th>Minimum number of items
+     <tbody>
+      <tr>
+       <td><span data-x="attr-area-shape-circle">Circle state</span>
+       <td>3
+      <tr>
+       <td><span data-x="attr-area-shape-default">Default state</span>
+       <td>0
+      <tr>
+       <td><span data-x="attr-area-shape-poly">Polygon state</span>
+       <td>6
+      <tr>
+       <td><span data-x="attr-area-shape-rect">Rectangle state</span>
+       <td>4
+    </table>
+
+   </li>
+
+   <li>
+
+    <p>Check for excess items in the <var>coords</var> list as per the entry in the
+    following list corresponding to the <code data-x="attr-area-shape">shape</code> attribute's
+    state:</p>
+
+    <dl class="switch">
+     <dt><span data-x="attr-area-shape-circle">Circle state</span></dt>
+     <dd>Drop any items in the list beyond the third.</dd>
+     <dt><span data-x="attr-area-shape-default">Default state</span></dt>
+     <dd>Drop all items in the list.</dd>
+     <dt><span data-x="attr-area-shape-poly">Polygon state</span></dt>
+     <dd>Drop the last item if there's an odd number of items.</dd>
+     <dt><span data-x="attr-area-shape-rect">Rectangle state</span></dt>
+     <dd>Drop any items in the list beyond the fourth.</dd>
+    </dl>
+
+   </li>
+
+   <li><p>If the <code data-x="attr-area-shape">shape</code> attribute represents the <span
+   data-x="attr-area-shape-rect">rectangle state</span>, and the first number in the list is
+   numerically greater than the third number in the list, then swap those two numbers around.</p></li>
+
+   <li><p>If the <code data-x="attr-area-shape">shape</code> attribute represents the <span
+   data-x="attr-area-shape-rect">rectangle state</span>, and the second number in the list is
+   numerically greater than the fourth number in the list, then swap those two numbers around.</p></li>
+
+   <li><p>If the <code data-x="attr-area-shape">shape</code> attribute represents the <span
+   data-x="attr-area-shape-circle">circle state</span>, and the third number in the list is less than
+   or equal to zero, then the shape is empty; abort these steps.</p></li>
+
+   <li><p>Now, the shape represented by the element is the one described for the entry in the list
+   below corresponding to the state of the <code data-x="attr-area-shape">shape</code> attribute:</p>
+
+    <dl class="switch">
+
+     <dt><span data-x="attr-area-shape-circle">Circle state</span></dt>
+     <dd>
+
+      <p>Let <var>x</var> be the first number in <var>coords</var>, <var>y</var> be the second number, and <var>r</var> be the third number.</p>
+
+      <p>The shape is a circle whose center is <var>x</var> <span data-x="'px'">CSS pixels</span>
+      from the left edge of the image and <var>y</var> <span data-x="'px'">CSS pixels</span> from
+      the top edge of the image, and whose radius is <var>r</var> <span data-x="'px'">CSS
+      pixels</span>.</p>
+
+     </dd>
+
+     <dt><span data-x="attr-area-shape-default">Default state</span></dt>
+     <dd>
+
+      <p>The shape is a rectangle that exactly covers the entire image.</p>
+
+     </dd>
+
+     <dt><span data-x="attr-area-shape-poly">Polygon state</span></dt>
+     <dd>
+
+      <p>Let <var>x<sub><var>i</var></sub></var> be the <span
+      data-x="">(2<var>i</var>)</span>th entry in <var>coords</var>, and <var>y<sub><var>i</var></sub></var> be the <span data-x="">(2<var>i</var>+1)</span>th entry in <var>coords</var> (the first entry in <var>coords</var> being the one with index 0).</p>
+
+      <p>Let <var>the coordinates</var> be (<var>x<sub><var>i</var></sub></var>, <var>y<sub><var>i</var></sub></var>),
+      interpreted in <span data-x="'px'">CSS pixels</span> measured from the top left of the image,
+      for all integer values of <var>i</var> from 0 to <span data-x="">(<var>N</var>/2)-1</span>,
+      where <var>N</var> is the number of items in <var>coords</var>.</p>
+
+      <p>The shape is a polygon whose vertices are given by <var>the coordinates</var>, and
+      whose interior is established using the even-odd rule. <ref spec=GRAPHICS></p>
+
+      <!--
+        browsers implement the even-odd rule / even winding rule:
+        https://software.hixie.ch/utilities/js/live-dom-viewer/?%3C%21DOCTYPE%20html%3E%0A%3Cimg%20usemap%3D%22%23x%22%20src%3D%22/resources/images/sample%22%3E%0A%3Cmap%20name%3D%22x%22%3E%0A%20%20%3Carea%20shape%3Dpolygon%20coords%3D%220%2C0%200%2C100%20100%2C100%20100%2C2%201%2C2%202%2C1%202%2C99%2099%2C99%2099%2C0%22%20href%3Da%3E%0A%3C/map%3E%0A
+       -->
+
+     </dd>
+
+     <dt><span data-x="attr-area-shape-rect">Rectangle state</span></dt>
+
+     <dd>
+
+      <p>Let <var>x<sub>1</sub></var> be the first number in <var>coords</var>, <var>y<sub>1</sub></var> be the second number, <var>x<sub>2</sub></var> be the third number, and <var>y<sub>2</sub></var> be the fourth number.</p>
+
+      <p>The shape is a rectangle whose top-left corner is given by the coordinate (<var>x<sub>1</sub></var>, <var>y<sub>1</sub></var>) and whose
+      bottom right corner is given by the coordinate (<var>x<sub>2</sub></var>,
+      <var>y<sub>2</sub></var>), those coordinates being interpreted as <span data-x="'px'">CSS
+      pixels</span> from the top left corner of the image.</p>
+
+     </dd>
+
+    </dl>
+
+    <p>For historical reasons, the coordinates must be interpreted relative to the
+    <em>displayed</em> image after any stretching caused by the CSS <span>'width'</span> and
+    <span>'height'</span> properties (or, for non-CSS browsers, the image element's <code
+    data-x="">width</code> and <code data-x="">height</code> attributes &mdash; CSS browsers map
+    those attributes to the aforementioned CSS properties).</p>
+
+    <p class="note">Browser zoom features and transforms applied using CSS or SVG do not affect the
+    coordinates.</p>
+
+   </li>
+
+  </ol>
+
+  <p>Pointing device interaction with an image associated with a set of layered shapes per the above
+  algorithm must result in the relevant user interaction events being first fired to the top-most
+  shape covering the point that the pointing device indicated, if any, or to the image element
+  itself, if there is no shape covering that point. User agents may also allow individual
+  <code>area</code> elements representing <span data-x="hyperlink">hyperlinks</span> to be selected
+  and activated (e.g. using a keyboard).</p>
+
+  <p class="note">Because a <code>map</code> element (and its <code>area</code> elements) can be
+  associated with multiple <code>img</code> and <code>object</code> elements, it is possible for an
+  <code>area</code> element to correspond to multiple <i data-x="focusable area">focusable areas</i>
+  of the document.</p>
+
+  <p>Image maps are <span>live</span>; if the DOM is mutated, then the user agent must act as if it
+  had rerun the algorithms for image maps.</p>
+
+  </div>
+
+
+
+  

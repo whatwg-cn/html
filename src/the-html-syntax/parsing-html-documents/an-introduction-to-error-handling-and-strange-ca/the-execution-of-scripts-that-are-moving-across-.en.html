@@ -1,0 +1,20 @@
+<h5>The execution of scripts that are moving across multiple documents</h5>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>Elaborating on the example in the previous section, consider the case where the second
+  <code>script</code> element is an external script (i.e. one with a <code
+  data-x="attr-script-src">src</code> attribute). Since the element was not in the parser's
+  <code>Document</code> when it was created, that external script is not even downloaded.</p>
+
+  <p>In a case where a <code>script</code> element with a <code data-x="attr-script-src">src</code>
+  attribute is parsed normally into its parser's <code>Document</code>, but while the external
+  script is being downloaded, the element is moved to another document, the script continues to
+  download, but does not execute.</p>
+
+  <p class="note">In general, moving <code>script</code> elements between <code>Document</code>s is
+  considered a bad practice.</p>
+
+
+
+  

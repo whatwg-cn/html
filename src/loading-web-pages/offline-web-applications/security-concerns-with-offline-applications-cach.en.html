@@ -1,0 +1,36 @@
+<h4>Security concerns with offline applications caches</h4>
+
+  <!-- NON-NORMATIVE SECTION -->
+
+  <p>The main risk introduced by offline application caches is that an injection attack can be
+  elevated into persistent site-wide page replacement. This attack involves using an injection
+  vulnerability to upload two files to the victim site. The first file is an application cache
+  manifest consisting of just a fallback entry pointing to the second file, which is an HTML page
+  whose manifest is declared as that first file. Once the user has been directed to that second
+  file, all subsequent accesses to any file covered by the given fallback namespace while either the
+  user or the site is offline will instead show that second file. Targeted denial-of-service
+  attacks or cookie bombing attacks (where the client is made to send so many cookies that the
+  server refuses to process the request) can be used to ensure that the site appears offline.</p>
+
+  <p>To mitigate this, manifests can only specify fallbacks that are in the same path as the
+  manifest itself. This means that a content injection upload vulnerability in a particular
+  directory on a server can only be escalated to a take-over of that directory and its
+  subdirectories. If there is no way to inject a file into the root directory, the entire site
+  cannot be taken over.</p>
+
+  <p>If a site has been attacked in this way, simply removing the offending manifest might eventually
+  clear the problem, since the next time the manifest is updated, a 404 error will be seen, and the
+  user agent will clear the cache. "Eventually" is the key word here, however; while the attack on
+  the user or server is ongoing, such that connections from an affected user to the affected site
+  are blocked, the user agent will simply assume that the user is offline and will continue to use
+  the hostile manifest. Unfortunately, if a cookie bombing attack has also been used, merely
+  removing the manifest is insufficient; in addition, the server has to be configured to return a
+  404 or 410 response instead of the 413 "Request Entity Too Large" response.</p>
+
+  <p>TLS does not inherently protect a site from this attack, since the attack relies on content
+  being served from the server itself. Not using application caches also does not prevent this
+  attack, since the attack relies on an attacker-provided manifest.</p>
+<!--REMOVE-TOPIC:Security-->
+
+
+  

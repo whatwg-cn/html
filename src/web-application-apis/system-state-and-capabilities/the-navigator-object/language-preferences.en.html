@@ -1,0 +1,99 @@
+<h5>Language preferences</h5>
+
+  <pre class="idl">[NoInterfaceObject, Exposed=(Window,Worker)]
+interface <dfn>NavigatorLanguage</dfn> {
+  readonly attribute DOMString <span data-x="dom-navigator-language">language</span>;
+  readonly attribute FrozenArray&lt;DOMString&gt; <span data-x="dom-navigator-languages">languages</span>;
+};</pre>
+
+  <dl class="domintro">
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-language">language</code></dt>
+   <dd>
+    <p>Returns a language tag representing the user's preferred language.</p>
+   </dd>
+
+   <dt><var>window</var> . <code data-x="dom-navigator">navigator</code> . <code subdfn data-x="dom-navigator-languages">languages</code></dt>
+   <dd>
+    <p>Returns an array of language tags representing the user's preferred languages, with the most preferred language first.</p>
+    <p>The most preferred language is the one returned by <code data-x="dom-navigator-language">navigator.language</code>.</p>
+   </dd>
+
+  </dl>
+
+  <p class="note">A <code data-x="event-languagechange">languagechange</code> event is fired at the
+  <code>Window</code> or <code>WorkerGlobalScope</code> object when the user agent's understanding
+  of what the user's preferred languages are changes.</p>
+
+  <div w-nodev>
+
+  <dl>
+
+   <!--
+   <dt><dfn><code data-x="dom-navigator-browserLanguage">browserLanguage</code></dfn></dt> <!- - Opera and IE only - ->
+   <dd><p>Must return a language tag representing either <span>a plausible language</span> or the
+   language the browser uses in its interface.</p></dd>
+
+
+   <dt><dfn><code data-x="dom-navigator-userLanguage">userLanguage</code></dfn></dt> <!- - Opera and IE only - ->
+   -->
+   <!-- at time of testing, this was supported by Opera, Safari, and Mozilla only -->
+   <dt><dfn><code data-x="dom-navigator-language">language</code></dfn></dt>
+   <dd><p>Must return a valid BCP 47 language tag representing either <span>a plausible
+   language</span> or the user's most preferred language. <ref spec=BCP47></p></dd>
+
+   <dt><dfn><code data-x="dom-navigator-languages">languages</code></dfn></dt>
+   <dd>
+
+    <p>Must return a <span>frozen array</span> of valid BCP 47 language tags representing either one
+    or more <span data-x="a plausible language">plausible languages</span>, or the user's preferred
+    languages, ordered by preference with the most preferred language first. The same object must be
+    returned until the user agent needs to return different values, or values in a different order.
+    <ref spec=BCP47></p>
+
+    <p>Whenever the user agent needs to make the <code
+    data-x="dom-navigator-languages">navigator.languages</code> attribute of a <code>Window</code>
+    or <code>WorkerGlobalScope</code> object return a new set of language tags, the user agent must
+    <span>queue a task</span> to <span data-x="concept-event-fire">fire an event</span> named <code
+    data-x="event-languagechange">languagechange</code> at the <code>Window</code> or
+    <code>WorkerGlobalScope</code> object and wait until that task begins to be executed before
+    actually returning a new value.</p>
+
+    <p>The <span>task source</span> for this <span data-x="concept-task">task</span> is the
+    <span>DOM manipulation task source</span>.</p>
+
+   </dd>
+
+  </dl>
+
+  <p>To determine <dfn>a plausible language</dfn>, the user agent should bear in mind the following:</p>
+
+  <ul>
+
+   <li>Any information in this API that varies from user to user can be used to profile or identify
+   the user.
+   <!--INSERT FINGERPRINT-->
+   </li>
+
+   <li>If the user is not using a service that obfuscates the user's point of origin (e.g. the Tor
+   anonymity network), then the value that is least likely to distinguish the user from other users
+   with similar origins (e.g. from the same IP address block) is the language used by the majority
+   of such users. <ref spec=TOR></li>
+
+   <li>If the user is using an anonymizing service, then the value "<code data-x="">en-US</code>" is
+   suggested; if all users of the service use that same value, that reduces the possibility of
+   distinguishing the users from each other.</li>
+
+  </ul>
+
+  <p>To avoid introducing any more fingerprinting vectors, user agents should use the same list for
+  the APIs defined in this function as for the HTTP `<code
+  data-x="http-accept-language">Accept-Language</code>` header.
+  <!--INSERT FINGERPRINT-->
+  </p>
+
+  </div>
+
+
+
+  

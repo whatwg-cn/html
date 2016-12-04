@@ -1,0 +1,44 @@
+<h6>The <code data-x="attr-input-maxlength">maxlength</code> and <code data-x="attr-input-minlength">minlength</code> attributes</h6>
+
+  <p>The <dfn><code data-x="attr-input-maxlength">maxlength</code></dfn> attribute<span
+  w-nodev>, when it <span data-x="concept-input-apply">applies</span>,</span> is a <span
+  data-x="attr-fe-maxlength">form control <code data-x="">maxlength</code> attribute</span><span
+  w-nodev> controlled by the <code>input</code> element's <span
+  data-x="concept-input-value-dirty-flag">dirty value flag</span></span>.</p>
+
+  <p>The <dfn><code data-x="attr-input-minlength">minlength</code></dfn> attribute<span
+  w-nodev>, when it <span data-x="concept-input-apply">applies</span>,</span> is a <span
+  data-x="attr-fe-minlength">form control <code data-x="">minlength</code> attribute</span><span
+  w-nodev> controlled by the <code>input</code> element's <span
+  data-x="concept-input-value-dirty-flag">dirty value flag</span></span>.</p>
+
+  <p>If the <code>input</code> element has a <span>maximum allowed value length</span>, then the
+  <span>code-unit length</span> of the value of the element's <code
+  data-x="attr-input-value">value</code> attribute must be equal to or less than the element's
+  <span>maximum allowed value length</span>.</p>
+
+  <!-- we allow the default to be smaller than the minimum, so that you can have incomplete, but not
+  empty, input already in the form, like a template that needs to be filled in -->
+
+  <div class="example">
+
+   <p>The following extract shows how a messaging client's text entry could be arbitrarily
+   restricted to a fixed number of characters, thus forcing any conversation through this medium to
+   be terse and discouraging intelligent discourse.</p>
+
+   <pre>&lt;label>What are you doing? &lt;input name=status maxlength=140>&lt;/label></pre>
+
+  </div>
+
+  <div class="example">
+
+   <p>Here, a password is given a minimum length:</p>
+
+   <pre>&lt;p>&lt;label>Username: &lt;input name=u required>&lt;/label>
+&lt;p>&lt;label>Password: &lt;input name=p required minlength=12>&lt;/label></pre>
+
+  </div>
+
+
+
+  

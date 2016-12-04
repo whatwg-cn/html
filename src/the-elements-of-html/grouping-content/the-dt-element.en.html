@@ -1,0 +1,45 @@
+<h4>The <dfn><code>dt</code></dfn> element</h4>
+
+  <dl class="element">
+   <dt><span data-x="concept-element-categories">Categories</span>:</dt>
+   <dd>None.</dd>
+   <dt><span data-x="concept-element-contexts">Contexts in which this element can be used</span>:</dt>
+   <dd>Before <code>dd</code> or <code>dt</code> elements inside <code>dl</code> elements.</dd>
+   <dd>Before <code>dd</code> or <code>dt</code> elements inside <code>div</code> elements that are children of a <code>dl</code> element.</dd>
+   <dt><span data-x="concept-element-content-model">Content model</span>:</dt>
+   <dd><span>Flow content</span>, but with no <code>header</code>, <code>footer</code>, <span>sectioning content</span>, or <span>heading content</span> descendants.</dd>
+   <dt><span data-x="concept-element-attributes">Content attributes</span>:</dt>
+   <dd><span>Global attributes</span></dd>
+   <dt><span data-x="concept-element-dom">DOM interface</span>:</dt><!--TOPIC:DOM APIs-->
+   <dd>Uses <code>HTMLElement</code>.</dd>
+  </dl><!--TOPIC:HTML-->
+
+  <p>The <code>dt</code> element <span>represents</span> the term, or name, part of a
+  term-description group in a description list (<code>dl</code> element).</p>
+
+  <p class="note">The <code>dt</code> element itself, when used in a <code>dl</code> element, does
+  not indicate that its contents are a term being defined, but this can be indicated using the
+  <code>dfn</code> element.</p>
+
+  <div class="example">
+
+   <p>This example shows a list of frequently asked questions (a FAQ) marked up using the
+   <code>dt</code> element for questions and the <code>dd</code> element for answers.</p>
+
+   <pre>&lt;article>
+ &lt;h1>FAQ&lt;/h1>
+ &lt;dl>
+  &lt;dt>What do we want?&lt;/dt>
+  &lt;dd>Our data.&lt;/dd>
+  &lt;dt>When do we want it?&lt;/dt>
+  &lt;dd>Now.&lt;/dd>
+  &lt;dt>Where is it?&lt;/dt>
+  &lt;dd>We are not sure.&lt;/dd>
+ &lt;/dl>
+&lt;/article></pre>
+
+  </div>
+
+
+
+  
