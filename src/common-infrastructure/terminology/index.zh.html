@@ -1,32 +1,26 @@
-  <h3>Terminology</h3>
+  <h3>术语</h3>
 
-  <p>This specification refers to both HTML and XML attributes and IDL attributes, often in the same
-  context. When it is not clear which is being referred to, they are referred to as <dfn
-  data-x="">content attributes</dfn> for HTML and XML attributes, and <dfn data-x="">IDL
-  attributes</dfn> for those defined on IDL interfaces. Similarly, the term "properties" is used for
-  both JavaScript object properties and CSS properties. When these are ambiguous they are qualified
-  as <dfn data-x="">object properties</dfn> and <dfn data-x="">CSS properties</dfn> respectively.</p>
+  <p>该标准所说的属性，指的是 HTML，XML 和 IDL 属性，通常在同一个上下文中。当未具体提及所指时，HTML 和 XML 属性指的是 <dfn
+  data-x="">content attributes</dfn>，而 <dfn data-x="">IDL
+  attributes</dfn>指的是在 IDL 接口中定义的属性。同样，“属性”这个词也同时指 Javascript 对象属性和 CSS 属性。在可能产生混淆时，
+  该标准使用 <dfn data-x="">object properties</dfn> 和 <dfn data-x="">CSS properties</dfn> 来区别。</p>
 
-  <p>Generally, when the specification states that a feature applies to <span>HTML 语法</span>
-  or <span>XML 语法</span>, it also includes the other. When a feature specifically only
-  applies to one of the two languages, it is called out by explicitly stating that it does not apply
-  to the other format, as in "for HTML, ... (this does not apply to XML)".</p>
+  <p>一般而言，当该标准申明一个特性可以在 <span>HTML 语法</span> 或 <span>XML 语法</span> 中应用，则在另一个中也可用。
+  当一个特性仅在两个语言之一中应用时，该标准将显式申明它不能在另一个语言中使用，
+  如：“可在 HTML 中使用，…… （该语法不可用于 XML）”。</p>
 
-  <p>This specification uses the term <dfn data-x="">document</dfn> to refer to any use of HTML,
-  ranging from short static documents to long essays or reports with rich multimedia, as well as to
-  fully-fledged interactive applications. The term is used to refer both to <code>Document</code>
-  objects and their descendant DOM trees, and to serialized byte streams using the <span data-x="HTML 语法">HTML syntax</span> or the <span data-x="XML 语法">XML 语法</span>, depending
-  on context.</p>
+  <p>该标准使用术语 <dfn data-x="">document</dfn>（文档）指任何 HTML，从短小精悍的文档到长篇累牍的论文，
+  亦或是多媒体报告、完整的交互式应用程序。该术语同时指 <code>Document</code> 对象和他们的后裔 DOM 树。至于序列化的字节流，
+  则根据上下文使用 <span data-x="HTML 语法">HTML 语法</span> 或 <span data-x="XML 语法">XML 语法</span> 来表示。</p>
 
-  <p>In the context of the DOM structures, the terms <span data-x="HTML documents">HTML
-  document</span> and <span data-x="XML documents">XML document</span> are used as defined in the DOM
+  <p>在 DOM 结构的上下文中，术语 <span data-x="HTML documents">HTML document</span> 和
+  <span data-x="XML documents">XML document</span> are used as defined in the DOM
   specification, and refer specifically to two different modes that <code>Document</code> objects
   can find themselves in. <ref spec=DOM> (Such uses are always hyperlinked to their
   definition.)</p>
 
-  <p>In the context of byte streams, the term HTML document refers to resources labeled as
-  <code>text/html</code>, and the term XML document refers to resources labeled with an <span>XML
-  MIME type</span>.</p>
+  <p>在字节流的上下文中，术语 HTML document 指标记为 <code>text/html</code> 的资源，术语 XML document 指标记为
+  <span>XML MIME type</span> 的资源。</p>
 
   <hr>
 
