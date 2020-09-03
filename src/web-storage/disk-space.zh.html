@@ -2,8 +2,8 @@
 
   <p>用户代理应该限制可存储区域的空间大小，否则恶意的作者可能会利用这一特性耗尽用户的可用磁盘空间。</p>
 
-  <p>用户代理应该防止网站在它们源下的附属站点进行存储，例如应防范通过在
-  a1.example.com，a2.example.com，a3.example.com 等站点进行存储，
+  <p>用户代理应该防止站点在它们源下的附属站点进行存储，例如应防范通过在
+  a1.example.com、a2.example.com、a3.example.com 等站点进行存储，
   来绕过主站 example.com 存储限制的行为</p>
 
   <p>当到达配额时用户代理可以提示用户，使用户可以授予一个站点更多空间。
@@ -14,7 +14,7 @@
   <!--<p>If the storage area space limit is reached during a <code
   data-x="dom-Storage-setItem">setItem()</code> call, the method will throw an exception.</p>-->
 
-  <p>通常建议每个 <span data-x="origin">源</span> 的存储上线是 5M。
+  <p>通常建议每个 <span data-x="origin">源</span> 的存储上限是 5M。
   欢迎实现者提供反馈意见，用于将来更新这个建议。</p>
 
   <p>为了保证可预测性，配额应该基于未压缩的数据存储大小来进行计算。</p>
