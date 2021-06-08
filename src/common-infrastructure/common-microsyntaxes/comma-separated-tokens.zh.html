@@ -1,22 +1,12 @@
-  <h4>逗号分隔的令牌</h4>
+  <h4>逗号分隔的字符集</h4>
 
-  <p><dfn data-x="set of comma-separated tokens">逗号分隔的令牌集合</dfn> is a string containing zero or more tokens each
-  separated from the next by a single U+002C COMMA character (,), where tokens consist of any string
-  of zero or more characters, neither beginning nor ending with <span>ASCII whitespace</span>, nor
-  containing any U+002C COMMA characters (,), and optionally surrounded by <span>ASCII
-  whitespace</span>.</p>
+  <p><dfn data-x="set of comma-separated tokens">逗号分隔的字符集</dfn> is a string containing zero or more tokens each separated from the next by a single U+002C COMMA character (,), where tokens consist of any string of zero or more characters, neither beginning nor ending with <span>ASCII whitespace</span>, nor containing any U+002C COMMA characters (,), and optionally surrounded by <span>ASCII whitespace</span>.</p>
 
-  <p>是包含零个或更多令牌的字符串，它们以一个 U+002C COMMA 字符（,）分隔，
-  其中的令牌是由一个或更多的字符组成的任意字符串，
-  首尾不包括 <span data-x="ASCII whitespace">ASCII 空白</span>
-  也不能包含 U+002C COMMA 字符（,），但前后可以有 <span data-x="ASCII whitespace">ASCII 空白</span>。</p>
+  <p>是包含零个或多个字符的字符串，它们以一个 U+002C COMMA 字符（,）分隔，其中的字符是由一个或更多的字符组成的任意字符串，首尾不包括 <span data-x="ASCII whitespace">ASCII 空白</span>也不能包含 U+002C COMMA 字符（,），但前后可以有 <span data-x="ASCII whitespace">ASCII 空白</span>。</p>
 
-  <p class="example">例如字符串 "<code data-x="">&nbsp;a&nbsp;,b,,d&nbsp;d&nbsp;</code>"
-  由四个令牌组成："a", "b", 空字符串和 "d&nbsp;d"。每个令牌的前后空白不计入令牌，空字符串可以是一个令牌。</p>
+  <p class="example">例如字符串"<code data-x="">&nbsp;a&nbsp;,b,,d&nbsp;d&nbsp;</code>"由四个字符组成："a", "b", 空字符串和 "d&nbsp;d"。每个字符的前后空白不计入字符，空字符串可以是一个字符。</p>
 
-  <p>有时 <span data-x="set of comma-separated tokens">逗号分隔的令牌集合</span> 对合法令牌的构成还有额外限制。
-  如果定义了那些限制，令牌就必须完全遵守；其他值都是不符合规范的。
-  如果没定义其他限制，所有值都是符合规范的。</p>
+  <p>有时<span data-x="set of comma-separated tokens">逗号分隔的字符集</span>对合法字符的构成还有额外限制。如果定义了那些限制，字符就必须完全遵守；其他值都是不符合规范的。如果没定义其他限制，所有值都是符合规范的。</p>
 
 
 
