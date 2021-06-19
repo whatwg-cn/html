@@ -33,7 +33,7 @@
     "bluebird": "^3.5.1",
     "fs-extra": "^5.0.0",
     "gitlog": "^3.1.2",
-    "http-server": "^0.11.1",
+    "http-server": "^0.12.3",
     "mkpath": "^1.0.0",
     "moment": "^2.20.1",
     "parse5": "^4.0.0"

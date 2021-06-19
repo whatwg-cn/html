@@ -7,7 +7,7 @@ build: update-progress html
 	[ -d html-build ] || git clone https://github.com/whatwg-cn/html-build.git --depth=1
 	[ -d wattsi ] || (git clone https://github.com/whatwg/wattsi.git --depth=1 && cd wattsi && make)
 	export SHA_OVERRIDE=ffffff; \
-	export PATH=$$PATH:`pwd`/wattsi/bin; \
+	export PATH="$$PATH":`pwd`/wattsi/bin; \
 	export HTML_OUTPUT=$(OUTPUT); \
 	bash html-build/build.sh --no-lint -n --no-highlight
 	sed -i \
@@ -32,10 +32,10 @@ build: update-progress html
 	cp -r images/* $(OUTPUT)/images/
 
 html:
-	git clone https://github.com/whatwg/html.git --depth=1
-	rm -rf html/.git
+	./bin/update-html.sh $$(cat HTML_VERSION)
 
 update-en: clean-html html
+	./bin/update-html.sh origin/master
 	cp html/source source
 	rm -rf src/SUMMARY.en.md
 	find src/ -name "*.en.html" -delete
